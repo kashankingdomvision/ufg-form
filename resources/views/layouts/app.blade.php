@@ -20,6 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
 
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     
@@ -52,7 +53,12 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
     
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    
+    <script src="{{ asset('js/swi204cs.js') }}" ></script>
+ 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     {{-- <div id="app"> --}}

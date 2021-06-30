@@ -5,4 +5,67 @@
 @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
+
+@import "~select2/dist/css/select2.css";
+// @import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3.css";
+
+
+// display
+.inline-flex{
+    display: inline-flex;
+}
+//margin
+.ml-5 {
+    margin-left: 5px !important;
+}
+
+.mt-2{
+    margin-top: 1rem;
+
+} 
+
+.mb-2{
+    margin-bottom: 1rem
+}
+//margin
+
+.th{    
+    width: 15rem;
+  }
+
+.td{
+    width: 60rem;
+}
+
+.selectRow {
+    display : block;
+    padding : 20px;
+}
+.select2-container {
+    width: 200px;
+}
+
+.select2-container .select2-selection--single {
+    box-sizing: border-box;
+    cursor: pointer;
+    display: block;
+    height: 38px;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 34px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #444;
+    line-height: 24px;
+}

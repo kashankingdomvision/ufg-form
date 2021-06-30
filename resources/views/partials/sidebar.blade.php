@@ -1,3 +1,7 @@
+@php
+  $route = \Route::currentRouteName()
+@endphp
+
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     
     <a href="index3.html" class="brand-link">
@@ -24,8 +28,8 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
 
-                <li class="nav-item menu-open">
-                    <a href="#" class="nav-link active">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -124,9 +128,9 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ ($route == 'users.index' || $route == 'users.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
-                        <i class="fa fa-cloud nav-icon"></i>
+                        <i class="fa fa-user nav-icon"></i>
                         <p>
                             User Management
                             <i class="fas fa-angle-left right"></i>
@@ -134,26 +138,26 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('users.create') }}" class="nav-link {{ $route == 'users.create' ? 'active' : ''}} ">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add User</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{ route('users.index') }}" class="nav-link {{  $route == 'users.index' || $route == 'users.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View User</p>
                             </a>
                         </li>
                         
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('roles.create')}}" class="nav-link {{ $route == 'roles.create' ? 'active' : ''}}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Role</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{ route('roles.index')}}" class="nav-link {{ $route == 'roles.index' || $route == 'roles.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Role</p>
                             </a>
