@@ -13,13 +13,14 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         $this->call([
-            // BrandAndHolidayTableSeeder::class,
-            // CurrencyTableSeeder::class,
-            // RoleTableSeeder::class, 
-            // UserTableSeeder::class,
-            // CategoryTableSeeder::class,
-            // BookingTypeSeeder::class,
-            CurrencyConversionSeeder::class
+            BrandAndHolidayTableSeeder::class,
+            CurrencyTableSeeder::class,
+            RoleTableSeeder::class, 
+            UserTableSeeder::class,
+            CategoryTableSeeder::class,
+            BookingMethodSeeder::class,
+            BookingTypeSeeder::class,
+            CurrencyConversionSeeder::class,
         ]);
     }
 }
