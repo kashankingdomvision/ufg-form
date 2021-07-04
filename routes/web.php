@@ -12,24 +12,20 @@
  */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
-
-
 Route::group(['middleware' => ['auth']], function(){
 
-
-
-
-
-    
-
+    /*
+    |--------------------------------------------------------------------------
+    | Quote Manangement
+    |--------------------------------------------------------------------------
+    */
 
     Route::group(['prefix' => 'quotes', 'as' => 'quotes.'], function () {
         // Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
@@ -39,12 +35,6 @@ Route::group(['middleware' => ['auth']], function(){
         // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
     	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
-
-  
-
-
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -66,13 +56,10 @@ Route::group(['middleware' => ['auth']], function(){
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
-    Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
-
+    // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
 
     Route::prefix('json')->group(function () {
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));	
-
-
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
     });
 });
