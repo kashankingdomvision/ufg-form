@@ -11,24 +11,89 @@
 // @import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3.css";
 
 
-// display
+/**
+ * -------------------------------------------------------------------------------------
+ *                                layouts
+ * -------------------------------------------------------------------------------------
+*/
+
 .inline-flex{
     display: inline-flex;
 }
-//margin
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Margin
+ * -------------------------------------------------------------------------------------
+*/
+
+.mt-1{
+    margin-top: 1rem !important;
+} 
+
+.mt-2{
+    margin-top: 2rem;
+} 
+
+.mb-2{
+    margin-bottom: 2rem !important;;
+}
+
 .ml-5 {
     margin-left: 5px !important;
 }
 
-.mt-2{
-    margin-top: 1rem;
-
-} 
-
-.mb-2{
-    margin-bottom: 1rem
+.mr-1{
+    margin-right: 1rem !important;
 }
-//margin
+
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Form Control
+ * -------------------------------------------------------------------------------------
+*/
+
+.input-group-text {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: .375rem .375rem;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.form-control:disabled, .form-control[readonly]{
+    background-color: #e9ecefa1;
+    opacity: 1;
+}
+
+.hide-arrows::-webkit-inner-spin-button, .hide-arrows::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+.hide-arrows {
+    -moz-appearance:textfield !important;
+}
+
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Table
+ * -------------------------------------------------------------------------------------
+*/
 
 .th{    
     width: 15rem;
@@ -42,6 +107,13 @@
     display : block;
     padding : 20px;
 }
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Select2
+ * -------------------------------------------------------------------------------------
+*/
+
 .select2-container {
     width: 200px;
 }
@@ -67,5 +139,40 @@
 
 .select2-container--default .select2-selection--single .select2-selection__rendered {
     color: #444;
-    line-height: 24px;
+    line-height: 26px;
+}
+
+.selling-price-other-currency{
+    width: 68%;
+}
+
+.select2-container--default .select2-selection--single{
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+/* fix select2 border color on validation */
+.is-invalid + .select2-container .select2-selection--single {
+    border-color: #dc3545;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(.375em + .1875rem) center;
+    background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Quote Manangement
+ * -------------------------------------------------------------------------------------
+*/
+
+.quote{
+    // width: 83%;
+    border: solid 1px #DCDCDC;
+    padding: 20px;
+    margin: 0 auto 15px;
+    float: none;
+    border-radius: 10px;
 }

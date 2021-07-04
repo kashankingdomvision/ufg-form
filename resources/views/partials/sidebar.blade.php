@@ -56,7 +56,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ ($route == 'quotes.index' || $route == 'quotes.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
                         <p>
@@ -66,7 +66,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('quotes.create') }}" class="nav-link {{ $route == 'quotes.create' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Quote</p>
                             </a>

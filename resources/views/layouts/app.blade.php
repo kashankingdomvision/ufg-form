@@ -6,20 +6,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    {{-- <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
-
-
+    
+    <title>{{ config('app.name', 'Laravel') }} | @yield('title') </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -31,34 +19,33 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}"> --}}
 
     <!-- icheck bootstrap -->
     <link href="{{ asset('css/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
     
     <!-- JQVMap -->
-    <link rel="stylesheet" href="{{ asset('css/jqvmap.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/jqvmap.min.css') }}"> --}}
+
     <!-- Theme style -->
     <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
     
-    
-    
-    
     <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="{{ asset('css/OverlayScrollbars.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/OverlayScrollbars.min.css') }}"> --}}
     
     <!-- Daterange picker -->
-    <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}"> --}}
     
     <!-- summernote -->
-    <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('css/summernote-bs4.min.css') }}"> --}}
     
-    
+    <!-- jQuery -->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
 
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script src="{{ asset('js/swi204cs.js') }}" defer></script>
     
-    <script src="{{ asset('js/swi204cs.js') }}" ></script>
- 
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     {{-- <div id="app"> --}}
@@ -135,66 +122,53 @@
     @endauth
 
 
-
-
-        
-    {{-- </div> --}}
-
+         
     
+ 
 
-    <!-- AdminLTE App -->
-    {{-- <script src="{{ asset('js/adminlte.min.js')}} "></script> --}}
-
-<!-- jQuery -->
-<script src="{{ asset('js/jquery.min.js') }}"></script>
 
 <!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
-
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+{{-- <script src="{{ asset('js/jquery-ui.min.js') }}"></script> --}}
 
 
 <!-- Bootstrap 4 -->
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
 <!-- ChartJS -->
-<script src="{{ asset('js/Chart.min.js') }}"></script>
+{{-- <script src="{{ asset('js/Chart.min.js') }}"></script> --}}
 
 <!-- Sparkline -->
-<script src="{{ asset('js/sparkline.js') }}"></script>
+{{-- <script src="{{ asset('js/sparkline.js') }}"></script> --}}
 
 <!-- JQVMap -->
-<script src="{{ asset('js/jquery.vmap.min.js') }}"></script>
-<script src="{{ asset('js/jquery.vmap.usa.js') }}"></script>
+{{-- <script src="{{ asset('js/jquery.vmap.min.js') }}"></script>
+<script src="{{ asset('js/jquery.vmap.usa.js') }}"></script> --}}
 
 <!-- jQuery Knob Chart -->
-<script src="{{ asset('js/jquery.knob.min.js') }}"></script>
+{{-- <script src="{{ asset('js/jquery.knob.min.js') }}"></script> --}}
 
 <!-- daterangepicker -->
-<script src="{{ asset('js/moment.min.js') }}"></script>
-<script src="{{ asset('js/daterangepicker.js') }}"></script>
+{{-- <script src="{{ asset('js/moment.min.js') }}"></script> --}}
+{{-- <script src="{{ asset('js/daterangepicker.js') }}"></script> --}}
 
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
 
 <!-- Summernote -->
-<script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
+{{-- <script src="{{ asset('js/summernote-bs4.min.js') }}"></script> --}}
 
 <!-- overlayScrollbars -->
-<script src="{{ asset('js/jquery.overlayScrollbars.min.js') }}"></script>
+{{-- <script src="{{ asset('js/jquery.overlayScrollbars.min.js') }}"></script> --}}
 
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.js') }}"></script>
 
 <!-- AdminLTE for demo purposes -->
-<script src="{{ asset('js/demo.js') }}"></script>
+{{-- <script src="{{ asset('js/demo.js') }}"></script> --}}
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('js/dashboard.js') }}"></script>
-
+{{-- <script src="{{ asset('js/dashboard.js') }}"></script> --}}
+@stack('js')
 
 </body>
 </html>

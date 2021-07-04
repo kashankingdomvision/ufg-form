@@ -1,7 +1,12 @@
 require('./scripts.js');
 
 $(document).ready(function(){
-    $(document).funfon('change', 'select[name="role"]', function() {
+    $(document).on('change', 'select[name="role"]', function() {
+
+
+        console.log("sdsd");
+
+
         var role = $(this).find('option:selected').data('role');
         if (role == 'Sales Agent' || role == 2) {
             $('#supervisor').show();

@@ -5,12 +5,9 @@
 
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="login-logo py-3" style="margin-left:-13%">
-                        <img src="{{ asset('img/logo.png') }}">
-                    </div>
-                </div>
+         
+            <div class="login-logo py-3 mt-5">
+                <img src="{{ asset('img/logo.png') }}">
             </div>
 
             <div class="card card-outline card-danger">

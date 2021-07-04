@@ -36,7 +36,7 @@
 
                     <div class="form-group">
                       <label>Name <span style="color:red">*</span></label>
-                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" required>
+                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" >
 
                       @error('name')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -45,7 +45,7 @@
 
                     <div class="form-group">
                       <label>Email <span style="color:red">*</span></label>
-                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" required>
+                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" >
 
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -54,7 +54,7 @@
 
                     <div class="form-group">
                       <label>Password <span style="color:red">*</span></label>
-                      <input type="password" name="password" value="" class="form-control @error('password') is-invalid @enderror" placeholder="Password" required>
+                      <input type="password" name="password" value="" class="form-control @error('password')  @enderror" placeholder="Password" >
 
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -63,7 +63,7 @@
 
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
-                      <select class="form-control select2 changeRole @error('role') is-invalid @enderror" name="role">
+                      <select name="role" class="form-control select2 changeRole  @error('role') is-invalid @enderror" >
                         <option value="">Select User Type</option>
                         @foreach ($roles as $role)
                           <option value="{{ $role->id }}" data-role="{{ $role->name }}"> {{ $role->name }}</option>
@@ -77,7 +77,7 @@
 
                     <div class="form-group">
                       <label>Default Currency</label>
-                      <select class="form-control select2 currencyImage @error('currency') is-invalid @enderror" name="currency">
+                      <select name="currency" class="form-control select2 currencyImage @error('currency') is-invalid @enderror">
                         <option selected value="">Select Currency</option>
                         @foreach ($currencies as $currency)
                           <option value="{{ $currency->id }}" {{ old('currency') == $currency->id ? 'selected' : null }} data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp; {{ $currency->code }} - {{ $currency->name }} </option>
@@ -91,7 +91,7 @@
 
                     <div class="form-group">
                       <label>Default Brands</label>
-                      <select class="form-control select2 getBrandtoHoliday" name="brand">
+                      <select name="brand" class="form-control select2 getBrandtoHoliday @error('brand') is-invalid @enderror">
                         <option value="">Select Brands</option>
                         @foreach ($brands as $brand)
                           <option value="{{ $brand->id }}" {{ (old('brand') == $brand->id ? 'selected' : null) }} >{{ $brand->name }}</option>
@@ -105,7 +105,7 @@
 
                     <div class="form-group">
                       <label>Holiday Type</label>
-                      <select class="form-control select2 appendHolidayType" name="holiday_type">
+                      <select name="holiday_type" class="form-control select2 appendHolidayType">
                         <option value="">Select Holiday Type</option>
                         @if(isset($user->getBrand->getHolidayTypes))
                           @foreach ($user->getBrand->getHolidayTypes as $holiday_type)
