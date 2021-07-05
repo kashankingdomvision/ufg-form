@@ -14,16 +14,21 @@ class BookingMethodSeeder extends Seeder
     {
         $booking_methods = [
             [   
-                'name' => 'Paypal',
+                'name' => 'Supplier Own',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
 
             [
-                'name' => 'Credit Card',
+                'name' => 'Stuba',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
+            ],
 
+            [
+                'name' => 'Webhotelier',
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
         ];
 

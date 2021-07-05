@@ -168,7 +168,7 @@
 
              
                
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit'? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -228,9 +228,9 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-pen-square nav-icon"></i>
+                        <li class="nav-item {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'setting-child-active' : '' }}">
+                                <i class="fa fa-plane nav-icon"></i>
                                 <p>
                                     Booking Method
                                     <i class="right fas fa-angle-left"></i>
@@ -238,13 +238,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.booking_methods.create') }}" class="nav-link {{ $route == 'setting.booking_methods.create' ? 'active' : '' }}">
                                         <i class="fa fa-plus nav-icon"></i>
                                         <p>Add Booking Method</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.booking_methods.index') }}" class="nav-link {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.edit' ? 'active' : '' }}">
                                         <i class="fa fa-eye nav-icon"></i>
                                         <p>View Booking Method</p>
                                     </a>
