@@ -60,21 +60,21 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Zoho Reference <span style="color:red">*</span></label>
-                        <input type="text" class="form-control" placeholder="Enter Reference Number">
+                        <input type="text" name="ref_no" class="form-control" placeholder="Enter Reference Number">
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" class="form-control" placeholder="Quote Reference Number" >
+                        <input type="text" name="quote_no" class="form-control" placeholder="Quote Reference Number" >
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" class="form-control" placeholder="Lead Passenger Name" >
+                        <input type="text" name="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
                       </div>
                     </div>
 
@@ -110,7 +110,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sales_person_id" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sales_person" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                         </select>
 
@@ -141,11 +141,11 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input  type="radio" name="agency_booking" > Yes
+                            <input  type="radio" name="agency" > Yes
                           </label>
                           
                           <label class="radio-inline">
-                            <input  type="radio" name="agency_booking" checked> No
+                            <input  type="radio" name="agency" checked> No
                           </label>
                         </div>
                       </div>
@@ -205,12 +205,8 @@
 
                   
                   <div class="parent" id="parent">
-
                     <div class="quote" data-key="0">
-
                       <div class="row">
-
-                      
                           
                         <div class="col-sm-2">
                           <div class="form-group">
@@ -628,10 +624,6 @@
                       </div>
                     </div>
                   </div>
-
-
-
-  
                 </div>
 
                 </form>
