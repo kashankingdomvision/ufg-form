@@ -67,6 +67,51 @@ Route::group(['middleware' => ['auth']], function(){
 		'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
+    /*
+    |--------------------------------------------------------------------------
+    | Setting
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
+
+        /* Airlines */
+		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+		
+        /* Booking methods */
+		Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+ 
+	    /* Payment methods */
+		Route::resource('payment_methods', 'SettingControllers\PaymentMethodController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+		
+		/* Currencies */
+		Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+		
+		/* Brands */
+		Route::resource('brands', 'SettingControllers\BrandController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+		
+		/*  Holiday Types */
+		Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+		
+		/* Currency Conversion */
+		Route::resource('currnecy_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
+			'index', 'edit', 'update'
+		]]);
+
+	});
+
     // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
 
     Route::prefix('json')->group(function () {

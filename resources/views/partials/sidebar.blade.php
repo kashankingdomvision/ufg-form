@@ -168,7 +168,7 @@
 
              
                
-                <li class="nav-item">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -178,8 +178,8 @@
                     </a>
                     <ul class="nav nav-treeview">
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' ? : 'setting-child-active' }}">
                                 <i class="fa fa-plane nav-icon"></i>
                                 <p>
                                     Airline
@@ -188,13 +188,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.airlines.create') }}" class="nav-link {{ $route == 'setting.airlines.create' ? 'active' : '' }}">
                                         <i class="fa fa-plus nav-icon"></i>
                                         <p>Add Airline</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.airlines.index') }}" class="nav-link {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.edit' ? 'active' : '' }}">
                                         <i class="fa fa-eye nav-icon"></i>
                                         <p>View Airline</p>
                                     </a>
@@ -203,9 +203,9 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-money-check-alt nav-icon"></i>
+                        <li class="nav-item {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? : 'setting-child-active' }}">
+                                <i class="fa fa-plane nav-icon"></i>
                                 <p>
                                     Payment Method
                                     <i class="right fas fa-angle-left"></i>
@@ -213,13 +213,13 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.payment_methods.create') }}" class="nav-link {{ $route == 'setting.payment_methods.create' ? 'active' : '' }}">
                                         <i class="fa fa-plus nav-icon"></i>
                                         <p>Add Payment Method</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.payment_methods.index') }}" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.edit' ? 'active' : '' }}">
                                         <i class="fa fa-eye nav-icon"></i>
                                         <p>View Payment Method</p>
                                     </a>
