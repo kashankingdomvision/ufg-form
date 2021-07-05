@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Add Role')
+@section('title','Add Payment Method')
 
 @section('content')
 
@@ -10,12 +10,13 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Add Role</h4>
+              <h4>Add Payment Method</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item active">User Management</li>
+                <li class="breadcrumb-item"><a>Setting</a></li>
+                <li class="breadcrumb-item active">Payment Method</li>
               </ol>
           </div>
         </div>
@@ -29,17 +30,17 @@
 
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title text-center">Role Form</h3>
+                <h3 class="card-title text-center">Payment Method Form</h3>
               </div>
 
-              <form method="POST" action="{{ route('roles.store') }}">
+              <form method="POST" action="{{ route('setting.payment_methods.store') }}">
                 @csrf
 
                 <div class="card-body">
 
                   <div class="form-group">
                     <label>Name <span style="color:red">*</span></label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Role Name" required>
+                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Payment Method Name" required>
 
                     @error('name')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

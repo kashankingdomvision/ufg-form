@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Tempusdominus Bootstrap 4 -->
-    {{-- <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('css/tempusdominus-bootstrap-4.min.css') }}">
 
     <!-- icheck bootstrap -->
     <link href="{{ asset('css/icheck-bootstrap/icheck-bootstrap.min.css') }}" rel="stylesheet">
@@ -148,11 +148,10 @@
 {{-- <script src="{{ asset('js/jquery.knob.min.js') }}"></script> --}}
 
 <!-- daterangepicker -->
-{{-- <script src="{{ asset('js/moment.min.js') }}"></script> --}}
-{{-- <script src="{{ asset('js/daterangepicker.js') }}"></script> --}}
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/daterangepicker.js') }}"></script>
 
-<!-- Tempusdominus Bootstrap 4 -->
-{{-- <script src="{{ asset('js/tempusdominus-bootstrap-4.min.js') }}"></script> --}}
+
 
 <!-- Summernote -->
 {{-- <script src="{{ asset('js/summernote-bs4.min.js') }}"></script> --}}
@@ -168,6 +167,10 @@
 
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 {{-- <script src="{{ asset('js/dashboard.js') }}"></script> --}}
+
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="{{ asset('js/tempusdominus-bootstrap-4.js') }}"></script>
+
 @stack('js')
 
 </body>

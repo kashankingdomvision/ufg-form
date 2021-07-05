@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
-@section('content')
+@section('title','View User')
 
+@section('content')
 
     <div class="content-wrapper">
 
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row">
                     <div class="col-sm-6">
                         <h4>View User</h4>
                     </div>
@@ -89,14 +90,7 @@
 
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
-                                    <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">»</a></li>
-                                    {{-- {!! $users->render() !!} --}}
-
-                                    {{-- {{ dd( $users->links() ) }} --}}
+                                  {{ $users->links() }}
                                 </ul>
                             </div>
                         </div>

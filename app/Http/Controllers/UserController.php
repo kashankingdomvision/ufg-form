@@ -30,11 +30,9 @@ class UserController extends Controller
             $query->where('slug', 'supervisor');
         })->orderBy('name', 'ASC')->get();
 
-        $data['roles'] = Role::orderBy('name', 'ASC')->get();
-
+        $data['roles']      = Role::orderBy('name', 'ASC')->get();
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
-
-        $data['brands'] = Brand::orderBy('id', 'ASC')->get();
+        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
 
         return view('users.create', $data);
     }
@@ -48,7 +46,7 @@ class UserController extends Controller
             'email'          => $request->email,
             'role_id'        => $request->role,
             'password'       => $request->password,
-            'supervisor_id'  => $request->supervisor,
+            'supervisor_id'  => $request->supervisor_id,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
             'holiday_type_id' => $request->holiday_type,
@@ -86,7 +84,7 @@ class UserController extends Controller
             'name'           => $request->name,
             'email'          => $request->email,
             'role_id'        => $request->role,
-            'supervisor_id'  => $request->supervisor,
+            'supervisor_id'  => $request->supervisor_id,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
             'holiday_type_id' => $request->holiday_type,

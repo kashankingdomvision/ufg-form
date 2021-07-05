@@ -97,16 +97,22 @@ $(document).on('change', '.supplier-id',function(){
 
 
 
-    $(document).on('change', '.changeRole', function() {
+    $(document).on('change', '.role', function() {
+
         var role = $(this).find('option:selected').data('role');
-        var supervisor = $('.userSupervisor');
+        var supervisor = $('#supervisor_feild');
+
         if (role == 'Sales Agent' || role == 2) {
-            supervisor.show();
-            $('#selectSupervisor').removeAttr('disabled');
+
+            $(supervisor).removeClass("d-none");
+            $('#supervisor_id').attr("required", true).removeAttr('disabled');
+
         } else {
-            supervisor.hide();
-            $('#selectSupervisor').attr('disabled', 'disabled');
+
+            $(supervisor).addClass("d-none");
+            $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
         }
+
     });
         
     $('.currencyImage').select2({
@@ -127,6 +133,23 @@ $(document).on('change', '.supplier-id',function(){
 
      
     
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Season Manangement
+ * -------------------------------------------------------------------------------------
+*/
+
+    // $('.date-picker').datetimepicker({
+    //     format: 'L'
+    // });
+
+    $('#seasons').keyup( function () {
+        var val = $(this).val();
+        if(val.length == 4){
+            $(this).val(val+'-');
+        }
+    });
 
 
 /**

@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
+@section('title','Add User')
+
 @section('content')
     <div class="content-wrapper">
 
       <section class="content-header">
         <div class="container-fluid">
-          <div class="row mb-2">
+          <div class="row">
             <div class="col-sm-6">
                 <h4>Add User</h4>
               </div>
@@ -36,7 +38,7 @@
 
                     <div class="form-group">
                       <label>Name <span style="color:red">*</span></label>
-                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" >
+                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" required>
 
                       @error('name')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -45,7 +47,7 @@
 
                     <div class="form-group">
                       <label>Email <span style="color:red">*</span></label>
-                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" >
+                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" required>
 
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -54,7 +56,7 @@
 
                     <div class="form-group">
                       <label>Password <span style="color:red">*</span></label>
-                      <input type="password" name="password" value="" class="form-control @error('password')  @enderror" placeholder="Password" >
+                      <input type="password" name="password" value="" class="form-control @error('password')  @enderror" placeholder="Password" required>
 
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -63,7 +65,7 @@
 
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
-                      <select name="role" class="form-control select2 changeRole  @error('role') is-invalid @enderror" >
+                      <select name="role" class="form-control select2 role  @error('role') is-invalid @enderror" required>
                         <option value="">Select User Type</option>
                         @foreach ($roles as $role)
                           <option value="{{ $role->id }}" data-role="{{ $role->name }}"> {{ $role->name }}</option>
@@ -71,6 +73,20 @@
                       </select>
 
                       @error('role')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div> 
+
+                    <div class="form-group d-none" id="supervisor_feild">
+                      <label>Supervisor <span style="color:red">*</span></label>
+                      <select name="supervisor_id" id="supervisor_id" class="form-control select2 supervisor-id  @error('supervisor_id') is-invalid @enderror" >
+                        <option value="">Select Supervisor</option>
+                        @foreach ($supervisors as $supervisor)
+                          <option value="{{ $supervisor->id }}" > {{ $supervisor->name }}</option>
+                        @endforeach
+                      </select>
+
+                      @error('supervisor_id')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div> 

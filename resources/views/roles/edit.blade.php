@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+@section('title','Edit Role')
+
 @section('content')
 
     <div class="content-wrapper">
 
       <section class="content-header">
         <div class="container-fluid">
-          <div class="row mb-2">
+          <div class="row">
             <div class="col-sm-6">
                 <h4>Edit Role</h4>
               </div>

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             CurrencyConversionSeeder::class,
             InitialTableSeeder::class,
             ProductTableSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
         $users = factory(App\User::class, 5)->create();
     }

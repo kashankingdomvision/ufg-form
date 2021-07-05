@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\BookingMethod;
+use App\PaymentMethod;
 
-class BookingMethodSeeder extends Seeder
+class PaymentMethodSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,26 +12,21 @@ class BookingMethodSeeder extends Seeder
      */
     public function run()
     {
-        $booking_methods = [
+        $payment_methods = [
             [   
-                'name' => 'Supplier Own',
+                'name' => 'Paypal',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
 
             [
-                'name' => 'Stuba',
+                'name' => 'Credit Card',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
-            ],
 
-            [
-                'name' => 'Webhotelier',
-                'created_at' =>  now(),
-                'updated_at' =>  now()
             ],
         ];
 
-        BookingMethod::insert($booking_methods);
+        PaymentMethod::insert($payment_methods);
     }
 }
