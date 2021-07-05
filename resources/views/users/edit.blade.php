@@ -109,7 +109,7 @@
                         <option value="">Select Holiday Type</option>
                         @if(isset($user->getBrand->getHolidayTypes))
                           @foreach ($user->getBrand->getHolidayTypes as $holiday_type)
-                            <option value="{{ $holiday_type->id }}" {{ $user->holidaytype_id == $holiday_type->id ? 'selected' : (old('brand') == $holiday_type->id ? 'selected' : null) }} >{{ $holiday_type->name }}</option>
+                            <option value="{{ $holiday_type->id }}" {{ $user->holiday_type_id == $holiday_type->id ? 'selected' : (old('brand') == $holiday_type->id ? 'selected' : null) }} >{{ $holiday_type->name }}</option>
                           @endforeach
                         @endif      
                       </select>

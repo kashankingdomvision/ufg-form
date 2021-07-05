@@ -16,7 +16,7 @@ class AlertAddForeignKeyUserTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('holidaytype_id')->references('id')->on('holiday_types')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('holiday_type_id')->references('id')->on('holiday_types')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('supervisor_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
@@ -30,7 +30,7 @@ class AlertAddForeignKeyUserTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign(['role_id', 'currency_id', 'supervisor_id', 'holidaytype_id', 'brand_id']);
+            $table->dropForeign(['role_id', 'currency_id', 'supervisor_id', 'holiday_type_id', 'brand_id']);
         });
     }
 }

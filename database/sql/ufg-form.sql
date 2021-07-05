@@ -134,7 +134,7 @@ CREATE TABLE `users` (
   `supervisor_id` bigint(20) UNSIGNED DEFAULT NULL,
   `currency_id` bigint(20) UNSIGNED DEFAULT NULL,
   `brand_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `holidaytype_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `holiday_type_id` bigint(20) UNSIGNED DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
@@ -149,7 +149,7 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `role_id`, `supervisor_id`, `currency_id`, `brand_id`, `holidaytype_id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `is_login`, `created_at`, `updated_at`) VALUES
+INSERT INTO `users` (`id`, `role_id`, `supervisor_id`, `currency_id`, `brand_id`, `holiday_type_id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `is_login`, `created_at`, `updated_at`) VALUES
 (1, 1, NULL, NULL, NULL, NULL, 'Kashan', 'kashan.kingdomvision@gmail.com', NULL, '$2y$10$PZvdq9E3SrPjGlPM22bxf.FZA57s4Id8LxRUQin0O3rYgOoHP9RiC', NULL, 0, '2021-06-28 19:06:39', '2021-06-28 19:06:39');
 
 --

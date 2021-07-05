@@ -51,7 +51,7 @@ class UserController extends Controller
             'supervisor_id'  => $request->supervisor,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
-            'holidaytype_id' => $request->holiday_type,
+            'holiday_type_id' => $request->holiday_type,
         ];
 
         User::create($data);
@@ -89,7 +89,7 @@ class UserController extends Controller
             'supervisor_id'  => $request->supervisor,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
-            'holidaytype_id' => $request->holiday_type,
+            'holiday_type_id' => $request->holiday_type,
         ];
 
         if ($request->has('password') && !empty($request->password)) {
