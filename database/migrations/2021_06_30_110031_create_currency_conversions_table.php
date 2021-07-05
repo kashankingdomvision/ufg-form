@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateCurrencyConversionsTable extends Migration
 {
@@ -17,8 +17,8 @@ class CreateCurrencyConversionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('from');
             $table->string('to');
-            $table->float('live_rate', 16, 2);
-            $table->float('manual_rate', 16, 2);
+            $table->double('live_rate');
+            $table->double('manual_rate');
             $table->timestamps();
         });
     }

@@ -29,14 +29,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             
         });
-
-        // Schema::create('app_type_users', function (Blueprint $table) {
-        //     $table->increments('id');
-        //     $table->integer('user_id')->unsigned()->index();
-        //     $table->integer('app_type_id')->unsigned()->index();
-        //     $table->string('status',1);
-        //     $table->timestamps();
-        // });
     }
 
     /**

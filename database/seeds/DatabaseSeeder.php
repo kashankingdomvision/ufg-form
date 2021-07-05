@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             BookingMethodSeeder::class,
             BookingTypeSeeder::class,
             CurrencyConversionSeeder::class,
+            InitialTableSeeder::class,
         ]);
     }
 }
