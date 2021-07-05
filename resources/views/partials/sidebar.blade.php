@@ -104,7 +104,7 @@
                     </ul>
                 </li>
                
-                <li class="nav-item">
+                <li class="nav-item {{ ($route == 'seasons.index' || $route == 'seasons.create' || $route == 'seasons.edit') ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-cloud nav-icon"></i>
                         <p>
@@ -114,13 +114,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('seasons.create') }}"  class="nav-link {{ $route == 'seasons.create' ? 'active' : ''}} ">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Season</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : ''}} ">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Season</p>
                             </a>

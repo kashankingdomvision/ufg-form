@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*
     |--------------------------------------------------------------------------
-    | Users
+    | Users Manangement
     |--------------------------------------------------------------------------
     */
 
@@ -54,6 +54,17 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('roles', 'RoleController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Season Manangement
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('seasons', 'SeasonController',['only' => [
+		'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
     // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
