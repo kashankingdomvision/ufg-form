@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title','Edit Role')
+
 @section('content')
 
     <div class="content-wrapper">
