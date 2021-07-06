@@ -11,7 +11,7 @@
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         {{ (Auth::user()->name) }}
-        <i class="fa fa-user" aria-hidden="true"></i>
+        &nbsp;&nbsp;<i class="fa fa-user" aria-hidden="true"></i>
       </a>
 
 
