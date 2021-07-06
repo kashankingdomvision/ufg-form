@@ -168,7 +168,7 @@
 
              
                
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit'? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -205,7 +205,7 @@
 
                         <li class="nav-item {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'setting-child-active' : '' }}">
-                                <i class="fa fa-plane nav-icon"></i>
+                                <i class="fas fa-money-check-alt nav-icon"></i>
                                 <p>
                                     Payment Method
                                     <i class="right fas fa-angle-left"></i>
@@ -230,7 +230,7 @@
 
                         <li class="nav-item {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'setting-child-active' : '' }}">
-                                <i class="fa fa-plane nav-icon"></i>
+                                <i class="fas fa-pen-square nav-icon"></i>
                                 <p>
                                     Booking Method
                                     <i class="right fas fa-angle-left"></i>
@@ -277,48 +277,24 @@
 
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>
-                                    Brand  
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fa fa-plus nav-icon"></i>
-                                        <p>Add Brand</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="fa fa-eye nav-icon"></i>
-                                        <p>View Brand</p>
-                                    </a>
-                                </li>
-                       
 
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'setting-child-active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Holiday
+                                    Brand
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.brands.create') }}" class="nav-link {{ $route == 'setting.brands.create' ? 'active' : '' }}">
                                         <i class="fa fa-plus nav-icon"></i>
                                         <p>Add Brand</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{ route('setting.brands.index') }}" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.edit' ? 'active' : '' }}">
                                         <i class="fa fa-eye nav-icon"></i>
                                         <p>View Brand</p>
                                     </a>
@@ -326,6 +302,33 @@
 
                             </ul>
                         </li>
+
+                        <li class="nav-item {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'setting-child-active' : '' }}">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    Holiday Type
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('setting.holidaytypes.create') }}" class="nav-link {{ $route == 'setting.holidaytypes.create' ? 'active' : '' }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>Add Holiday Type</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('setting.holidaytypes.index') }}" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.edit' ? 'active' : '' }}">
+                                        <i class="fa fa-eye nav-icon"></i>
+                                        <p>View Holiday Type</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                 
 
                     </ul>
                 </li>
