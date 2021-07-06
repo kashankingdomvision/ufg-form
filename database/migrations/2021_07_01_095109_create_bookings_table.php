@@ -38,6 +38,7 @@ class CreateBookingsTable extends Migration
             $table->double('selling_currency_oc')->nullable();
             $table->double('selling_price_oc')->nullable();
             $table->double('amount_per_person')->nullable();
+            $table->enum('rate_type',['live','manual'])->default('live');
             $table->timestamps();
             
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');

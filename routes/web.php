@@ -28,9 +28,9 @@ Route::group(['middleware' => ['auth']], function(){
     */
 
     Route::group(['prefix' => 'quotes', 'as' => 'quotes.'], function () {
-        // Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
+        Route::get('index', array('as' => 'index', 'uses' => 'QuoteController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'QuoteController@create'));
-        // Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
+        Route::post('store', array('as' => 'store', 'uses' => 'QuoteController@store'));
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
         // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
     	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
@@ -117,5 +117,8 @@ Route::group(['middleware' => ['auth']], function(){
     Route::prefix('json')->group(function () {
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));	
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
+        Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
+        Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
+        Route::get('supplier/to/product',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProduct'));
     });
 });

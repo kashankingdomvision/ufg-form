@@ -26,8 +26,8 @@ class CreateQuotesTable extends Migration
             $table->string('lead_passenger');
             $table->string('sale_person');
             $table->enum('agency', [0, 1])->default(0);
-            $table->string('agency_name');
-            $table->string('agency_contact');
+            $table->string('agency_name')->nullable();
+            $table->string('agency_contact')->nullable();
             $table->string('dinning_preference');
             $table->string('bedding_preference');
             $table->bigInteger('pax_no')->default(1);
@@ -35,9 +35,10 @@ class CreateQuotesTable extends Migration
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
-            $table->double('selling_currency_oc')->nullable();
+            $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_oc')->nullable();
             $table->double('amount_per_person')->nullable();
+            $table->enum('rate_type',['live','manual'])->default('live');
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

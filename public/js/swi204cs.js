@@ -17200,11 +17200,12 @@ var BASEURL = 'http://localhost/ufg-form/public/json/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%'
-  });
+  }); /// brands holidays
+
   $(document).on('change', '.getBrandtoHoliday', function () {
     var brand_id = $(this).val();
     var options = '';
-    var url = BASEURL + 'holiday-types';
+    var url = BASEURL + 'brand/to/holidays';
     $.ajax({
       type: 'get',
       url: url,
@@ -17219,7 +17220,62 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('.appendHolidayType').html(options);
       }
     });
-  });
+  }); /// brands holidays
+  ///
+
+  $(document).on('change', '.select-agency', function () {
+    $('.agencyColumns').empty();
+    var $v_html = " <div class=\"col\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_name\"> </div>\n                </div>\n                <div class=\"col\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_contact_no\"> </div>\n                </div>";
+
+    if ($(this).val() == 'yes') {
+      $('.agencyColumns').append($v_html);
+    } else {
+      $('.agencyColumns').empty();
+    }
+  }); /// Category to supplier
+
+  $(document).on('change', '.category-select2', function () {
+    var $selector = $(this);
+    var category_id = $(this).val();
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: BASEURL + 'category/to/supplier',
+      data: {
+        'category_id': category_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Supplier</option>';
+        $.each(response, function (key, value) {
+          options += '<option value="' + value.id + '">' + value.name + '</option>';
+        });
+        $selector.closest('.row').find('.supplier-id').html(options);
+        $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+      }
+    });
+  }); /// Category to supplier
+  // Supplier to product
+
+  $(document).on('change', '.supplier-id', function () {
+    var $selector = $(this);
+    var supplier_id = $(this).val();
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: BASEURL + 'supplier/to/product',
+      data: {
+        'id': supplier_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Product</option>';
+        $.each(response, function (key, value) {
+          options += '<option value="' + value.id + '">' + value.name + '</option>';
+        });
+        $selector.closest('.row').find('.product-id').html(options);
+      }
+    });
+  }); // Supplier to product
+
   $(document).on('change', '.role', function () {
     var role = $(this).find('option:selected').data('role');
     var supervisor = $('#supervisor_feild');
@@ -17247,28 +17303,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var $opt = $('<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>');
     return $opt;
   }
-
-  $(document).on('change', '.category-select2', function () {
-    var $selector = $(this);
-    var category_id = $(this).val();
-    var options = '';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'category_id': category_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Supplier</option>';
-        $.each(response, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
-        });
-        $selector.closest('.row').find('[class*="supplier-select2"]').html(options);
-        $selector.closest('.row').find('[class*="product-select2"]').html('<option value="">Select Product</option>');
-        $selector.closest('.qoute').find('[name="service_details[]"]').val('');
-      }
-    });
-  });
   /**
    * -------------------------------------------------------------------------------------
    *                                Season Manangement
@@ -17277,6 +17311,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // $('.date-picker').datetimepicker({
   //     format: 'L'
   // });
+
 
   $('#seasons').keyup(function () {
     var val = $(this).val();
@@ -17291,6 +17326,42 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
    * -------------------------------------------------------------------------------------
   */
 
+  $(document).on('click', '.removeChild', function () {
+    var id = $(this).data('show');
+    $(id).removeAttr("style");
+    $($(this).data('append')).empty();
+    $(this).attr("style", "display:none");
+  });
+  $(document).on('click', '.addChild', function () {
+    $('.append').empty();
+    var id = $(this).data('id');
+    var refNumber = $(this).data('ref');
+    var appendId = $(this).data('append');
+    console.log(appendId);
+    var url = '{{ route("get.child.reference", ":id") }}';
+    url = url.replace(':id', refNumber);
+    var removeBtnId = $(this).data('remove');
+    var showBtnId = $(this).data('show');
+    $('.addChild').removeAttr("style");
+    $('.removeChild').attr("style", "display:none");
+    $(this).attr("style", "display:none"); // $(appendId).empty();
+
+    token = $('input[name=_token]').val();
+    $.ajax({
+      url: url,
+      headers: {
+        'X-CSRF-TOKEN': token
+      },
+      data: {
+        id: id
+      },
+      type: 'get',
+      success: function success(response) {
+        $(appendId).html(response);
+        $(removeBtnId).removeAttr("style");
+      }
+    });
+  });
   $('.pax-number').select2();
   $('.selling-price-other-currency').select2({
     // width: '68%',
@@ -17317,7 +17388,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       this.id = this.id.replace(/\d+/g, $('.quote').length, function (str, p1) {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
-    }).end().find(".select234").val("").each(function () {
+    }).end().find("select").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
         return '[' + $('.quote').length + ']';
       });
@@ -17330,6 +17401,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.alert-danger').html('');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>"); // reinitializedDynamicFeilds();
     // datePickerSetDate();
+
+    $('.select2').select2({
+      width: '100%'
+    });
   });
   $(document).on('click', '.close', function () {
     $(this).closest(".quote").remove();
@@ -17434,7 +17509,55 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (dd < 10) dd = '0' + dd;
     if (mm < 10) mm = '0' + mm;
     return yyyy + sp + mm + sp + dd;
-  };
+  }; // $(document).on('change', '.pax-number',function () {
+  //     var $_val = $(this).val();
+  //     var currentDate = curday('-');
+  //     if($_val > $('.appendCount').length){
+  //         var countable = ($_val - $('.appendCount').length) - 1;
+  //         for (i = 1; i <= countable; ++i) {
+  //             var count = $('.appendCount').length + 1;
+  //             const $_html = `<div class="mb-2 appendCount" id="appendCount${count}">
+  //                         <div class="row" >
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Passenger #${ count + 1 } Full Name</label> 
+  //                                 <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
+  //                             </div>
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Email Address</label> 
+  //                                 <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
+  //                             </div>
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Contact Number</label> 
+  //                                 <input type="number" name="pax[${count}][contact_number]" class="form-control" placeholder="CONTACT NUMBER" >
+  //                             </div>
+  //                         </div>
+  //                         <div class="row">
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Date Of Birth</label> 
+  //                                 <input type="date" max="${currentDate}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="CONTACT NUMBER" >
+  //                             </div>
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Bedding Preference</label> 
+  //                                 <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+  //                             </div>
+  //                             <div class="col-md-3 mb-2">
+  //                                 <label>Dinning Preference</label> 
+  //                                 <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+  //                             </div>
+  //                         </div>
+  //                     </div> `;
+  //                 $('#appendPaxName').append($_html);
+  //         }
+  //     }else{
+  //        var countable = $('.appendCount').length + 1;
+  //        console.log();
+  //         for (var i = countable - 1; i >= $_val; i--) {
+  //             $("#appendCount"+i).remove();
+  //         }
+  //     }
+  //     getSellingPrice();
+  // });
+
 
   $(document).on('change', '.pax-number', function () {
     var $_val = $(this).val();
@@ -17445,30 +17568,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
       for (i = 1; i <= countable; ++i) {
         var count = $('.appendCount').length + 1;
-        var $_html = "<div class=\"mb-2 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Passenger #").concat(count + 1, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #2 FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"number\" name=\"pax[").concat(count, "][contact_number]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"").concat(currentDate, "\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div> ");
-        $('#appendPaxName').append($_html);
-      }
-    } else {
-      var countable = $('.appendCount').length + 1;
-      console.log();
-
-      for (var i = countable - 1; i >= $_val; i--) {
-        $("#appendCount" + i).remove();
-      }
-    }
-
-    getSellingPrice();
-  });
-  $(document).on('change', '.pax-number', function () {
-    var $_val = $(this).val();
-    var currentDate = curday('-');
-
-    if ($_val > $('.appendCount').length) {
-      var countable = $_val - $('.appendCount').length - 1;
-
-      for (i = 1; i <= countable; ++i) {
-        var count = $('.appendCount').length + 1;
-        var $_html = "<div class=\"mb-2 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Passenger #").concat(count + 1, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #2 FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"number\" name=\"pax[").concat(count, "][contact_number]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"").concat(currentDate, "\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div> ");
+        var $_html = "<div class=\"mb-2 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Passenger #").concat(count + 1, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #2 FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"number\" name=\"pax[").concat(count, "][contact_number]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"").concat(currentDate, "\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div> ");
         $('#appendPaxName').append($_html);
       }
     } else {

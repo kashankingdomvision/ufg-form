@@ -16,8 +16,11 @@ class CreateSupplierCategoryTable extends Migration
         Schema::create('supplier_categories', function (Blueprint $table) {
             $table->unsignedBigInteger('supplier_id');
             $table->unsignedBigInteger('category_id');
+            $table->primary(['supplier_id', 'category_id']);
+
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+
 
         });
     }
