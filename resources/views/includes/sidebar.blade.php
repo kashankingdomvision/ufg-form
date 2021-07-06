@@ -72,7 +72,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{ route('quotes.index') }}" class="nav-link">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Quote</p>
                             </a>

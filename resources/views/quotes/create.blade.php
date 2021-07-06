@@ -40,8 +40,8 @@
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
             
+            <form method="POST" action="{{ route('quotes.store') }}"> @csrf
               <div class="card-body">
-                <form method="POST" action="{{ route('quotes.store') }}"> @csrf
                   <div class="row mb-2">
 
                     <div class="col-sm-6">
@@ -49,12 +49,12 @@
                         <label>Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="live" checked>
+                            <input type="radio" name="rate_type" {{ (old('rate_type') == '')? 'checked': NULL }} value="live">
                             <span>&nbsp;Live Rate</span>
                           </label>
                           
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="munual">
+                            <input type="radio" name="rate_type" {{ (old('rate_type') == '')? 'checked': NULL }} value="munual">
                             <span>&nbsp;Munaul Rate</span>
                           </label>
                         </div>
@@ -117,7 +117,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sales_person" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option value="{{ $person->id }}">{{ $person->name }}</option>
@@ -331,7 +331,7 @@
                             <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control  select2  booked-by-id @error('booked_by_id') is-invalid @enderror">
                               <option value="">Select Booked By</option>
                               @foreach ($booked_by as $booked_by)
-                                <option value="{{ $booked_by->id }}" {{ old('booked_by_id') == $booked_by->id  ? "selected" : "" }}> {{ $booked_by->name }} </option>
+                                <option value="{{ $booked_by->id }}" > {{ $booked_by->name }} </option>
                               @endforeach
                             </select>
                             @error('booked_by_id')
@@ -342,11 +342,11 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Booking Types</label>
+                            <label>Booking Types </label>
                             <select name="quote[0][booking_type]" data-name="booking_type" id="quote_0_booking_type" class="form-control select2   booking-type-id @error('booking_type_id') is-invalid @enderror">
                               <option value="">Select Booking Type</option>
                               @foreach ($booking_types as $booking_type)
-                                <option value="{{ $booking_type->id }}" {{ old('booking_type_id') == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
+                                <option value="{{ $booking_type->id }}"  </option>
                               @endforeach
                             </select>
 
@@ -379,7 +379,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                              <input type="number" step="any" value="" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
                             </div>
                           </div>
                         </div>
@@ -391,7 +391,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00">
+                              <input type="number" step="any" value="" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00">
                             </div>
                           </div>
                         </div>
@@ -631,11 +631,11 @@
                       </div>
                     </div>
                   </div>
-                </form>
-              </div>
-              <div class="card-footer">
-                <button type="submit" class="btn btn-success float-right">Submit</button>
-              </div>
+                </div>
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                </div>
+            </form>
             </div>
  
           </div>

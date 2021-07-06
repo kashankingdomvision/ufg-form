@@ -31,9 +31,14 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'QuoteController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'QuoteController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'QuoteController@store'));
+    	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'QuoteController@delete'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'QuoteController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
+        
+        Route::get('quote/{id}/version', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
+        
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
         // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
-    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
 
     /*
@@ -120,5 +125,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
         Route::get('supplier/to/product',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProduct'));
-    });
+ 
+        Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
+        
+   });
 });

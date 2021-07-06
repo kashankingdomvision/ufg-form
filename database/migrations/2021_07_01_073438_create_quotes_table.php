@@ -20,11 +20,11 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
+            $table->unsignedBigInteger('sale_person_id');
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
             $table->string('lead_passenger');
-            $table->string('sale_person');
             $table->enum('agency', [0, 1])->default(0);
             $table->string('agency_name')->nullable();
             $table->string('agency_contact')->nullable();
@@ -39,6 +39,8 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price_oc')->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('booking_status',['quote','booked'])->default('quote');
+            $table->timestamp('booking_date')->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
@@ -46,6 +48,7 @@ class CreateQuotesTable extends Migration
             $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('holiday_type_id')->references('id')->on('holiday_types')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('sale_person_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');;
             
         });
     }

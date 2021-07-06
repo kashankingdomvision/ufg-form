@@ -11,4 +11,14 @@ class QuoteDetail extends Model
         'booking_refrence','booking_type','supplier_currency_id','comments','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','selling_price_bc',
         'markup_amount_bc','added_in_sage',
     ];
+    
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
+    }
+    
+    public function getSupplier()
+    {
+        return $this->hasOne(Supplier::class, 'id', 'supplier_id');
+    }
 }

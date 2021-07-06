@@ -22,7 +22,8 @@
 
       <div class="row">
         <div class="col-md-12 col-md-offset-3">
-          @include('partials.flash_message')
+          @include('includes.flash_message')
+
         </div>
       </div>
     </div>

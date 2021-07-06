@@ -12,6 +12,6 @@ class Category extends Model
 
     public function getSupplier()
     {
-        return $this->belongsToMany(Supplier::class,'supplier_categories','category_id');
+        return $this->belongsToMany(Supplier::class,'supplier_categories','category_id', 'supplier_id');
     }
 }

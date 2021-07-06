@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\HolidayType;
 use App\Supplier;
 use App\Product;
+use App\Quote;
+use Illuminate\Support\Facades\View;
+
 
 class ResponseController extends Controller
 {
@@ -29,6 +32,11 @@ class ResponseController extends Controller
                         $query->where('id', $request->id);
                     })->get();
         return response()->json($product);
-        
+    }
+    
+    public function getChildReference(Request $request)
+    {
+        $data['quotes'] = Quote::where('ref_no', $request->ref_no)->where('id', '!=' ,$request->id)->orderBy('created_at')->get();
+        return response()->json(View::make('partials.quote_listing', $data)->render());
     }
 }

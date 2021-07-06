@@ -23,12 +23,13 @@ class CreateQuoteDetailsTable extends Migration
             $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
+            $table->unsignedBigInteger('booking_type_id')->nullable();
             $table->date('date_of_service')->nullable();
+            $table->time('time_of_service')->nullable();
             $table->date('booking_date')->nullable();
             $table->date('booking_due_date');
             $table->text('service_details')->nullable();
-            $table->string('booking_refrence')->nullable();
-            $table->enum('booking_type', ['refundable', 'non_refundable'])->nullable();
+            $table->string('booking_reference')->nullable();
             $table->text('comments')->nullable();
             $table->double('estimated_cost')->nullable();
             $table->double('markup_amount')->nullable();
@@ -41,13 +42,14 @@ class CreateQuoteDetailsTable extends Migration
             $table->timestamps();
             
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers');
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('booked_by_id')->references('id')->on('users');
-            $table->foreign('supervisor_id')->references('id')->on('users');
-            $table->foreign('booking_method_id')->references('id')->on('booking_methods');
-            $table->foreign('supplier_currency_id')->references('id')->on('currencies');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('booked_by_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('supervisor_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('booking_method_id')->references('id')->on('booking_methods')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('supplier_currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('booking_type_id')->references('id')->on('booking_types')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
