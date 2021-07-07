@@ -13,17 +13,17 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UserFactory::class);
         $this->call([
-            // BrandAndHolidayTableSeeder::class,
+            BrandAndHolidayTableSeeder::class,
             CurrencyTableSeeder::class,
-            // RoleTableSeeder::class, 
-            // UserTableSeeder::class,
-            // CategoryTableSeeder::class,
-            // BookingMethodSeeder::class,
-            // BookingTypeSeeder::class,
+            RoleTableSeeder::class, 
+            UserTableSeeder::class,
+            CategoryTableSeeder::class,
+            BookingMethodSeeder::class,
+            BookingTypeSeeder::class,
             CurrencyConversionSeeder::class,
-            // InitialTableSeeder::class,
-            // ProductTableSeeder::class,
-            // PaymentMethodSeeder::class,
+            InitialTableSeeder::class,
+            ProductTableSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
