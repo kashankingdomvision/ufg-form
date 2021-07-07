@@ -49,13 +49,13 @@
                         <label>Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" {{ (old('rate_type') == '')? 'checked': NULL }} value="live">
+                            <input type="radio" name="rate_type" value="live" class="rate-type" checked>
                             <span>&nbsp;Live Rate</span>
                           </label>
                           
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" {{ (old('rate_type') == '')? 'checked': NULL }} value="munual">
-                            <span>&nbsp;Munaul Rate</span>
+                            <input type="radio" name="rate_type" value="manual" class="rate-type">
+                            <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
                       </div>
@@ -184,7 +184,7 @@
                         <select name="currency_id" id="booking_currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) && Auth::user()->getCurrency->code == $currency->code ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
 
@@ -232,9 +232,19 @@
                         </div>
 
                         <div class="col-sm-2">
+
+                          {{-- <div class="form-group">
+                            <label>Minimal</label>
+                            <select name="quote[0][category_id]"  class="form-control category-select2"  data-name="category_id" >
+                              <option value="">Select Category</option>
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" > {{ $category->name }} </option>
+                              @endforeach
+                            </select>
+                          </div> --}}
                           <div class="form-group">
                             <label>Category</label>
-                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control select2 category-select2 category-id @error('category_id') is-invalid @enderror">
+                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-select2 category-id @error('category_id') is-invalid @enderror">
                               <option value="">Select Category</option>
                               @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" > {{ $category->name }} </option>
@@ -359,10 +369,10 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supplier Currency</label>
-                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control    supplier-currency-id @error('currency_id') is-invalid @enderror">
+                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
                               <option value="">Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
-                                <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                               @endforeach
                             </select>
 
@@ -379,7 +389,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" value="" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
                             </div>
                           </div>
                         </div>
@@ -391,7 +401,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" value="" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00">
+                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" step="any">
                             </div>
                           </div>
                         </div>
@@ -449,7 +459,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                               </div>
-                              <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00">
+                              <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                             </div>
                           </div>
                         </div>
@@ -461,7 +471,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00"> 
+                              <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                             </div>
                           </div>
                         </div>

@@ -54,7 +54,7 @@ class QuoteController extends Controller
     }
 
     public function get_currency_conversion(){
-        return  CurrencyConversion::all();
+        return CurrencyConversion::all();
     }
     
     public function quoteArray($request)

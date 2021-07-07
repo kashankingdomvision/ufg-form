@@ -248,9 +248,9 @@ $(document).on('click', '.addChild', function () {
         
             // reinitializedDynamicFeilds();
             // datePickerSetDate();
-            $('.select2').select2({
-                width: '100%',
-            });
+            // $('.select2').select2({
+            //     width: '100%',
+            // });
     });
 
     $(document).on('click', '.close',function(){
@@ -258,7 +258,8 @@ $(document).on('click', '.addChild', function () {
     });
     
     $(document).on('change', '.supplier-currency-id',function () {
-        $(this).closest(".quote").find('[class*="supplier-currency-code"]').html($(this).val());
+        var code = $(this).find(':selected').data('code');
+        $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
     });
 
     function reinitializedDynamicFeilds(){
@@ -269,8 +270,7 @@ $(document).on('click', '.addChild', function () {
 
     var currencyConvert = getJson();
 
-    function getJson(url) {
-
+    function getJson() {
         return JSON.parse($.ajax({
             type: 'GET',
             url : BASEURL+'get-currency-conversion',
@@ -332,20 +332,58 @@ $(document).on('click', '.addChild', function () {
 
             var rateType                      =  $('input[name="rate_type"]:checked').val();
             var paxNumber                     =  parseFloat($(".pax-number").val());
-            var bookingCurrency               =  $(".booking-currency-id").val();
+            var bookingCurrency               =  $(".booking-currency-id").find(':selected').data('code');
             var totalSellingPrice             =  parseFloat($('.total-selling-price').val());
+
             var rate                          =  getRate(bookingCurrency,sellingPriceOtherCurrency,rateType);
             var sellingPriceOtherCurrencyRate =  parseFloat(totalSellingPrice) * parseFloat(rate);
             var bookingAmountPerPerson        =  parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
-
-
-            console.log();
 
             $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
             $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
             $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
 
         }
+    }
+
+    function changeCurrenyRate(){
+        var rateType               =  $('input[name="rate_type"]:checked').val();
+        var sellingPriceArray      =  $('.selling-price').map((i, e) => parseFloat(e.value)).get();
+        var markupAmountArray      =  $('.markup-amount').map((i, e) => parseFloat(e.value)).get();
+        var bookingCurrency        =  $('.booking-currency-id').find(':selected').data('code');
+        var supplierCurrencyArray  =  $('.supplier-currency-id').map((i, e) => $(e).find(':selected').data('code') ).get();
+
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var quoteSize = parseInt($('.quote').length);
+
+        var key = 0;
+        while (key < quoteSize) {
+
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice     = sellingPriceArray[key];
+            var markupAmount     = markupAmountArray[key];
+
+            if(supplierCurrency){
+
+                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+                
+            }else{
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+
+            key++;
+        }
+        getTotalValues();
+        getSellingPrice();
     }
 
     var curday = function(sp){
@@ -358,60 +396,6 @@ $(document).on('click', '.addChild', function () {
         if(mm<10) mm='0'+mm;
         return (yyyy+sp+mm+sp+dd);
     };
-
-
-    // $(document).on('change', '.pax-number',function () {
-
-    //     var $_val = $(this).val();
-    //     var currentDate = curday('-');
-
-    //     if($_val > $('.appendCount').length){
-    //         var countable = ($_val - $('.appendCount').length) - 1;
-    //         for (i = 1; i <= countable; ++i) {
-    //             var count = $('.appendCount').length + 1;
-    //             const $_html = `<div class="mb-2 appendCount" id="appendCount${count}">
-    //                         <div class="row" >
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Passenger #${ count + 1 } Full Name</label> 
-    //                                 <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
-    //                             </div>
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Email Address</label> 
-    //                                 <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
-    //                             </div>
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Contact Number</label> 
-    //                                 <input type="number" name="pax[${count}][contact_number]" class="form-control" placeholder="CONTACT NUMBER" >
-    //                             </div>
-    //                         </div>
-    //                         <div class="row">
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Date Of Birth</label> 
-    //                                 <input type="date" max="${currentDate}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="CONTACT NUMBER" >
-    //                             </div>
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Bedding Preference</label> 
-    //                                 <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
-    //                             </div>
-                                
-    //                             <div class="col-md-3 mb-2">
-    //                                 <label>Dinning Preference</label> 
-    //                                 <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
-    //                             </div>
-    //                         </div>
-    //                     </div> `;
-    //                 $('#appendPaxName').append($_html);
-    //         }
-    //     }else{
-    //        var countable = $('.appendCount').length + 1;
-    //        console.log();
-    //         for (var i = countable - 1; i >= $_val; i--) {
-    //             $("#appendCount"+i).remove();
-    //         }
-    //     }
-
-    //     getSellingPrice();
-    // });
 
     $(document).on('change', '.pax-number',function () {
 
@@ -468,43 +452,11 @@ $(document).on('click', '.addChild', function () {
 
     $(document).on('change', '.booking-currency-id',function () {
 
-        var rateType               =  $('input[name="rate_type"]:checked').val();
-        var sellingPriceArray      =  $('.selling-price').map((i, e) => parseFloat(e.value)).get();
-        var markupAmountArray      =  $('.markup-amount').map((i, e) => parseFloat(e.value)).get();
-        var bookingCurrency        =  $(this).val();
-        var supplierCurrencyArray  =  $('.supplier-currency-id').map((i, e) => e.value).get();
+        changeCurrenyRate();
+        $('.booking-currency-code').html($(this).find(':selected').data('code'));
 
-        var calculatedSellingPriceInBookingCurrency = 0;
-        var calculatedMarkupAmountInBookingCurrency = 0;
-        var quoteSize = parseInt($('.quote').length);
-
-        var key = 0;
-        while (key < quoteSize) {
-
-            var supplierCurrency = supplierCurrencyArray[key];
-            var sellingPrice     = sellingPriceArray[key];
-            var markupAmount     = markupAmountArray[key];
-
-            if(supplierCurrency){
-
-                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
-
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-                
-            }else{
-
-                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-            }
-
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-
-            key++;
-        }
-
-        $('.booking-currency-code').html(bookingCurrency);
+        getTotalValues();
+        getSellingPrice();
     });
 
     $(document).on('change', '.change', function (event) {
@@ -514,8 +466,9 @@ $(document).on('click', '.addChild', function () {
         var changeFeild = $(this).data('name');
 
         var estimatedCost               =  parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-        var supplierCurrency            =  $(`#quote_${key}_supplier_currency_id`).val();
-        var bookingCurrency             =  $(".booking-currency-id").val();
+        var supplierCurrency            =  $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency             =  $(".booking-currency-id").find(':selected').data('code');
+
         var rateType                    =  $('input[name="rate_type"]:checked').val();
         var rate                        =  getRate(supplierCurrency,bookingCurrency,rateType);
         var markupPercentage            =  parseFloat($(`#quote_${key}_markup_percentage`).val());
@@ -534,11 +487,6 @@ $(document).on('click', '.addChild', function () {
             calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
             calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-
-            console.log(calculatedMarkupPercentage);
-            console.log(calculatedSellingPrice);
-            console.log(calculatedSellingPriceInBookingCurrency);
 
             $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
             $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
@@ -586,6 +534,9 @@ $(document).on('click', '.addChild', function () {
         getSellingPrice();
     });
 
+    $(document).on('change', '.rate-type',function(){
+        changeCurrenyRate();
+    });
 
     $(".readonly").keypress(function (evt) {
         evt.preventDefault();
