@@ -43,6 +43,27 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*
     |--------------------------------------------------------------------------
+    | Template Controller
+    |--------------------------------------------------------------------------
+    */
+    
+	Route::group([
+        'prefix' => 'template',
+        'as' 	 => 'templates.'
+    ],function (){
+        Route::get('index', ['as' => 'index', 'uses' => 'TemplateController@index']);
+        Route::get('create', ['as' => 'create', 'uses' => 'TemplateController@create']);
+        Route::post('store', ['as' => 'store', 'uses' => 'TemplateController@store']);
+        Route::get('detail/{id}', ['as' => 'detail', 'uses' => 'TemplateController@detail']);
+        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'TemplateController@destroy']);
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);
+        Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
+        Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'TemplateController@call_template']);
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Users Manangement
     |--------------------------------------------------------------------------
     */
