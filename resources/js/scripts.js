@@ -485,11 +485,6 @@ $(document).on('click', '.addChild', function () {
             calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
 
-
-            console.log(calculatedMarkupPercentage);
-            console.log(calculatedSellingPrice);
-            console.log(calculatedSellingPriceInBookingCurrency);
-
             $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
             $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
             $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));

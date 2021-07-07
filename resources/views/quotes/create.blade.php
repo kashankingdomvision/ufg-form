@@ -54,8 +54,8 @@
                           </label>
                           
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="munual">
-                            <span>&nbsp;Munaul Rate</span>
+                            <input type="radio" name="rate_type" value="manual">
+                            <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
                       </div>
