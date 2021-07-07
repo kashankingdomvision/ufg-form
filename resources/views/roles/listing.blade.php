@@ -22,7 +22,8 @@
 
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">
-                        @include('partials.flash_message')
+                        @include('includes.flash_message')
+
                     </div>
                 </div>
             </div>
@@ -47,10 +48,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach ($roles as $key => $value)
                                         <tr>
-
                                             <td>{{ $value->name }}</td>
                                             <td>
                                                 <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}">

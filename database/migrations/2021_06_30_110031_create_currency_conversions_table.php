@@ -17,8 +17,8 @@ class CreateCurrencyConversionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('from');
             $table->string('to');
-            $table->double('live_rate');
-            $table->double('manual_rate');
+            $table->double('live');
+            $table->double('manual');
             $table->timestamps();
         });
     }

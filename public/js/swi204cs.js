@@ -17337,7 +17337,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var id = $(this).data('id');
     var refNumber = $(this).data('ref');
     var appendId = $(this).data('append');
-    console.log(appendId);
     var url = '{{ route("get.child.reference", ":id") }}';
     url = url.replace(':id', refNumber);
     var removeBtnId = $(this).data('remove');
@@ -17346,18 +17345,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.removeChild').attr("style", "display:none");
     $(this).attr("style", "display:none"); // $(appendId).empty();
 
-    token = $('input[name=_token]').val();
     $.ajax({
-      url: url,
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
+      url: BASEURL + 'quotes/child/reference',
       data: {
-        id: id
+        id: id,
+        ref_no: refNumber
       },
       type: 'get',
       success: function success(response) {
-        $(appendId).html(response);
+        $(appendId).append(response);
         $(removeBtnId).removeAttr("style");
       }
     });

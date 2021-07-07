@@ -20,7 +20,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-md-offset-3">
-                        @include('partials.flash_message')
+                        @include('includes.flash_message')
                     </div>
                 </div>
             </div>
@@ -62,32 +62,32 @@
                                                   <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
                                                     <span class="fa fa-plus"></span>
                                                   </button>
-                                                  @else
                                                   <button class="btn btn-sm removeChild" id="remove{{$quote->id}}" data-show="#show{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}" style="display:none;" >
                                                     <span class="fa fa-minus"></span>
                                                   </button>
                                                   @endif
                                                 </td>
                                                 <td>{{ $quote->ref_no }}</td>
-                                                <td>{{ $quote->quote_no }}</td>
+                                                <td>{{ $quote->quote_ref }}</td>
                                                 <td>{{ $quote->getSeason->name }}</td>
                                                 <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
-                                                <td>{{ !empty($quote->getCurrency->code) && !empty($quote->getCurrency->name) ? $quote->getCurrency->code.' - '.$quote->getCurrency->name : NULL }}</td>
+                                                
+                                                <td>{{ $quote->getBookingCurrency->code.'-'.$quote->getBookingCurrency->name }}</td>
                                                 <td>{!! $quote->booking_formated_status !!}</td>
-                                                <td>{{ !empty($quote->qoute_to_booking_date) ? date('d/m/Y', strtotime($quote->qoute_to_booking_date)) : '' }}</td>
+                                                <td>{{ $quote->formated_booking_date }}</td>
+                                                <td>{{ $quote->formated_created_at }}</td>
                                                 
                                                 <td width="10%" >
-                                                  {{-- @if($quote->qoute_to_booking_status == 0)
-                                                    <a href="{{ URL::to('edit-quote/'.$quote->id)}}" class="btn btn-primary btn-xs" data-title="Edit" data-target="#edit"><span class="fa fa-pencil"></span></a>
-                                                    <a onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" href="{{ route('convert-quote-to-booking', $quote->id) }}" class="btn btn-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></a>
-                                                  @endif --}}
-                        
+                                                  @if($quote->booking_status == 'quote')
+                                                    <a href="{{route('quotes.edit', encrypt($quote->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    {{-- <a onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" href="{{ route('convert-quote-to-booking', $quote->id) }}" class="btn btn-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></a> --}}
+                                                  @else
+                                                    {{-- <a target="_blank" href="{{ route('view-quote-detail', $quote->id) }}" class="btn btn-primary btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-eye"></span></a> --}}
+                                                  @endif
                                                   
-                                                  {{-- @if($quote->qoute_to_booking_status == 1)
-                                                  <a target="_blank" href="{{ route('view-quote-detail', $quote->id) }}" class="btn btn-primary btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-eye"></span></a>
-                                                  @endif --}}
-                                                  
-                                                  {{-- <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }}');" href="{{ route('delete-quote', encrypt($quote->id)) }}" class="btn btn-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash"></span></a> --}}
+                                                  <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }}');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
                         
                                                 </td>
                                                 <tbody class="append" id="appendChild{{$quote->id}}" style="{{ $quote->quote_count > 1 ? 'background-color: #f9f9f9;' : null}}">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\QuoteRequest;
 use App\Category;
 use App\Product;
 use App\Season;
@@ -19,7 +20,8 @@ use App\Quote;
 use App\QuoteDetail;
 use App\QuotePaxDetail;
 use Auth;
-use App\Http\Requests\QuoteRequest;
+use DB;
+use App\QuoteLog;
 
 class QuoteController extends Controller
 {
@@ -27,10 +29,10 @@ class QuoteController extends Controller
     
     public function index()
     {
-       $data['quotes'] = Quote::paginate($this->pagiantion);
-       return view('quotes.listing', $data);
-       
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->paginate(10);
+        return view('quotes.listing', $data);       
     }
+    
     
     public function create()
     {
@@ -67,7 +69,7 @@ class QuoteController extends Controller
             'ref_no'             =>  $request->ref_no,
             'quote_ref'          =>  $request->quote_no,
             'lead_passenger'     =>  $request->lead_passenger,
-            'sale_person'        =>  $request->sales_person,
+            'sale_person_id'     =>  $request->sale_person_id,
             'agency'             =>  ($request->agency == 'on')? '1' : '0',
             'dinning_preference' =>  $request->dinning_preferences,
             'bedding_preference' =>  $request->bedding_preference,
@@ -101,11 +103,12 @@ class QuoteController extends Controller
             'booked_by_id'          => $quoteD['booked_by_id'],
             'supervisor_id'         => $quoteD['supervisor_id'],
             'date_of_service'       => $quoteD['date_of_service'],
+            'time_of_service'       => $quoteD['time_of_service'],
             'booking_date'          => $quoteD['booking_date'],
             'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
-            'booking_refrence'      => $quoteD['booking_refrence'],
-            'booking_type'          => $quoteD['booking_type'],
+            'booking_reference'     => $quoteD['booking_refrence'],
+            'booking_type_id'       => $quoteD['booking_type'],
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
             'estimated_cost'        => $quoteD['estimated_cost'],
@@ -142,7 +145,86 @@ class QuoteController extends Controller
                 ]);
             }
        }
-       return redirect()->route('quotes.index')->with('success_message', 'Role created successfully');
+       return redirect()->route('quotes.index')->with('success_message', 'Quote created successfully');
     }
     
+    public function edit($id)
+    {
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['quote']            = Quote::findOrFail(decrypt($id));
+        return view('quotes.edit',$data);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $quote = Quote::findOrFail(decrypt($id));
+        QuoteLog::create([
+            'quote_id'   => $quote->id,
+            'version_no' => $quote->version,
+            'data'       => $request->all(),
+        ]);
+        
+        $quote->update($this->quoteArray($request));
+        
+        if($request->has('quote') && count($request->quote) > 0){
+            $quote->getQuoteDetails()->delete();
+            foreach ($request->quote as $qu_details) {
+                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                QuoteDetail::create($quoteDetail);
+            }
+        }
+        
+        //pax data 
+        if($request->has('pax')){
+           $quote->getPaxDetail()->delete();
+            foreach ($request->pax as $pax_data) {
+                QuotePaxDetail::create([
+                    'quote_id'              => $quote->id,
+                    'full_name'             => $pax_data['full_name'],
+                    'email'                 => $pax_data['email_address'],
+                    'contact'               => $pax_data['contact_number'],
+                    'date_of_birth'         => $pax_data['date_of_birth'],
+                    'bedding_preference'    => $pax_data['bedding_preference'],
+                    'dinning_preference'    => $pax_data['dinning_preference'],
+                ]);
+            }
+       }
+       return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
+    }
+    
+    public function quoteVersion($id)
+    {
+        $log = QuoteLog::findOrFail(decrypt($id));
+        $data['quote'] = $log->data;
+        $data['log']  = $log;
+      
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        
+        // dd($log->data);
+        return view('quotes.version',$data);
+    }
 }

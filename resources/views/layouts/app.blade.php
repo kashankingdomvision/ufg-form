@@ -111,11 +111,11 @@
     @endguest
 
     @auth
-        @include('partials.sidebar')
+        @include('includes.sidebar')
         <div class="wrapper">
 
 
-            @include('partials.navbar')
+            @include('includes.navbar')
 
             @yield('content')
         </div>
