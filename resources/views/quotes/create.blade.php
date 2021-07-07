@@ -184,7 +184,7 @@
                         <select name="currency_id" id="booking_currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) && Auth::user()->getCurrency->code == $currency->code ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
 
@@ -232,9 +232,19 @@
                         </div>
 
                         <div class="col-sm-2">
+
+                          {{-- <div class="form-group">
+                            <label>Minimal</label>
+                            <select name="quote[0][category_id]"  class="form-control category-select2"  data-name="category_id" >
+                              <option value="">Select Category</option>
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" > {{ $category->name }} </option>
+                              @endforeach
+                            </select>
+                          </div> --}}
                           <div class="form-group">
                             <label>Category</label>
-                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control select2 category-select2 category-id @error('category_id') is-invalid @enderror">
+                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-select2 category-id @error('category_id') is-invalid @enderror">
                               <option value="">Select Category</option>
                               @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" > {{ $category->name }} </option>
@@ -359,10 +369,10 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supplier Currency</label>
-                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control    supplier-currency-id @error('currency_id') is-invalid @enderror">
+                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
                               <option value="">Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
-                                <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                               @endforeach
                             </select>
 
