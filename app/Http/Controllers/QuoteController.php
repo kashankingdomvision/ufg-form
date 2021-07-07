@@ -107,7 +107,7 @@ class QuoteController extends Controller
             'booking_date'          => $quoteD['booking_date'],
             'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
-            'booking_reference'     => $quoteD['booking_refrence'],
+            'booking_reference'     => $quoteD['booking_reference'],
             'booking_type_id'       => $quoteD['booking_type'],
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
@@ -169,11 +169,15 @@ class QuoteController extends Controller
     
     public function update(Request $request, $id)
     {
+
         $quote = Quote::findOrFail(decrypt($id));
+        $array =  $quote->toArray();
+        $array['quote'] = $quote->getQuoteDetails->toArray();
+        $array['pax'  ] = $quote->getPaxDetail->toArray();
         QuoteLog::create([
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,
-            'data'       => $request->all(),
+            'data'       => $array
         ]);
         
         $quote->update($this->quoteArray($request));
@@ -204,12 +208,11 @@ class QuoteController extends Controller
        return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
     }
     
-    public function quoteVersion($id)
+    public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
         $data['quote'] = $log->data;
         $data['log']  = $log;
-      
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -223,8 +226,25 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        
+
+        if($type != NULL){
+            $data['type'] = $type;
+        }
         // dd($log->data);
-        return view('quotes.version',$data);
+        return view('quotes.version', $data);
+
+
+        $currency_conver = CurrencyConversions::whereNull('live');
+        
+        
+        $from   = $currency_conver->pluck(['from', 'to']);
+        $count  = $currency_conver->count();
+    }
+
+
+    public function delete($id)
+    {
+        Quote::destroy(decrypt($id));
+        return redirect()->route('quotes.index')->with('success_message', 'Quote deleted successfully');        
     }
 }

@@ -17682,6 +17682,27 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
   });
+  $("#versions :input").prop("disabled", true);
+  $('#reCall').prop("disabled", false);
+  $('#reCall').on('click', function () {
+    if ($(this).data('recall') == true) {
+      if (confirm("Are you sure you want to Recall this Quotation?") == true) {
+        $("#versions :input").not(this).prop('disabled', false);
+        $(this).data('recall', 'false');
+        $(this).text('Back Into Version');
+        var add_HTML = "<div class=\"col-12 text-right\">\n                                    <button type=\"button\" id=\"add_more\" class=\"btn btn-outline-dark  pull-right \">+ Add more </button>\n                                </div>";
+        $('#addMoreButton').append(add_HTML);
+        var btn_Submit = " <button type=\"submit\" class=\"btn btn-success float-right\">Submit</button>";
+        $('#btnSubmitversion').append(btn_Submit);
+      }
+    } else {
+      $("#versions :input").prop("disabled", true);
+      $('#reCall').prop("disabled", false);
+      $(this).text('Recall Version');
+      $('#addMoreButton').append();
+      $('#btnSubmitversion').append();
+    }
+  });
 });
 
 /***/ }),

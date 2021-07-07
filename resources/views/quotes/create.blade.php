@@ -305,7 +305,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Reference</label>
-                            <input type="text" name="quote[0][booking_refrence]" data-name="booking_refrence" id="quote_0_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
+                            <input type="text" name="quote[0][booking_reference]" data-name="booking_refrence" id="quote_0_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
                           </div>
                         </div>
 
