@@ -111,7 +111,7 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 		
 		/* Currency Conversion */
-		Route::resource('currnecy_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
+		Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
 			'index', 'edit', 'update'
 		]]);
 
