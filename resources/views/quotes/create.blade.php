@@ -49,12 +49,12 @@
                         <label>Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" {{ (old('rate_type') == '')? 'checked': NULL }} value="live">
+                            <input type="radio" name="rate_type" value="live" class="rate-type" checked>
                             <span>&nbsp;Live Rate</span>
                           </label>
                           
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="manual">
+                            <input type="radio" name="rate_type" value="manual" class="rate-type">
                             <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
@@ -389,7 +389,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" value="" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
                             </div>
                           </div>
                         </div>
@@ -401,7 +401,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" value="" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00">
+                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" step="any">
                             </div>
                           </div>
                         </div>
@@ -459,7 +459,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                               </div>
-                              <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00">
+                              <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                             </div>
                           </div>
                         </div>
@@ -471,7 +471,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00"> 
+                              <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                             </div>
                           </div>
                         </div>
