@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class QuoteLog extends Model
 {
+
     protected $fillable = [
         'quote_id',
         'version_no',
@@ -24,7 +25,8 @@ class QuoteLog extends Model
     
     public function getQueryData($id, $modelName)
     {
-        dd($id);
+        $model_name = 'App\\'.$modelName;
+        return $model_name::where('id', $id)->get();
     }
 
 }
