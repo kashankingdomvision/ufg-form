@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Quote')
+@section('title', 'Edit Quote')
 
 @section('content')
   <div class="content-wrapper">
@@ -17,12 +17,12 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Add Quote</h4>
+              <h4>Edit Quote</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item active">User Management</li>
+                <li class="breadcrumb-item active">Quote Management</li>
               </ol>
           </div>
         </div>
@@ -33,9 +33,9 @@
       <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <div 
+          <div>
             <p>
-              <a class="btn btn-dark btn-sm" data-toggle="collapse" href="#viewQuoteVersion" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Quote Versions</a>
+              <a class="btn btn-info btn-sm" data-toggle="collapse" href="#viewQuoteVersion" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Quote Versions {{  (count($quote->getQuotelogs) > 0 ) ? '('.count($quote->getQuotelogs).')' : '' }}</a>
             </p>
             <div class="row">
               <div class="col">
@@ -63,7 +63,7 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Quote Edit</h3>
+                <h3 class="card-title text-center">Edit Quote</h3>
               </div>
             
             <form method="POST" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
@@ -101,7 +101,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('quote_no')??$quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" >
+                        <input type="text" value="{{ old('quote_no')??$quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
 
@@ -115,7 +115,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
+                        <select name="brand_id" id="brand_id" class="form-control select2 getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
                           <option value="">Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ (old('brand_id') == $brand->id)? "selected" : (($quote->brand_id == $brand->id)? 'selected':NULL) }}> {{ $brand->name }} </option>
@@ -131,7 +131,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2 appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
                           <option value="">Select Type Of Holiday</option>
                           @foreach ($quote->getBrand->getHolidayTypes as $holiday_type)
                             <option value="{{ $holiday_type->id }}" {{  (old('holiday_type_id') == $holiday_type->id)? "selected" : ($quote->holiday_type_id == $holiday_type->id ? 'selected' : '') }} >{{ $holiday_type->name }}</option>
@@ -148,7 +148,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sales_person_id" class="form-control select2 sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($quote->sale_person_id == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
@@ -164,7 +164,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control currency-select2">
+                        <select name="season_id" id="season_id" class="form-control select2">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : ($quote->season_id == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
@@ -188,7 +188,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agencyColumns">
+                      <div class="row agency-columns mb-1">
                         @if($quote->agency == 1)
                             <div class="col" style="width:175px;">
                                 <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
@@ -242,7 +242,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
-                        <select name="pax_no" id="pax_no" class="form-control paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                        <select name="pax_no" id="pax_no" class="form-control select2 paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value={{$i}} {{ (old('pax_no') == $i)? "selected" : (($quote->pax_no == $i)? 'selected': NULL) }}>{{$i}}</option>
@@ -552,7 +552,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail->selling_price_bc??0 }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00">
+                                    <input type="number" step="any" value="{{ $q_detail->selling_price_bc??0 }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                     </div>
                                 </div>
                                 </div>
@@ -564,7 +564,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail->markup_amount_bc??0 }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00"> 
+                                    <input type="number" step="any" value="{{ $q_detail->markup_amount_bc??0 }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                     </div>
                                 </div>
                                 </div>

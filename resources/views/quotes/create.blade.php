@@ -23,7 +23,7 @@
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item active">User Management</li>
+                <li class="breadcrumb-item active">Quote Management</li>
               </ol>
           </div>
         </div>
@@ -74,7 +74,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" name="quote_no" class="form-control" placeholder="Quote Reference Number" >
+                        <input type="text" name="quote_no" class="form-control" value="{{ uniqid() }}" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
 
@@ -88,7 +88,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
+                        <select name="brand_id" id="brand_id" class="form-control select2 getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
                           <option value="">Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id  ? "selected" : "" }}> {{ $brand->name }} </option>
@@ -104,7 +104,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2 appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
                           <option value="">Select Type Of Holiday</option>
                         </select>
 
@@ -117,7 +117,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sales_person_id" class="form-control select2 sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option value="{{ $person->id }}">{{ $person->name }}</option>
@@ -133,7 +133,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control currency-select2">
+                        <select name="season_id" id="season_id" class="form-control select2 currency-select2">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
@@ -157,7 +157,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agencyColumns">
+                      <div class="row agency-columns mb-1">
                        
                       </div>
                     </div>
@@ -197,7 +197,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
-                        <select name="pax_no" id="pax_no" class="form-control paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                        <select name="pax_no" id="pax_no" class="form-control select2 paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value={{$i}} {{ old('pax_no') == $i || $i == 1 ? "selected" : "" }}>{{$i}}</option>

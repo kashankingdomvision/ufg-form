@@ -31,7 +31,7 @@ $(document).ready(function($) {
  /// brands holidays
 ///
 $(document).on('change', '.select-agency', function() {
-    $('.agencyColumns').empty();
+    $('.agency-columns').empty();
     
     var $v_html = ` <div class="col" style="width:175px;">
                     <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
@@ -45,9 +45,9 @@ $(document).on('change', '.select-agency', function() {
                 </div>`;
                 
     if($(this).val() == 'yes'){
-        $('.agencyColumns').append($v_html);
+        $('.agency-columns').append($v_html);
     }else{
-        $('.agencyColumns').empty();
+        $('.agency-columns').empty();
     } 
 });
 
@@ -193,7 +193,7 @@ $(document).on('click', '.addChild', function () {
     });
 });
 
-    $('.pax-number').select2();
+    // $('.pax-number').select2();
 
     $('.selling-price-other-currency').select2({
         // width: '68%',
@@ -202,10 +202,10 @@ $(document).on('click', '.addChild', function () {
         templateSelection: currencyImageFormate
     });
 
-    // $('.booking-currency-id, .supplier-currency-id').select2({
-    //     templateResult: currencyImageFormate,
-    //     templateSelection: currencyImageFormate
-    // });
+    $('.booking-currency-id, .supplier-currency-id').select2({
+        templateResult: currencyImageFormate,
+        templateSelection: currencyImageFormate
+    });
 
     $(document).on('click', '#add_more', function(e) {
             

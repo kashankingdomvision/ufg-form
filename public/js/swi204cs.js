@@ -17224,13 +17224,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   ///
 
   $(document).on('change', '.select-agency', function () {
-    $('.agencyColumns').empty();
+    $('.agency-columns').empty();
     var $v_html = " <div class=\"col\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_name\"> </div>\n                </div>\n                <div class=\"col\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_contact_no\"> </div>\n                </div>";
 
     if ($(this).val() == 'yes') {
-      $('.agencyColumns').append($v_html);
+      $('.agency-columns').append($v_html);
     } else {
-      $('.agencyColumns').empty();
+      $('.agency-columns').empty();
     }
   }); /// Category to supplier
 
@@ -17357,18 +17357,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $(removeBtnId).removeAttr("style");
       }
     });
-  });
-  $('.pax-number').select2();
+  }); // $('.pax-number').select2();
+
   $('.selling-price-other-currency').select2({
     // width: '68%',
     width: 'resolve',
     templateResult: currencyImageFormate,
     templateSelection: currencyImageFormate
-  }); // $('.booking-currency-id, .supplier-currency-id').select2({
-  //     templateResult: currencyImageFormate,
-  //     templateSelection: currencyImageFormate
-  // });
-
+  });
+  $('.booking-currency-id, .supplier-currency-id').select2({
+    templateResult: currencyImageFormate,
+    templateSelection: currencyImageFormate
+  });
   $(document).on('click', '#add_more', function (e) {
     $(".quote").eq(0).clone().find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {

@@ -161,7 +161,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agencyColumns">
+                      <div class="row agency-columns">
                         @if($quote['agency'] == 1)
                             <div class="col" style="width:175px;">
                                 <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
