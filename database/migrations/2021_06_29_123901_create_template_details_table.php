@@ -15,32 +15,33 @@ class CreateTemplateDetailsTable extends Migration
     {
         Schema::create('template_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('template_id');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('booking_method_id');
-            $table->unsignedBigInteger('booked_by_id');
-            $table->unsignedBigInteger('supervisor_id');
-            $table->string('booking_refrence');
-            $table->enum('booking_type', ['refundable', 'non_refundable']);
-            $table->string('comments');
-            $table->string('supplier_currency');
-            $table->double('qoute_base_currency');
-            $table->double('estimated_cost');
-            $table->double('currency_conversion');
-            $table->enum('added_in_sage', [0, 1])->default(0);
-            $table->date('date_of_service');
-            $table->date('service_details');
-            $table->date('booking_date');
+            $table->unsignedBigInteger('template_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('booking_method_id')->nullable();
+            $table->unsignedBigInteger('booked_by_id')->nullable();
+            $table->unsignedBigInteger('supervisor_id')->nullable();
+            $table->unsignedBigInteger('supplier_currency_id')->nullable();
+            $table->unsignedBigInteger('booking_type_id')->nullable();
+            $table->date('date_of_service')->nullable();
+            $table->time('time_of_service')->nullable();
+            $table->date('booking_date')->nullable();
             $table->date('booking_due_date');
+            $table->text('service_details')->nullable();
+            $table->string('booking_reference')->nullable();
+            $table->text('comments')->nullable();
+            $table->double('estimated_cost')->nullable();
+            $table->double('markup_amount')->nullable();
+            $table->double('markup_percentage')->nullable();
+            $table->double('selling_price')->nullable();
+            $table->double('profit_percentage')->nullable();
+            $table->double('selling_price_bc')->nullable();
+            $table->double('markup_amount_bc')->nullable();
+            $table->enum('added_in_sage', [0, 1])->default(0);
             $table->timestamps();
             
-            $table->foreign('template_id')->references('id')->on('templates')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('booked_by_id')->references('id')->on('users');
-            $table->foreign('supervisor_id')->references('id')->on('users');
+           
         });
     }
 

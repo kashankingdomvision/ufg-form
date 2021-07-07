@@ -27,7 +27,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->date('date_of_service')->nullable();
             $table->time('time_of_service')->nullable();
             $table->date('booking_date')->nullable();
-            $table->date('booking_due_date');
+            $table->date('booking_due_date')->nullable();
             $table->text('service_details')->nullable();
             $table->string('booking_reference')->nullable();
             $table->text('comments')->nullable();

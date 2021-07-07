@@ -91,13 +91,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('templates.create') }}" class="nav-link">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Template</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages/tables/simple.html" class="nav-link">
+                            <a href="{{ route('templates.index') }}" class="nav-link">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Template</p>
                             </a>

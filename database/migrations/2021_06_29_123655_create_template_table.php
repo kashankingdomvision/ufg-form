@@ -18,8 +18,10 @@ class CreateTemplateTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('season_id');
             $table->string('title');
-            $table->enum('status', [0,1])->default(1);
+            $table->enum('status', [0, 1])->default(1);
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

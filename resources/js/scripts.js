@@ -52,7 +52,7 @@ $(document).on('change', '.select-agency', function() {
 });
 
 /// Category to supplier
-$(document).on('change', '.category-select2',function(){
+$(document).on('change', '.category-id',function(){
     var $selector = $(this);
     var category_id = $(this).val();
     var options = '';
@@ -202,10 +202,10 @@ $(document).on('click', '.addChild', function () {
         templateSelection: currencyImageFormate
     });
 
-    $('.booking-currency-id, .supplier-currency-id').select2({
-        templateResult: currencyImageFormate,
-        templateSelection: currencyImageFormate
-    });
+    // $('.booking-currency-id, .supplier-currency-id').select2({
+    //     templateResult: currencyImageFormate,
+    //     templateSelection: currencyImageFormate
+    // });
 
     $(document).on('click', '#add_more', function(e) {
             
@@ -240,6 +240,8 @@ $(document).on('click', '.addChild', function () {
             .show()
             .insertAfter(".quote:last");
             
+            $('.supplier-id').html(`<option>Select Supplier</option>`);
+            $('.product-id').html(`<option>Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);
           
             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
