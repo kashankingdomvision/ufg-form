@@ -122,18 +122,18 @@ class QuoteController extends Controller
         ];
     }
     
-    public function store(QuoteRequest $request)
+    public function store(Request $request)
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
-                    $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
-                    QuoteDetail::create($quoteDetail);
+                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                QuoteDetail::create($quoteDetail);
             }
         }
        //pax data 
        if($request->has('pax')){
-            foreach ($request->pax as $pax_data) {
+           foreach ($request->pax as $pax_data) {
                 QuotePaxDetail::create([
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],

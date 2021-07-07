@@ -352,11 +352,12 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
+s
                             <label>Booking Types </label>
                             <select name="quote[0][booking_type]" data-name="booking_type" id="quote_0_booking_type" class="form-control select2   booking-type-id @error('booking_type_id') is-invalid @enderror">
                               <option value="">Select Booking Type</option>
                               @foreach ($booking_types as $booking_type)
-                                <option value="{{ $booking_type->id }}"  </option>
+                                <option value="{{ $booking_type->id }}"> {{$booking_type->name}} </option>
                               @endforeach
                             </select>
 
