@@ -16,12 +16,12 @@ class CreateQuotePaxDetailsTable extends Migration
         Schema::create('quote_pax_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
-            $table->string('full_name');
-            $table->string('email');
-            $table->string('contact');
-            $table->date('date_of_birth');
-            $table->string('bedding_preference');
-            $table->string('dinning_preference');
+            $table->string('full_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('contact')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->string('bedding_preference')->nullable();
+            $table->string('dinning_preference')->nullable();
             $table->timestamps();
             
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
