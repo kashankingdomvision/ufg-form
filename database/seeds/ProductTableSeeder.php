@@ -14,11 +14,16 @@ class ProductTableSeeder extends Seeder
      */
     public function run()
     {
-        Product::create([
+        $data = [ 
+        [   
             'code'        => Str::random(10),  
             'name'        => Str::random(4),
-            'description' => Str::random(55),
-        ]);
+            'description' => Str::random(55) ],
+        [   'code'        => Str::random(10),  
+            'name'        => Str::random(4),
+            'description' => Str::random(55) ],
+        ];
+        Product::insert($data);
     }
     
    

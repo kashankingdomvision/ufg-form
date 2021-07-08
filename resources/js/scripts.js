@@ -1,7 +1,7 @@
-import $ from 'jquery';
+import $, { ajax } from 'jquery';
 import select2 from 'select2';
 var BASEURL = 'http://localhost/ufg-form/public/json/';
-
+var CSRFTOKEN = $('#csrf-token').attr('content');
 
 
 $(document).ready(function($) {
@@ -195,17 +195,17 @@ $(document).on('click', '.addChild', function () {
 
     // $('.pax-number').select2();
 
-    $('.selling-price-other-currency').select2({
-        // width: '68%',
-        width: 'resolve',
-        templateResult: currencyImageFormate,
-        templateSelection: currencyImageFormate
-    });
+    // $('.selling-price-other-currency').select2({
+    //     // width: '68%',
+    //     width: 'resolve',
+    //     templateResult: currencyImageFormate,
+    //     templateSelection: currencyImageFormate
+    // });
 
-    $('.booking-currency-id, .supplier-currency-id').select2({
-        templateResult: currencyImageFormate,
-        templateSelection: currencyImageFormate
-    });
+    // $('.booking-currency-id, .supplier-currency-id').select2({
+    //     templateResult: currencyImageFormate,
+    //     templateSelection: currencyImageFormate
+    // });
 
     $(document).on('click', '#add_more', function(e) {
             
@@ -240,8 +240,8 @@ $(document).on('click', '.addChild', function () {
             .show()
             .insertAfter(".quote:last");
             
-            $('.supplier-id').html(`<option>Select Supplier</option>`);
-            $('.product-id').html(`<option>Select Product</option>`);
+            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);
           
             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
@@ -568,5 +568,114 @@ $(document).on('click', '.addChild', function () {
             $('#btnSubmitversion').append();
         }
     });
-    
+
+////////////////////////////////// 
+// / Quote FORM SUBMISSION START
+// /
+// / 
+
+$("#quoteCreate").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+    url = $form.attr('action');
+    var formdata = $(this).serialize();
+
+
+    /* Send the data using post */
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function (data) {
+            alert('Quote created Successfully');
+        },
+        error: function (reject) {
+            console.log(reject);
+        },
+    });
+});
+
+
+$(".update-quote").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+    url = $form.attr('action');
+    var formdata = $(this).serialize();
+
+
+    /* Send the data using post */
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function (data) {
+            alert('Quote updated Successfully');
+        },
+        error: function (reject) {
+            console.log(reject);
+        },
+    });
+});
+
+$('.search-reference').on('click', function () {
+    var searchRef = $(this);
+    searchRef.text('Searching..').prop('disabled', true);
+    var reference_no = $('.reference-name').val();
+    if(reference_no == ''){
+        alert('Reference number is not found'); 
+        searchRef.text('Search').prop('disabled', false);     
+    }else{
+        
+        //ajax for references
+        $.ajax({
+            headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+            url: BASEURL+'find/reference/'+reference_no+'/exist',
+            type: 'get',
+            dataType: "json",
+            success: function (data) {
+                var r = true
+                if(data.response == true){
+                    r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
+                }
+                if(r == true){
+                    $.ajax({
+                        headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+                        url: BASEURL+'find/reference',
+                        data : {ref_no: reference_no},
+                        type: 'POST',
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data+ 'data');
+                            searchRef.text('Search').prop('disabled', false);
+                        },
+                        error: function (reject) {
+                           alert(reject.responseJSON.errors);
+                            searchRef.text('Search').prop('disabled', false);
+                        
+                        },
+                    });
+                }
+                searchRef.text('Search').prop('disabled', false);
+            },
+            error: function (reject) {
+                
+                alert(reject);
+                searchRef.text('Search').prop('disabled', false);
+                
+            },
+        });
+        //ajax for references
+   } 
+});
+
+// /
+// / 
+// / Quote FORM SUBMISSION END
+////////////////////////////////// 
 });

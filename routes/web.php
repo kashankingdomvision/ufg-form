@@ -166,6 +166,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('supplier/to/product',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProduct'));
  
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
+        Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
+        Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         
    });
 });

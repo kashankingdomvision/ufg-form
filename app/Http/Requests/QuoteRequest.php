@@ -31,9 +31,9 @@ class QuoteRequest extends FormRequest
             'ref_no'                            =>  'required',
             'quote_no'                          =>  'required',
             'lead_passenger'                    =>  'required',
-            'sale_person_id'                      =>  'required',
+            'sale_person_id'                    =>  'required',
             'agency'                            =>  'required',
-            'dinning_preferences'               =>  'required',
+            'dinning_preference'                =>  'required',
             'bedding_preference'                =>  'required',
             'pax_no'                            =>  'required',
             'rate_type'                         =>  'required',
@@ -46,7 +46,11 @@ class QuoteRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency' => 'required',
             'quote.*.markup_amount_in_booking_currency' => 'required',
             'quote.*.added_in_sage'             =>  'required',
-            
+            'quote.*.supplier_id'               =>  'nullable',
+            'quote.*.product_id'                =>  'nullable',
+            'quote.*.booking_method_id'         =>  'nullable',
+            'quote.*.booked_by_id'              =>  'nullable',
+            'quote.*.supervisor_id'             =>  'nullable',
         ];
     }
     
@@ -74,6 +78,11 @@ class QuoteRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency' => 'Selling price booking',
             'quote.*.markup_amount_in_booking_currency' => 'Markup amount booking',
             'quote.*.added_in_sage'             =>  'Added in sage',
+            'quote.*.supplier_id'               =>  'Supplier',
+            'quote.*.product_id'                =>  'Product',
+            'quote.*.booking_method_id'         =>  'Booking method',
+            'quote.*.booked_by_id'              =>  'Booked By',
+            'quote.*.supervisor_id'             =>  'Supervisor',
         ];
     }
 }
