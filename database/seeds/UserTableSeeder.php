@@ -13,15 +13,45 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
-            'role_id'           =>  1,
-            'supervisor_id'     =>  NULL,
-            'currency_id'       =>  NULL,
-            'brand_id'          =>  NULL,
-            'name'              =>  'Kashan',
-            'email'             =>  'kashan.kingdomvision@gmail.com',
-            'email_verified_at' =>  now(),
-            'password'          =>  Hash::make(12345678),
-        ]);
+
+        $users = [
+            [
+                'role_id'           =>  1,
+                'supervisor_id'     =>  NULL,
+                'currency_id'       =>  NULL,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'Kashan',
+                'email'             =>  'kashan.kingdomvision@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+            ],
+
+            [
+                'role_id'           =>  5,
+                'supervisor_id'     =>  NULL,
+                'currency_id'       =>  2,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'Tabseer',
+                'email'             =>  'tabseer@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+            ],
+
+            [
+                'role_id'           =>  2,
+                'supervisor_id'     =>  2,
+                'currency_id'       =>  3,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'Tabraiz',
+                'email'             =>  'tabraiz@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+            ],
+        ];
+
+        User::insert($users);
     }
 }
