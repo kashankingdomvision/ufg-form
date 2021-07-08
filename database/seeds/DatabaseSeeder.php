@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             InitialTableSeeder::class,
             ProductTableSeeder::class,
             PaymentMethodSeeder::class,
+            SeasonSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
