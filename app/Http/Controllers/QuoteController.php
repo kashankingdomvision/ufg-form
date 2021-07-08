@@ -171,6 +171,9 @@ class QuoteController extends Controller
     public function update(Request $request, $id)
     {
 
+        dd($request->all());
+      
+
         $quote = Quote::findOrFail(decrypt($id));
         $array =  $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
@@ -187,6 +190,7 @@ class QuoteController extends Controller
             $quote->getQuoteDetails()->delete();
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                $quoteDetail['quote_id'] = $quote->id;
                 QuoteDetail::create($quoteDetail);
             }
         }

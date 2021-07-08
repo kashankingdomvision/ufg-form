@@ -15,7 +15,7 @@ class CreateBookingDetailsTable extends Migration
     {
         Schema::create('booking_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('quote_id');
+            $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
@@ -42,7 +42,7 @@ class CreateBookingDetailsTable extends Migration
             $table->string('inovice')->nullable();;
             $table->timestamps();
             
-            $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');

@@ -71,34 +71,43 @@
                                         <tbody>
 
                                             @if($bookings && $bookings->count())
+                                                @foreach ($bookings as $booking)
+                                                    <tr>
+                                                        <td>{{$booking->ref_no}}</td>
+                                                        <td>{{$booking->quote_ref}}</td>
+                                                        <td>{{$booking->lead_passenger}}</td>
+                                                        <td>{{$booking->getBrand->name??NULL}}</td>
+                                                        <td>{{$booking->getHolidayType->name??NULL}}</td>
+                                                        <td>{{$booking->sale_person}}</td>
+                                                        <td>{{$booking->agency_booking == 1 ? 'No' : 'Yes'}}</td>
+                                                        <td>{{!empty($booking->getCurrency->code) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : NULL }}</td>
+                                                        <td>{{$booking->pax_no}}</td>
+                                                        <td>{{$booking->dinning_preference}}</td>
+                                                        <td>{{$booking->bedding_preference}}</td>
+                                                        {{-- <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td> --}}
+                                                  
 
+                                                        <td width="10%" class="d-flex" >
+                                                            <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                   
+                                                            <a onclick="return confirm('Are you sure want to Delete this record?');" href="{{ route('bookings.delete', encrypt($booking->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                        </td>
+
+                                                    </tr>
+                                                @endforeach
                                             @else
                                                 <tr align="center"><td colspan="100%">No record found.</td></tr>
                                             @endif
-                                        {{-- @foreach ($seasons as $key => $value)
-                                            <tr>
-
-                                            <td>
-                                                {{ $value->name }} &nbsp;
-                                                
-                                                @if ($value->default == 1)
-                                                <span class="btn btn-primary badge">Default</span>
-                                                @endif
-                                            </td>
-
-                                            <td>
-                                                <form method="post" action="{{ route('seasons.destroy', encrypt($value->id)) }}">
-                                                <a href="{{ route('seasons.edit', encrypt($value->id)) }}" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn btn-xs ml-0 text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
-                                                    <span class="fa fa-trash"></span>
-                                                </button>
-                                                </form>
-                                            </td>
-
-                                            </tr>
-                                        @endforeach --}}
+                                            
                                         
                                         </tbody>
                                     </table>

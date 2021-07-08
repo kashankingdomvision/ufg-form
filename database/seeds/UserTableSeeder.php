@@ -45,7 +45,7 @@ class UserTableSeeder extends Seeder
                 'currency_id'       =>  3,
                 'brand_id'          =>  1,
                 'holiday_type_id'   =>  1,
-                'name'              =>  'Tabraiz',
+                'name'              =>  'tabraiz@gmail.com',
                 'email'             =>  'tabraiz@gmail.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),

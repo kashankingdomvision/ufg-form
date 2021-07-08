@@ -11,7 +11,7 @@ class Booking extends Model
     protected $fillable = [ 
         'quote_id', 'season_id', 'brand_id', 'currency_id', 'holiday_type_id', 'ref_name', 'ref_no', 'quote_ref', 
         'lead_passenger', 'sale_person', 'agency', 'agency_name', 'agency_contact', 'dinning_preference', 'bedding_preference', 
-        'pax_no', 'markup_amount', 'markup_percentage', 'selling_price', 'profit_percentage', 'selling_currency_oc', 'selling_price_oc',
+        'pax_no', 'markup_amount', 'markup_percentage', 'selling_price', 'profit_percentage', 'selling_currency_oc', 'selling_price_ocr',
         'amount_per_person'
     ];
     
@@ -37,6 +37,10 @@ class Booking extends Model
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
+
+    // function getSupplierCurrency() {
+    //     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
+    // }
     
     function getBrand() {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
@@ -59,6 +63,11 @@ class Booking extends Model
     public function getQuote()
     {
         return $this->hasOne(Quote::class, 'id', 'quote_id');
+    }
+
+    public function getPaxDetail()
+    {
+        return $this->hasMany(BookingPaxDetail::class, 'booking_id', 'id');
     }
     
     public function getBookingLogs()
