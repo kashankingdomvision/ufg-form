@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\QuoteRequest;
+use Auth;
 use App\Category;
 use App\Product;
 use App\Season;
@@ -19,9 +20,9 @@ use App\CurrencyConversion;
 use App\Quote;
 use App\QuoteDetail;
 use App\QuotePaxDetail;
-use Auth;
-use DB;
 use App\QuoteLog;
+use App\Booking;
+use DB;
 
 class QuoteController extends Controller
 {
@@ -67,24 +68,24 @@ class QuoteController extends Controller
             'holiday_type_id'    =>  $request->holiday_type_id,
             'ref_name'           =>  $request->ref_name??'zoho',
             'ref_no'             =>  $request->ref_no,
-            'quote_ref'          =>  $request->quote_no,
+            'quote_ref'          =>  $request->quote_no??$request->quote_ref,
             'lead_passenger'     =>  $request->lead_passenger,
             'sale_person_id'     =>  $request->sale_person_id,
-            'agency'             =>  ($request->agency == 'on')? '1' : '0',
-            'dinning_preference' =>  $request->dinning_preferences,
+            'agency'             =>  ($request->agency == 1)? 1 : (($request->agency == 'on')? '1' : '0'),
+            'dinning_preference' =>  $request->dinning_preference,
             'bedding_preference' =>  $request->bedding_preference,
             'pax_no'             =>  $request->pax_no,
-            'markup_amount'      =>  $request->total_markup_amount,
-            'markup_percentage'  =>  $request->total_markup_percent,
-            'selling_price'      =>  $request->total_selling_price,
-            'profit_percentage'  =>  $request->total_profit_percentage,
-            'selling_currency_oc'=>  $request->selling_price_other_currency,
-            'selling_price_oc'   =>  $request->selling_price_other_currency_rate,
-            'amount_per_person'  =>  $request->booking_amount_per_person,
+            'markup_amount'      =>  $request->total_markup_amount??$request->markup_amount,
+            'markup_percentage'  =>  $request->total_markup_percent??$request->markup_percentage,
+            'selling_price'      =>  $request->total_selling_price??$request->selling_price,
+            'profit_percentage'  =>  $request->total_profit_percentage??$request->profit_percentage,
+            'selling_currency_oc'=>  $request->selling_price_other_currency??$request->selling_currency_oc,
+            'selling_price_oc'   =>  $request->selling_price_other_currency_rate??$request->selling_price_oc,
+            'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'          =>  ($request->rate_type == 'live')? 'live': 'manual',
         ];
         
-        if($request->has('agency') && $request->agency == 'yes'){
+        if($request->agency == 'yes' || $request->agency == 1){
             $data['agency_name']        = $request->agency_name;
             $data['agency_contact']     = $request->agency_contact;
         }
@@ -95,7 +96,6 @@ class QuoteController extends Controller
     public function getQuoteDetailsArray($quoteD, $id)
     {
         return [
-            'quote_id'              => $id,
             'category_id'           => $quoteD['category_id'],
             'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
@@ -128,6 +128,7 @@ class QuoteController extends Controller
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                $quoteDetail['quote_id'] = $quote->id;
                 QuoteDetail::create($quoteDetail);
             }
         }
@@ -247,4 +248,14 @@ class QuoteController extends Controller
         Quote::destroy(decrypt($id));
         return redirect()->route('quotes.index')->with('success_message', 'Quote deleted successfully');        
     }
+
+    public function booking($id)
+    {
+        $quote = Quote::findORFail(decrypt($id));
+        $getQuote = $this->quoteArray($quote);
+        $getQuote['quote_id'] = $quote->id; 
+        dd($getQuote);
+        Booking::create($getQuote);
+        // dd($quote->id);
+    } 
 }

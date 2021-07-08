@@ -36,9 +36,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
         
         Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
-        
-        // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-        // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
+        Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
     });
 
     /*
@@ -59,6 +57,23 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'TemplateController@call_template']);
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booking 
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
+        Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
+        Route::get('booking/season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
+
+        
+        // Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
+        // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+        // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
+    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
 
 
