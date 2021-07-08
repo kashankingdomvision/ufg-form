@@ -7,6 +7,7 @@ use App\HolidayType;
 use App\Supplier;
 use App\Product;
 use App\Quote;
+use App\ReferenceCredential;
 use Illuminate\Support\Facades\View;
 
 
@@ -39,4 +40,176 @@ class ResponseController extends Controller
         $data['quotes'] = Quote::where('ref_no', $request->ref_no)->where('id', '!=' ,$request->id)->orderBy('created_at')->get();
         return response()->json(View::make('partials.quote_listing', $data)->render());
     }
+    // FIND QUOTE REFERENCES
+    public function findReference(Request $request)
+    {
+        $zoho_credentials = ReferenceCredential::where('type', 'zoho')->first();
+        $ajax_response = [];
+        $ref = $request->ref_no;
+        // $refresh_token = '1000.18cb2e5fbe397a6422d8fcece9b67a06.d71539ff6e5fa8364879574343ab799a';
+        $url = "https://www.zohoapis.com/crm/v2/Deals/search?criteria=(Booking_Reference:equals:{$ref})";
+        $args = array(
+            'method' => 'GET',
+            'ssl' => false,
+            'format' => 'ARRAY',
+            'headers' => array(
+                "Authorization:" . 'Zoho-oauthtoken ' . $zoho_credentials->access_token,
+                "Content-Type: application/json",
+            ),
+        );
+        $response = $this->cf_remote_request($url, $args);
+        if ($response['status'] == 200) {
+            
+            $responses_data = array_shift($response['body']['data']);
+            $passenger_id = $responses_data['id'];
+            $url = "https://www.zohoapis.com/crm/v2/Passengers/search?criteria=(Deal:equals:{$passenger_id})";
+            $passenger_response = $this->cf_remote_request($url, $args);
+            if ($passenger_response['status'] == 200) {
+                $pax_no = count($passenger_response['body']['data']);
+            }
+            $holidayName = isset($responses_data['Holiday_Type']) && !empty($responses_data['Holiday_Type']) ? $responses_data['Holiday_Type'] : null;
+            $holiday = HolidayType::where('name', $holidayName)->first();
+            $holidayTypes = NULL;
+            if($holiday){
+                $holidayTypes = HolidayType::where('brand_id', $holiday->brand_id)->get();
+            }
+            
+            $passenger_data = [];
+            $passengerArray = [];
+            if(isset($passenger_response['body']['data']) && count($passenger_response['body']['data']) > 0 ){
+                foreach ($passenger_response['body']['data'] as $key => $passenger) {
+                        if($key == 0){    
+                        $passengerArray['lead_passenger'] = $this->getPassenger($passenger);
+                    }else{                            
+                        $x = $this->getPassenger($passenger);
+                        array_push($passenger_data, $x);
+                    }
+                }
+            }
+            $passengerArray['passengers'] = $passenger_data;
+            
+            $response = [
+                "holiday_type"  => $holiday,
+                "holidayTypes"  => $holidayTypes,
+                "sale_person"   => isset($responses_data['Owner']['email']) && !empty($responses_data['Owner']['email']) ? $responses_data['Owner']['email'] : null,
+                "currency"      => isset($responses_data['Currency']) && !empty($responses_data['Currency']) ? $responses_data['Currency'] : null,
+                "pax"           => isset($pax_no) && !empty($pax_no) ? $pax_no : null,
+                'passengers'    => $passengerArray,
+            ];
+            $ajax_response['status']    = true;
+            $ajax_response['response']  = $response;
+            return response()->json($ajax_response);
+        }
+            $ajax_response['status'] = false;
+            $ajax_response['error'] = 'The reference is not found. Try again!';
+        return response()->json($ajax_response);
+    }
+
+    
+    public function isReferenceExists($ref_no)
+    {
+        $response['response'] = Quote::where('ref_no', $ref_no)->exists();
+        return response()->json($response);
+    }
+    
+    
+    
+    public function cf_remote_request($url, $_args = array())
+    {
+        // prepare array
+        $array = array(
+            //'status' => false,
+            'message' => array(
+                '101' => 'Invalid url',
+                '102' => 'cURL Error #: ',
+                '200' => 'cURL Successful #: ',
+                '400' => '400 Bad Request',
+            ),
+        );
+
+        // initalize args
+        $args = array(
+            'method' => 'POST',
+            'timeout' => 45,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'ssl' => true,
+            'headers' => array(),
+            'body' => array(),
+            'returntransfer' => true,
+            'encoding' => '',
+            'maxredirs' => 10,
+            'format' => 'JSON',
+        );
+
+        if (empty($url)) {
+            $code = 101;
+            $response = array('status' => $code, 'body' => $array['message'][$code]);
+            return $response;
+        }
+
+        if (!empty($_args) && is_array($_args)) {
+            $args = array_merge($args, $_args);
+        }
+
+        $fields = $args['body'];
+        if (strtolower($args['method']) == 'post' && is_array($fields)) {
+            $fields = http_build_query($fields);
+        }
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => $args['returntransfer'],
+            CURLOPT_ENCODING => $args['encoding'],
+            CURLOPT_MAXREDIRS => $args['maxredirs'],
+            CURLOPT_HTTP_VERSION => $args['httpversion'], // CURL_HTTP_VERSION_1_1,
+            CURLOPT_USERAGENT => $_SERVER['HTTP_USER_AGENT'],
+            //CURLOPT_HEADER             => true,
+            CURLINFO_HEADER_OUT => true,
+            CURLOPT_TIMEOUT => $args['timeout'],
+            CURLOPT_CONNECTTIMEOUT => $args['timeout'],
+            CURLOPT_SSL_VERIFYPEER => $args['ssl'] === true ? true : false,
+            //CURLOPT_SSL_VERIFYHOST     => $args['ssl'] === true ? true : false,
+            // CURLOPT_CAPATH             => APPPATH . 'certificates/ca-bundle.crt',
+            CURLOPT_CUSTOMREQUEST => $args['method'],
+            CURLOPT_POSTFIELDS => $fields,
+            CURLOPT_HTTPHEADER => $args['headers'],
+        ));
+
+        $curl_response = curl_exec($curl);
+        $err = curl_error($curl);
+        $curl_info = array(
+            'status' => curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            'header' => curl_getinfo($curl, CURLINFO_HEADER_OUT),
+            'total_time' => curl_getinfo($curl, CURLINFO_TOTAL_TIME),
+        );
+
+        curl_close($curl);
+
+        if ($err) {
+            $response = array('message' => $err, 'body' => $err);
+        } else {
+            if ($curl_info['status'] == 200
+                && in_array($args['format'], array('ARRAY', 'OBJECT'))
+                && !empty($curl_response) && is_string($curl_response)) {
+                $curl_response = json_decode($curl_response, $args['format'] == 'ARRAY' ? true : false);
+                $curl_response = (json_last_error() == JSON_ERROR_NONE) ? $curl_response : $curl_response;
+            } else {
+                $curl_response = json_decode($curl_response, true);
+            }
+
+            $response = array(
+                //'message'     => $array['message'][ $curl_info['status'] ],
+                'body' => $curl_response,
+            );
+        }
+
+        $response = array_merge($curl_info, $response);
+        return $response;
+    }
+    // FIND QUOTE REFERENCES
+    
+    
 }

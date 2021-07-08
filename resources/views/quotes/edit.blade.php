@@ -87,14 +87,15 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="col-sm-6">
                     </div>
-
                     <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Zoho Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" class="form-control" placeholder="Enter Reference Number">
+                      <label>Zoho Reference <span style="color:red">*</span></label>
+                      <div class="input-group ">
+                        <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" class="form-control reference-name" placeholder="Enter Reference Number">
+                         <div class="input-group-append">
+                          <button class="btn btn-outline-dark search-reference" type="button">Search</button>
+                        </div>
                       </div>
                     </div>
 
@@ -208,7 +209,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote->dinning_preference }}" name="dinning_preferences" class="form-control" placeholder="Dinning Preferences" >
+                        <input type="text" value="{{ $quote->dinning_preference }}" name="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                       </div>
                     </div>
                     

@@ -122,7 +122,7 @@ class QuoteController extends Controller
         ];
     }
     
-    public function store(Request $request)
+    public function store(QuoteRequest $request)
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
@@ -168,9 +168,8 @@ class QuoteController extends Controller
         return view('quotes.edit',$data);
     }
     
-    public function update(Request $request, $id)
+    public function update(QuoteRequest $request, $id)
     {
-
         $quote = Quote::findOrFail(decrypt($id));
         $array =  $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
@@ -187,6 +186,8 @@ class QuoteController extends Controller
             $quote->getQuoteDetails()->delete();
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                $quoteDetail['quote_id'] = $quote->id;
+                
                 QuoteDetail::create($quoteDetail);
             }
         }
@@ -255,7 +256,19 @@ class QuoteController extends Controller
         $getQuote = $this->quoteArray($quote);
         $getQuote['quote_id'] = $quote->id; 
         dd($getQuote);
-        Booking::create($getQuote);
-        // dd($quote->id);
+        $booking = Booking::create($getQuote);
+        if($quote->getPaxDetail && $quote->pax_no > 1){
+            foreach ($quote->getPaxDetail as $pax) {
+                QuotePaxDetail::create([
+                    'booking_id'            => $booking->id,
+                    'full_name'             => $pax['full_name'],
+                    'email'                 => $pax['email_address'],
+                    'contact'               => $pax['contact_number'],
+                    'date_of_birth'         => $pax['date_of_birth'],
+                    'bedding_preference'    => $pax['bedding_preference'],
+                    'dinning_preference'    => $pax['dinning_preference'],
+                ]);
+            }
+        }
     } 
 }

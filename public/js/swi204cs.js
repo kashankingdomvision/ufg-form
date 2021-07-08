@@ -17197,6 +17197,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var BASEURL = 'http://localhost/ufg-form/public/json/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%'
@@ -17358,17 +17359,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   }); // $('.pax-number').select2();
+  // $('.selling-price-other-currency').select2({
+  //     // width: '68%',
+  //     width: 'resolve',
+  //     templateResult: currencyImageFormate,
+  //     templateSelection: currencyImageFormate
+  // });
+  // $('.booking-currency-id, .supplier-currency-id').select2({
+  //     templateResult: currencyImageFormate,
+  //     templateSelection: currencyImageFormate
+  // });
 
-  $('.selling-price-other-currency').select2({
-    // width: '68%',
-    width: 'resolve',
-    templateResult: currencyImageFormate,
-    templateSelection: currencyImageFormate
-  });
-  $('.booking-currency-id, .supplier-currency-id').select2({
-    templateResult: currencyImageFormate,
-    templateSelection: currencyImageFormate
-  });
   $(document).on('click', '#add_more', function (e) {
     $(".quote").eq(0).clone().find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
@@ -17392,8 +17393,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
     }).end().show().insertAfter(".quote:last");
-    $('.supplier-id').html("<option>Select Supplier</option>");
-    $('.product-id').html("<option>Select Product</option>");
+    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
     $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
     $('.alert-danger').html('');
@@ -17663,7 +17664,87 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('#addMoreButton').append();
       $('#btnSubmitversion').append();
     }
+  }); ////////////////////////////////// 
+  // / Quote FORM SUBMISSION START
+  // /
+  // / 
+
+  $("#quoteCreate").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var formdata = $(this).serialize();
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function success(data) {
+        alert(data);
+      },
+      error: function error(reject) {
+        alert(reject);
+      }
+    });
   });
+  $('.search-reference').on('click', function () {
+    var searchRef = $(this);
+    searchRef.text('Searching..').prop('disabled', true);
+    var reference_no = $('.reference-name').val();
+
+    if (reference_no == '') {
+      alert('Reference number is not found');
+      searchRef.text('Search').prop('disabled', false);
+    } else {
+      //ajax for references
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: BASEURL + 'find/reference/' + reference_no + '/exist',
+        type: 'get',
+        dataType: "json",
+        success: function success(data) {
+          alert(data.response);
+
+          if (data.response == true) {
+            $.ajax({
+              headers: {
+                'X-CSRF-TOKEN': CSRFTOKEN
+              },
+              url: BASEURL + 'find/reference',
+              data: {
+                ref_no: reference_no
+              },
+              type: 'POST',
+              dataType: "json",
+              success: function success(data) {
+                alert(data.error);
+                searchRef.text('Search').prop('disabled', false);
+              },
+              error: function error(reject) {
+                alert(reject);
+                searchRef.text('Search').prop('disabled', false);
+              }
+            });
+          }
+
+          searchRef.text('Search').prop('disabled', false);
+        },
+        error: function error(reject) {
+          alert(reject);
+          searchRef.text('Search').prop('disabled', false);
+        }
+      }); //ajax for references
+    }
+  }); // /
+  // / 
+  // / Quote FORM SUBMISSION END
+  ////////////////////////////////// 
 });
 
 /***/ }),
