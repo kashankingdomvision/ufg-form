@@ -40,7 +40,7 @@ class CreateQuotesTable extends Migration
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('booking_status',['quote','booked'])->default('quote');
-            $table->timestamp('booking_date')->nullable();
+            $table->dateTime('booking_date')->nullable();
             $table->timestamps();
             
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

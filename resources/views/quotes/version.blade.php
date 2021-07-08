@@ -40,7 +40,7 @@
                   <button id="reCall" type="button" data-recall="true" class="btn btn-outline-light btn-sm float-right">Recall Version</button>
               </div>
 
-            <form method="POST" action="{{ route('quotes.update', encrypt($quote['id'])) }}"> 
+            <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}"> 
             @csrf @method('put')
               <div class="card-body">
                   <div class="row mb-2">

@@ -44,6 +44,12 @@ class ResponseController extends Controller
     public function findReference(Request $request)
     {
         $zoho_credentials = ReferenceCredential::where('type', 'zoho')->first();
+        if($zoho_credentials == null){ 
+            return response()->json([
+                'status' => 'false',
+                'errors'  => 'Something went wrong with reference number Please try again!',
+            ], 400);           
+        }
         $ajax_response = [];
         $ref = $request->ref_no;
         // $refresh_token = '1000.18cb2e5fbe397a6422d8fcece9b67a06.d71539ff6e5fa8364879574343ab799a';

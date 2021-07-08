@@ -22,7 +22,10 @@ use App\QuoteDetail;
 use App\QuotePaxDetail;
 use App\QuoteLog;
 use App\Booking;
+use App\BookingDetail;
+use App\BookingPaxDetail;
 use DB;
+use Carbon\Carbon;
 
 class QuoteController extends Controller
 {
@@ -116,8 +119,8 @@ class QuoteController extends Controller
             'markup_percentage'     => $quoteD['markup_percentage'],
             'selling_price'         => $quoteD['selling_price'],
             'profit_percentage'     => $quoteD['profit_percentage'],
-            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency'],
-            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency'],
+            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc  '],
+            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc  '],
             'added_in_sage'         => ($quoteD['added_in_sage'] == "0")? '0' : '1',
         ];
     }
@@ -255,20 +258,32 @@ class QuoteController extends Controller
         $quote = Quote::findORFail(decrypt($id));
         $getQuote = $this->quoteArray($quote);
         $getQuote['quote_id'] = $quote->id; 
-        dd($getQuote);
         $booking = Booking::create($getQuote);
+        
+        foreach ($quote->getQuoteDetails as $qu_details) {
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+            $quoteDetail['booking_id'] = $booking->id;
+            BookingDetail::create($quoteDetail);
+        }
+        
         if($quote->getPaxDetail && $quote->pax_no > 1){
             foreach ($quote->getPaxDetail as $pax) {
-                QuotePaxDetail::create([
+                BookingPaxDetail::create([
                     'booking_id'            => $booking->id,
                     'full_name'             => $pax['full_name'],
-                    'email'                 => $pax['email_address'],
-                    'contact'               => $pax['contact_number'],
+                    'email'                 => $pax['email'],
+                    'contact'               => $pax['contact'],
                     'date_of_birth'         => $pax['date_of_birth'],
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
                 ]);
             }
         }
+        $quote->update([
+            'booking_status' => 'booked',
+            'booking_date'   => Carbon::now()
+        ]);
+        
+        return redirect()->route('quotes.index')->with('success_message', 'Quote Booked successfully');        
     } 
 }

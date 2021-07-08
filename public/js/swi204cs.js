@@ -17684,10 +17684,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       cache: false,
       processData: false,
       success: function success(data) {
-        alert(data);
+        alert('Quote created Successfully');
       },
       error: function error(reject) {
-        alert(reject);
+        console.log(reject);
+      }
+    });
+  });
+  $(".update-quote").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var formdata = $(this).serialize();
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function success(data) {
+        alert('Quote updated Successfully');
+      },
+      error: function error(reject) {
+        console.log(reject);
       }
     });
   });
@@ -17709,9 +17731,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         type: 'get',
         dataType: "json",
         success: function success(data) {
-          alert(data.response);
+          var r = true;
 
           if (data.response == true) {
+            r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
+          }
+
+          if (r == true) {
             $.ajax({
               headers: {
                 'X-CSRF-TOKEN': CSRFTOKEN
@@ -17723,11 +17749,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               type: 'POST',
               dataType: "json",
               success: function success(data) {
-                alert(data.error);
+                console.log(data + 'data');
                 searchRef.text('Search').prop('disabled', false);
               },
               error: function error(reject) {
-                alert(reject);
+                alert(reject.responseJSON.errors);
                 searchRef.text('Search').prop('disabled', false);
               }
             });

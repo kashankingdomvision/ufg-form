@@ -590,11 +590,35 @@ $("#quoteCreate").submit(function(event) {
         cache: false,
         processData:false,
         success: function (data) {
-            alert(data);
+            alert('Quote created Successfully');
         },
         error: function (reject) {
-            alert(reject);
-        
+            console.log(reject);
+        },
+    });
+});
+
+
+$(".update-quote").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+    url = $form.attr('action');
+    var formdata = $(this).serialize();
+
+
+    /* Send the data using post */
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        success: function (data) {
+            alert('Quote updated Successfully');
+        },
+        error: function (reject) {
+            console.log(reject);
         },
     });
 });
@@ -615,8 +639,11 @@ $('.search-reference').on('click', function () {
             type: 'get',
             dataType: "json",
             success: function (data) {
-                alert(data.response);
+                var r = true
                 if(data.response == true){
+                    r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
+                }
+                if(r == true){
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
                         url: BASEURL+'find/reference',
@@ -624,18 +651,20 @@ $('.search-reference').on('click', function () {
                         type: 'POST',
                         dataType: "json",
                         success: function (data) {
-                            alert(data.error);
-                          searchRef.text('Search').prop('disabled', false);
+                            console.log(data+ 'data');
+                            searchRef.text('Search').prop('disabled', false);
                         },
                         error: function (reject) {
-                            alert(reject);
+                           alert(reject.responseJSON.errors);
                             searchRef.text('Search').prop('disabled', false);
+                        
                         },
                     });
                 }
                 searchRef.text('Search').prop('disabled', false);
             },
             error: function (reject) {
+                
                 alert(reject);
                 searchRef.text('Search').prop('disabled', false);
                 
