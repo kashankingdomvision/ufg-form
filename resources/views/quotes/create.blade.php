@@ -165,7 +165,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" name="dinning_preferences" class="form-control" placeholder="Dinning Preferences" >
+                        <input type="text" name="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                       </div>
                     </div>
                     
