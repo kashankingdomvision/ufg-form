@@ -19,6 +19,9 @@ use App\BookingMethod;
 use App\BookingType;
 use App\BookingDetail;
 use App\BookingDetailFinance;
+use App\BookingLog;
+use App\BookingPaxDetail;
+use App\Http\Requests\BookingRequest;
 use Auth;
 
 class BookingController extends Controller
@@ -66,7 +69,6 @@ class BookingController extends Controller
     public function bookingArray($request)
     {
         $data =  [
-            'quote_id'            =>  $request->quote_id,
             'user_id'             =>  Auth::id(),
             'rate_type'           =>  ($request->rate_type == 'live')? 'live': 'manual',
             'ref_no'              =>  $request->ref_no,
@@ -75,7 +77,7 @@ class BookingController extends Controller
             'lead_passenger'      =>  $request->lead_passenger,
             'brand_id'            =>  $request->brand_id,
             'holiday_type_id'     =>  $request->holiday_type_id,
-            'sale_person_id'      =>  $request->sale_person_id,
+            'sale_person'         =>  $request->sale_person_id,
             'season_id'           =>  $request->season_id,
             'agency'              =>  ($request->agency == 1)? 1 : (($request->agency == 'on')? '1' : '0'),
             'dinning_preference'  =>  $request->dinning_preference,
@@ -87,7 +89,7 @@ class BookingController extends Controller
             'selling_price'       =>  $request->total_selling_price??$request->selling_price,
             'profit_percentage'   =>  $request->total_profit_percentage??$request->profit_percentage,
             'selling_currency_oc' =>  $request->selling_price_other_currency??$request->selling_currency_oc,
-            'selling_price_ocr'   =>  $request->selling_price_other_currency_rate??$request->selling_price_oc,
+            'selling_price_oc'   =>  $request->selling_price_other_currency_rate??$request->selling_price_oc,
             'amount_per_person'   =>  $request->booking_amount_per_person??$request->amount_per_person,
         ];
         
@@ -136,48 +138,65 @@ class BookingController extends Controller
             "deposit_amount"        => $quoteD['deposit_amount'],
             "deposit_due_date"      => $quoteD['deposit_due_date'],
             "paid_date"             => $quoteD['paid_date'],
-            "payment_method"        => $quoteD['payment_method'],
-            "upload_to_calendar"    => $quoteD['upload_to_calendar'],
-            "ab_number_of_days"     => $quoteD['ab_number_of_days'],
+            "payment_method_id"     => $quoteD['payment_method'],
+            "upload_to_calender"    => $quoteD['upload_to_calender'],
+            "additional_date"       => $quoteD['ab_number_of_days'],
         ];
     }
 
-    public function update(Request $request, $id)
+    public function update(BookingRequest $request, $id)
     {
-
-        // dd($request->all());
-
         $booking = Booking::findOrFail(decrypt($id));
-        // $array =  $booking->toArray();
-        // $array['booking'] = $booking->getBookingDetailsArray->toArray();
-        // $array['pax'  ] = $quote->getPaxDetail->toArray();
-        // QuoteLog::create([
-        //     'quote_id'   => $quote->id,
-        //     'version_no' => $quote->version,
-        //     'data'       => $array
-        // ]);
-        
+        $array =  $booking->toArray();
+        $book =[];
+        foreach ($booking->getBookingDetail as $bookingde) {
+            $d = $bookingde->toArray();
+            $d['finance'] = $bookingde->getBookingFinance->toArray();
+            array_push($book, $d);
+        }
+        $array['booking'] = $book;
+        $array['pax'] = $booking->getBookingPaxDetail->toArray();
+        BookingLog::create([
+                'booking_id'   => $booking->id,
+                'version_no' => $booking->version,
+                'data'       => $array
+            ]);
+            
+            
         $booking->update($this->bookingArray($request));
-
         if($request->has('booking') && count($request->booking) > 0){
-
             $booking->getBookingDetail()->delete();
-
             foreach ($request->booking as $qu_details) {
-
                 $bookingDetail = $this->getBookingDetailsArray($qu_details);
                 $bookingDetail['booking_id'] = $booking->id;
-                BookingDetail::create($bookingDetail);
+                $booking_Details=  BookingDetail::create($bookingDetail);
+                foreach ($qu_details['finance'] as $finance){
+                    $fin = $this->getFinanceBookingDetailsArray($finance);
+                    $fin['booking_detail_id'] = $booking_Details->id;
+                    BookingDetailFinance::create($fin);
+                }
             }
+        }
+        
+         //pax data 
+         if($request->has('pax')){
+            $booking->getPaxDetail()->delete();
+             foreach ($request->pax as $pax_data) {
+                 BookingPaxDetail::create([
+                     'booking_id'              => $booking->id,
+                     'full_name'             => $pax_data['full_name'],
+                     'email'                 => $pax_data['email_address'],
+                     'contact'               => $pax_data['contact_number'],
+                     'date_of_birth'         => $pax_data['date_of_birth'],
+                     'bedding_preference'    => $pax_data['bedding_preference'],
+                     'dinning_preference'    => $pax_data['dinning_preference'],
+                 ]);
+             }
         }
 
         return redirect()->route('bookings.index',encrypt($request->season_id))->with('success_message', 'Booking update successfully');    
-
-    //    $booking  = Booking::findOrFail(decrypt($id));
-    //    dd($booking, $request->all());
     }
     
-
     private function curl_data($url)
     {
         $ch = curl_init();
@@ -185,5 +204,34 @@ class BookingController extends Controller
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         return $output = curl_exec($ch);
+    }
+    
+    
+    public function destroy(Request $request, $id)
+    {
+        Booking::destroy(decrypt($id));
+        return redirect()->route('bookings.index',$request->season)->with('success_message', 'Booking deleted successfully');    
+    }
+    
+    public function viewVersion($id)
+    {
+        $data['booking']          = Booking::findOrFail(decrypt($id));
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['payment_methods']  = PaymentMethod::all();
+   
+
+        return view('bookings.version',$data);
     }
 }

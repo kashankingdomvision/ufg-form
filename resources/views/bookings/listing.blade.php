@@ -84,22 +84,17 @@
                                                         <td>{{$booking->pax_no}}</td>
                                                         <td>{{$booking->dinning_preference}}</td>
                                                         <td>{{$booking->bedding_preference}}</td>
-                                                        {{-- <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td> --}}
                                                   
 
                                                         <td width="10%" class="d-flex" >
                                                             <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                   
-                                                            <a onclick="return confirm('Are you sure want to Delete this record?');" href="{{ route('bookings.delete', encrypt($booking->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                            <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
+                                                                @csrf @method('delete')
+                                                                <input type="hidden" value="{{ encrypt($booking->season_id) }}" name="season">
+                                                                <button onclick="return confirm('Are you sure want to Delete this record?');" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></button>
+                                                            </form>
                                                         </td>
 
                                                     </tr>

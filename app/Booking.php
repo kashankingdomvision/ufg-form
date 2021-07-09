@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Auth;
 
 class Booking extends Model
 {
@@ -17,7 +18,7 @@ class Booking extends Model
     
     public function getVersionAttribute()
     {
-        return 'Booking version '.$this->count().' '.Str::random(4).' '.$this->formated_created_at. ' By '. $this->getQuote->getUser->name;
+        return Str::random(6).' '.$this->formated_created_at. ' By '.Auth::user()->name;
     }
     
     public function getFormatedCreatedAtAttribute()
@@ -74,4 +75,5 @@ class Booking extends Model
     {
         return $this->hasMany(BookingLog::class, 'booking_id', 'id');
     }
+   
 }

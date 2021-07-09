@@ -67,12 +67,13 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
         Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
-        Route::get('booking/season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
+        Route::get('season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
 
-        Route::get('booking/{id}/edit', array('as' => 'edit', 'uses' => 'BookingController@edit'));
-        Route::put('booking/{id}/update', array('as' => 'update', 'uses' => 'BookingController@update'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BookingController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'BookingController@update'));
 
-        Route::get('booking/{id}/destroy', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
+        Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
+        Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
         // Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
         // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
@@ -158,6 +159,12 @@ Route::group(['middleware' => ['auth']], function(){
 
     // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
 
+
+   /*
+    |--------------------------------------------------------------------------
+    | Routes For Ajax Request Start
+    |--------------------------------------------------------------------------
+    */
     Route::prefix('json')->group(function () {
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));	
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
@@ -170,4 +177,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         
    });
+    /*
+    |--------------------------------------------------------------------------
+    | Routes For Ajax Request End
+    |--------------------------------------------------------------------------
+    */
 });

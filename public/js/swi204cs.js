@@ -17645,6 +17645,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     evt.preventDefault();
   });
   $("#versions :input").prop("disabled", true);
+  $('#bookingVersion :input').prop('disabled', true);
   $('#reCall').prop("disabled", false);
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
@@ -17767,6 +17768,24 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }); //ajax for references
     }
+  });
+  $('#clone_booking_finance').on('click', function () {
+    var depositeLabelId = 'deposite_heading' + $(this).data('key');
+    var countHeading = $('.finance-clonning').length + 1;
+    console.log($(this).data('key'));
+    $('.finance-clonning').eq(0).clone().find("input").val("").each(function () {
+      this.name = this.name.replace(/]\[(\d+)]/g, function (str, p1) {
+        return '][' + $('.finance-clonning').length + ']';
+      });
+    }).end().find('.depositeLabel').each(function () {
+      this.id = 'deposite_heading' + $('.finance-clonning').length;
+      var countHeading = $('.finance-clonning').length + 1;
+      $(this).text('Deposit Payment #' + countHeading);
+    }).end().find("select").val("").each(function () {
+      this.name = this.name.replace(/]\[(\d+)]/g, function (str, p1) {
+        return '][' + $('.finance-clonning').length + ']';
+      });
+    }).end().show().insertAfter(".finance-clonning:last");
   }); // /
   // / 
   // / Quote FORM SUBMISSION END
