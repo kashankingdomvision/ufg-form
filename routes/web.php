@@ -56,7 +56,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'TemplateController@destroy']);
         Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
-        Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'TemplateController@call_template']);
     });
 
     /*
@@ -175,6 +174,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
+        Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
         
    });
     /*

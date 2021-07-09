@@ -41,6 +41,7 @@ class QuoteController extends Controller
     public function create()
     {
 
+        $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -154,6 +155,7 @@ class QuoteController extends Controller
     
     public function edit($id)
     {
+        $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');

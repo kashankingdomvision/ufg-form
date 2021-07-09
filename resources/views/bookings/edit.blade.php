@@ -623,17 +623,18 @@
                           </div>{{-- ?>>>rown end --}}
                           
                         <section class="finance">
-                            @if($booking_detail->getBookingFinance)
+                            @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
                               @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
+                              @php $count =  $fkey + 1; @endphp
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
                                   <div class="col-sm-2">
                                     <div class="form-group">
-                                      <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #1</label>
+                                      <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #{{ $count }}</label>
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                         </div>
-                                        <input type="number" value="{{ $finance->deposit_amount }}" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
+                                        <input type="number" value="{{ $finance->deposit_amount }}" name="booking[{{ $key }}][finance][{{ $fkey }}][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
                                       </div>
                                     </div>
                                   </div>
@@ -641,21 +642,21 @@
                                   <div class="col-2">
                                     <div class="form-group">
                                       <label>Due Date</label>
-                                      <input type="date" value="{{ $finance->deposit_due_date }}" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
+                                      <input type="date" value="{{ $finance->deposit_due_date }}" name="booking[{{ $key }}][finance][{{ $fkey }}][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
                                     </div>
                                   </div>
 
                                   <div class="col-2">
                                     <div class="form-group">
                                       <label>Paid Date</label>
-                                      <input type="date" value="{{ $finance->paid_date }}" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
+                                      <input type="date" value="{{ $finance->paid_date }}" name="booking[{{ $key }}][finance][{{ $fkey }}][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
                                     </div>
                                   </div>
 
                                   <div class="col-2">
                                     <div class="form-group">
                                       <label>Payment</label>
-                                      <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
+                                      <select class="form-control" name="booking[{{ $key }}][finance][{{ $fkey }}][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
                                         <option value="">Select Payment Method</option>
                                         @foreach ($payment_methods as $payment_method)
                                           <option value="{{ $payment_method->id }}" {{ $payment_method->id == $finance->payment_method_id ? 'selected' : '' }}> {{ $payment_method->name }} </option>
@@ -670,7 +671,7 @@
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <div class="icheck-primary">
-                                            <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]"  value="{{ $finance->upload_to_calender }}">
+                                            <input type="hidden" name="booking[{{ $key }}][finance][{{ $fkey }}][upload_to_calender]"  value="{{ $finance->upload_to_calender }}">
                                             <input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" {{ ($finance->upload_to_calender == 1)? 'checked': NULL }} type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
                                           </div>
                                         </div>
@@ -685,7 +686,7 @@
                                         <div class="input-group-prepend">
                                           <span class="input-group-text minus increment">-</span>
                                         </div>
-                                          <input type="number" value="{{ $finance->additional_date }}" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
+                                          <input type="number" value="{{ $finance->additional_date }}" name="booking[{{ $key }}][finance][{{ $fkey }}][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
                                         <div class="input-group-append">
                                           <span class="input-group-text plus increment">+</span>
                                         </div>
@@ -699,10 +700,10 @@
                               @endforeach
                             @else
                               {{-- /////for single value/ --}}
-                              <div class="row finance-clonning">
+                              <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <label>Deposit Amount # </label>
+                                    <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Payment #1</label>
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -712,67 +713,69 @@
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-2">
                                   <div class="form-group">
-                                    <label>Deposit Due Date</label>
+                                    <label>Due Date</label>
                                     <input type="date" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-2">
                                   <div class="form-group">
                                     <label>Paid Date</label>
                                     <input type="date" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-2">
                                   <div class="form-group">
-                                    <label>Payment Method</label>
+                                    <label>Payment</label>
                                     <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
                                       <option value="">Select Payment Method</option>
                                       @foreach ($payment_methods as $payment_method)
-                                        <option value="{{ $payment_method->id }}" {{ $payment_method->id == $booking_detail->payment_method ? 'selected' : '' }}> {{ $payment_method->name }} </option>
+                                        <option value="{{ $payment_method->id }}"> {{ $payment_method->name }} </option>
                                       @endforeach
                                     </select>
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2 d-flex justify-content-center">
+                                <div class="col-1">
                                   <div class="form-group">
-                                    <label>Upload to Calendar </label>
+                                    <label>Calender </label>
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <div class="icheck-primary">
-                                          <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]" value="0"><input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                          <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]" >
+                                          <input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2 d-flex justify-content-center">
+                                <div class="col-sm-2">
                                   <div class="form-group">
-                                    <label>Alert before following # of days </label>
+                                    <label>Alert before the following days </label>
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <span class="input-group-text minus increment">-</span>
                                       </div>
-
-                                      <input type="number" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
-                                      
+                                        <input type="number"  name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
                                       <div class="input-group-append">
                                         <span class="input-group-text plus increment">+</span>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
+                                <div class="col-1">
+                                      <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-sm text-dark btn-link">X</button>
+                                </div>
                               </div>
                               {{-- /////for single value/ --}}
                             @endif
                             <div class="row ">
                               <div class="col-12">
-                                <button type="button" data-key="{{ $fkey }}" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Finance</button>
+                                <button type="button" data-key="0" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Finance</button>
                               </div>
                             </div>
                         </section>

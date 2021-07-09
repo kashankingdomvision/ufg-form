@@ -726,6 +726,23 @@ $('#clone_booking_finance').on('click', function () {
     .insertAfter(".finance-clonning:last");
 });
 
+$('#tempalte_id').on('change', function () {
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+        url: BASEURL+'template/'+$(this).val()+'/partial',
+        type: 'get',
+        dataType: "json",
+        success: function (data) {
+           $('#parent').html(data.template_view);
+        },
+        error: function (reject) {
+            
+            alert(reject);
+            searchRef.text('Search').prop('disabled', false);
+            
+        },
+    });
+});
 // /
 // / 
 // / Quote FORM SUBMISSION END

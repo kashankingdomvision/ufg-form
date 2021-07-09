@@ -77,7 +77,7 @@ class BookingController extends Controller
             'lead_passenger'      =>  $request->lead_passenger,
             'brand_id'            =>  $request->brand_id,
             'holiday_type_id'     =>  $request->holiday_type_id,
-            'sale_person'         =>  $request->sale_person_id,
+            'sale_person_id'      =>  $request->sale_person_id,
             'season_id'           =>  $request->season_id,
             'agency'              =>  ($request->agency == 1)? 1 : (($request->agency == 'on')? '1' : '0'),
             'dinning_preference'  =>  $request->dinning_preference,
@@ -135,12 +135,12 @@ class BookingController extends Controller
     {
         return [
          
-            "deposit_amount"        => $quoteD['deposit_amount'],
-            "deposit_due_date"      => $quoteD['deposit_due_date'],
-            "paid_date"             => $quoteD['paid_date'],
-            "payment_method_id"     => $quoteD['payment_method'],
-            "upload_to_calender"    => $quoteD['upload_to_calender'],
-            "additional_date"       => $quoteD['ab_number_of_days'],
+            "deposit_amount"        => $quoteD['deposit_amount']??NULL,
+            "deposit_due_date"      => $quoteD['deposit_due_date']??NULL,
+            "paid_date"             => $quoteD['paid_date']??NULL,
+            "payment_method_id"     => $quoteD['payment_method']??NULL,
+            "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
+            "additional_date"       => $quoteD['ab_number_of_days']??NULL,
         ];
     }
 
@@ -184,12 +184,12 @@ class BookingController extends Controller
              foreach ($request->pax as $pax_data) {
                  BookingPaxDetail::create([
                      'booking_id'              => $booking->id,
-                     'full_name'             => $pax_data['full_name'],
-                     'email'                 => $pax_data['email_address'],
-                     'contact'               => $pax_data['contact_number'],
-                     'date_of_birth'         => $pax_data['date_of_birth'],
-                     'bedding_preference'    => $pax_data['bedding_preference'],
-                     'dinning_preference'    => $pax_data['dinning_preference'],
+                     'full_name'             => $pax_data['full_name']??NULL,
+                     'email'                 => $pax_data['email_address']??NULL,
+                     'contact'               => $pax_data['contact_number']??NULL,
+                     'date_of_birth'         => $pax_data['date_of_birth']??NULL,
+                     'bedding_preference'    => $pax_data['bedding_preference']??NULL,
+                     'dinning_preference'    => $pax_data['dinning_preference']??NULL,
                  ]);
              }
         }
