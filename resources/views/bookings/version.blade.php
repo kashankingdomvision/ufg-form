@@ -17,84 +17,32 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Edit Booking</h4>
+              <h4>Version Booking</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
                 <li class="breadcrumb-item">Booking</li>
-                <li class="breadcrumb-item active">Booking Season</li>
+                <li class="breadcrumb-item active">Booking Version</li>
               </ol>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="content">
+    <section class="content" id="bookingVersion">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col-md-6">
-            <div>
-              <p>
-                <a class="btn btn-info btn-sm" data-toggle="collapse" href="#view_booking_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                  View Booking Versions {{  (count($booking->getBookingLogs) > 0 ) ? '('.count($booking->getBookingLogs).')' : '' }}
-                </a>
-              </p>
-              <div class="row">
-                <div class="col">
-                  <div class="collapse multi-collapse" id="view_booking_version">
-                    <div class="card card-body">
-                      <table>
-                        @foreach ($booking->getBookingLogs as $logKey =>  $logs)
-                          <thead>
-                            <th><a href="{{ route('bookings.version', encrypt($logs->booking_id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
-                          </thead>
-                          @endforeach
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="float-right">
-              <p class="">
-                <a class="btn btn-info btn-sm " data-toggle="collapse" href="#view_quote_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                  View Quote Versions {{  (count($booking->getQuote->getQuotelogs) > 0 ) ? '('.count($booking->getQuote->getQuotelogs).')' : '' }}
-                </a>
-              </p>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="collapse multi-collapse" id="view_quote_version">
-                    <div class="card card-body float-right">
-                      <table>
-                        @foreach ($booking->getQuote->getQuotelogs as $logKey =>  $logs)
-                          <thead>
-                            <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}">Quote Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
-                          </thead>
-                          @endforeach
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      
-      
-      
         <div class="row">
           <div class="col-md-12">
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Edit Quote</h3>
+                
+                <h3 class="card-title text-center">Version Bookings </h3>
+                <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" data-recall="true" class="btn btn-outline-light btn-sm float-right">Back</a>
+                
               </div>
             
-            <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}"> 
-              @csrf @method('put')
               <div class="card-body">
                   <div class="row mb-2">
 
@@ -621,85 +569,10 @@
                             </div>
 
                           </div>{{-- ?>>>rown end --}}
-                          
-                        <section class="finance">
-                            @if($booking_detail->getBookingFinance)
-                              @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
-                                <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
-                                  <div class="col-sm-2">
-                                    <div class="form-group">
-                                      <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #1</label>
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
-                                        </div>
-                                        <input type="number" value="{{ $finance->deposit_amount }}" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
-                                      </div>
-                                    </div>
-                                  </div>
 
-                                  <div class="col-2">
-                                    <div class="form-group">
-                                      <label>Due Date</label>
-                                      <input type="date" value="{{ $finance->deposit_due_date }}" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
-                                    </div>
-                                  </div>
-
-                                  <div class="col-2">
-                                    <div class="form-group">
-                                      <label>Paid Date</label>
-                                      <input type="date" value="{{ $finance->paid_date }}" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
-                                    </div>
-                                  </div>
-
-                                  <div class="col-2">
-                                    <div class="form-group">
-                                      <label>Payment</label>
-                                      <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
-                                        <option value="">Select Payment Method</option>
-                                        @foreach ($payment_methods as $payment_method)
-                                          <option value="{{ $payment_method->id }}" {{ $payment_method->id == $finance->payment_method_id ? 'selected' : '' }}> {{ $payment_method->name }} </option>
-                                        @endforeach
-                                      </select>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-1">
-                                    <div class="form-group">
-                                      <label>Calender </label>
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <div class="icheck-primary">
-                                            <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]"  value="{{ $finance->upload_to_calender }}">
-                                            <input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" {{ ($finance->upload_to_calender == 1)? 'checked': NULL }} type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-sm-2">
-                                    <div class="form-group">
-                                      <label>Alert before the following days </label>
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <span class="input-group-text minus increment">-</span>
-                                        </div>
-                                          <input type="number" value="{{ $finance->additional_date }}" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
-                                        <div class="input-group-append">
-                                          <span class="input-group-text plus increment">+</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-1">
-                                        <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-sm text-dark btn-link">X</button>
-                                  </div>
-                                </div>
-                              @endforeach
-                            @else
-                              {{-- /////for single value/ --}}
-                              <div class="row finance-clonning">
+                          @if($booking_detail->getBookingFinance)
+                            @foreach ($booking_detail->getBookingFinance as $finance)
+                              <div class="row">
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Deposit Amount # </label>
@@ -707,7 +580,7 @@
                                       <div class="input-group-prepend">
                                         <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                       </div>
-                                      <input type="number" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
+                                      <input type="number" value="{{ $finance->deposit_amount }}" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
                                     </div>
                                   </div>
                                 </div>
@@ -715,14 +588,14 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Deposit Due Date</label>
-                                    <input type="date" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
+                                    <input type="date" value="{{ $finance->deposit_due_date }}" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
                                   </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Paid Date</label>
-                                    <input type="date" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
+                                    <input type="date" value="{{ $finance->paid_date }}" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
                                   </div>
                                 </div>
 
@@ -732,7 +605,7 @@
                                     <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
                                       <option value="">Select Payment Method</option>
                                       @foreach ($payment_methods as $payment_method)
-                                        <option value="{{ $payment_method->id }}" {{ $payment_method->id == $booking_detail->payment_method ? 'selected' : '' }}> {{ $payment_method->name }} </option>
+                                        <option value="{{ $payment_method->id }}" {{ $payment_method->id == $finance->payment_method_id ? 'selected' : '' }}> {{ $payment_method->name }} </option>
                                       @endforeach
                                     </select>
                                   </div>
@@ -744,7 +617,8 @@
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <div class="icheck-primary">
-                                          <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]" value="0"><input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                          <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]"  value="{{ $finance->upload_to_calender }}">
+                                          <input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" {{ ($finance->upload_to_calender == 1)? 'checked': NULL }} type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
                                         </div>
                                       </div>
                                     </div>
@@ -758,24 +632,96 @@
                                       <div class="input-group-prepend">
                                         <span class="input-group-text minus increment">-</span>
                                       </div>
-
-                                      <input type="number" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
-                                      
+                                        <input type="number" value="{{ $finance->additional_date }}" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
                                       <div class="input-group-append">
                                         <span class="input-group-text plus increment">+</span>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
+
+                                
+                              
+
+
                               </div>
-                              {{-- /////for single value/ --}}
-                            @endif
-                            <div class="row ">
-                              <div class="col-12">
-                                <button type="button" data-key="{{ $fkey }}" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Finance</button>
+                            @endforeach
+                              
+                          @else
+                            {{-- /////for single value/ --}}
+                            <div class="row">
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Deposit Amount # </label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                    </div>
+                                    <input type="number" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Deposit Due Date</label>
+                                  <input type="date" name="booking[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{ $key }}_deposit_due_date" value="" class="form-control deposit-due-date" >
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Paid Date</label>
+                                  <input type="date" name="booking[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{ $key }}_paid_date" value="" class="form-control paid-date" >
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Payment Method</label>
+                                  <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
+                                    <option value="">Select Payment Method</option>
+                                    @foreach ($payment_methods as $payment_method)
+                                      <option value="{{ $payment_method->id }}" {{ $payment_method->id == $booking_detail->payment_method ? 'selected' : '' }}> {{ $payment_method->name }} </option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 d-flex justify-content-center">
+                                <div class="form-group">
+                                  <label>Upload to Calendar </label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <div class="icheck-primary">
+                                        <input type="hidden" name="booking[{{ $key }}][finance][0][upload_to_calender]" value="0"><input data-name="upload_to_calendar" id="quote_{{ $key }}_upload_to_calendar" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 d-flex justify-content-center">
+                                <div class="form-group">
+                                  <label>Alert before following # of days </label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text minus increment">-</span>
+                                    </div>
+
+                                    <input type="number" name="booking[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
+                                    
+                                    <div class="input-group-append">
+                                      <span class="input-group-text plus increment">+</span>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                        </section>
+                            {{-- /////for single value/ --}}
+                          @endif
+
+                        </div>
                       @endforeach
                     @endif
                   </div>
@@ -899,12 +845,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-success float-right">Submit</button>
-                </div>
-            </form>
             </div>
- 
           </div>
         </div>
       </div>

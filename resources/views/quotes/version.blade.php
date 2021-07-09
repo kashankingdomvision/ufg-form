@@ -36,8 +36,10 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                  <h3 class="card-title text-center">Quote Version</h3>
+                <h3 class="card-title text-center">Quote Version</h3>
+                @if(!isset($type))
                   <button id="reCall" type="button" data-recall="true" class="btn btn-outline-light btn-sm float-right">Recall Version</button>
+                @endif
               </div>
 
             <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}"> 

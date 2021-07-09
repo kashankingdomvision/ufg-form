@@ -20,7 +20,7 @@ class CreateBookingDetailFinancesTable extends Migration
             $table->double('deposit_amount')->nullable();
             $table->date('deposit_due_date')->nullable();
             $table->date('paid_date')->nullable();
-            $table->enum('upload_to_calender', [0,1])->default(0);
+            $table->enum('upload_to_calender', [0,1])->default(0)->nullable();
             $table->bigInteger('additional_date')->nullable();
             $table->timestamps();
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
