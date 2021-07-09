@@ -21,4 +21,8 @@ class QuoteDetail extends Model
     {
         return $this->hasOne(Supplier::class, 'id', 'supplier_id');
     }
+
+    function getSupplierCurrency() {
+        return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id',);
+    }
 }

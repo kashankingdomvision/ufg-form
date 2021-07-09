@@ -17226,7 +17226,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   $(document).on('change', '.select-agency', function () {
     $('.agency-columns').empty();
-    var $v_html = " <div class=\"col\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_name\"> </div>\n                </div>\n                <div class=\"col\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" class=\"form-control\">\n                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_agency_contact_no\"> </div>\n                </div>";
+    var $v_html = " <div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
 
     if ($(this).val() == 'yes') {
       $('.agency-columns').append($v_html);
@@ -17674,6 +17674,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
     /* Send the data using post */
 
     $.ajax({
@@ -17683,11 +17685,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       contentType: false,
       cache: false,
       processData: false,
+      beforeSend: function beforeSend() {
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
       success: function success(data) {
-        alert('Quote created Successfully');
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          alert('Quote created Successfully');
+        }, 800);
       },
       error: function error(reject) {
-        console.log(reject);
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $('#' + index).addClass('is-invalid');
+              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
       }
     });
   });

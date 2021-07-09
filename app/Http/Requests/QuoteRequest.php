@@ -24,6 +24,9 @@ class QuoteRequest extends FormRequest
     public function rules()
     {
         return [
+            'agency'                            =>  'required',
+            'agency_name'                       =>  'required_if:agency,yes',
+            'agency_contact'                    =>  'required_if:agency,yes',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
             'currency_id'                       =>  'required',
@@ -57,6 +60,9 @@ class QuoteRequest extends FormRequest
     public function attributes()
     {
         return [
+            'agency'                            => 'Agency',
+            'agency_name.required_if'           => 'Agency Name',
+            'agency_contact.required_if'        => 'Agency Contact',
             'season_id'                         => 'Booking season',
             'brand_id'                          => 'Brand',
             'currency_id'                       => 'Booking currency',
@@ -66,7 +72,7 @@ class QuoteRequest extends FormRequest
             'lead_passenger'                    => 'Lead Passenger name',
             'sale_person_id'                    => 'Sale person',
             'agency'                            => 'Agency',
-            'dinning_preferences'               => 'Dinning Preference',
+            'dinning_preference'                => 'Dinning Preference',
             'bedding_preference'                => 'Bedding Preference',
             'pax_no'                            => 'Pax number ',
             'rate_type'                         => 'Rate type',

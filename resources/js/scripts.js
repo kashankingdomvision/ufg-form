@@ -33,15 +33,15 @@ $(document).ready(function($) {
 $(document).on('change', '.select-agency', function() {
     $('.agency-columns').empty();
     
-    var $v_html = ` <div class="col" style="width:175px;">
+    var $v_html = ` <div class="col form-group" style="width:175px;">
                     <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                    <input type="text" name="agency_name" class="form-control">
-                    <div class="alert-danger" style="text-align:center" id="error_agency_name"> </div>
+                    <input type="text" name="agency_name" id="agency_name" class="form-control">
+                    <span class="text-danger" role="alert" > </span>
                 </div>
-                <div class="col">
+                <div class="col form-group">
                     <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                    <input type="text" name="agency_contact" class="form-control">
-                    <div class="alert-danger" style="text-align:center" id="error_agency_contact_no"> </div>
+                    <input type="text" name="agency_contact" id="agency_contact" class="form-control">
+                    <span class="text-danger" role="alert" > </span>
                 </div>`;
                 
     if($(this).val() == 'yes'){
@@ -580,6 +580,8 @@ $("#quoteCreate").submit(function(event) {
     url = $form.attr('action');
     var formdata = $(this).serialize();
 
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
 
     /* Send the data using post */
     $.ajax({
@@ -589,11 +591,36 @@ $("#quoteCreate").submit(function(event) {
         contentType: false,
         cache: false,
         processData:false,
+        beforeSend: function() {
+            $("#overlay").addClass('overlay');
+            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+        },
         success: function (data) {
-            alert('Quote created Successfully');
+            $("#overlay").removeClass('overlay').html('');
+            setTimeout(function() {
+                alert('Quote created Successfully');
+            }, 800);
         },
         error: function (reject) {
-            console.log(reject);
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                setTimeout(function() {
+                    $("#overlay").removeClass('overlay').html('');
+     
+                    jQuery.each(errors.errors, function( index, value ) {
+    
+                        index = index.replace(/\./g,'_');
+    
+                        $('#'+index).addClass('is-invalid');
+                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                    });
+
+                }, 800);
+
+            }
         },
     });
 });

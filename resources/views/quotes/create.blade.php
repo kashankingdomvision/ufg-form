@@ -40,8 +40,8 @@
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
             
-            <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate"> @csrf
               <div class="card-body">
+                <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" > @csrf
                   <div class="row mb-2">
 
                     <div class="col-sm-6">
@@ -66,11 +66,15 @@
 
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
-                      <div class="input-group ">
-                        <input type="text" name="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                         <div class="input-group-append">
-                          <button class="btn btn-outline-dark search-reference" type="button">Search</button>
+
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                            <button class="btn btn-outline-secondary search-reference" type="button">Search</button>
+                          </div>
                         </div>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -84,52 +88,44 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" name="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <input type="text" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control  getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
+                        <select name="brand_id" id="brand_id" class="form-control  getBrandtoHoliday  brand-id">
                           <option selected value="" >Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id  ? "selected" : "" }}> {{ $brand->name }} </option>
                           @endforeach
                         </select>
-
-                        @error('brand_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id ">
                           <option selected value="">Select Type Of Holiday</option>
                         </select>
-
-                        @error('holiday_type_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sales_person_id" class="form-control  sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sale_person_id" class="form-control sales-person-id">
                           <option selected value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option value="{{ $person->id }}">{{ $person->name }}</option>
                           @endforeach
                         </select>
-
-                        @error('sales_person_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -142,9 +138,7 @@
                             <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
                           @endforeach
                         </select>
-                        @error('season_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -153,7 +147,7 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input class="select-agency"  value="yes" type="radio" name="agency" > Yes
+                            <input class="select-agency"  value="yes" type="radio" name="agency"> Yes
                           </label>
                           <label class="radio-inline">
                             <input  class="select-agency"  value="no" type="radio" name="agency" checked> No
@@ -161,61 +155,55 @@
                         </div>
                       </div>
                       <div class="row agency-columns mb-1">
-                       
+                        
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" name="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                        <input type="text" name="dinning_preference" id="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
                     
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Bedding Preferences <span style="color:red">*</span></label>
-                        <input type="text" name="bedding_preference" class="form-control" placeholder="Bedding Preferences" >
+                        <input type="text" name="bedding_preference" id="bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-
+              
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="booking_currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option selected value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
-
-                        @error('currency_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
-                        <select name="pax_no" id="pax_no" class="form-control  paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                        <select name="pax_no" id="pax_no" class="form-control paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option selected value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value={{$i}} {{ old('pax_no') == $i || $i == 1 ? "selected" : "" }}>{{$i}}</option>
                           @endfor
                         </select>
-
-                        @error('pax_no')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
                     <div id="appendPaxName" class="col-md-12"></div>
                   </div>
-
-                  
+                    
                   <div class="parent" id="parent">
                     <div class="quote" data-key="0">
                       <div class="row">
@@ -303,6 +291,7 @@
                           <div class="form-group">
                             <label>Booking Due Date</label>
                             <input type="date" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                            <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
 
@@ -362,17 +351,14 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Supplier Currency</label>
+                            <label>Supplier Currency <span style="color: red">*</span></label>
                             <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
                               <option selected value="" >Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
                                 <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                               @endforeach
                             </select>
-
-                            @error('currency_id')
-                              <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+                            <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
 
@@ -510,19 +496,6 @@
                     </div>
                   </div>
 
-
-                  {{-- <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">Total Markup</label>
-                    <div class="col-sm-2">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text supplier-currency-code">
-                          <i class="fas fa-dollar-sign"></i>
-                        </span>
-                      </div>
-                      <input type="number" step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
-                    </div>
-                  </div> --}}
-
                   <div class="form-group row">
                     
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
@@ -567,7 +540,7 @@
                         </div>
                       </div>
                     </div>
-               
+                
                   </div>
 
                   <div class="form-group row">
@@ -604,7 +577,7 @@
                         @enderror
                       </div>
                     </div>
-                 
+                  
                     <div class="col-sm-2">
                       <div class="form-group mt-2">
                         <label></label>
@@ -619,7 +592,7 @@
                         </div>
                       </div>
                     </div>
-                 
+                  
                   </div>
 
                   <div class="form-group row">
@@ -635,12 +608,14 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-success float-right">Submit</button>
-                </div>
-            </form>
-            </div>
+                  </div>
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right">Submit</button>
+                  </div>
+                </form>
+                <div id="overlay" class=""></div>
+              </div>
  
           </div>
 

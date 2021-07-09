@@ -64,6 +64,10 @@ class Quote extends Model
         return $this->hasOne(HolidayType::class,'id', 'holiday_type_id' );
     }
 
+    function getCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
     function getBookingCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
