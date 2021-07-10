@@ -39,7 +39,7 @@ class CreateBookingDetailsTable extends Migration
             $table->double('selling_price_bc')->nullable();
             $table->double('markup_amount_bc')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);
-            $table->string('inovice')->nullable();;
+            $table->string('inovice')->nullable();
             $table->timestamps();
             
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');

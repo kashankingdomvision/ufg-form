@@ -36,7 +36,7 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
-            $table->double('selling_price_oc')->nullable();
+            $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('booking_status',['quote','booked'])->default('quote');

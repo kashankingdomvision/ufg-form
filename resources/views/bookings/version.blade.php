@@ -205,7 +205,7 @@
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}"  data-image="data:image/png;base64, {{$currency->flag}}" 
-                            {{ (old('currency_id') == $currency->id)? 'selected' :(($booking->currency_id == $currency->id)? 'selected' :((isset(Auth::user()->getCurrency->id) && $Auth::user()->getCurrency->id == $currency->id)? 'selected':NULL)) }}
+                              {{ $currency->id == $booking->currency_id ? 'selected' : ''  }}
                             > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
@@ -821,7 +821,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->selling_price_oc }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                          <input type="number" value="{{ $booking->selling_price_ocr }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>

@@ -40,8 +40,8 @@
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
             
-              <div class="card-body">
-                <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" > @csrf
+              <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" > @csrf
+                <div class="card-body">
                   <div class="row mb-2">
 
                     <div class="col-sm-6">
@@ -71,7 +71,7 @@
                         <div class="input-group">
                           <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
                             <div class="input-group-append">
-                            <button class="btn btn-outline-secondary search-reference" type="button">Search</button>
+                            <button class="btn search-reference-btn search-reference" type="button">Search</button>
                           </div>
                         </div>
                         <span class="text-danger" role="alert"></span>
@@ -99,7 +99,7 @@
                         <select name="brand_id" id="brand_id" class="form-control  getBrandtoHoliday  brand-id">
                           <option selected value="" >Select Brand</option>
                           @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id  ? "selected" : "" }}> {{ $brand->name }} </option>
+                            <option value="{{ $brand->id }}" {{ isset(Auth::user()->brand_id) && !empty(Auth::user()->brand_id) && $brand->id == Auth::user()->brand_id ? 'selected' : '' }}> {{ $brand->name }} </option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -110,7 +110,12 @@
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
                         <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id ">
-                          <option selected value="">Select Type Of Holiday</option>
+                          <option value="">Select Type Of Holiday</option>
+                          @if(Auth::user()->getBrand->getHolidayTypes && Auth::user()->getBrand->getHolidayTypes->count())
+                            @foreach (Auth::user()->getBrand->getHolidayTypes as $holiday_type)
+                              <option value="{{ $holiday_type->id }}" {{ isset(Auth::user()->holiday_type_id) && !empty(Auth::user()->holiday_type_id) && $holiday_type->id == Auth::user()->holiday_type_id ? 'selected' : '' }}> {{ $holiday_type->name }} </option>
+                            @endforeach
+                          @endif
                         </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
@@ -147,10 +152,10 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input class="select-agency"  value="yes" type="radio" name="agency"> Yes
+                            <input type="radio" name="agency" class="select-agency" value="1" > Yes
                           </label>
                           <label class="radio-inline">
-                            <input  class="select-agency"  value="no" type="radio" name="agency" checked> No
+                            <input type="radio" name="agency" class="select-agency" value="0"  checked> No
                           </label>
                         </div>
                       </div>
@@ -573,7 +578,7 @@
 
                     <div class="col-sm-3">
                       <div class="form-group">
-                        <label>Supplier Selling Price in Other Currency</label>
+                        <label>Selling Price in Other Currency</label>
                         <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="" selected >Select Currency</option>
                           @foreach ($currencies as $currency)
@@ -617,18 +622,16 @@
                       </div>
                     </div>
                   </div>
-                  </div>
-
-                  <div class="card-footer">
-                    <button type="submit" class="btn btn-success float-right">Submit</button>
-                  </div>
-                </form>
-                <div id="overlay" class=""></div>
-              </div>
- 
+                  
+                </div>
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                </div>
+              </form>
+              
+              <div id="overlay" class=""></div>
+            </div>
           </div>
-
-
           
 
         </div>
