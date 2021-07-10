@@ -208,7 +208,16 @@
                     </div>
                     <div id="appendPaxName" class="col-md-12"></div>
                   </div>
-                    
+                  <div class="row">
+                      <div class="col-md-3 offset-md-9">
+                        <select name="template" id="tempalte_id" class="float-right form-control template">
+                          <option  disabled selected value="">Select Template</option>
+                          @foreach ($templates as $template)
+                            <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                  </div>
                   <div class="parent" id="parent">
                     <div class="quote" data-key="0">
                       <div class="row">

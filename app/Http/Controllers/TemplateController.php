@@ -142,20 +142,6 @@ class TemplateController extends Controller
         
     }
     
-    public function call_template($id)
-    {
-        $template = Template::findOrFail($id);
-        $data['categories']       = Category::all()->sortBy('name');
-        $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
-        $data['suppliers']        = Supplier::all()->sortBy('name');
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['users']            = User::all()->sortBy('name');
-        $data['seasons']          = Season::all();
-        $data['template']         = $template;
-        $return['template']       = $template;
-        $return['template_view']  = View::make('template.quote_partial_view', $data)->render();
-        return response()->json($return);
-    }
+  
     
 }

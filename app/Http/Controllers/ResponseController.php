@@ -9,7 +9,13 @@ use App\Product;
 use App\Quote;
 use App\ReferenceCredential;
 use Illuminate\Support\Facades\View;
-
+use App\Template;
+use App\Category;
+use App\User;
+use App\BookingMethod;
+use App\Currency;
+use App\Season;
+use App\BookingType;
 
 class ResponseController extends Controller
 {
@@ -215,7 +221,25 @@ class ResponseController extends Controller
         $response = array_merge($curl_info, $response);
         return $response;
     }
-    // FIND QUOTE REFERENCES
+    // FIND QUOTE REFERENCES\
     
+    
+    public function call_template($id)
+    {
+        $template = Template::findOrFail(decrypt($id));
+        $data['template']         = $template;
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
+        $data['suppliers']        = Supplier::all()->sortBy('name');
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['users']            = User::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['booking_types']    = BookingType::all();
+        $return['template']       = $template;
+        $return['template_view']  = View::make('partials.quote_template', $data)->render();
+        return response()->json($return);
+    }
     
 }

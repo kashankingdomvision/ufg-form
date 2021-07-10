@@ -294,6 +294,16 @@
                         
                     </div>
                   </div>
+                  <div class="row">
+                      <div class="col-md-3 offset-md-9">
+                        <select name="template" id="tempalte_id" class="float-right form-control template">
+                          <option  disabled selected value="">Select Template</option>
+                          @foreach ($templates as $template)
+                            <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
+                          @endforeach
+                        </select>
+                    </div>
+                  </div>
                   
                   <div class="parent" id="parent">
                     @foreach ($quote->getQuoteDetails as $key  => $q_detail )

@@ -17831,6 +17831,23 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         return '][' + $('.finance-clonning').length + ']';
       });
     }).end().show().insertAfter(".finance-clonning:last");
+  });
+  $('#tempalte_id').on('change', function () {
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': CSRFTOKEN
+      },
+      url: BASEURL + 'template/' + $(this).val() + '/partial',
+      type: 'get',
+      dataType: "json",
+      success: function success(data) {
+        $('#parent').html(data.template_view);
+      },
+      error: function error(reject) {
+        alert(reject);
+        searchRef.text('Search').prop('disabled', false);
+      }
+    });
   }); // /
   // / 
   // / Quote FORM SUBMISSION END
