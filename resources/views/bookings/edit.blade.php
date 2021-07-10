@@ -257,7 +257,7 @@
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}"  data-image="data:image/png;base64, {{$currency->flag}}" 
-                            {{ (old('currency_id') == $currency->id)? 'selected' :(($booking->currency_id == $currency->id)? 'selected' :((isset(Auth::user()->getCurrency->id) && $Auth::user()->getCurrency->id == $currency->id)? 'selected':NULL)) }}
+                              {{ $currency->id == $booking->currency_id ? 'selected' : ''  }}
                             > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
