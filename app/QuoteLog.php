@@ -7,9 +7,7 @@ class QuoteLog extends Model
 {
 
     protected $fillable = [
-        'quote_id',
-        'version_no',
-        'data',
+        'quote_id', 'version_no', 'data', 'log_no'
     ];
     
     
@@ -28,5 +26,12 @@ class QuoteLog extends Model
         $model_name = 'App\\'.$modelName;
         return $model_name::where('id', $id)->get();
     }
+    
+    
+    public function setLogNoAttribute($value)
+    {
+        $this->attributes['log_no'] = $value + 1;
+    }
+    
 
 }

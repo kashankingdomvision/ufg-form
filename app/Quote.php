@@ -81,4 +81,6 @@ class Quote extends Model
     {
         return  'UFG-'.rand(23, 200).''.Str::random(5).' '.date('d/m/Y', strtotime(now())).' By '.Auth::user()->name; 
     }
+    
+    
 }

@@ -159,7 +159,8 @@ class BookingController extends Controller
         BookingLog::create([
                 'booking_id'   => $booking->id,
                 'version_no' => $booking->version,
-                'data'       => $array
+                'data'       => $array,
+                'log_no'     =>  $booking->getBookingLogs()->count()
             ]);
             
             

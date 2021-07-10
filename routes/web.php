@@ -154,6 +154,11 @@ Route::group(['middleware' => ['auth']], function(){
 			'index', 'edit', 'update'
 		]]);
 
+        /* Commsisions */
+        Route::resource('commissions', 'SettingControllers\CommissionController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
 	});
 
     // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));

@@ -290,7 +290,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                   <label>Date of Service</label>
-                                  <input type="date" value="{{ $booking_detail->date_of_service }}" name="booking[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  <input type="date" value="{{ (new Carbon($booking_detail->date_of_service))->format('d/m/Y') }}" name="booking[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                               </div>
                             </div>
 
@@ -370,14 +370,14 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Date</label>
-                                <input type="date" value="{{ $booking_detail->booking_date }}" name="booking[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                                <input type="date" value="{{ (new Carbon($booking_detail->booking_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
                               </div>
                             </div>
 
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Due Date</label>
-                                <input type="date" value="{{ $booking_detail->booking_due_date }}" name="booking[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                                <input type="date" value="{{ (new Carbon($booking_detail->booking_due_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
                               </div>
                             </div>
 

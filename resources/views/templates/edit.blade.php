@@ -59,7 +59,7 @@
                                     <select name="season_id" id="season_id" class="form-control">
                                         <option value="">Select Booking Season</option>
                                         @foreach ($seasons as $season)
-                                            <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : (($template->season_id == $season->id)? 'selected': NULL) }}> {{ $season->name }} </option>
+                                            <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : (($template->season_id == $season->id)? 'selected': NULL) }}> {{ $season->name }} </option>
                                         @endforeach
                                     </select>
                                     @error('season_id')
@@ -80,7 +80,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Date of Service</label>
-                                    <input type="date" value="{{ $q_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                    <input type="text" value="{{ $q_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                                 </div>
                                 </div>
 
@@ -160,14 +160,14 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Date</label>
-                                    <input type="date" value="{{ $q_detail->booking_date }}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                                    <input type="text" value="{{ $q_detail->booking_date }}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
                                 </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Due Date</label>
-                                    <input type="date" value="{{ $q_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                                    <input type="text" value="{{ $q_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
                                 </div>
                                 </div>
 

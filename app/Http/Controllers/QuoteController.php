@@ -182,7 +182,8 @@ class QuoteController extends Controller
         QuoteLog::create([
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,
-            'data'       => $array
+            'data'       => $array,
+            'log_no'     => $quote->getQuotelogs()->count(),
         ]);
         
         $quote->update($this->quoteArray($request));

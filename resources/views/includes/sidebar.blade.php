@@ -178,6 +178,31 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                    
+                        <li class="nav-item {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions' ? 'setting-child-active' : '' }}">
+                                <i class="fa fa-percentage nav-icon"></i>
+                                <p>
+                                    Commissions
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('setting.commissions.create') }}" class="nav-link {{ $route == 'setting.commissions.create' ? 'active' : '' }}">
+                                        <i class="fa fa-plus nav-icon"></i>
+                                        <p>Add Commision</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('setting.commissions.index') }}" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.edit' ? 'active' : '' }}">
+                                        <i class="fa fa-eye nav-icon"></i>
+                                        <p>View Commision</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
 
                         <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' ? 'setting-child-active' : '' }}">

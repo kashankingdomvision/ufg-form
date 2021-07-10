@@ -45,7 +45,7 @@
     <script src="{{ asset('js/swi204cs.js') }}" defer></script>
     
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     {{-- <div id="app"> --}}

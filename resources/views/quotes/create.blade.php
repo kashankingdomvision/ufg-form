@@ -135,7 +135,7 @@
                         <select name="season_id" id="season_id" class="form-control scurrency-id">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
-                            <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
+                            <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -220,7 +220,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Date of Service</label>
-                            <input type="date" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                             <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
                           </div>
                         </div>
 
@@ -292,14 +292,14 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Date</label>
-                            <input type="date" name="quote[0][booking_date]" data-name="booking_date" id="quote_0_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                             <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_date]" data-name="booking_date" id="quote_0_booking_date"  class="form-control booking-date datepicker  bookingDate" autocomplete="off" >
                           </div>
                         </div>
 
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Due Date</label>
-                            <input type="date" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                             <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker  checkDates bookingDueDate" autocomplete="off">
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>

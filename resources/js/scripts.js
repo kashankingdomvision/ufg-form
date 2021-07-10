@@ -2,13 +2,117 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 var BASEURL = 'http://localhost/ufg-form/public/json/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
+import datepicker from 'bootstrap-datepicker';
+
+function datepickerReset(key = null) {
+    var $season = $("#season_id");
+    var season_start_date = new Date($season.find(':selected').data('start'));
+    var season_end_date = new Date($season.find(':selected').data('end'));
+    if(season_start_date && season_end_date){
+        if(key != null){
+            $('.bookingDateOfService:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            $('.bookingDate:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            $('.bookingDueDate:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        }else{
+            $('.datepicker').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            
+        }
+    }else{
+        $('.datepicker').datepicker({ autoclose: true, format:'dd/mm/yyyy'});
+    }
+}
+
+function convertDate(date) {
+    var dateParts = date.split("/");
+    return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+}
 
 
 $(document).ready(function($) {
+    datepickerReset();
     
     $('.select2').select2({
         width: '100%',
     });
+    
+    /////////////////////////////
+    // / Date Picker 
+    // /
+    // /
+    $('#season_id').on('change', function(){
+        datepickerReset();
+        $('.datepicker').datepicker("setDate",'');
+    });
+    
+    $(document).on('change', '.datepicker', function () {
+        var datePicker_id   = $(this).attr('id');
+        var name            = $(this).data('name');
+        var key             = $(this).closest('.quote').data('key');
+        var DateOFService   = $('#quote_'+key+'_date_of_service').val();
+        var BookingDate     = $('#quote_'+key+'_booking_date').val();
+        var BookingDueDate  = $('#quote_'+key+'_booking_due_date').val();
+        var $season         = $("#season_id");
+        var season_start_date = new Date($season.find(':selected').data('start'));
+        var season_end_date = new Date($season.find(':selected').data('end'));
+        
+        switch (name) {
+            case 'date_of_service':
+            DateOFService  = convertDate($(this).val());
+            BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
+            BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
+            
+            if(DateOFService < BookingDueDate){
+                $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
+                $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+            }
+            
+            $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
+            $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
+                break;
+            case 'booking_date':
+
+                if(convertDate(BookingDate) > convertDate(DateOFService)){
+                    $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
+                }
+                
+                if(convertDate(BookingDate) < convertDate(BookingDueDate)){
+                    $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
+                }
+                
+                BookingDate = convertDate($(this).val());
+                $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
+                var setDueDate = (BookingDate != '')? BookingDate: (DateOFService != '')? convertDate(DateOFService) : season_end_date;
+                $('#quote_'+key+'_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate});
+                
+                break;
+            case 'booking_due_date':
+                if(convertDate(BookingDueDate) > convertDate(DateOFService)){
+                    $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                    $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
+                }
+                if(convertDate(BookingDueDate) > convertDate(BookingDate)){
+                    $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                }
+                
+                BookingDueDate = convertDate($(this).val());
+                BookingDate = (BookingDate != null)? convertDate(BookingDate): season_start_date;
+                DateOFService = (DateOFService != '')? convertDate(DateOFService): season_end_date;
+                $('#quote_'+key+'_booking_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: season_end_date});
+                $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
+
+                break;
+        
+            default:
+                datepickerReset();
+                break;
+        }
+    });
+    
+    // /
+    // /
+    // / Date Picker 
+    /////////////////////////////
+
 
  /// brands holidays
     $(document).on('change', '.getBrandtoHoliday',function(){
@@ -247,7 +351,8 @@ $(document).on('click', '.addChild', function () {
             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
             $('.alert-danger').html('');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-        
+            datepickerReset(1);
+           
             // reinitializedDynamicFeilds();
             // datePickerSetDate();
             // $('.select2').select2({
