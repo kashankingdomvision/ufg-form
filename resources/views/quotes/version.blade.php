@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Quote')
+@section('title', 'Quote Version')
 
 @section('content')
   <div class="content-wrapper">
@@ -17,12 +17,12 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Add Quote</h4>
+              <h4>Quote Version</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item active">User Management</li>
+                <li class="breadcrumb-item active">Quote Management</li>
               </ol>
           </div>
         </div>
@@ -36,27 +36,27 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Quote Version</h3>
+                <h3 class="card-title text-center lh-2">Quote Version {{ isset($log['version_no']) && !empty($log['version_no']) ? $log['version_no'] : '' }}</h3>
                 @if(!isset($type))
-                  <button id="reCall" type="button" data-recall="true" class="btn btn-outline-light btn-sm float-right">Recall Version</button>
+                  <button id="reCall" type="button" data-recall="true" class="btn btn-light float-right">Recall Version</button>
                 @endif
               </div>
 
-            <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}"> 
-            @csrf @method('put')
-              <div class="card-body">
+              <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}"> 
+                <div class="card-body">
+                  @csrf @method('put')
                   <div class="row mb-2">
                     <div class="col-md-6">
                       <div class="form-group">
                         <label>Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }} value="live" >
+                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
                             <span>&nbsp;Live Rate</span>
                           </label>
                           
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
+                            <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} >
                             <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
@@ -68,41 +68,43 @@
                     
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
-                      <div class="input-group ">
-                        <input type="text" value="{{ old('ref_no')??$quote['ref_no'] }}" name="ref_no" class="form-control reference-name" placeholder="Enter Reference Number">
-                         <div class="input-group-append">
-                          <button class="btn btn-outline-dark search-reference" type="button">Search</button>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" value="{{ old('ref_no')??$quote['ref_no'] }}" name="ref_no" id="ref_no" class="form-control reference-name" placeholder="Enter Reference Number">
+                            <div class="input-group-append">
+                            <button class="btn search-reference-btn search-reference" type="button"> Search </button>
+                          </div>
                         </div>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('quote_no')??$quote['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" >
+                        <input type="text" value="{{ old('quote_no')??$quote['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('lead_passenger')??$quote['lead_passenger'] }}" name="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <input type="text" value="{{ old('lead_passenger')??$quote['lead_passenger'] }}" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
+                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday brand-id">
                           <option value="">Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ (old('brand_id') == $brand->id)? "selected" : (($quote['brand_id'] == $brand->id)? 'selected':NULL) }}> {{ $brand->name }} </option>
                           @endforeach
                         </select>
-
-                        @error('brand_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -116,26 +118,20 @@
                           @endforeach
                           <option value="">Select Type Of Holiday</option>
                         </select>
-
-                        @error('holiday_type_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sales_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sale_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($quote['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
                           @endforeach
                         </select>
-
-                        @error('sales_person_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -148,9 +144,7 @@
                             <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : ($quote['season_id'] == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
                           @endforeach
                         </select>
-                        @error('season_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -159,41 +153,42 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input class="select-agency" {{ old('agency') == 'yes' ? "checked" : ($quote['agency'] ==  0 ? 'checked' : '') }}  value="yes" type="radio" name="agency" > Yes
+                            <input class="select-agency" {{ ($quote['agency'] ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
                           </label>
                           <label class="radio-inline">
-                            <input  class="select-agency" {{ old('agency') == 'no'  ? "checked" : ($quote['agency'] ==  1? 'checked' : '') }}  value="no" type="radio" name="agency" > No
+                            <input  class="select-agency" {{ ($quote['agency'] ==  0 ? 'checked' : '') }}  value="0" type="radio" name="agency" > No
                           </label>
                         </div>
                       </div>
                       <div class="row agency-columns">
                         @if($quote['agency'] == 1)
-                            <div class="col" style="width:175px;">
-                                <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                                <input type="text" value="{{ $quote['agency_name'] }}" name="agency_name" class="form-control">
-                                <div class="alert-danger" style="text-align:center" id="error_agency_name"> </div>
-                            </div>
-                            <div class="col">
-                                <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                                <input type="text" value="{{ $quote['agency_contact'] }}" name="agency_contact" class="form-control">
-                                <div class="alert-danger" style="text-align:center" id="error_agency_contact_no"> </div>
-                            </div>
+                          <div class="col" style="width:175px;">
+                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote['agency_name'] }}" name="agency_name" class="form-control">
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                          <div class="col">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote['agency_contact'] }}" name="agency_contact" class="form-control">
+                            <span class="text-danger" role="alert"></span>
+                          </div>
                         @endif
-                       
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote['dinning_preference'] }}" name="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                        <input type="text" value="{{ $quote['dinning_preference'] }}" name="dinning_preference" name="dinning_preference" id="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
                     
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Bedding Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote['bedding_preference'] }}" name="bedding_preference" class="form-control" placeholder="Bedding Preferences" >
+                        <input type="text" value="{{ $quote['bedding_preference'] }}" name="bedding_preference" id="bedding_preference" class="form-control" placeholder="Bedding Preferences" >
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -202,18 +197,15 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="booking_currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}"  data-image="data:image/png;base64, {{$currency->flag}}" 
-                            {{ (old('currency_id') == $currency->id)? 'selected' :(($quote['currency_id'] == $currency->id)? 'selected' :((isset(Auth::user()->getCurrency->id) && $Auth::user()->getCurrency->id == $currency->id)? 'selected':NULL)) }}
+                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" 
+                              {{ $currency->id == $quote['currency_id'] ? 'selected' : '' }}
                             > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
-
-                        @error('currency_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -226,9 +218,7 @@
                             <option value={{$i}} {{ (old('pax_no') == $i)? "selected" : (($quote['pax_no'] == $i)? 'selected': NULL) }}>{{$i}}</option>
                           @endfor
                         </select>
-                        @error('pax_no')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
                     <div id="appendPaxName" class="col-md-12">
@@ -278,12 +268,9 @@
                     </div>
                   </div>
 
-           
-
-                  
                   <div class="parent" id="parent">
-                    @foreach ($quote['quote'] as $key  => $q_detail )
-                        <div class="quote" data-key="0">
+                    @foreach ($quote['quote'] as $key => $q_detail )
+                        <div class="quote" data-key="{{ $key }}">
                             @if($loop->iteration > 1)
                               <div class="row">
                                 <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
@@ -308,7 +295,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2 category-select2 category-id @error('category_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" {{ ($q_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
@@ -324,7 +311,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Supplier</label>
-                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2 supplier-id @error('supplier_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control supplier-id @error('supplier_id') is-invalid @enderror">
                                         <option value="">Select Supplier</option>
                                         @if(isset($q_detail['category_id']))
                                             @foreach ($log->getQueryData($q_detail['category_id'], 'Category')->first()->getSupplier as $supplier )
@@ -341,7 +328,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Product</label>
-                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2  product-id @error('product_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id @error('product_id') is-invalid @enderror">
                                         <option value="">Select Product</option>
                                     @if(isset($q_detail['supplier_id']))
                                         @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts as  $product)
@@ -358,7 +345,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Supervisor</label>
-                                    <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control  select2  supervisor-id @error('supervisor_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control supervisor-id @error('supervisor_id') is-invalid @enderror">
                                     <option value="">Select Supervisor</option>
                                     @foreach ($supervisors as $supervisor)
                                         <option value="{{ $supervisor->id }}" {{ ($q_detail['supervisor_id'] == $supervisor->id)? 'selected' : NULL}}> {{ $supervisor->name }} </option>
@@ -380,9 +367,10 @@
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Booking Due Date</label>
+                                    <label>Booking Due Date <span style="color:red">*</span></label>
                                     <input type="date" value="{{ $q_detail['booking_due_date'] }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
-                                </div>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
                                 </div>
 
                                 <div class="col-sm-2">
@@ -395,7 +383,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Method</label>
-                                    <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control select2 booking-method-id @error('booking_method_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control booking-method-id @error('booking_method_id') is-invalid @enderror">
                                     <option value="">Select Booking Method</option>
                                     @foreach ($booking_methods as $booking_method)
                                         <option value="{{ $booking_method->id }}" {{ $q_detail['booking_method_id'] == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
@@ -411,7 +399,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booked By</label>
-                                    <select name="quote[{{ $key }}][booked_by_id]" data-name="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control  select2  booked-by-id @error('booked_by_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booked_by_id]" data-name="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control booked-by-id @error('booked_by_id') is-invalid @enderror">
                                     <option value="">Select Booked By </option>
                                     @foreach ($booked_by as $book_id)
                                         <option value="{{ $book_id->id }}" {{ $q_detail['booked_by_id'] == $book_id->id  ? "selected" : "" }}> {{ $book_id->name }} </option>
@@ -426,7 +414,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Types</label>
-                                    <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2   booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control booking-type-id @error('booking_type_id') is-invalid @enderror">
                                     <option value="">Select Booking Type</option>
                                     @foreach ($booking_types as $booking_type)
                                         <option value="{{ $booking_type->id }}" {{ $q_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
@@ -441,17 +429,14 @@
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Supplier Currency</label>
-                                    <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control    supplier-currency-id @error('currency_id') is-invalid @enderror">
+                                  <label>Supplier Currency <span style="color:red">*</span></label>
+                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)
-                                        <option value="{{ $currency->id }}" {{ $q_detail['supplier_currency_id'] == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                      <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $q_detail['supplier_currency_id'] == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                     @endforeach
-                                    </select>
-
-                                    @error('currency_id')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                                 </div>
 
@@ -460,9 +445,9 @@
                                     <label>Estimated Cost <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code"></span>
+                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['estimated_cost']??0 }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['estimated_cost']) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
                                     </div>
                                 </div>
                                 </div>
@@ -472,9 +457,9 @@
                                     <label>Markup Amount <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code"></span>
+                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['markup_amount']??0 }}" name="quote[{{ $key }}][markup_amount]" data-name="markup_amount" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['markup_amount']) }}" name="quote[{{ $key }}][markup_amount]" data-name="markup_amount" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change" value="0.00">
                                     </div>
                                 </div>
                                 </div>
@@ -484,9 +469,9 @@
                                     <label>Markup % <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code"></span>
+                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['markup_percentage']??0 }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['markup_percentage']) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                     <div class="input-group-append">
                                         <div class="input-group-text">%</div>
                                     </div>
@@ -499,11 +484,9 @@
                                     <label>Selling Price <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code">
-                                        {{-- <i class="fas fa-dollar-sign"></i> --}}
-                                        </span>
+                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['selling_price']??0 }}" name="quote[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['selling_price']) }}" name="quote[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                                     </div>
                                 </div>
                                 </div>
@@ -513,11 +496,9 @@
                                     <label>Profit % <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code">
-                                        {{-- <i class="fas fa-dollar-sign"></i> --}}
-                                        </span>
+                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['profit_percentage']??0 }}" name="quote[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['profit_percentage']) }}" name="quote[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                     <div class="input-group-append">
                                         <div class="input-group-text">%</div>
                                     </div>
@@ -530,9 +511,9 @@
                                     <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                      <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['selling_price_bc']??0 }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['selling_price_bc']) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                     </div>
                                 </div>
                                 </div>
@@ -542,16 +523,16 @@
                                     <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                      <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ $q_detail['markup_amount_bc']??0 }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00"> 
+                                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail['markup_amount_bc']) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                     </div>
                                 </div>
                                 </div>
 
                                 <div class="col-sm-2 d-flex justify-content-center">
                                 <div class="form-group"> 
-                                    <label>Added in Sage <span style="color:red">*</span></label>
+                                    <label>Added in Sage</label>
                                     <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="icheck-primary">
@@ -583,9 +564,7 @@
                     @endforeach
                   </div>
 
-                  <div class="row" id="addMoreButton">
-                    
-                  </div>
+                  <div class="row" id="addMoreButton"></div>
 
                   <div class="form-group row">
                     
@@ -595,9 +574,9 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $quote['markup_amount'] }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote['markup_amount']) }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -605,7 +584,7 @@
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
-                        <input type="number" value="{{ $quote['markup_percentage'] }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                        <input type="number" value="{{ \Helper::number_format($quote['markup_percentage']) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -622,13 +601,13 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $quote['selling_price'] }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($q_detail['selling_price']) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
                         </div>
                       </div>
                     </div>
-               
+                
                   </div>
 
                   <div class="form-group row">
@@ -637,9 +616,9 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $quote['profit_percentage'] }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($q_detail['profit_percentage']) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -652,7 +631,7 @@
 
                     <div class="col-sm-3">
                       <div class="form-group">
-                        <label>Supplier Selling Price in Other Currency</label>
+                        <label>Selling Price in Other Currency</label>
                         <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
@@ -665,22 +644,22 @@
                         @enderror
                       </div>
                     </div>
-                 
+                  
                     <div class="col-sm-2">
                       <div class="form-group mt-2">
                         <label></label>
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text selling-price-other-currency-code"></span>
+                            <span class="input-group-text selling-price-other-currency-code">{{ isset($quote['selling_currency_oc']) && !empty($quote['selling_currency_oc']) ? $quote['selling_currency_oc'] : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $quote['selling_price_oc'] }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote['selling_price_ocr']) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
                         </div>
                       </div>
                     </div>
-                 
+                  
                   </div>
 
                   <div class="form-group row">
@@ -689,18 +668,18 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text selling-price-other-currency-code"></span>
+                            <span class="input-group-text selling-price-other-currency-code">{{ isset($quote['selling_currency_oc']) && !empty($quote['selling_currency_oc']) ? $quote['selling_currency_oc'] : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $quote['amount_per_person'] }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote['amount_per_person']) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
                   </div>
+
                 </div>
-                <div class="card-footer" id="btnSubmitversion">
-                 
-                </div>
+                <div class="card-footer" id="btnSubmitversion"></div>
               </form>
+              <div id="overlay" class=""></div>
             </div>
           </div>
         </div>

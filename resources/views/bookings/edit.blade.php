@@ -854,7 +854,7 @@
 
                     <div class="col-sm-3">
                       <div class="form-group">
-                        <label>Supplier Selling Price in Other Currency</label>
+                        <label>Selling Price in Other Currency</label>
                         <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
@@ -875,7 +875,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->selling_price_oc }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                          <input type="number" value="{{ $booking->selling_price_ocr }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
