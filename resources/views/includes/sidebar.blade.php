@@ -39,7 +39,7 @@
                 </li>
 
 
-                <li class="nav-item {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-pen-square nav-icon"></i>
                         <p>
@@ -49,7 +49,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('bookings.view.seasons') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' ? 'active' : '' }}">
+                            <a href="{{ route('bookings.view.seasons') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Booking Season</p>
                             </a>

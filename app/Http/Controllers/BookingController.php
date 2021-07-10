@@ -164,9 +164,9 @@ class BookingController extends Controller
             
             
         $booking->update($this->bookingArray($request));
-        if($request->has('booking') && count($request->booking) > 0){
+        if($request->has('quote') && count($request->quote) > 0){
             $booking->getBookingDetail()->delete();
-            foreach ($request->booking as $qu_details) {
+            foreach ($request->quote as $qu_details) {
                 $bookingDetail = $this->getBookingDetailsArray($qu_details);
                 $bookingDetail['booking_id'] = $booking->id;
                 $booking_Details=  BookingDetail::create($bookingDetail);

@@ -7,11 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 class BookingDetail extends Model
 {
     protected $fillable = [
-        'booking_id',  'user_id', 'rate_type','ref_no', 'ref_name','quote_ref','lead_passenger',     'brand_id','holiday_type_id',    'sale_person_id',      'season_id',         'agency',   'dinning_preference', 'bedding_preference', 'currency_id',       'pax_no',   'markup_amount',     
-         'markup_percentage',   'selling_price', 'profit_percentage',   'selling_currency_oc', 'selling_price_ocr','amount_per_person',  
-         "date_of_service", "time_of_service","category_id", "supplier_id","product_id","supervisor_id", "booking_date","booking_due_date","booking_reference","booking_method_id", "booked_by_id", "booking_type","supplier_currency_id","estimated_cost","markup_amount",
-        "markup_percentage","selling_price","profit_percentage","selling_price_in_booking_currency","markup_amount_in_booking_currency","added_in_sage","service_details",
-        "comments", 
+        'booking_id',
+        'category_id',
+        'supplier_id',
+        'product_id',
+        'booking_method_id',
+        'booked_by_id',
+        'supervisor_id',
+        'supplier_currency_id',
+        'booking_type_id',
+        'date_of_service',
+        'time_of_service',
+        'booking_date',
+        'booking_due_date',
+        'service_details',
+        'booking_reference',
+        'comments',
+        'estimated_cost',
+        'markup_amount',
+        'markup_percentage',
+        'selling_price',
+        'profit_percentage',
+        'selling_price_bc',
+        'markup_amount_bc',
+        'added_in_sage', 
+        'inovice'
     ];
 
     public function getCategory()

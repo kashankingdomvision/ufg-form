@@ -1,7 +1,6 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
 var BASEURL = 'http://localhost/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 
@@ -603,7 +602,6 @@ $("#quoteCreate").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote created Successfully');
-                window.location.href = REDIRECT_BASEURL + 'quotes/index';
             }, 800);
         },
         error: function (reject) {
@@ -656,7 +654,7 @@ $(".update-quote").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote updated Successfully');
-                window.location.href = REDIRECT_BASEURL + 'quotes/index';
+                window.history.back();
             }, 800);
         },
         error: function (reject) {
@@ -753,6 +751,9 @@ $('#clone_booking_finance').on('click', function () {
     }).end()
     .show()
     .insertAfter(".finance-clonning:last");
+
+    // remove checked attribute after clone
+    $('.finance-clonning:last').find(':checked').attr('checked', false);
 });
 
 $('#tempalte_id').on('change', function () {
@@ -776,4 +777,57 @@ $('#tempalte_id').on('change', function () {
 // / 
 // / Quote FORM SUBMISSION END
 ////////////////////////////////// 
+
+
+
+$("#update-booking").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+    url = $form.attr('action');
+    var formdata = $(this).serialize();
+
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
+
+    /* Send the data using post */
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        beforeSend: function() {
+            $("#overlay").addClass('overlay');
+            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+        },
+        success: function (data) {
+            $("#overlay").removeClass('overlay').html('');
+            setTimeout(function() {
+                alert('Booking updated Successfully');
+                window.history.back();
+            }, 800);
+        },
+        error: function (reject) {
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                setTimeout(function() {
+                    $("#overlay").removeClass('overlay').html('');
+     
+                    jQuery.each(errors.errors, function( index, value ) {
+    
+                        index = index.replace(/\./g,'_');
+                        $('#'+index).addClass('is-invalid');
+                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                    });
+
+                }, 800);
+
+            }
+        },
+    });
+});
 });

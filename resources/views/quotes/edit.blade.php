@@ -95,7 +95,7 @@
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group ">
-                          <input type="text" name="ref_no" id="ref_no" value="{{ old('ref_no')??$quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
+                          <input type="text" name="ref_no" id="ref_no" value="{{ $quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
                            <div class="input-group-append">
                             <button class="btn search-reference-btn search-reference" type="button">Search</button>
                           </div>
@@ -107,14 +107,14 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('quote_no')??$quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
+                        <input type="text" value="{{ $quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('lead_passenger')??$quote->lead_passenger }}" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <input type="text" value="{{ $quote->lead_passenger }}" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
@@ -294,6 +294,8 @@
                         
                     </div>
                   </div>
+<<<<<<< HEAD
+=======
                   <div class="row">
                       <div class="col-md-3 offset-md-9">
                         <select name="template" id="tempalte_id" class="float-right form-control template">
@@ -304,6 +306,7 @@
                         </select>
                     </div>
                   </div>
+>>>>>>> f028d5800238c4e165451d24af1fc5d6cb1deb9a
                   
                   <div class="parent" id="parent">
                     @foreach ($quote->getQuoteDetails as $key  => $q_detail )
