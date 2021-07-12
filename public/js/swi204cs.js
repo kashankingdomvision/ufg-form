@@ -19469,15 +19469,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var options = '';
     $.ajax({
       type: 'get',
-      url: BASEURL + 'supplier/to/product',
+      url: BASEURL + 'supplier/to/product/currency',
       data: {
         'id': supplier_id
       },
       success: function success(response) {
         options += '<option value="">Select Product</option>';
-        $.each(response, function (key, value) {
+        $.each(response.product, function (key, value) {
           options += '<option value="' + value.id + '">' + value.name + '</option>';
         });
+        $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
         $selector.closest('.row').find('.product-id').html(options);
       }
     });
@@ -20051,6 +20052,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         searchRef.text('Search').prop('disabled', false);
       }
     });
+  });
+  $(document).on('click', '.supplier-id', function () {
+    // supplier-currency-id
+    $(this).find(':selected').data('start');
   }); // /
   // / 
   // / Quote FORM SUBMISSION END
