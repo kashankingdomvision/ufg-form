@@ -1,6 +1,8 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
 var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -353,8 +355,8 @@ $(document).on('click', '.addChild', function () {
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);
           
-            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.text-danger, .booking-currency-code').html('');
+            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+            $('.text-danger').html('');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
            
@@ -395,6 +397,24 @@ $(document).on('click', '.addChild', function () {
         }).responseText);
     }
 
+    
+    var commissionRate = getCommissionJson();
+
+    function getCommissionJson() {
+        return JSON.parse($.ajax({
+            type: 'GET',
+            url : BASEURL+'get-commission',
+            dataType: 'json',
+            global: false,
+            async: false,
+            success: function (data) {
+                return data;
+            }
+        }).responseText);
+    }
+
+    // console.log(commissionRate);
+
     function check(x) {
 
         if(isNaN(x) || !isFinite(x) ){
@@ -417,7 +437,32 @@ $(document).on('click', '.addChild', function () {
         return (object.shift()[rateType]);
     }
 
+    function getCommissionRate(){
+
+        var totalNetPrice  = $('.total-net-price').val();
+        var commissionId   = $('.commission-id').val(); 
+        var calculatedCommisionAmount = 0;
+
+        if(commissionId){
+
+            var object = commissionRate.filter(function(elem) {
+                return elem.id == commissionId
+            });
+            var commissionPercentage = parseFloat(object.shift()['percentage']);
+            calculatedCommisionAmount =  parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+
+        }else{
+            calculatedCommisionAmount = 0.00;
+        }
+        
+        $('.commission-amount').val(check(calculatedCommisionAmount));
+    }
+
     function getTotalValues(){
+
+        var estimatedCostInBookingCurrencyArray  =  $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostInBookingCurrency       =  estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        $('.total-net-price').val(check(estimatedCostInBookingCurrency));
 
         var markupAmountInBookingCurrencyArray  =  $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
         var calculatedMarkupAmountInBookingCurrency       =  markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
@@ -434,6 +479,8 @@ $(document).on('click', '.addChild', function () {
         var profitPercentagetArray  =  $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
         var calculatedProfitPercentage      =  profitPercentagetArray.reduce((a, b) => (a + b), 0);
         $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+
+        getCommissionRate();
     }
 
     function getSellingPrice(){
@@ -460,11 +507,13 @@ $(document).on('click', '.addChild', function () {
 
     function changeCurrenyRate(){
         var rateType               =  $('input[name="rate_type"]:checked').val();
+        var estimatedCostArray     =  $('.estimated-cost').map((i, e) => parseFloat(e.value)).get();
         var sellingPriceArray      =  $('.selling-price').map((i, e) => parseFloat(e.value)).get();
         var markupAmountArray      =  $('.markup-amount').map((i, e) => parseFloat(e.value)).get();
         var bookingCurrency        =  $('.booking-currency-id').find(':selected').data('code');
         var supplierCurrencyArray  =  $('.supplier-currency-id').map((i, e) => $(e).find(':selected').data('code') ).get();
 
+        var calculatedEstimatedCostInBookingCurrency = 0
         var calculatedSellingPriceInBookingCurrency = 0;
         var calculatedMarkupAmountInBookingCurrency = 0;
         var quoteSize = parseInt($('.quote').length);
@@ -472,6 +521,7 @@ $(document).on('click', '.addChild', function () {
         var key = 0;
         while (key < quoteSize) {
 
+            var estimatedCost    = estimatedCostArray[key];
             var supplierCurrency = supplierCurrencyArray[key];
             var sellingPrice     = sellingPriceArray[key];
             var markupAmount     = markupAmountArray[key];
@@ -480,6 +530,7 @@ $(document).on('click', '.addChild', function () {
 
                 var rate = getRate(supplierCurrency,bookingCurrency,rateType);
 
+                calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
                 calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
                 calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
                 
@@ -489,6 +540,7 @@ $(document).on('click', '.addChild', function () {
                 calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
             }
 
+            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
             $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
             $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
 
@@ -591,6 +643,7 @@ $(document).on('click', '.addChild', function () {
         var calculatedMarkupAmount                  = 0;
         var calculatedProfitPercentage              = 0;
         var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedEstimatedCostInBookingCurrency = 0;
         var calculatedSellingPriceInBookingCurrency = 0;
 
         if(changeFeild == 'estimated_cost'){
@@ -599,7 +652,9 @@ $(document).on('click', '.addChild', function () {
             calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
             calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
+            calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+            
+            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
             $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
             $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
             $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
@@ -648,6 +703,10 @@ $(document).on('click', '.addChild', function () {
 
     $(document).on('change', '.rate-type',function(){
         changeCurrenyRate();
+    });
+
+    $(document).on('change', '.commission-id', function () {
+        getCommissionRate();
     });
 
     $(".readonly").keypress(function (evt) {
@@ -712,6 +771,7 @@ $("#quoteCreate").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote created Successfully');
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -764,7 +824,7 @@ $(".update-quote").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote updated Successfully');
-                window.history.back();
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {

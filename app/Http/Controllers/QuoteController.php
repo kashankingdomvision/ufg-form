@@ -24,6 +24,7 @@ use App\QuoteLog;
 use App\Booking;
 use App\BookingDetail;
 use App\BookingPaxDetail;
+use App\Commission;
 use DB;
 use Carbon\Carbon;
 
@@ -55,16 +56,23 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+
         return view('quotes.create', $data);
     }
 
     public function get_currency_conversion(){
         return CurrencyConversion::all();
     }
+
+    public function get_commission(){
+        return Commission::all();
+    }
     
     public function quoteArray($request)
     {
         $data =  [
+            'commission_id'      =>  $request->commission_id,
             'user_id'            =>  Auth::id(),
             'season_id'          =>  $request->season_id,
             'brand_id'           =>  $request->brand_id,
@@ -79,10 +87,12 @@ class QuoteController extends Controller
             'dinning_preference' =>  $request->dinning_preference,
             'bedding_preference' =>  $request->bedding_preference,
             'pax_no'             =>  $request->pax_no,
+            'net_price'          =>  $request->total_net_price??$request->total_net_price,
             'markup_amount'      =>  $request->total_markup_amount??$request->markup_amount,
             'markup_percentage'  =>  $request->total_markup_percent??$request->markup_percentage,
             'selling_price'      =>  $request->total_selling_price??$request->selling_price,
             'profit_percentage'  =>  $request->total_profit_percentage??$request->profit_percentage,
+            'commission_amount'  =>  $request->commission_amount??$request->commission_amount,
             'selling_currency_oc'=>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'  =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
@@ -120,8 +130,9 @@ class QuoteController extends Controller
             'markup_percentage'     => $quoteD['markup_percentage'],
             'selling_price'         => $quoteD['selling_price'],
             'profit_percentage'     => $quoteD['profit_percentage'],
-            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc  '],
-            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc  '],
+            'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
+            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
+            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
             'added_in_sage'         => ($quoteD['added_in_sage'] == "0")? '0' : '1',
         ];
     }
@@ -170,6 +181,8 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
+        $data['commission_types'] = Commission::all();
+
         return view('quotes.edit',$data);
     }
     
@@ -179,6 +192,7 @@ class QuoteController extends Controller
         $array =  $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
+
         QuoteLog::create([
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,
@@ -234,6 +248,7 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
 
         if($type != NULL){
             $data['type'] = $type;

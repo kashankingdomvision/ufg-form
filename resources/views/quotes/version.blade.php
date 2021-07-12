@@ -64,6 +64,16 @@
                     </div>
 
                     <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
                     </div>
                     
                     <div class="col-sm-6">
@@ -506,7 +516,19 @@
                                 </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                      </div>
+                                      <input type="number" step="any" value="{{ \Helper::number_format($q_detail['estimated_cost_bc']) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                     <div class="input-group">
@@ -518,7 +540,7 @@
                                 </div>
                                 </div>
                                 
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                     <div class="input-group">
@@ -567,6 +589,20 @@
                   <div class="row" id="addMoreButton"></div>
 
                   <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="{{ \Helper::number_format($quote['net_price']) }}" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
                     
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
               
@@ -603,7 +639,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ \Helper::number_format($q_detail['selling_price']) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote['selling_price']) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -618,10 +654,24 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote['currency_id'] && $log->getQueryData($quote['currency_id'], 'Currency')->count()) ? $log->getQueryData($quote['currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ \Helper::number_format($q_detail['profit_percentage']) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote['profit_percentage']) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Amount</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($quote['commission_amount']) }}" readonly>
                         </div>
                       </div>
                     </div>

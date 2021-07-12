@@ -27,6 +27,7 @@ class QuoteRequest extends FormRequest
             'agency'                            =>  'required',
             'agency_name'                       =>  'required_if:agency,yes',
             'agency_contact'                    =>  'required_if:agency,yes',
+            'commission_id'                     =>  'required',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
             'currency_id'                       =>  'required',

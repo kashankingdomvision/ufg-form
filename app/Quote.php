@@ -11,6 +11,7 @@ class Quote extends Model
 {
     use SoftDeletes;
     protected $fillable = [ 
+        'commission_id',
         'user_id',
         'season_id',
         'brand_id',
@@ -27,10 +28,12 @@ class Quote extends Model
         'dinning_preference',
         'bedding_preference',
         'pax_no',
+        'net_price',
         'markup_amount',
         'markup_percentage',
         'selling_price',
         'profit_percentage',
+        'commission_amount',
         'selling_currency_oc',
         'selling_price_ocr',
         'amount_per_person',

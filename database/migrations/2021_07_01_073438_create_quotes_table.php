@@ -16,6 +16,7 @@ class CreateQuotesTable extends Migration
         Schema::create('quotes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('commission_id');
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('currency_id');
@@ -31,10 +32,12 @@ class CreateQuotesTable extends Migration
             $table->string('dinning_preference');
             $table->string('bedding_preference');
             $table->bigInteger('pax_no')->default(1);
+            $table->double('net_price')->nullable();
             $table->double('markup_amount')->nullable();
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
+            $table->double('commission_amount')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
@@ -43,13 +46,6 @@ class CreateQuotesTable extends Migration
             $table->dateTime('booking_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('holiday_type_id')->references('id')->on('holiday_types')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('sale_person_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');;
-            
         });
     }
 

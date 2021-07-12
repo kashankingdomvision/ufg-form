@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
             SupplierTableSeeder::class,
+            CommissionTableSeeder::class,
             
         ]);
         // $users = factory(App\User::class, 5)->create();

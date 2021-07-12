@@ -19248,6 +19248,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19603,8 +19604,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
     $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
-    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.text-danger, .booking-currency-code').html('');
+    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+    $('.text-danger').html('');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
     datepickerReset(1); // reinitializedDynamicFeilds();
     // datePickerSetDate();
@@ -19640,6 +19641,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).responseText);
   }
 
+  var commissionRate = getCommissionJson();
+
+  function getCommissionJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: BASEURL + 'get-commission',
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  } // console.log(commissionRate);
+
+
   function check(x) {
     if (isNaN(x) || !isFinite(x)) {
       return parseFloat(0).toFixed(2);
@@ -19658,7 +19675,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return object.shift()[rateType];
   }
 
+  function getCommissionRate() {
+    var totalNetPrice = $('.total-net-price').val();
+    var commissionId = $('.commission-id').val();
+    var calculatedCommisionAmount = 0;
+
+    if (commissionId) {
+      var object = commissionRate.filter(function (elem) {
+        return elem.id == commissionId;
+      });
+      var commissionPercentage = parseFloat(object.shift()['percentage']);
+      calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+    } else {
+      calculatedCommisionAmount = 0.00;
+    }
+
+    $('.commission-amount').val(check(calculatedCommisionAmount));
+  }
+
   function getTotalValues() {
+    var estimatedCostInBookingCurrencyArray = $('.estimated-cost-in-booking-currency').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    $('.total-net-price').val(check(estimatedCostInBookingCurrency));
     var markupAmountInBookingCurrencyArray = $('.selling-price-in-booking-currency').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
@@ -19687,6 +19729,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return a + b;
     }, 0);
     $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+    getCommissionRate();
   }
 
   function getSellingPrice() {
@@ -19708,6 +19751,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function changeCurrenyRate() {
     var rateType = $('input[name="rate_type"]:checked').val();
+    var estimatedCostArray = $('.estimated-cost').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
     var sellingPriceArray = $('.selling-price').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
@@ -19718,18 +19764,21 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var supplierCurrencyArray = $('.supplier-currency-id').map(function (i, e) {
       return $(e).find(':selected').data('code');
     }).get();
+    var calculatedEstimatedCostInBookingCurrency = 0;
     var calculatedSellingPriceInBookingCurrency = 0;
     var calculatedMarkupAmountInBookingCurrency = 0;
     var quoteSize = parseInt($('.quote').length);
     var key = 0;
 
     while (key < quoteSize) {
+      var estimatedCost = estimatedCostArray[key];
       var supplierCurrency = supplierCurrencyArray[key];
       var sellingPrice = sellingPriceArray[key];
       var markupAmount = markupAmountArray[key];
 
       if (supplierCurrency) {
         var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
         calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
         calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
       } else {
@@ -19737,6 +19786,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
       }
 
+      $("#quote_".concat(key, "_estimated_cost_in_booking_currency")).val(check(calculatedEstimatedCostInBookingCurrency));
       $("#quote_".concat(key, "_selling_price_in_booking_currency")).val(check(calculatedSellingPriceInBookingCurrency));
       $("#quote_".concat(key, "_markup_amount_in_booking_currency")).val(check(calculatedMarkupAmountInBookingCurrency));
       key++;
@@ -19801,6 +19851,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var calculatedMarkupAmount = 0;
     var calculatedProfitPercentage = 0;
     var calculatedMarkupAmountInBookingCurrency = 0;
+    var calculatedEstimatedCostInBookingCurrency = 0;
     var calculatedSellingPriceInBookingCurrency = 0;
 
     if (changeFeild == 'estimated_cost') {
@@ -19808,6 +19859,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
       calculatedProfitPercentage = (parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice) * 100;
       calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+      calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+      $("#quote_".concat(key, "_estimated_cost_in_booking_currency")).val(check(calculatedEstimatedCostInBookingCurrency));
       $("#quote_".concat(key, "_markup_percentage")).val(check(calculatedMarkupPercentage));
       $("#quote_".concat(key, "_selling_price")).val(check(calculatedSellingPrice));
       $("#quote_".concat(key, "_selling_price_in_booking_currency")).val(check(calculatedSellingPriceInBookingCurrency));
@@ -19848,6 +19901,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();
+  });
+  $(document).on('change', '.commission-id', function () {
+    getCommissionRate();
   });
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
@@ -19902,6 +19958,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
           alert('Quote created Successfully');
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
@@ -19943,7 +20000,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
           alert('Quote updated Successfully');
-          window.history.back();
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
