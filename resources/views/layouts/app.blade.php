@@ -41,12 +41,14 @@
     
     <!-- jQuery -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-
     <script src="{{ asset('js/swi204cs.js') }}" defer></script>
     
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     {{-- <div id="app"> --}}
@@ -123,7 +125,17 @@
     @endauth
 
 
-         
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 150,   //set editable area's height
+                placeholder: 'Enter the description here ..........',
+                codemirror: { // codemirror options
+                    theme: 'monokai'
+                }
+            });
+        });
+      </script>
     
  
 

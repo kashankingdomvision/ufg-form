@@ -6,7 +6,10 @@ var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
+
 function datepickerReset(key = null) {
+    
+    
     var $season = $("#season_id");
     var season_start_date = new Date($season.find(':selected').data('start'));
     var season_end_date = new Date($season.find(':selected').data('end'));
@@ -31,6 +34,7 @@ function convertDate(date) {
 
 
 $(document).ready(function($) {
+    
     datepickerReset();
     
     $('.select2').select2({

@@ -44,6 +44,7 @@ class CreateQuotesTable extends Migration
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('booking_status',['quote','booked'])->default('quote');
             $table->dateTime('booking_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -163,7 +163,21 @@ Route::group(['middleware' => ['auth']], function(){
 
     // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
 
+    ////////////////////////////..supplier route start //////////////////////////////////////////
+    Route::resource('suppliers', 'SupplierController');	
+        
+    //supplier product start
+    Route::resource('products', 'ProductController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+    //supplier product end
 
+    //supplier categories start
+    Route::resource('categories', 'CategoryController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+    //supplier categories end
+    ////////////////////////////..supplier route end //////////////////////////////////////////
    /*
     |--------------------------------------------------------------------------
     | Routes For Ajax Request Start
