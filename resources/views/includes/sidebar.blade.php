@@ -166,6 +166,60 @@
                     </ul>
                 </li>
  
+ 
+ 
+                <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit'  ? 'menu-open': '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>
+                            Suppliers Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('suppliers.create') }}" class="nav-link {{ $route == 'suppliers.create' ? 'active' : ''}} ">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Supplier</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>View Supplier</p>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('products.create')}}" class="nav-link {{ $route == 'products.create' ? 'active' : ''}}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Product</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('products.index')}}" class="nav-link {{ $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>View Product</p>
+                            </a>
+                        </li>
+                        
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('categories.create')}}" class="nav-link {{ $route == 'categories.create' ? 'active' : ''}}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Category</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('categories.index')}}" class="nav-link {{ $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>View Category</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+ 
+ 
 
              
                

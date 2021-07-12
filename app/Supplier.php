@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     protected $fillable = [
-        'currency_id', 'name',	'email', 'phone'
+        'currency_id', 'name',	'email', 'phone', 'description'
     ];
     
     public function getCategories()

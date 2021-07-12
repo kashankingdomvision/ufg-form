@@ -19,6 +19,7 @@ class CreateSupplierTable extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->longText('description')->nullable();
             $table->timestamps();
             $table->foreign('currency_id')->references('id')->on('currencies');
         });
