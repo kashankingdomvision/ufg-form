@@ -189,7 +189,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-commission',array('as'=>'get-commission','uses'=>'QuoteController@get_commission'));
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
-        Route::get('supplier/to/product',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProduct'));
+        Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
  
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));

@@ -33,12 +33,12 @@ class ResponseController extends Controller
         return response()->json($supplier);
     }
     
-    public function getSupplierToProduct(Request $request)
+    public function getSupplierToProductORCurrency(Request $request)
     {
-        $product  = Product::whereHas('getSuppliers', function($query) use($request){
-                        $query->where('id', $request->id);
-                    })->get();
-        return response()->json($product);
+        $supplier = Supplier::find($request->id);
+        $response['product'] = $supplier->getProducts;
+        $response['currency'] = $supplier->getCurrency->id;
+        return response()->json($response);
     }
     
     public function getChildReference(Request $request)

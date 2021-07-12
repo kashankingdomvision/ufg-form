@@ -192,14 +192,15 @@ $(document).on('change', '.supplier-id',function(){
     var options = '';
     $.ajax({
         type: 'get',
-        url: BASEURL+'supplier/to/product',
+        url: BASEURL+'supplier/to/product/currency',
         data: { 'id': supplier_id },
         success: function(response) {
             options += '<option value="">Select Product</option>';
-            $.each(response,function(key,value){
+            $.each(response.product,function(key,value){
                 options += '<option value="'+value.id+'">'+value.name+'</option>';
             });
             
+            $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
             $selector.closest('.row').find('.product-id').html(options);
         }
     })
@@ -942,6 +943,12 @@ $('#tempalte_id').on('change', function () {
         },
     });
 });
+
+$(document).on('click', '.supplier-id', function () {
+    
+    // supplier-currency-id
+    $(this).find(':selected').data('start')
+})
 // /
 // / 
 // / Quote FORM SUBMISSION END
