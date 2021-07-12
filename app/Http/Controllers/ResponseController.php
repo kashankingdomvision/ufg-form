@@ -117,7 +117,20 @@ class ResponseController extends Controller
         return response()->json($ajax_response);
     }
 
-    
+    public function getPassenger($response)
+    {   
+        return [
+            'bedding_prefrences' => $response['BEDDING_PREFERENCE'],
+            'dinning_prefrences' => $response['DIETARY_PREFERENCES'],
+            'passenger_email'    => $response['Passenger_Email'],
+            'passenger_name'     => $response['Name'],
+            'passenger_dbo'      => $response['Passenger_DOB'],
+            'passenger_contact'  => $response['Passenger_Phone'],
+
+        ];
+    }
+
+
     public function isReferenceExists($ref_no)
     {
         $response['response'] = Quote::where('ref_no', $ref_no)->exists();
