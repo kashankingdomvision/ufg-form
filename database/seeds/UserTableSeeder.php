@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
             [
                 'role_id'           =>  1,
                 'supervisor_id'     =>  NULL,
-                'currency_id'       =>  NULL,
+                'currency_id'       =>  1,
                 'brand_id'          =>  1,
                 'holiday_type_id'   =>  1,
                 'name'              =>  'Kashan',
