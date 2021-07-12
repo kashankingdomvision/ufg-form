@@ -9,6 +9,7 @@ use Auth;
 class Quote extends Model
 {
     protected $fillable = [ 
+        'commission_id',
         'user_id',
         'season_id',
         'brand_id',
@@ -30,6 +31,7 @@ class Quote extends Model
         'markup_percentage',
         'selling_price',
         'profit_percentage',
+        'commission_amount',
         'selling_currency_oc',
         'selling_price_ocr',
         'amount_per_person',

@@ -56,16 +56,23 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+
         return view('quotes.create', $data);
     }
 
     public function get_currency_conversion(){
         return CurrencyConversion::all();
     }
+
+    public function get_commission(){
+        return Commission::all();
+    }
     
     public function quoteArray($request)
     {
         $data =  [
+            'commission_id'      =>  $request->commission_id,
             'user_id'            =>  Auth::id(),
             'season_id'          =>  $request->season_id,
             'brand_id'           =>  $request->brand_id,
@@ -85,6 +92,7 @@ class QuoteController extends Controller
             'markup_percentage'  =>  $request->total_markup_percent??$request->markup_percentage,
             'selling_price'      =>  $request->total_selling_price??$request->selling_price,
             'profit_percentage'  =>  $request->total_profit_percentage??$request->profit_percentage,
+            'commission_amount'  =>  $request->commission_amount??$request->commission_amount,
             'selling_currency_oc'=>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'  =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
@@ -173,6 +181,8 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
+        $data['commission_types'] = Commission::all();
+
         return view('quotes.edit',$data);
     }
     
@@ -238,6 +248,7 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
 
         if($type != NULL){
             $data['type'] = $type;

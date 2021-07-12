@@ -19248,6 +19248,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19639,6 +19640,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).responseText);
   }
 
+  var commissionRate = getCommissionJson();
+
+  function getCommissionJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: BASEURL + 'get-commission',
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  } // console.log(commissionRate);
+
+
   function check(x) {
     if (isNaN(x) || !isFinite(x)) {
       return parseFloat(0).toFixed(2);
@@ -19655,6 +19672,24 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return elem.from == supplierCurrency && elem.to == bookingCurrency;
     });
     return object.shift()[rateType];
+  }
+
+  function getCommissionRate() {
+    var totalNetPrice = $('.total-net-price').val();
+    var commissionId = $('.commission-id').val();
+    var calculatedCommisionAmount = 0;
+
+    if (commissionId) {
+      var object = commissionRate.filter(function (elem) {
+        return elem.id == commissionId;
+      });
+      var commissionPercentage = parseFloat(object.shift()['percentage']);
+      calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+    } else {
+      calculatedCommisionAmount = 0.00;
+    }
+
+    $('.commission-amount').val(check(calculatedCommisionAmount));
   }
 
   function getTotalValues() {
@@ -19693,6 +19728,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return a + b;
     }, 0);
     $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+    getCommissionRate();
   }
 
   function getSellingPrice() {
@@ -19865,6 +19901,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();
   });
+  $(document).on('change', '.commission-id', function () {
+    getCommissionRate();
+  });
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
   });
@@ -19918,7 +19957,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
           alert('Quote created Successfully');
-          window.history.back();
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
@@ -19960,7 +19999,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
           alert('Quote updated Successfully');
-          window.history.back();
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {

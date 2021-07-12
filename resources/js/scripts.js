@@ -1,6 +1,8 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
 var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -390,6 +392,24 @@ $(document).on('click', '.addChild', function () {
         }).responseText);
     }
 
+    
+    var commissionRate = getCommissionJson();
+
+    function getCommissionJson() {
+        return JSON.parse($.ajax({
+            type: 'GET',
+            url : BASEURL+'get-commission',
+            dataType: 'json',
+            global: false,
+            async: false,
+            success: function (data) {
+                return data;
+            }
+        }).responseText);
+    }
+
+    // console.log(commissionRate);
+
     function check(x) {
 
         if(isNaN(x) || !isFinite(x) ){
@@ -410,6 +430,27 @@ $(document).on('click', '.addChild', function () {
         });
 
         return (object.shift()[rateType]);
+    }
+
+    function getCommissionRate(){
+
+        var totalNetPrice  = $('.total-net-price').val();
+        var commissionId   = $('.commission-id').val(); 
+        var calculatedCommisionAmount = 0;
+
+        if(commissionId){
+
+            var object = commissionRate.filter(function(elem) {
+                return elem.id == commissionId
+            });
+            var commissionPercentage = parseFloat(object.shift()['percentage']);
+            calculatedCommisionAmount =  parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+
+        }else{
+            calculatedCommisionAmount = 0.00;
+        }
+        
+        $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 
     function getTotalValues(){
@@ -433,6 +474,8 @@ $(document).on('click', '.addChild', function () {
         var profitPercentagetArray  =  $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
         var calculatedProfitPercentage      =  profitPercentagetArray.reduce((a, b) => (a + b), 0);
         $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+
+        getCommissionRate();
     }
 
     function getSellingPrice(){
@@ -657,6 +700,10 @@ $(document).on('click', '.addChild', function () {
         changeCurrenyRate();
     });
 
+    $(document).on('change', '.commission-id', function () {
+        getCommissionRate();
+    });
+
     $(".readonly").keypress(function (evt) {
         evt.preventDefault();
     });
@@ -719,7 +766,7 @@ $("#quoteCreate").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote created Successfully');
-                window.history.back();
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -772,7 +819,7 @@ $(".update-quote").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote updated Successfully');
-                window.history.back();
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
