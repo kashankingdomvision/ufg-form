@@ -25,6 +25,7 @@ class Quote extends Model
         'dinning_preference',
         'bedding_preference',
         'pax_no',
+        'net_price',
         'markup_amount',
         'markup_percentage',
         'selling_price',

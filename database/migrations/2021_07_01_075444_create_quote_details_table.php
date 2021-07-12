@@ -36,6 +36,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
+            $table->double('estimated_cost_bc')->nullable();
             $table->double('selling_price_bc')->nullable();
             $table->double('markup_amount_bc')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);

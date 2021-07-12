@@ -24,6 +24,7 @@ use App\QuoteLog;
 use App\Booking;
 use App\BookingDetail;
 use App\BookingPaxDetail;
+use App\Commission;
 use DB;
 use Carbon\Carbon;
 
@@ -79,6 +80,7 @@ class QuoteController extends Controller
             'dinning_preference' =>  $request->dinning_preference,
             'bedding_preference' =>  $request->bedding_preference,
             'pax_no'             =>  $request->pax_no,
+            'net_price'          =>  $request->total_net_price??$request->total_net_price,
             'markup_amount'      =>  $request->total_markup_amount??$request->markup_amount,
             'markup_percentage'  =>  $request->total_markup_percent??$request->markup_percentage,
             'selling_price'      =>  $request->total_selling_price??$request->selling_price,
@@ -120,8 +122,9 @@ class QuoteController extends Controller
             'markup_percentage'     => $quoteD['markup_percentage'],
             'selling_price'         => $quoteD['selling_price'],
             'profit_percentage'     => $quoteD['profit_percentage'],
-            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc  '],
-            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc  '],
+            'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
+            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
+            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
             'added_in_sage'         => ($quoteD['added_in_sage'] == "0")? '0' : '1',
         ];
     }
@@ -179,6 +182,7 @@ class QuoteController extends Controller
         $array =  $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
+
         QuoteLog::create([
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,

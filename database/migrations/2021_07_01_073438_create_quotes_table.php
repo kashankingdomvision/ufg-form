@@ -31,6 +31,7 @@ class CreateQuotesTable extends Migration
             $table->string('dinning_preference');
             $table->string('bedding_preference');
             $table->bigInteger('pax_no')->default(1);
+            $table->double('net_price')->nullable();
             $table->double('markup_amount')->nullable();
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();

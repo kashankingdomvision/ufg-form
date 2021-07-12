@@ -446,7 +446,19 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                              </div>
+                              <input type="number" step="any" name="quote[0][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_0_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-2">
                           <div class="form-group">
                             <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                             <div class="input-group">
@@ -458,7 +470,7 @@
                           </div>
                         </div>
                         
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                           <div class="form-group">
                             <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                             <div class="input-group">
@@ -472,7 +484,7 @@
 
                         <div class="col-sm-2 d-flex justify-content-center">
                           <div class="form-group">
-                            <label>Added in Sage <span style="color:red">*</span></label>
+                            <label>Added in Sage </label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <div class="icheck-primary">
@@ -507,6 +519,20 @@
                   <div class="row">
                     <div class="col-12 text-right">
                       <button type="button" id="add_more" class="btn btn-outline-dark  pull-right ">+ Add more </button>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="0.00" readonly>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
