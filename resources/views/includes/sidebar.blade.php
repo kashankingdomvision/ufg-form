@@ -233,8 +233,8 @@
                     </a>
                     <ul class="nav nav-treeview">
                     
-                        <li class="nav-item {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions' ? 'menu-open': '' }}">
-                            <a href="#" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions' ? 'setting-child-active' : '' }}">
+                        <li class="nav-item {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'menu-open': '' }}">
+                            <a href="#" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'setting-child-active' : '' }}">
                                 <i class="fa fa-percentage nav-icon"></i>
                                 <p>
                                     Commissions

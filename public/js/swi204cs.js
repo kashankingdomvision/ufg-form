@@ -19246,11 +19246,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
+ // var BASEURL = 'http://localhost/ufg-form/public/json/';
+// var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 
-var BASEURL = 'http://localhost/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
+
+function todayDate() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+
+  var yyyy = today.getFullYear();
+  return today = dd + '/' + mm + '/' + yyyy;
+}
 
 function datepickerReset() {
   var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -20195,6 +20206,56 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
+  $(document).on('change', '.deposit-due-date', function () {
+    var close = $(this).closest('.finance-clonning');
+    close.find('.plus').removeAttr('disabled');
+  }); ///booking incremnet and 
+
+  $(document).on('click', '.increment', function () {
+    var close = $(this).closest('.finance-clonning');
+    var valueElement = close.find('.ab_number_of_days');
+    var dueDate = close.find('.deposit-due-date').val();
+    var nowDate = todayDate();
+    var firstDate = new Date(dueDate);
+    var secondDate = convertDate(nowDate);
+
+    if (firstDate == 'Invalid Date') {
+      alert('deposite date required');
+    } else {
+      var oneDay = 24 * 60 * 60 * 1000;
+      var diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+
+      if (firstDate > secondDate) {
+        $(this).attr('disabled', true);
+      } else {
+        var _valueElement$val;
+
+        if (valueElement.val() == '') {
+          valueElement.val(0);
+        }
+
+        var count = Math.max(parseInt((_valueElement$val = valueElement.val()) !== null && _valueElement$val !== void 0 ? _valueElement$val : 0));
+        var diffcount = diffDays - valueElement.val();
+        var b = 1;
+
+        if ($(this).hasClass('plus')) {
+          if (diffcount < 1) {
+            close.find('.plus').attr('disabled', true);
+          } else {
+            count = count + b;
+            valueElement.val(count);
+          }
+        } else if (valueElement.val() > 0) // Stops the value going into negatives
+          {
+            close.find('.plus').attr('disabled', false);
+            count -= b;
+            valueElement.val(count);
+          }
+      }
+    }
+
+    return false;
+  }); ///booking incremnet and 
 });
 
 /***/ }),

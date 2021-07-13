@@ -9,7 +9,7 @@ class Brand extends Model
 {
 
     protected $fillable = [
-        'name', 'email_address', 'address', 'phone', 'logo',
+        'name', 'email', 'address', 'phone', 'logo',
     ];
    
     public function getHolidayTypes()
