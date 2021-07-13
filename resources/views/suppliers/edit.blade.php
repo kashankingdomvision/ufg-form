@@ -46,7 +46,7 @@
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category</label>
                       <span style="color:red">*</span>
-                      <select name="categories[]" class="form-control" multiple>
+                      <select name="categories[]" class="form-control select2 " multiple>
                           @foreach ($categories as $category)
                             <option value="{{ $category->id }}"  {{ (in_array($category->id, $supplier->getCategories()->pluck('id')->toArray()))? 'selected' : NULL }}>{{ $category->name }}</option>
                           @endforeach
