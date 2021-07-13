@@ -99,7 +99,6 @@ class ResponseController extends Controller
                 }
             }
             $passengerArray['passengers'] = $passenger_data;
-            
             $response = [
                 "brand"         => $holiday,
                 "holidayTypes"  => $holidayTypes,
