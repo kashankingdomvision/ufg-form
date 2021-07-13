@@ -21,6 +21,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function(){
 
+
+	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
+
     /*
     |--------------------------------------------------------------------------
     | Quote Manangement

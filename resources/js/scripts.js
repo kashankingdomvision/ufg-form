@@ -870,6 +870,7 @@ $('.search-reference').on('click', function () {
                 if(data.response == true){
                     r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
                 }
+                
                 if(r == true){
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
@@ -878,8 +879,50 @@ $('.search-reference').on('click', function () {
                         type: 'POST',
                         dataType: "json",
                         success: function (data) {
-                            console.log(data+ 'data');
+                            // lead Passenger
+                                $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
+                            // lead Passenger
+                            // brand
+                                $('#brand_id').val(data.response.brand.brand_id).change();
+                            // brand
+                            // holidaytype
+                                $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected');
+                            // holidaytype
+                            // Sale person
+                                $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                            // Sale person
+                            // Pax No
+                                $('#pax_no').val(data.response.pax).trigger('change');  
+                            // Pax No
+                            // Booking Currency'
+                            $("#currency_id").find('option').each(function(){
+                                if( $(this).data('code') == data.response.currency ) {
+                                    $(this).attr("selected","selected");
+                                }
+                            });
+                                // $("#currency_id option:data-code"+data.response.currency+"]").trigger('change');
+                            // Booking Currency
+                            // Dinning Preference
+                            $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                            // Dinning Preference
+                            // Bedding Preference
+                            $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+                            // Bedding Preference
+                          
+                            if(data.response.passengers.passengers.length > 0){
+                                data.response.passengers.passengers.forEach(($_value, $key) => {
+                                    var $_count = $key + 1;
+                                    $('input[name="pax['+$_count+'][full_name]"]').val($_value.passenger_name);
+                                    $('input[name="pax['+$_count+'][email_address]"]').val($_value.passenger_email);
+                                    $('input[name="pax['+$_count+'][contact_number]"]').val($_value.passenger_contact);
+                                    $('input[name="pax['+$_count+'][date_of_birth]"]').val($_value.passenger_dbo);
+                                    $('input[name="pax['+$_count+'][bedding_preference]"]').val($_value.bedding_prefrences);
+                                    $('input[name="pax['+$_count+'][dinning_preference]"]').val($_value.dinning_prefrences);
+                                });
+                            }
+                            
                             searchRef.text('Search').prop('disabled', false);
+                            
                         },
                         error: function (reject) {
                            alert(reject.responseJSON.errors);
@@ -888,7 +931,6 @@ $('.search-reference').on('click', function () {
                         },
                     });
                 }
-                searchRef.text('Search').prop('disabled', false);
             },
             error: function (reject) {
                 
@@ -944,11 +986,6 @@ $('#tempalte_id').on('change', function () {
     });
 });
 
-$(document).on('click', '.supplier-id', function () {
-    
-    // supplier-currency-id
-    $(this).find(':selected').data('start')
-})
 // /
 // / 
 // / Quote FORM SUBMISSION END

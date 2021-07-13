@@ -99,9 +99,8 @@ class ResponseController extends Controller
                 }
             }
             $passengerArray['passengers'] = $passenger_data;
-            
             $response = [
-                "holiday_type"  => $holiday,
+                "brand"         => $holiday,
                 "holidayTypes"  => $holidayTypes,
                 "sale_person"   => isset($responses_data['Owner']['email']) && !empty($responses_data['Owner']['email']) ? $responses_data['Owner']['email'] : null,
                 "currency"      => isset($responses_data['Currency']) && !empty($responses_data['Currency']) ? $responses_data['Currency'] : null,
@@ -114,10 +113,24 @@ class ResponseController extends Controller
         }
             $ajax_response['status'] = false;
             $ajax_response['error'] = 'The reference is not found. Try again!';
+            
         return response()->json($ajax_response);
     }
 
-    
+    public function getPassenger($response)
+    {   
+        return [
+            'bedding_prefrences' => $response['BEDDING_PREFERENCE'],
+            'dinning_prefrences' => $response['DIETARY_PREFERENCES'],
+            'passenger_email'    => $response['Passenger_Email'],
+            'passenger_name'     => $response['Name'],
+            'passenger_dbo'      => $response['Passenger_DOB'],
+            'passenger_contact'  => $response['Passenger_Phone'],
+
+        ];
+    }
+
+
     public function isReferenceExists($ref_no)
     {
         $response['response'] = Quote::where('ref_no', $ref_no)->exists();
