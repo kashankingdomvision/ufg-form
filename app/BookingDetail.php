@@ -27,6 +27,7 @@ class BookingDetail extends Model
         'markup_amount',
         'markup_percentage',
         'selling_price',
+        'estimated_cost_bc',
         'profit_percentage',
         'selling_price_bc',
         'markup_amount_bc',

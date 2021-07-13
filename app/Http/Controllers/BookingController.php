@@ -21,6 +21,7 @@ use App\BookingDetail;
 use App\BookingDetailFinance;
 use App\BookingLog;
 use App\BookingPaxDetail;
+use App\Commission;
 use App\Http\Requests\BookingRequest;
 use Auth;
 
@@ -61,6 +62,7 @@ class BookingController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
+        $data['commission_types'] = Commission::all();
    
 
         return view('bookings.edit',$data);
@@ -71,6 +73,7 @@ class BookingController extends Controller
         $data =  [
             'user_id'             =>  Auth::id(),
             'rate_type'           =>  ($request->rate_type == 'live')? 'live': 'manual',
+            'commission_id'       =>  $request->commission_id,
             'ref_no'              =>  $request->ref_no,
             'ref_name'            =>  $request->ref_name??'zoho',
             'quote_ref'           =>  $request->quote_no,
@@ -84,12 +87,14 @@ class BookingController extends Controller
             'bedding_preference'  =>  $request->bedding_preference,
             'currency_id'         =>  $request->currency_id,
             'pax_no'              =>  $request->pax_no,
+            'net_price'           =>  $request->total_net_price??$request->total_net_price,
             'markup_amount'       =>  $request->total_markup_amount??$request->markup_amount,
             'markup_percentage'   =>  $request->total_markup_percent??$request->markup_percentage,
             'selling_price'       =>  $request->total_selling_price??$request->selling_price,
             'profit_percentage'   =>  $request->total_profit_percentage??$request->profit_percentage,
+            'commission_amount'   =>  $request->commission_amount??$request->commission_amount,
             'selling_currency_oc' =>  $request->selling_price_other_currency??$request->selling_currency_oc,
-            'selling_price_ocr'    =>   $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'selling_price_ocr'   =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'   =>  $request->booking_amount_per_person??$request->amount_per_person,
         ];
         
@@ -124,6 +129,7 @@ class BookingController extends Controller
             'markup_percentage'     => $quoteD['markup_percentage'],
             'selling_price'         => $quoteD['selling_price'],
             'profit_percentage'     => $quoteD['profit_percentage'],
+            'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency'],
             'selling_price_bc'      => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency'],
             'added_in_sage'         => ($quoteD['added_in_sage'] == "0")? '0' : '1',
@@ -231,6 +237,7 @@ class BookingController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
+        $data['commission_types'] = Commission::all();
    
 
         return view('bookings.version',$data);

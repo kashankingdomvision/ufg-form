@@ -35,50 +35,54 @@
         <div class="row">
           <div class="col-md-6">
             <div>
-              <p>
-                <a class="btn btn-info btn-sm" data-toggle="collapse" href="#view_booking_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                  View Booking Versions {{  (count($booking->getBookingLogs) > 0 ) ? '('.count($booking->getBookingLogs).')' : '' }}
-                </a>
-              </p>
-              <div class="row">
-                <div class="col">
-                  <div class="collapse multi-collapse" id="view_booking_version">
-                    <div class="card card-body">
-                      <table>
-                        @foreach ($booking->getBookingLogs as $logKey =>  $logs)
-                          <thead>
-                            <th><a href="{{ route('bookings.version', encrypt($logs->booking_id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
-                          </thead>
-                          @endforeach
-                      </table>
+              @if($booking->getBookingLogs->count())
+                <p>
+                  <a class="btn btn-info btn-sm" data-toggle="collapse" href="#view_booking_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                    View Booking Versions {{  (count($booking->getBookingLogs) > 0 ) ? '('.count($booking->getBookingLogs).')' : '' }}
+                  </a>
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <div class="collapse multi-collapse" id="view_booking_version">
+                      <div class="card card-body">
+                        <table>
+                          @foreach ($booking->getBookingLogs as $logKey =>  $logs)
+                            <thead>
+                              <th><a href="{{ route('bookings.version', encrypt($logs->booking_id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
+                            </thead>
+                            @endforeach
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              @endif
             </div>
           </div>
           <div class="col-md-6">
             <div class="float-right">
-              <p class="">
-                <a class="btn btn-info btn-sm " data-toggle="collapse" href="#view_quote_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
-                  View Quote Versions {{  (count($booking->getQuote->getQuotelogs) > 0 ) ? '('.count($booking->getQuote->getQuotelogs).')' : '' }}
-                </a>
-              </p>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="collapse multi-collapse" id="view_quote_version">
-                    <div class="card card-body float-right">
-                      <table>
-                        @foreach ($booking->getQuote->getQuotelogs as $logKey =>  $logs)
-                          <thead>
-                            <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}">Quote Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
-                          </thead>
-                          @endforeach
-                      </table>
+              @if($booking->getQuote->getQuotelogs->count())
+                <p class="">
+                  <a class="btn btn-info btn-sm " data-toggle="collapse" href="#view_quote_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                    View Quote Versions {{  (count($booking->getQuote->getQuotelogs) > 0 ) ? '('.count($booking->getQuote->getQuotelogs).')' : '' }}
+                  </a>
+                </p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="collapse multi-collapse" id="view_quote_version">
+                      <div class="card card-body float-right">
+                        <table>
+                          @foreach ($booking->getQuote->getQuotelogs as $logKey =>  $logs)
+                            <thead>
+                              <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}">Quote Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
+                            </thead>
+                            @endforeach
+                        </table>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              @endif
             </div>
           </div>
         </div>
@@ -90,7 +94,7 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Edit Quote</h3>
+                <h3 class="card-title text-center">Edit Booking</h3>
               </div>
             
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking"> 
@@ -115,7 +119,18 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-6"></div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
 
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
@@ -332,7 +347,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                   <label>Date of Service</label>
-                                  <input type="text" value="{{ $booking_detail->date_of_service }}" name="booking[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  <input type="text" value="{{ $booking_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                               </div>
                             </div>
 
@@ -412,14 +427,14 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Date</label>
-                                <input type="text" value="{{ $booking_detail->booking_date}}" name="booking[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                                <input type="text" value="{{ $booking_detail->booking_date}}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
                               </div>
                             </div>
 
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Due Date</label>
-                                <input type="text" value="{{ $booking_detail->booking_due_date }}" name="booking[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                                <input type="text" value="{{ $booking_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
@@ -557,7 +572,19 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                  </div>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency"  readonly>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -569,7 +596,7 @@
                               </div>
                             </div>
                               
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -758,7 +785,7 @@
                                     </div>
                                   </div>
                                   <div class="col-1">
-                                        <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-sm text-dark btn-link">X</button>
+                                        <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-sm btn-outline-dark">X</button>
                                   </div>
                                 </div>
                                 {{-- /////for single value/ --}}
@@ -773,9 +800,21 @@
                       @endforeach
                     @endif
                   
-                 
+                    <div class="form-group row  mt-3">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="{{ \Helper::number_format($booking->net_price) }}" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                    <div class="form-group row mt-3">
+                    <div class="form-group row">
                       
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
                 
@@ -834,6 +873,20 @@
                             <div class="input-group-append">
                               <div class="input-group-text">%</div>
                             </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Amount</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking->commission_amount) }}" readonly>
                           </div>
                         </div>
                       </div>

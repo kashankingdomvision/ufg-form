@@ -64,6 +64,16 @@
                     </div>
 
                     <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
                     </div>
 
                     <div class="col-sm-6">
@@ -290,7 +300,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                   <label>Date of Service</label>
-                                  <input type="date" value="{{ (new Carbon($booking_detail->date_of_service))->format('d/m/Y') }}" name="booking[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  {{-- <input type="date" value="{{ (new Carbon($booking_detail->date_of_service))->format('d/m/Y') }}" name="booking[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off"> --}}
                               </div>
                             </div>
 
@@ -370,14 +380,14 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Date</label>
-                                <input type="date" value="{{ (new Carbon($booking_detail->booking_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                                {{-- <input type="date" value="{{ (new Carbon($booking_detail->booking_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date"> --}}
                               </div>
                             </div>
 
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Due Date</label>
-                                <input type="date" value="{{ (new Carbon($booking_detail->booking_due_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                                {{-- <input type="date" value="{{ (new Carbon($booking_detail->booking_due_date))->format('d/m/Y') }}" name="booking[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date"> --}}
                               </div>
                             </div>
 
@@ -517,7 +527,20 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                  </div>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency"  readonly>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -529,7 +552,7 @@
                               </div>
                             </div>
                               
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -732,6 +755,20 @@
                     </div>
                   </div> --}}
 
+                  <div class="form-group row  mt-3">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="{{ \Helper::number_format($booking->net_price) }}" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="form-group row">
                     
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
@@ -791,6 +828,20 @@
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Amount</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking->commission_amount) }}" readonly>
                         </div>
                       </div>
                     </div>
