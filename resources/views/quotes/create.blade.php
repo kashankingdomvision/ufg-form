@@ -313,7 +313,7 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Booking Due Date</label>
+                            <label>Booking Due Date <span style="color:red">*</span></label>
                              <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker  checkDates bookingDueDate" autocomplete="off">
                             <span class="text-danger" role="alert"></span>
                           </div>
