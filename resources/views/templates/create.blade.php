@@ -151,7 +151,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Due Date</label>
-                            <input type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                            <input type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date" autocomplete="off">
                           </div>
                         </div>
 
@@ -295,24 +295,36 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label>Estimated Cost in Booking Currency </label>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text booking-currency-code"></span>
+                              </div>
+                              <input type="number" step="any" name="quote[0][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_0_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-2">
                           <div class="form-group">
                             <label>Selling Price in Booking Currency </label>
                             <div class="input-group">
                               <div class="input-group-prepend">
-                                <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                <span class="input-group-text booking-currency-code"></span>
                               </div>
                               <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                             </div>
                           </div>
                         </div>
                         
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                           <div class="form-group">
                             <label>Markup Amount in Booking Currency </label>
                             <div class="input-group">
                               <div class="input-group-prepend">
-                                <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                <span class="input-group-text booking-currency-code"></span>
                               </div>
                               <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                             </div>

@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category  <span style="color:red">*</span></label>
-                      <select name="categories[]" class="form-control " multiple="multiple" required>
+                      <select name="categories[]" class="form-control select2" multiple="multiple" required>
                           <option  value="">Select Category</option>
                           @foreach ($categories as $category)
                           <option value="{{$category->id}}" {{ in_array($category->id, old('categories') ?? []) ? 'selected' : '' }} >{{$category->name}}</option>
