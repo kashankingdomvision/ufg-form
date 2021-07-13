@@ -101,7 +101,7 @@ class ResponseController extends Controller
             $passengerArray['passengers'] = $passenger_data;
             
             $response = [
-                "holiday_type"  => $holiday,
+                "brand"         => $holiday,
                 "holidayTypes"  => $holidayTypes,
                 "sale_person"   => isset($responses_data['Owner']['email']) && !empty($responses_data['Owner']['email']) ? $responses_data['Owner']['email'] : null,
                 "currency"      => isset($responses_data['Currency']) && !empty($responses_data['Currency']) ? $responses_data['Currency'] : null,
@@ -114,6 +114,7 @@ class ResponseController extends Controller
         }
             $ajax_response['status'] = false;
             $ajax_response['error'] = 'The reference is not found. Try again!';
+            
         return response()->json($ajax_response);
     }
 

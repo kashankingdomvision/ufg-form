@@ -36,8 +36,7 @@ class HomeController extends Controller
         $response = $this->cf_remote_request($url, $args);
         if ($response['status'] == 200) {
             $body = $response['body'];
-            $zoho_credentials->access_token = $body['access_token'];
-            $zoho_credentials->save();
+            $zoho_credentials->update(['access_token' => $body['access_token']]);
         }
     }
     
