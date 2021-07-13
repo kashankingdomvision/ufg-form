@@ -1,9 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-// var BASEURL = 'http://localhost/ufg-form/public/json/';
-// var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
-var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
+var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+// var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -22,17 +22,21 @@ function datepickerReset(key = null) {
     var $season = $("#season_id");
     var season_start_date = new Date($season.find(':selected').data('start'));
     var season_end_date = new Date($season.find(':selected').data('end'));
-    if(season_start_date && season_end_date){
+    if(season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date'){
         if(key != null){
-            $('.bookingDateOfService:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-            $('.bookingDate:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-            $('.bookingDueDate:last').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-        }else{
-            $('.datepicker').datepicker('remove').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             
-        }
+            $('.bookingDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            $('.bookingDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            $('.bookingDueDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        }else{
+            console.log('2 sd');
+            // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+            $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format:'dd/mm/yyyy'});
+       
+       }
     }else{
-        $('.datepicker').datepicker({ autoclose: true, format:'dd/mm/yyyy'});
+        $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy'});
+        console.log('run datepicker');
     }
 }
 
@@ -44,19 +48,19 @@ function convertDate(date) {
 
 $(document).ready(function($) {
     
-    datepickerReset();
-    
     $('.select2').select2({
         width: '100%',
     });
+    datepickerReset();
+    
     
     /////////////////////////////
     // / Date Picker 
     // /
     // /
     $('#season_id').on('change', function(){
-        datepickerReset();
         $('.datepicker').datepicker("setDate",'');
+        datepickerReset();
     });
     
     $(document).on('change', '.datepicker', function () {
