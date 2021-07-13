@@ -468,7 +468,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->estimated_cost??0 }}" name="booking[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="booking[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
                                 </div>
                               </div>
                             </div>
@@ -480,7 +480,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->markup_amount??0 }}" name="booking[{{ $key }}][markup_amount]" data-name="markup_amount" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change" value="0.00">
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_amount) }}" name="booking[{{ $key }}][markup_amount]" data-name="markup_amount" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change" value="0.00">
                                 </div>
                               </div>
                             </div>
@@ -492,7 +492,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->markup_percentage??0 }}" name="booking[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_percentage) }}" name="booking[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                   <div class="input-group-append">
                                     <div class="input-group-text">%</div>
                                   </div>
@@ -507,7 +507,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->selling_price??0 }}" name="booking[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->selling_price) }}" name="booking[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                                 </div>
                               </div>
                             </div>
@@ -519,7 +519,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->profit_percentage??0 }}" name="booking[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->profit_percentage) }}" name="booking[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                   <div class="input-group-append">
                                     <div class="input-group-text">%</div>
                                   </div>
@@ -547,7 +547,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->selling_price_bc??0 }}" name="booking[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->selling_price_bc) }}" name="booking[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                 </div>
                               </div>
                             </div>
@@ -559,7 +559,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ $booking_detail->markup_amount_bc??0 }}" name="booking[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_amount_bc) }}" name="booking[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                 </div>
                               </div>
                             </div>
@@ -603,7 +603,7 @@
                                       <div class="input-group-prepend">
                                         <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                       </div>
-                                      <input type="number" value="{{ $finance->deposit_amount }}" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
+                                      <input type="number" value="{{ \Helper::number_format($finance->deposit_amount) }}" name="booking[{{ $key }}][finance][0][deposit_amount]" data-name="deposit_amount" id="quote_{{ $key }}_deposit_amount" value="0.00" class="form-control deposit-amount hide-arrows" step="any">
                                     </div>
                                   </div>
                                 </div>
@@ -624,7 +624,7 @@
 
                                 <div class="col-sm-2">
                                   <div class="form-group">
-                                    <label>Payment Method</label>
+                                    <label>Payment </label>
                                     <select class="form-control" name="booking[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{ $key }}_payment_method" class="form-control payment-method" >
                                       <option value="">Select Payment Method</option>
                                       @foreach ($payment_methods as $payment_method)
@@ -636,7 +636,7 @@
 
                                 <div class="col-sm-2 d-flex justify-content-center">
                                   <div class="form-group">
-                                    <label>Upload to Calendar </label>
+                                    <label>Calendar </label>
                                     <div class="input-group">
                                       <div class="input-group-prepend">
                                         <div class="icheck-primary">
@@ -779,7 +779,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->markup_amount }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($booking->markup_amount) }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -790,7 +790,7 @@
                           {{-- <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div> --}}
-                          <input type="number" value="{{ $booking->markup_percent }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($booking->markup_percent) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -809,7 +809,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->selling_price }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($booking->selling_price) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -824,7 +824,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->profit_percentage }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($booking->profit_percentage) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -872,7 +872,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->selling_price_ocr }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($booking->selling_price_ocr) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -890,7 +890,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
                           </div>
-                          <input type="number" value="{{ $booking->amount_per_person }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                          <input type="number" value="{{  \Helper::number_format($booking->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
                         </div>
                       </div>
                     </div>

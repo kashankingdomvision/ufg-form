@@ -433,7 +433,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Booking Due Date</label>
+                                <label>Booking Due Date <span style="color:red">*</span></label>
                                 <input type="text" value="{{ $booking_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
                                 <span class="text-danger" role="alert"></span>
                               </div>

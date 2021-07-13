@@ -966,6 +966,7 @@ $('#clone_booking_finance').on('click', function () {
 
     // remove checked attribute after clone
     $('.finance-clonning:last').find(':checked').attr('checked', false);
+    $('.deposit-amount:last').val('0.00');
 });
 
 $('#tempalte_id').on('change', function () {
