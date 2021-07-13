@@ -64,7 +64,6 @@ class SeasonController extends Controller
      */
     public function update(SeasonRequest $request, $id)
     {
-        dd($request->all());
         $season = Season::findOrFail(decrypt($id));
         $season->update($request->all());
         return redirect()->route('seasons.index')->with('success_message', 'Season updated successfully');

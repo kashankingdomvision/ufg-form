@@ -10,11 +10,11 @@
             <div class="col-sm-2">
                 <div class="form-group">
                     <label>Date of Service</label>
-                    <input type="date" value="{{ $q_detail->date_of_service }}"
+                    <input type="text" value="{{ $q_detail->date_of_service }}"
                         name="quote[{{ $key }}][date_of_service]" data-name="date_of_service"
                         id="quote_{{ $key }}_date_of_service"
                         class="form-control date-of-service datepicker checkDates bookingDateOfService"
-                        placeholder="Date of Service" autocomplete="off">
+                        placeholder="DD/MM/YYYY" autocomplete="off">
                 </div>
             </div>
 
@@ -113,21 +113,21 @@
             <div class="col-sm-2">
                 <div class="form-group">
                     <label>Booking Date</label>
-                    <input type="date" value="{{ $q_detail->booking_date }}"
+                    <input type="text" value="{{ $q_detail->booking_date }}"
                         name="quote[{{ $key }}][booking_date]" data-name="booking_date"
                         id="quote_{{ $key }}_booking_date"
-                        class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
+                        class="form-control booking-date datepicker bookingDate" placeholder="DD/MM/YYYY" autocomplete="off">
                 </div>
             </div>
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Booking Due Date</label>
-                    <input type="date" value="{{ $q_detail->booking_due_date }}"
+                    <label>Booking Due Date <span style="color:red">*</span></label>
+                    <input type="text value="{{ $q_detail->booking_due_date }}"
                         name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date"
                         id="quote_{{ $key }}_booking_due_date"
                         class="form-control booking-due-date datepicker checkDates bookingDueDate"
-                        placeholder="Booking Due Date">
+                        placeholder="DD/MM/YYYY" autocomplete="off">
                 </div>
             </div>
 
@@ -202,16 +202,13 @@
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Supplier Currency</label>
+                    <label>Supplier Currency <span style="color:red">*</span></label>
                     <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id"
                         id="quote_{{ $key }}_supplier_currency_id"
                         class="form-control    supplier-currency-id @error('currency_id') is-invalid @enderror">
                         <option value="">Select Supplier Currency</option>
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}"
-                                {{ $q_detail->supplier_currency_id == $currency->id ? 'selected' : '' }}
-                                data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp;
-                                {{ $currency->code }} - {{ $currency->name }} </option>
+                            <option value="{{ $currency->id }}" {{ $q_detail->supplier_currency_id == $currency->id ? 'selected' : '' }} data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp; {{ $currency->code }} - {{ $currency->name }} </option>
                         @endforeach
                     </select>
 
@@ -223,45 +220,45 @@
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Estimated Cost </label>
+                    <label>Estimated Cost <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text supplier-currency-code"></span>
+                            <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->estimated_cost ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->estimated_cost) }}"
                             name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost"
                             id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change"
-                            value="0.00">
+                            >
                     </div>
                 </div>
             </div>
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Markup Amount </label>
+                    <label>Markup Amount <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text supplier-currency-code"></span>
+                            <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->markup_amount ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->markup_amount) }}"
                             name="quote[{{ $key }}][markup_amount]" data-name="markup_amount"
                             id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change"
-                            value="0.00">
+                            >
                     </div>
                 </div>
             </div>
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Markup % </label>
+                    <label>Markup % <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text supplier-currency-code"></span>
+                            <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->markup_percentage ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->markup_percentage) }}"
                             name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage"
                             id="quote_{{ $key }}_markup_percentage"
-                            class="form-control markup-percentage change" value="0.00">
+                            class="form-control markup-percentage change">
                         <div class="input-group-append">
                             <div class="input-group-text">%</div>
                         </div>
@@ -271,14 +268,12 @@
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Selling Price </label>
+                    <label>Selling Price <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text supplier-currency-code">
-                                {{-- <i class="fas fa-dollar-sign"></i> --}}
-                            </span>
+                            <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->selling_price ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->selling_price) }}"
                             name="quote[{{ $key }}][selling_price]" data-name="selling_price"
                             id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows"
                             value="0.00" readonly>
@@ -288,14 +283,12 @@
 
             <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Profit % </label>
+                    <label>Profit % <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text supplier-currency-code">
-                                {{-- <i class="fas fa-dollar-sign"></i> --}}
-                            </span>
+                            <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->profit_percentage ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->profit_percentage) }}"
                             name="quote[{{ $key }}][profit_percentage]" data-name="profit_percentage"
                             id="quote_{{ $key }}_profit_percentage"
                             class="form-control profit-percentage hide-arrows" value="0.00" readonly>
@@ -306,36 +299,36 @@
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Selling Price in Booking Currency </label>
+                    <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span
-                                class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                class="input-group-text booking-currency-code"></span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->selling_price_bc ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->selling_price_bc) }}"
                             name="quote[{{ $key }}][selling_price_in_booking_currency]"
                             data-name="selling_price_in_booking_currency"
                             id="quote_{{ $key }}_selling_price_in_booking_currency"
-                            class="form-control selling-price-in-booking-currency" value="0.00">
+                            class="form-control selling-price-in-booking-currency" readonly>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
-                    <label>Markup Amount in Booking Currency </label>
+                    <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span
-                                class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                class="input-group-text booking-currency-code"></span>
                         </div>
-                        <input type="number" step="any" value="{{ $q_detail->markup_amount_bc ?? 0 }}"
+                        <input type="number" step="any" value="{{ \Helper::number_format($q_detail->markup_amount_bc) }}"
                             name="quote[{{ $key }}][markup_amount_in_booking_currency]"
                             data-name="markup_amount_in_booking_currency"
                             id="quote_{{ $key }}_markup_amount_in_booking_currency"
-                            class="form-control markup-amount-in-booking-currency" value="0.00">
+                            class="form-control markup-amount-in-booking-currency" readonly>
                     </div>
                 </div>
             </div>
