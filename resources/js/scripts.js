@@ -6,6 +6,13 @@ var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
+function todayDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    return today = dd + '/' + mm + '/' + yyyy;
+}
 
 function datepickerReset(key = null) {
     
@@ -1044,4 +1051,70 @@ $("#update-booking").submit(function(event) {
         },
     });
 });
+
+
+
+
+
+
+
+$(document).on('change', '.deposit-due-date', function(){
+    var close = $(this).closest('.finance-clonning');
+    close.find('.plus').removeAttr('disabled');
+});
+
+
+///booking incremnet and 
+  
+$(document).on('click', '.increment', function() {
+                
+    var close = $(this).closest('.finance-clonning');
+    
+        var valueElement = close.find('.ab_number_of_days');
+        var dueDate = close.find('.deposit-due-date').val();
+        var nowDate  =todayDate();
+        const firstDate = new Date(dueDate);
+        const secondDate = convertDate(nowDate);
+       
+        if(firstDate == 'Invalid Date'){
+            alert('deposite date required');
+        }else{
+            const oneDay = 24 * 60 * 60 * 1000; 
+            const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+            if(firstDate > secondDate){
+                $(this).attr('disabled', true);
+            }else{
+                if(valueElement.val() == ''){
+                    valueElement.val(0);
+                }
+                var count = Math.max(parseInt(valueElement.val()??0));
+                var diffcount = diffDays - valueElement.val();
+                var b =1;
+                if($(this).hasClass('plus')) 
+                {
+                    if(diffcount < 1){
+                        close.find('.plus').attr('disabled', true);
+                    }else{
+                        count = count + b;
+                        valueElement.val(count);
+                    }
+                } 
+                else if (valueElement.val() > 0) // Stops the value going into negatives
+                {
+                    close.find('.plus').attr('disabled', false);
+                    count -=b;
+                    valueElement.val(count);
+                } 
+            }
+        }
+    return false;
+});
+
+
+///booking incremnet and 
+
+
+
+
+
 });

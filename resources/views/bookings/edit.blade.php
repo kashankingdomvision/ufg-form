@@ -698,11 +698,11 @@
                                         <label>Alert before the following days </label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
-                                            <span class="input-group-text minus increment">-</span>
+                                            <button type="button" class="input-group-text minus increment">-</button>
                                           </div>
-                                            <input type="number" value="{{ $finance->additional_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][ab_number_of_days]" step="any" class="form-control ab_number_of_days" min="0" >
-                                          <div class="input-group-append">
-                                            <span class="input-group-text plus increment">+</span>
+                                          <input type="text"  name="quote[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days"  size="10" value="{{ $finance->additional_date??0 }}">
+                                            <div class="input-group-append">
+                                            <button type="button" class="input-group-text plus increment">+</button>
                                           </div>
                                         </div>
                                       </div>
@@ -777,7 +777,7 @@
                                         <div class="input-group-prepend">
                                           <span class="input-group-text minus increment">-</span>
                                         </div>
-                                          <input type="number"  name="quote[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days" min="0" >
+                                          <input type="text"  name="quote[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days"  size="10" value="0">
                                         <div class="input-group-append">
                                           <span class="input-group-text plus increment">+</span>
                                         </div>
