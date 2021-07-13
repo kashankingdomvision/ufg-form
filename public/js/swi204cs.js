@@ -19269,39 +19269,40 @@ function datepickerReset() {
   var season_start_date = new Date($season.find(':selected').data('start'));
   var season_end_date = new Date($season.find(':selected').data('end'));
 
-  if (season_start_date && season_end_date) {
+  if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
     if (key != null) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDateOfService:last').datepicker('remove').datepicker({
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDateOfService:last').datepicker('destroy').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         startDate: season_start_date,
         endDate: season_end_date
       });
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDate:last').datepicker('remove').datepicker({
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDate:last').datepicker('destroy').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         startDate: season_start_date,
         endDate: season_end_date
       });
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDueDate:last').datepicker('remove').datepicker({
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDueDate:last').datepicker('destroy').datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy',
         startDate: season_start_date,
         endDate: season_end_date
       });
     } else {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker('remove').datepicker({
+      console.log('2 sd'); // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+
+      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker("destroy").datepicker({
         autoclose: true,
-        format: 'dd/mm/yyyy',
-        startDate: season_start_date,
-        endDate: season_end_date
+        format: 'dd/mm/yyyy'
       });
     }
   } else {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker({
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker('destroy').datepicker({
       autoclose: true,
       format: 'dd/mm/yyyy'
     });
+    console.log('run datepicker');
   }
 }
 
@@ -19311,17 +19312,17 @@ function convertDate(date) {
 }
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  datepickerReset();
   $('.select2').select2({
     width: '100%'
-  }); /////////////////////////////
+  });
+  datepickerReset(); /////////////////////////////
   // / Date Picker 
   // /
   // /
 
   $('#season_id').on('change', function () {
-    datepickerReset();
     $('.datepicker').datepicker("setDate", '');
+    datepickerReset();
   });
   $(document).on('change', '.datepicker', function () {
     var datePicker_id = $(this).attr('id');
