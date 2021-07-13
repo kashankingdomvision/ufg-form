@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             SeasonTableSeeder::class,
             SupplierTableSeeder::class,
             CommissionTableSeeder::class,
-            
+            ReferenceCredentialTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
