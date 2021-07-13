@@ -64,6 +64,7 @@ class QuoteRequest extends FormRequest
             'agency'                            => 'Agency',
             'agency_name.required_if'           => 'Agency Name',
             'agency_contact.required_if'        => 'Agency Contact',
+            'commission_id'                     => 'Commission Type',
             'season_id'                         => 'Booking season',
             'brand_id'                          => 'Brand',
             'currency_id'                       => 'Booking currency',

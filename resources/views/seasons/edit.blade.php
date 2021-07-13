@@ -49,7 +49,7 @@
   
                     <div class="form-group">
                       <label>Start Date <span style="color:red">*</span></label>
-                      <input type="text" name="start_date" value="{{$season->start_date}}" class="form-control date-picker @error('start_date') is-invalid @enderror" placeholder="{{ date("d/m/Y") }}" autocomplete="off">
+                      <input type="date" name="start_date" value="{{$season->start_date}}" class="form-control date-picker @error('start_date') is-invalid @enderror" placeholder="{{ date("d/m/Y") }}" autocomplete="off">
   
                       @error('start_date')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -58,7 +58,7 @@
   
                     <div class="form-group">
                       <label>End Date <span style="color:red">*</span></label>
-                      <input type="text" name="end_date" value="{{$season->end_date}}" class="form-control date-picker @error('end_date') is-invalid @enderror" placeholder="{{ date("d/m/Y") }}" autocomplete="off">
+                      <input type="date" name="end_date" value="{{$season->end_date}}" class="form-control date-picker @error('end_date') is-invalid @enderror" placeholder="{{ date("d/m/Y") }}" autocomplete="off">
   
                       @error('end_date')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
