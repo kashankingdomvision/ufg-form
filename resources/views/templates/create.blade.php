@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Add Quote')
+@section('title', 'Add Template')
 
 @section('content')
 
@@ -18,7 +18,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Create Template</h4>
+              <h4>Add Template</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">

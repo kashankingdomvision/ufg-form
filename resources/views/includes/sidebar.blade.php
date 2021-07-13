@@ -81,7 +81,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-clone nav-icon"></i>
                         <p>
@@ -91,13 +91,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('templates.create') }}" class="nav-link">
+                            <a href="{{ route('templates.create') }}" class="nav-link {{ $route == 'templates.create' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Template</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('templates.index') }}" class="nav-link">
+                            <a href="{{ route('templates.index') }}"class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Template</p>
                             </a>
@@ -115,13 +115,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('seasons.create') }}"  class="nav-link {{ $route == 'seasons.create' ? 'active' : ''}} ">
+                            <a href="{{ route('seasons.create') }}"  class="nav-link {{ $route == 'seasons.create' ? 'active' : '' }}">
                                 <i class="fa fa-plus nav-icon"></i>
                                 <p>Add Season</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : ''}} ">
+                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Season</p>
                             </a>
