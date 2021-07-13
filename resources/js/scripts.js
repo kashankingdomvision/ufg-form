@@ -1,9 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-var BASEURL = 'http://localhost/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
-// var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
+// var BASEURL = 'http://localhost/ufg-form/public/json/';
+// var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
