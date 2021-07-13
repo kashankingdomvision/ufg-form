@@ -33,7 +33,7 @@
                 <h3 class="card-title text-center">Commissions Form</h3>
               </div>
 
-              <form action="{{ route('setting.commisions.update', encrypt($commission->id)) }}" method="POST">
+              <form action="{{ route('setting.commissions.update', encrypt($commission->id)) }}" method="POST">
                 @csrf @method('put')
 
                 <div class="card-body">
