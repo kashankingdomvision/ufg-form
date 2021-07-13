@@ -20130,6 +20130,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).end().show().insertAfter(".finance-clonning:last"); // remove checked attribute after clone
 
     $('.finance-clonning:last').find(':checked').attr('checked', false);
+    $('.deposit-amount:last').val('0.00');
   });
   $('#tempalte_id').on('change', function () {
     $.ajax({
