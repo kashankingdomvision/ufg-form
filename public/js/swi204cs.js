@@ -19246,11 +19246,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -20157,6 +20157,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.deposit-amount:last').val('0.00');
   });
   $('#tempalte_id').on('change', function () {
+    var confirmAlert = null;
     $.ajax({
       headers: {
         'X-CSRF-TOKEN': CSRFTOKEN
@@ -20165,7 +20166,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       type: 'get',
       dataType: "json",
       success: function success(data) {
-        $('#parent').html(data.template_view);
+        if (data) {
+          confirmAlert = confirm('Are you sure! you want to override Quote Details');
+        }
+
+        if (confirmAlert == true) {
+          $('#parent').html(data.template_view);
+          $(".booking-currency-id").val(data.template.currency_id).change();
+        }
       },
       error: function error(reject) {
         alert(reject);
