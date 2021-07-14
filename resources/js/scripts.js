@@ -482,7 +482,7 @@ $(document).on('click', '.addChild', function () {
             });
             var commissionPercentage = parseFloat(object.shift()['percentage']);
             calculatedCommisionAmount =  parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
-
+            
         }else{
             calculatedCommisionAmount = 0.00;
         }
@@ -1000,13 +1000,26 @@ $('#clone_booking_finance').on('click', function () {
 });
 
 $('#tempalte_id').on('change', function () {
+
+    var confirmAlert = null;
+
     $.ajax({
         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
         url: BASEURL+'template/'+$(this).val()+'/partial',
         type: 'get',
         dataType: "json",
         success: function (data) {
-           $('#parent').html(data.template_view);
+
+            if(data){
+                confirmAlert = confirm('Are you sure! you want to override Quote Details');
+            }
+
+            if(confirmAlert == true){
+
+                $('#parent').html(data.template_view);
+                $(".booking-currency-id").val(data.template.currency_id).change();
+            }
+
         },
         error: function (reject) {
             
@@ -1015,6 +1028,7 @@ $('#tempalte_id').on('change', function () {
             
         },
     });
+
 });
 
 $("#create_template").submit(function(event) {

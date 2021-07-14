@@ -301,6 +301,18 @@
 
             <div class="col-sm-2">
                 <div class="form-group">
+                  <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text booking-currency-code">{{ ($template->getCurrency && $template->getCurrency->count()) ? $template->getCurrency->code : '' }}</span>
+                    </div>
+                    <input type="number" step="any" value="{{ \Helper::number_format($q_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
+                  </div>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <div class="form-group">
                     <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
