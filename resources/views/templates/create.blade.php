@@ -6,20 +6,20 @@
 
   <div class="content-wrapper">
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+      <div class="alert alert-danger">
+        <ul>
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
     @endif
     <section class="content-header">
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-              <h4>Add Template</h4>
-            </div>
+            <h4>Add Template</h4>
+          </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
@@ -40,48 +40,64 @@
                 <h3 class="card-title text-center">Template Form</h3>
               </div>
             
-            <form method="POST" action="{{ route('templates.store') }}"> @csrf
-              <div class="card-body">
-                  <div class="parent" id="parent">
+              <form method="POST" action="{{ route('templates.store') }}" id="create_template"> @csrf
+                <div class="card-body">
+
                   <div class="row p-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>Template Name <span class="text-danger">*</span></label>
-                            <input type="text" name="template_name"  class="form-control"  placeholder="Template name" autocomplete="off">
-                            @error('template_name')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col">
+                    <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Season <span class="text-danger">*</span></label>
-                              <select name="season_id" id="season_id" class="form-control currency-select2">
-                                  <option value="">Select Booking Season</option>
-                                  @foreach ($seasons as $season)
-                                      <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
-                                  @endforeach
-                              </select>
-                              @error('season_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
-                        </div>
+                        <label>Template Name <span style="color:red">*</span></label>
+                        <input type="text" name="template_name" id="template_name" class="form-control" placeholder="Template name">
+                        <span class="text-danger" role="alert"></span>
+                      </div>
                     </div>
-                    <div class="col">
+
+                    <div class="col-sm-6">
                       <div class="form-group">
-                          <label>Booking Currency <span class="text-danger">*</span></label>
-                              <select name="booking_currency_id" id="booking_currency_id" class="form-control currency-select2">
-                                  <option value="">Select Booking Currency</option>
-                                  @foreach ($currencies as $currency)
-                                    <option value="{{ $currency->id }}" {{ old('currency') == $currency->id  ? "selected" : "" }}> {{ $currency->name }} </option>
-                                  @endforeach
-                              </select>
-                              @error('season_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
+                        <label>Season <span style="color:red">*</span></label>
+                        <select name="season_id" id="season_id" class="form-control currency-select2">
+                          <option value="">Select Booking Season</option>
+                          @foreach ($seasons as $season)
+                            <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Booking Currency <span style="color:red">*</span></label>
+                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id">
+                          <option value="">Select Booking Currency</option>
+                          @foreach ($currencies as $currency)
+                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" >  &nbsp; {{$currency->code}} - {{$currency->name}}  </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Rate Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" value="live" class="rate-type" checked>
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" value="manual" class="rate-type">
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
                         </div>
+                      </div>
                     </div>
                   </div>
+
+
+                  <div class="parent" id="parent">
                     <div class="quote" data-key="0">
                         
                       <div class="row">
@@ -166,8 +182,9 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Booking Due Date</label>
+                            <label>Booking Due Date <span style="color:red">*</span></label>
                             <input type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date" autocomplete="off">
+                            <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
 
@@ -227,52 +244,49 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Supplier Currency</label>
+                            <label>Supplier Currency <span style="color:red">*</span></label>
                             <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
                               <option value="">Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
                                 <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                               @endforeach
                             </select>
-
-                            @error('currency_id')
-                              <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                            @enderror
+                            <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Estimated Cost </label>
+                            <label>Estimated Cost <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" min="0" value="0.00">
                             </div>
                           </div>
                         </div>
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Markup Amount </label>
+                            <label>Markup Amount <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" step="any">
+                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" min="0" value="0.00" step="any">
                             </div>
                           </div>
                         </div>
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Markup % </label>
+                            <label>Markup % <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" value="0.00">
+                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
                               <div class="input-group-append">
                                 <div class="input-group-text">%</div>
                               </div>
@@ -282,7 +296,7 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Selling Price </label>
+                            <label>Selling Price <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code">
@@ -296,7 +310,7 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Profit % </label>
+                            <label>Profit % <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code">
@@ -313,7 +327,7 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Estimated Cost in Booking Currency </label>
+                            <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code"></span>
@@ -325,7 +339,7 @@
 
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Selling Price in Booking Currency </label>
+                            <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code"></span>
@@ -337,7 +351,7 @@
                         
                         <div class="col-sm-2">
                           <div class="form-group">
-                            <label>Markup Amount in Booking Currency </label>
+                            <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
                                 <span class="input-group-text booking-currency-code"></span>
@@ -378,7 +392,6 @@
                       </div>
 
                     </div>
-                
                   </div>
 
                   <div class="row">
@@ -386,14 +399,18 @@
                       <button type="button" id="add_more" class="btn btn-outline-dark  pull-right ">+ Add more </button>
                     </div>
                   </div>
-             
-                 
+                
+                   
                 </div>
+
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right">Submit</button>
                 </div>
-            </form>
+              </form>
+
+              <div id="overlay" class=""></div>
             </div>
+
           </div>
         </div>
       </div>

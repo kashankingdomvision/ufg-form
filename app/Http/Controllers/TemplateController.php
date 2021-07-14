@@ -15,6 +15,7 @@ use Auth;
 use App\BookingType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
+use App\Http\Requests\TemplateRequest;
 
 class TemplateController extends Controller
 {
@@ -78,14 +79,14 @@ class TemplateController extends Controller
       return view('templates.create', $data);
     }
     
-    public function store(Request $request)
+    public function store(TemplateRequest $request)
     {
       $template = Template::create([
-        'user_id'   => Auth::id(),
-        'title'     => $request->template_name,
-        'season_id' => $request->season_id,
-        'booking_currency_id' => $request->booking_currency_id,
-        
+        'user_id'     => Auth::id(),
+        'title'       => $request->template_name,
+        'season_id'   => $request->season_id,
+        'currency_id' => $request->currency_id,
+        'rate_type'   => $request->rate_type,
       ]);
 
       foreach ($request->quote as $quote) {
@@ -127,13 +128,15 @@ class TemplateController extends Controller
        return view('templates.edit', $data);
     }
     
-    public function update(Request $request, $id)
+    public function update(TemplateRequest $request, $id)
     {
         $template = Template::findOrFail(decrypt($id));
         $template->update([
-          'title'     => $request->template_name,
-          'season_id' => $request->season_id,
-          'booking_currency_id' => $request->booking_currency_id,
+          'user_id'     => Auth::id(),
+          'title'       => $request->template_name,
+          'season_id'   => $request->season_id,
+          'currency_id' => $request->currency_id,
+          'rate_type'   => $request->rate_type,
         ]);
         $template->getDetails()->delete();
    
