@@ -38,7 +38,6 @@
                     <th>#</th>
                     <th>Product Code</th>
                     <th>Product Name</th>
-                    <th>Product Description</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -48,7 +47,6 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
-                    <td>{{ Str::limit($product->description, 50, '...')}}</td>
                     <td class="d-flex">
                       <a href="{{ route('products.edit', encrypt($product->id)) }}" class="btn btn-link text-success p-0" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                       <form method="post" action="{{ route('products.destroy', encrypt($product->id)) }}">

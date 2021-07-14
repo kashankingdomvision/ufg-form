@@ -19318,6 +19318,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     width: '100%',
     theme: "bootstrap"
   });
+  $('.select2-multiple').select2({
+    width: '100%',
+    theme: "classic"
+  });
   datepickerReset(); /////////////////////////////
   // / Date Picker 
   // /
