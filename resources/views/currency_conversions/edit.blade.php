@@ -41,7 +41,7 @@
                     <div class="card-body">
                       <div class="form-group">
                         <label>From <span class="text-danger">*</span></label>
-                        <select name="from" class="form-control currencyImage @error('currency') is-invalid @enderror" required disabled>
+                        <select name="from" class="form-control select2single currencyImage @error('currency') is-invalid @enderror" required disabled>
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $curr)
                             <option value="{{$curr->code}}" data-image="data:image/png;base64, {{$curr->flag}}" {{ $curr->code == $currency->from ? 'selected' : '' }}> &nbsp; {{$curr->code}} - {{$curr->name}} {{ ($currency->isObsolete == 1) ? '(obsolete)' : '' }} </option>
@@ -51,7 +51,7 @@
               
                       <div class="form-group">
                         <label>To <span class="text-danger">*</span></label>
-                        <select name="to" class="form-control currencyImage @error('currency') is-invalid @enderror" required disabled>
+                        <select name="to" class="form-control select2single currencyImage @error('currency') is-invalid @enderror" required disabled>
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $curr)
                             <option value="{{$curr->code}}" data-image="data:image/png;base64, {{$curr->flag}}" {{ $curr->code == $currency->to ? 'selected' : '' }}> &nbsp; {{$curr->code}} - {{$curr->name}} {{ ($currency->isObsolete == 1) ? '(obsolete)' : '' }} </option>

@@ -19246,11 +19246,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
- // var BASEURL = 'http://localhost/ufg-form/public/json/';
-// var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
 
-var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
+var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/'; // var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19290,8 +19290,7 @@ function datepickerReset() {
         endDate: season_end_date
       });
     } else {
-      console.log('2 sd'); // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-
+      // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
       jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker("destroy").datepicker({
         autoclose: true,
         format: 'dd/mm/yyyy'
@@ -19313,7 +19312,12 @@ function convertDate(date) {
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
-    width: '100%'
+    width: '100%',
+    theme: "classic"
+  });
+  $('.select2single').select2({
+    width: '100%',
+    theme: "bootstrap"
   });
   datepickerReset(); /////////////////////////////
   // / Date Picker 
@@ -19591,6 +19595,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // });
 
   $(document).on('click', '#add_more', function (e) {
+    $('.select2single').select2('destroy');
     $(".quote").eq(0).clone().find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
         return '[' + $('.quote').length + ']';
@@ -19619,8 +19624,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
     $('.text-danger').html('');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1); // reinitializedDynamicFeilds();
-    // datePickerSetDate();
+    datepickerReset(1);
+    reinitializedDynamicFeilds(); // datePickerSetDate();
     // $('.select2').select2({
     //     width: '100%',
     // });
@@ -19634,8 +19639,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function reinitializedDynamicFeilds() {
-    $('.reinitialized-select2').removeClass('select2-hidden-accessible').next().remove();
-    $('.reinitialized-select2').select2();
+    $('.select2single').select2({
+      width: '100%',
+      theme: "bootstrap"
+    }); //     if ($('.select2').hasClass("select2-hidden-accessible")) {
+    //         $('.select2').select2('destroy');
+    //     }
+    //         // $('.select2').select2('remove');
+    //     // $('.select2:last').removeClass('select2-hidden-accessible').next().remove();
+    //     $('.select2').select2({
+    //         width: '100%',
+    //         theme: "classic",
+    //     });
   }
 
   var currencyConvert = getJson();

@@ -1,10 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-// var BASEURL = 'http://localhost/ufg-form/public/json/';
-// var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
-var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
-
+var BASEURL = 'http://localhost/ufg-form/public/json/';
+var REDIRECT_BASEURL = 'http://localhost/ufg-form/public/';
+// var BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = 'https://stagingwebsite.tk/php/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -29,7 +28,6 @@ function datepickerReset(key = null) {
             $('.bookingDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             $('.bookingDueDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
         }else{
-            console.log('2 sd');
             // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format:'dd/mm/yyyy'});
        
@@ -50,6 +48,12 @@ $(document).ready(function($) {
     
     $('.select2').select2({
         width: '100%',
+        theme: "classic",
+    });
+    
+    $('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap",
     });
     datepickerReset();
     
@@ -332,7 +336,7 @@ $(document).on('click', '.addChild', function () {
     // });
 
     $(document).on('click', '#add_more', function(e) {
-            
+            $('.select2single').select2('destroy');
         $(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){                        
@@ -373,7 +377,7 @@ $(document).on('click', '.addChild', function () {
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
            
-            // reinitializedDynamicFeilds();
+            reinitializedDynamicFeilds();
             // datePickerSetDate();
             // $('.select2').select2({
             //     width: '100%',
@@ -390,9 +394,19 @@ $(document).on('click', '.addChild', function () {
     });
 
     function reinitializedDynamicFeilds(){
-
-        $('.reinitialized-select2').removeClass('select2-hidden-accessible').next().remove();
-        $('.reinitialized-select2').select2();
+        $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+        });
+    //     if ($('.select2').hasClass("select2-hidden-accessible")) {
+    //         $('.select2').select2('destroy');
+    //     }
+    //         // $('.select2').select2('remove');
+    //     // $('.select2:last').removeClass('select2-hidden-accessible').next().remove();
+    //     $('.select2').select2({
+    //         width: '100%',
+    //         theme: "classic",
+    //     });
     }
 
     var currencyConvert = getJson();

@@ -38,7 +38,7 @@
                     <div class="card-body">
                       <div class="form-group">
                         <label>Currencies <span style="color:red">*</span></label>
-                        <select name="currency" class="form-control currencyImage @error('currency') is-invalid @enderror" required>
+                        <select name="currency" class="form-control select2single currencyImage @error('currency') is-invalid @enderror" required>
                           <option value="">Select Currency</option>
                           @foreach ($all_currencies as $currency)
                             <option value="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ old('currency') == $currency->code ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} {{ ($currency->isObsolete == 'true') ? '(obsolete)' : '' }} </option>

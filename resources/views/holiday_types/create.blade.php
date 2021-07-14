@@ -49,7 +49,7 @@
 
                   <div class="form-group">
                     <label>Brand <span style="color:red">*</span></label>
-                    <select name="brand_id" class="form-control select2 @error('brand_id') is-invalid @enderror" required>
+                    <select name="brand_id" class="form-control select2single @error('brand_id') is-invalid @enderror" required>
                       <option value="">Select Brand</option>
                         @foreach ($brands as $brand)
                             <option value="{{$brand->id}}"  {{ (old('brand_id') == $brand->id) ? 'selected' : '' }}> {{$brand->name}} </option>
