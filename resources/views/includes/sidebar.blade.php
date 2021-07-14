@@ -80,8 +80,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
-                                <i class="fa fa-trash  nav-icon"></i>
-                                <p>View Trash</p>
+                                <i class="fa fa-trash-alt nav-icon"></i>
+                                <p>Recently Deleted</p>
                             </a>
                         </li>
                     </ul>
