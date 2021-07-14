@@ -65,7 +65,7 @@
 
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
-                      <select class="form-control select2 role @error('role') is-invalid @enderror" name="role">
+                      <select class="form-control select2single role @error('role') is-invalid @enderror" name="role">
                         <option value="">Select User Type</option>
                         @foreach ($roles as $role)
                           <option value="{{ $role->id }}" {{ ($user->role_id == $role->id) ? 'selected' : ''}} data-role="{{ $role->name }}"> {{ $role->name }}</option>
@@ -79,7 +79,7 @@
 
                     <div class="form-group {{ $user->role_id == 2 ? '' : 'd-none' }}" id="supervisor_feild">
                       <label>Supervisor <span style="color:red">*</span></label>
-                      <select name="supervisor_id" id="supervisor_id" class="form-control select2 supervisor-id  @error('supervisor_id') is-invalid @enderror" >
+                      <select name="supervisor_id" id="supervisor_id" class="form-control select2single supervisor-id  @error('supervisor_id') is-invalid @enderror" >
                         <option value="">Select Supervisor</option>
                         @foreach ($supervisors as $supervisor)
                           <option value="{{ $supervisor->id }}" {{ ($supervisor->id == $user->supervisor_id) ? 'selected' : ''}}> {{ $supervisor->name }}</option>
@@ -93,7 +93,7 @@
 
                     <div class="form-group">
                       <label>Default Currency</label>
-                      <select class="form-control select2 currencyImage @error('currency') is-invalid @enderror" name="currency">
+                      <select class="form-control select2single currencyImage @error('currency') is-invalid @enderror" name="currency">
                         <option selected value="">Select Currency</option>
                         @foreach ($currencies as $currency)
                           <option value="{{ $currency->id }}" {{ old('currency') == $currency->id || ($user->role_id == $currency->id) ? 'selected' : null }} data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp; {{ $currency->code }} - {{ $currency->name }} </option>
@@ -107,7 +107,7 @@
 
                     <div class="form-group">
                       <label>Default Brands</label>
-                      <select class="form-control select2 getBrandtoHoliday @error('brand') is-invalid @enderror" name="brand">
+                      <select class="form-control select2single getBrandtoHoliday @error('brand') is-invalid @enderror" name="brand">
                         <option value="">Select Brands</option>
                         @foreach ($brands as $brand)
                           <option value="{{ $brand->id }}" {{ $user->brand_id == $brand->id ? 'selected' : (old('brand') == $brand->id ? 'selected' : null) }} >{{ $brand->name }}</option>
@@ -121,7 +121,7 @@
 
                     <div class="form-group">
                       <label>Holiday Type</label>
-                      <select class="form-control select2 appendHolidayType @error('holiday_type') is-invalid @enderror" name="holiday_type">
+                      <select class="form-control select2single appendHolidayType @error('holiday_type') is-invalid @enderror" name="holiday_type">
                         <option value="">Select Holiday Type</option>
                         @if(isset($user->getBrand->getHolidayTypes))
                           @foreach ($user->getBrand->getHolidayTypes as $holiday_type)

@@ -57,7 +57,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
                         <p>
@@ -78,9 +78,14 @@
                                 <p>View Quote</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
+                                <i class="fa fa-trash  nav-icon"></i>
+                                <p>View Trash</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
-
                 <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-clone nav-icon"></i>

@@ -303,5 +303,17 @@ class QuoteController extends Controller
         ]);
         
         return redirect()->route('quotes.index')->with('success_message', 'Quote Booked successfully');        
+    }
+    
+    public function getTrash()
+    {
+        $data['quotes'] = Quote::onlyTrashed()->get();
+        return view('quotes.quotetrash', $data);
     } 
+    
+    public function restore($id)
+    {
+        $quote = Quote::withTrashed()->find(decrypt($id))->restore();
+        return redirect()->route('quotes.view.trash')->with('success_message', 'Quote restored successfully');        
+    }
 }

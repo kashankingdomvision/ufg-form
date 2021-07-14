@@ -66,7 +66,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
                             <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
@@ -108,7 +108,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday brand-id">
+                        <select name="brand_id" id="brand_id" class="form-control getBrandtoHoliday select2single brand-id">
                           <option value="">Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ (old('brand_id') == $brand->id)? "selected" : (($quote['brand_id'] == $brand->id)? 'selected':NULL) }}> {{ $brand->name }} </option>
@@ -121,7 +121,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2single appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
                           <option value="">Select Type Of Holiday</option>
                           @foreach ($log->getQueryData($quote['brand_id'], 'Brand')->first()->getHolidayTypes as $holiday_type)
                             <option value="{{ $holiday_type->id }}" {{  (old('holiday_type_id') == $holiday_type->id)? "selected" : ($quote['holiday_type_id'] == $holiday_type->id ? 'selected' : '') }} >{{ $holiday_type->name }}</option>
@@ -135,7 +135,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sale_person_id" class="form-control   sales-person-id @error('sales_person_id') is-invalid @enderror">
+                        <select name="sale_person_id" id="sale_person_id" class="form-control  select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($quote['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
@@ -148,7 +148,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control currency-select2">
+                        <select name="season_id" id="season_id" class="form-control select2single currency-select2">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : ($quote['season_id'] == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
@@ -207,7 +207,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" 
@@ -222,7 +222,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
-                        <select name="pax_no" id="pax_no" class="form-control paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                        <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value={{$i}} {{ (old('pax_no') == $i)? "selected" : (($quote['pax_no'] == $i)? 'selected': NULL) }}>{{$i}}</option>
@@ -305,7 +305,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control category-id @error('category_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" {{ ($q_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
@@ -321,7 +321,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Supplier</label>
-                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control supplier-id @error('supplier_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                         <option value="">Select Supplier</option>
                                         @if(isset($q_detail['category_id']))
                                             @foreach ($log->getQueryData($q_detail['category_id'], 'Category')->first()->getSupplier as $supplier )
@@ -338,7 +338,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Product</label>
-                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id @error('product_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-contro select2single product-id @error('product_id') is-invalid @enderror">
                                         <option value="">Select Product</option>
                                     @if(isset($q_detail['supplier_id']))
                                         @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts as  $product)
@@ -355,7 +355,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Supervisor</label>
-                                    <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control supervisor-id @error('supervisor_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control select2single supervisor-id @error('supervisor_id') is-invalid @enderror">
                                     <option value="">Select Supervisor</option>
                                     @foreach ($supervisors as $supervisor)
                                         <option value="{{ $supervisor->id }}" {{ ($q_detail['supervisor_id'] == $supervisor->id)? 'selected' : NULL}}> {{ $supervisor->name }} </option>
@@ -393,7 +393,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Method</label>
-                                    <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control booking-method-id @error('booking_method_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control select2single booking-method-id @error('booking_method_id') is-invalid @enderror">
                                     <option value="">Select Booking Method</option>
                                     @foreach ($booking_methods as $booking_method)
                                         <option value="{{ $booking_method->id }}" {{ $q_detail['booking_method_id'] == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
@@ -409,7 +409,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booked By</label>
-                                    <select name="quote[{{ $key }}][booked_by_id]" data-name="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control booked-by-id @error('booked_by_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booked_by_id]" data-name="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control select2single booked-by-id @error('booked_by_id') is-invalid @enderror">
                                     <option value="">Select Booked By </option>
                                     @foreach ($booked_by as $book_id)
                                         <option value="{{ $book_id->id }}" {{ $q_detail['booked_by_id'] == $book_id->id  ? "selected" : "" }}> {{ $book_id->name }} </option>
@@ -424,7 +424,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Booking Types</label>
-                                    <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2single booking-type-id @error('booking_type_id') is-invalid @enderror">
                                     <option value="">Select Booking Type</option>
                                     @foreach ($booking_types as $booking_type)
                                         <option value="{{ $booking_type->id }}" {{ $q_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
@@ -440,7 +440,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supplier Currency <span style="color:red">*</span></label>
-                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
+                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)
                                       <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $q_detail['supplier_currency_id'] == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -682,7 +682,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
-                        <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                        <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
                           <option value="{{ $currency->code }}" {{ ($quote['selling_currency_oc'] == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>

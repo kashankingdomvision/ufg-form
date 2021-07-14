@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function(){
         
         Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
+        Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
+        Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
     });
 
     /*
