@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class TemplateDetail extends Model
 {
     protected $fillable = [ 
@@ -24,6 +24,31 @@ class TemplateDetail extends Model
     }
     
     function getSupplierCurrency() {
-        return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id',);
+        return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id');
+    }
+    
+    
+    public function getDateOfServiceAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function getBookingDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function getBookingDueDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function setDateOfServiceAttribute( $value ) {
+        $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+    
+    public function setBookingDateAttribute( $value ) {
+        $this->attributes['booking_date']       = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+    
+    public function setBookingDueDateAttribute( $value ) {
+        $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }

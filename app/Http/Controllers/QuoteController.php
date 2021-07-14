@@ -307,7 +307,7 @@ class QuoteController extends Controller
     
     public function getTrash()
     {
-        $data['quotes'] = Quote::onlyTrashed()->get();
+        $data['quotes'] = Quote::onlyTrashed()->paginate($this->pagiantion);
         return view('quotes.quotetrash', $data);
     } 
     

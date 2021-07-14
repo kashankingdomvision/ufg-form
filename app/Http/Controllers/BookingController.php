@@ -31,7 +31,7 @@ class BookingController extends Controller
 
     public function view_seasons()
     {
-        $data['seasons'] = Season::orderBy('seasons.created_at', 'desc')->groupBy('seasons.id', 'seasons.name')->get(['seasons.id', 'seasons.name', 'seasons.default']);
+        $data['seasons'] = Season::orderBy('seasons.created_at', 'desc')->groupBy('seasons.id', 'seasons.name')->paginate($this->pagination);
         return view('bookings.season_listing', $data);
     }
 
@@ -39,9 +39,6 @@ class BookingController extends Controller
     {
         $season = Season::findOrFail(decrypt($id));
         $data['bookings'] = $season->getBooking()->paginate($this->pagination);
-
-        // dd($data);
-
         return view('bookings.listing', $data);
     }
 
