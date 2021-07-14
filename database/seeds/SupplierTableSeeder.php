@@ -17,8 +17,8 @@ class SupplierTableSeeder extends Seeder
         $data = [
             [
                 'currency_id'   => 1,
-                'name'  => 'tabraiz bukhari',
-                'email' => 'm.tabriazbukhari@gmail.com',
+                'name'  => 'Jaun Elia',
+                'email' => 'jaun@gmail.com',
                 'phone' => '03024214334',
                 'categories' => [2,4,5],
                 'products' => 1,
@@ -29,6 +29,15 @@ class SupplierTableSeeder extends Seeder
                 'name'  => 'Kevin Levin',
                 'email' => 'kevinlevin@yahoo.co.uk',
                 'phone' => '+92034973095',
+                'products' => 2,
+                'categories' => [3,1,5],
+            ],
+            
+            [
+                'currency_id'   => 2,
+                'name'  => 'Peter Parker',
+                'email' => 'parker@yahoo.co.uk',
+                'phone' => '89798693322',
                 'products' => 2,
                 'categories' => [3,1,5],
             ],
