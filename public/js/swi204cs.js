@@ -19246,11 +19246,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19316,12 +19316,49 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $('.select2single').select2({
     width: '100%',
-    theme: "bootstrap"
+    theme: "bootstrap",
+    templateResult: formatState,
+    templateSelection: formatState
   });
   $('.select2-multiple').select2({
     width: '100%',
     theme: "classic"
   });
+  $('.currency-image-select2').select2({
+    width: '100%',
+    templateResult: formatState,
+    templateSelection: formatState,
+    theme: "bootstrap"
+  }); // $('.supplier-currency-id').select2({
+  //     width: '100%',
+  //     templateResult: formatState,
+  //     templateSelection: formatState,
+  //     theme: "bootstrap",
+  // });
+
+  $('.selling-price-other-currency').select2({
+    width: '68%',
+    templateResult: formatState,
+    templateSelection: formatState,
+    theme: "bootstrap"
+  });
+
+  function formatState(opt) {
+    if (!opt.id) {
+      return opt.text;
+    }
+
+    var optimage = $(opt.element).attr('data-image');
+
+    if (!optimage) {
+      return opt.text;
+    } else {
+      var $opt = $('<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>');
+      return $opt;
+    }
+  }
+
+  ;
   datepickerReset(); /////////////////////////////
   // / Date Picker 
   // /
@@ -19644,7 +19681,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function reinitializedDynamicFeilds() {
     $('.select2single').select2({
       width: '100%',
-      theme: "bootstrap"
+      theme: "bootstrap",
+      templateResult: formatState,
+      templateSelection: formatState
     }); //     if ($('.select2').hasClass("select2-hidden-accessible")) {
     //         $('.select2').select2('destroy');
     //     }

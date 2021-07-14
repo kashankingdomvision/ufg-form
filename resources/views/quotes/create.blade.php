@@ -64,7 +64,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
                             <option value="{{ $commission_type->id }}">{{ $commission_type->name }}</option>
@@ -106,7 +106,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control  getBrandtoHoliday  brand-id">
+                        <select name="brand_id" id="brand_id" class="form-control select2single getBrandtoHoliday brand-id">
                           <option selected value="" >Select Brand</option>
                           @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}" {{ isset(Auth::user()->brand_id) && !empty(Auth::user()->brand_id) && $brand->id == Auth::user()->brand_id ? 'selected' : '' }}> {{ $brand->name }} </option>
@@ -119,7 +119,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  appendHolidayType  holiday-type-id ">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2single appendHolidayType  holiday-type-id ">
                           <option value="">Select Type Of Holiday</option>
                           @if(Auth::user()->getBrand->getHolidayTypes && Auth::user()->getBrand->getHolidayTypes->count())
                             @foreach (Auth::user()->getBrand->getHolidayTypes as $holiday_type)
@@ -134,7 +134,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sale_person_id" class="form-control sales-person-id">
+                        <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
                           <option selected value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
                             <option value="{{ $person->id }}">{{ $person->name }}</option>
@@ -147,7 +147,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control scurrency-id">
+                        <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
@@ -194,7 +194,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" class="form-control currency-image-select2 booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option selected value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -207,7 +207,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
-                        <select name="pax_no" id="pax_no" class="form-control paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                        <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option selected value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value={{$i}} {{ old('pax_no') == $i || $i == 1 ? "selected" : "" }}>{{$i}}</option>
@@ -220,7 +220,7 @@
                   </div>
                   <div class="row mb-2">
                       <div class="col-md-2 offset-md-10">
-                        <select name="template" id="tempalte_id" class="float-right form-control template">
+                        <select name="template" id="tempalte_id" class="float-right select2single form-control template">
                           <option  disabled selected value="">Select Template</option>
                           @foreach ($templates as $template)
                             <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
@@ -265,7 +265,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supplier</label>
-                            <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control  supplier-id select2single @error('supplier_id') is-invalid @enderror">
+                            <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single @error('supplier_id') is-invalid @enderror">
                               <option selected value="">Select Supplier</option>
                             </select>
 
@@ -392,7 +392,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" min="0" value="0.00">
                             </div>
                           </div>
                         </div>
@@ -404,7 +404,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" step="any">
+                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" min="0" step="any">
                             </div>
                           </div>
                         </div>
@@ -416,7 +416,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" value="0.00">
+                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
                               <div class="input-group-append">
                                 <div class="input-group-text">%</div>
                               </div>
@@ -628,7 +628,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
-                        <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                        <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="" selected >Select Currency</option>
                           @foreach ($currencies as $currency)
                           <option value="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -642,7 +642,7 @@
                     </div>
                   
                     <div class="col-sm-2">
-                      <div class="form-group mt-2">
+                      <div class="form-group">
                         <label></label>
                         <div class="input-group">
                           <div class="input-group-prepend">

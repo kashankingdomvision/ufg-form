@@ -1307,6 +1307,10 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   -moz-appearance: textfield !important;
 }
 
+.selling-price-other-currency {
+  width: 68% !important;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Table
@@ -1350,13 +1354,32 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   -webkit-user-select: none;
 }
 
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-  height: 34px;
-  position: absolute;
-  top: 1px;
-  right: 1px;
-  width: 20px;
+.select2-container .select2-selection--single .select2-selection__rendered {
+  display: block;
+  padding-left: 8px;
+  padding-right: 20px;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+/* fix select2 border color on validation */
+
+.is-invalid + .select2-container .select2-selection--single {
+  border-color: #dc3545;
+  padding-right: 2.25rem;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .1875rem) center;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+/**
+ * -------------------------------------------------------------------------------------
+ *                                Quote Managment
+ * -------------------------------------------------------------------------------------
+*/
 
 .quote {
   border: solid 1px #DCDCDC;

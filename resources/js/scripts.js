@@ -1,9 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -53,12 +53,33 @@ $(document).ready(function($) {
     $('.select2single').select2({
         width: '100%',
         theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
     });
-    
-    $('.select2-multiple').select2({
-        width: '100%',
-        theme: "classic"
+
+    $('.selling-price-other-currency').select2({
+        width: '68%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
     });
+
+    function formatState(opt) {
+        if (!opt.id) {
+            return opt.text;
+        }
+
+        var optimage = $(opt.element).attr('data-image');
+
+        if (!optimage) {
+            return opt.text ;
+        } else {
+            var $opt = $(
+                '<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>'
+            );
+            return $opt;
+        }
+    };
     
     datepickerReset();
     
@@ -402,6 +423,8 @@ $(document).on('click', '.addChild', function () {
         $('.select2single').select2({
             width: '100%',
             theme: "bootstrap",
+            templateResult: formatState,
+            templateSelection: formatState,
         });
     //     if ($('.select2').hasClass("select2-hidden-accessible")) {
     //         $('.select2').select2('destroy');
