@@ -80,13 +80,12 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
-                                <i class="fa fa-eye nav-icon"></i>
-                                <p>View Quote Trash</p>
+                                <i class="fa fa-trash  nav-icon"></i>
+                                <p>View Trash</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
                 <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-clone nav-icon"></i>
