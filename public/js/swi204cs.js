@@ -19246,11 +19246,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
+ // var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-
+var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19937,7 +19937,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
   });
-  $("#versions :input").prop("disabled", true);
+  $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
   $('#reCall').prop("disabled", false);
   $('#reCall').on('click', function () {
