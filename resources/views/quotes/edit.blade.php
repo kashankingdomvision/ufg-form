@@ -318,7 +318,7 @@
                   </div>
                   
                   <div class="parent" id="parent">
-                    @foreach ($quote->getQuoteDetails as $key  => $q_detail )
+                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'DESC')->get() as $key  => $q_detail )
                         <div class="quote" data-key="{{$key}}">
                             @if($loop->iteration > 1)
                             <div class="row">
@@ -731,7 +731,7 @@
                         <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
-                          <option value="{{ $currency->code }}" {{ ($quote->selling_currency_oc == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                           <option value="{{ $currency->code }}" {{ ($quote->selling_currency_oc == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
 
