@@ -70,7 +70,7 @@
                                             <select name="currency_id" id="currency_id" class="form-control booking-currency-id">
                                                 <option value="">Select Booking Currency</option>
                                                 @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->id }}" data-code="{{$currency->code}}" {{ $template->currency_id == $currency->id  ? 'selected': '' }}>  &nbsp; {{$currency->code}} - {{$currency->name}}  </option>
+                                                    <option value="{{ $currency->id }}" data-code="{{$currency->code}}" {{ $template->booking_currency_id == $currency->id  ? 'selected': '' }}>  &nbsp; {{$currency->code}} - {{$currency->name}}  </option>
                                                 @endforeach
                                             </select>
                                             <span class="text-danger" role="alert"></span>
