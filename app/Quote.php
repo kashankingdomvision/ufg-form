@@ -61,10 +61,10 @@ class Quote extends Model
         $status = $this->booking_status;
         switch ($status) {
             case 'booked':
-                return '<span class="badge badge-success">Booked</span>';
+                return '<h5><span class="badge badge-success">Booked</span></h5>';
                 break;
             case 'quote':
-                return '<span class="badge badge-dark">Quote</span>';
+                return '<h5><span class="badge badge-info">Quote</span></h5>';
                 break;
         }
         

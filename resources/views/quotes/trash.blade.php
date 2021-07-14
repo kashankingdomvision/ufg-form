@@ -6,12 +6,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>View Quote Trash</h4>
+                        <h4>Recently Deleted</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
-                            <li class="breadcrumb-item active">Quote Trash</li>
+                            <li class="breadcrumb-item active">Recently Deleted</li>
                         </ol>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Quote List (Trash)</h3>
+                                <h3 class="card-title">Quote List</h3>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -70,7 +70,7 @@
                                                     <td>{{ $quote->formated_booking_date }}</td>
                                                     <td>{{ $quote->formated_created_at }}</td>
                                                     <td width="10%" class="d-flex" >
-                                                        <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }}');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-dark btn-xs" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
+                                                        <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
                                                     </td>
                                                     <tbody class="append" id="appendChild{{$quote->id}}" style="{{ $quote->quote_count > 1 ? 'background-color: #f9f9f9;' : null}}">
                                                     </tbody>
