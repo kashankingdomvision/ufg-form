@@ -19246,11 +19246,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_2__);
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -19856,8 +19856,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     getSellingPrice();
   });
   $(document).on('change', '.booking-currency-id', function () {
-    changeCurrenyRate();
     $('.booking-currency-code').html($(this).find(':selected').data('code'));
+    changeCurrenyRate();
     getTotalValues();
     getSellingPrice();
   });
@@ -20170,6 +20170,90 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       error: function error(reject) {
         alert(reject);
         searchRef.text('Search').prop('disabled', false);
+      }
+    });
+  });
+  $("#create_template").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var formdata = $(this).serialize();
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          alert('Template created Successfully');
+          window.location.href = REDIRECT_BASEURL + "template/index";
+        }, 800);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $('#' + index).addClass('is-invalid');
+              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
+      }
+    });
+  });
+  $("#update_template").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var formdata = $(this).serialize();
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          alert('Template updated Successfully');
+          window.location.href = REDIRECT_BASEURL + "template/index";
+        }, 800);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $('#' + index).addClass('is-invalid');
+              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
       }
     });
   }); // /
