@@ -10,6 +10,7 @@ class Template extends Model
         'user_id',
         'title',
         'season_id',
+        'booking_currency_id',
     ];
 
     public function getUser()

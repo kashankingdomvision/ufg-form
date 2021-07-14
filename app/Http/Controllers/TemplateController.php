@@ -83,7 +83,9 @@ class TemplateController extends Controller
       $template = Template::create([
         'user_id'   => Auth::id(),
         'title'     => $request->template_name,
-        'season_id' => $request->season_id
+        'season_id' => $request->season_id,
+        'booking_currency_id' => $request->booking_currency_id,
+        
       ]);
 
       foreach ($request->quote as $quote) {
@@ -131,6 +133,7 @@ class TemplateController extends Controller
         $template->update([
           'title'     => $request->template_name,
           'season_id' => $request->season_id,
+          'booking_currency_id' => $request->booking_currency_id,
         ]);
         $template->getDetails()->delete();
    

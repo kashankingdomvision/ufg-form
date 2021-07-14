@@ -54,19 +54,33 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="form-group">
-                            <label>Season <span class="text-danger">*</span></label>
-                                <select name="season_id" id="season_id" class="form-control currency-select2">
-                                    <option value="">Select Booking Season</option>
-                                    @foreach ($seasons as $season)
-                                        <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
-                                    @endforeach
-                                </select>
-                                @error('season_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                          </div>
-                      </div>
+                      <div class="form-group">
+                          <label>Season <span class="text-danger">*</span></label>
+                              <select name="season_id" id="season_id" class="form-control currency-select2">
+                                  <option value="">Select Booking Season</option>
+                                  @foreach ($seasons as $season)
+                                      <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
+                                  @endforeach
+                              </select>
+                              @error('season_id')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                              @enderror
+                        </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                          <label>Booking Currency <span class="text-danger">*</span></label>
+                              <select name="booking_currency_id" id="booking_currency_id" class="form-control currency-select2">
+                                  <option value="">Select Booking Currency</option>
+                                  @foreach ($currencies as $currency)
+                                    <option value="{{ $currency->id }}" {{ old('currency') == $currency->id  ? "selected" : "" }}> {{ $currency->name }} </option>
+                                  @endforeach
+                              </select>
+                              @error('season_id')
+                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                              @enderror
+                        </div>
+                    </div>
                   </div>
                     <div class="quote" data-key="0">
                         

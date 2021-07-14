@@ -68,6 +68,21 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Booking Currency <span class="text-danger">*</span></label>
+                                    <select name="booking_currency_id" id="booking_currency_id" class="form-control currency-select2">
+                                        <option value="">Select Booking Currency</option>
+                                        @foreach ($currencies as $currency)
+                                          <option value="{{ $currency->id }}" {{ old('currency') == $currency->id  ? "selected" : (($template->booking_currency_id == $currency->id)? 'selected': NULL) }}> {{ $currency->name }} </option>
+                                        @endforeach
+                                    </select>
+                                    @error('season_id')
+                                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                    @enderror
+                              </div>
+                          </div>
+                    </div>
                     @foreach ($template->getDetails as $key  => $q_detail )
                         <div class="quote" data-key="0">
                             @if($loop->iteration > 1)
