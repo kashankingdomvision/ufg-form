@@ -610,7 +610,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Amount</label>
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Potential Commission</label>
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
