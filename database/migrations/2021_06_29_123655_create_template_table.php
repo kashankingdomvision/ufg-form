@@ -17,11 +17,14 @@ class CreateTemplateTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('season_id');
+            $table->unsignedBigInteger('currency_id');
             $table->string('title');
+            $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('status', [0, 1])->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

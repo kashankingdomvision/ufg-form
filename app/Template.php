@@ -34,14 +34,18 @@ class Template extends Model
         $status = $this->status;
         switch ($status) {
             case '1':
-                return '<span class="badge badge-success">active</span>';
+                return '<span class="badge badge-success">Active</span>';
                 break;
             case '0':
-                return '<span class="badge badge-dark">not-active</span>';
+                return '<span class="badge badge-dark">Inactive</span>';
                 break;
         }
         
         return $status;
+    }
+
+    function getCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
 
     public function getDetails()

@@ -304,8 +304,7 @@
                     <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span
-                                class="input-group-text booking-currency-code"></span>
+                            <span class="input-group-text booking-currency-code">{{ ($template->getCurrency && $template->getCurrency->count()) ? $template->getCurrency->code : '' }}</span>
                         </div>
                         <input type="number" step="any" value="{{ \Helper::number_format($q_detail->selling_price_bc) }}"
                             name="quote[{{ $key }}][selling_price_in_booking_currency]"
@@ -321,8 +320,7 @@
                     <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                     <div class="input-group">
                         <div class="input-group-prepend">
-                            <span
-                                class="input-group-text booking-currency-code"></span>
+                            <span class="input-group-text booking-currency-code">{{ ($template->getCurrency && $template->getCurrency->count()) ? $template->getCurrency->code : '' }}</span>
                         </div>
                         <input type="number" step="any" value="{{ \Helper::number_format($q_detail->markup_amount_bc) }}"
                             name="quote[{{ $key }}][markup_amount_in_booking_currency]"

@@ -44,22 +44,22 @@
                                     <table id="example1" class="table" >
                                         <thead>
                                           <tr>
-                                            <th>User</th>
-                                            <th>Season</th>
-                                            <th>Template Name</th>
-                                            <th>Status</th>
-                                            <th>Created_at</th>
+                                              <th>Template Name</th>
+                                              <th>Season</th>
+                                              {{-- <th>Status</th> --}}
+                                              <th>Created At</th>
+                                              <th>Created By</th>
                                             <th>Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                         @foreach ($templates as $key => $template)
                                             <tr>
-                                                <td>{{ $template->getUser->name }}</td>
-                                                <td>{{ $template->getSeason->name }}</td>
                                                 <td>{!! $template->title !!}</td>
-                                                <td>{!! $template->formated_status !!}</td>
+                                                <td>{{ $template->getSeason->name }}</td>
+                                                {{-- <td>{!! $template->formated_status !!}</td> --}}
                                                 <td>{{ $template->formated_created_at }}</td>
+                                                <td>{{ $template->getUser->name }}</td>
                                                  <td width="10%" >
                                                    <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                         <i class="fas fa-edit"></i>
