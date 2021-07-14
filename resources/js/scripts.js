@@ -768,7 +768,7 @@ $(document).on('click', '.addChild', function () {
     });
 
 
-    $("#versions :input").prop("disabled", true);
+    $(".versions :input").prop("disabled", true);
     $('#bookingVersion :input').prop('disabled', true);
     
     

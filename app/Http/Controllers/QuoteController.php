@@ -316,4 +316,26 @@ class QuoteController extends Controller
         $quote = Quote::withTrashed()->find(decrypt($id))->restore();
         return redirect()->route('quotes.view.trash')->with('success_message', 'Quote restored successfully');        
     }
+    
+    ///View Final Quote 
+    public function finalQuote($id)
+    {
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['quote']            = Quote::findOrFail(decrypt($id));
+        $data['commission_types'] = Commission::all();
+        return view('quotes.show',$data);
+    }
+    ///View Final Quote 
 }

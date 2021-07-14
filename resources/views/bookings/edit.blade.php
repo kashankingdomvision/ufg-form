@@ -18,7 +18,8 @@
         <div class="row">
           <div class="col-sm-6">
               <h4>Edit Booking</h4>
-            </div>
+           
+          </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
@@ -95,6 +96,9 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title text-center">Edit Booking</h3>
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" class=" float-right btn btn-primary btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                  View Final Quote
+                </a>
               </div>
             
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking"> 

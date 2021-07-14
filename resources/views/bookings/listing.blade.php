@@ -90,6 +90,7 @@
                                                             <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
+                                                        
                                                             <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
                                                                 @csrf @method('delete')
                                                                 <input type="hidden" value="{{ encrypt($booking->season_id) }}" name="season">

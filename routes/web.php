@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
         Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
         Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
+        
+        Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
     });
 
     /*

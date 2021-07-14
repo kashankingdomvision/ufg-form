@@ -19976,7 +19976,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
   });
-  $("#versions :input").prop("disabled", true);
+  $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
   $('#reCall').prop("disabled", false);
   $('#reCall').on('click', function () {
