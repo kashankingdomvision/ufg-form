@@ -793,7 +793,7 @@
                               @endif
                               <div class="row ">
                                 <div class="col-12">
-                                  <button type="button" data-key="0" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Finance</button>
+                                  <button type="button" data-key="0" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Payment</button>
                                 </div>
                               </div>
                           </section>
