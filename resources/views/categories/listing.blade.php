@@ -1,18 +1,18 @@
 @extends('layouts.app')
-@section('title','Listing categorys')
+@section('title','View Category')
 @section('content')
 <div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6">
-          <h4>Listing Category</h4>
+          <h4>View Category</h4>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Setting</a></li>
-            <li class="breadcrumb-item active">categorys</li>
+            <li class="breadcrumb-item"><a>Supplier Managment</a></li>
+            <li class="breadcrumb-item active">View Category</li>
           </ol>
         </div>
       </div>
@@ -29,7 +29,7 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">categorys List</h3>
+              <h3 class="card-title">Category List</h3>
             </div>
             <div class="card-body p-0">
               <table class="table table-striped">
@@ -46,11 +46,11 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $category->name }}</td>
                     <td class="d-flex">
-                      <a href="{{ route('categories.edit', encrypt($category->id)) }}" class="btn btn-link text-success p-0" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                      <a href="{{ route('categories.edit', encrypt($category->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                       <form method="post" action="{{ route('categories.destroy', encrypt($category->id)) }}">
                         @csrf
                         @method('delete')
-                        <button class="btn btn-link p-0 text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
+                        <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
                           <span class="fa fa-trash"></span>
                         </button>
                       </form>

@@ -11,8 +11,8 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Setting</a></li>
-            <li class="breadcrumb-item active">Products</li>
+            <li class="breadcrumb-item"><a>Supplier Managment</a></li>
+            <li class="breadcrumb-item active">View Products</li>
           </ol>
         </div>
       </div>
@@ -48,11 +48,11 @@
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
                     <td class="d-flex">
-                      <a href="{{ route('products.edit', encrypt($product->id)) }}" class="btn btn-link text-success p-0" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                      <a href="{{ route('products.edit', encrypt($product->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                       <form method="post" action="{{ route('products.destroy', encrypt($product->id)) }}">
                         @csrf
                         @method('delete')
-                        <button class="btn btn-link p-0 text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
+                        <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
                           <span class="fa fa-trash"></span>
                         </button>
                       </form>

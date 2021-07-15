@@ -68,10 +68,10 @@
                                                 <td>{{ $value->getSupervisor->name ?? null }}</td>
                                                 <td>
                                                     <form method="post" action="{{ route('users.delete', encrypt($value->id)) }}">
-                                                    <a href="{{ route('users.edit', encrypt($value->id)) }}" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                                    <a href="{{ route('users.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                                                         @csrf
                                                         @method('delete')
-                                                        <button class="btn btn-xs ml-0 text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                        <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
                                                           <span class="fa fa-trash"></span>
                                                         </button>
                                                     </form>

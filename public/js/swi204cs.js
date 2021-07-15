@@ -19320,27 +19320,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     templateResult: formatState,
     templateSelection: formatState
   });
-  $('.select2-multiple').select2({
-    width: '100%',
-    theme: "classic"
-  });
-  $('.currency-image-select2').select2({
-    width: '100%',
-    templateResult: formatState,
-    templateSelection: formatState,
-    theme: "bootstrap"
-  }); // $('.supplier-currency-id').select2({
-  //     width: '100%',
-  //     templateResult: formatState,
-  //     templateSelection: formatState,
-  //     theme: "bootstrap",
-  // });
-
   $('.selling-price-other-currency').select2({
     width: '68%',
+    theme: "bootstrap",
     templateResult: formatState,
-    templateSelection: formatState,
-    theme: "bootstrap"
+    templateSelection: formatState
   });
 
   function formatState(opt) {

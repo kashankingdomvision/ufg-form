@@ -1,17 +1,17 @@
 @extends('layouts.app')
-@section('title','Listing Supplier')
+@section('title','View Supplier')
 @section('content')
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>View User</h4>
+                        <h4>View Supplier</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
-                            <li class="breadcrumb-item active">User Management</li>
+                            <li class="breadcrumb-item active">Supplier Managment</li>
                         </ol>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">User List</h3>
+                                <h3 class="card-title">Supplier List</h3>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -54,11 +54,11 @@
                                             <td>{{ $supplier->getCurrency->name??NULL }}</td>
                                             <td class="d-flex">
                                               <form method="post" action="{{ route('suppliers.destroy', encrypt($supplier->id)) }}">
-                                              <a class="btn-link btn p-0" href="{{ route('suppliers.edit', encrypt($supplier->id)) }}" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                              <a class="btn-link btn p-0" href="{{ route('suppliers.show', encrypt($supplier->id)) }}" title="show"><i class="fa fa-fw fa-eye"></i></a>
+                                              <a  href="{{ route('suppliers.edit', encrypt($supplier->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                              <a class="mr-2  btn btn-outline-info btn-xs"href="{{ route('suppliers.show', encrypt($supplier->id)) }}" title="show"><i class="fa fa-fw fa-eye"></i></a>
                                                   @csrf
                                                   @method('delete')
-                                                   <button class="btn-link p-0 btn text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                   <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
                                                     <span class="fa fa-trash"></span>
                                                   </button>
                                               </form>
