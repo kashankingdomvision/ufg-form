@@ -19479,7 +19479,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.agency-columns').empty();
     var $v_html = " <div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
 
-    if ($(this).val() == 'yes') {
+    if ($(this).val() == 1) {
       $('.agency-columns').append($v_html);
     } else {
       $('.agency-columns').empty();
