@@ -314,7 +314,7 @@ class QuoteController extends Controller
     public function restore($id)
     {
         $quote = Quote::withTrashed()->find(decrypt($id))->restore();
-        return redirect()->route('quotes.view.trash')->with('success_message', 'Quote restored successfully');        
+        return redirect()->route('quotes.index')->with('success_message', 'Quote restored successfully');        
     }
     
     ///View Final Quote 

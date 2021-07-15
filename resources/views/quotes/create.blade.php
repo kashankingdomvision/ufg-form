@@ -413,9 +413,6 @@
                           <div class="form-group">
                             <label>Markup % <span style="color:red">*</span></label>
                             <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text supplier-currency-code"></span>
-                              </div>
                               <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
                               <div class="input-group-append">
                                 <div class="input-group-text">%</div>

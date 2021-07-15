@@ -1345,6 +1345,10 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   padding: 20px;
 }
 
+.tbody-highlight {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2
