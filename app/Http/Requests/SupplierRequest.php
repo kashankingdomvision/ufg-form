@@ -27,6 +27,7 @@ class SupplierRequest extends FormRequest
             'username'      =>  'required|string',
             'email'         =>  'required|email',
             'categories'    =>  'required|array',
+            'products'      =>  'required|array',
         ];
     }
     
@@ -34,9 +35,10 @@ class SupplierRequest extends FormRequest
     public function attributes()
     {
         return [
-            'username'       => 'Name',
-            'email'      => 'Email address',
-            'categories' => 'Categories',
+            'username'     =>  'Name',
+            'email'        =>  'Email address',
+            'categories'   =>  'Categories',
+            'products'     =>  'Products',
         ];
     }
 }

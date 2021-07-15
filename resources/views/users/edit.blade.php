@@ -93,7 +93,7 @@
 
                     <div class="form-group">
                       <label>Default Currency</label>
-                      <select class="form-control select2single currencyImage @error('currency') is-invalid @enderror" name="currency">
+                      <select class="form-control select2single @error('currency') is-invalid @enderror" name="currency">
                         <option selected value="">Select Currency</option>
                         @foreach ($currencies as $currency)
                           <option value="{{ $currency->id }}" {{ old('currency') == $currency->id || ($user->role_id == $currency->id) ? 'selected' : null }} data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp; {{ $currency->code }} - {{ $currency->name }} </option>
