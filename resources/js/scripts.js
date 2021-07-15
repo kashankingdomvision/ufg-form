@@ -1,9 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -998,6 +998,7 @@ $('.search-reference').on('click', function () {
 });
 
 $('#clone_booking_finance').on('click', function () {
+    
     var depositeLabelId  = 'deposite_heading'+$(this).data('key');
     var countHeading =$('.finance-clonning').length + 1;
     $('.finance-clonning').eq(0).clone().find("input").val("").each(function(){
@@ -1013,13 +1014,18 @@ $('#clone_booking_finance').on('click', function () {
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){                        
             return ']['+$('.finance-clonning').length+']';
         });
+    }).end().find('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap",
     }).end()
     .show()
     .insertAfter(".finance-clonning:last");
-
+    
     // remove checked attribute after clone
     $('.finance-clonning:last').find(':checked').attr('checked', false);
     $('.deposit-amount:last').val('0.00');
+    
+    
 });
 
 $('#tempalte_id').on('change', function () {
