@@ -71,7 +71,7 @@ class QuoteController extends Controller
     
     public function quoteArray($request)
     {
-        $data =  [
+        return [
             'commission_id'      =>  $request->commission_id,
             'user_id'            =>  Auth::id(),
             'season_id'          =>  $request->season_id,
@@ -83,7 +83,7 @@ class QuoteController extends Controller
             'quote_ref'          =>  $request->quote_no??$request->quote_ref,
             'lead_passenger'     =>  $request->lead_passenger,
             'sale_person_id'     =>  $request->sale_person_id,
-            'agency'             =>  ($request->agency == 1)? 1 : (($request->agency == 'on')? '1' : '0'),
+            'agency'             =>  ((int)$request->agency == 1)? '1' : false,
             'dinning_preference' =>  $request->dinning_preference,
             'bedding_preference' =>  $request->bedding_preference,
             'pax_no'             =>  $request->pax_no,
@@ -97,14 +97,10 @@ class QuoteController extends Controller
             'selling_price_ocr'  =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'          =>  ($request->rate_type == 'live')? 'live': 'manual',
+            'agency_name'        =>  (isset($request['agency_name']))? $request->agency_name : NULL,
+            'agency_contact'     =>  (isset($request['agency_contact']))? $request->agency_contact : NULL, 
         ];
-        
-        if($request->agency == 'yes' || $request->agency == 1){
-            $data['agency_name']        = $request->agency_name;
-            $data['agency_contact']     = $request->agency_contact;
-        }
-        
-        return $data;
+       
     }
     
     public function getQuoteDetailsArray($quoteD, $id)

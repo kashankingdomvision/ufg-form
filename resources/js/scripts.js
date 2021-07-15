@@ -1,9 +1,9 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -190,7 +190,6 @@ $(document).ready(function($) {
 ///
 $(document).on('change', '.select-agency', function() {
     $('.agency-columns').empty();
-    
     var $v_html = ` <div class="col form-group" style="width:175px;">
                     <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                     <input type="text" name="agency_name" id="agency_name" class="form-control">
@@ -202,7 +201,7 @@ $(document).on('change', '.select-agency', function() {
                     <span class="text-danger" role="alert" > </span>
                 </div>`;
                 
-    if($(this).val() == 'yes'){
+    if(($(this).val() == 1)){
         $('.agency-columns').append($v_html);
     }else{
         $('.agency-columns').empty();

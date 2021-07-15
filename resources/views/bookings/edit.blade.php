@@ -224,10 +224,10 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input class="select-agency" {{ old('agency') == 'yes' ? "checked" : ($booking->agency ==  1 ? 'checked' : '') }}  value="yes" type="radio" name="agency" > Yes
+                            <input class="select-agency" {{ old('agency') == '1' ? "checked" : ($booking->agency ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
                           </label>
                           <label class="radio-inline">
-                            <input  class="select-agency" {{ old('agency') == 'no'  ? "checked" : ($booking->agency ==  0? 'checked' : '') }}  value="no" type="radio" name="agency" > No
+                            <input  class="select-agency" {{ old('agency') == '0'  ? "checked" : ($booking->agency ==  0? 'checked' : '') }}  value="0" type="radio" name="agency" > No
                           </label>
                         </div>
                       </div>
