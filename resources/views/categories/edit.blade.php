@@ -1,6 +1,7 @@
 @extends('layouts.app')
-@section('title','Add Products')
+@section('title','Edit Category')
 @section('content')
+
   <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
@@ -11,8 +12,7 @@
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item"><a>Setting</a></li>
-                <li class="breadcrumb-item active">Category</li>
+                <li class="breadcrumb-item"><a>Supplier Management</a></li>
               </ol>
           </div>
         </div>
@@ -30,8 +30,8 @@
                 @method('put') @csrf 
                 <div class="card-body">
                   <div class="form-group">
-                    <label>Category Name</label>
-                    <input type="text" name="name" value="{{ old('name')??$category->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Product Name" >
+                    <label>Category Name <span style="color:red">*</span></label>
+                    <input type="text" name="name" value="{{ old('name')??$category->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Category Name" required>
                     @error('name')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
