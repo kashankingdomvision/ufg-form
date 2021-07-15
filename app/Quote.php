@@ -44,7 +44,7 @@ class Quote extends Model
     
     public function getQuotelogs()
     {
-        return $this->hasMany(QuoteLog::class, 'quote_id', 'id');
+        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
     }
     
     public function getSeason(){

@@ -36,7 +36,7 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center lh-2">Quote Version {{ isset($log['version_no']) && !empty($log['version_no']) ? $log['version_no'] : '' }}</h3>
+                <h3 class="card-title text-center lh-2">Quote Version {{ isset($log['log_no']) && !empty($log['log_no']) ? $log['log_no'].' : ' : '' }} {{ isset($log['version_no']) && !empty($log['version_no']) ? $log['version_no'] : '' }}</h3>
                 @if(!isset($type))
                   <button id="reCall" type="button" data-recall="true" class="btn btn-light float-right">Recall Version</button>
                 @endif

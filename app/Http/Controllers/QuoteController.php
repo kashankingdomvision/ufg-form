@@ -34,7 +34,7 @@ class QuoteController extends Controller
     
     public function index()
     {
-        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->paginate(10);
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->orderBy('created_at','DESC')->paginate(10);
         return view('quotes.listing', $data);       
     }
     

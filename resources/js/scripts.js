@@ -1044,7 +1044,7 @@ $('#tempalte_id').on('change', function () {
         success: function (data) {
 
             if(data){
-                confirmAlert = confirm('Are you sure! you want to override Quote Details');
+                confirmAlert = confirm('Are you sure! you want to override Quote Details?');
             }
 
             if(confirmAlert == true){

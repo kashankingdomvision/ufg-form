@@ -20201,7 +20201,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       dataType: "json",
       success: function success(data) {
         if (data) {
-          confirmAlert = confirm('Are you sure! you want to override Quote Details');
+          confirmAlert = confirm('Are you sure! you want to override Quote Details?');
         }
 
         if (confirmAlert == true) {
