@@ -57,7 +57,7 @@
                       <td>{{ $value->live }}</td>
                       <td>{{ $value->manual }}</td>
                       <td>
-                        <a href="{{ route('setting.currency_conversions.edit', encrypt($value->id)) }}" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <a href="{{ route('setting.currency_conversions.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                       </td>
                     </tr>
                   @endforeach
