@@ -57,7 +57,7 @@
 
                                             <h5>
                                                 @if ($value->default == 1)
-                                                <span class="ml-2 btn btn-info badge"> Default &nbsp;</span></h5>
+                                                <span class="ml-2 btn btn-light badge"> Default &nbsp;</span></h5>
                                                 @endif
                                             </h5>
                                           </td>
