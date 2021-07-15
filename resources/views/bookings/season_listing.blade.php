@@ -44,34 +44,27 @@
                                     <thead>
                                         <tr>
                                             <th>Season</th>
-                                            <th>Action</th>
+                                            {{-- <th>Action</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
                                       @foreach ($seasons as $key => $value)
                                         <tr>
+                                          <td class="inline-flex">
+                                            <a href="{{ route('bookings.index', encrypt($value->id)) }}" >
+                                                <h5><span class="btn btn-primary badge"> {{ $value->name }} &nbsp;</span></h5>
+                                            </a>
 
-                                          <td>
-                                            {{ $value->name }} &nbsp;
-                                            
-                                            @if ($value->default == 1)
-                                              <span class="btn btn-primary badge">Default</span>
-                                            @endif
+                                            <h5>
+                                                @if ($value->default == 1)
+                                                <span class="ml-2 btn btn-info badge"> Default &nbsp;</span></h5>
+                                                @endif
+                                            </h5>
                                           </td>
 
-                                          <td>
-
+                                          {{-- <td>
                                             <a href="{{ route('bookings.index', encrypt($value->id)) }}" class="btn btn-outline-info btn-xs"><i class="fa fa-eye nav-icon"></i></a>
-                                            {{-- <form method="post" action="{{ route('seasons.destroy', encrypt($value->id)) }}">
-                                              
-                                              @csrf
-                                              @method('delete')
-                                              <button class="btn btn-xs ml-0 text-danger" onclick="return confirm('Are you sure want to Delete this record?');">
-                                                <span class="fa fa-trash"></span>
-                                              </button>
-                                            </form> --}}
-                                          </td>
-
+                                          </td> --}}
                                         </tr>
                                       @endforeach
                                      
