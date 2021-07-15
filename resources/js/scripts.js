@@ -57,6 +57,11 @@ $(document).ready(function($) {
         templateSelection: formatState,
     });
 
+    $('.select2-multiple').select2({
+        width: '100%',
+        theme: "classic",
+    });
+
     $('.selling-price-other-currency').select2({
         width: '68%',
         theme: "bootstrap",

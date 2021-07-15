@@ -19320,6 +19320,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     templateResult: formatState,
     templateSelection: formatState
   });
+  $('.select2-multiple').select2({
+    width: '100%',
+    theme: "classic"
+  });
   $('.selling-price-other-currency').select2({
     width: '68%',
     theme: "bootstrap",
