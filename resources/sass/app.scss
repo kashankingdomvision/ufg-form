@@ -9,11 +9,13 @@
 @import '~select2-bootstrap-theme/dist/select2-bootstrap.min.css';
 @import '~select2/dist/css/select2.css'; 
 @import "~bootstrap-datepicker/dist/css/bootstrap-datepicker3.css";
+
 /**
  * -------------------------------------------------------------------------------------
  *                                layouts
  * -------------------------------------------------------------------------------------
 */
+
 .inline-flex{
     display: inline-flex;
 }
@@ -51,7 +53,6 @@
 .lh-2{
     line-height: 2rem !important;
 }
-
 
 /**
  * -------------------------------------------------------------------------------------
@@ -102,6 +103,13 @@
     width: 68% !important;
 }
 
+.card-title {
+    float: left;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+    line-height: 2rem;
+}
 
 /**
  * -------------------------------------------------------------------------------------
@@ -134,10 +142,6 @@
  *                                Select2
  * -------------------------------------------------------------------------------------
 */
-
-// .select2-container {
-//     width: 200px;
-// }
 
 .select2-container .select2-selection--single {
     box-sizing: border-box;
@@ -194,6 +198,3 @@
     background-color: #343a40;
     border-color: #a7acb1;
 }
-
-
-

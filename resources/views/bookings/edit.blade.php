@@ -96,7 +96,7 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title text-center">Edit Booking</h3>
-                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" class=" float-right btn btn-primary btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" class=" float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
               </div>
