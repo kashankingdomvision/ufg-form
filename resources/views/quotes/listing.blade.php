@@ -27,8 +27,72 @@
             </div>
         </section>
 
-
-
+        <section class="content">
+            <div class="container-fluid ">
+                <div class="card card-default {{ (request()->get('search') == '')? 'collapsed-card': '' }}">
+                    <button type="button" class="btn btn-tool text-dark" data-card-widget="collapse">
+                    <div class="card-header ">
+                        <h3 class="card-title display-2"><strong>Filters</strong></h3>
+                        <div class="card-tools">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                    </button>
+                    <div class="card-body">
+                        <form method="get" action="{{ route('quotes.index') }}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Search</label>
+                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Search</label>
+                                    <select class="form-control" name="status">
+                                        <option {{ (old('search') == 'all')? 'selected': ((request()->get('status') == 'all')? 'selected' : null) }} value="all" selected>All Status</option>
+                                        <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
+                                        <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="d-flex flex-row-reverse bd-highlight">
+                                    <div class="col-md-2 ">
+                                        <button type="submit" class="btn btn-outline-success btn-block">Search</button>
+                                    </div>
+                                    <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
         <section class="content">
             <div class="container-fluid">
                 <div class="row">

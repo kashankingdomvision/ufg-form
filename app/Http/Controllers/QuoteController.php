@@ -32,9 +32,32 @@ class QuoteController extends Controller
 {
     public $pagiantion = 10;
     
-    public function index()
+    public function index(Request $request)
     {
-        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1);
+        if(count($request->all()) >0){
+            if($request->has('search') && !empty($request->search)){
+                $quote->where(function($query) use($request){
+                    $query->where('ref_no', 'like', '%'.$request->search.'%')
+                    ->orWhere('quote_ref', 'like', '%'.$request->search.'%')
+                    ->orWhereHas('getBrand', function($query) use($request){
+                        $query->where('name', 'like', '%'.$request->search.'%');
+                    });
+                });
+            }
+            
+            if($request->has('status') && $request->status != null && $request->status != 'all'){
+                $quote->where('booking_status', $request->status);
+            }
+            
+            if($request->has('date') && !empty($request->date['from']) || !empty($request->date['to'])){
+                $quote->where(function($query) use($request){
+                    $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->date['from'])->format('Y-m-d'))
+                    ->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->date['to'])->format('Y-m-d'));
+                });
+            }
+        }
+        $data['quotes'] = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);       
     }
     
