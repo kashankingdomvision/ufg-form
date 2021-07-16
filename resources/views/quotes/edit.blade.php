@@ -198,21 +198,27 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agency-columns mb-1">
-                        @if($quote->agency == 1)
-                          <div class="col form-group" style="width:175px;">
+
+                      @if($quote->agency == 1)
+                        <div class="row agency-columns mb-1">
+                          <div class="col form-group" >
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" class="form-control">
+                            <input type="text" name="agency_name" id="agency_name" class="form-control" value="{{ $quote->agency_name }}">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control">
                             <span class="text-danger" role="alert"></span>
                           </div>
                           <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" class="form-control">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
                             <span class="text-danger" role="alert"></span>
                           </div>
-                        @endif
-                       
-                      </div>
+                        </div>
+                      @endif
                     </div>
 
 

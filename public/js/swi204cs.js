@@ -19482,13 +19482,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   ///
 
   $(document).on('change', '.select-agency', function () {
-    $('.agency-columns').empty();
-    var $v_html = " <div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
+    var $v_html = " <div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                \n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Email </label> <span style=\"color:red\"> *</span>\n                    <input type=\"email\" name=\"agency_email\" id=\"agency_email\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
 
     if ($(this).val() == 1) {
-      $('.agency-columns').append($v_html);
+      $('.agency-columns').append($v_html).show(500);
     } else {
-      $('.agency-columns').empty();
+      $('.agency-columns').hide(500).empty();
     }
   }); /// Category to supplier
 

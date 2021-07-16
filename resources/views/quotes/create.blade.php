@@ -170,7 +170,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agency-columns mb-1">
+                      <div class="row agency-columns mb-1 " style="display: none;">
                         
                       </div>
                     </div>
