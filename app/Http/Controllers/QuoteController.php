@@ -381,7 +381,7 @@ class QuoteController extends Controller
     }
     //update status in archive 
     
-    public function getArchive(Type $var = null)
+    public function getArchive($var = null)
     {
         $data['status'] = 'archive';
         $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
