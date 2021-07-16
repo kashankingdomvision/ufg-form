@@ -24,4 +24,10 @@ class BookingLog extends Model
     {
         $this->attributes['log_no'] = $value + 1;
     }
+    
+    public function getQueryData($id, $modelName)
+    {
+        $model_name = 'App\\'.$modelName;
+        return $model_name::where('id', $id)->get();
+    }
 }

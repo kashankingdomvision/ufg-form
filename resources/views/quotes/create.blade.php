@@ -30,7 +30,7 @@
       </div>
     </section>
 
-    <section class="content">
+    <section id="content" class="content" data-countries="{{$countries}}">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
@@ -105,6 +105,20 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>Nationality <span style="color:red">*</span></label>
+                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                          <option selected value="" >Select Nationality</option>
+                          @foreach ($countries as $country)
+                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
                         <select name="brand_id" id="brand_id" class="form-control select2single getBrandtoHoliday brand-id">
                           <option selected value="" >Select Brand</option>
@@ -143,20 +157,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
-                          <option value="">Select Booking Season</option>
-                          @foreach ($seasons as $season)
-                            <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
@@ -176,6 +177,34 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>Booking Season <span style="color:red">*</span></label>
+                        <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
+                          <option value="">Select Booking Season</option>
+                          @foreach ($seasons as $season)
+                            <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Booking Currency <span style="color:red">*</span></label>
+                        <select name="currency_id" id="currency_id" class="form-control currency-image-select2 booking-currency-id @error('currency_id') is-invalid @enderror">
+                          <option selected value="">Select Booking Currency </option>
+                          @foreach ($currencies as $currency)
+                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                   
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
                         <input type="text" name="dinning_preference" id="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                         <span class="text-danger" role="alert"></span>
@@ -191,18 +220,7 @@
                     </div>
               
 
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control currency-image-select2 booking-currency-id @error('currency_id') is-invalid @enderror">
-                          <option selected value="">Select Booking Currency </option>
-                          @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
+                    
 
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -216,7 +234,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div id="appendPaxName" class="col-md-12"></div>
+                    <div id="appendPaxName" class="col-md-12 "></div>
                   </div>
                   <div class="row mb-2">
                       <div class="col-md-2 offset-md-10">

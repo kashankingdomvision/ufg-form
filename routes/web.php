@@ -202,6 +202,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
+        Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
         
    });
     /*

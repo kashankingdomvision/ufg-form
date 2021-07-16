@@ -19623,7 +19623,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // });
 
   $(document).on('click', '#add_more', function (e) {
-    $('.select2single').select2('destroy');
+    if ($('.select2single').data('select2')) {
+      $('.select2single').select2('destroy');
+    }
+
     $(".quote").eq(0).clone().find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
         return '[' + $('.quote').length + ']';
@@ -19867,13 +19870,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.pax-number', function () {
     var $_val = $(this).val();
     var currentDate = curday('-');
+    var countries = $('#content').data('countries');
 
     if ($_val > $('.appendCount').length) {
       var countable = $_val - $('.appendCount').length - 1;
 
       for (i = 1; i <= countable; ++i) {
         var count = $('.appendCount').length + 1;
-        var $_html = "<div class=\"mb-2 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Passenger #").concat(count + 1, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #2 FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"number\" name=\"pax[").concat(count, "][contact_number]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"").concat(currentDate, "\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-4 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div> ");
+        var c = count + 1;
+        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Passenger #").concat(c, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                \n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control select2single nationality-id\">\n                                    <option selected value=\"\" >Select Nationality</option>\n                                    ").concat(countries.map(function (co) {
+          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+        }).join(""), "\n                                    </select>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"number\" name=\"pax[").concat(count, "][contact_number]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"CONTACT NUMBER\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div>");
         $('#appendPaxName').append($_html);
       }
     } else {
@@ -19970,7 +19977,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
       if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-        $("#versions :input").not(this).prop('disabled', false);
+        console.log('run');
+        $(".versions :input").removeAttr("disabled");
         $(this).data('recall', 'false');
         $(this).text('Back Into Version');
         var add_HTML = "<div class=\"col-12 text-right\">\n                                    <button type=\"button\" id=\"add_more\" class=\"btn btn-outline-dark  pull-right \">+ Add more </button>\n                                </div>";
@@ -20167,12 +20175,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }); //ajax for references
     }
   });
-  $('#clone_booking_finance').on('click', function () {
+  $('.clone_booking_finance').on('click', function () {
     var depositeLabelId = 'deposite_heading' + $(this).data('key');
     var countHeading = $('.finance-clonning').length + 1;
     $('.finance-clonning').eq(0).clone().find("input").val("").each(function () {
       this.name = this.name.replace(/]\[(\d+)]/g, function (str, p1) {
         return '][' + $('.finance-clonning').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function (str, p1) {
+        return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name");
       });
     }).end().find('.depositeLabel').each(function () {
       this.id = 'deposite_heading' + $('.finance-clonning').length;
@@ -20181,6 +20192,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).end().find("select").val("").each(function () {
       this.name = this.name.replace(/]\[(\d+)]/g, function (str, p1) {
         return '][' + $('.finance-clonning').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function (str, p1) {
+        return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name");
       });
     }).end().find('.select2single').select2({
       width: '100%',

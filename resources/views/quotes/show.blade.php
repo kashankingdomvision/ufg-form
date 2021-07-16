@@ -90,6 +90,20 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Nationality <span style="color:red">*</span></label>
+                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                          <option selected value="" >Select Nationality</option>
+                          @foreach ($countries as $country)
+                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($quote->country_id == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
@@ -127,18 +141,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control  select2single">
-                          <option value="">Select Booking Season</option>
-                          @foreach ($seasons as $season)
-                            <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : ($quote->season_id == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
@@ -166,6 +169,19 @@
                         @endif
                       </div>
                     </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Booking Season <span style="color:red">*</span></label>
+                        <select name="season_id" id="season_id" class="form-control  select2single">
+                          <option value="">Select Booking Season</option>
+                          @foreach ($seasons as $season)
+                            <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : ($quote->season_id == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
