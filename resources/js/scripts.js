@@ -373,7 +373,9 @@ $(document).on('click', '.addChild', function () {
     // });
 
     $(document).on('click', '#add_more', function(e) {
+        if ($('.select2single').data('select2')) {
             $('.select2single').select2('destroy');
+          }
         $(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){                        
@@ -628,54 +630,67 @@ $(document).on('click', '.addChild', function () {
     };
 
     $(document).on('change', '.pax-number',function () {
-
+        $('.select2single').select2('destroy');
         var $_val = $(this).val();
         var currentDate = curday('-');
-
+        var countries = $('#content').data('countries');
         if($_val > $('.appendCount').length){
             var countable = ($_val - $('.appendCount').length) - 1;
             for (i = 1; i <= countable; ++i) {
                 var count = $('.appendCount').length + 1;
-                const $_html = `<div class="mb-2 appendCount" id="appendCount${count}">
+                var c = count + 1;
+                const $_html = `
+                        <div class="mb-1 appendCount" id="appendCount${count}">
                             <div class="row" >
-                                <div class="col-md-4 mb-2">
-                                    <label>Passenger #${ count + 1 } Full Name</label> 
-                                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
+                                <div class="col-md-3 mb-2">
+                                    <label>Passenger #${c} Full Name</label> 
+                                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
                                 </div>
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label>Email Address</label> 
                                     <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
                                 </div>
-                                <div class="col-md-4 mb-2">
+                                
+                                <div class="col-sm-3">
+                                    <label>Nationality</label>
+                                    <select name="pax[${count}][nationality_id]"  class="form-control select2single nationality-id">
+                                    <option selected value="" >Select Nationality</option>
+                                    ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                                    </select>
+                                </div>
+                                <div class="col-md-3 mb-2">
                                     <label>Contact Number</label> 
                                     <input type="number" name="pax[${count}][contact_number]" class="form-control" placeholder="CONTACT NUMBER" >
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label>Date Of Birth</label> 
-                                    <input type="date" max="${currentDate}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="CONTACT NUMBER" >
+                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                                 </div>
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label>Bedding Preference</label> 
                                     <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
                                 </div>
                                 
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label>Dinning Preference</label> 
                                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                                 </div>
                             </div>
-                        </div> `;
-                    $('#appendPaxName').append($_html);
+                        </div>`;
+                $('#appendPaxName').append($_html);
             }
         }else{
-           var countable = $('.appendCount').length + 1;
+            var countable = $('.appendCount').length + 1;
             for (var i = countable - 1; i >= $_val; i--) {
                 $("#appendCount"+i).remove();
             }
         }
-
+        $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+        });
         getSellingPrice();
     });
 
@@ -782,12 +797,14 @@ $(document).on('click', '.addChild', function () {
     $(".versions :input").prop("disabled", true);
     $('#bookingVersion :input').prop('disabled', true);
     
-    
     $('#reCall').prop("disabled", false);
+    
     $('#reCall').on('click', function () {
         if($(this).data('recall') == true){
             if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-                $("#versions :input").not(this).prop('disabled', false);
+                console.log('run');
+                $(".versions :input").removeAttr("disabled");
+
                 $(this).data('recall', 'false');
                 $(this).text('Back Into Version');
                 var add_HTML = `<div class="col-12 text-right">
@@ -1061,13 +1078,17 @@ $('.search-reference').on('click', function () {
    } 
 });
 
-$('#clone_booking_finance').on('click', function () {
+$('.clone_booking_finance').on('click', function () {
     
     var depositeLabelId  = 'deposite_heading'+$(this).data('key');
     var countHeading =$('.finance-clonning').length + 1;
     $('.finance-clonning').eq(0).clone().find("input").val("").each(function(){
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){                        
             return ']['+$('.finance-clonning').length+']';
+        });
+                                                                               
+        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){                        
+            return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
         });
     }).end().find('.depositeLabel').each(function () {
         this.id = 'deposite_heading'+$('.finance-clonning').length;
@@ -1077,6 +1098,9 @@ $('#clone_booking_finance').on('click', function () {
     .find("select").val("").each(function(){
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){                        
             return ']['+$('.finance-clonning').length+']';
+        });
+        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){                        
+            return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
         });
     }).end().find('.select2single').select2({
         width: '100%',

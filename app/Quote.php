@@ -39,7 +39,9 @@ class Quote extends Model
         'amount_per_person',
         'rate_type',
         'booking_status',
-        'booking_date'
+        'booking_date',
+        'country_id',
+        'is_archive',
     ];
     
     public function getQuotelogs()

@@ -24,6 +24,7 @@ use App\BookingPaxDetail;
 use App\Commission;
 use App\Http\Requests\BookingRequest;
 use Auth;
+use App\Country;
 
 class BookingController extends Controller
 {
@@ -44,6 +45,7 @@ class BookingController extends Controller
 
     public function edit($id)
     {
+        $data['countries']         = Country::orderBy('name', 'ASC')->get();
         $data['booking']          = Booking::findOrFail(decrypt($id));
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -79,6 +81,7 @@ class BookingController extends Controller
             'holiday_type_id'     =>  $request->holiday_type_id,
             'sale_person_id'      =>  $request->sale_person_id,
             'season_id'           =>  $request->season_id,
+            'country_id'          =>  $request->nationality_id??$request->country_id,
             'agency'              =>  ((int)$request->agency == 1)? '1' : false,
             'dinning_preference'  =>  $request->dinning_preference,
             'bedding_preference'  =>  $request->bedding_preference,
@@ -189,6 +192,7 @@ class BookingController extends Controller
                      'date_of_birth'         => $pax_data['date_of_birth']??NULL,
                      'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                      'dinning_preference'    => $pax_data['dinning_preference']??NULL,
+                     'country_id'            => $pax_data['nationality_id']??NULL,
                  ]);
              }
         }
@@ -214,24 +218,26 @@ class BookingController extends Controller
     
     public function viewVersion($id)
     {
-        $data['booking']          = Booking::findOrFail(decrypt($id));
-        $data['categories']       = Category::all()->sortBy('name');
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $data['payment_methods']  = PaymentMethod::all();
-        $data['commission_types'] = Commission::all();
-   
-
+        $booking_log = BookingLog::findOrFail(decrypt($id));
+        $data['log']                = $booking_log;
+        $data['booking']            = $booking_log->data;
+        $data['countries']          = Country::orderBy('name', 'ASC')->get();
+        $data['categories']         = Category::all()->sortBy('name');
+        $data['seasons']            = Season::all();
+        $data['booked_by']          = User::all()->sortBy('name');
+        $data['supervisors']        = User::whereHas('getRole', function($query){
+                                                $query->where('slug', 'supervisor');
+                                        })->get();
+        $data['sale_persons']       = User::whereHas('getRole', function($query){
+                                            $query->where('slug', 'sales-agent');
+                                        })->get();
+        $data['booking_methods']    = BookingMethod::all()->sortBy('id');
+        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']             = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']      = BookingType::all();
+        $data['payment_methods']    = PaymentMethod::all();
+        $data['commission_types']   = Commission::all();
+        
         return view('bookings.version',$data);
     }
 }

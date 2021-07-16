@@ -27,21 +27,21 @@ use App\BookingPaxDetail;
 use App\Commission;
 use DB;
 use Carbon\Carbon;
-
+use App\Country;
 class QuoteController extends Controller
 {
     public $pagiantion = 10;
     
     public function index()
     {
-        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->orderBy('created_at','DESC')->paginate(10);
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);       
     }
     
     
     public function create()
     {
-
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -76,6 +76,7 @@ class QuoteController extends Controller
             'user_id'            =>  Auth::id(),
             'season_id'          =>  $request->season_id,
             'brand_id'           =>  $request->brand_id,
+            'country_id'         =>  $request->nationailty_id??$request->country_id,
             'currency_id'        =>  $request->currency_id,
             'holiday_type_id'    =>  $request->holiday_type_id,
             'ref_name'           =>  $request->ref_name??'zoho',
@@ -162,6 +163,7 @@ class QuoteController extends Controller
     
     public function edit($id)
     {
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -220,6 +222,7 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
+                    'country_id'            => $pax_data['nationality_id'],
                 ]);
             }
        }
@@ -231,6 +234,7 @@ class QuoteController extends Controller
         $log = QuoteLog::findOrFail(decrypt($id));
         $data['quote'] = $log->data;
         $data['log']  = $log;
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -290,6 +294,7 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax['date_of_birth'],
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
+                    'country_id'            => $pax['country_id'],
                 ]);
             }
         }
@@ -316,6 +321,7 @@ class QuoteController extends Controller
     ///View Final Quote 
     public function finalQuote($id)
     {
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -334,4 +340,29 @@ class QuoteController extends Controller
         return view('quotes.show',$data);
     }
     ///View Final Quote 
+    
+    //update status in archive 
+    public function addInArchive(Request $request, $id)
+    {
+        $isArchive = ((int)$request->is_archive == 0)? 1 : 0;
+        Quote::findOrFail(decrypt($id))->update(['is_archive' => $isArchive]);
+        if(isset($request->status)){
+            $messge = 'Quote reverted from archive successfully';
+            return redirect()->route('quotes.archive')->with('success_message', $messge);        
+        }else{
+            $messge = 'Quote add in archive successfully';
+            return redirect()->route('quotes.index')->with('success_message', $messge);        
+        }
+        
+        return redirect()->back();
+    }
+    //update status in archive 
+    
+    public function getArchive(Type $var = null)
+    {
+        $data['status'] = 'archive';
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        return view('quotes.listing', $data);      
+    }
+    
 }

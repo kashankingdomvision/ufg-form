@@ -30,7 +30,7 @@
       </div>
     </section>
 
-    <section class="content">
+    <section class="content" id="content" data-countries="{{ $countries }}">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-6">
@@ -48,7 +48,7 @@
                         <table>
                           @foreach ($booking->getBookingLogs as $logKey =>  $logs)
                             <thead>
-                              <th><a href="{{ route('bookings.version', encrypt($logs->booking_id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
+                              <th><a href="{{ route('bookings.version', encrypt($logs->id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
                             </thead>
                             @endforeach
                         </table>
@@ -162,6 +162,19 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Nationality <span style="color:red">*</span></label>
+                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                          <option selected value="" >Select Nationality</option>
+                          @foreach ($countries as $country)
+                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($booking['country_id'] == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -204,20 +217,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control  select2single ">
-                          <option value="">Select Booking Season</option>
-                          @foreach ($seasons as $season)
-                            <option value="{{ $season->id }}"  data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}"  {{ old('season_id') == $season->id  ? "selected" : ($booking->season_id == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
@@ -243,7 +243,19 @@
                                 <span class="text-danger" role="alert"></span>
                             </div>
                         @endif
-                       
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Booking Season <span style="color:red">*</span></label>
+                        <select name="season_id" id="season_id" class="form-control  select2single ">
+                          <option value="">Select Booking Season</option>
+                          @foreach ($seasons as $season)
+                            <option value="{{ $season->id }}"  data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}"  {{ old('season_id') == $season->id  ? "selected" : ($booking->season_id == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -296,35 +308,44 @@
                             @php $count = $paxKey + 1; @endphp
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <label >Passenger #{{ $count +1  }} Full Name</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <label >Email Address</label> 
                                             <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email }}" class="form-control" placeholder="EMAIL ADDRESS" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-sm-3">
+                                          <label>Nationality</label>
+                                          <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
+                                                  <option selected value="" >Select Nationality</option>
+                                              @foreach ($countries as $country)
+                                                  <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected':( ($pax->country_id == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
+                                              @endforeach
+                                          </select>
+                                        </div>
+                                        <div class="col-md-3 mb-2">
                                             <label >Contact Number</label> 
                                             <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control" placeholder="CONTACT NUMBER" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <label>Date Of Birth</label> 
                                             <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <label>Bedding Preference</label> 
                                             <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         
-                                        <div class="col-md-4 mb-2">
+                                        <div class="col-md-3 mb-2">
                                             <label>Dinning Preference</label> 
                                             <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="DINNING PREFERENCES" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
@@ -792,7 +813,7 @@
                               @endif
                               <div class="row ">
                                 <div class="col-12">
-                                  <button type="button" data-key="0" id="clone_booking_finance" class="float-right btn btn-dark btn-sm">Add More Payment</button>
+                                  <button type="button" data-key="0" class=" clone_booking_finance float-right btn btn-dark btn-sm">Add More Finance</button>
                                 </div>
                               </div>
                           </section>

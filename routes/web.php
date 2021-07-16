@@ -61,6 +61,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
         
         Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
+        
+        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
     });
 
     /*
@@ -199,6 +202,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
+        Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
         
    });
     /*

@@ -16,6 +16,8 @@ use App\BookingMethod;
 use App\Currency;
 use App\Season;
 use App\BookingType;
+use App\Country;
+
 
 class ResponseController extends Controller
 {
@@ -255,4 +257,11 @@ class ResponseController extends Controller
         return response()->json($return);
     }
     
+    public function getPaxPartial($count)
+    {
+        $data['countries'] = Country::orderBy('name', 'ASC')->get();
+        $data['count']     = $count;
+        $re['response']    = View::make('partials.paxdetail', $data)->render();
+        return response()->json($re);
+    }
 }

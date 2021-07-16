@@ -84,6 +84,12 @@
                                 <p>Recently Deleted</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('quotes.archive') }}" class="nav-link {{ $route == 'quotes.view.archive' ? 'active' : '' }}">
+                                <i class="fa fa-archive nav-icon"></i>
+                                <p>Archived</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
