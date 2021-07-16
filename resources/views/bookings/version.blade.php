@@ -40,7 +40,7 @@
                   <div class="row mb-2">
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Rate Type <span class="text-danger">*</span></label>
+                        <label>Currency Rate Type <span class="text-danger">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >

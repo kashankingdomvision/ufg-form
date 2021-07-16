@@ -46,7 +46,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" value="live" class="rate-type" checked>
