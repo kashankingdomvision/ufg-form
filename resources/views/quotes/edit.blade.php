@@ -647,7 +647,8 @@
 
                   <div class="row">
                     <div class="col-12 text-right">
-                      <button type="button" id="add_more" class="btn btn-outline-dark  pull-right ">+ Add more </button>
+                      <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right ">+ Add more </button>
+                      <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                     </div>
                   </div>
 
@@ -804,6 +805,7 @@
       </div>
     </section>
 
+    @include('partials.template_modal')
   </div>
 
 @endsection

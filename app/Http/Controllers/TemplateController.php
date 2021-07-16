@@ -125,6 +125,8 @@ class TemplateController extends Controller
         $data['booked_by']        = User::all()->sortBy('name');
         $data['booking_types']    = BookingType::all();
 
+        // dd($data);
+
        return view('templates.edit', $data);
     }
     

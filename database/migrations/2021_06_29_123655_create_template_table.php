@@ -16,8 +16,8 @@ class CreateTemplateTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('season_id');
-            $table->unsignedBigInteger('currency_id');
+            $table->unsignedBigInteger('season_id')->nullable();;
+            $table->unsignedBigInteger('currency_id')->nullable();;
             $table->string('title');
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('status', [0, 1])->default(1);

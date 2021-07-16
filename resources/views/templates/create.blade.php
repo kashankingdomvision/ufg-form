@@ -47,7 +47,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Template Name <span style="color:red">*</span></label>
-                        <input type="text" name="template_name" id="template_name" class="form-control" placeholder="Template name">
+                        <input type="text" name="template_name" id="template_name" class="form-control" placeholder="Template name" required>
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
@@ -55,7 +55,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control currency-select2">
+                        <select name="season_id" id="season_id" class="form-control select2single" required>
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : "" }}> {{ $season->name }} </option>
@@ -68,7 +68,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id">
+                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id" required>
                           <option value="">Select Booking Currency</option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" >  &nbsp; {{$currency->code}} - {{$currency->name}}  </option>
@@ -245,7 +245,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supplier Currency <span style="color:red">*</span></label>
-                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
+                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror" required>
                               <option value="">Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
                                 <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -262,7 +262,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" min="0" value="0.00">
+                              <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" min="0" value="0.00" required>
                             </div>
                           </div>
                         </div>
@@ -274,7 +274,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" min="0" value="0.00" step="any">
+                              <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" min="0" value="0.00" step="any" required>
                             </div>
                           </div>
                         </div>
@@ -286,7 +286,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code"></span>
                               </div>
-                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
+                              <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00" required>
                               <div class="input-group-append">
                                 <div class="input-group-text">%</div>
                               </div>

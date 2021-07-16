@@ -19329,6 +19329,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     theme: "bootstrap",
     templateResult: formatState,
     templateSelection: formatState
+  }); // ajaxSetup
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': CSRFTOKEN
+    }
   });
 
   function formatState(opt) {
@@ -19653,7 +19659,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
     $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.text-danger').html('');
+    $('.text-danger, .quote:last .supplier-currency-code').html('');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
     datepickerReset(1);
     reinitializedDynamicFeilds(); // datePickerSetDate();
@@ -19836,7 +19842,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var sellingPrice = sellingPriceArray[key];
       var markupAmount = markupAmountArray[key];
 
-      if (supplierCurrency) {
+      if (supplierCurrency && bookingCurrency) {
         var rate = getRate(supplierCurrency, bookingCurrency, rateType);
         calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
         calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
@@ -20035,6 +20041,44 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           var errors = $.parseJSON(reject.responseText);
           setTimeout(function () {
             $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $('#' + index).addClass('is-invalid');
+              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
+      }
+    });
+  });
+  $(document).on('click', '#save_template', function () {
+    jQuery('#modal-default').modal('show').find('input').val('');
+  });
+  $(document).on('click', '#submit_template', function () {
+    var templateName = $('#template_name').val();
+    var formData = $('#quoteCreate').serialize() + '&template_name=' + templateName;
+    var url = REDIRECT_BASEURL + 'template/store';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      beforeSend: function beforeSend() {
+        $('input').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+        jQuery('#modal-default').modal('hide');
+        setTimeout(function () {
+          alert('Template created Successfully');
+        }, 800);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
             jQuery.each(errors.errors, function (index, value) {
               index = index.replace(/\./g, '_');
               $('#' + index).addClass('is-invalid');
