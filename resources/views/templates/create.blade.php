@@ -68,7 +68,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control booking-currency-id">
+                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id">
                           <option value="">Select Booking Currency</option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" >  &nbsp; {{$currency->code}} - {{$currency->name}}  </option>
@@ -245,7 +245,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supplier Currency <span style="color:red">*</span></label>
-                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control supplier-currency-id @error('currency_id') is-invalid @enderror">
+                            <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
                               <option value="">Select Supplier Currency</option>
                               @foreach ($currencies as $currency)
                                 <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
