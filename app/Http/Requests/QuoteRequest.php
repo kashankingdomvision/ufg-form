@@ -25,8 +25,8 @@ class QuoteRequest extends FormRequest
     {
         return [
             'agency'                            =>  'required',
-            'agency_name'                       =>  'required_if:agency,yes',
-            'agency_contact'                    =>  'required_if:agency,yes',
+            'agency_name'                       =>  'required_if:agency,1',
+            'agency_contact'                    =>  'required_if:agency,1',
             'commission_id'                     =>  'required',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
@@ -56,6 +56,15 @@ class QuoteRequest extends FormRequest
             'quote.*.booking_method_id'         =>  'nullable',
             'quote.*.booked_by_id'              =>  'nullable',
             'quote.*.supervisor_id'             =>  'nullable',
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+
+            'agency_name.required_if'           => 'The Agency Name field is required.',
+            'agency_contact.required_if'        => 'The Agency Contact field is required.',
         ];
     }
     
