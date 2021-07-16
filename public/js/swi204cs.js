@@ -19899,7 +19899,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     getTotalValues();
     getSellingPrice();
   });
-  $(document).on('change', '.change', function (event) {
+  $(document).on('keyup', '.change', function (event) {
     var key = $(this).closest('.quote').data('key');
     var changeFeild = $(this).data('name');
     var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
@@ -20215,7 +20215,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       dataType: "json",
       success: function success(data) {
         if (data) {
-          confirmAlert = confirm('Are you sure! you want to override Quote Details');
+          confirmAlert = confirm('Are you sure! you want to override Quote Details?');
         }
 
         if (confirmAlert == true) {

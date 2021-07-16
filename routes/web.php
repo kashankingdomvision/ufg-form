@@ -24,6 +24,23 @@ Route::group(['middleware' => ['auth']], function(){
 
 	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booking 
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
+        Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
+        Route::get('season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BookingController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'BookingController@update'));
+        Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
+        Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
+    });
+
+
     /*
     |--------------------------------------------------------------------------
     | Quote Manangement
@@ -65,26 +82,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Booking 
-    |--------------------------------------------------------------------------
-    */
-
-    Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
-        Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
-        Route::get('season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
-
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BookingController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'BookingController@update'));
-
-        Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
-        Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
-        // Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
-        // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-        // Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
-    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
-    });
 
 
     /*

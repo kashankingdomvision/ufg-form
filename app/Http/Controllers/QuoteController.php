@@ -34,7 +34,7 @@ class QuoteController extends Controller
     
     public function index()
     {
-        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->paginate(10);
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->orderBy('created_at','DESC')->paginate(10);
         return view('quotes.listing', $data);       
     }
     
@@ -315,7 +315,7 @@ class QuoteController extends Controller
     public function restore($id)
     {
         $quote = Quote::withTrashed()->find(decrypt($id))->restore();
-        return redirect()->route('quotes.view.trash')->with('success_message', 'Quote restored successfully');        
+        return redirect()->route('quotes.index')->with('success_message', 'Quote restored successfully');        
     }
     
     ///View Final Quote 

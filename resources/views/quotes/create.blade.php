@@ -191,7 +191,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control currency-image-select2 booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option selected value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -431,9 +431,6 @@
                           <div class="form-group">
                             <label>Markup % <span style="color:red">*</span></label>
                             <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text supplier-currency-code"></span>
-                              </div>
                               <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
                               <div class="input-group-append">
                                 <div class="input-group-text">%</div>

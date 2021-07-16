@@ -501,9 +501,6 @@
                                 <div class="form-group">
                                     <label>Markup % <span style="color:red">*</span></label>
                                     <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
-                                    </div>
                                     <input type="number" step="any" value="{{ \Helper::number_format($q_detail['markup_percentage']) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                     <div class="input-group-append">
                                         <div class="input-group-text">%</div>

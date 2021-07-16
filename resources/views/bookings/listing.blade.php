@@ -91,11 +91,11 @@
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
                                                         
-                                                            <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
+                                                            {{-- <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
                                                                 @csrf @method('delete')
                                                                 <input type="hidden" value="{{ encrypt($booking->season_id) }}" name="season">
                                                                 <button onclick="return confirm('Are you sure want to Delete this record?');" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></button>
-                                                            </form>
+                                                            </form> --}}
                                                         </td>
 
                                                     </tr>

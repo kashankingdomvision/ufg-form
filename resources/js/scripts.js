@@ -693,7 +693,7 @@ $(document).on('click', '.addChild', function () {
         getSellingPrice();
     });
 
-    $(document).on('change', '.change', function (event) {
+    $(document).on('keyup', '.change', function (event) {
 
 
         var key         = $(this).closest('.quote').data('key');
@@ -1065,7 +1065,7 @@ $('#tempalte_id').on('change', function () {
         success: function (data) {
 
             if(data){
-                confirmAlert = confirm('Are you sure! you want to override Quote Details');
+                confirmAlert = confirm('Are you sure! you want to override Quote Details?');
             }
 
             if(confirmAlert == true){

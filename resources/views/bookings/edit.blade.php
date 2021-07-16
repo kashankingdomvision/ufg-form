@@ -18,7 +18,6 @@
         <div class="row">
           <div class="col-sm-6">
               <h4>Edit Booking</h4>
-           
           </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -95,8 +94,8 @@
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Edit Booking</h3>
-                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" class=" float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
+                <h1 class="card-title text-center card-title-style">Edit Booking</h1>
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" class="float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
               </div>
@@ -559,9 +558,6 @@
                               <div class="form-group">
                                 <label>Markup % <span style="color:red">*</span></label>
                                 <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
-                                  </div>
                                   <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                   <div class="input-group-append">
                                     <div class="input-group-text">%</div>

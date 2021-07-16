@@ -56,7 +56,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
                             <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
@@ -196,7 +196,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span class="text-danger">*</span></label>
-                        <select name="currency_id" id="booking_currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="booking_currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}"  data-image="data:image/png;base64, {{$currency->flag}}" 
@@ -301,7 +301,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Category</label>
-                                <select name="booking[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2single category-id @error('category_id') is-invalid @enderror">
+                                <select name="booking[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
                                   <option value="">Select Category</option>
                                   @foreach ($categories as $category)
                                     <option value="{{ $category->id }}" {{ ($booking_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>

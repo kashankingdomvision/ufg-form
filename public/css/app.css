@@ -1311,11 +1311,8 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   width: 68% !important;
 }
 
-.card-title {
-  float: left;
+.card-title-style {
   font-size: 1.5rem;
-  font-weight: 400;
-  margin: 0;
   line-height: 2rem;
 }
 
@@ -1343,6 +1340,10 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
 .selectRow {
   display: block;
   padding: 20px;
+}
+
+.tbody-highlight {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /**
