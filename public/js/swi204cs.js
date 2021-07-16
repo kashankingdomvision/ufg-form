@@ -19842,7 +19842,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var sellingPrice = sellingPriceArray[key];
       var markupAmount = markupAmountArray[key];
 
-      if (supplierCurrency) {
+      if (supplierCurrency && bookingCurrency) {
         var rate = getRate(supplierCurrency, bookingCurrency, rateType);
         calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
         calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);

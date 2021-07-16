@@ -594,7 +594,7 @@ $(document).on('click', '.addChild', function () {
             var sellingPrice     = sellingPriceArray[key];
             var markupAmount     = markupAmountArray[key];
 
-            if(supplierCurrency){
+            if(supplierCurrency && bookingCurrency){
 
                 var rate = getRate(supplierCurrency,bookingCurrency,rateType);
 

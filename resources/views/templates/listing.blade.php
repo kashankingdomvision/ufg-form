@@ -53,21 +53,25 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                        @foreach ($templates as $key => $template)
-                                            <tr>
-                                                <td>{!! $template->title !!}</td>
-                                                <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
-                                                {{-- <td>{!! $template->formated_status !!}</td> --}}
-                                                <td>{{ $template->formated_created_at }}</td>
-                                                <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
-                                                 <td width="10%" >
-                                                   <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                  <a onclick="return confirm('Are you sure want to Delete {{ $template->name }}');" href="{{ route('templates.delete', encrypt($template->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        @if($templates && $templates->count())
+                                            @foreach ($templates as $key => $template)
+                                                <tr>
+                                                    <td>{!! $template->title !!}</td>
+                                                    <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
+                                                    {{-- <td>{!! $template->formated_status !!}</td> --}}
+                                                    <td>{{ $template->formated_created_at }}</td>
+                                                    <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
+                                                    <td width="10%" >
+                                                    <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                    <a onclick="return confirm('Are you sure want to Delete {{ $template->name }}');" href="{{ route('templates.delete', encrypt($template->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                        @endif
                                         </tbody>
                                       </table>
                                 </div>
