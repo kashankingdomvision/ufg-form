@@ -69,6 +69,13 @@ $(document).ready(function($) {
         templateSelection: formatState,
     });
 
+    // ajaxSetup
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': CSRFTOKEN
+        }
+    });
+
     function formatState(opt) {
         if (!opt.id) {
             return opt.text;
@@ -856,6 +863,59 @@ $("#quoteCreate").submit(function(event) {
     });
 });
 
+$(document).on('click', '#save_template', function(){
+    jQuery('#modal-default').modal('show').find('input').val('');
+});
+
+$(document).on('click', '#submit_template', function(){
+
+    let templateName = $('#template_name').val();
+    var formData     = $('#quoteCreate').serialize()  + '&template_name=' + templateName;
+    var url          = REDIRECT_BASEURL+'template/store';
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  formData,
+        beforeSend: function() {
+
+            $('input').removeClass('is-invalid');
+            $('.text-danger').html('');
+            $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
+        },
+        success: function (data) {
+
+            $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+            jQuery('#modal-default').modal('hide');
+
+            setTimeout(function() {
+                alert('Template created Successfully');
+            }, 800);
+        },
+        error: function (reject) {
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                setTimeout(function() {
+                    $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+        
+                    jQuery.each(errors.errors, function( index, value ) {
+    
+                        index = index.replace(/\./g,'_');
+    
+                        $('#'+index).addClass('is-invalid');
+                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                    });
+
+                }, 800);
+
+            }
+        },
+    });
+
+});
 
 $(".update-quote").submit(function(event) {
     event.preventDefault();

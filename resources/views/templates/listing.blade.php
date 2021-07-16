@@ -56,10 +56,10 @@
                                         @foreach ($templates as $key => $template)
                                             <tr>
                                                 <td>{!! $template->title !!}</td>
-                                                <td>{{ $template->getSeason->name }}</td>
+                                                <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
                                                 {{-- <td>{!! $template->formated_status !!}</td> --}}
                                                 <td>{{ $template->formated_created_at }}</td>
-                                                <td>{{ $template->getUser->name }}</td>
+                                                <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
                                                  <td width="10%" >
                                                    <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                         <i class="fas fa-edit"></i>

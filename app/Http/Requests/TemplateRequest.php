@@ -25,12 +25,12 @@ class TemplateRequest extends FormRequest
     {
         return [
             'template_name' =>  'required',
-            'season_id'     =>  'required',
-            'currency_id'   =>  'required',
-            'rate_type'     =>  'required',
-            'quote'                             =>  'required|array',
-            'quote.*.booking_due_date'          =>  'required',
-            'quote.*.supplier_currency_id'      =>  'required',
+            // 'season_id'     =>  'required',
+            // 'currency_id'   =>  'required',
+            // 'rate_type'     =>  'required',
+            // 'quote'                             =>  'required|array',
+            // 'quote.*.booking_due_date'          =>  'required',
+            // 'quote.*.supplier_currency_id'      =>  'required',
         ];
     }
 
@@ -39,11 +39,11 @@ class TemplateRequest extends FormRequest
     {
         return [
             'template_name' => 'Template Name',
-            'season_id'     => 'Booking season',
-            'currency_id'   => 'Booking currency',
-            'rate_type'     => 'Rate type',
-            'quote.*.booking_due_date'          => 'Booking Due Date',
-            'quote.*.supplier_currency_id'      => 'Supplier currency',
+            // 'season_id'     => 'Booking season',
+            // 'currency_id'   => 'Booking currency',
+            // 'rate_type'     => 'Rate type',
+            // 'quote.*.booking_due_date'          => 'Booking Due Date',
+            // 'quote.*.supplier_currency_id'      => 'Supplier currency',
         ];
     }
 }
