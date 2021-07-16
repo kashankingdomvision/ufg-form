@@ -61,6 +61,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
         
         Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
+        
+        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
     });
 
     /*

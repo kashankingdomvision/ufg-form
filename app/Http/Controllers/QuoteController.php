@@ -34,7 +34,7 @@ class QuoteController extends Controller
     
     public function index()
     {
-        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->groupBy('ref_no')->orderBy('created_at','DESC')->paginate(10);
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);       
     }
     
@@ -341,6 +341,28 @@ class QuoteController extends Controller
     }
     ///View Final Quote 
     
+    //update status in archive 
+    public function addInArchive(Request $request, $id)
+    {
+        $isArchive = ((int)$request->is_archive == 0)? 1 : 0;
+        Quote::findOrFail(decrypt($id))->update(['is_archive' => $isArchive]);
+        if(isset($request->status)){
+            $messge = 'Quote reverted from archive successfully';
+            return redirect()->route('quotes.archive')->with('success_message', $messge);        
+        }else{
+            $messge = 'Quote add in archive successfully';
+            return redirect()->route('quotes.index')->with('success_message', $messge);        
+        }
+        
+        return redirect()->back();
+    }
+    //update status in archive 
     
+    public function getArchive(Type $var = null)
+    {
+        $data['status'] = 'archive';
+        $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        return view('quotes.listing', $data);      
+    }
     
 }

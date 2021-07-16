@@ -623,7 +623,7 @@ $(document).on('click', '.addChild', function () {
     };
 
     $(document).on('change', '.pax-number',function () {
-
+        $('.select2single').select2('destroy');
         var $_val = $(this).val();
         var currentDate = curday('-');
         var countries = $('#content').data('countries');
@@ -659,7 +659,7 @@ $(document).on('click', '.addChild', function () {
                             <div class="row">
                                 <div class="col-md-3 mb-2">
                                     <label>Date Of Birth</label> 
-                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="CONTACT NUMBER" >
+                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <label>Bedding Preference</label> 
@@ -675,12 +675,15 @@ $(document).on('click', '.addChild', function () {
                 $('#appendPaxName').append($_html);
             }
         }else{
-           var countable = $('.appendCount').length + 1;
+            var countable = $('.appendCount').length + 1;
             for (var i = countable - 1; i >= $_val; i--) {
                 $("#appendCount"+i).remove();
             }
         }
-
+        $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+        });
         getSellingPrice();
     });
 

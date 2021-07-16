@@ -10,7 +10,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>View Quote</h4>
+                        <h4>View @if(isset($status) && $status == 'archive') Archive @endif Quote</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -35,7 +35,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Quote List</h3>
+                                <h3 class="card-title">Quote @if(isset($status) && $status == 'archive') Archive @endif List</h3>
                             </div>
 
                             <div class="card-body p-0">
@@ -94,7 +94,24 @@
                                                             <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                                 <span class="fa fa-eye"></span>
                                                             </a>
+                                                          
+                                                                <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
+                                                                    @csrf @method('patch')
+                                                                    @if(isset($status))
+                                                                    <input type="hidden" value="true" name="status">
+                                                                    @endif
+                                                                    <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
+                                                                    <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" data-target="#archive">
+                                                                        @if(isset($status) || $quote->is_archive == 1)
+                                                                            <i class="fa fa-recycle" ></i>
+                                                                        @else
+                                                                            <i class="fa fa-archive" ></i>
+                                                                        @endif
+                                                                        </button>
+                                                                </form>
+                                                            
                                                         @endif
+                                                        
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     
