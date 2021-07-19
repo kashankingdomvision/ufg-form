@@ -166,7 +166,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                        <select name="nationailty_id" id="nationailty_id" class="form-control select2single nationality-id">
                           <option selected value="" >Select Nationality</option>
                           @foreach ($countries as $country)
                             <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($booking['country_id'] == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
