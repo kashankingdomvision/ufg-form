@@ -90,6 +90,10 @@
                                                             <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
+
+                                                            <a href="{{ route('bookings.show', encrypt($booking->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" data-target="#View_Booking">
+                                                                <span class="fa fa-eye"></span>
+                                                            </a>
                                                         
                                                             {{-- <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
                                                                 @csrf @method('delete')

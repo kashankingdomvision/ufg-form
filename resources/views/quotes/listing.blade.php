@@ -134,7 +134,7 @@
                                                     @endif
                                                     </td>
                                                     <td>{{ $quote->ref_no }}</td>
-                                                    <td>{{ $quote->quote_ref }}</td>
+                                                    <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     <td>{{ $quote->getSeason->name }}</td>
                                                     <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
                                                     

@@ -67,6 +67,31 @@ class BookingController extends Controller
         return view('bookings.edit',$data);
     }
 
+    public function show($id)
+    {
+
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['booking']            = Booking::findOrFail(decrypt($id));
+        $data['commission_types'] = Commission::all();
+        $data['payment_methods']  = PaymentMethod::all();
+
+        return view('bookings.show',$data);
+
+    }
+
     public function bookingArray($request)
     {
         return [

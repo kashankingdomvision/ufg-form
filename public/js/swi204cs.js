@@ -19983,6 +19983,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
+  $('.booking-show :input').prop('disabled', true);
   $('#reCall').prop("disabled", false);
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {

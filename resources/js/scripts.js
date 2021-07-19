@@ -802,6 +802,8 @@ $(document).on('click', '.addChild', function () {
 
     $(".versions :input").prop("disabled", true);
     $('#bookingVersion :input').prop('disabled', true);
+
+    $('.booking-show :input').prop('disabled', true);
     
     $('#reCall').prop("disabled", false);
     
