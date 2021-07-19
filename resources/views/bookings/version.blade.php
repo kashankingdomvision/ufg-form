@@ -458,9 +458,9 @@
                               <div class="form-group">
                                 <label>Markup % <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                  <div class="input-group-prepend">
+                                  {{-- <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
-                                  </div>
+                                  </div> --}}
                                   <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['markup_percentage']) }}" name="booking[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change" value="0.00">
                                   <div class="input-group-append">
                                     <div class="input-group-text">%</div>
