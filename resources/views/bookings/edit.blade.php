@@ -48,7 +48,7 @@
                         <table>
                           @foreach ($booking->getBookingLogs as $logKey =>  $logs)
                             <thead>
-                              <th><a href="{{ route('bookings.version', encrypt($logs->id)) }}">Booking Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
+                              <th><a href="{{ route('bookings.version', encrypt($logs->id)) }}" target="_blank">Booking Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
                             </thead>
                             @endforeach
                         </table>
@@ -74,7 +74,7 @@
                         <table>
                           @foreach ($booking->getQuote->getQuotelogs as $logKey =>  $logs)
                             <thead>
-                              <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}">Quote Version {{ $logKey+1 }} : {{ $logs->version_no }}</a></th>
+                              <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}" target="_blank">Quote Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
                             </thead>
                             @endforeach
                         </table>

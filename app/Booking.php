@@ -101,7 +101,7 @@ class Booking extends Model
     
     public function getBookingLogs()
     {
-        return $this->hasMany(BookingLog::class, 'booking_id', 'id');
+        return $this->hasMany(BookingLog::class, 'booking_id', 'id')->orderBy('log_no','DESC');
     }
    
 }
