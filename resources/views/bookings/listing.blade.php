@@ -74,7 +74,11 @@
                                                 @foreach ($bookings as $booking)
                                                     <tr>
                                                         <td>{{$booking->ref_no}}</td>
-                                                        <td>{{$booking->quote_ref}}</td>
+                                                        <td>
+                                                            <a href="{{ route('bookings.show', encrypt($booking->id)) }}">
+                                                                {{$booking->quote_ref}}
+                                                            </a>
+                                                        </td>
                                                         <td>{{$booking->lead_passenger}}</td>
                                                         <td>{{$booking->getBrand->name??NULL}}</td>
                                                         <td>{{$booking->getHolidayType->name??NULL}}</td>
