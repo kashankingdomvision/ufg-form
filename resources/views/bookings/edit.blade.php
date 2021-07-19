@@ -218,7 +218,7 @@
                       </div>
                     </div>
                     
-                    <div class="col-sm-6">
+                    {{-- <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
@@ -243,6 +243,41 @@
                                 <span class="text-danger" role="alert"></span>
                             </div>
                         @endif
+                      </div>
+                    </div> --}}
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Agency Booking <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline">
+                            <input class="select-agency" {{ ($booking->agency ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
+                          </label>
+                          <label class="radio-inline">
+                            <input  class="select-agency" {{ ($booking->agency ==  0 ? 'checked' : '') }}  value="0" type="radio" name="agency" > No
+                          </label>
+                        </div>
+                      </div>
+
+                      <div class="row agency-columns mb-1" style={{  $booking->agency == 0 ? 'display:none;' : '' }} >
+                        @if($booking->agency == 1)
+                          <div class="col form-group" >
+                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                            <input type="text" name="agency_name" id="agency_name" class="form-control" value="{{ $booking->agency_name }}">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control">
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $booking->agency_email }}" name="agency_email" id="agency_email" class="form-control">
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                          @endif
                       </div>
                     </div>
 
