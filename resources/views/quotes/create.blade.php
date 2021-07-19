@@ -91,7 +91,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" name="quote_no" class="form-control" value="{{ uniqid() }}" placeholder="Quote Reference Number" readonly>
+                        <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
 

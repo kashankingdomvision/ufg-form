@@ -80,6 +80,7 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
 
         return view('quotes.create', $data);
     }
