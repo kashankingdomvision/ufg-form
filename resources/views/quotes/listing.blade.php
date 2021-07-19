@@ -151,14 +151,18 @@
                                                                 @csrf @method('patch')
                                                                 <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></button>
                                                             </form>
+                                                        @endif
+
+                                                        <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                                                            <span class="fa fa-eye"></span>
+                                                        </a>
+
+                                                        @if($quote->booking_status == 'quote')
                                                             <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
                                                         @endif
 
                                                         @if($quote->booking_status == 'booked')
-                                                            <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
-                                                                <span class="fa fa-eye"></span>
-                                                            </a>
-                                                          
+                                                       
                                                                 <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
                                                                     @csrf @method('patch')
                                                                     @if(isset($status))
