@@ -159,9 +159,8 @@ class QuoteController extends Controller
         ];
     }
     
-    public function store(Request $request)
+    public function store(QuoteRequest $request)
     {
-        dd($request->all());
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {

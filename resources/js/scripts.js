@@ -217,8 +217,10 @@ $(document).on('change', '.select-agency', function() {
                 </div>`;
                 
     if(($(this).val() == 1)){
+        $('#pax_no').val('').change();
         $('.agency-columns').append($v_html).show(500);
     }else{
+        $('#pax_no').val(1).change();
         $('.agency-columns').hide(500).empty();
     } 
 });
@@ -637,16 +639,26 @@ $(document).on('click', '.addChild', function () {
         return (yyyy+sp+mm+sp+dd);
     };
 
-    $(document).on('change', '.pax-number',function () {
+    $(document).on('change', '.pax-number', function () {
         $('.select2single').select2('destroy');
         var $_val = $(this).val();
+        var agencyVal = $('.select-agency:checked').val();
+        console.log(agencyVal);
         var currentDate = curday('-');
         var countries = $('#content').data('countries');
         if($_val > $('.appendCount').length){
             var countable = ($_val - $('.appendCount').length) - 1;
+            if(agencyVal == 1){
+                var countable = ($_val - $('.appendCount').length);
+            }
+            
             for (i = 1; i <= countable; ++i) {
                 var count = $('.appendCount').length + 1;
                 var c = count + 1;
+                
+                if(agencyVal == 1){
+                    c = count;
+                }
                 const $_html = `
                         <div class="mb-1 appendCount" id="appendCount${count}">
                             <div class="row" >
