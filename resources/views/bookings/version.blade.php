@@ -498,7 +498,7 @@
                                 <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                                   </div>
                                   <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['estimated_cost_bc']) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency"  readonly>
                                 </div>
@@ -509,7 +509,7 @@
                                 <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                                   </div>
                                   <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['selling_price_bc']) }}" name="booking[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                 </div>
@@ -520,7 +520,7 @@
                                 <label>Markup Amount in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                                   </div>
                                   <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['markup_amount_bc']) }}" name="booking[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                 </div>

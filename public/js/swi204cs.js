@@ -21428,7 +21428,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert('Quote created Successfully'); // window.location.href = REDIRECT_BASEURL + "quotes/index";
+          alert('Quote created Successfully');
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
