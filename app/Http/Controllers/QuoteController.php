@@ -222,7 +222,7 @@ class QuoteController extends Controller
                 [
                     'user_id'    => Auth::id(),
                     'quote_id'   => decrypt($id)
-                ],
+                ]
             );
             
             $data['quote_exist']   = null;
