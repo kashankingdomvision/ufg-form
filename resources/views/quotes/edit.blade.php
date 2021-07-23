@@ -812,6 +812,13 @@
     </section>
 
     @include('partials.template_modal')
+
+    @if($quote_exist && $quote_user_id)
+      @if($quote_exist == 1 && $quote_user_id != Auth::id())
+        @include('partials.override_modal')
+      @endif
+    @endif
+
   </div>
 
 @endsection

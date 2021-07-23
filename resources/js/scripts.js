@@ -975,18 +975,82 @@ $(".update-quote").submit(function(event) {
             if( reject.status === 422 ) {
 
                 var errors = $.parseJSON(reject.responseText);
-
+           
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
-     
-                    jQuery.each(errors.errors, function( index, value ) {
-    
-                        index = index.replace(/\./g,'_');
-                        $('#'+index).addClass('is-invalid');
-                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                    });
+
+                    if(errors.hasOwnProperty("overrride_errors")){
+                        alert(errors.overrride_errors);
+                        window.location.href = REDIRECT_BASEURL + "quotes/index";
+                    }
+                    else{
+        
+                        jQuery.each(errors.errors, function( index, value ) {
+        
+                            index = index.replace(/\./g,'_');
+                            $('#'+index).addClass('is-invalid');
+                            $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                        });
+                    }
 
                 }, 800);
+            }
+        },
+    });
+});
+
+
+$("#update-override").submit(function(event) {
+    event.preventDefault();
+
+    var $form = $(this),
+    url = $form.attr('action');
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        beforeSend: function() {
+            $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
+        },
+        success: function (data) {
+
+
+            if(data.success_message){
+
+                $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+                jQuery('#override_modal').modal('hide');
+            }
+
+
+            // $("#overlay").removeClass('overlay').html('');
+            // setTimeout(function() {
+            //     alert('Quote updated Successfully');
+            //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+            // }, 800);
+        },
+        error: function (reject) {
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                console.log(errors);
+
+                // setTimeout(function() {
+                //     $("#overlay").removeClass('overlay').html('');
+     
+                //     jQuery.each(errors.errors, function( index, value ) {
+    
+                //         index = index.replace(/\./g,'_');
+                //         $('#'+index).addClass('is-invalid');
+                //         $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                //     });
+
+                // }, 800);
 
             }
         },

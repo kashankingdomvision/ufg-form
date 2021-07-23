@@ -28,6 +28,8 @@ use App\Commission;
 use DB;
 use Carbon\Carbon;
 use App\Country;
+use App\QuoteUpdateDetail;
+
 class QuoteController extends Controller
 {
     public $pagiantion = 10;
@@ -206,11 +208,39 @@ class QuoteController extends Controller
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
 
+
+        $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->first();
+
+        if($quote_update_detail && $quote_update_detail->exists()){
+
+            $data['quote_exist']   = 1;
+            $data['quote_user_id'] = $quote_update_detail->user_id;
+        }
+        else{    
+            
+            $quote_update_details = QuoteUpdateDetail::create(
+                [
+                    'user_id'    => Auth::id(),
+                    'quote_id'   => decrypt($id)
+                ],
+            );
+            
+            $data['quote_exist']   = null;
+            $data['quote_user_id'] = null;
+        }
+
         return view('quotes.edit',$data);
     }
     
     public function update(QuoteRequest $request, $id)
     {
+
+        $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->where('user_id',Auth::id())->first();
+ 
+        if ($quote_update_detail == null){
+            return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
+        }
+
         $quote = Quote::findOrFail(decrypt($id));
         $array =  $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
@@ -251,9 +281,18 @@ class QuoteController extends Controller
                 ]);
             }
        }
+
+       $quote_update_detail->delete();
+
        return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
     }
-    
+
+    public function update_override(Request $request,$id){
+
+        QuoteUpdateDetail::where("quote_id", decrypt($id))->update([ "user_id" => $request->user_id ]);
+        return \Response::json(['success_message' => 'User Updated'], 200);
+    }
+
     public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
