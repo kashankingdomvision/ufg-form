@@ -80,6 +80,7 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
 
         return view('quotes.create', $data);
     }
@@ -120,9 +121,10 @@ class QuoteController extends Controller
             'selling_currency_oc'=>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'  =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
-            'rate_type'          =>  ($request->rate_type == 'live')? 'live': 'manual',
-            'agency_name'        =>  (isset($request['agency_name']))? $request->agency_name : NULL,
-            'agency_contact'     =>  (isset($request['agency_contact']))? $request->agency_contact : NULL, 
+            'rate_type'          =>  ($request->rate_type == 'live') ? 'live': 'manual',
+            'agency_name'        =>  (isset($request['agency_name'])) ? $request->agency_name : NULL,
+            'agency_contact'     =>  (isset($request['agency_contact'])) ? $request->agency_contact : NULL,
+            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_name : NULL, 
         ];
        
     }

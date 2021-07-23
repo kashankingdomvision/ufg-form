@@ -15,7 +15,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
-                            <li class="breadcrumb-item active">Season Management</li>
+                            <li class="breadcrumb-item active">Booking</li>
                         </ol>
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 <?php
 namespace App\Http;
+use App\Quote;
 
 class Helper
 {
@@ -7,4 +8,11 @@ class Helper
 
         return number_format($number,2);
     }
+
+    public static function getQuoteID(){
+        
+        $last_id = Quote::latest()->pluck('id')->first();
+       return "QR-".sprintf("%04s", ++$last_id);
+    }
+
 }

@@ -198,8 +198,8 @@ $(document).ready(function($) {
  /// brands holidays
 ///
 $(document).on('change', '.select-agency', function() {
-    $('.agency-columns').empty();
-    var $v_html = ` <div class="col form-group" style="width:175px;">
+    
+    var $v_html = `<div class="col form-group" style="width:175px;">
                     <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                     <input type="text" name="agency_name" id="agency_name" class="form-control">
                     <span class="text-danger" role="alert" > </span>
@@ -208,12 +208,18 @@ $(document).on('change', '.select-agency', function() {
                     <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                     <input type="text" name="agency_contact" id="agency_contact" class="form-control">
                     <span class="text-danger" role="alert" > </span>
+                </div>
+                
+                <div class="col form-group">
+                    <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                    <input type="email" name="agency_email" id="agency_email" class="form-control">
+                    <span class="text-danger" role="alert" > </span>
                 </div>`;
                 
     if(($(this).val() == 1)){
-        $('.agency-columns').append($v_html);
+        $('.agency-columns').append($v_html).show(500);
     }else{
-        $('.agency-columns').empty();
+        $('.agency-columns').hide(500).empty();
     } 
 });
 
@@ -802,6 +808,8 @@ $(document).on('click', '.addChild', function () {
 
     $(".versions :input").prop("disabled", true);
     $('#bookingVersion :input').prop('disabled', true);
+
+    $('.booking-show :input').prop('disabled', true);
     
     $('#reCall').prop("disabled", false);
     

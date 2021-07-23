@@ -27,6 +27,7 @@ class QuoteRequest extends FormRequest
             'agency'                            =>  'required',
             'agency_name'                       =>  'required_if:agency,1',
             'agency_contact'                    =>  'required_if:agency,1',
+            'agency_email'                      =>  'required_if:agency,1',
             'commission_id'                     =>  'required',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
@@ -65,6 +66,7 @@ class QuoteRequest extends FormRequest
 
             'agency_name.required_if'           => 'The Agency Name field is required.',
             'agency_contact.required_if'        => 'The Agency Contact field is required.',
+            'agency_email.required_if'        => 'The Agency Email field is required.',
         ];
     }
     
@@ -74,6 +76,7 @@ class QuoteRequest extends FormRequest
             'agency'                            => 'Agency',
             'agency_name.required_if'           => 'Agency Name',
             'agency_contact.required_if'        => 'Agency Contact',
+            'agency_email.required_if'          => 'Agency Email',
             'commission_id'                     => 'Commission Type',
             'season_id'                         => 'Booking Season',
             'brand_id'                          => 'Brand',

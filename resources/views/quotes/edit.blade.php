@@ -75,7 +75,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
@@ -134,7 +134,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                        <select name="nationailty_id" id="nationailty_id" class="form-control select2single nationality-id">
                           <option selected value="" >Select Nationality</option>
                           @foreach ($countries as $country)
                             <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($quote->country_id == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
@@ -198,20 +198,26 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agency-columns mb-1">
+
+                      <div class="row agency-columns mb-1" style={{  $quote->agency == 0 ? 'display:none;' : '' }} >
                         @if($quote->agency == 1)
-                          <div class="col form-group" style="width:175px;">
+                          <div class="col form-group" >
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" class="form-control">
+                            <input type="text" name="agency_name" id="agency_name" class="form-control" value="{{ $quote->agency_name }}">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control">
                             <span class="text-danger" role="alert"></span>
                           </div>
                           <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" class="form-control">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
                             <span class="text-danger" role="alert"></span>
                           </div>
-                        @endif
-                       
+                          @endif
                       </div>
                     </div>
 

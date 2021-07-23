@@ -46,7 +46,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" value="live" class="rate-type" checked>
@@ -91,7 +91,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" name="quote_no" class="form-control" value="{{ uniqid() }}" placeholder="Quote Reference Number" readonly>
+                        <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
 
@@ -106,7 +106,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
+                        <select name="nationailty_id" id="nationailty_id" class="form-control select2single nationality-id">
                           <option selected value="" >Select Nationality</option>
                           @foreach ($countries as $country)
                             <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
@@ -170,7 +170,7 @@
                           </label>
                         </div>
                       </div>
-                      <div class="row agency-columns mb-1">
+                      <div class="row agency-columns mb-1 " style="display: none;">
                         
                       </div>
                     </div>

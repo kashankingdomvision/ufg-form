@@ -28,16 +28,18 @@
         </section>
 
         <section class="content">
-            <div class="container-fluid ">
-                <div class="card card-default {{ (request()->get('search') == '')? 'collapsed-card': '' }}">
-                    <button type="button" class="btn btn-tool text-dark" data-card-widget="collapse">
-                    <div class="card-header ">
-                        <h3 class="card-title display-2"><strong>Filters</strong></h3>
+            <div class="container-fluid">
+                <div class="card card-default">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Filters</b></h3>
+    
                         <div class="card-tools">
-                                <i class="fas fa-plus"></i>
-                            </div>
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
                         </div>
-                    </button>
+                    </div>
+         
                     <div class="card-body">
                         <form method="get" action="{{ route('quotes.index') }}">
                         <div class="row">
@@ -52,7 +54,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Search</label>
-                                    <select class="form-control" name="status">
+                                    <select class="form-control select2single" name="status">
                                         <option {{ (old('search') == 'all')? 'selected': ((request()->get('status') == 'all')? 'selected' : null) }} value="all" selected>All Status</option>
                                         <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
                                         <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
@@ -77,22 +79,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex flex-row-reverse bd-highlight">
-                                    <div class="col-md-2 ">
-                                        <button type="submit" class="btn btn-outline-success btn-block">Search</button>
-                                    </div>
-                                    <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
-                                </div>
+
+                        <div class="row mt-1">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Search</button>
+                                <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
                             </div>
                         </div>
+
                     </form>
                     </div>
-                    
                 </div>
             </div>
         </section>
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -134,7 +134,7 @@
                                                     @endif
                                                     </td>
                                                     <td>{{ $quote->ref_no }}</td>
-                                                    <td>{{ $quote->quote_ref }}</td>
+                                                    <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     <td>{{ $quote->getSeason->name }}</td>
                                                     <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
                                                     
@@ -151,14 +151,18 @@
                                                                 @csrf @method('patch')
                                                                 <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></button>
                                                             </form>
+                                                        @endif
+
+                                                        <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                                                            <span class="fa fa-eye"></span>
+                                                        </a>
+
+                                                        @if($quote->booking_status == 'quote')
                                                             <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
                                                         @endif
 
                                                         @if($quote->booking_status == 'booked')
-                                                            <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
-                                                                <span class="fa fa-eye"></span>
-                                                            </a>
-                                                          
+                                                       
                                                                 <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
                                                                     @csrf @method('patch')
                                                                     @if(isset($status))
