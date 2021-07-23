@@ -264,14 +264,13 @@
                           <div class="col form-group" >
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                             <input type="text" name="agency_name" id="agency_name" class="form-control" value="{{ $booking->agency_name }}">
-                            <span class="text-danger" role="alert" > </span>
+                            <span class="text-danger" role="alert"> </span>
                           </div>
 
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
                             <span class="text-danger error_msg0" role="alert" > </span>
-                            <span class="text-danger valid_msg0" role="alert" > </span>
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>

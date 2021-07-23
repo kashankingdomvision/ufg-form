@@ -157,13 +157,18 @@
                             <div class="col" style="width:175px;">
                                 <label for="inputEmail3" class="">Agency Name</label> <span class="text-danger"> *</span>
                                 <input type="text" value="{{ $booking['agency_name'] }}" name="agency_name" class="form-control">
-                                <div class="alert-danger" style="text-align:center" id="error_agency_name"> </div>
+                                <span class="text-danger" role="alert"></span>
                             </div>
                             <div class="col">
                                 <label for="inputEmail3" class="">Agency Contact No.</label> <span class="text-danger"> *</span>
                                 <input type="tel" value="{{ $booking['agency_contact'] }}" name="agency_contact" class="form-control phone phone0">
                                 <span class="text-danger error_msg0" role="alert" > </span>
                                 <span class="text-danger valid_msg0" role="alert" > </span>
+                            </div>
+                            <div class="col">
+                                <label for="inputEmail3" class="">Agency Email</label> <span class="text-danger"> *</span>
+                                <input type="tel" value="{{ $booking['agency_email'] }}" name="agency_email" class="form-control">
+                                <span class="text-danger" role="alert"></span>
                             </div>
                         @endif
                       </div>

@@ -23,26 +23,12 @@ class BookingRequest extends FormRequest
      */
     public function rules()
     {
-        // return [
-        //     'season_id'           =>  'required',
-        //     'brand_id'            =>  'required',
-        //     'currency_id'         =>  'required',
-        //     'holiday_type_id'     =>  'required',
-        //     'ref_no'              =>  'required',
-        //     'quote_no'            =>  'required',
-        //     'lead_passenger'      =>  'required',
-        //     'sale_person_id'      =>  'required',
-        //     'agency'              =>  'required',
-        //     'dinning_preference'  =>  'required',
-        //     'bedding_preference'  =>  'required',
-        //     'pax_no'              =>  'required',
-        //     'rate_type'           =>  'required',
-        // ];
-
+    
         return [
             'agency'                            =>  'required',
-            'agency_name'                       =>  'required_if:agency,yes',
-            'agency_contact'                    =>  'required_if:agency,yes',
+            'agency_name'                       =>  'required_if:agency,1',
+            'agency_contact'                    =>  'required_if:agency,1',
+            'agency_email'                      =>  'required_if:agency,1',
             'commission_id'                     =>  'required',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
@@ -73,6 +59,16 @@ class BookingRequest extends FormRequest
             'quote.*.supervisor_id'             =>  'nullable',
         ];
     }
+
+    public function messages()
+    {
+        return[
+
+            'agency_name.required_if'           => 'The Agency Name field is required.',
+            'agency_contact.required_if'        => 'The Agency Contact field is required.',
+            'agency_email.required_if'        => 'The Agency Email field is required.',
+        ];
+    }
     
     public function attributes()
     {
@@ -96,6 +92,7 @@ class BookingRequest extends FormRequest
             'agency'                            => 'Agency',
             'agency_name.required_if'           => 'Agency Name',
             'agency_contact.required_if'        => 'Agency Contact',
+            'agency_email.required_if'          => 'Agency Email',
             'commission_id'                     => 'Commission Type',
             'season_id'                         => 'Booking season',
             'brand_id'                          => 'Brand',

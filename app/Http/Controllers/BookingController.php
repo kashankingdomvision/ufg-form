@@ -123,6 +123,7 @@ class BookingController extends Controller
             'amount_per_person'   =>  $request->booking_amount_per_person??$request->amount_per_person,
             'agency_name'        =>   (isset($request['agency_name']))? $request->agency_name : NULL,
             'agency_contact'     =>   (isset($request['agency_contact']))? $request->full_number : NULL, 
+            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_email : NULL, 
         ];
     }
 
