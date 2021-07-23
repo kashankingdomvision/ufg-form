@@ -47,10 +47,10 @@
                     <div class="form-group">
                       <label for="inputEmail3" class="">Phone Number</label>
                       <br />
-                      <input type="tel"  name="phone" class="form-control phone" data-idkey="" id="phone" value="{{old('phone')}}">
+                      <input type="tel"  name="phone" class="form-control phone phone0" value="{{old('phone')}}">
                       <div class="alert-danger" style="text-align:center">{{$errors->first('phone')}}</div>
-                      <div class="alert-danger hide" id="error_msg" style="text-align:center"></div>
-                      <div class="alert-danger hide" id="valid_msg" style="text-align:center"></div>
+                      <span class="text-danger error_msg0 hide" role="alert"></span>
+                      <span class="text-danger valid_msg0 hide" role="alert"></span>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Categories <span style="color:red">*</span></label>
@@ -91,7 +91,7 @@
                     </div>
                   </div>
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-right">Submit</button>
+                    <button type="submit" class="btn btn-primary buttonSumbit float-right">Submit</button>
                   </div>
                 </form>
               </div>

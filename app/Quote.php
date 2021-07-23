@@ -42,6 +42,7 @@ class Quote extends Model
         'booking_date',
         'country_id',
         'is_archive',
+        'agency_email',
     ];
     
     public function getQuotelogs()

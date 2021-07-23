@@ -20863,11 +20863,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   ///
 
   $(document).on('change', '.select-agency', function () {
-    var $v_html = "<div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                \n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Email </label> <span style=\"color:red\"> *</span>\n                    <input type=\"email\" name=\"agency_email\" id=\"agency_email\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
+    var $v_html = "<div class=\"col form-group\" style=\"width:175px;\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                    <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>\n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                    <input type=\"tel\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control phone phone0\">\n                    <span class=\"text-danger error_msg0 hide\" role=\"alert\"></span>\n                    <span class=\"text-danger valid_msg0 hide\" role=\"alert\"></span>\n                </div>\n                \n                <div class=\"col form-group\">\n                    <label for=\"inputEmail3\" class=\"\">Agency Email </label> <span style=\"color:red\"> *</span>\n                    <input type=\"email\" name=\"agency_email\" id=\"agency_email\" class=\"form-control\">\n                    <span class=\"text-danger\" role=\"alert\" > </span>\n                </div>";
 
     if ($(this).val() == 1) {
       $('#pax_no').val('').change();
       $('.agency-columns').append($v_html).show(500);
+      intTelinput(0);
     } else {
       $('#pax_no').val(1).change();
       $('.agency-columns').hide(500).empty();
@@ -21280,10 +21281,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Passenger #").concat(c, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                \n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control select2single nationality-id\">\n                                    <option selected value=\"\" >Select Nationality</option>\n                                    ").concat(countries.map(function (co) {
           return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                    </select>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" id=\"phone").concat(count, "\" class=\"form-control phone\" >\n                                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"error_msg").concat(count, "\" ></div>\n                                    <div class=\"alert-danger\" style=\"text-align:center\" id=\"valid_msg").concat(count, "\" ></div>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div>");
-        $('#appendPaxName').append($_html);
-        console.log('countable' + count);
-        integrate_intlTelInput('#phone' + count);
+        }).join(""), "\n                                    </select>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                    <span class=\"text-danger valid_msg").concat(count, "\" role=\"alert\"></span>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div>");
+        $('#appendPaxName').append($_html); // console.log('countable'+count);
+        // integrate_intlTelInput('#phone'+count);
+
+        intTelinput(count);
       }
     } else {
       var countable = $('.appendCount').length + 1;
@@ -21855,119 +21857,176 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }); ///booking incremnet and 
   // tel input  start
 
-  if ($('#phone').length > 0) {
-    var input = integrate_intlTelInput();
-    console.log('greater than');
+  if ($('.phone').length > 0) {
+    for (var i = 0; i < $('.phone').length; i++) {
+      intTelinput(i);
+    }
   } //tel input end
-  // $(document).on('change', '.phone', function() {
-  //     var id = $(this).data('idkey');
-  //     console.log(id);
-  //     reset( document.querySelector('#phone'+id),
-  //     document.querySelector('#error_msg'+id), 
-  //     document.querySelector('#valid_msg'+id));
-  // })
-  // $('.phone').addEventListener('change', resetTelinput);
-  // $('.phone').addEventListener('keyup', resetTelinput);
+  //intl-tel-input ************** Start ******************** //
 
-});
 
-var integrate_intlTelInput = function integrate_intlTelInput(id) {
-  var input_id = id !== null && id !== void 0 ? id : '#phone';
-  console.log(input_id, ' int input funcation');
-  var input = document.querySelector(input_id);
-  var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(input, {
-    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-    separateDialCode: true,
-    formatOnDisplay: true,
-    initialCountry: "auto",
-    nationalMode: true,
-    hiddenInput: "full_number",
-    autoPlaceholder: "polite",
-    placeholderNumberType: "MOBILE"
-  });
-  return iti;
-};
+  function intTelinput() {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var inVal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    var input = document.querySelector('.phone' + key);
+    var errorMsg = document.querySelector('.error_msg' + key);
+    var validMsg = document.querySelector('.valid_msg' + key);
+    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(input, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+      separateDialCode: true,
+      formatOnDisplay: true,
+      initialCountry: "auto",
+      nationalMode: true,
+      hiddenInput: "full_number",
+      autoPlaceholder: "polite",
+      placeholderNumberType: "MOBILE"
+    });
+    input.nextElementSibling.value = iti.getNumber(); // on blur: validate
 
-var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('change', '.phone', function () {
-  var key = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('key');
-  var input = document.querySelector('#phone' + key);
-  input.addEventListener('blur', function (iti) {
-    var errorMsg = document.querySelector('#error_msg' + key);
-    var validMsg = document.querySelector('#valid_msg' + key);
-    reset(input, errorMsg, validMsg); // var iti = integrate_intlTelInput('#phone'+key);/
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    input.addEventListener('blur', function () {
+      reset();
 
-    console.log(integrate_intlTelInput('#phone' + key).getSelectedCountryData()); // console.log(integrate_intlTelInput().getSelectedCountryData());
-    // // var iti = intlTelInput(input, {
-    // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-    // //     separateDialCode: true,
-    // //     formatOnDisplay:true,
-    // //     initialCountry: "auto",
-    // //     nationalMode: false,
-    // //     hiddenInput: "full_number",
-    // //     autoPlaceholder: "polite",
-    // //     placeholderNumberType: "MOBILE",
-    // // });
-    // if (input.value.trim()) {
-    //     console.log(iti.getSelectedCountryData());
-    //     if (iti.isValidNumber()) {
-    //         validMsg.classList.remove("hide");
-    //     } else {
-    //         input.classList.add("is-invalid");
-    //         var errorCode = iti.getValidationError();
-    //         errorMsg.innerHTML = errorMap[errorCode];
-    //         errorMsg.classList.remove("hide");
-    //     }
-    // }
-    // iti.destroy();
-  });
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()('.phone1').on("countrychange", function () {
-  var key = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).data('key');
-  var input = document.querySelector('#phone' + key);
-  console.log(input, 'countrycahnge');
-  var errorMsg = document.querySelector('#error_msg' + key);
-  var validMsg = document.querySelector('#valid_msg' + key);
-  reset(input, errorMsg, validMsg);
-  var iti = integrate_intlTelInput('#phone' + key);
-  iti.destroy();
-  iti = integrate_intlTelInput('#phone' + key);
-  console.log(iti.getSelectedCountryData()); // do something with iti.getSelectedCountryData()
-});
+      if (input.value.trim()) {
+        if (iti.isValidNumber()) {
+          validMsg.classList.remove("hide");
+          $('.buttonSumbit').removeAttr('disabled');
+        } else {
+          $('.buttonSumbit').attr('disabled', 'disabled');
+          input.classList.add("is-invalid");
+          var errorCode = iti.getValidationError();
+          console.log(errorMsg);
+          errorMsg.innerHTML = errorMap[errorCode];
+          errorMsg.classList.remove("hide");
+        }
+      }
+    });
 
-var reset = function reset(input, errorMsg, validMsg) {
-  input.classList.remove("is-invalid");
-  errorMsg.innerHTML = "";
-  errorMsg.classList.add("hide");
-  console.log('reset funcction');
-  validMsg.classList.add("hide");
-}; // on keyup / change flag: reset
-// on blur: validate
-// input.addEventListener('blur', function() {
-//     reset(input, errorMsg, validMsg);
-//     if (input.value.trim()) {
-//         if (iti.isValidNumber()) {
-//             validMsg.classList.remove("hide");
-//         } else {
-//             input.classList.add("is-invalid");
-//             var errorCode = iti.getValidationError();
-//             errorMsg.innerHTML = errorMap[errorCode];
-//             errorMsg.classList.remove("hide");
+    var reset = function reset() {
+      input.classList.remove("is-invalid");
+      errorMsg.innerHTML = "";
+      errorMsg.classList.add("hide");
+      validMsg.classList.add("hide");
+    };
+  } //intl-tel-input ************** End ******************** //
+
+}); // var integrate_intlTelInput = function (id, key = null) {
+//     var input_id= id??'#phone'
+//     console.log(input_id, ' int input funcation');
+//     var input =    document.querySelector(input_id);
+//     var errorMsg =    document.querySelector('#error_msg'+key);
+//     var validMsg =    document.querySelector('#valid_msg'+key);
+//     console.log(errorMsg);
+//     // input = window.intlTelInputGlobals.getInstance(input);
+//     var iti = intlTelInput(input, {
+//         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+//         separateDialCode: true,
+//         formatOnDisplay:true,
+//         initialCountry: "auto",
+//         nationalMode: true,
+//         hiddenInput: "full_number",
+//         autoPlaceholder: "polite",
+//         placeholderNumberType: "MOBILE",
+//     });
+//     input.addEventListener('blur', function() {
+//         reset(input, errorMsg, validMsg);
+//         if (input.value.trim()) {
+//             if (iti.isValidNumber()) {
+//                 validMsg.classList.remove("hide");
+//             } else {
+//                 input.classList.add("is-invalid");
+//                 var errorCode = iti.getValidationError();
+//                 console.log(errorMap);
+//                 errorMsg.innerHTML = errorMap[errorCode];
+//                 errorMsg.classList.remove("hide");
+//             }
 //         }
-//     }
+//     });
+//     // console.log(iti.getSelectedCountryData);
+//     return iti
+// }
+// $(document).on('blur', '.phone', function() {
+//     var key      =    $(this).data('key');
+//     integrate_intlTelInput('#phone'+key, key);
+//     // var input    =    document.querySelector('#phone'+key);
+//     // input.addEventListener('blur', function(iti) {
+//     //     var errorMsg =    document.querySelector('#error_msg'+key);
+//     //     var validMsg =    document.querySelector('#valid_msg'+key);
+//     //     reset(input, errorMsg, validMsg);
+//     //     // var iti = integrate_intlTelInput('#phone'+key);/
+//     //     console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
+//         // console.log(integrate_intlTelInput().getSelectedCountryData());
+//     // // var iti = intlTelInput(input, {
+//     // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+//     // //     separateDialCode: true,
+//     // //     formatOnDisplay:true,
+//     // //     initialCountry: "auto",
+//     // //     nationalMode: false,
+//     // //     hiddenInput: "full_number",
+//     // //     autoPlaceholder: "polite",
+//     // //     placeholderNumberType: "MOBILE",
+//     // // });
+//     // if (input.value.trim()) {
+//     //     console.log(iti.getSelectedCountryData());
+//     //     if (iti.isValidNumber()) {
+//     //         validMsg.classList.remove("hide");
+//     //     } else {
+//     //         input.classList.add("is-invalid");
+//     //         var errorCode = iti.getValidationError();
+//     //         errorMsg.innerHTML = errorMap[errorCode];
+//     //         errorMsg.classList.remove("hide");
+//     //     }
+//     // }
+//     // iti.destroy();
+//     // });
 // });
-//   var reset = function(inId = null, erId = null, valid =null) {
-//     console.log('rest');
-//     var input    =     document.querySelector('#phone');
-//     var errorMsg =     document.querySelector('#error_msg');
-//     var validMsg =     document.querySelector('#valid_msg');
-//       console.log(input, validMsg, errorMsg);
-//     input.classList.remove("is-invalid");
-//     errorMsg.innerHTML = "";
-//     errorMsg.classList.add("hide");
-//     console.log(validMsg);
-//     validMsg.classList.add("hide");
-//   };
+// // $('.phone1').on("countrychange", function() {
+// //         var key      =    $(this).data('key');
+// //         var input    =    document.querySelector('#phone'+key);
+// //         console.log(input, 'countrycahnge');
+// //         var errorMsg =    document.querySelector('#error_msg'+key);
+// //         var validMsg =    document.querySelector('#valid_msg'+key);
+// //         reset(input, errorMsg, validMsg);
+// //         var iti      = integrate_intlTelInput('#phone'+key);
+// //         iti.destroy();
+// //         iti = integrate_intlTelInput('#phone'+key);
+// //         console.log(iti.getSelectedCountryData());
+// //     // do something with iti.getSelectedCountryData()
+// // });
+//     var reset = function(input, errorMsg, validMsg) {
+//         input.classList.remove("is-invalid");
+//         errorMsg.innerHTML = "";
+//         errorMsg.classList.add("hide");
+//         console.log('reset funcction');
+//         validMsg.classList.add("hide");
+//     };
+//     // on keyup / change flag: reset
+//     // on blur: validate
+//     // input.addEventListener('blur', function() {
+//     //     reset(input, errorMsg, validMsg);
+//     //     if (input.value.trim()) {
+//     //         if (iti.isValidNumber()) {
+//     //             validMsg.classList.remove("hide");
+//     //         } else {
+//     //             input.classList.add("is-invalid");
+//     //             var errorCode = iti.getValidationError();
+//     //             errorMsg.innerHTML = errorMap[errorCode];
+//     //             errorMsg.classList.remove("hide");
+//     //         }
+//     //     }
+//     // });
+// //   var reset = function(inId = null, erId = null, valid =null) {
+// //     console.log('rest');
+// //     var input    =     document.querySelector('#phone');
+// //     var errorMsg =     document.querySelector('#error_msg');
+// //     var validMsg =     document.querySelector('#valid_msg');
+// //       console.log(input, validMsg, errorMsg);
+// //     input.classList.remove("is-invalid");
+// //     errorMsg.innerHTML = "";
+// //     errorMsg.classList.add("hide");
+// //     console.log(validMsg);
+// //     validMsg.classList.add("hide");
+// //   };
 
 /***/ }),
 

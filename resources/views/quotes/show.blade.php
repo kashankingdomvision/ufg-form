@@ -163,7 +163,13 @@
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" class="form-control">
+                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" class="form-control phone phone0">
+                            <span class="text-danger error_msg0" role="alert" > </span>
+                            <span class="text-danger valid_msg0" role="alert" > </span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
                             <span class="text-danger" role="alert"></span>
                           </div>
                         @endif
@@ -240,8 +246,9 @@
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <label >Contact Number</label> 
-                                            <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                            <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}" placeholder="CONTACT NUMBER" >
+                                            <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                            <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
                                         </div>
                                     </div>
                                     <div class="row">
