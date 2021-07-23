@@ -206,8 +206,9 @@ $(document).on('change', '.select-agency', function() {
                 </div>
                 <div class="col form-group">
                     <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                    <input type="text" name="agency_contact" id="agency_contact" class="form-control">
-                    <span class="text-danger" role="alert" > </span>
+                    <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                    <span class="text-danger error_msg0 hide" role="alert"></span>
+                    <span class="text-danger valid_msg0 hide" role="alert"></span>
                 </div>
                 
                 <div class="col form-group">
@@ -219,6 +220,7 @@ $(document).on('change', '.select-agency', function() {
     if(($(this).val() == 1)){
         $('#pax_no').val('').change();
         $('.agency-columns').append($v_html).show(500);
+        intTelinput(0);
     }else{
         $('#pax_no').val(1).change();
         $('.agency-columns').hide(500).empty();
@@ -680,9 +682,9 @@ $(document).on('click', '.addChild', function () {
                                 </div>
                                 <div class="col-md-3 mb-2">
                                     <label>Contact Number</label> 
-                                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" id="phone${count}" class="form-control phone" >
-                                    <div class="alert-danger" style="text-align:center" id="error_msg${count}" ></div>
-                                    <div class="alert-danger" style="text-align:center" id="valid_msg${count}" ></div>
+                                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
+                                        <span class="text-danger error_msg${count}" role="alert"></span>
+                                    <span class="text-danger valid_msg${count}" role="alert"></span>
                                 </div>
                             </div>
                             <div class="row">
@@ -702,8 +704,9 @@ $(document).on('click', '.addChild', function () {
                             </div>
                         </div>`;
                         $('#appendPaxName').append($_html);
-                        console.log('countable'+count);
-                        integrate_intlTelInput('#phone'+count);
+                        // console.log('countable'+count);
+                        // integrate_intlTelInput('#phone'+count);
+                        intTelinput(count);
             }
         }else{
             var countable = $('.appendCount').length + 1;
@@ -1460,30 +1463,17 @@ $(document).on('click', '.increment', function() {
 ///booking incremnet and 
 
 // tel input  start
-if($('#phone').length > 0){
-   var input =  integrate_intlTelInput();
-    console.log('greater than');
+if($('.phone').length > 0){
+    for (let i = 0; i < $('.phone').length; i++) {
+        intTelinput(i);
+    }
 }
 //tel input end
-
-// $(document).on('change', '.phone', function() {
-//     var id = $(this).data('idkey');
-//     console.log(id);
-//     reset( document.querySelector('#phone'+id),
-//     document.querySelector('#error_msg'+id), 
-//     document.querySelector('#valid_msg'+id));
-// })
-// $('.phone').addEventListener('change', resetTelinput);
-// $('.phone').addEventListener('keyup', resetTelinput);
-
-
-});
-
-
-var integrate_intlTelInput = function (id) {
-    var input_id= id??'#phone'
-    console.log(input_id, ' int input funcation');
-    var input =    document.querySelector(input_id);
+//intl-tel-input ************** Start ******************** //
+function intTelinput(key = null, inVal = null) {
+    var input    =    document.querySelector('.phone'+key);
+    var errorMsg =    document.querySelector('.error_msg'+key);
+    var validMsg =    document.querySelector('.valid_msg'+key);
     var iti = intlTelInput(input, {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
         separateDialCode: true,
@@ -1494,102 +1484,181 @@ var integrate_intlTelInput = function (id) {
         autoPlaceholder: "polite",
         placeholderNumberType: "MOBILE",
     });
-    return iti
-}
-
-var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-$(document).on('change', '.phone', function() {
-    var key      =    $(this).data('key');
-    var input    =    document.querySelector('#phone'+key);
-    input.addEventListener('blur', function(iti) {
-        var errorMsg =    document.querySelector('#error_msg'+key);
-        var validMsg =    document.querySelector('#valid_msg'+key);
-        reset(input, errorMsg, validMsg);
-        // var iti = integrate_intlTelInput('#phone'+key);/
-        console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
-        // console.log(integrate_intlTelInput().getSelectedCountryData());
-        
-
-    // // var iti = intlTelInput(input, {
-    // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-    // //     separateDialCode: true,
-    // //     formatOnDisplay:true,
-    // //     initialCountry: "auto",
-    // //     nationalMode: false,
-    // //     hiddenInput: "full_number",
-    // //     autoPlaceholder: "polite",
-    // //     placeholderNumberType: "MOBILE",
-    // // });
+    input.nextElementSibling.value = iti.getNumber()
     
-    // if (input.value.trim()) {
-    //     console.log(iti.getSelectedCountryData());
-    //     if (iti.isValidNumber()) {
-    //         validMsg.classList.remove("hide");
-    //     } else {
-    //         input.classList.add("is-invalid");
-    //         var errorCode = iti.getValidationError();
-    //         errorMsg.innerHTML = errorMap[errorCode];
-    //         errorMsg.classList.remove("hide");
-    //     }
-    // }
-    // iti.destroy();
-        
-    });
-});
-
-$('.phone1').on("countrychange", function() {
-        var key      =    $(this).data('key');
-        var input    =    document.querySelector('#phone'+key);
-        console.log(input, 'countrycahnge');
-        var errorMsg =    document.querySelector('#error_msg'+key);
-        var validMsg =    document.querySelector('#valid_msg'+key);
-        reset(input, errorMsg, validMsg);
-        var iti      = integrate_intlTelInput('#phone'+key);
-        iti.destroy();
-        iti = integrate_intlTelInput('#phone'+key);
-        console.log(iti.getSelectedCountryData());
-        
-    // do something with iti.getSelectedCountryData()
-});
-
-    var reset = function(input, errorMsg, validMsg) {
-        input.classList.remove("is-invalid");
-        errorMsg.innerHTML = "";
-        errorMsg.classList.add("hide");
-        console.log('reset funcction');
-        validMsg.classList.add("hide");
-    };
-
-  
-
-    // on keyup / change flag: reset
-  
     // on blur: validate
-    // input.addEventListener('blur', function() {
-    //     reset(input, errorMsg, validMsg);
-    //     if (input.value.trim()) {
-    //         if (iti.isValidNumber()) {
-    //             validMsg.classList.remove("hide");
-    //         } else {
-    //             input.classList.add("is-invalid");
-    //             var errorCode = iti.getValidationError();
-    //             errorMsg.innerHTML = errorMap[errorCode];
-    //             errorMsg.classList.remove("hide");
-    //         }
-    //     }
-    // });
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        input.addEventListener('blur', function() {
+            reset();
+            if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                    validMsg.classList.remove("hide");
+                    $('.buttonSumbit').removeAttr('disabled');
+                } else {
+                    $('.buttonSumbit').attr('disabled', 'disabled');
+                    input.classList.add("is-invalid");
+                    var errorCode = iti.getValidationError();
+                    console.log(errorMsg);
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
+        
+        var reset = function() {
+            input.classList.remove("is-invalid");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+            validMsg.classList.add("hide");
+        };
+}
+//intl-tel-input ************** End ******************** //
+
+});
+
+
+
+
+
+
+
+
+
+
+// var integrate_intlTelInput = function (id, key = null) {
+//     var input_id= id??'#phone'
+//     console.log(input_id, ' int input funcation');
+//     var input =    document.querySelector(input_id);
+//     var errorMsg =    document.querySelector('#error_msg'+key);
+//     var validMsg =    document.querySelector('#valid_msg'+key);
     
-//   var reset = function(inId = null, erId = null, valid =null) {
-//     console.log('rest');
+//     console.log(errorMsg);
+    
+//     // input = window.intlTelInputGlobals.getInstance(input);
+//     var iti = intlTelInput(input, {
+//         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+//         separateDialCode: true,
+//         formatOnDisplay:true,
+//         initialCountry: "auto",
+//         nationalMode: true,
+//         hiddenInput: "full_number",
+//         autoPlaceholder: "polite",
+//         placeholderNumberType: "MOBILE",
+//     });
+    
+//     input.addEventListener('blur', function() {
+//         reset(input, errorMsg, validMsg);
+//         if (input.value.trim()) {
+//             if (iti.isValidNumber()) {
+//                 validMsg.classList.remove("hide");
+//             } else {
+//                 input.classList.add("is-invalid");
+//                 var errorCode = iti.getValidationError();
+//                 console.log(errorMap);
+//                 errorMsg.innerHTML = errorMap[errorCode];
+//                 errorMsg.classList.remove("hide");
+//             }
+//         }
+//     });
+    
+    
+//     // console.log(iti.getSelectedCountryData);
+//     return iti
+// }
+
+// $(document).on('blur', '.phone', function() {
+//     var key      =    $(this).data('key');
+//     integrate_intlTelInput('#phone'+key, key);
+//     // var input    =    document.querySelector('#phone'+key);
+//     // input.addEventListener('blur', function(iti) {
+//     //     var errorMsg =    document.querySelector('#error_msg'+key);
+//     //     var validMsg =    document.querySelector('#valid_msg'+key);
+//     //     reset(input, errorMsg, validMsg);
+//     //     // var iti = integrate_intlTelInput('#phone'+key);/
+//     //     console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
+//         // console.log(integrate_intlTelInput().getSelectedCountryData());
+        
+
+//     // // var iti = intlTelInput(input, {
+//     // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+//     // //     separateDialCode: true,
+//     // //     formatOnDisplay:true,
+//     // //     initialCountry: "auto",
+//     // //     nationalMode: false,
+//     // //     hiddenInput: "full_number",
+//     // //     autoPlaceholder: "polite",
+//     // //     placeholderNumberType: "MOBILE",
+//     // // });
+    
+//     // if (input.value.trim()) {
+//     //     console.log(iti.getSelectedCountryData());
+//     //     if (iti.isValidNumber()) {
+//     //         validMsg.classList.remove("hide");
+//     //     } else {
+//     //         input.classList.add("is-invalid");
+//     //         var errorCode = iti.getValidationError();
+//     //         errorMsg.innerHTML = errorMap[errorCode];
+//     //         errorMsg.classList.remove("hide");
+//     //     }
+//     // }
+//     // iti.destroy();
+        
+//     // });
+// });
+
+// // $('.phone1').on("countrychange", function() {
+// //         var key      =    $(this).data('key');
+// //         var input    =    document.querySelector('#phone'+key);
+// //         console.log(input, 'countrycahnge');
+// //         var errorMsg =    document.querySelector('#error_msg'+key);
+// //         var validMsg =    document.querySelector('#valid_msg'+key);
+// //         reset(input, errorMsg, validMsg);
+// //         var iti      = integrate_intlTelInput('#phone'+key);
+// //         iti.destroy();
+// //         iti = integrate_intlTelInput('#phone'+key);
+// //         console.log(iti.getSelectedCountryData());
+        
+// //     // do something with iti.getSelectedCountryData()
+// // });
+
+//     var reset = function(input, errorMsg, validMsg) {
+//         input.classList.remove("is-invalid");
+//         errorMsg.innerHTML = "";
+//         errorMsg.classList.add("hide");
+//         console.log('reset funcction');
+//         validMsg.classList.add("hide");
+//     };
+
+  
+
+//     // on keyup / change flag: reset
+  
+//     // on blur: validate
+//     // input.addEventListener('blur', function() {
+//     //     reset(input, errorMsg, validMsg);
+//     //     if (input.value.trim()) {
+//     //         if (iti.isValidNumber()) {
+//     //             validMsg.classList.remove("hide");
+//     //         } else {
+//     //             input.classList.add("is-invalid");
+//     //             var errorCode = iti.getValidationError();
+//     //             errorMsg.innerHTML = errorMap[errorCode];
+//     //             errorMsg.classList.remove("hide");
+//     //         }
+//     //     }
+//     // });
+    
+// //   var reset = function(inId = null, erId = null, valid =null) {
+// //     console.log('rest');
       
-//     var input    =     document.querySelector('#phone');
-//     var errorMsg =     document.querySelector('#error_msg');
-//     var validMsg =     document.querySelector('#valid_msg');
+// //     var input    =     document.querySelector('#phone');
+// //     var errorMsg =     document.querySelector('#error_msg');
+// //     var validMsg =     document.querySelector('#valid_msg');
       
-//       console.log(input, validMsg, errorMsg);
-//     input.classList.remove("is-invalid");
-//     errorMsg.innerHTML = "";
-//     errorMsg.classList.add("hide");
-//     console.log(validMsg);
-//     validMsg.classList.add("hide");
-//   };
+// //       console.log(input, validMsg, errorMsg);
+// //     input.classList.remove("is-invalid");
+// //     errorMsg.innerHTML = "";
+// //     errorMsg.classList.add("hide");
+// //     console.log(validMsg);
+// //     validMsg.classList.add("hide");
+// //   };

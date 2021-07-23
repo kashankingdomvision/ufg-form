@@ -200,9 +200,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
                    
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Dinning Preferences <span style="color:red">*</span></label>
@@ -690,7 +688,7 @@
                   
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                  <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
                 </div>
               </form>
               

@@ -46,10 +46,10 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Phone Number</label>
-                      <input class="form-control phone" data-idkey="" id="phone" type="tel" name="phone" placeholder="12345678" value="{{$supplier->phone}}">
+                      <input type="tel" class="form-control phone phone0" type="tel" name="phone" placeholder="12345678" value="{{$supplier->phone}}">
                       <div class="alert-danger" style="text-align:center">{{$errors->first('phone')}}</div>
-                      <div class="alert-danger" id="#error_msg" style="text-align:center"></div>
-                      <div class="alert-danger" id="#valid_msg" style="text-align:center"></div>
+                      <span class="text-danger error_msg0 hide" role="alert"></span>
+                      <span class="text-danger valid_msg0 hide" role="alert"></span>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category <span style="color:red">*</span></label>

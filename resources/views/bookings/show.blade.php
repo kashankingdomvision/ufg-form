@@ -210,8 +210,9 @@
 
                         <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control">
-                            <span class="text-danger" role="alert"></span>
+                            <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                            <span class="text-danger error_msg0" role="alert" > </span>
+                            <span class="text-danger valid_msg0" role="alert" > </span>
                         </div>
                         <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
@@ -279,13 +280,13 @@
                     </div>
                     </div>
                     <div id="appendPaxName" class="col-md-12">
-                        @if($booking->pax_no > 1)
+                        @if($booking->pax_no >= 1)
                             @foreach ($booking->getPaxDetail as $paxKey => $pax )
                             @php $count = $paxKey + 1; @endphp
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
-                                            <label >Passenger #{{ $count +1  }} Full Name</label> 
+                                            <label >Passenger #{{ ($booking->agency == 1)? $count : $count +1  }} Full Name</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
@@ -305,8 +306,9 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Contact Number</label> 
-                                            <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                            <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                            <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                            <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
                                         </div>
                                     </div>
                                     <div class="row">

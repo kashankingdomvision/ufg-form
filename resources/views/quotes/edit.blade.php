@@ -209,8 +209,9 @@
 
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control">
-                            <span class="text-danger" role="alert"></span>
+                            <input type="tel" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                            <span class="text-danger error_msg0" role="alert" > </span>
+                            <span class="text-danger valid_msg0" role="alert" > </span>
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
@@ -307,14 +308,15 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Contact Number</label> 
-                                            <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                            <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                            <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                            <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 mb-2">
                                             <label>Date Of Birth</label> 
-                                            <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
+                                            <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
@@ -800,7 +802,7 @@
                   </div>
                 </div>
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                  <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                 </div>
               </form>
               <div id="overlay" class=""></div>
