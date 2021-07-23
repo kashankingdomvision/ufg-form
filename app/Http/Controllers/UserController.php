@@ -17,10 +17,43 @@ class UserController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data['users'] = User::paginate($this->pagination);
-
+        $user = User::orderBy('id', 'ASC');
+        if (count($request->all()) > 0) {
+            if ($request->has('search') && !empty($request->search)) {
+                $user = $user->where(function ($query) use($request) {
+                    $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
+                    ->orWhereHas('getBrand', function ($query) use($request) {
+                        $query->where('name', 'like', '%'.$request->search.'%');
+                    })->orWhereHas('getSupervisor', function ($query) use($request) {
+                        $query->where('name', 'like', '%'.$request->search.'%');
+                    });
+                });
+            }
+                             
+            if ($request->has('role') && !empty($request->role)) {
+                $user = $user->whereHas('getRole', function ($q) use($request) {
+                    $q->where('id', $request->role);
+                });
+            }
+            if ($request->has('currency') && !empty($request->currency)) {
+                $user = $user->whereHas('getCurrency', function ($q) use($request) {
+                    $q->where('id', $request->currency);
+                });
+            }
+            if ($request->has('brand') && !empty($request->brand)) {
+                $user = $user->whereHas('getBrand', function ($q) use($request) {
+                    $q->where('id', $request->brand);
+                });
+            }
+        }
+        
+        $data['users'] = $user->paginate($this->pagination);
+        $data['roles']      = Role::orderBy('name', 'ASC')->get();
+        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
         return view('users.listing', $data);
     }
 
