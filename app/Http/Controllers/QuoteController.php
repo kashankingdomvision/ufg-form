@@ -72,7 +72,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'supervisor');
                                     })->get();
-        $data['sale_persons']      = User::whereHas('getRole', function($query){
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'sales-agent');
                                     })->get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
@@ -157,8 +157,9 @@ class QuoteController extends Controller
         ];
     }
     
-    public function store(QuoteRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
@@ -174,7 +175,7 @@ class QuoteController extends Controller
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],
                     'email'                 => $pax_data['email_address'],
-                    'contact'               => $pax_data['contact_number'],
+                    'contact'               => $pax_data['full_number'],
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
@@ -381,7 +382,7 @@ class QuoteController extends Controller
     }
     //update status in archive 
     
-    public function getArchive(Type $var = null)
+    public function getArchive()
     {
         $data['status'] = 'archive';
         $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);

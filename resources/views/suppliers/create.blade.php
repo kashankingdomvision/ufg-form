@@ -46,8 +46,11 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Phone Number</label>
-                      <input class="form-control" name="phone" placeholder="12345678" value="{{old('phone')}}">
+                      <br />
+                      <input type="tel"  name="phone" class="form-control phone" data-idkey="" id="phone" value="{{old('phone')}}">
                       <div class="alert-danger" style="text-align:center">{{$errors->first('phone')}}</div>
+                      <div class="alert-danger hide" id="error_msg" style="text-align:center"></div>
+                      <div class="alert-danger hide" id="valid_msg" style="text-align:center"></div>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Categories <span style="color:red">*</span></label>

@@ -7,7 +7,7 @@
         {{-- title start --}}
         <title>{{ config('app.name', 'Laravel') }} | @yield('title') </title>
         {{-- title end --}}
-    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.14/js/utils.js"></script>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
