@@ -50,7 +50,7 @@ class SupplierController extends Controller
             'currency_id' => $request->currency, 
             'name'        => $request->username, 
             'email'       => $request->email, 
-            'phone'       => $request->phone,
+            'phone'       => $request->full_number,
             'description' => $request->description,
         ]);
         
@@ -119,7 +119,7 @@ class SupplierController extends Controller
             'currency_id' => $request->currency, 
             'name'        => $request->username, 
             'email'       => $request->email, 
-            'phone'       => $request->phone,
+            'phone'       => $request->full_number,
             'description' => $request->description,
         ]);
         

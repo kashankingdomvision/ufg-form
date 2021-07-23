@@ -3,6 +3,8 @@
 
 // Variables
 @import 'variables';
+$flagsImagePath: "~images/vendor/intl_tel_input/";
+@import '~intl-tel-input/build/css/intlTelInput.css';
 
 // Bootstrap
 // @import '~bootstrap/scss/bootstrap';
@@ -14,12 +16,18 @@
  * -------------------------------------------------------------------------------------
  *                                layouts
  * -------------------------------------------------------------------------------------
-*/
+ */
 
 .inline-flex{
     display: inline-flex;
 }
 
+
+.iti__flag {background-image: url("http://localhost/ufg-form/resources/img/flags.png") ;}
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .iti__flag {background-image: url("http://localhost/ufg-form/resources/img/flags@2x.png") !important;}
+}
+.iti{ width: 100%;}
 /**
  * -------------------------------------------------------------------------------------
  *                                Margin

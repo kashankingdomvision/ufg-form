@@ -251,10 +251,10 @@
                         <label>Agency Booking <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline">
-                            <input class="select-agency" {{ ($booking->agency ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
+                            <input class="select-agency" {{ ($booking->agency ==  1) ? 'checked' : '' }}  value="1" type="radio" name="agency" > Yes
                           </label>
                           <label class="radio-inline">
-                            <input  class="select-agency" {{ ($booking->agency ==  0 ? 'checked' : '') }}  value="0" type="radio" name="agency" > No
+                            <input  class="select-agency" {{ ($booking->agency ==  0 || $booking->agency == null) ? 'checked' : '' }}  value="0" type="radio" name="agency" > No
                           </label>
                         </div>
                       </div>
@@ -338,13 +338,13 @@
                       </div>
                     </div>
                     <div id="appendPaxName" class="col-md-12">
-                        @if($booking->pax_no > 1)
+                        @if($booking->pax_no >= 1)
                             @foreach ($booking->getPaxDetail as $paxKey => $pax )
                             @php $count = $paxKey + 1; @endphp
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
-                                            <label >Passenger #{{ $count +1  }} Full Name</label> 
+                                            <label >Passenger #{{ ($booking->agency == 1)? $count : $count +1  }} Full Name</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>

@@ -234,7 +234,7 @@
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
-                                            <label >Passenger #{{ $count +1  }} Full Name</label> 
+                                            <label >Passenger #{{ ($quote['agency'] == 1)? $count : $count +1  }}  Full Name</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax['full_name'] }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
