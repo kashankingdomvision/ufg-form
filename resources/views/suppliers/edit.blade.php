@@ -53,7 +53,6 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category <span style="color:red">*</span></label>
- 
                       <select name="categories[]" class="form-control select2-multiple @error('categories') is-invalid @enderror" multiple required>
                           @foreach ($categories as $category)
                             <option value="{{ $category->id }}"  {{ (in_array($category->id, $supplier->getCategories()->pluck('id')->toArray()))? 'selected' : NULL }}>{{ $category->name }}</option>
