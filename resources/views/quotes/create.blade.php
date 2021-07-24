@@ -137,7 +137,7 @@
                           <option value="">Select Type Of Holiday</option>
                           @if(Auth::user()->getBrand->getHolidayTypes && Auth::user()->getBrand->getHolidayTypes->count())
                             @foreach (Auth::user()->getBrand->getHolidayTypes as $holiday_type)
-                              <option value="{{ $holiday_type->id }}" {{ isset(Auth::user()->holiday_type_id) && !empty(Auth::user()->holiday_type_id) && $holiday_type->id == Auth::user()->holiday_type_id ? 'selected' : '' }}> {{ $holiday_type->name }} </option>
+                              <option data-value="{{ $holiday_type->name }}" value="{{ $holiday_type->id }}" {{ isset(Auth::user()->holiday_type_id) && !empty(Auth::user()->holiday_type_id) && $holiday_type->id == Auth::user()->holiday_type_id ? 'selected' : '' }}> {{ $holiday_type->name }} </option>
                             @endforeach
                           @endif
                         </select>

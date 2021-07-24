@@ -2,10 +2,11 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
@@ -197,7 +198,7 @@ $(document).ready(function($) {
             success: function(response) {
                 options += '<option value="">Select Type Of Holiday</option>';
                 $.each(response,function(key,value){
-                    options += '<option value="'+value.id+'">'+value.name+'</option>';
+                    options += '<option data-value="'+value.name+'" value="'+value.id+'">'+value.name+'</option>';
                 });
                 $('.appendHolidayType').html(options);
             }
@@ -1119,6 +1120,7 @@ $('.search-reference').on('click', function () {
                         type: 'POST',
                         dataType: "json",
                         success: function (data) {
+
                             // lead Passenger
                                 $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
                             // lead Passenger
@@ -1126,7 +1128,12 @@ $('.search-reference').on('click', function () {
                                 $('#brand_id').val(data.response.brand.brand_id).change();
                             // brand
                             // holidaytype
-                                $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected');
+
+                            setTimeout(function(){ 
+                                $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected').change();
+                                // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                            }, 500);
+
                             // holidaytype
                             // Sale person
                                 $('#sale_person_id').val(data.response.sale_person).trigger('change');
