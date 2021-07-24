@@ -51,7 +51,7 @@ $(document).ready(function($) {
         width: '100%',
         theme: "classic",
     });
-    
+   
     $('.select2single').select2({
         width: '100%',
         theme: "bootstrap",

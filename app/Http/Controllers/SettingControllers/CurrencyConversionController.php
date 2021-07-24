@@ -11,8 +11,27 @@ class CurrencyConversionController extends Controller
     public $pagination = 10;
     
     public function index(Request $request){
-
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->paginate($this->pagination);
+        
+        $currency_conver  = CurrencyConversion::orderBy('id', 'desc');
+        if(count($request->all()) > 0){
+            
+            if($request->has('from') && !empty($request->from)){
+                $currency_conver = $currency_conver->where('from' , 'like', '%'.$request->form.'%');
+            }
+            if($request->has('to') && !empty($request->to)){
+                $currency_conver = $currency_conver->where('to' , 'like', '%'.$request->to.'%');
+            }
+            
+            if($request->has('live_rate') && !empty($request->live_rate)){
+                $currency_conver = $currency_conver->where('live' , 'like', '%'.$request->live_rate.'%');
+            }
+            
+            if($request->has('manaul_rate') && !empty($request->manual_rate)){
+                $currency_conver = $currency_conver->where('manual' , 'like', '%'.$request->manaul_rate.'%');
+            }
+        }
+        
+        $data['currency_conversions'] = $currency_conver->paginate($this->pagination);
         return view('currency_conversions.listing',$data);
     }
 

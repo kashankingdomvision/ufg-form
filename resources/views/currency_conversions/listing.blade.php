@@ -27,7 +27,57 @@
       </div>
     </div>
   </section>
+  <section class="content">
+    <div class="container-fluid">
+        <div class="card card-default {{ (request()->has('from'))? '' : 'collapsed-card' }}">
+            <div class="card-header">
+                <h3 class="card-title"><b>Filters</b></h3>
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-{{ (request()->has('from'))? 'minus' : 'plus' }}"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="get" action="{{ route('setting.currency_conversions.index') }}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>From</label>
+                            <input type="text" name="from" value="{{ old('from')??request()->get('from') }}" class="form-control" placeholder="from...">
+                        </div>
+                    </div>
+                    <div class="col">
+                      <div class="form-group">
+                          <label>to</label>
+                          <input type="text" name="to" value="{{ old('to')??request()->get('to') }}" class="form-control" placeholder="to...">
+                      </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                        <label>Live Rate</label>
+                        <input type="number" name="live_rate" value="{{ old('live_rate')??request()->get('live_rate') }}" class="form-control" placeholder="live rate...">
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                        <label>Manual Rate</label>
+                        <input type="number" name="manual_rate" value="{{ old('manual_rate')??request()->get('manual_rate') }}" class="form-control" placeholder="manual rate...">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-12 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Search</button>
+                        <a href="{{ route('setting.currency_conversions.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                    </div>
+                </div>
 
+            </form>
+            </div>
+        </div>
+    </div>
+  </section>
   <section class="content">
     <div class="container-fluid">
       <div class="row">
