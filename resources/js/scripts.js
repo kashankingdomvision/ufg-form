@@ -59,6 +59,14 @@ $(document).ready(function($) {
         templateSelection: formatState,
     });
 
+
+    $('.nationality-select2').select2({
+        width: '100%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
+
     $('.select2-multiple').select2({
         width: '100%',
         theme: "classic",
@@ -642,10 +650,12 @@ $(document).on('click', '.addChild', function () {
     };
 
     $(document).on('change', '.pax-number', function () {
-        $('.select2single').select2('destroy');
+        
+        $('.nationality-select2').select2('destroy');
+
         var $_val = $(this).val();
         var agencyVal = $('.select-agency:checked').val();
-        console.log(agencyVal);
+     
         var currentDate = curday('-');
         var countries = $('#content').data('countries');
         if($_val > $('.appendCount').length){
@@ -675,7 +685,7 @@ $(document).on('click', '.addChild', function () {
                                 
                                 <div class="col-sm-3">
                                     <label>Nationality</label>
-                                    <select name="pax[${count}][nationality_id]"  class="form-control select2single nationality-id">
+                                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
                                     <option selected value="" >Select Nationality</option>
                                     ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
                                     </select>
@@ -714,7 +724,7 @@ $(document).on('click', '.addChild', function () {
                 $("#appendCount"+i).remove();
             }
         }
-        $('.select2single').select2({
+        $('.nationality-select2').select2({
             width: '100%',
             theme: "bootstrap",
         });
