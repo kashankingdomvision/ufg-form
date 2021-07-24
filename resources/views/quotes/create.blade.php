@@ -265,7 +265,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Category</label>
-                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id js-states select2single @error('category_id') is-invalid @enderror">
+                            <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
                               <option selected value="">Select Category</option>
                               @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" > {{ $category->name }} </option>
@@ -306,7 +306,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Supervisor</label>
-                            <select name="quote[0][supervisor_id]" data-name="supervisor_id" id="quote_0_supervisor_id" class="form-control  select2single  supervisor-id @error('supervisor_id') is-invalid @enderror">
+                            <select name="quote[0][supervisor_id]" data-name="supervisor_id" id="quote_0_supervisor_id" class="form-control select2single supervisor-id @error('supervisor_id') is-invalid @enderror">
                               <option selected value="">Select Supervisor</option>
                               @foreach ($supervisors as $supervisor)
                                 <option value="{{ $supervisor->id }}" {{ old('category_id') == $supervisor->id  ? "selected" : "" }}> {{ $supervisor->name }} </option>
@@ -329,7 +329,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Due Date <span style="color:red">*</span></label>
-                             <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker  checkDates bookingDueDate" autocomplete="off">
+                             <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" autocomplete="off">
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
@@ -360,7 +360,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booked By</label>
-                            <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control select2single   booked-by-id @error('booked_by_id') is-invalid @enderror">
+                            <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control select2single booked-by-id @error('booked_by_id') is-invalid @enderror">
                               <option selected value="">Select Booked By</option>
                               @foreach ($booked_by as $booked_by)
                                 <option value="{{ $booked_by->id }}" > {{ $booked_by->name }} </option>
@@ -375,7 +375,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Booking Types </label>
-                            <select name="quote[0][booking_type]" data-name="booking_type" id="quote_0_booking_type" class="form-control  select2single  booking-type-id @error('booking_type_id') is-invalid @enderror">
+                            <select name="quote[0][booking_type]" data-name="booking_type" id="quote_0_booking_type" class="form-control select2single booking-type-id @error('booking_type_id') is-invalid @enderror">
                               <option selected value="" >Select Booking Type</option>
                               @foreach ($booking_types as $booking_type)
                                 <option value="{{ $booking_type->id }}"> {{$booking_type->name}} </option>

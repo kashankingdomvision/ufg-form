@@ -21721,6 +21721,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (confirmAlert == true) {
           $('#parent').html(data.template_view);
+          $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+            templateResult: formatState,
+            templateSelection: formatState
+          });
           $(".booking-currency-id").val(data.template.currency_id).change();
         }
       },
