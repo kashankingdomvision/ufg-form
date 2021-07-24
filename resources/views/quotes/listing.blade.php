@@ -51,9 +51,19 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col">
                                 <div class="form-group">
-                                    <label>Search</label>
+                                    <label>Client Type</label>
+                                    <select class="form-control select2single" name="client_type">
+                                        <option value="" selected>Select any one</option>
+                                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
+                                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Status</label>
                                     <select class="form-control select2single" name="status">
                                         <option {{ (old('search') == 'all')? 'selected': ((request()->get('status') == 'all')? 'selected' : null) }} value="all" selected>All Status</option>
                                         <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
@@ -61,19 +71,75 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Booking Currency</label>
+                                    <select class="form-control select2single" name="booking_currency">
+                                        <option value="" selected >Select booking currency</option>
+                                        @foreach ($currencies as $curren)
+                                            <option value="{{ $curren->code }}" {{ (old('booking_currency') == $curren->code)? 'selected': ((request()->get('booking_currency') ==  $curren->code )? 'selected' : null) }}>{{ $curren->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             
-                            <div class="col-md-6">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Booking Season</label>
+                                    <select class="form-control select2single" name="booking_season">
+                                        <option value="" selected >Select booking season</option>
+                                        @foreach ($booking_seasons as $seasons)
+                                            <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Brand</label>
+                                    <select class="form-control select2single" name="brand">
+                                        <option value="" selected >Select brand name</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->name }}" {{ (old('brand') == $brand->name)? 'selected': ((request()->get('brand') == $brand->name)? 'selected' : null) }}>{{ $brand->name }} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col">
+                                <label><u> Created Date</u></label>
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
                                             <label>From</label>
-                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" >
+                                            <input type="text" value="{{ (request()->get('created_date'))?request()->get('created_date')['from']: null }}" name="created_date[from]" class="form-control datepicker" >
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label>To</label>
-                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" >
+                                            <input type="text" value="{{ (request()->get('created_date'))? request()->get('created_date')['to']: null }}" name="created_date[to]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col">
+                                <label><u>Departure Date</u></label>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="text" value="{{ (request()->get('departure_date'))?request()->get('departure_date')['from']: null }}" name="departure_date[from]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="text" value="{{ (request()->get('departure_date'))? request()->get('departure_date')['to']: null }}" name="departure_date[to]" class="form-control datepicker" >
                                         </div>
                                     </div>
                                 </div>
