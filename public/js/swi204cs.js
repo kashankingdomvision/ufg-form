@@ -20860,7 +20860,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(response) {
         options += '<option value="">Select Type Of Holiday</option>';
         $.each(response, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
+          options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
         });
         $('.appendHolidayType').html(options);
       }
@@ -21624,7 +21624,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 $('#brand_id').val(data.response.brand.brand_id).change(); // brand
                 // holidaytype
 
-                $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected'); // holidaytype
+                setTimeout(function () {
+                  $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                }, 500); // holidaytype
                 // Sale person
 
                 $('#sale_person_id').val(data.response.sale_person).trigger('change'); // Sale person
