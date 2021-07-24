@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\QuoteDelete::class,
+        Commands\ZohoCredentials::class,
     ];
 
     /**
@@ -25,8 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        \Log::info('This is running');
-        $schedule->command('quotation:delete')->everyMinute();
+        $schedule->command('quotation:delete')->monthly();
+        $schedule->command('zoho:credentials')->hourly();
     }
 
     /**

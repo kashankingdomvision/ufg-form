@@ -432,7 +432,9 @@ $(document).on('click', '.addChild', function () {
             $(".quote:last").attr('data-key', $('.quote').length - 1);
           
             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.text-danger, .quote:last .supplier-currency-code').html('');
+            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+            $('.quote:last input, .quote:last select').removeClass('is-invalid');
+
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
            
@@ -740,7 +742,7 @@ $(document).on('click', '.addChild', function () {
         getSellingPrice();
     });
 
-    $(document).on('keyup', '.change', function (event) {
+    $(document).on("keyup change", '.change', function (event) {
 
 
         var key         = $(this).closest('.quote').data('key');
