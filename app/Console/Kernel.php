@@ -26,9 +26,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        \Log::info('This is running');
         $schedule->command('quotation:delete')->monthly();
-        $schedule->command('zoho:credentials')->everyMinute();
+        $schedule->command('zoho:credentials')->hourly();
     }
 
     /**

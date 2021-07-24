@@ -134,7 +134,6 @@ class ZohoCredentials extends Command
      */
     public function handle()
     {
-        \Log::info("start new  ZohoCredentials Cron is working fine!");
 
         $zoho_credentials = ReferenceCredential::findOrFail(1);
         $refresh_token = $zoho_credentials->refresh_token;
@@ -147,7 +146,7 @@ class ZohoCredentials extends Command
             $zoho_credentials->save();
 		}
 
-		\Log::info("start new  ZohoCredentials Cron is working fine again!");
+		\Log::info("start new  ZohoCredentials Cron is working fine !");
 
     }
 }
