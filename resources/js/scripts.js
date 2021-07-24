@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1093,7 +1093,7 @@ $("#update-override").submit(function(event) {
 
 $('.search-reference').on('click', function () {
     var searchRef = $(this);
-    searchRef.text('Searching..').prop('disabled', true);
+    
     var reference_no = $('.reference-name').val();
     if(reference_no == ''){
         alert('Reference number is not found'); 
@@ -1119,6 +1119,11 @@ $('.search-reference').on('click', function () {
                         data : {ref_no: reference_no},
                         type: 'POST',
                         dataType: "json",
+                        beforeSend: function() {
+
+                            $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+                            searchRef.prop('disabled', true);
+                        },
                         success: function (data) {
 
                             // lead Passenger
@@ -1168,12 +1173,16 @@ $('.search-reference').on('click', function () {
                                 });
                             }
                             
-                            searchRef.text('Search').prop('disabled', false);
+                            searchRef.prop('disabled', false);
+                            $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                            console.log('done');
                             
                         },
                         error: function (reject) {
-                           alert(reject.responseJSON.errors);
-                            searchRef.text('Search').prop('disabled', false);
+
+                            searchRef.prop('disabled', false);
+                            $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                            $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
                         
                         },
                     });

@@ -109,7 +109,7 @@
                         <div class="input-group ">
                           <input type="text" name="ref_no" id="ref_no" value="{{ $quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
                            <div class="input-group-append">
-                            <button class="btn search-reference-btn search-reference" type="button">Search</button>
+                            <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                           </div>
                         </div>
                         <span class="text-danger" role="alert"></span>

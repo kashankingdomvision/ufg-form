@@ -113,8 +113,11 @@ class ResponseController extends Controller
             $ajax_response['response']  = $response;
             return response()->json($ajax_response);
         }
-            $ajax_response['status'] = false;
-            $ajax_response['error'] = 'The reference is not found. Try again!';
+
+            return response()->json([
+                'status' => 'false',
+                'errors'  => 'Something went wrong with reference number Please try again!',
+            ], 402);    
             
         return response()->json($ajax_response);
     }

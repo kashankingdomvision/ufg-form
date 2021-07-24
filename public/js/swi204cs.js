@@ -20627,11 +20627,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3__);
 
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -21583,7 +21583,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $('.search-reference').on('click', function () {
     var searchRef = $(this);
-    searchRef.text('Searching..').prop('disabled', true);
     var reference_no = $('.reference-name').val();
 
     if (reference_no == '') {
@@ -21616,6 +21615,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               },
               type: 'POST',
               dataType: "json",
+              beforeSend: function beforeSend() {
+                $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+                searchRef.prop('disabled', true);
+              },
               success: function success(data) {
                 // lead Passenger
                 $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name); // lead Passenger
@@ -21660,11 +21663,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                   });
                 }
 
-                searchRef.text('Search').prop('disabled', false);
+                searchRef.prop('disabled', false);
+                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                console.log('done');
               },
               error: function error(reject) {
-                alert(reject.responseJSON.errors);
-                searchRef.text('Search').prop('disabled', false);
+                searchRef.prop('disabled', false);
+                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
               }
             });
           }
