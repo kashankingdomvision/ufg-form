@@ -156,7 +156,7 @@ class QuoteController extends Controller
             'rate_type'          =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'agency_name'        =>  (isset($request['agency_name'])) ? $request->agency_name : NULL,
             'agency_contact'     =>  (isset($request['agency_contact'])) ? $request->full_number : NULL,
-            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_name : NULL, 
+            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_email : NULL, 
         ];
        
     }
