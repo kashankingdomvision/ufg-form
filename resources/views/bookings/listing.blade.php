@@ -129,24 +129,6 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="col">
-                            <label><u>Departure Date</u></label>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label>From</label>
-                                        <input type="text" value="{{ (request()->get('departure_date'))?request()->get('departure_date')['from']: null }}" name="departure_date[from]" class="form-control datepicker" >
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label>To</label>
-                                        <input type="text" value="{{ (request()->get('departure_date'))? request()->get('departure_date')['to']: null }}" name="departure_date[to]" class="form-control datepicker" >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row mt-1">

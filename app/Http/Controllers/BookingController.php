@@ -86,16 +86,6 @@ class BookingController extends Controller
                 });
             }
             
-            // if($request->has('departure_date')){
-            //     $quote->where(function($query) use($request){
-            //         if(isset($request->departure_date['form']) && !empty($request->departure_date['form'])){
-            //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->departure_date['from'])->format('Y-m-d'));
-            //         }
-            //         if (isset($request->departure_date['to']) && !empty($request->created_date['to'])) {
-            //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->departure_date['to'])->format('Y-m-d'));
-            //         }
-            //     });
-            // }
         }
         
         $data['bookings']    = $booking->paginate($this->pagination);
