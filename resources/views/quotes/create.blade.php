@@ -258,7 +258,7 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Time of Service</label>
-                            <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control" placeholder="Time of Service" autocomplete="off">
+                            <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control"  autocomplete="off">
                           </div>
                         </div>
 

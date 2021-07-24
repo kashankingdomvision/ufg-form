@@ -40,10 +40,15 @@ class QuoteController extends Controller
         if(count($request->all()) >0){
             if($request->has('client_type') && !empty($request->client_type)){
                 $client_type = ($request->client_type == 'client')? 0 : 1;
-                $quote->where('agency', $client_type);    
+                if($client_type == 0)
+                {
+                    $quote->where('agency', '!=', 1);    
+                }else{
+                    $quote->where('agency', (int)$client_type);    
+                }
             }
             
-            if($request->has('status') && $request->status != null && $request->status != 'all'){
+            if($request->has('status') && !empty($request->status)){
                 $quote->where('booking_status', $request->status);
             }
             
@@ -140,7 +145,7 @@ class QuoteController extends Controller
             'quote_ref'          =>  $request->quote_no??$request->quote_ref,
             'lead_passenger'     =>  $request->lead_passenger,
             'sale_person_id'     =>  $request->sale_person_id,
-            'agency'             =>  ((int)$request->agency == 1)? '1' : false,
+            'agency'             =>  ((int)$request->agency == 1)? '1' : '0',
             'dinning_preference' =>  $request->dinning_preference,
             'bedding_preference' =>  $request->bedding_preference,
             'pax_no'             =>  $request->pax_no,
@@ -505,7 +510,9 @@ class QuoteController extends Controller
             
         }
         $data['quotes'] = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
-        
+        $data['booking_seasons']  = Season::all();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         // $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);      
     }

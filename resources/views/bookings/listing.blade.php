@@ -64,16 +64,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control select2single" name="status">
-                                    <option {{ (old('search') == 'all')? 'selected': ((request()->get('status') == 'all')? 'selected' : null) }} value="all" selected>All Status</option>
-                                    <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
-                                    <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="col">
                             <div class="form-group">
                                 <label>Booking Currency</label>

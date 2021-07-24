@@ -125,7 +125,6 @@
                                           <tr>
                                               <th>Template Name</th>
                                               <th>Season</th>
-                                              {{-- <th>Status</th> --}}
                                               <th>Created At</th>
                                               <th>Created By</th>
                                             <th>Action</th>
@@ -137,9 +136,8 @@
                                                 <tr>
                                                     <td>{!! $template->title !!}</td>
                                                     <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
-                                                    {{-- <td>{!! $template->formated_status !!}</td> --}}
-                                                    <td>{{ $template->formated_created_at }}</td>
                                                     <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
+                                                    <td>{{ $template->formated_created_at }}</td>
                                                     <td width="10%" >
                                                     <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
                                                             <i class="fas fa-edit"></i>
