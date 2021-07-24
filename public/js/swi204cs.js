@@ -21048,7 +21048,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
     $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.text-danger, .quote:last .supplier-currency-code').html('');
+    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+    $('.quote:last input, .quote:last select').removeClass('is-invalid');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
     datepickerReset(1);
     reinitializedDynamicFeilds(); // datePickerSetDate();
@@ -21312,7 +21313,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     getTotalValues();
     getSellingPrice();
   });
-  $(document).on('keyup', '.change', function (event) {
+  $(document).on("keyup change", '.change', function (event) {
     var key = $(this).closest('.quote').data('key');
     var changeFeild = $(this).data('name');
     var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
