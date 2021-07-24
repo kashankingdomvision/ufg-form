@@ -13,9 +13,17 @@ class PaymentMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['payment_mehtods'] = PaymentMethod::paginate($this->pagination);
+        $PaymentMethod = PaymentMethod::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $PaymentMethod->where(function($q) use($request){
+                    $q->where('name', 'like', '%'.$request->search.'%');
+                });
+            }
+        }
+        $data['payment_mehtods'] = $PaymentMethod->paginate($this->pagination);
         return view('payment_methods.listing',$data);
     }
 

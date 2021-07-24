@@ -16,9 +16,15 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['categories'] = Category::paginate($this->pagination);
+        $category = Category::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $category = $category->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['categories'] = $category->paginate($this->pagination);
         return view('categories.listing', $data);
     }
 

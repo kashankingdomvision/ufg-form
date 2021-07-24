@@ -15,9 +15,16 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['products'] = Product::paginate($this->pagination);
+        $product = Product::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $product = $product->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('code', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['products'] = $product->paginate($this->pagination);
         return view('products.listing', $data);
     }
 

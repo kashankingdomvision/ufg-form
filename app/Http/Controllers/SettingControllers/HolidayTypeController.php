@@ -16,9 +16,20 @@ class HolidayTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['holiday_types'] = HolidayType::orderBy('brand_id', 'asc')->paginate($this->pagination);
+        $HolidayType = HolidayType::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $HolidayType->where(function($q) use($request){
+                    $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhereHas('getBrand', function($query) use($request){
+                        $query->where('name', 'like', '%'.$request->search.'%');
+                    });
+                });
+            }
+        }
+        $data['holiday_types'] = $HolidayType->paginate($this->pagination);
         return view('holiday_types.listing', $data);
     }
 

@@ -25,7 +25,7 @@ use App\Commission;
 use App\Http\Requests\BookingRequest;
 use Auth;
 use App\Country;
-
+use Carbon\Carbon;
 class BookingController extends Controller
 {
     public $pagination = 10;
@@ -36,10 +36,46 @@ class BookingController extends Controller
         return view('bookings.season_listing', $data);
     }
 
-    public function index($id)
+    public function index(Request $request, $id)
     {
         $season = Season::findOrFail(decrypt($id));
-        $data['bookings'] = $season->getBooking()->paginate($this->pagination);
+        $booking = $season->getBooking();
+    
+        if (count($request->all()) > 0 && $season->getBooking()->count() > 0) {
+            if ($request->has('search') && !empty($request->search)) {
+                $booking = $booking->where(function ($query) use ($request) {
+                    $query->where('ref_no', 'like', '%'.$request->search.'%')
+                    ->orWhere('quote_ref', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%')
+                    ->orWhere('dinning_preference', 'like', '%'.$request->search.'%')
+                    ->orWhere('bedding_preference', 'like', '%'.$request->search.'%');
+                });
+            }
+                             
+            if ($request->has('currency') && !empty($request->currency)) {
+                $booking = $booking->whereHas('getCurrency', function ($q) use($request) {
+                    $q->where('name', $request->currency);
+                });
+            }
+            
+            if ($request->has('brand') && !empty($request->brand)) {
+                $booking = $booking->whereHas('getBrand', function ($q) use($request) {
+                    $q->where('name', $request->brand);
+                });
+            }
+            
+            if($request->has('date') && !empty($request->date['from']) || !empty($request->date['to'])){
+                $booking = $booking->where(function($query) use($request){
+                    $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->date['from'])->format('Y-m-d'))
+                    ->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->date['to'])->format('Y-m-d'));
+                });
+            }
+        }
+        
+        $data['bookings'] = $booking->paginate($this->pagination);
+        $data['season_id'] = $season->id;
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
         return view('bookings.listing', $data);
     }
 

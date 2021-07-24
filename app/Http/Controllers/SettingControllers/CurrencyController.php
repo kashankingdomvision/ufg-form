@@ -16,9 +16,18 @@ class CurrencyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['currencies'] = Currency::paginate($this->pagination);
+        $Currency = Currency::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $Currency->where(function($q) use($request){
+                    $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('code', 'like', '%'.$request->search.'%');
+                });
+            }
+        }
+        $data['currencies'] = $Currency->paginate($this->pagination);
         return view('currencies.listing',$data);
     }
 

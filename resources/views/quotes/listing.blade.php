@@ -29,13 +29,13 @@
 
         <section class="content">
             <div class="container-fluid">
-                <div class="card card-default">
+                <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
                     <div class="card-header">
                         <h3 class="card-title"><b>Filters</b></h3>
     
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
+                                <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
                             </button>
                         </div>
                     </div>

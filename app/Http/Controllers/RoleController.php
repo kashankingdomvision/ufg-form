@@ -15,9 +15,15 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $data['roles'] = Role::paginate($this->pagination);
+    public function index(Request $request)
+    {  
+        $roles = Role::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $roles = $roles->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['roles'] = $roles->paginate($this->pagination);
         return view('roles.listing', $data);
     }
 

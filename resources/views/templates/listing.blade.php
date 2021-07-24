@@ -27,7 +27,75 @@
                 </div>
             </div>
         </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Filters</b></h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="get" action="{{ route('templates.index') }}">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Search</label>
+                                            <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Season</label>
+                                    <select class="form-control" name="season">
+                                        <option value="">Search with Season</option>
+                                        @foreach ($seasons as $season)
+                                            <option value="{{ $season->name }}" {{ (old('season') == $season->id)? 'selected' :((request()->get('season') == $season->id)? 'selected' : null ) }}>{{ $season->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>From</label>
+                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>To</label>
+                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
+    
+                        <div class="row mt-1">
+                            <div class="col-md-12 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Search</button>
+                                <a href="{{ route('templates.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                            </div>
+                        </div>
+    
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </section>
 
 
         <section class="content">

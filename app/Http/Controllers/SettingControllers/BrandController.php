@@ -17,9 +17,20 @@ class BrandController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['brands']  = Brand::paginate($this->pagination);
+        $Brand = Brand::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $Brand->where(function($q) use($request){
+                    $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
+                    ->orWhere('address', 'like', '%'.$request->search.'%')
+                    ->orWhere('phone', 'like', '%'.$request->search.'%');
+                });
+            }
+        }
+        $data['brands'] = $Brand->paginate($this->pagination);
         return view('brands.listing',$data);
     }
 

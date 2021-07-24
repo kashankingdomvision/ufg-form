@@ -19,9 +19,27 @@ class SupplierController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['suppliers'] = Supplier::paginate($this->pagination);       
+        $supplier = Supplier::orderBy('id', 'ASC');
+        if (count($request->all()) > 0) {
+            if ($request->has('search') && !empty($request->search)) {
+                $supplier = $supplier->where(function ($query) use ($request) {
+                    $query->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
+                    ->orWhere('phone', 'like', '%'.$request->search.'%');
+                });
+            }
+                             
+            if ($request->has('currency') && !empty($request->currency)) {
+                $supplier = $supplier->whereHas('getCurrency', function ($q) use($request) {
+                    $q->where('name', 'like', '%'.$request->currency.'%');
+                });
+            }
+        }
+        
+        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['suppliers'] = $supplier->paginate($this->pagination);       
         return view('suppliers.listing', $data);
     }
 

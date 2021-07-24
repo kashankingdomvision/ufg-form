@@ -13,9 +13,15 @@ class BookingMethodController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['booking_methods'] = BookingMethod::paginate($this->pagination);
+        $bookingMethod = BookingMethod::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $bookingMethod->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['booking_methods'] = $bookingMethod->paginate($this->pagination);
         return view('booking_methods.listing',$data);
     }
 

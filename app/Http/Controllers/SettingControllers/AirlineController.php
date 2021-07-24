@@ -14,9 +14,15 @@ class AirlineController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['airlines'] = Airline::paginate($this->pagination);
+        $airline = Airline::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $airline->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['airlines'] = $airline->paginate($this->pagination);
         return view('airlines.listing', $data);
     }
 

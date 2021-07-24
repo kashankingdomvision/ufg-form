@@ -58,8 +58,31 @@ class TemplateController extends Controller
     }
     
     
-    public function index()
+    public function index(Request $request)
     {
+      $template = Template::orderBy('id', 'asc');
+      if(count($request->all())> 0){
+        if($request->has('search') && !empty($request->search)){
+          $template->where('title', 'like', '%'.$request->search.'%')
+          ->orWhereHas('getSeason', function($query) use($request){
+            $query->where('name', 'like', '%'.$request->search.'%');
+          });
+        }
+        
+        if($request->has('season') && !empty($request->season)){
+          $template->whereHas('getSeason', function($query) use($request){
+              $query->where('name', 'like', '%'.$request->season.'%' );
+          });
+        }
+        
+        if($request->has('date') && !empty($request->date['from']) || !empty($request->date['to'])){
+          $template = $template->where(function($query) use($request){
+              $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->date['from'])->format('Y-m-d'))
+              ->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->date['to'])->format('Y-m-d'));
+          });
+        }
+      }
+      $data['seasons']          = Season::all();
       $data['templates'] = Template::paginate($this->pagination);
       return view('templates.listing', $data);
     }

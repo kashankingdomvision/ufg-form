@@ -15,9 +15,16 @@ class CommissionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['commissions'] = Commission::paginate($this->pagination);
+        $commission = Commission::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search)){
+                $commission->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('percentage', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['commissions'] = $commission->paginate($this->pagination);
         return view('commissions.listing', $data);
     }
 
