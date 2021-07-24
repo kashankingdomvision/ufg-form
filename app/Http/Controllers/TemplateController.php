@@ -60,7 +60,7 @@ class TemplateController extends Controller
     
     public function index(Request $request)
     {
-      $template = Template::orderBy('id', 'asc');
+      $template = Template::orderBy('id', 'DESC');
       if(count($request->all())> 0){
         if($request->has('search') && !empty($request->search)){
           $template->where('title', 'like', '%'.$request->search.'%')

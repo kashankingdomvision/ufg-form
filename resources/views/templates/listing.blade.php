@@ -120,7 +120,7 @@
 
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table id="example1" class="table" >
+                                    <table id="example1" class="table table-striped">
                                         <thead>
                                           <tr>
                                               <th>Template Name</th>

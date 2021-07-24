@@ -67,7 +67,7 @@
               <h3 class="card-title">Products List</h3>
             </div>
             <div class="card-body p-0">
-              <table class="table table-striped">
+             table-striped
                 <thead>
                   <tr>
                     <th>#</th>
