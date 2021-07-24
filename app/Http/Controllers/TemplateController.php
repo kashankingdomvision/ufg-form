@@ -65,13 +65,20 @@ class TemplateController extends Controller
         if($request->has('search') && !empty($request->search)){
           $template->where('title', 'like', '%'.$request->search.'%')
           ->orWhereHas('getSeason', function($query) use($request){
-            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->where('name', $request->search);
           });
         }
         
         if($request->has('season') && !empty($request->season)){
           $template->whereHas('getSeason', function($query) use($request){
               $query->where('name', 'like', '%'.$request->season.'%' );
+          });
+        }
+        
+        if($request->has('created_by') && !empty($request->created_by)){
+          $template->whereHas('getUser', function($query) use($request)
+          {
+              $query->where('name', $request->created_by);
           });
         }
         
@@ -82,8 +89,10 @@ class TemplateController extends Controller
           });
         }
       }
-      $data['seasons']          = Season::all();
-      $data['templates'] = Template::paginate($this->pagination);
+      $data['templates'] = $template->paginate($this->pagination);
+      $data['seasons']   = Season::all();
+      $data['users']     = User::all()->sortBy('name');
+      
       return view('templates.listing', $data);
     }
     

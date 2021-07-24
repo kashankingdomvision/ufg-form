@@ -53,19 +53,30 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col">
                                 <div class="form-group">
                                     <label>Season</label>
                                     <select class="form-control" name="season">
                                         <option value="">Search with Season</option>
                                         @foreach ($seasons as $season)
-                                            <option value="{{ $season->name }}" {{ (old('season') == $season->id)? 'selected' :((request()->get('season') == $season->id)? 'selected' : null ) }}>{{ $season->name }}</option>
+                                            <option value="{{ $season->name }}" {{ (old('season') == $season->name)? 'selected' :((request()->get('season') == $season->name)? 'selected' : null ) }}>{{ $season->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Created By</label>
+                                    <select class="form-control" name="created_by">
+                                        <option value="">Search with Created by user</option>
+                                        @foreach ($users as $user)
+                                            <option value="{{ $user->name }}" {{ (old('created_by') == $user->name)? 'selected' :((request()->get('created_by') == $user->name)? 'selected' : null ) }}>{{ $user->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             
-                            <div class="col-md-6">
+                            <div class="col">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">

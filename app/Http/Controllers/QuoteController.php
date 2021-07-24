@@ -48,7 +48,7 @@ class QuoteController extends Controller
             }
             
             if($request->has('booking_currency') && !empty($request->booking_currency)){
-                $quote->whereHas('getBookingCurrency', function($query) use($request){
+                $quote->whereHas('getCurrency', function($query) use($request){
                    $query->where('code', $request->booking_currency);
                 });
             }            
@@ -68,6 +68,7 @@ class QuoteController extends Controller
             if($request->has('search') && !empty($request->search)){
                 $quote->where(function($query) use($request){
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%')                    
                     ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
                 });
             }
@@ -94,7 +95,7 @@ class QuoteController extends Controller
             //     });
             // }
         }
-        $data['quotes'] = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         $data['booking_seasons']  = Season::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();

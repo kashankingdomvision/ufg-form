@@ -15,9 +15,16 @@ class SeasonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['seasons'] = Season::paginate($this->pagination);
+        $season  = Season::orderBy('id', 'ASC');
+        if(count($request->all()) > 0){
+            if($request->has('search') && !empty($request->search))
+            {
+                $season->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['seasons'] =  $season->paginate($this->pagination);
         return view('seasons.listing', $data);
     }
 

@@ -38,10 +38,23 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Search</label>
                                             <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Categories</label>
+                                            <select class="form-control" name="category">
+                                                <option value="">Search with Categories</option>
+                                                @foreach ($categories as $category)
+                                                    <option value="{{ $category->name }}" {{ (old('category') == $category->name)? 'selected' :((request()->get('category') == $category->name)? 'selected' : null ) }}>{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -50,7 +63,7 @@
                                             <select class="form-control" name="currency">
                                                 <option value="">Search with Currency</option>
                                                 @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->name }}" {{ (old('search') == $currency->id)? 'selected' :((request()->get('currency') == $currency->id)? 'selected' : null ) }}>{{ $currency->name }}</option>
+                                                    <option value="{{ $currency->name }}" {{ (old('currency') == $currency->name)? 'selected' :((request()->get('currency') == $currency->name)? 'selected' : null ) }}>{{ $currency->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>

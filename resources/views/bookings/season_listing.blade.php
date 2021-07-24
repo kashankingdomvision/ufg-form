@@ -30,13 +30,12 @@
         </section>
         <section class="content">
             <div class="container-fluid">
-                <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
+                <div class="card card-default {{ (request()->has('seasons'))? '' : 'collapsed-card' }}">
                     <div class="card-header">
                         <h3 class="card-title"><b>Filters</b></h3>
-        
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
+                                <i class="fas fa-{{ (request()->has('seasons'))? 'minus' : 'plus' }}"></i>
                             </button>
                         </div>
                     </div>
@@ -44,25 +43,29 @@
                     <div class="card-body">
                         <form method="get" action="{{ route('bookings.view.seasons') }}">
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+                                    <label>Seasons</label>
+                                    <select class="form-control select2single" name="seasons">
+                                        <option value="" selected >Select booking season</option>
+                                        @foreach ($booking_seasons as $season)
+                                            <option value="{{ $season->name }}" {{ (old('seasons') == $season->name)? 'selected': ((request()->get('seasons') == $season->name)? 'selected' : null) }}>{{ $season->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Search</button>
-                                <a href="{{ route('bookings.view.seasons') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                            <div class="col-md-4  offset-md-4">
+                                <a href="{{ route('bookings.view.seasons') }}" class="float-right btn btn-md btn-outline-dark mt-4">Reset<span class="fa fa-repeats"></span></a>
+                                <button type="submit" class=" float-right btn btn-outline-success mr-2 mt-4">Search</button>
                             </div>
                         </div>
+                       
         
                     </form>
                     </div>
                 </div>
             </div>
-          </section>
+        </section>
 
 
         <section class="content">

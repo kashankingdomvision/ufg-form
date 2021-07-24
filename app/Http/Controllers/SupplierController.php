@@ -36,10 +36,17 @@ class SupplierController extends Controller
                     $q->where('name', 'like', '%'.$request->currency.'%');
                 });
             }
+            if ($request->has('category') && !empty($request->category)) {
+                $supplier = $supplier->whereHas('getCategories', function ($q) use($request) {
+                    $q->where('name', 'like', '%'.$request->category.'%');
+                });
+            }
         }
         
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
         $data['suppliers'] = $supplier->paginate($this->pagination);       
+        $data['categories'] = Category::get();
+        
         return view('suppliers.listing', $data);
     }
 
