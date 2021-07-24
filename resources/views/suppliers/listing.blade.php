@@ -48,9 +48,9 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Categories</label>
-                                            <select class="form-control" name="category">
-                                                <option value="">Search with Categories</option>
+                                            <label>Category</label>
+                                            <select class="form-control select2single" name="category">
+                                                <option value="">Select Category </option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->name }}" {{ (old('category') == $category->name)? 'selected' :((request()->get('category') == $category->name)? 'selected' : null ) }}>{{ $category->name }}</option>
                                                 @endforeach
@@ -59,11 +59,11 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Currencys</label>
-                                            <select class="form-control" name="currency">
-                                                <option value="">Search with Currency</option>
+                                            <label>Currency</label>
+                                            <select class="form-control select2single" name="currency">
+                                                <option value="">Select Currency</option>
                                                 @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->name }}" {{ (old('currency') == $currency->name)? 'selected' :((request()->get('currency') == $currency->name)? 'selected' : null ) }}>{{ $currency->name }}</option>
+                                                    <option value="{{ $currency->name }}" data-image="data:image/png;base64, {{$currency->flag}}" {{ (old('currency') == $currency->name)? 'selected' :((request()->get('currency') == $currency->name)? 'selected' : null ) }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                                 @endforeach
                                             </select>
                                         </div>
