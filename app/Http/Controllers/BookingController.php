@@ -30,9 +30,15 @@ class BookingController extends Controller
 {
     public $pagination = 10;
 
-    public function view_seasons()
+    public function view_seasons(Request $request)
     {
-        $data['seasons'] = Season::orderBy('seasons.created_at', 'desc')->groupBy('seasons.id', 'seasons.name')->paginate($this->pagination);
+        $season = Season::orderBy('seasons.created_at', 'desc');
+        if(count($request->all()) >  0){
+            if($request->has('search') && $request->search){
+                $season->where('name', 'like', '%'.$request->search.'%');
+            }
+        }
+        $data['seasons'] = $season->groupBy('seasons.id', 'seasons.name')->paginate($this->pagination);
         return view('bookings.season_listing', $data);
     }
 
