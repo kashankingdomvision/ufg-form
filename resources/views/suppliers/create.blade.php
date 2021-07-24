@@ -55,7 +55,6 @@
                     <div class="form-group">
                       <label for="inputEmail3" class="">Categories <span style="color:red">*</span></label>
                       <select name="categories[]" class="form-control select2-multiple @error('categories') is-invalid @enderror" multiple="multiple" required>
-                          <option  value="">Select Category</option>
                           @foreach ($categories as $category)
                           <option value="{{$category->id}}" {{ in_array($category->id, old('categories') ?? []) ? 'selected' : '' }} >{{$category->name}}</option>
                           @endforeach

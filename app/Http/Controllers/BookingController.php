@@ -56,6 +56,15 @@ class BookingController extends Controller
                     ->orWhere('lead_passenger', 'like', '%'.$request->search.'%');
                 });
             }
+            if($request->has('client_type') && !empty($request->client_type)){
+                $client_type = ($request->client_type == 'client')? 0 : 1;
+                if($client_type == 0)
+                {
+                    $quote->where('agency', '!=', 1);    
+                }else{
+                    $quote->where('agency', (int)$client_type);    
+                }
+            }
             
             if($request->has('booking_currency') && !empty($request->booking_currency)){
                 $booking->whereHas('getCurrency', function($query) use($request){
@@ -85,7 +94,6 @@ class BookingController extends Controller
                     }
                 });
             }
-            
         }
         
         $data['bookings']    = $booking->paginate($this->pagination);
