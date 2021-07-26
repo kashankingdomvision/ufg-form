@@ -166,12 +166,12 @@ class BookingController extends Controller
             'quote_ref'           =>  $request->quote_no,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
             'agency_name'                       =>  $request->agency_name??NULL,
-            'agency_contact'                    =>  $request->agency_contact??NULL,
+            'agency_contact'                    =>  ($request->agency_contact != NULL)? $request->full_number : NULL,
             'agency_email'                      =>  $request->agency_email??NULL,
             'agency_contact_name'               =>  $request->agency_contact_name??NULL,
             'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
             'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
-            'lead_passenger_contact'            =>  $request->lead_passenger_contact??NULL,
+            'lead_passenger_contact'            =>  ($request->lead_passenger_contact != NULL)? $request->full_number : NULL,
             'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
@@ -288,7 +288,7 @@ class BookingController extends Controller
                      'date_of_birth'         => $pax_data['date_of_birth']??NULL,
                      'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                      'dinning_preference'    => $pax_data['dinning_preference']??NULL,
-                     'country_id'            => $pax_data['nationality_id']??NULL,
+                     'nationality_id'            => $pax_data['nationality_id']??NULL,
                  ]);
              }
         }
