@@ -125,8 +125,8 @@
                                           <tr>
                                               <th>Template Name</th>
                                               <th>Season</th>
-                                              <th>Created At</th>
                                               <th>Created By</th>
+                                              <th>Created At</th>
                                             <th>Action</th>
                                           </tr>
                                         </thead>
