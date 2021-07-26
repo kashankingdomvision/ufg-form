@@ -112,6 +112,18 @@ class Quote extends Model
     {
         return  'UFG-'.rand(23, 200).''.Str::random(5).' '.date('d/m/Y', strtotime(now())).' By '.Auth::user()->name; 
     }
-    
+
+    public function getQuoteUpdateDetail()
+    {
+        return $this->hasOne(QuoteUpdateDetail::class, 'quote_id', 'id' );
+    }
+
+    public function getHasUserEditAttribute()
+    {
+        $checkUserExist = $this->getQuoteUpdateDetail()->exists();
+        if($checkUserExist){
+            return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
+        }
+    }
     
 }

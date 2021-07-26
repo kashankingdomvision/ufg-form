@@ -10,6 +10,7 @@
       </button>
       @endif
     </td>
+    <td width="8">{!! $quote->has_user_edit !!}</td>
     <td>{{ $quote->ref_no }}</td>
     <td>{{ $quote->quote_ref }}</td>
     <td>{{ $quote->getSeason->name }}</td>
