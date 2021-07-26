@@ -2159,12 +2159,12 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
 }
 
 .iti__flag {
-  background-image: url("http://localhost/ufg-form/resources/img/flags.png");
+  background-image: url("https://stagingwebsite.tk/php/ufg-form/resources/img/flags.png");
 }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .iti__flag {
-    background-image: url("http://localhost/ufg-form/resources/img/flags@2x.png") !important;
+    background-image: url("https://stagingwebsite.tk/php/ufg-form/resources/img/flags@2x.png") !important;
   }
 }
 
