@@ -156,6 +156,7 @@
                                         <thead>
                                           <tr>
                                             <th></th>
+                                            <th width="8"></th>
                                             <th>Zoho Ref #</th>
                                             <th>Quote Ref #</th>
                                             <th>Season</th>
@@ -171,16 +172,18 @@
                                         @if($quotes && $quotes->count())
                                             @foreach ($quotes as $key => $quote)
                                                 <tr class="{{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}">
-                                                <td>
-                                                    @if($quote->quote_count > 1)
-                                                        <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
-                                                            <span class="fa fa-plus"></span>
-                                                        </button>
-                                                        <button class="btn btn-sm removeChild" id="remove{{$quote->id}}" data-show="#show{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}" style="display:none;" >
-                                                            <span class="fa fa-minus"></span>
-                                                        </button>
-                                                    @endif
+                                                
+                                                    <td width="8">
+                                                        @if($quote->quote_count > 1)
+                                                            <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
+                                                                <span class="fa fa-plus"></span>
+                                                            </button>
+                                                            <button class="btn btn-sm removeChild" id="remove{{$quote->id}}" data-show="#show{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}" style="display:none;" >
+                                                                <span class="fa fa-minus"></span>
+                                                            </button>
+                                                        @endif
                                                     </td>
+                                                    <td width="8">{!! $quote->has_user_edit !!}</td>
                                                     <td>{{ $quote->ref_no }}</td>
                                                     <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     <td>{{ $quote->getSeason->name }}</td>
