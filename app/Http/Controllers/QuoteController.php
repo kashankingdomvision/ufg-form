@@ -186,7 +186,7 @@ class QuoteController extends Controller
             'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
             'booking_reference'     => $quoteD['booking_reference'],
-            'booking_type_id'       => $quoteD['booking_type']??$quoteD['booking_type_id'],
+            'booking_type_id'       => (isset($quoteD['booking_type_id']))? $quoteD['booking_type_id'] : $quoteD['booking_type'],
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
             'estimated_cost'        => $quoteD['estimated_cost'],
