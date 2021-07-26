@@ -269,7 +269,6 @@ class QuoteController extends Controller
     
     public function update(QuoteRequest $request, $id)
     {
-
         $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->where('user_id',Auth::id())->first();
  
         if ($quote_update_detail == null){
@@ -308,7 +307,7 @@ class QuoteController extends Controller
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],
                     'email'                 => $pax_data['email_address'],
-                    'contact'               => $pax_data['contact_number'],
+                    'contact'               => $pax_data['full_number'],
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],

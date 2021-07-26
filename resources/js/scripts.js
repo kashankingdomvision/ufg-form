@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1069,7 +1069,7 @@ $(".update-quote").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote updated Successfully');
-                window.location.href = REDIRECT_BASEURL + "quotes/index";
+                // window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -1594,6 +1594,8 @@ function intTelinput(key = null, inVal = null) {
         autoPlaceholder: "polite",
         placeholderNumberType: "MOBILE",
     });
+    input.nextElementSibling.value = iti.getNumber();
+    
     // on blur: validate
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function() {
