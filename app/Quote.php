@@ -124,7 +124,7 @@ class Quote extends Model
 
     public function getHasUserEditAttribute()
     {
-        $checkUserExist = $this->getQuoteUpdateDetail()->whereNot('user_id',Auth::id())->exists();
+        $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
         if($checkUserExist){
             return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
         }
