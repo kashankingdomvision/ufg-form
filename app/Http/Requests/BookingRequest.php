@@ -29,6 +29,7 @@ class BookingRequest extends FormRequest
             'agency_name'                       =>  'required_if:agency,1',
             'agency_contact'                    =>  'required_if:agency,1',
             'agency_email'                      =>  'required_if:agency,1',
+            'agency_contact_name'               =>  'required_if:agency,1',
             'commission_id'                     =>  'required',
             'season_id'                         =>  'required',
             'brand_id'                          =>  'required',
@@ -36,14 +37,17 @@ class BookingRequest extends FormRequest
             'holiday_type_id'                   =>  'required',
             'ref_no'                            =>  'required',
             'quote_no'                          =>  'required',
-            'lead_passenger'                    =>  'required',
+            'lead_passenger_name'               =>  'required_if:agency,0',
+            'lead_passenger_email'              =>  'required_if:agency,0',
+            'lead_passenger_contact'            =>  'required_if:agency,0',    
+            'lead_passenger_dbo'                =>  'required_if:agency,0',
+            'lead_passsenger_nationailty_id'    =>  'required_if:agency,0', 
+            'lead_passenger_dinning_preference' =>  'required_if:agency,0', 
+            'lead_passenger_bedding_preference' =>  'required_if:agency,0', 
             'sale_person_id'                    =>  'required',
             'agency'                            =>  'required',
-            'dinning_preference'                =>  'required',
-            'bedding_preference'                =>  'required',
             'pax_no'                            =>  'required',
             'rate_type'                         =>  'required',
-            'nationailty_id'                    =>  'required',
             'quote'                             =>  'required|array',
             'quote.*.booking_due_date'          =>  'required',
             'quote.*.supplier_currency_id'      =>  'required',
@@ -63,31 +67,22 @@ class BookingRequest extends FormRequest
     public function messages()
     {
         return[
-
             'agency_name.required_if'           => 'The Agency Name field is required.',
             'agency_contact.required_if'        => 'The Agency Contact field is required.',
-            'agency_email.required_if'        => 'The Agency Email field is required.',
+            'agency_email.required_if'          => 'The Agency Email field is required.',
+            'agency_contact_name.required_if'   => 'The Agency contact name field is required.',
+            'lead_passenger_name.required_if'               => 'The lead passenger name field is required',
+            'lead_passenger_email.required_if'              => 'The lead passenger email field is required',
+            'lead_passenger_contact.required_if'            => 'The lead passenger contact field is required',    
+            'lead_passenger_dbo.required_if'                => 'The lead passenger date of birth field is required',
+            'lead_passsenger_nationailty_id.required_if'    => 'The lead passenger nationailty field is required',
+            'lead_passenger_dinning_preference.required_if' => 'The lead passenger dinning preference field is required',
+            'lead_passenger_bedding_preference.required_if' => 'The lead passenger bedding preference field is required',
         ];
     }
     
     public function attributes()
     {
-        // return [
-        //     'season_id'           => 'Booking season',
-        //     'brand_id'            => 'Brand',
-        //     'currency_id'         => 'Booking currency',
-        //     'holiday_type_id'     => 'Holiday type',
-        //     'ref_no'              => 'Zoho reference',
-        //     'quote_no'            => 'Quote reference',
-        //     'lead_passenger'      => 'Lead Passenger name',
-        //     'sale_person_id'      => 'Sale person',
-        //     'agency'              => 'Agency',
-        //     'dinning_preferences' => 'Dinning Preference',
-        //     'bedding_preference'  => 'Bedding Preference',
-        //     'pax_no'              => 'Pax number ',
-        //     'rate_type'           => 'Rate type',
-        // ];
-
         return [
             'agency'                            => 'Agency',
             'agency_name.required_if'           => 'Agency Name',
@@ -100,14 +95,10 @@ class BookingRequest extends FormRequest
             'holiday_type_id'                   => 'Holiday type',
             'ref_no'                            => 'Zoho reference',
             'quote_no'                          => 'Quote reference',
-            'lead_passenger'                    => 'Lead Passenger name',
             'sale_person_id'                    => 'Sale person',
             'agency'                            => 'Agency',
-            'dinning_preference'                => 'Dinning Preference',
-            'bedding_preference'                => 'Bedding Preference',
             'pax_no'                            => 'Pax number ',
             'rate_type'                         => 'Rate type',
-            'nationailty_id'                    => 'Nationality',
             'quote.*.booking_due_date'          => 'Booking Due Date',
             'quote.*.supplier_currency_id'      => 'Supplier currency',
             'quote.*.estimated_cost'            => 'Estimated cost',
@@ -115,7 +106,6 @@ class BookingRequest extends FormRequest
             'quote.*.markup_percentage'         => 'Markup percentage',
             'quote.*.selling_price_in_booking_currency' => 'Selling price booking',
             'quote.*.markup_amount_in_booking_currency' => 'Markup amount booking',
-            // 'quote.*.added_in_sage'             =>  'Added in sage',
             'quote.*.supplier_id'               =>  'Supplier',
             'quote.*.product_id'                =>  'Product',
             'quote.*.booking_method_id'         =>  'Booking method',

@@ -132,6 +132,7 @@ class QuoteController extends Controller
     
     public function quoteArray($request, $type = null)
     {
+
         return [
             'commission_id'                     =>  $request->commission_id,
             'user_id'                           =>  Auth::id(),
@@ -185,7 +186,7 @@ class QuoteController extends Controller
             'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
             'booking_reference'     => $quoteD['booking_reference'],
-            'booking_type_id'       => $quoteD['booking_type'],
+            'booking_type_id'       => $quoteD['booking_type']??$quoteD['booking_type_id'],
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
             'estimated_cost'        => $quoteD['estimated_cost'],
@@ -202,6 +203,7 @@ class QuoteController extends Controller
     
     public function store(QuoteRequest $request)
     {
+        dd($this->quoteArray($request));
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {

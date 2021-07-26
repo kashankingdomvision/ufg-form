@@ -1599,7 +1599,6 @@ function intTelinput(key = null, inVal = null) {
             reset();
             if (input.value.trim()) {
                 if (iti.isValidNumber()) {
-                    validMsg.classList.remove("hide");
                     $('.buttonSumbit').removeAttr('disabled');
                 } else {
                     $('.buttonSumbit').attr('disabled', 'disabled');
@@ -1616,7 +1615,6 @@ function intTelinput(key = null, inVal = null) {
             input.classList.remove("is-invalid");
             errorMsg.innerHTML = "";
             errorMsg.classList.add("hide");
-            validMsg.classList.add("hide");
         };
 }
 //intl-tel-input ************** End ******************** //

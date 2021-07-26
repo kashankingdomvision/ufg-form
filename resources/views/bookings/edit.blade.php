@@ -105,35 +105,7 @@
                 <div class="card-body">
                   <div class="row mb-2">
 
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control commission-id">
-                          <option selected value="" >Select Commission Type </option>
-                          @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
+                   
 
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
@@ -154,28 +126,51 @@
                         <input type="text" value="{{ old('quote_no')??$booking->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
-
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('lead_passenger')??$booking->lead_passenger }}" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Sales Person <span style="color:red">*</span></label>
+                        <select name="sale_person_id" id="sale_person_id" class="form-control  select2single  sales-person-id">
+                          <option value="">Select Sales Person</option>
+                          @foreach ($sale_persons as $person)
+                            <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking->sale_person_id == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
+                          @endforeach
+                        </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationailty_id" class="form-control select2single nationality-id">
-                          <option selected value="" >Select Nationality</option>
-                          @foreach ($countries as $country)
-                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($booking['country_id'] == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
+                   
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
@@ -207,82 +202,6 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sale_person_id" class="form-control  select2single  sales-person-id">
-                          <option value="">Select Sales Person</option>
-                          @foreach ($sale_persons as $person)
-                            <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking->sale_person_id == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    
-                    {{-- <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Agency Booking <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline">
-                            <input class="select-agency" {{ old('agency') == '1' ? "checked" : ($booking->agency ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
-                          </label>
-                          <label class="radio-inline">
-                            <input  class="select-agency" {{ old('agency') == '0'  ? "checked" : ($booking->agency ==  0? 'checked' : '') }}  value="0" type="radio" name="agency" > No
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row agency-columns mb-1">
-                        @if($booking->agency == 1)
-                            <div class="col form-group" style="width:175px;">
-                                <label for="inputEmail3" class="">Agency Name</label> <span class="text-danger"> *</span>
-                                <input type="text" value="{{ $booking->agency_name }}" name="agency_name" class="form-control">
-                                <span class="text-danger" role="alert"></span>
-                            </div>
-                            <div class="col form-group">
-                                <label for="inputEmail3" class="">Agency Contact No.</label> <span class="text-danger"> *</span>
-                                <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" class="form-control">
-                                <span class="text-danger" role="alert"></span>
-                            </div>
-                        @endif
-                      </div>
-                    </div> --}}
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Agency Booking <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline">
-                            <input class="select-agency" {{ ($booking->agency ==  1) ? 'checked' : '' }}  value="1" type="radio" name="agency" > Yes
-                          </label>
-                          <label class="radio-inline">
-                            <input  class="select-agency" {{ ($booking->agency ==  0 || $booking->agency == null) ? 'checked' : '' }}  value="0" type="radio" name="agency" > No
-                          </label>
-                        </div>
-                      </div>
-
-                      <div class="row agency-columns mb-1" style={{  $booking->agency == 0 ? 'display:none;' : '' }} >
-                        @if($booking->agency == 1)
-                          <div class="col form-group" >
-                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                            <input type="text" name="agency_name" id="agency_name" class="form-control" value="{{ $booking->agency_name }}">
-                            <span class="text-danger" role="alert"> </span>
-                          </div>
-
-                          <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                            <span class="text-danger error_msg0" role="alert" > </span>
-                          </div>
-                          <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                            <input type="email" value="{{ $booking->agency_email }}" name="agency_email" id="agency_email" class="form-control">
-                            <span class="text-danger" role="alert"></span>
-                          </div>
-                          @endif
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
                         <select name="season_id" id="season_id" class="form-control  select2single ">
                           <option value="">Select Booking Season</option>
@@ -293,23 +212,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $booking->dinning_preference }}" name="dinning_preference" id="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Bedding Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $booking->bedding_preference }}" name="bedding_preference" id="bedding_preference" class="form-control" placeholder="Bedding Preferences" >
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
+                
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
@@ -324,6 +227,110 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Agency Booking <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline">
+                            <input class="select-agency" {{ ($booking->agency ==  1) ? 'checked' : '' }}  value="1" type="radio" name="agency" > Yes
+                          </label>
+                          <label class="radio-inline">
+                            <input  class="select-agency" {{ ($booking->agency ==  0 || $booking->agency == null) ? 'checked' : '' }}  value="0" type="radio" name="agency" > No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 agency-columns" >
+                      @if($booking->agency == 1)  {{--  Agency  --}}
+                        <div class="row mt-1" >
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $booking->agency_name }}" name="agency_name" id="agency_name" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $booking->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="tel" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                            <span class="text-danger error_msg0 hide" role="alert"></span>
+                          </div>
+                        
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $booking->agency_email }}" name="agency_email" id="agency_email" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                        </div>
+                      @else  {{--  lead passenger  --}}
+                        <div class="row mt-1" >
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Lead Passenger Name <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $booking->lead_passenger_name }}" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Email Address <span style="color:red">*</span></label> 
+                              <input type="email" value="{{ $booking->lead_passenger_email }}" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Contact Number <span style="color:red">*</span></label> 
+                              <input type="tel" value="{{ $booking->lead_passenger_contact }}" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
+                              <span class="text-danger error_msg0" role="alert"></span>
+                            </div>
+                          </div>
+                        
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Date Of Birth <span style="color:red">*</span></label> 
+                              <input type="date" value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Nationality <span style="color:red">*</span></label>
+                              <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
+                                <option selected value="" >Select Nationality</option>
+                                @foreach ($countries as $country)
+                                  <option value="{{ $country->id }}" {{ ($booking->lead_passsenger_nationailty_id == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Dinning Preferences <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $booking->lead_passenger_dinning_preference }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Bedding Preferences <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $booking->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>  
+                        </div>
+                      @endif
+                    </div>
+
 
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -358,7 +365,7 @@
                                           <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
                                                   <option selected value="" >Select Nationality</option>
                                               @foreach ($countries as $country)
-                                                  <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected':( ($pax->country_id == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
+                                                  <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected':( ($pax->nationality_id == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
                                               @endforeach
                                           </select>
                                         </div>

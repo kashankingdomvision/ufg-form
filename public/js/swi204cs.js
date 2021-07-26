@@ -21520,9 +21520,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
       },
       success: function success(data) {
-        // $("#overlay").removeClass('overlay').html('');
+        $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert('Quote updated Successfully'); // window.location.href = REDIRECT_BASEURL + "quotes/index";
+          alert('Quote updated Successfully');
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
@@ -21965,7 +21966,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
       if (input.value.trim()) {
         if (iti.isValidNumber()) {
-          validMsg.classList.remove("hide");
           $('.buttonSumbit').removeAttr('disabled');
         } else {
           $('.buttonSumbit').attr('disabled', 'disabled');
@@ -21982,7 +21982,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       input.classList.remove("is-invalid");
       errorMsg.innerHTML = "";
       errorMsg.classList.add("hide");
-      validMsg.classList.add("hide");
     };
   } //intl-tel-input ************** End ******************** //
 
