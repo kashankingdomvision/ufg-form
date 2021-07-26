@@ -25,7 +25,7 @@ class UserRequest extends FormRequest
     {
         return [ 
             'name'      => 'required|string',
-            'email'     => 'required|email',
+            'email'     => 'required|email|unique:users',
             'role'      => 'required',
         ];
     }
