@@ -44,6 +44,26 @@
                 <div class="card-body">
                   <div class="row mb-2">
 
+                    <div class="col-sm-6"> 
+                      <label>Zoho Reference <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                            <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
+                          </div>
+                        </div>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Quote Reference <span style="color:red">*</span></label>
+                        <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
+                      </div>
+                    </div>
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span></label>
@@ -63,6 +83,19 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>Sales Person <span style="color:red">*</span></label>
+                        <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
+                          <option selected value="">Select Sales Person</option>
+                          @foreach ($sale_persons as $person)
+                            <option value="{{ $person->id }}">{{ $person->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
@@ -73,49 +106,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-                    <div class="col-sm-6">
-                      <label>Zoho Reference <span style="color:red">*</span></label>
-
-                      <div class="form-group">
-                        <div class="input-group">
-                          <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                            <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
-                          </div>
-                        </div>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationailty_id" class="form-control select2single nationality-id">
-                          <option selected value="" >Select Nationality</option>
-                          @foreach ($countries as $country)
-                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    
                     
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -147,36 +137,6 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Sales Person <span style="color:red">*</span></label>
-                        <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
-                          <option selected value="">Select Sales Person</option>
-                          @foreach ($sale_persons as $person)
-                            <option value="{{ $person->id }}">{{ $person->name }}</option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Agency Booking <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline">
-                            <input type="radio" name="agency" class="select-agency" value="1" > Yes
-                          </label>
-                          <label class="radio-inline">
-                            <input type="radio" name="agency" class="select-agency" value="0"  checked> No
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row agency-columns mb-1 " style="display: none;">
-                        
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
                         <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
                           <option value="">Select Booking Season</option>
@@ -203,22 +163,82 @@
                    
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" name="dinning_preference" id="dinning_preference" class="form-control" placeholder="Dinning Preferences" >
-                        <span class="text-danger" role="alert"></span>
+                        <label>Agency Booking <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline">
+                            <input type="radio" name="agency" class="select-agency" value="1" > Yes
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="agency" class="select-agency" value="0"  checked> No
+                          </label>
+                        </div>
                       </div>
                     </div>
                     
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Bedding Preferences <span style="color:red">*</span></label>
-                        <input type="text" name="bedding_preference" id="bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
-                        <span class="text-danger" role="alert"></span>
+                    <div class="col-md-12 agency-columns" >
+                      <div class="row mt-1" >
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Lead Passenger Name <span style="color:red">*</span></label>
+                            <input type="text" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Email Address <span style="color:red">*</span></label> 
+                            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Contact Number <span style="color:red">*</span></label> 
+                            <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
+                            <span class="text-danger error_msg0" role="alert"></span>
+                          </div>
+                        </div>
+                      
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label>Date Of Birth <span style="color:red">*</span></label> 
+                            <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Nationality <span style="color:red">*</span></label>
+                            <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
+                              <option selected value="" >Select Nationality</option>
+                              @foreach ($countries as $country)
+                                <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                              @endforeach
+                            </select>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Dinning Preferences <span style="color:red">*</span></label>
+                            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Bedding Preferences <span style="color:red">*</span></label>
+                            <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>  
+                          
+                          
                       </div>
                     </div>
-              
-
-                    
 
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -232,8 +252,13 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div id="appendPaxName" class="col-md-12 "></div>
+                    
+                    <div id="appendPaxName" class="col-md-12 ">
+                    
+                    </div>
                   </div>
+                
+                  
                   <div class="row mb-2">
                       <div class="col-md-2 offset-md-10">
                         <select name="template" id="tempalte_id" class="float-right select2single form-control template">

@@ -17,6 +17,7 @@ class CreateBookingLogsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('booking_id');
             $table->string('version_no');
+            $table->bigInteger('log_no')->nullalbe();
             $table->longText('data');
             $table->timestamps();
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');

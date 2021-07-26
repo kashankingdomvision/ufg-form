@@ -16,6 +16,7 @@ class CreateQuoteLogsTable extends Migration
         Schema::create('quote_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
+            $table->bigInteger('log_no')->nullalbe();
             $table->string('version_no');
             $table->longText('data');
             $table->timestamps();

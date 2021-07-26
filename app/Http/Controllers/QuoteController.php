@@ -130,38 +130,42 @@ class QuoteController extends Controller
         return Commission::all();
     }
     
-    public function quoteArray($request)
+    public function quoteArray($request, $type = null)
     {
         return [
-            'commission_id'      =>  $request->commission_id,
-            'user_id'            =>  Auth::id(),
-            'season_id'          =>  $request->season_id,
-            'brand_id'           =>  $request->brand_id,
-            'country_id'         =>  $request->nationailty_id??$request->country_id,
-            'currency_id'        =>  $request->currency_id,
-            'holiday_type_id'    =>  $request->holiday_type_id,
-            'ref_name'           =>  $request->ref_name??'zoho',
-            'ref_no'             =>  $request->ref_no,
-            'quote_ref'          =>  $request->quote_no??$request->quote_ref,
-            'lead_passenger'     =>  $request->lead_passenger,
-            'sale_person_id'     =>  $request->sale_person_id,
-            'agency'             =>  ((int)$request->agency == 1)? '1' : '0',
-            'dinning_preference' =>  $request->dinning_preference,
-            'bedding_preference' =>  $request->bedding_preference,
-            'pax_no'             =>  $request->pax_no,
-            'net_price'          =>  $request->total_net_price??$request->net_price,
-            'markup_amount'      =>  $request->total_markup_amount??$request->markup_amount,
-            'markup_percentage'  =>  $request->total_markup_percent??$request->markup_percentage,
-            'selling_price'      =>  $request->total_selling_price??$request->selling_price,
-            'profit_percentage'  =>  $request->total_profit_percentage??$request->profit_percentage,
-            'commission_amount'  =>  $request->commission_amount??$request->commission_amount,
-            'selling_currency_oc'=>  $request->selling_price_other_currency??$request->selling_currency_oc,
-            'selling_price_ocr'  =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
-            'amount_per_person'  =>  $request->booking_amount_per_person??$request->amount_per_person,
-            'rate_type'          =>  ($request->rate_type == 'live') ? 'live': 'manual',
-            'agency_name'        =>  (isset($request['agency_name'])) ? $request->agency_name : NULL,
-            'agency_contact'     =>  (isset($request['agency_contact'])) ? $request->full_number : NULL,
-            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_email : NULL, 
+            'commission_id'                     =>  $request->commission_id,
+            'user_id'                           =>  Auth::id(),
+            'season_id'                         =>  $request->season_id,
+            'brand_id'                          =>  $request->brand_id,
+            'currency_id'                       =>  $request->currency_id,
+            'holiday_type_id'                   =>  $request->holiday_type_id,
+            'ref_name'                          =>  $request->ref_name??'zoho',
+            'ref_no'                            =>  $request->ref_no,
+            'quote_ref'                         =>  $request->quote_no??$request->quote_ref,
+            'sale_person_id'                    =>  $request->sale_person_id,
+            'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
+            'agency_name'                       =>  $request->agency_name??NULL,
+            'agency_contact'                    =>  (!empty($type))? $request->agency_contact : (($request->has('agency_contact'))? $request->full_number : NULL),
+            'agency_email'                      =>  $request->agency_email??NULL,
+            'agency_contact_name'               =>  $request->agency_contact_name??NULL,
+            'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
+            'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
+            'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->has('lead_passenger_contact'))? $request->full_number : NULL),
+            'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
+            'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
+            'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
+            'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
+            'pax_no'                            =>  $request->pax_no??'0',
+            'net_price'                         =>  $request->total_net_price??$request->net_price,
+            'markup_amount'                     =>  $request->total_markup_amount??$request->markup_amount,
+            'markup_percentage'                 =>  $request->total_markup_percent??$request->markup_percentage,
+            'selling_price'                     =>  $request->total_selling_price??$request->selling_price,
+            'profit_percentage'                 =>  $request->total_profit_percentage??$request->profit_percentage,
+            'commission_amount'                 =>  $request->commission_amount??$request->commission_amount,
+            'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
+            'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
+            'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
         ];
        
     }
@@ -217,6 +221,7 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
+                    'nationality_id'        => $pax_data['nationality_id'],
                 ]);
             }
        }
@@ -247,23 +252,17 @@ class QuoteController extends Controller
         $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->first();
 
         if($quote_update_detail && $quote_update_detail->exists()){
-
             $data['quote_exist']   = 1;
             $data['quote_user_id'] = $quote_update_detail->user_id;
         }
         else{    
-            
-            $quote_update_details = QuoteUpdateDetail::create(
-                [
+            $quote_update_details = QuoteUpdateDetail::create([
                     'user_id'    => Auth::id(),
                     'quote_id'   => decrypt($id)
-                ]
-            );
-            
+                ]);
             $data['quote_exist']   = null;
             $data['quote_user_id'] = null;
         }
-
         return view('quotes.edit',$data);
     }
     
@@ -373,7 +372,7 @@ class QuoteController extends Controller
     public function booking($id)
     {
         $quote = Quote::findORFail(decrypt($id));
-        $getQuote = $this->quoteArray($quote);
+        $getQuote = $this->quoteArray($quote, 'booking');
         $getQuote['quote_id'] = $quote->id; 
         $booking = Booking::create($getQuote);
         
@@ -393,7 +392,7 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax['date_of_birth'],
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
-                    'country_id'            => $pax['country_id'],
+                    'nationality_id'        => $pax['nationality_id'],
                 ]);
             }
         }
@@ -509,7 +508,7 @@ class QuoteController extends Controller
             }
             
         }
-        $data['quotes'] = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         $data['booking_seasons']  = Season::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
