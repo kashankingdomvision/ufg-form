@@ -76,19 +76,20 @@
                                 </div>
                             </div>
                             
-                            <div class="col">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>From</label>
-                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
-                                        </div>
+                        </div>
+                        <div class="col">
+                            <label><u> Created Date</u></label>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>From</label>
+                                        <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
                                     </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>To</label>
-                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
-                                        </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label>To</label>
+                                        <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
                                     </div>
                                 </div>
                             </div>
