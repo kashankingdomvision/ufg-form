@@ -28,7 +28,7 @@
         </a>
         <form class="mr-2" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
           @csrf @method('patch')
-          <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></button>
+          <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></button>
         </form>
       @else
       <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
