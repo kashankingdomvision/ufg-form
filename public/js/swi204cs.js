@@ -21957,11 +21957,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       hiddenInput: "full_number",
       autoPlaceholder: "polite",
       placeholderNumberType: "MOBILE"
-    });
-    input.nextElementSibling.value = iti.getNumber(); // on blur: validate
+    }); // on blur: validate
 
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function () {
+      input.nextElementSibling.value = iti.getNumber();
       reset();
 
       if (input.value.trim()) {
@@ -21971,7 +21971,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $('.buttonSumbit').attr('disabled', 'disabled');
           input.classList.add("is-invalid");
           var errorCode = iti.getValidationError();
-          console.log(errorMsg);
           errorMsg.innerHTML = errorMap[errorCode];
           errorMsg.classList.remove("hide");
         }

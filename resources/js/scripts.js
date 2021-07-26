@@ -1575,6 +1575,9 @@ if($('.phone').length > 0){
         intTelinput(i);
     }
 }
+
+
+
 //tel input end
 //intl-tel-input ************** Start ******************** //
 function intTelinput(key = null, inVal = null) {
@@ -1591,11 +1594,10 @@ function intTelinput(key = null, inVal = null) {
         autoPlaceholder: "polite",
         placeholderNumberType: "MOBILE",
     });
-    input.nextElementSibling.value = iti.getNumber()
-    
     // on blur: validate
-        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-        input.addEventListener('blur', function() {
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    input.addEventListener('blur', function() {
+            input.nextElementSibling.value = iti.getNumber();
             reset();
             if (input.value.trim()) {
                 if (iti.isValidNumber()) {
@@ -1604,13 +1606,13 @@ function intTelinput(key = null, inVal = null) {
                     $('.buttonSumbit').attr('disabled', 'disabled');
                     input.classList.add("is-invalid");
                     var errorCode = iti.getValidationError();
-                    console.log(errorMsg);
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
                 }
             }
         });
         
+     
         var reset = function() {
             input.classList.remove("is-invalid");
             errorMsg.innerHTML = "";
@@ -1620,7 +1622,6 @@ function intTelinput(key = null, inVal = null) {
 //intl-tel-input ************** End ******************** //
 
 });
-
 
 
 
