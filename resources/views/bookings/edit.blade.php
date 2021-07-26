@@ -371,7 +371,7 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Contact Number</label> 
-                                            <input type="number" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                            <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
                                             <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
                                             <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
                                         </div>

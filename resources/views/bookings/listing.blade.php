@@ -180,15 +180,15 @@
                                                 <td>
                                                     <a href="{{ route('bookings.show', encrypt($booking->id)) }}"> {{$booking->quote_ref}} </a>
                                                 </td>
-                                                <td>{{$booking->lead_passenger}}</td>
+                                                <td>{{$booking->lead_passenger_name}}</td>
                                                 <td>{{$booking->getBrand->name??NULL}}</td>
                                                 <td>{{$booking->getHolidayType->name??NULL}}</td>
                                                 <td>{{$booking->sale_person}}</td>
                                                 <td>{{$booking->agency_booking == 1 ? 'No' : 'Yes'}}</td>
                                                 <td>{{!empty($booking->getCurrency->code) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : NULL }}</td>
                                                 <td>{{$booking->pax_no}}</td>
-                                                <td>{{$booking->dinning_preference}}</td>
-                                                <td>{{$booking->bedding_preference}}</td>
+                                                <td>{{$booking->lead_passenger_dinning_preference}}</td>
+                                                <td>{{$booking->lead_passenger_bedding_preference}}</td>
                                                 <td>{{$booking->formated_created_at}}</td>
                                                 <td width="10%" class="d-flex" >
                                                     <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
