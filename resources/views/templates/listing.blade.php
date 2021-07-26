@@ -56,7 +56,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Season</label>
-                                    <select class="form-control" name="season">
+                                    <select class="form-control select2single" name="season">
                                         <option value="">Search with Season</option>
                                         @foreach ($seasons as $season)
                                             <option value="{{ $season->name }}" {{ (old('season') == $season->name)? 'selected' :((request()->get('season') == $season->name)? 'selected' : null ) }}>{{ $season->name }}</option>
@@ -67,8 +67,8 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Created By</label>
-                                    <select class="form-control" name="created_by">
-                                        <option value="">Search with Created by user</option>
+                                    <select class="form-control select2single" name="created_by">
+                                        <option value="">Select User</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->name }}" {{ (old('created_by') == $user->name)? 'selected' :((request()->get('created_by') == $user->name)? 'selected' : null ) }}>{{ $user->name }}</option>
                                         @endforeach
@@ -81,13 +81,13 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>From</label>
-                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" >
+                                            <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
                                             <label>To</label>
-                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" >
+                                            <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +120,7 @@
 
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table id="example1" class="table" >
+                                    <table id="example1" class="table table-striped">
                                         <thead>
                                           <tr>
                                               <th>Template Name</th>

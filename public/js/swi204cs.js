@@ -21588,7 +21588,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $('.search-reference').on('click', function () {
     var searchRef = $(this);
-    searchRef.text('Searching..').prop('disabled', true);
     var reference_no = $('.reference-name').val();
 
     if (reference_no == '') {
@@ -21621,6 +21620,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               },
               type: 'POST',
               dataType: "json",
+              beforeSend: function beforeSend() {
+                $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+                searchRef.prop('disabled', true);
+              },
               success: function success(data) {
                 if (data.response) {
                   // lead Passenger
@@ -21669,11 +21672,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                   alert(data.error);
                 }
 
-                searchRef.text('Search').prop('disabled', false);
+                searchRef.prop('disabled', false);
+                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                console.log('done');
               },
               error: function error(reject) {
-                alert(reject.responseJSON.errors);
-                searchRef.text('Search').prop('disabled', false);
+                searchRef.prop('disabled', false);
+                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
               }
             });
           }
@@ -21730,6 +21736,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (confirmAlert == true) {
           $('#parent').html(data.template_view);
+          $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+            templateResult: formatState,
+            templateSelection: formatState
+          });
           $(".booking-currency-id").val(data.template.currency_id).change();
         }
       },

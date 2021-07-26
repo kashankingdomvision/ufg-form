@@ -1161,7 +1161,7 @@ $("#update-override").submit(function(event) {
 
 $('.search-reference').on('click', function () {
     var searchRef = $(this);
-    searchRef.text('Searching..').prop('disabled', true);
+    
     var reference_no = $('.reference-name').val();
     if(reference_no == ''){
         alert('Reference number is not found'); 
@@ -1187,6 +1187,11 @@ $('.search-reference').on('click', function () {
                         data : {ref_no: reference_no},
                         type: 'POST',
                         dataType: "json",
+                        beforeSend: function() {
+
+                            $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+                            searchRef.prop('disabled', true);
+                        },
                         success: function (data) {
                             if(data.response)
                             {
@@ -1239,12 +1244,16 @@ $('.search-reference').on('click', function () {
                                 alert(data.error);
                             }
                             
-                            searchRef.text('Search').prop('disabled', false);
+                            searchRef.prop('disabled', false);
+                            $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                            console.log('done');
                             
                         },
                         error: function (reject) {
-                           alert(reject.responseJSON.errors);
-                            searchRef.text('Search').prop('disabled', false);
+
+                            searchRef.prop('disabled', false);
+                            $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                            $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
                         
                         },
                     });
@@ -1317,6 +1326,14 @@ $('#tempalte_id').on('change', function () {
             if(confirmAlert == true){
 
                 $('#parent').html(data.template_view);
+
+                $('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                    templateResult: formatState,
+                    templateSelection: formatState,
+                });
+           
                 $(".booking-currency-id").val(data.template.currency_id).change();
             }
 

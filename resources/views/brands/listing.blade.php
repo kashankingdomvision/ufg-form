@@ -75,41 +75,45 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Email Address</th>
-                    <th>Address</th>
-                    <th>Phone Number</th>
-                    <th>Logo</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach ($brands as $key => $value)
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
                     <tr>
-                      <td>{{ $value->name }}</td>
-                      <td>{{ $value->email }}</td>
-                      <td>{{ $value->address  }}</td>
-                      <td>{{ $value->phone  }}</td>
-                      <td>@if($value->logo)<img src="{{ $value->image_path }}" width="30" height="30" alt="brand logo" /> @endif</td>
-                      <td>
-                        <form method="post" action="{{ route('setting.brands.destroy', encrypt($value->id)) }}">
-                          <a href="{{ route('setting.brands.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                          @csrf
-                          @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        </form>
-                      </td>
+                      <th>Name</th>
+                      <th>Email Address</th>
+                      <th>Address</th>
+                      <th>Phone Number</th>
+                      <th>Logo</th>
+                      <th>Action</th>
                     </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                  @if($brands && $brands->count())
+                    @foreach ($brands as $key => $value)
+                      <tr>
+                        <td>{{ $value->name }}</td>
+                        <td>{{ $value->email }}</td>
+                        <td>{{ $value->address  }}</td>
+                        <td>{{ $value->phone  }}</td>
+                        <td>@if($value->logo)<img src="{{ $value->image_path }}" width="30" height="30" alt="brand logo" /> @endif</td>
+                        <td>
+                          <form method="post" action="{{ route('setting.brands.destroy', encrypt($value->id)) }}">
+                            <a href="{{ route('setting.brands.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            @csrf
+                            @method('delete')
+                            <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                              <span class="fa fa-trash"></span>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
+                    <tr align="center"><td colspan="100%">No record found.</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="card-footer clearfix">

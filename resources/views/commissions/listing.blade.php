@@ -85,24 +85,27 @@
                   </tr>
                 </thead>
                 <tbody>
-
-                  @foreach ($commissions as $commi)
-                  <tr>
-                    <td>{{ $commi->id }}</td>
-                    <td>{{ $commi->name }}</td>
-                    <td>{{ $commi->percentage }} %</td>
-                    <td>
-                      <form method="post" action="{{ route('setting.commissions.destroy', encrypt($commi->id)) }}">
-                        <a href="{{ route('setting.commissions.edit', encrypt($commi->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                        @csrf
-                        @method('delete')
-                        <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                          <span class="fa fa-trash"></span>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                @endforeach
+                @if($commissions && $commissions->count())
+                  @foreach ($commissions as $commission)
+                    <tr>
+                      <td>{{ $commission->id }}</td>
+                      <td>{{ $commission->name }}</td>
+                      <td>{{ $commission->percentage }} %</td>
+                      <td>
+                        <form method="post" action="{{ route('setting.commissions.destroy', encrypt($commission->id)) }}">
+                          <a href="{{ route('setting.commissions.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          @csrf
+                          @method('delete')
+                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
+                @else
+                  <tr align="center"><td colspan="100%">No record found.</td></tr>
+                @endif
                   
                 </tbody>
               </table>

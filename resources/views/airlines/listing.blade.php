@@ -72,33 +72,38 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Airline</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach ($airlines as $key => $value)
-                  <tr>
-                    <td>{{ $value->name }}</td>
-                    <td>
-                      <form method="post" action="{{ route('setting.airlines.destroy', encrypt($value->id)) }}">
-                      <a href="{{ route('setting.airlines.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                        @csrf
-                        @method('delete')
-                        <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                          <span class="fa fa-trash"></span>
-                        </button>
-                      </form>
-                    </td>
-                  </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Airline</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @if($airlines && $airlines->count())
+                    @foreach ($airlines as $key => $airline)
+                    <tr>
+                      <td>{{ $airline->name }}</td>
+                      <td>
+                        <form method="post" action="{{ route('setting.airlines.destroy', encrypt($airline->id)) }}">
+                        <a href="{{ route('setting.airlines.edit', encrypt($airline->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          @csrf
+                          @method('delete')
+                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                            <span class="fa fa-trash"></span>
+                          </button>
+                        </form>
+                      </td>
+                    </tr>
+                    @endforeach
+                  @else
+                    <tr align="center"><td colspan="100%">No record found.</td></tr>
+                  @endif
+                    
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="card-footer clearfix">

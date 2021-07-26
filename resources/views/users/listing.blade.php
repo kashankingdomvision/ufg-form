@@ -50,8 +50,8 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Roles </label>
-                                            <select class="form-control" name="role">
-                                                <option value="">Search with Role</option>
+                                            <select class="form-control select2single" name="role">
+                                                <option value="">Select Role</option>
                                                 @foreach ($roles as $role)
                                                     <option value="{{ $role->id }}" {{ (old('search') == $role->id)? 'selected' :((request()->get('role') == $role->id)? 'selected' : null ) }}>{{ $role->name }}</option>
                                                 @endforeach
@@ -61,8 +61,8 @@
                                     <div class="col">
                                         <div class="form-group">
                                             <label>Brand</label>
-                                            <select class="form-control" name="brand">
-                                                <option value="">Search with Brand Name</option>
+                                            <select class="form-control select2single" name="brand">
+                                                <option value="">Select Brand</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}" {{ (old('search') == $brand->id)? 'selected' :((request()->get('brand') == $brand->id)? 'selected' : null ) }}>{{ $brand->name }}</option>
                                                 @endforeach
@@ -71,11 +71,11 @@
                                     </div>
                                     <div class="col">
                                         <div class="form-group">
-                                            <label>Currencys</label>
-                                            <select class="form-control" name="currency">
-                                                <option value="">Search with Currency</option>
+                                            <label>Currency</label>
+                                            <select class="form-control select2single" name="currency">
+                                                <option value="">Select Currency</option>
                                                 @foreach ($currencies as $currency)
-                                                    <option value="{{ $currency->id }}" {{ (old('search') == $currency->id)? 'selected' :((request()->get('currency') == $currency->id)? 'selected' : null ) }}>{{ $currency->name }}</option>
+                                                    <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{$currency->flag}}" {{ (old('search') == $currency->id)? 'selected' :((request()->get('currency') == $currency->id)? 'selected' : null ) }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -119,6 +119,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        @if($users && $users->count())
                                             @foreach ($users as $key => $value)
                                             <tr>
                                                 <td>{{ $value->name }}</td>
@@ -140,6 +141,9 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                        @else
+                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

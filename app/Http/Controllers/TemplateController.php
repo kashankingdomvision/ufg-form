@@ -60,7 +60,7 @@ class TemplateController extends Controller
     
     public function index(Request $request)
     {
-      $template = Template::orderBy('id', 'asc');
+      $template = Template::orderBy('id', 'DESC');
       if(count($request->all())> 0){
         if($request->has('search') && !empty($request->search)){
           $template->where('title', 'like', '%'.$request->search.'%')
@@ -157,27 +157,25 @@ class TemplateController extends Controller
         $data['booked_by']        = User::all()->sortBy('name');
         $data['booking_types']    = BookingType::all();
 
-        // dd($data);
-
        return view('templates.edit', $data);
     }
     
     public function update(TemplateRequest $request, $id)
     {
-        $template = Template::findOrFail(decrypt($id));
-        $template->update([
-          'user_id'     => Auth::id(),
-          'title'       => $request->template_name,
-          'season_id'   => $request->season_id,
-          'currency_id' => $request->currency_id,
-          'rate_type'   => $request->rate_type,
-        ]);
-        $template->getDetails()->delete();
-   
-        foreach ($request->quote as $quote) {
-            $data = $this->getQuoteDetailsArray($quote, $template->id);
-            TemplateDetail::create($data);
-        }
+      $template = Template::findOrFail(decrypt($id));
+      $template->update([
+        'user_id'     => Auth::id(),
+        'title'       => $request->template_name,
+        'season_id'   => $request->season_id,
+        'currency_id' => $request->currency_id,
+        'rate_type'   => $request->rate_type,
+      ]);
+      $template->getDetails()->delete();
+  
+      foreach ($request->quote as $quote) {
+        $data = $this->getQuoteDetailsArray($quote, $template->id);
+        TemplateDetail::create($data);
+      }
         
       return redirect()->route('templates.index')->with('success_message', 'Template Successfully Updated');
         

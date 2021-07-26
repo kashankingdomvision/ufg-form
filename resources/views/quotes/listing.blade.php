@@ -55,7 +55,7 @@
                                 <div class="form-group">
                                     <label>Client Type</label>
                                     <select class="form-control select2single" name="client_type">
-                                        <option value="" selected>Select any one</option>
+                                        <option value="" selected>Select Client Type </option>
                                         <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
                                         <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
                                     </select>
@@ -65,7 +65,7 @@
                                 <div class="form-group">
                                     <label>Status</label>
                                     <select class="form-control select2single" name="status">
-                                        <option value="" selected>Select any one</option>
+                                        <option value="" selected>Select Status</option>
                                         <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
                                         <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
                                     </select>
@@ -75,9 +75,9 @@
                                 <div class="form-group">
                                     <label>Booking Currency</label>
                                     <select class="form-control select2single" name="booking_currency">
-                                        <option value="" selected >Select booking currency</option>
+                                        <option value="" selected >Select Booking Currency</option>
                                         @foreach ($currencies as $curren)
-                                            <option value="{{ $curren->code }}" {{ (old('booking_currency') == $curren->code)? 'selected': ((request()->get('booking_currency') ==  $curren->code )? 'selected' : null) }}>{{ $curren->name }}</option>
+                                            <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ((request()->get('booking_currency') ==  $curren->code )? 'selected' : null) }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label>Booking Season</label>
                                     <select class="form-control select2single" name="booking_season">
-                                        <option value="" selected >Select booking season</option>
+                                        <option value="" selected >Select Booking Season</option>
                                         @foreach ($booking_seasons as $seasons)
                                             <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
                                         @endforeach
@@ -99,7 +99,7 @@
                                 <div class="form-group">
                                     <label>Brand</label>
                                     <select class="form-control select2single" name="brand">
-                                        <option value="" selected >Select brand name</option>
+                                        <option value="" selected >Select Brand </option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->name }}" {{ (old('brand') == $brand->name)? 'selected': ((request()->get('brand') == $brand->name)? 'selected' : null) }}>{{ $brand->name }} </option>
                                         @endforeach

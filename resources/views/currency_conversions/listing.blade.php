@@ -88,32 +88,36 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Live Rate</th>
-                    <th>Manual Rate</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach ($currency_conversions as $key => $value)
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
                     <tr>
-                      <td>{{ $value->from }}   </td>
-                      <td>{{ $value->to }}</td>
-                      <td>{{ $value->live }}</td>
-                      <td>{{ $value->manual }}</td>
-                      <td>
-                        <a href="{{ route('setting.currency_conversions.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                      </td>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>Live Rate</th>
+                      <th>Manual Rate</th>
+                      <th>Action</th>
                     </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                  @if($currency_conversions && $currency_conversions->count())
+                    @foreach ($currency_conversions as $key => $value)
+                      <tr>
+                        <td>{{ $value->from }}   </td>
+                        <td>{{ $value->to }}</td>
+                        <td>{{ $value->live }}</td>
+                        <td>{{ $value->manual }}</td>
+                        <td>
+                          <a href="{{ route('setting.currency_conversions.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
+                    <tr align="center"><td colspan="100%">No record found.</td></tr>
+                  @endif
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="card-footer clearfix">
