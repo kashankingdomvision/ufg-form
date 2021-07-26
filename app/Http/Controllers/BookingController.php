@@ -53,7 +53,8 @@ class BookingController extends Controller
                 $booking = $booking->where(function ($query) use ($request) {
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
                     ->orWhere('quote_ref', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%');
+                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%');
                 });
             }
             if($request->has('client_type') && !empty($request->client_type)){
