@@ -25,13 +25,19 @@ class CreateQuotesTable extends Migration
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
-            $table->string('lead_passenger');
             $table->enum('agency', [0, 1])->default(0);
             $table->string('agency_name')->nullable();
             $table->string('agency_contact')->nullable();
-            $table->string('dinning_preference');
-            $table->string('bedding_preference');
-            $table->bigInteger('pax_no')->default(1);
+            $table->string('agency_email')->nullable();
+            $table->string('agency_contact_name')->nullable();
+            $table->string('lead_passenger_name')->nullable();
+            $table->string('lead_passenger_email')->nullable();
+            $table->string('lead_passenger_contact')->nullable();
+            $table->string('lead_passenger_dbo')->nullable();
+            $table->unsignedBigInteger('lead_passsenger_nationailty_id')->nullable();
+            $table->string('lead_passenger_dinning_preference')->nullable();
+            $table->string('lead_passenger_bedding_preference')->nullable();
+            $table->bigInteger('pax_no')->default(0);
             $table->double('net_price')->nullable();
             $table->double('markup_amount')->nullable();
             $table->double('markup_percentage')->nullable();
@@ -43,7 +49,9 @@ class CreateQuotesTable extends Migration
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('booking_status',['quote','booked'])->default('quote');
+            $table->enum('is_archive',[1,0])->default(0);
             $table->dateTime('booking_date')->nullable();
+            
             $table->softDeletes();
             $table->timestamps();
         });

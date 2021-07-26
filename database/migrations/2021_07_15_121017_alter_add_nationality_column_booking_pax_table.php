@@ -14,8 +14,8 @@ class AlterAddNationalityColumnBookingPaxTable extends Migration
     public function up()
     {
         Schema::table('booking_pax_details', function (Blueprint $table) {
-            $table->unsignedBigInteger('country_id')->after('booking_id')->nullable();
-            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('nationality_id')->after('booking_id')->nullable();
+            $table->foreign('nationality_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -27,8 +27,8 @@ class AlterAddNationalityColumnBookingPaxTable extends Migration
     public function down()
     {
         Schema::table('booking_pax_details', function (Blueprint $table) {
-            $table->dropForeign('booking_pax_details_country_id_foreign');
-            $table->dropColumn('country_id');
+            $table->dropForeign('booking_pax_details_nationality_id_foreign');
+            $table->dropColumn('nationality_id');
         });
     }
 }

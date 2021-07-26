@@ -39,33 +39,6 @@
                   @csrf @method('put')
                   <div class="row mb-2">
                     <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($quote->rate_type == 'manual')? 'checked': NULL }}>
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control  select2single commission-id">
-                          <option selected value="" >Select Commission Type </option>
-                          @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group ">
@@ -77,6 +50,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
@@ -85,50 +59,22 @@
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Lead Passenger Name <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote->lead_passenger }}" name="lead_passenger" id="lead_passenger" class="form-control" placeholder="Lead Passenger Name" >
-                        <span class="text-danger" role="alert"></span>
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($quote->rate_type == 'manual')? 'checked': NULL }}>
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
                     
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Nationality <span style="color:red">*</span></label>
-                        <select name="nationailty_id" id="nationality_id" class="form-control select2single nationality-id">
-                          <option selected value="" >Select Nationality</option>
-                          @foreach ($countries as $country)
-                            <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': (($quote->country_id == $country->id)? 'selected':NULL) }}> {{ $country->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
                     
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Brand <span style="color:red">*</span></label>
-                        <select name="brand_id" id="brand_id" class="form-control  select2single getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
-                          <option value="">Select Brand</option>
-                          @foreach ($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ (old('brand_id') == $brand->id)? "selected" : (($quote->brand_id == $brand->id)? 'selected':NULL) }}> {{ $brand->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  select2single appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
-                          <option value="">Select Type Of Holiday</option>
-                          @foreach ($quote->getBrand->getHolidayTypes as $holiday_type)
-                            <option value="{{ $holiday_type->id }}" {{  (old('holiday_type_id') == $holiday_type->id)? "selected" : ($quote->holiday_type_id == $holiday_type->id ? 'selected' : '') }} >{{ $holiday_type->name }}</option>
-                          @endforeach
-                          <option value="">Select Type Of Holiday</option>
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
@@ -144,37 +90,46 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Agency Booking <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline">
-                            <input class="select-agency" {{ ($quote->agency ==  1 ? 'checked' : '') }}  value="1" type="radio" name="agency" > Yes
-                          </label>
-                          <label class="radio-inline">
-                            <input  class="select-agency" {{ ($quote->agency ==  0 ? 'checked' : '') }}  value="0" type="radio" name="agency" > No
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row agency-columns mb-1">
-                        @if($quote->agency == 1)
-                          <div class="col form-group" style="width:175px;">
-                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" class="form-control">
-                            <span class="text-danger" role="alert"></span>
-                          </div>
-                          <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact }}" name="agency_contact" class="form-control phone phone0">
-                            <span class="text-danger error_msg0" role="alert" > </span>
-                            <span class="text-danger valid_msg0" role="alert" > </span>
-                          </div>
-                          <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
-                            <span class="text-danger" role="alert"></span>
-                          </div>
-                        @endif
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control  select2single commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Brand <span style="color:red">*</span></label>
+                        <select name="brand_id" id="brand_id" class="form-control  select2single getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
+                          <option value="">Select Brand</option>
+                          @foreach ($brands as $brand)
+                            <option value="{{ $brand->id }}" {{ (old('brand_id') == $brand->id)? "selected" : (($quote->brand_id == $brand->id)? 'selected':NULL) }}> {{ $brand->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Type Of Holiday <span style="color:red">*</span></label>
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control  select2single appendHolidayType  holiday-type-id @error('holiday_type_id') is-invalid @enderror">
+                          <option value="">Select Type Of Holiday</option>
+                          @foreach ($quote->getBrand->getHolidayTypes as $holiday_type)
+                            <option value="{{ $holiday_type->id }}" {{  (old('holiday_type_id') == $holiday_type->id)? "selected" : ($quote->holiday_type_id == $holiday_type->id ? 'selected' : '') }} >{{ $holiday_type->name }}</option>
+                          @endforeach
+                          <option value="">Select Type Of Holiday</option>
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                 
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
@@ -187,21 +142,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Dinning Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote->dinning_preference }}" name="dinning_preference" id="dinning_preference"  class="form-control" placeholder="Dinning Preferences" >
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Bedding Preferences <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote->bedding_preference }}" name="bedding_preference" id="bedding_preference" class="form-control" placeholder="Bedding Preferences" >
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
@@ -215,6 +156,110 @@
                         </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Agency Booking <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline">
+                            <input class="select-agency" {{ ($quote->agency ==  1) ? 'checked' : '' }}  value="1" type="radio" name="agency" > Yes
+                          </label>
+                          <label class="radio-inline">
+                            <input  class="select-agency" {{ ($quote->agency ==  0 || $quote->agency == null) ? 'checked' : '' }}  value="0" type="radio" name="agency" > No
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="col-md-12 agency-columns" >
+                      @if($quote->agency == 1)  {{--  Agency  --}}
+                        <div class="row mt-1" >
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" id="agency_name" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
+                            <input type="text" value="{{ $quote->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                            <input type="tel" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                            <span class="text-danger error_msg0 hide" role="alert"></span>
+                          </div>
+                        
+                          <div class="col form-group">
+                            <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
+                            <span class="text-danger" role="alert" > </span>
+                          </div>
+                        </div>
+                      @else  {{--  lead passenger  --}}
+                        <div class="row mt-1" >
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Lead Passenger Name <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $quote->lead_passenger_name }}" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Email Address <span style="color:red">*</span></label> 
+                              <input type="email" value="{{ $quote->lead_passenger_email }}" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Contact Number <span style="color:red">*</span></label> 
+                              <input type="tel" value="{{ $quote->lead_passenger_contact }}" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
+                              <span class="text-danger error_msg0" role="alert"></span>
+                            </div>
+                          </div>
+                        
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <label>Date Of Birth <span style="color:red">*</span></label> 
+                              <input type="date" value="{{ $quote->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Nationality <span style="color:red">*</span></label>
+                              <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
+                                <option selected value="" >Select Nationality</option>
+                                @foreach ($countries as $country)
+                                  <option value="{{ $country->id }}" {{ ($quote->lead_passsenger_nationailty_id == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Dinning Preferences <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $quote->lead_passenger_dinning_preference }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+                          
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Bedding Preferences <span style="color:red">*</span></label>
+                              <input type="text" value="{{ $quote->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>  
+                        </div>
+                      @endif
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
