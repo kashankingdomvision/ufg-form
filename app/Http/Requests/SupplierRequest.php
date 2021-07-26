@@ -25,7 +25,7 @@ class SupplierRequest extends FormRequest
     {
         return [
             'username'      =>  'required|string',
-            'email'         =>  'required|email',
+            'email'         =>  'required|email|unique:suppliers',
             'categories'    =>  'required|array',
             'products'      =>  'required|array',
         ];
