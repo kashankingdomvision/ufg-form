@@ -311,7 +311,7 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
-                    'country_id'            => $pax_data['nationality_id'],
+                    'nationality_id'            => $pax_data['nationality_id'],
                 ]);
             }
        }
