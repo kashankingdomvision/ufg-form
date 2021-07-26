@@ -57,7 +57,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
                         <p>
@@ -85,7 +85,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('quotes.archive') }}" class="nav-link {{ $route == 'quotes.view.archive' ? 'active' : '' }}">
+                            <a href="{{ route('quotes.archive') }}" class="nav-link {{ $route == 'quotes.view.archive' || $route == 'quotes.archive' ? 'active' : '' }}">
                                 <i class="fa fa-archive nav-icon"></i>
                                 <p>Archived</p>
                             </a>

@@ -67,7 +67,8 @@
               <h3 class="card-title">Products List</h3>
             </div>
             <div class="card-body p-0">
-             table-striped
+            <div class="table-responsive">
+              <table class="table table-striped">
                 <thead>
                   <tr>
                     <th>#</th>
@@ -77,6 +78,7 @@
                   </tr>
                 </thead>
                 <tbody>
+                @if($products && $products->count())
                   @foreach ($products as $key => $product)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -94,8 +96,12 @@
                     </td>
                   </tr>
                   @endforeach
+                @else
+                  <tr align="center"><td colspan="100%">No record found.</td></tr>
+                @endif
                 </tbody>
               </table>
+            </div>
             </div>
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">

@@ -119,6 +119,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        @if($users && $users->count())
                                             @foreach ($users as $key => $value)
                                             <tr>
                                                 <td>{{ $value->name }}</td>
@@ -140,6 +141,9 @@
                                                 </td>
                                             </tr>
                                             @endforeach
+                                        @else
+                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>

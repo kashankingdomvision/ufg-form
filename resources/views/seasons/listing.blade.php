@@ -73,41 +73,47 @@
                             </div>
 
                             <div class="card-body p-0">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Season</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      @foreach ($seasons as $key => $value)
-                                        <tr>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Season</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @if($seasons && $seasons->count())
+                                            @foreach ($seasons as $key => $value)
+                                                <tr>
 
-                                          <td>
-                                            {{ $value->name }} &nbsp;
-                                            
-                                            @if ($value->default == 1)
-                                              <span class="btn btn-primary badge">Default</span>
-                                            @endif
-                                          </td>
+                                                <td>
+                                                    {{ $value->name }} &nbsp;
+                                                    
+                                                    @if ($value->default == 1)
+                                                    <span class="btn btn-primary badge">Default</span>
+                                                    @endif
+                                                </td>
 
-                                          <td>
-                                            <form method="post" action="{{ route('seasons.destroy', encrypt($value->id)) }}">
-                                              <a href="{{ route('seasons.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                              @csrf
-                                              @method('delete')
-                                              <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                                                <span class="fa fa-trash"></span>
-                                              </button>
-                                            </form>
-                                          </td>
+                                                <td>
+                                                    <form method="post" action="{{ route('seasons.destroy', encrypt($value->id)) }}">
+                                                    <a href="{{ route('seasons.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                        <span class="fa fa-trash"></span>
+                                                    </button>
+                                                    </form>
+                                                </td>
 
-                                        </tr>
-                                      @endforeach
-                                     
-                                    </tbody>
-                                </table>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                        @endif
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="card-footer clearfix">

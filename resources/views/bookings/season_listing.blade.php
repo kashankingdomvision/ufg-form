@@ -78,36 +78,42 @@
                             </div>
 
                             <div class="card-body p-0">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Season</th>
-                                            {{-- <th>Action</th> --}}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                      @foreach ($seasons as $key => $value)
-                                        <tr>
-                                          <td class="inline-flex">
-                                            <a href="{{ route('bookings.index', encrypt($value->id)) }}" >
-                                                <h5><span class="btn btn-primary badge"> {{ $value->name }} &nbsp;</span></h5>
-                                            </a>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Season</th>
+                                                {{-- <th>Action</th> --}}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if($seasons && $seasons->count())
+                                                @foreach ($seasons as $key => $value)
+                                                <tr>
+                                                    <td class="inline-flex">
+                                                    <a href="{{ route('bookings.index', encrypt($value->id)) }}" >
+                                                        <h5><span class="btn btn-primary badge"> {{ $value->name }} &nbsp;</span></h5>
+                                                    </a>
 
-                                            <h5>
-                                                @if ($value->default == 1)
-                                                <span class="ml-2 btn btn-light badge"> Default &nbsp;</span></h5>
-                                                @endif
-                                            </h5>
-                                          </td>
+                                                    <h5>
+                                                        @if ($value->default == 1)
+                                                        <span class="ml-2 btn btn-light badge"> Default &nbsp;</span></h5>
+                                                        @endif
+                                                    </h5>
+                                                    </td>
 
-                                          {{-- <td>
-                                            <a href="{{ route('bookings.index', encrypt($value->id)) }}" class="btn btn-outline-info btn-xs"><i class="fa fa-eye nav-icon"></i></a>
-                                          </td> --}}
-                                        </tr>
-                                      @endforeach
-                                     
-                                    </tbody>
-                                </table>
+                                                    {{-- <td>
+                                                    <a href="{{ route('bookings.index', encrypt($value->id)) }}" class="btn btn-outline-info btn-xs"><i class="fa fa-eye nav-icon"></i></a>
+                                                    </td> --}}
+                                                </tr>
+                                                @endforeach   
+                                            @else
+                                                <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                            @endif
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="card-footer clearfix">

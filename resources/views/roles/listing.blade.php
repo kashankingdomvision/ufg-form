@@ -75,32 +75,38 @@
                             </div>
 
                             <div class="card-body p-0">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Role</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($roles as $key => $value)
-                                        <tr>
-                                            <td>{{ $value->name }}</td>
-                                            <td>
-                                                <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}">
-                                                <a href="{{ route('roles.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                                                      <span class="fa fa-trash"></span>
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                     
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Role</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if($roles && $roles->count())
+                                                @foreach ($roles as $key => $value)
+                                                <tr>
+                                                    <td>{{ $value->name }}</td>
+                                                    <td>
+                                                        <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}">
+                                                        <a href="{{ route('roles.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                                                            @csrf
+                                                            @method('delete')
+                                                            <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                            <span class="fa fa-trash"></span>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            @else
+                                                <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                            @endif
+                                        
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
                             <div class="card-footer clearfix">

@@ -75,37 +75,42 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  @foreach ($currencies as $key => $value)
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
                     <tr>
-                      <td>{{ $value->name }}</td>
-                      <td>{{ $value->code }}</td>
-                      <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
-                      <td>
-                        <form method="post" action="{{ route('setting.currencies.destroy', encrypt($value->id)) }}">
-                          <a href="{{ route('setting.currencies.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                          @csrf
-                          @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        </form>
-                      </td>
+                      <th>Name</th>
+                      <th>Code</th>
+                      <th>Status</th>
+                      <th>Action</th>
                     </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    @if($currencies && $currencies->count())
+                      @foreach ($currencies as $key => $value)
+                        <tr>
+                          <td>{{ $value->name }}</td>
+                          <td>{{ $value->code }}</td>
+                          <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
+                          <td>
+                            <form method="post" action="{{ route('setting.currencies.destroy', encrypt($value->id)) }}">
+                              <a href="{{ route('setting.currencies.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                              @csrf
+                              @method('delete')
+                              <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                                <span class="fa fa-trash"></span>
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                      @endforeach
+                    @else
+                      <tr align="center"><td colspan="100%">No record found.</td></tr>
+                    @endif
+                    
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="card-footer clearfix">
