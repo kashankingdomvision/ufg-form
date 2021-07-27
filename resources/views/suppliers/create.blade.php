@@ -50,7 +50,7 @@
                       <input type="tel"  name="phone" class="form-control phone phone0" value="{{old('phone')}}">
                       <div class="alert-danger" style="text-align:center">{{$errors->first('phone')}}</div>
                       <span class="text-danger error_msg0 hide" role="alert"></span>
-                      <span class="text-danger valid_msg0 hide" role="alert"></span>
+                      <span class="text-success valid_msg0 hide" role="alert"></span>
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Categories <span style="color:red">*</span></label>
