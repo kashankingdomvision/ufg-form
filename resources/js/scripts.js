@@ -212,6 +212,7 @@ $(document).on('change', '.select-agency', function() {
     var $v_html = null;
     if(($(this).val() == 1)){
         $('#pax_no').val('').change();
+        $('#appendPaxName').html();
         $v_html = `<div class="row mt-1" >
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
