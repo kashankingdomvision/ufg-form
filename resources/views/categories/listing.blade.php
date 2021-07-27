@@ -25,15 +25,14 @@
   <section class="content">
     <div class="container-fluid">
         <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
+          <button type="button" class="btn btn-tool m-0 text-dark" data-card-widget="collapse">
             <div class="card-header">
-                <h3 class="card-title"><b>Filters</b></h3>
-
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
-                    </button>
-                </div>
+              <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
+              <div class="card-tools">
+                  <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
+              </div>
             </div>
+          </button>
  
             <div class="card-body">
                 <form method="get" action="{{ route('categories.index') }}">
@@ -64,6 +63,10 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Category List</h3>
+              <a href="{{ route('categories.create') }}" class="btn btn-secondary btn-sm float-right">
+                <span class="fa fa-plus"></span>
+                <span>Add New</span>
+              </a>
             </div>
             <div class="card-body p-0">
               <div class="table-responsive">
