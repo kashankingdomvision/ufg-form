@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+/*var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';*/
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -19,21 +19,21 @@ function todayDate() {
 }
 
 function datepickerReset(key = null) {
-    
-    
+
+
     var $season = $("#season_id");
     var season_start_date = new Date($season.find(':selected').data('start'));
     var season_end_date = new Date($season.find(':selected').data('end'));
     if(season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date'){
         if(key != null){
-            
+
             $('.bookingDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             $('.bookingDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             $('.bookingDueDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
         }else{
             // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format:'dd/mm/yyyy'});
-       
+
        }
     }else{
         $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy'});
@@ -47,12 +47,12 @@ function convertDate(date) {
 
 
 $(document).ready(function($) {
-    
+
     $('.select2').select2({
         width: '100%',
         theme: "classic",
     });
-   
+
     $('.select2single').select2({
         width: '100%',
         theme: "bootstrap",
@@ -103,19 +103,19 @@ $(document).ready(function($) {
             return $opt;
         }
     };
-    
+
     datepickerReset();
-    
-    
+
+
     /////////////////////////////
-    // / Date Picker 
+    // / Date Picker
     // /
     // /
     $('#season_id').on('change', function(){
         $('.datepicker').datepicker("setDate",'');
         datepickerReset();
     });
-    
+
     $(document).on('change', '.datepicker', function () {
         var datePicker_id   = $(this).attr('id');
         var name            = $(this).data('name');
@@ -126,18 +126,18 @@ $(document).ready(function($) {
         var $season         = $("#season_id");
         var season_start_date = new Date($season.find(':selected').data('start'));
         var season_end_date = new Date($season.find(':selected').data('end'));
-        
+
         switch (name) {
             case 'date_of_service':
             DateOFService  = convertDate($(this).val());
             BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
             BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
-            
+
             if(DateOFService < BookingDueDate){
                 $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
                 $('#quote_'+key+'_booking_date').datepicker("setDate", '');
             }
-            
+
             $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
             $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
                 break;
@@ -146,16 +146,16 @@ $(document).ready(function($) {
                 if(convertDate(BookingDate) > convertDate(DateOFService)){
                     $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
                 }
-                
+
                 if(convertDate(BookingDate) < convertDate(BookingDueDate)){
                     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
                 }
-                
+
                 BookingDate = convertDate($(this).val());
                 $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
                 var setDueDate = (BookingDate != '')? BookingDate: (DateOFService != '')? convertDate(DateOFService) : season_end_date;
                 $('#quote_'+key+'_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate});
-                
+
                 break;
             case 'booking_due_date':
                 if(convertDate(BookingDueDate) > convertDate(DateOFService)){
@@ -165,7 +165,7 @@ $(document).ready(function($) {
                 if(convertDate(BookingDueDate) > convertDate(BookingDate)){
                     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
                 }
-                
+
                 BookingDueDate = convertDate($(this).val());
                 BookingDate = (BookingDate != null)? convertDate(BookingDate): season_start_date;
                 DateOFService = (DateOFService != '')? convertDate(DateOFService): season_end_date;
@@ -173,16 +173,16 @@ $(document).ready(function($) {
                 $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
 
                 break;
-        
+
             default:
                 datepickerReset();
                 break;
         }
     });
-    
+
     // /
     // /
-    // / Date Picker 
+    // / Date Picker
     /////////////////////////////
 
 
@@ -228,7 +228,7 @@ $(document).on('change', '.select-agency', function() {
                           <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
                           <span class="text-danger error_msg0 hide" role="alert"></span>
                         </div>
-                      
+
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
                           <input type="email" name="agency_email" id="agency_email" class="form-control">
@@ -248,22 +248,22 @@ $(document).on('change', '.select-agency', function() {
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>Email Address <span style="color:red">*</span></label> 
+            <label>Email Address <span style="color:red">*</span></label>
             <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
         <div class="col-md-3">
           <div class="form-group">
-            <label>Contact Number <span style="color:red">*</span></label> 
+            <label>Contact Number <span style="color:red">*</span></label>
             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
             <span class="text-danger error_msg0" role="alert"></span>
           </div>
         </div>
-      
+
         <div class="col-md-3">
           <div class="form-group">
-            <label>Date Of Birth <span style="color:red">*</span></label> 
+            <label>Date Of Birth <span style="color:red">*</span></label>
             <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
             <span class="text-danger" role="alert"></span>
           </div>
@@ -287,19 +287,19 @@ $(document).on('change', '.select-agency', function() {
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
-        
+
         <div class="col-sm-3">
           <div class="form-group">
             <label>Bedding Preferences <span style="color:red">*</span></label>
             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
             <span class="text-danger" role="alert"></span>
           </div>
-        </div>  
+        </div>
       </div>`
-                             
+
         $('#pax_no').val(1).change();
         $('.agency-columns').append($v_html).show(500);
-    } 
+    }
     intTelinput(0);
 });
 
@@ -317,11 +317,11 @@ $(document).on('change', '.category-id',function(){
             $.each(response,function(key,value){
                 options += '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            
+
             $selector.closest('.row').find('.supplier-id').html(options);
             $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
 
-            
+
         }
     })
 });
@@ -341,7 +341,7 @@ $(document).on('change', '.supplier-id',function(){
             $.each(response.product,function(key,value){
                 options += '<option value="'+value.id+'">'+value.name+'</option>';
             });
-            
+
             $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
             $selector.closest('.row').find('.product-id').html(options);
         }
@@ -368,7 +368,7 @@ $(document).on('change', '.supplier-id',function(){
         }
 
     });
-        
+
     $('.currencyImage').select2({
         templateResult: currencyImageFormate,
         templateSelection: currencyImageFormate
@@ -382,11 +382,11 @@ $(document).on('change', '.supplier-id',function(){
             var $opt = $(
                 '<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>'
             );
-            return $opt;    
+            return $opt;
     }
 
-     
-    
+
+
 
 /**
  * -------------------------------------------------------------------------------------
@@ -434,7 +434,7 @@ $(document).on('click', '.addChild', function () {
 
     $(this).attr("style", "display:none")
     // $(appendId).empty();
-    
+
     $.ajax({
         url:  BASEURL+'quotes/child/reference',
         data: {id: id, ref_no: refNumber},
@@ -466,11 +466,11 @@ $(document).on('click', '.addChild', function () {
           }
         $(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){                        
+                this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){
                     return '[' + ($('.quote').length) + ']';
                 });
 
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){                        
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
                 });
 
@@ -479,33 +479,33 @@ $(document).on('click', '.addChild', function () {
                 this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){
                     return '[' + (parseInt($('.quote').length)) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){                        
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
                 });
- 
+
             }).end()
             .find("select").val("").each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(str,p1){
                     return '[' + ($('.quote').length) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){                        
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(str,p1){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .show()
             .insertAfter(".quote:last");
-            
+
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);
-          
+
             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
             $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
 
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-           
+
             reinitializedDynamicFeilds();
             // datePickerSetDate();
             // $('.select2').select2({
@@ -516,7 +516,7 @@ $(document).on('click', '.addChild', function () {
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
     });
-    
+
     $(document).on('change', '.supplier-currency-id',function () {
         var code = $(this).find(':selected').data('code');
         $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
@@ -555,7 +555,7 @@ $(document).on('click', '.addChild', function () {
         }).responseText);
     }
 
-    
+
     var commissionRate = getCommissionJson();
 
     function getCommissionJson() {
@@ -598,7 +598,7 @@ $(document).on('click', '.addChild', function () {
     function getCommissionRate(){
 
         var totalNetPrice  = $('.total-net-price').val();
-        var commissionId   = $('.commission-id').val(); 
+        var commissionId   = $('.commission-id').val();
         var calculatedCommisionAmount = 0;
 
         if(commissionId){
@@ -608,11 +608,11 @@ $(document).on('click', '.addChild', function () {
             });
             var commissionPercentage = parseFloat(object.shift()['percentage']);
             calculatedCommisionAmount =  parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
-            
+
         }else{
             calculatedCommisionAmount = 0.00;
         }
-        
+
         $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 
@@ -691,7 +691,7 @@ $(document).on('click', '.addChild', function () {
                 calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
                 calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
                 calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-                
+
             }else{
 
                 calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
@@ -720,12 +720,12 @@ $(document).on('click', '.addChild', function () {
     };
 
     $(document).on('change', '.pax-number', function () {
-        
+
         $('.nationality-select2').select2('destroy');
 
         var $_val = $(this).val();
         var agencyVal = $('.select-agency:checked').val();
-     
+
         var currentDate = curday('-');
         var countries = $('#content').data('countries');
         if($_val > $('.appendCount').length){
@@ -733,11 +733,11 @@ $(document).on('click', '.addChild', function () {
             if(agencyVal == 1){
                 var countable = ($_val - $('.appendCount').length);
             }
-            
+
             for (i = 1; i <= countable; ++i) {
                 var count = $('.appendCount').length + 1;
                 var c = count + 1;
-                
+
                 if(agencyVal == 1){
                     c = count;
                 }
@@ -745,23 +745,23 @@ $(document).on('click', '.addChild', function () {
                         <div class="mb-1 appendCount" id="appendCount${count}">
                             <div class="row" >
                                 <div class="col-md-3 mb-2">
-                                    <label>Passenger #${c} Full Name</label> 
+                                    <label>Passenger #${c} Full Name</label>
                                     <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Email Address</label> 
+                                    <label>Email Address</label>
                                     <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
                                 </div>
-                                
-                              
+
+
                                 <div class="col-md-3 mb-2">
-                                    <label>Contact Number</label> 
+                                    <label>Contact Number</label>
                                     <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
                                         <span class="text-danger error_msg${count}" role="alert"></span>
                                     <span class="text-danger valid_msg${count}" role="alert"></span>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Date Of Birth</label> 
+                                    <label>Date Of Birth</label>
                                     <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                                 </div>
                             </div>
@@ -774,12 +774,12 @@ $(document).on('click', '.addChild', function () {
                                     </select>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Bedding Preference</label> 
+                                    <label>Bedding Preference</label>
                                     <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
                                 </div>
-                                
+
                                 <div class="col-md-3 mb-2">
-                                    <label>Dinning Preference</label> 
+                                    <label>Dinning Preference</label>
                                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                                 </div>
                             </div>
@@ -825,7 +825,7 @@ $(document).on('click', '.addChild', function () {
         var rate                        =  getRate(supplierCurrency,bookingCurrency,rateType);
         var markupPercentage            =  parseFloat($(`#quote_${key}_markup_percentage`).val());
         var markupAmount                =  parseFloat($(`#quote_${key}_markup_amount`).val());
-        
+
         var calculatedSellingPrice                  = 0;
         var calculatedMarkupPercentage              = 0;
         var calculatedMarkupAmount                  = 0;
@@ -841,14 +841,14 @@ $(document).on('click', '.addChild', function () {
             calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
             calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-            
+
             $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
             $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
             $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
             $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
         }
 
-        
+
         if(changeFeild == 'markup_amount'){
 
             calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
@@ -856,7 +856,7 @@ $(document).on('click', '.addChild', function () {
             calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
             calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-   
+
             $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
             $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
             $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
@@ -906,9 +906,9 @@ $(document).on('click', '.addChild', function () {
     $('#bookingVersion :input').prop('disabled', true);
 
     $('.booking-show :input').prop('disabled', true);
-    
+
     $('#reCall').prop("disabled", false);
-    
+
     $('#reCall').on('click', function () {
         if($(this).data('recall') == true){
             if (confirm("Are you sure you want to Recall this Quotation?") == true) {
@@ -923,7 +923,7 @@ $(document).on('click', '.addChild', function () {
                 $('#addMoreButton').append(add_HTML);
                 var btn_Submit= ` <button type="submit" class="btn btn-success float-right">Submit</button>`;
                 $('#btnSubmitversion').append(btn_Submit);
-            } 
+            }
         }else {
             $("#versions :input").prop("disabled", true);
             $('#reCall').prop("disabled", false);
@@ -933,10 +933,10 @@ $(document).on('click', '.addChild', function () {
         }
     });
 
-////////////////////////////////// 
+//////////////////////////////////
 // / Quote FORM SUBMISSION START
 // /
-// / 
+// /
 
 $("#quoteCreate").submit(function(event) {
     event.preventDefault();
@@ -974,11 +974,11 @@ $("#quoteCreate").submit(function(event) {
 
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
-     
+
                     jQuery.each(errors.errors, function( index, value ) {
-    
+
                         index = index.replace(/\./g,'_');
-    
+
                         $('#'+index).addClass('is-invalid');
                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
                     });
@@ -1027,11 +1027,11 @@ $(document).on('click', '#submit_template', function(){
 
                 setTimeout(function() {
                     $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
-        
+
                     jQuery.each(errors.errors, function( index, value ) {
-    
+
                         index = index.replace(/\./g,'_');
-    
+
                         $('#'+index).addClass('is-invalid');
                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
                     });
@@ -1077,7 +1077,7 @@ $(".update-quote").submit(function(event) {
             if( reject.status === 422 ) {
 
                 var errors = $.parseJSON(reject.responseText);
-           
+
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
 
@@ -1086,9 +1086,9 @@ $(".update-quote").submit(function(event) {
                         window.location.href = REDIRECT_BASEURL + "quotes/index";
                     }
                     else{
-        
+
                         jQuery.each(errors.errors, function( index, value ) {
-        
+
                             index = index.replace(/\./g,'_');
                             $('#'+index).addClass('is-invalid');
                             $('#'+index).closest('.form-group').find('.text-danger').html(value);
@@ -1144,9 +1144,9 @@ $("#update-override").submit(function(event) {
 
                 // setTimeout(function() {
                 //     $("#overlay").removeClass('overlay').html('');
-     
+
                 //     jQuery.each(errors.errors, function( index, value ) {
-    
+
                 //         index = index.replace(/\./g,'_');
                 //         $('#'+index).addClass('is-invalid');
                 //         $('#'+index).closest('.form-group').find('.text-danger').html(value);
@@ -1161,13 +1161,13 @@ $("#update-override").submit(function(event) {
 
 $('.search-reference').on('click', function () {
     var searchRef = $(this);
-    
+
     var reference_no = $('.reference-name').val();
     if(reference_no == ''){
-        alert('Reference number is not found'); 
-        searchRef.text('Search').prop('disabled', false);     
+        alert('Reference number is not found');
+        searchRef.text('Search').prop('disabled', false);
     }else{
-        
+
         //ajax for references
         $.ajax({
             headers: {'X-CSRF-TOKEN': CSRFTOKEN},
@@ -1179,7 +1179,7 @@ $('.search-reference').on('click', function () {
                 if(data.response == true){
                     r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
                 }
-                
+
                 if(r == true){
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
@@ -1203,7 +1203,7 @@ $('.search-reference').on('click', function () {
                             // brand
                             // holidaytype
 
-                            setTimeout(function(){ 
+                            setTimeout(function(){
                                 $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected').change();
                                 // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
                             }, 500);
@@ -1213,7 +1213,7 @@ $('.search-reference').on('click', function () {
                                 $('#sale_person_id').val(data.response.sale_person).trigger('change');
                             // Sale person
                             // Pax No
-                                $('#pax_no').val(data.response.pax).trigger('change');  
+                                $('#pax_no').val(data.response.pax).trigger('change');
                             // Pax No
                             // Booking Currency'
                             $("#currency_id").find('option').each(function(){
@@ -1243,43 +1243,43 @@ $('.search-reference').on('click', function () {
                             }else{
                                 alert(data.error);
                             }
-                            
+
                             searchRef.prop('disabled', false);
                             $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
                             console.log('done');
-                            
+
                         },
                         error: function (reject) {
 
                             searchRef.prop('disabled', false);
                             $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
                             $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
-                        
+
                         },
                     });
                 }
             },
             error: function (reject) {
-                
+
                 alert(reject);
                 searchRef.text('Search').prop('disabled', false);
-                
+
             },
         });
         //ajax for references
-   } 
+   }
 });
 
 $('.clone_booking_finance').on('click', function () {
-    
+
     var depositeLabelId  = 'deposite_heading'+$(this).data('key');
     var countHeading =$('.finance-clonning').length + 1;
     $('.finance-clonning').eq(0).clone().find("input").val("").each(function(){
-        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){                        
+        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
             return ']['+$('.finance-clonning').length+']';
         });
-                                                                               
-        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){                        
+
+        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){
             return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
         });
     }).end().find('.depositeLabel').each(function () {
@@ -1288,10 +1288,10 @@ $('.clone_booking_finance').on('click', function () {
         $(this).text('Deposit Payment #'+countHeading);
     }).end()
     .find("select").val("").each(function(){
-        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){                        
+        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
             return ']['+$('.finance-clonning').length+']';
         });
-        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){                        
+        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){
             return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
         });
     }).end().find('.select2single').select2({
@@ -1300,12 +1300,12 @@ $('.clone_booking_finance').on('click', function () {
     }).end()
     .show()
     .insertAfter(".finance-clonning:last");
-    
+
     // remove checked attribute after clone
     $('.finance-clonning:last').find(':checked').attr('checked', false);
     $('.deposit-amount:last').val('0.00');
-    
-    
+
+
 });
 
 $('#tempalte_id').on('change', function () {
@@ -1333,16 +1333,16 @@ $('#tempalte_id').on('change', function () {
                     templateResult: formatState,
                     templateSelection: formatState,
                 });
-           
+
                 $(".booking-currency-id").val(data.template.currency_id).change();
             }
 
         },
         error: function (reject) {
-            
+
             alert(reject);
             searchRef.text('Search').prop('disabled', false);
-            
+
         },
     });
 
@@ -1384,11 +1384,11 @@ $("#create_template").submit(function(event) {
 
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
-     
+
                     jQuery.each(errors.errors, function( index, value ) {
-    
+
                         index = index.replace(/\./g,'_');
-    
+
                         $('#'+index).addClass('is-invalid');
                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
                     });
@@ -1436,11 +1436,11 @@ $("#update_template").submit(function(event) {
 
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
-     
+
                     jQuery.each(errors.errors, function( index, value ) {
-    
+
                         index = index.replace(/\./g,'_');
-    
+
                         $('#'+index).addClass('is-invalid');
                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
                     });
@@ -1453,9 +1453,9 @@ $("#update_template").submit(function(event) {
 });
 
 // /
-// / 
+// /
 // / Quote FORM SUBMISSION END
-////////////////////////////////// 
+//////////////////////////////////
 
 
 
@@ -1495,9 +1495,9 @@ $("#update-booking").submit(function(event) {
 
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
-     
+
                     jQuery.each(errors.errors, function( index, value ) {
-    
+
                         index = index.replace(/\./g,'_');
                         $('#'+index).addClass('is-invalid');
                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
@@ -1522,22 +1522,22 @@ $(document).on('change', '.deposit-due-date', function(){
 });
 
 
-///booking incremnet and 
-  
+///booking incremnet and
+
 $(document).on('click', '.increment', function() {
-                
+
     var close = $(this).closest('.finance-clonning');
-    
+
         var valueElement = close.find('.ab_number_of_days');
         var dueDate = close.find('.deposit-due-date').val();
         var nowDate  =todayDate();
         const firstDate = new Date(dueDate);
         const secondDate = convertDate(nowDate);
-       
+
         if(firstDate == 'Invalid Date'){
             alert('deposite date required');
         }else{
-            const oneDay = 24 * 60 * 60 * 1000; 
+            const oneDay = 24 * 60 * 60 * 1000;
             const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
             if(firstDate > secondDate){
                 $(this).attr('disabled', true);
@@ -1548,7 +1548,7 @@ $(document).on('click', '.increment', function() {
                 var count = Math.max(parseInt(valueElement.val()??0));
                 var diffcount = diffDays - valueElement.val();
                 var b =1;
-                if($(this).hasClass('plus')) 
+                if($(this).hasClass('plus'))
                 {
                     if(diffcount < 1){
                         close.find('.plus').attr('disabled', true);
@@ -1556,18 +1556,18 @@ $(document).on('click', '.increment', function() {
                         count = count + b;
                         valueElement.val(count);
                     }
-                } 
+                }
                 else if (valueElement.val() > 0) // Stops the value going into negatives
                 {
                     close.find('.plus').attr('disabled', false);
                     count -=b;
                     valueElement.val(count);
-                } 
+                }
             }
         }
     return false;
 });
-///booking incremnet and 
+///booking incremnet and
 
 // tel input  start
 if($('.phone').length > 0){
@@ -1595,7 +1595,7 @@ function intTelinput(key = null, inVal = null) {
         placeholderNumberType: "MOBILE",
     });
     input.nextElementSibling.value = iti.getNumber();
-    
+
     // on blur: validate
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function() {
@@ -1613,8 +1613,8 @@ function intTelinput(key = null, inVal = null) {
                 }
             }
         });
-        
-     
+
+
         var reset = function() {
             input.classList.remove("is-invalid");
             errorMsg.innerHTML = "";
@@ -1639,9 +1639,9 @@ function intTelinput(key = null, inVal = null) {
 //     var input =    document.querySelector(input_id);
 //     var errorMsg =    document.querySelector('#error_msg'+key);
 //     var validMsg =    document.querySelector('#valid_msg'+key);
-    
+
 //     console.log(errorMsg);
-    
+
 //     // input = window.intlTelInputGlobals.getInstance(input);
 //     var iti = intlTelInput(input, {
 //         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
@@ -1653,7 +1653,7 @@ function intTelinput(key = null, inVal = null) {
 //         autoPlaceholder: "polite",
 //         placeholderNumberType: "MOBILE",
 //     });
-    
+
 //     input.addEventListener('blur', function() {
 //         reset(input, errorMsg, validMsg);
 //         if (input.value.trim()) {
@@ -1668,8 +1668,8 @@ function intTelinput(key = null, inVal = null) {
 //             }
 //         }
 //     });
-    
-    
+
+
 //     // console.log(iti.getSelectedCountryData);
 //     return iti
 // }
@@ -1685,7 +1685,7 @@ function intTelinput(key = null, inVal = null) {
 //     //     // var iti = integrate_intlTelInput('#phone'+key);/
 //     //     console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
 //         // console.log(integrate_intlTelInput().getSelectedCountryData());
-        
+
 
 //     // // var iti = intlTelInput(input, {
 //     // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
@@ -1697,7 +1697,7 @@ function intTelinput(key = null, inVal = null) {
 //     // //     autoPlaceholder: "polite",
 //     // //     placeholderNumberType: "MOBILE",
 //     // // });
-    
+
 //     // if (input.value.trim()) {
 //     //     console.log(iti.getSelectedCountryData());
 //     //     if (iti.isValidNumber()) {
@@ -1710,7 +1710,7 @@ function intTelinput(key = null, inVal = null) {
 //     //     }
 //     // }
 //     // iti.destroy();
-        
+
 //     // });
 // });
 
@@ -1725,7 +1725,7 @@ function intTelinput(key = null, inVal = null) {
 // //         iti.destroy();
 // //         iti = integrate_intlTelInput('#phone'+key);
 // //         console.log(iti.getSelectedCountryData());
-        
+
 // //     // do something with iti.getSelectedCountryData()
 // // });
 
@@ -1737,10 +1737,10 @@ function intTelinput(key = null, inVal = null) {
 //         validMsg.classList.add("hide");
 //     };
 
-  
+
 
 //     // on keyup / change flag: reset
-  
+
 //     // on blur: validate
 //     // input.addEventListener('blur', function() {
 //     //     reset(input, errorMsg, validMsg);
@@ -1755,14 +1755,14 @@ function intTelinput(key = null, inVal = null) {
 //     //         }
 //     //     }
 //     // });
-    
+
 // //   var reset = function(inId = null, erId = null, valid =null) {
 // //     console.log('rest');
-      
+
 // //     var input    =     document.querySelector('#phone');
 // //     var errorMsg =     document.querySelector('#error_msg');
 // //     var validMsg =     document.querySelector('#valid_msg');
-      
+
 // //       console.log(input, validMsg, errorMsg);
 // //     input.classList.remove("is-invalid");
 // //     errorMsg.innerHTML = "";

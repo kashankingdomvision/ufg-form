@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','View Payment Method')
+@section('title','View Payment Methods')
 
 @section('content')
 <div class="content-wrapper">
@@ -69,7 +69,13 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Payment Method List</h3>
+              <h3 class="card-title float-left">
+                Payment Method List
+              </h3>
+              <a href="{{ route('setting.payment_methods.create') }}" class="btn btn-secondary btn-sm float-right">
+                <span class="fa fa-plus"></span>
+                <span>Add New</span>
+              </a>
             </div>
 
             <div class="card-body p-0">

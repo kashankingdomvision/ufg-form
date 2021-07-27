@@ -71,7 +71,13 @@
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Brands List</h3>
+              <h3 class="card-title float-left">
+                Brands List
+              </h3>
+              <a href="{{ route('setting.brands.create') }}" class="btn btn-secondary btn-sm float-right">
+                <span class="fa fa-plus"></span>
+                <span>Add New</span>
+              </a>
             </div>
 
             <div class="card-body p-0">
