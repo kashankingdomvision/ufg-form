@@ -97,7 +97,7 @@
                         <a href="{{ route('setting.payment_methods.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>
