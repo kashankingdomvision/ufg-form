@@ -195,21 +195,21 @@
                                                     <td>{{ $quote->formated_created_at }}</td>
                                                     <td width="10%" class="d-flex">
                                                         @if($quote->booking_status == 'quote')
-                                                            <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
+                                                            <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit" title="Edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
                                                             <form class="mr-2 " method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                                                                 @csrf @method('patch')
-                                                                <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#"><span class="fa fa-check"></span></button>
+                                                                <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><span class="fa fa-check"></span></button>
                                                             </form>
                                                         @endif
 
-                                                        <a href="{{ route('quotes.final', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                                                        <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                             <span class="fa fa-eye"></span>
                                                         </a>
 
                                                         @if($quote->booking_status == 'quote')
-                                                            <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                            <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
                                                         @endif
 
                                                         @if($quote->booking_status == 'booked')
@@ -220,7 +220,7 @@
                                                                     <input type="hidden" value="true" name="status">
                                                                     @endif
                                                                     <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
-                                                                    <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" data-target="#archive">
+                                                                    <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
                                                                         @if(isset($status) || $quote->is_archive == 1)
                                                                             <i class="fa fa-recycle" ></i>
                                                                         @else

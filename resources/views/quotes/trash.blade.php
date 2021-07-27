@@ -70,7 +70,7 @@
                                                     <td>{{ $quote->formated_booking_date }}</td>
                                                     <td>{{ $quote->formated_created_at }}</td>
                                                     <td width="10%" class="d-flex" >
-                                                        <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
+                                                        <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
                                                     </td>
                                                     <tbody class="append" id="appendChild{{$quote->id}}" style="{{ $quote->quote_count > 1 ? 'background-color: #f9f9f9;' : null}}">
                                                     </tbody>
