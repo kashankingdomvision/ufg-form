@@ -142,9 +142,11 @@
                                             @foreach ($users as $key => $value)
                                             <tr>
                                                 <td>
-                                                    <div class="icheck-primary">
-                                                      <input type="checkbox" class="child" value="{{$value->id}}" >
-                                                    </div>
+                                                    @if($value->getRole->id != 1)
+                                                        <div class="icheck-primary">
+                                                        <input type="checkbox" class="child" value="{{$value->id}}" >
+                                                        </div>
+                                                    @endif
                                                 </td>
                                                 <td>{{ $value->name }}</td>
                                                 <td style="text-transform: capitalize;">{{ $value->getRole->name ?? null }}
