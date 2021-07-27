@@ -215,12 +215,12 @@
                         <div class="row mt-1" >
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" id="agency_name" class="form-control">
+                            <input type="text" value="{{ $quote->agency_name }}" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                             <span class="text-danger" role="alert" > </span>
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
-                            <input type="text" value="{{ $quote->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control">
+                            <input type="text" value="{{ $quote->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                             <span class="text-danger" role="alert" > </span>
                           </div>
                           <div class="col form-group">
@@ -233,7 +233,7 @@
                         
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control">
+                            <input type="email" value="{{ $quote->agency_email }}" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
                             <span class="text-danger" role="alert" > </span>
                           </div>
                         </div>
@@ -249,7 +249,7 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Email Address <span style="color:red">*</span></label> 
-                              <input type="email" value="{{ $quote->lead_passenger_email }}" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+                              <input type="email" value="{{ $quote->lead_passenger_email }}" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
@@ -285,6 +285,13 @@
                             </div>
                           </div>
                           <div class="col-sm-3">
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Bedding Preferences <span style="color:red">*</span></label>
+                                <input type="text" value="{{ $quote->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>  
                             <div class="form-group">
                               <label>Dinning Preferences <span style="color:red">*</span></label>
                               <input type="text" value="{{ $quote->lead_passenger_dinning_preference }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
@@ -292,13 +299,6 @@
                             </div>
                           </div>
                           
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <label>Bedding Preferences <span style="color:red">*</span></label>
-                              <input type="text" value="{{ $quote->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
-                              <span class="text-danger" role="alert"></span>
-                            </div>
-                          </div>  
                         </div>
                       @endif
                     </div>

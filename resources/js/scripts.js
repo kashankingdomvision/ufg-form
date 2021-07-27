@@ -226,7 +226,7 @@ $(document).on('change', '.select-agency', function() {
                         </div>
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                          <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0" placeholder="Agency Contact Number">
+                          <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
                             <span class="text-danger error_msg0 hide" role="alert"></span>
                             <span class="text-success valid_msg0" role="alert"></span>
                         </div>
