@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1450,8 +1450,6 @@ $('#delete_all').on('click', function(e) {
     e.preventDefault();
     var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
 
-    // console.log(checkedValues);
-
     if(checkedValues.length > 0){
         jQuery('#multiple_delete_modal').modal('show');
     }else{
@@ -1496,6 +1494,70 @@ $('#multiple_delete').on('click', function(e) {
           console.log(xhr.responseText);  
         }
     });
+ 
+});
+
+$('.multiple-action').on('change', function(e) {
+
+    var action = $(this).val();
+
+    var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
+
+    if(checkedValues.length > 0){
+
+        jQuery('#multiple_delete_modal').modal('show');
+        $('.action_name').val(action);
+        $('#multiple_delete').addClass('btn btn-danger');
+        $("#multiple_delete").html(action);
+        $('#multiple_delete').removeClass();
+
+        if(action == 'Delete'){
+            
+            $('#multiple_delete').addClass('btn btn-danger');
+        }
+
+        $('#multiple_delete').addClass('btn btn-primary');
+
+    }else{
+        alert("Please Check any Record First");
+        $('.multiple-action').val("");
+    }
+
+    // if(action && checkedValues.length > 0){
+
+    //     $.ajax({
+    //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+    //         type: 'delete',  
+    //         dataType: "JSON",
+    //         data: { "checkedValues": checkedValues, "action": action },
+    //         beforeSend: function() {
+    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+    //         },
+    //         success: function (response)
+    //         {
+    
+    //             if(response.status == true){
+    
+    
+    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+    //                 jQuery('#multiple_delete_modal').modal('hide');
+                    
+    //                 setTimeout(function() {
+                        
+    //                     alert(response.message);
+    //                     location.reload();
+    
+    //                 }, 600);
+               
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //           console.log(xhr.responseText);  
+    //         }
+    //     });
+
+   
+    // }
  
 });
 

@@ -147,6 +147,19 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Quote @if(isset($status) && $status == 'archive') Archive @endif List</h3>
+
+                            </div>
+
+                            <div class="card-header">
+                                <h3 class="card-title float-left">
+
+                                    <select name="multiple_action" class="form-control multiple-action" id="">
+                                        <option value="">Select Action</option>
+                                        <option value="Delete">Delete</option>
+                                        <option value="Archive">Archive</option>
+                                    </select>
+                              
+                                </h3>
                                 <a href="{{ route('quotes.create') }}" class="btn btn-secondary btn-sm float-right">
                                     <span class="fa fa-plus"></span>
                                     <span>Add New</span>
@@ -158,6 +171,11 @@
                                     <table id="example1" class="table table-hover" >
                                         <thead>
                                           <tr>
+                                            <th width="8">
+                                                <div class="icheck-primary">
+                                                    <input type="checkbox" class="parent">
+                                                </div>
+                                            </th>
                                             <th></th>
                                             <th width="8"></th>
                                             <th>Zoho Ref #</th>
@@ -176,6 +194,14 @@
                                             @foreach ($quotes as $key => $quote)
                                                 <tr class="{{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}">
                                                 
+                                                    <td>
+                                                        @if($quote->booking_status == 'quote')
+                                                            <div class="icheck-primary">
+                                                                <input type="checkbox" class="child" value="{{$quote->id}}" >
+                                                            </div>
+                                                        @endif
+                                                    </td>
+
                                                     <td width="8">
                                                         @if($quote->quote_count > 1)
                                                             <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
@@ -248,6 +274,8 @@
                                 </div>
 
                             </div>
+
+                            @include('includes.quote_multiple_delete')
 
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">

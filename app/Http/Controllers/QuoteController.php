@@ -409,6 +409,25 @@ class QuoteController extends Controller
         
         return redirect()->route('quotes.index')->with('success_message', 'Quote Booked successfully');        
     }
+
+    public function multiple_action(Request $request)
+    {
+        $action       = $request->action;
+        $check_values = $request->checkedValues;
+
+        if($action == "Delete"){
+            Quote::destroy(decrypt($check_values));
+            return ['status' => true, 'message' => 'Records Deleted Successfully !!'];
+        }
+
+        if($action == "Archive"){
+
+            Quote::findOrFail(decrypt($check_values))->update(['is_archive' => 1]);
+
+            return ['status' => true, 'message' => 'Records Archived Successfully !!'];
+        }
+        
+    }
     
     public function getTrash()
     {

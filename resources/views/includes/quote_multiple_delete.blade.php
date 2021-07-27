@@ -2,8 +2,8 @@
     <div class="modal-dialog ">
         <div class="modal-content">
             <form action="" method="POST"  id="update-override">
-                @csrf @method('delete')
-                <input type="hidden" name="table_name" class="table-name" value="{{ $table_name }}">
+                @csrf  
+                <input type="hidden" name="action_name" class="action_name" value="">
         
                 <div class="modal-header">
                     <h4 class="modal-title">Confirm Delete</h4>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button class="" type="submit" id="multiple_delete">
+                    <button class="" type="submit" id="quote_multiple_action">
                         <span class="mr-2" role="status" aria-hidden="true"></span>
                         Delete
                     </button>
@@ -28,9 +28,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(window).on('load', function() {
-        $('#override_modal').modal('show');
-    });
-</script>

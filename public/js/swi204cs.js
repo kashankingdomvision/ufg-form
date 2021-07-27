@@ -20627,11 +20627,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3__);
 
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -21848,7 +21848,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     e.preventDefault();
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
-    }).get(); // console.log(checkedValues);
+    }).get();
 
     if (checkedValues.length > 0) {
       jQuery('#multiple_delete_modal').modal('show');
@@ -21887,6 +21887,54 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         console.log(xhr.responseText);
       }
     });
+  });
+  $('.multiple-action').on('change', function (e) {
+    var action = $(this).val();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+
+    if (checkedValues.length > 0) {
+      jQuery('#multiple_delete_modal').modal('show');
+      $('.action_name').val(action);
+      $('#multiple_delete').addClass('btn btn-danger');
+      $("#multiple_delete").html(action);
+      $('#multiple_delete').removeClass();
+
+      if (action == 'Delete') {
+        $('#multiple_delete').addClass('btn btn-danger');
+      }
+
+      $('#multiple_delete').addClass('btn btn-primary');
+    } else {
+      alert("Please Check any Record First");
+      $('.multiple-action').val("");
+    } // if(action && checkedValues.length > 0){
+    //     $.ajax({
+    //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+    //         type: 'delete',  
+    //         dataType: "JSON",
+    //         data: { "checkedValues": checkedValues, "action": action },
+    //         beforeSend: function() {
+    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+    //         },
+    //         success: function (response)
+    //         {
+    //             if(response.status == true){
+    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+    //                 jQuery('#multiple_delete_modal').modal('hide');
+    //                 setTimeout(function() {
+    //                     alert(response.message);
+    //                     location.reload();
+    //                 }, 600);
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //           console.log(xhr.responseText);  
+    //         }
+    //     });
+    // }
+
   }); ///booking incremnet and
 
   $(document).on('click', '.increment', function () {

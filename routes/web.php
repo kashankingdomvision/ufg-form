@@ -77,6 +77,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
         Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
+
+        Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
     });
 
     /*
