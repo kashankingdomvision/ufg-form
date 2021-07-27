@@ -20627,12 +20627,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3__);
 
 
+ // var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/';
-/*var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';*/
-
+var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -20876,12 +20875,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if ($(this).val() == 1) {
       $('#pax_no').val('').change();
-      $v_html = "<div class=\"row mt-1\" >\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                          <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Contact name </label> <span style=\"color:red\"> *</span>\n                          <input type=\"text\" name=\"agency_contact_name\" id=\"agency_contact_name\" class=\"form-control\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                          <input type=\"tel\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control phone phone0\">\n                          <span class=\"text-danger error_msg0 hide\" role=\"alert\"></span>\n                        </div>\n\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Email </label> <span style=\"color:red\"> *</span>\n                          <input type=\"email\" name=\"agency_email\" id=\"agency_email\" class=\"form-control\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                    </div>\n                ";
+      $('#appendPaxName').html();
+      $v_html = "<div class=\"row mt-1\" >\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Name</label> <span style=\"color:red\"> *</span>\n                          <input type=\"text\" name=\"agency_name\" id=\"agency_name\" class=\"form-control\" placeholder=\"Agency Name\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Contact Name </label> <span style=\"color:red\"> *</span>\n                          <input type=\"text\" name=\"agency_contact_name\" id=\"agency_contact_name\" class=\"form-control\" placeholder=\"Agency Contact Name\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Contact No.</label> <span style=\"color:red\"> *</span>\n                          <input type=\"tel\" name=\"agency_contact\" id=\"agency_contact\" class=\"form-control phone phone0\">\n                            <span class=\"text-danger error_msg0 hide\" role=\"alert\"></span>\n                            <span class=\"text-success valid_msg0\" role=\"alert\"></span>\n                        </div>\n\n                        <div class=\"col form-group\">\n                          <label for=\"inputEmail3\" class=\"\">Agency Email </label> <span style=\"color:red\"> *</span>\n                          <input type=\"email\" name=\"agency_email\" id=\"agency_email\" class=\"form-control\" placeholder=\"Agency Email Address\">\n                          <span class=\"text-danger\" role=\"alert\" > </span>\n                        </div>\n                    </div>\n                ";
       $('.agency-columns').append($v_html).show(500);
     } else {
-      $v_html = "<div class=\"row mt-1\" >\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Lead Passenger Name <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_name\" id=\"lead_passenger_name\" class=\"form-control\" placeholder=\"Lead Passenger Name\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Email Address <span style=\"color:red\">*</span></label>\n            <input type=\"email\" name=\"lead_passenger_email\" id=\"lead_passenger_email\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Contact Number <span style=\"color:red\">*</span></label>\n            <input type=\"tel\" name=\"lead_passenger_contact\" id=\"lead_passenger_contact\"  class=\"form-control phone phone0\" >\n            <span class=\"text-danger error_msg0\" role=\"alert\"></span>\n          </div>\n        </div>\n\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Date Of Birth <span style=\"color:red\">*</span></label>\n            <input type=\"date\" max=\"{{ date('Y-m-d') }}\" id=\"lead_passenger_dbo\" name=\"lead_passenger_dbo\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Nationality <span style=\"color:red\">*</span></label>\n            <select name=\"lead_passsenger_nationailty_id\" id=\"lead_passsenger_nationailty_id\" class=\"form-control select2single nationality-id\">\n              <option selected value=\"\" >Select Nationality</option>\n              ".concat(countries.map(function (co) {
+      $v_html = "<div class=\"row mt-1\" >\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Lead Passenger Name <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_name\" id=\"lead_passenger_name\" class=\"form-control\" placeholder=\"Lead Passenger Name\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Email Address <span style=\"color:red\">*</span></label>\n            <input type=\"email\" name=\"lead_passenger_email\" id=\"lead_passenger_email\" class=\"form-control\" placeholder=\"Email Address\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Contact Number <span style=\"color:red\">*</span></label>\n            <input type=\"tel\" name=\"lead_passenger_contact\" id=\"lead_passenger_contact\"  class=\"form-control phone phone0\" >\n            <span class=\"text-danger error_msg0\" role=\"alert\"></span>\n            <span class=\"text-success valid_msg0\" role=\"alert\"></span>\n          </div>\n        </div>\n\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Date Of Birth <span style=\"color:red\">*</span></label>\n            <input type=\"date\" max=\"{{ date('Y-m-d') }}\" id=\"lead_passenger_dbo\" name=\"lead_passenger_dbo\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Nationality <span style=\"color:red\">*</span></label>\n            <select name=\"lead_passsenger_nationailty_id\" id=\"lead_passsenger_nationailty_id\" class=\"form-control select2single nationality-id\">\n              <option selected value=\"\" >Select Nationality</option>\n              ".concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n            </select>\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Dinning Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_dinning_preference\" id=\"lead_passenger_dinning_preference\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Bedding Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_bedding_preference\" id=\"lead_passenger_bedding_preference\" class=\"form-control \" placeholder=\"Bedding Preferences\" id=\"bedding_preference\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n      </div>");
+      }).join(""), "\n            </select>\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-sm-3\">\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Bedding Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_bedding_preference\" id=\"lead_passenger_bedding_preference\" class=\"form-control \" placeholder=\"Bedding Preferences\" id=\"bedding_preference\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n          <div class=\"form-group\">\n            <label>Dinning Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_dinning_preference\" id=\"lead_passenger_dinning_preference\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n\n      </div>");
       $('#pax_no').val(1).change();
       $('.agency-columns').append($v_html).show(500);
     }
@@ -21118,8 +21118,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         return data;
       }
     }).responseText);
-  } // console.log(commissionRate);
-
+  }
 
   function check(x) {
     if (isNaN(x) || !isFinite(x)) {
@@ -21130,9 +21129,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function getRate(supplierCurrency, bookingCurrency, rateType) {
-    // console.log( "getRate: " + supplierCurrency);
-    // console.log( "getRate: " + bookingCurrency);
-    // console.log( "getRate: " + rateType);
     var object = currencyConvert.filter(function (elem) {
       return elem.from == supplierCurrency && elem.to == bookingCurrency;
     });
@@ -21271,50 +21267,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return yyyy + sp + mm + sp + dd;
   };
 
-  $(document).on('change', '.pax-number', function () {
-    $('.nationality-select2').select2('destroy');
-    var $_val = $(this).val();
-    var agencyVal = $('.select-agency:checked').val();
-    var currentDate = curday('-');
-    var countries = $('#content').data('countries');
-
-    if ($_val > $('.appendCount').length) {
-      var countable = $_val - $('.appendCount').length - 1;
-
-      if (agencyVal == 1) {
-        var countable = $_val - $('.appendCount').length;
-      }
-
-      for (i = 1; i <= countable; ++i) {
-        var count = $('.appendCount').length + 1;
-        var c = count + 1;
-
-        if (agencyVal == 1) {
-          c = count;
-        }
-
-        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Passenger #").concat(c, " Full Name</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label>\n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n\n\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label>\n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                    <span class=\"text-danger valid_msg").concat(count, "\" role=\"alert\"></span>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label>\n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
-          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                    </select>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n                            </div>\n                        </div>");
-        $('#appendPaxName').append($_html); // console.log('countable'+count);
-        // integrate_intlTelInput('#phone'+count);
-
-        intTelinput(count);
-      }
-    } else {
-      var countable = $('.appendCount').length + 1;
-
-      for (var i = countable - 1; i >= $_val; i--) {
-        $("#appendCount" + i).remove();
-      }
-    }
-
-    $('.nationality-select2').select2({
-      width: '100%',
-      theme: "bootstrap"
-    });
-    getSellingPrice();
-  });
   $(document).on('change', '.booking-currency-id', function () {
     $('.booking-currency-code').html($(this).find(':selected').data('code'));
     changeCurrenyRate();
@@ -21400,7 +21352,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
       if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-        console.log('run');
         $(".versions :input").removeAttr("disabled");
         $(this).data('recall', 'false');
         $(this).text('Back Into Version');
@@ -21524,7 +21475,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert('Quote updated Successfully'); // window.location.href = REDIRECT_BASEURL + "quotes/index";
+          alert('Quote updated Successfully');
+          window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
@@ -21575,8 +21527,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       error: function error(reject) {
         if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          console.log(errors); // setTimeout(function() {
+          var errors = $.parseJSON(reject.responseText); // setTimeout(function() {
           //     $("#overlay").removeClass('overlay').html('');
           //     jQuery.each(errors.errors, function( index, value ) {
           //         index = index.replace(/\./g,'_');
@@ -21676,7 +21627,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
                 searchRef.prop('disabled', false);
                 $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                console.log('done');
               },
               error: function error(reject) {
                 searchRef.prop('disabled', false);
@@ -21953,13 +21903,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
       separateDialCode: true,
       formatOnDisplay: true,
-      initialCountry: "auto",
+      initialCountry: "US",
       nationalMode: true,
       hiddenInput: "full_number",
       autoPlaceholder: "polite",
       placeholderNumberType: "MOBILE"
     });
-    input.nextElementSibling.value = iti.getNumber(); // on blur: validate
+    input.nextElementSibling.value = iti.getNumber(); // iti.setCountry("US");
+    // on blur: validate
 
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function () {
@@ -21969,9 +21920,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       if (input.value.trim()) {
         if (iti.isValidNumber()) {
           $('.buttonSumbit').removeAttr('disabled');
+          input.classList.add("is-valid");
+          validMsg.innerHTML = 'The number is valid';
         } else {
           $('.buttonSumbit').attr('disabled', 'disabled');
           input.classList.add("is-invalid");
+          validMsg.innerHTML = '';
           var errorCode = iti.getValidationError();
           errorMsg.innerHTML = errorMap[errorCode];
           errorMsg.classList.remove("hide");
@@ -21985,7 +21939,95 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       errorMsg.classList.add("hide");
     };
   } //intl-tel-input ************** End ******************** //
+  /// pax append work  start//
 
+
+  $(document).on('change', '.pax-number', function () {
+    $('.nationality-select2').select2('destroy');
+    var $_val = $(this).val();
+    var agencyVal = $('.select-agency:checked').val();
+    var currentDate = curday('-');
+    var countries = $('#content').data('countries');
+
+    if (agencyVal == $_val) {
+      var count = 1;
+      var $v_html = "\n        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n            <div class=\"row\" >\n                <div class=\"col-md-3 mb-2\">\n                    <label>Passenger #").concat(count, " Full Name</label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Email Address</label> \n                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Contact Number</label> \n                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Date Of Birth</label> \n                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-sm-3\">\n                    <label>Nationality</label>\n                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                        <option selected value=\"\" >Select Nationality</option>\n                        ").concat(countries.map(function (co) {
+        return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+      }).join(""), "\n                    </select>\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Bedding Preference</label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                </div>\n                \n                <div class=\"col-md-3 mb-2\">\n                    <label>Dinning Preference</label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                </div>\n            </div>\n        </div>");
+      $('#appendPaxName').html($v_html);
+      intTelinput(1);
+    }
+
+    if ($_val > $('.appendCount').length) {
+      var countable = $_val - $('.appendCount').length - 1;
+
+      if (agencyVal == 1) {
+        var countable = $_val - $('.appendCount').length;
+      }
+
+      for (i = 1; i <= countable; ++i) {
+        var count = $('.appendCount').length + 1;
+        var c = count + 1;
+
+        if (agencyVal == 1) {
+          c = count;
+        }
+
+        var $_html = "\n                    <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                        <div class=\"row\" >\n                            <div class=\"col-md-3 mb-2\">\n                                <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Email Address</label> \n                                <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                            </div>\n                            \n                          \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Contact Number</label> \n                                <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Date Of Birth</label> \n                                <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-3\">\n                                <label>Nationality</label>\n                                <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                    <option selected value=\"\" >Select Nationality</option>\n                                    ").concat(countries.map(function (co) {
+          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+        }).join(""), "\n                                </select>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Bedding Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                            </div>\n                            \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Dinning Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                            </div>\n                        </div>\n                    </div>");
+        $('#appendPaxName').append($_html);
+        intTelinput(count);
+      }
+    } else {
+      if (agencyVal != $_val) {
+        var countable = $('.appendCount').length + 1;
+
+        for (var i = countable - 1; i >= $_val; i--) {
+          $("#appendCount" + i).remove();
+        }
+      }
+    }
+
+    $('.nationality-select2').select2({
+      width: '100%',
+      theme: "bootstrap"
+    });
+    getSellingPrice();
+  });
+  $(document).on('click', '.add-pax-column', function () {
+    var pax_value = $('#pax_no').val();
+    var updateCount = pax_value != '' ? parseInt(pax_value) + 1 : 1;
+    $('#pax_no').val(updateCount).change();
+  });
+  $(document).on('click', '.remove-pax-column', function () {
+    var agency_Val = $('.select-agency:checked').val();
+    $(this).closest('.appendCount').remove();
+    var pax_value = $('#pax_no').val();
+    var updateCount = parseInt(pax_value) - 1;
+    $('#pax_no').val(updateCount).change();
+    var ids = [];
+    $('.appendCount').each(function () {
+      ids.push($(this).attr('id'));
+    });
+    var _val = 2;
+    var idLength = ids.length + _val;
+
+    if (agency_Val == 1) {
+      _val = 1;
+      idLength = ids.length + _val;
+    }
+
+    for (var _i = 0; _i <= ids.length; _i++) {
+      var count = 2 + _i;
+
+      if (agency_Val == 1) {
+        count = 1 + _i;
+      }
+
+      $('#' + ids[_i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
+    }
+  }); //pax appednd work end
 }); // var integrate_intlTelInput = function (id, key = null) {
 //     var input_id= id??'#phone'
 //     console.log(input_id, ' int input funcation');
@@ -22113,7 +22155,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\ufg-form\resources\js\scripts.js */"./resources/js/scripts.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\js\scripts.js */"./resources/js/scripts.js");
 
 
 /***/ })

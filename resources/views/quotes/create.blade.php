@@ -187,7 +187,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Email Address <span style="color:red">*</span></label> 
-                            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+                            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
@@ -196,6 +196,7 @@
                             <label>Contact Number <span style="color:red">*</span></label> 
                             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
                             <span class="text-danger error_msg0" role="alert"></span>
+                            <span class="text-success valid_msg0" role="alert"></span>
                           </div>
                         </div>
                       
@@ -222,19 +223,19 @@
                         </div>
                         <div class="col-sm-3">
                           <div class="form-group">
+                            <label>Bedding Preferences <span style="color:red">*</span></label>
+                            <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>  
+                        <div class="col-sm-3">
+                          <div class="form-group">
                             <label>Dinning Preferences <span style="color:red">*</span></label>
                             <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
                         
-                        <div class="col-sm-3">
-                          <div class="form-group">
-                            <label>Bedding Preferences <span style="color:red">*</span></label>
-                            <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
-                            <span class="text-danger" role="alert"></span>
-                          </div>
-                        </div>  
                           
                           
                       </div>
@@ -255,6 +256,9 @@
                     
                     <div id="appendPaxName" class="col-md-12 ">
                     
+                    </div>
+                    <div class="col-md-12 col-offset-md-4">
+                      <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div>
                   </div>
                 

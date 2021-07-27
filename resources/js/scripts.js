@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-/*var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';*/
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -212,26 +212,28 @@ $(document).on('change', '.select-agency', function() {
     var $v_html = null;
     if(($(this).val() == 1)){
         $('#pax_no').val('').change();
+        $('#appendPaxName').html();
         $v_html = `<div class="row mt-1" >
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_name" id="agency_name" class="form-control">
+                          <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control">
+                          <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
+                          <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                           <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                          <span class="text-danger error_msg0 hide" role="alert"></span>
+                            <span class="text-danger error_msg0 hide" role="alert"></span>
+                            <span class="text-success valid_msg0" role="alert"></span>
                         </div>
 
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                          <input type="email" name="agency_email" id="agency_email" class="form-control">
+                          <input type="email" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                     </div>
@@ -249,7 +251,7 @@ $(document).on('change', '.select-agency', function() {
         <div class="col-md-3">
           <div class="form-group">
             <label>Email Address <span style="color:red">*</span></label>
-            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
@@ -258,6 +260,7 @@ $(document).on('change', '.select-agency', function() {
             <label>Contact Number <span style="color:red">*</span></label>
             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
             <span class="text-danger error_msg0" role="alert"></span>
+            <span class="text-success valid_msg0" role="alert"></span>
           </div>
         </div>
 
@@ -281,13 +284,6 @@ $(document).on('change', '.select-agency', function() {
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="form-group">
-            <label>Dinning Preferences <span style="color:red">*</span></label>
-            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-
         <div class="col-sm-3">
           <div class="form-group">
             <label>Bedding Preferences <span style="color:red">*</span></label>
@@ -295,6 +291,13 @@ $(document).on('change', '.select-agency', function() {
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
+          <div class="form-group">
+            <label>Dinning Preferences <span style="color:red">*</span></label>
+            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+            <span class="text-danger" role="alert"></span>
+          </div>
+        </div>
+
       </div>`
 
         $('#pax_no').val(1).change();
@@ -571,7 +574,6 @@ $(document).on('click', '.addChild', function () {
         }).responseText);
     }
 
-    // console.log(commissionRate);
 
     function check(x) {
 
@@ -583,10 +585,6 @@ $(document).on('click', '.addChild', function () {
     }
 
     function getRate(supplierCurrency,bookingCurrency,rateType){
-
-        // console.log( "getRate: " + supplierCurrency);
-        // console.log( "getRate: " + bookingCurrency);
-        // console.log( "getRate: " + rateType);
 
         var object = currencyConvert.filter(function(elem) {
             return elem.from == supplierCurrency && elem.to == bookingCurrency
@@ -719,88 +717,6 @@ $(document).on('click', '.addChild', function () {
         return (yyyy+sp+mm+sp+dd);
     };
 
-    $(document).on('change', '.pax-number', function () {
-
-        $('.nationality-select2').select2('destroy');
-
-        var $_val = $(this).val();
-        var agencyVal = $('.select-agency:checked').val();
-
-        var currentDate = curday('-');
-        var countries = $('#content').data('countries');
-        if($_val > $('.appendCount').length){
-            var countable = ($_val - $('.appendCount').length) - 1;
-            if(agencyVal == 1){
-                var countable = ($_val - $('.appendCount').length);
-            }
-
-            for (i = 1; i <= countable; ++i) {
-                var count = $('.appendCount').length + 1;
-                var c = count + 1;
-
-                if(agencyVal == 1){
-                    c = count;
-                }
-                const $_html = `
-                        <div class="mb-1 appendCount" id="appendCount${count}">
-                            <div class="row" >
-                                <div class="col-md-3 mb-2">
-                                    <label>Passenger #${c} Full Name</label>
-                                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Email Address</label>
-                                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
-                                </div>
-
-
-                                <div class="col-md-3 mb-2">
-                                    <label>Contact Number</label>
-                                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
-                                        <span class="text-danger error_msg${count}" role="alert"></span>
-                                    <span class="text-danger valid_msg${count}" role="alert"></span>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Date Of Birth</label>
-                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <label>Nationality</label>
-                                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
-                                        <option selected value="" >Select Nationality</option>
-                                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Bedding Preference</label>
-                                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
-                                </div>
-
-                                <div class="col-md-3 mb-2">
-                                    <label>Dinning Preference</label>
-                                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
-                                </div>
-                            </div>
-                        </div>`;
-                        $('#appendPaxName').append($_html);
-                        // console.log('countable'+count);
-                        // integrate_intlTelInput('#phone'+count);
-                        intTelinput(count);
-            }
-        }else{
-            var countable = $('.appendCount').length + 1;
-            for (var i = countable - 1; i >= $_val; i--) {
-                $("#appendCount"+i).remove();
-            }
-        }
-        $('.nationality-select2').select2({
-            width: '100%',
-            theme: "bootstrap",
-        });
-        getSellingPrice();
-    });
 
     $(document).on('change', '.booking-currency-id',function () {
 
@@ -912,7 +828,6 @@ $(document).on('click', '.addChild', function () {
     $('#reCall').on('click', function () {
         if($(this).data('recall') == true){
             if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-                console.log('run');
                 $(".versions :input").removeAttr("disabled");
 
                 $(this).data('recall', 'false');
@@ -1069,7 +984,7 @@ $(".update-quote").submit(function(event) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
                 alert('Quote updated Successfully');
-                // window.location.href = REDIRECT_BASEURL + "quotes/index";
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -1140,7 +1055,6 @@ $("#update-override").submit(function(event) {
 
                 var errors = $.parseJSON(reject.responseText);
 
-                console.log(errors);
 
                 // setTimeout(function() {
                 //     $("#overlay").removeClass('overlay').html('');
@@ -1246,7 +1160,6 @@ $('.search-reference').on('click', function () {
 
                             searchRef.prop('disabled', false);
                             $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                            console.log('done');
 
                         },
                         error: function (reject) {
@@ -1588,14 +1501,14 @@ function intTelinput(key = null, inVal = null) {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
         separateDialCode: true,
         formatOnDisplay:true,
-        initialCountry: "auto",
+        initialCountry: "US",
         nationalMode: true,
         hiddenInput: "full_number",
         autoPlaceholder: "polite",
         placeholderNumberType: "MOBILE",
     });
     input.nextElementSibling.value = iti.getNumber();
-
+    // iti.setCountry("US");
     // on blur: validate
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function() {
@@ -1604,9 +1517,12 @@ function intTelinput(key = null, inVal = null) {
             if (input.value.trim()) {
                 if (iti.isValidNumber()) {
                     $('.buttonSumbit').removeAttr('disabled');
+                    input.classList.add("is-valid");
+                    validMsg.innerHTML = 'The number is valid';
                 } else {
                     $('.buttonSumbit').attr('disabled', 'disabled');
                     input.classList.add("is-invalid");
+                    validMsg.innerHTML = '';
                     var errorCode = iti.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
@@ -1623,6 +1539,181 @@ function intTelinput(key = null, inVal = null) {
 }
 //intl-tel-input ************** End ******************** //
 
+
+/// pax append work  start//
+
+
+
+$(document).on('change', '.pax-number', function () {
+        
+    $('.nationality-select2').select2('destroy');
+
+    var $_val = $(this).val();
+    var agencyVal = $('.select-agency:checked').val();
+ 
+    var currentDate = curday('-');
+    var countries = $('#content').data('countries');
+    if(agencyVal == $_val){
+        var count = 1;
+        var $v_html = `
+        <div class="mb-1 appendCount" id="appendCount${count}">
+            <div class="row" >
+                <div class="col-md-3 mb-2">
+                    <label>Passenger #${count} Full Name</label> 
+                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="Passsenger Name" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Email Address</label> 
+                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="Email Address" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Contact Number</label> 
+                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
+                    <span class="text-danger error_msg${count}" role="alert"></span>
+                    <span class="text-success valid_msg${count}" role="alert"></span>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Date Of Birth</label> 
+                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Nationality</label>
+                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
+                        <option selected value="" >Select Nationality</option>
+                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Bedding Preference</label> 
+                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
+                </div>
+                
+                <div class="col-md-3 mb-2">
+                    <label>Dinning Preference</label> 
+                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>`;
+        $('#appendPaxName').html($v_html);
+        intTelinput(1);
+        
+    }
+    if($_val > $('.appendCount').length){
+        var countable = ($_val - $('.appendCount').length) - 1;
+        if(agencyVal == 1){
+            var countable = ($_val - $('.appendCount').length);
+        }
+        
+                  
+        for (i = 1; i <= countable; ++i) {
+            var count = $('.appendCount').length + 1;
+            var c = count + 1;
+            
+            if(agencyVal == 1){
+                c = count;
+            }
+            const $_html = `
+                    <div class="mb-1 appendCount" id="appendCount${count}">
+                        <div class="row" >
+                            <div class="col-md-3 mb-2">
+                                <label class="mainLabel">Passenger #${c} Full Name</label> 
+                                <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Email Address</label> 
+                                <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
+                            </div>
+                            
+                          
+                            <div class="col-md-3 mb-2">
+                                <label>Contact Number</label> 
+                                <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
+                                <span class="text-danger error_msg${count}" role="alert"></span>
+                                <span class="text-success valid_msg${count}" role="alert"></span>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Date Of Birth</label> 
+                                <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>Nationality</label>
+                                <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
+                                    <option selected value="" >Select Nationality</option>
+                                    ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Bedding Preference</label> 
+                                <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+                            </div>
+                            
+                            <div class="col-md-3 mb-2">
+                                <label>Dinning Preference</label> 
+                                <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                    $('#appendPaxName').append($_html);
+                    intTelinput(count);
+        }
+    }else{
+        if(agencyVal != $_val){
+            var countable = $('.appendCount').length + 1;
+            for (var i = countable - 1; i >= $_val; i--) {
+                $("#appendCount"+i).remove();
+            }
+        }
+    }
+    $('.nationality-select2').select2({
+        width: '100%',
+        theme: "bootstrap",
+    });
+    getSellingPrice();
+});
+
+$(document).on('click', '.add-pax-column', function () {
+    var pax_value = $('#pax_no').val();
+    var updateCount = (pax_value != '')? parseInt(pax_value) + 1 : 1;
+    $('#pax_no').val(updateCount).change();
+});
+
+
+$(document).on('click', '.remove-pax-column', function () {
+    var agency_Val =  $('.select-agency:checked').val();
+    $(this).closest('.appendCount').remove();
+    var pax_value = $('#pax_no').val();
+    var updateCount = parseInt(pax_value) - 1;
+    $('#pax_no').val(updateCount).change();
+    
+    var ids = [];
+    $('.appendCount').each(function(){
+        ids.push($(this).attr('id')); 
+      });
+    let _val  = 2
+    let idLength = ids.length + _val;
+    if(agency_Val == 1){
+        _val = 1
+        idLength = ids.length + _val;
+    }
+    for (let i = 0; i <= ids.length; i++) {
+        var count = 2 + i;
+        if(agency_Val == 1){
+            count = 1 + i;
+        }
+        $('#'+ids[i]).find('.mainLabel').text('Passenger #'+count+' Full Name');
+    }
+});
+//pax appednd work end
 });
 
 
