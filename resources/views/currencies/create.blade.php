@@ -27,7 +27,7 @@
           <div class="row">
             <div class="offset-md-2 col-md-8">
 
-              <div class="card card-primary">
+              <div class="card card-secondary">
                 <div class="card-header">
                   <h3 class="card-title">Currency Form</h3>
                 </div>
@@ -66,7 +66,7 @@
                     </div>
 
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-right">Submit</button>
+                    <button type="submit" class="btn btn-secondary float-right">Submit</button>
                   </div>
 
                 </form>

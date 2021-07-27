@@ -140,10 +140,10 @@
                                                     <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
                                                     <td>{{ $template->formated_created_at }}</td>
                                                     <td width="10%" >
-                                                    <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit">
+                                                    <a href="{{route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs" title="Edit" data-title="Edit" data-target="#edit">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
-                                                    <a onclick="return confirm('Are you sure want to Delete {{ $template->name }}');" href="{{ route('templates.delete', encrypt($template->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                    <a onclick="return confirm('Are you sure want to Delete {{ $template->name }}');" href="{{ route('templates.delete', encrypt($template->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
                                                     </td>
                                                 </tr>
                                             @endforeach

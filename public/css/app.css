@@ -913,16 +913,16 @@
     height: 10px;
     background-position: -5632px 0px; }
 
-/* .iti__flag {
+.iti__flag {
   height: 15px;
   box-shadow: 0px 0px 1px 0px #888;
-  background-image: url("../img/flags.png");
+  background-image: url(/images/vendor/intl-tel-input/build/flags.png?416250f60d785a2e02f17e054d2e4e44);
   background-repeat: no-repeat;
   background-color: #DBDBDB;
   background-position: 20px 0; }
   @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {
-      background-image: url("../img/flags@2x.png"); } } */
+      background-image: url(/images/vendor/intl-tel-input/build/flags@2x.png?d429a5777afaf2fc349652e812e9bb11); } }
 
 .iti__flag.iti__np {
   background-color: transparent; }

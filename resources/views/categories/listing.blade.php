@@ -86,7 +86,7 @@
                         <form method="post" action="{{ route('categories.destroy', encrypt($category->id)) }}">
                           @csrf
                           @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                             <span class="fa fa-trash"></span>
                           </button>
                         </form>
