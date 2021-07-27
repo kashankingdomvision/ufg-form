@@ -66,12 +66,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('quotes.create') }}" class="nav-link {{ $route == 'quotes.create' ? 'active' : '' }}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Quote</p>
-                            </a>
-                        </li>
+                      
                         <li class="nav-item">
                             <a href="{{ route('quotes.index') }}" class="nav-link {{ $route == 'quotes.index' || $route == 'quotes.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -101,12 +96,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('templates.create') }}" class="nav-link {{ $route == 'templates.create' ? 'active' : '' }}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Template</p>
-                            </a>
-                        </li>
+                       
                         <li class="nav-item">
                             <a href="{{ route('templates.index') }}"class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -125,12 +115,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('seasons.create') }}"  class="nav-link {{ $route == 'seasons.create' ? 'active' : '' }}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Season</p>
-                            </a>
-                        </li>
+                      
                         <li class="nav-item">
                             <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -139,44 +124,35 @@
                         </li>
                     </ul>
                 </li>
+                @if(Auth::user()->hasAdmin())
 
-                <li class="nav-item {{ ($route == 'users.index' || $route == 'users.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
-                    <a href="#" class="nav-link">
-                        <i class="fa fa-user nav-icon"></i>
-                        <p>
-                            User Management
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('users.create') }}" class="nav-link {{ $route == 'users.create' ? 'active' : ''}} ">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add User</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}" class="nav-link {{  $route == 'users.index' || $route == 'users.edit' ? 'active' : '' }}">
-                                <i class="fa fa-eye nav-icon"></i>
-                                <p>View User</p>
-                            </a>
-                        </li>
+                    <li class="nav-item {{ ($route == 'users.index' || $route == 'users.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
+                        <a href="#" class="nav-link">
+                            <i class="fa fa-user nav-icon"></i>
+                            <p>
+                                User Management
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                          
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}" class="nav-link {{  $route == 'users.index' || $route == 'users.edit' ? 'active' : '' }}">
+                                    <i class="fa fa-eye nav-icon"></i>
+                                    <p>View User</p>
+                                </a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('roles.create')}}" class="nav-link {{ $route == 'roles.create' ? 'active' : ''}}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Role</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('roles.index')}}" class="nav-link {{ $route == 'roles.index' || $route == 'roles.edit' ? 'active' : ''}}">
-                                <i class="fa fa-eye nav-icon"></i>
-                                <p>View Role</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+                          
+                            <li class="nav-item">
+                                <a href="{{ route('roles.index')}}" class="nav-link {{ $route == 'roles.index' || $route == 'roles.edit' ? 'active' : ''}}">
+                                    <i class="fa fa-eye nav-icon"></i>
+                                    <p>View Role</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
 
 
                 <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit'  ? 'menu-open': '' }}">
@@ -188,12 +164,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('suppliers.create') }}" class="nav-link {{ $route == 'suppliers.create' ? 'active' : ''}} ">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Supplier</p>
-                            </a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -201,12 +172,7 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('products.create')}}" class="nav-link {{ $route == 'products.create' ? 'active' : ''}}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Product</p>
-                            </a>
-                        </li>
+                        
                         <li class="nav-item">
                             <a href="{{ route('products.index')}}" class="nav-link {{ $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -215,12 +181,7 @@
                         </li>
 
 
-                        <li class="nav-item">
-                            <a href="{{ route('categories.create')}}" class="nav-link {{ $route == 'categories.create' ? 'active' : ''}}">
-                                <i class="fa fa-plus nav-icon"></i>
-                                <p>Add Category</p>
-                            </a>
-                        </li>
+                      
                         <li class="nav-item">
                             <a href="{{ route('categories.index')}}" class="nav-link {{ $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>

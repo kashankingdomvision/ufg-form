@@ -62,7 +62,7 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
-
+                    @if(Auth::user()->hasAdmin())
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
                       <select name="role" class="form-control select2single role  @error('role') is-invalid @enderror" required>
@@ -76,6 +76,7 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div> 
+                    @endif
 
                     <div class="form-group d-none" id="supervisor_feild">
                       <label>Supervisor <span style="color:red">*</span></label>

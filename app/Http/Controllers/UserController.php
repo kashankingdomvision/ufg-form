@@ -89,7 +89,7 @@ class UserController extends Controller
 
         return redirect()->route('users.index')->with('success_message', 'User created successfully');
     }
-    public function edit($id)
+    public function edit($id, $status = null)
     {
         $data['user'] = User::findOrFail(decrypt($id));
 
@@ -102,33 +102,39 @@ class UserController extends Controller
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
 
         $data['brands'] = Brand::orderBy('id', 'ASC')->get();
-
-
+        $data['status'] = $status;
+        
         return view('users.edit', $data);
 
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id, $status = null )
     {
-
         $user = User::findOrFail(decrypt($id));
+        
+        $request->validate([ 'name'      => 'required|string',
+        'email'     => 'required|email|unique:users,id,'.$user->id]);
 
         $data = [
             'name'           => $request->name,
             'email'          => $request->email,
-            'role_id'        => $request->role,
             'supervisor_id'  => $request->supervisor_id,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
             'holiday_type_id' => $request->holiday_type,
         ];
+        if($request->has('role') && $request->role){
+            $data['role_id']  = $request->role;
+        }
 
         if ($request->has('password') && !empty($request->password)) {
             $data['password'] = $request->password;
         }
 
         $user->update($data);
-
+        if($status == 'profile'){
+            return redirect()->route('dashboard.index')->with('success_message', 'profile updated successfully');
+        }
         return redirect()->route('users.index')->with('success_message', 'User updated successfully');
     }
 
@@ -144,4 +150,6 @@ class UserController extends Controller
         
         return redirect()->route('users.index')->with('success_message', 'User deleted successfully');
     }
+    
+   
 }

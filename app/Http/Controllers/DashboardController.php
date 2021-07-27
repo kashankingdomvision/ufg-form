@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use App\Booking;
+use App\Quote;
+use App\User;
+use App\Supplier;
 use DB;
 
 class DashboardController extends Controller
@@ -16,7 +20,11 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $data['booking'] = Booking::count();
+        $data['quote']   = Quote::where('booking_status', 'quote')->count();
+        $data['users']   = User::count();
+        $data['supplier']= Supplier::count();
+        return view('home',$data);
     }
 
     /**

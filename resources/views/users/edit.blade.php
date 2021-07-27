@@ -9,12 +9,12 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-sm-6">
-                <h4>Edit User</h4>
+                <h4>Edit {{ (isset($status) && $status == 'profile')? 'Profile': 'User' }}</h4>
               </div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a>Home</a></li>
-                  <li class="breadcrumb-item active">User Management</li>
+                  <li class="breadcrumb-item active">{{ (isset($status) && $status == 'profile')? 'Edit Profile': 'User Management' }}</li>
                 </ol>
             </div>
           </div>
@@ -28,10 +28,10 @@
 
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">User Form</h3>
+                  <h3 class="card-title">{{ (isset($status) && $status == 'profile')? 'Edit Profile': 'User Edit' }}</h3>
                 </div>
 
-                <form method="POST" action="{{ route('users.update', encrypt($user->id)) }}">
+                <form method="POST" action="{{ route('users.update', [encrypt($user->id), $status]) }}">
                   @csrf
 
                   <div class="card-body">
@@ -55,14 +55,14 @@
                     </div>
 
                     <div class="form-group">
-                      <label>Password <span style="color:red">*</span></label>
+                      <label>Password</label>
                       <input type="password" name="password" value="" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
 
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
-
+                    @if(Auth::user()->hasAdmin())
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
                       <select class="form-control select2single role @error('role') is-invalid @enderror" name="role">
@@ -76,7 +76,7 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div> 
-
+                    @endif
                     <div class="form-group {{ $user->role_id == 2 ? '' : 'd-none' }}" id="supervisor_feild">
                       <label>Supervisor <span style="color:red">*</span></label>
                       <select name="supervisor_id" id="supervisor_id" class="form-control select2single supervisor-id  @error('supervisor_id') is-invalid @enderror" >
