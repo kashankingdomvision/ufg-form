@@ -1560,11 +1560,11 @@ $(document).on('change', '.pax-number', function () {
             <div class="row" >
                 <div class="col-md-3 mb-2">
                     <label>Passenger #${count} Full Name</label> 
-                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
+                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="Passsenger Name" >
                 </div>
                 <div class="col-md-3 mb-2">
                     <label>Email Address</label> 
-                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
+                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="Email Address" >
                 </div>
                 <div class="col-md-3 mb-2">
                     <label>Contact Number</label> 
@@ -1587,12 +1587,12 @@ $(document).on('change', '.pax-number', function () {
                 </div>
                 <div class="col-md-3 mb-2">
                     <label>Bedding Preference</label> 
-                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
                 </div>
                 
                 <div class="col-md-3 mb-2">
                     <label>Dinning Preference</label> 
-                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
                 </div>
                 <div class="col-md-3 mb-2">
                     <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>

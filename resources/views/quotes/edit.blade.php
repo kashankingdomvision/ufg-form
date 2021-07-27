@@ -325,14 +325,28 @@
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
                                             <label class="mainLabel" >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }} Full Name</label> 
-                                            <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
+                                            <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="Passsenger Name" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Email Address</label> 
-                                            <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email }}" class="form-control" placeholder="EMAIL ADDRESS" >
+                                            <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email }}" class="form-control" placeholder="Email Address" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
+                                      
+                                        <div class="col-md-3 mb-2">
+                                            <label >Contact Number</label> 
+                                            <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                            <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                            <span class="text-success valid_msg{{ $count }}" role="alert"></span>
+                                        </div>
+                                        <div class="col-md-3 mb-2">
+                                          <label>Date Of Birth</label> 
+                                          <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="Date Of Birth">
+                                          <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                      </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-3">
                                           <label>Nationality</label>
                                           <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
@@ -342,28 +356,16 @@
                                               @endforeach
                                           </select>
                                         </div>
-                                        <div class="col-md-3 mb-2">
-                                            <label >Contact Number</label> 
-                                            <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
-                                            <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
-                                            <span class="text-success valid_msg{{ $count }}" role="alert"></span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3 mb-2">
-                                            <label>Date Of Birth</label> 
-                                            <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" >
-                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                        </div>
+                                       
                                         <div class="col-md-3 mb-2">
                                             <label>Bedding Preference</label> 
-                                            <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
+                                            <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="Bedding Preferences" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         
                                         <div class="col-md-3 mb-2">
                                             <label>Dinning Preference</label> 
-                                            <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="DINNING PREFERENCES" >
+                                            <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="Dinning Preferences" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
