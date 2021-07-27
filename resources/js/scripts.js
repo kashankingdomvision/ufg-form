@@ -573,7 +573,6 @@ $(document).on('click', '.addChild', function () {
         }).responseText);
     }
 
-    // console.log(commissionRate);
 
     function check(x) {
 
@@ -585,10 +584,6 @@ $(document).on('click', '.addChild', function () {
     }
 
     function getRate(supplierCurrency,bookingCurrency,rateType){
-
-        // console.log( "getRate: " + supplierCurrency);
-        // console.log( "getRate: " + bookingCurrency);
-        // console.log( "getRate: " + rateType);
 
         var object = currencyConvert.filter(function(elem) {
             return elem.from == supplierCurrency && elem.to == bookingCurrency
@@ -832,7 +827,6 @@ $(document).on('click', '.addChild', function () {
     $('#reCall').on('click', function () {
         if($(this).data('recall') == true){
             if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-                console.log('run');
                 $(".versions :input").removeAttr("disabled");
 
                 $(this).data('recall', 'false');
@@ -1060,7 +1054,6 @@ $("#update-override").submit(function(event) {
 
                 var errors = $.parseJSON(reject.responseText);
 
-                console.log(errors);
 
                 // setTimeout(function() {
                 //     $("#overlay").removeClass('overlay').html('');
@@ -1166,7 +1159,6 @@ $('.search-reference').on('click', function () {
 
                             searchRef.prop('disabled', false);
                             $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                            console.log('done');
 
                         },
                         error: function (reject) {
@@ -1561,7 +1553,6 @@ $(document).on('change', '.pax-number', function () {
     var currentDate = curday('-');
     var countries = $('#content').data('countries');
     if(agencyVal == $_val){
-        console.log(agencyVal, $_val, 'values');
         var count = 1;
         var $v_html = `
         <div class="mb-1 appendCount" id="appendCount${count}">
@@ -1672,8 +1663,6 @@ $(document).on('change', '.pax-number', function () {
                         </div>
                     </div>`;
                     $('#appendPaxName').append($_html);
-                    // console.log('countable'+count);
-                    // integrate_intlTelInput('#phone'+count);
                     intTelinput(count);
         }
     }else{
@@ -1693,7 +1682,6 @@ $(document).on('change', '.pax-number', function () {
 
 $(document).on('click', '.add-pax-column', function () {
     var pax_value = $('#pax_no').val();
-    console.log(pax_value);
     var updateCount = (pax_value != '')? parseInt(pax_value) + 1 : 1;
     $('#pax_no').val(updateCount).change();
 });
@@ -1717,7 +1705,6 @@ $(document).on('click', '.remove-pax-column', function () {
         idLength = ids.length + _val;
     }
     for (let i = 0; i <= ids.length; i++) {
-        console.log($('#'+ids[i]).find('.mainLabel'));
         var count = 2 + i;
         if(agency_Val == 1){
             count = 1 + i;

@@ -21117,8 +21117,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         return data;
       }
     }).responseText);
-  } // console.log(commissionRate);
-
+  }
 
   function check(x) {
     if (isNaN(x) || !isFinite(x)) {
@@ -21129,9 +21128,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function getRate(supplierCurrency, bookingCurrency, rateType) {
-    // console.log( "getRate: " + supplierCurrency);
-    // console.log( "getRate: " + bookingCurrency);
-    // console.log( "getRate: " + rateType);
     var object = currencyConvert.filter(function (elem) {
       return elem.from == supplierCurrency && elem.to == bookingCurrency;
     });
@@ -21355,7 +21351,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
       if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-        console.log('run');
         $(".versions :input").removeAttr("disabled");
         $(this).data('recall', 'false');
         $(this).text('Back Into Version');
@@ -21530,8 +21525,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       error: function error(reject) {
         if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          console.log(errors); // setTimeout(function() {
+          var errors = $.parseJSON(reject.responseText); // setTimeout(function() {
           //     $("#overlay").removeClass('overlay').html('');
           //     jQuery.each(errors.errors, function( index, value ) {
           //         index = index.replace(/\./g,'_');
@@ -21631,7 +21625,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
                 searchRef.prop('disabled', false);
                 $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                console.log('done');
               },
               error: function error(reject) {
                 searchRef.prop('disabled', false);
@@ -21955,7 +21948,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var countries = $('#content').data('countries');
 
     if (agencyVal == $_val) {
-      console.log(agencyVal, $_val, 'values');
       var count = 1;
       var $v_html = "\n        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n            <div class=\"row\" >\n                <div class=\"col-md-3 mb-2\">\n                    <label>Passenger #").concat(count, " Full Name</label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Email Address</label> \n                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Contact Number</label> \n                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Date Of Birth</label> \n                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-sm-3\">\n                    <label>Nationality</label>\n                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                        <option selected value=\"\" >Select Nationality</option>\n                        ").concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
@@ -21982,9 +21974,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         var $_html = "\n                    <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                        <div class=\"row\" >\n                            <div class=\"col-md-3 mb-2\">\n                                <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER #").concat(count, " FULL NAME\" >\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Email Address</label> \n                                <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                            </div>\n                            \n                          \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Contact Number</label> \n                                <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Date Of Birth</label> \n                                <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-3\">\n                                <label>Nationality</label>\n                                <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                    <option selected value=\"\" >Select Nationality</option>\n                                    ").concat(countries.map(function (co) {
           return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
         }).join(""), "\n                                </select>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Bedding Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                            </div>\n                            \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Dinning Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                            </div>\n                        </div>\n                    </div>");
-        $('#appendPaxName').append($_html); // console.log('countable'+count);
-        // integrate_intlTelInput('#phone'+count);
-
+        $('#appendPaxName').append($_html);
         intTelinput(count);
       }
     } else {
@@ -22005,7 +21995,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '.add-pax-column', function () {
     var pax_value = $('#pax_no').val();
-    console.log(pax_value);
     var updateCount = pax_value != '' ? parseInt(pax_value) + 1 : 1;
     $('#pax_no').val(updateCount).change();
   });
@@ -22028,7 +22017,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     for (var _i = 0; _i <= ids.length; _i++) {
-      console.log($('#' + ids[_i]).find('.mainLabel'));
       var count = 2 + _i;
 
       if (agency_Val == 1) {
