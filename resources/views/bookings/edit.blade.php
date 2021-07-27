@@ -405,11 +405,11 @@
                                 </div>
                                 @endforeach
                                 @endif
-                                <div class="col-md-12 col-offset-md-4">
-                                  <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                </div>
-                        
-                    </div>
+                              </div>
+                                
+                              <div class="col-md-12 col-offset-md-4">
+                                <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                              </div>
                   </div>
 
                   <div class="parent" id="parent">
