@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label>Password <span style="color:red">*</span></label>
+                      <label>Password</label>
                       <input type="password" name="password" value="" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
 
                       @error('password')
