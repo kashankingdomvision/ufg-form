@@ -856,3 +856,36 @@
   </div>
 
 @endsection
+ 
+@push('js')
+
+<script>
+  $(window).on('beforeunload', function() {
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    var id = "{{encrypt($quote->id)}}";
+    var url = "{{ route('quotes.has-user-edit', ":id") }}";
+    url = url.replace(':id', id);
+
+    $.ajax({
+      url: url,
+      type: 'delete',  
+      dataType: "JSON",
+      data: { "id": id },
+      success: function (response)
+      {
+        console.log(response); 
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText);  
+      }
+    });
+  
+  });
+</script>
+@endpush

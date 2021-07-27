@@ -129,6 +129,11 @@ class QuoteController extends Controller
     public function get_commission(){
         return Commission::all();
     }
+
+    public function has_user_edit($id)
+    {
+        QuoteUpdateDetail::where('quote_id',decrypt($id))->where('user_id',Auth::id())->delete();
+    }
     
     public function quoteArray($request, $type = null)
     {
