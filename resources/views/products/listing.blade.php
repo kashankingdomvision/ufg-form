@@ -64,17 +64,32 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Products List</h3>
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('products.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
               </a>
             </div>
+
+
             <div class="card-body p-0">
             <div class="table-responsive">
               <table class="table table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th>
+                      <div class="icheck-primary">
+                        <input type="checkbox" class="parent">
+                      </div>
+                    </th>
                     <th>Product Code</th>
                     <th>Product Name</th>
                     <th>Action</th>
@@ -84,7 +99,11 @@
                 @if($products && $products->count())
                   @foreach ($products as $key => $product)
                   <tr>
-                    <td>{{ $loop->iteration }}</td>
+                    <td>
+                      <div class="icheck-primary">
+                        <input type="checkbox" class="child" value="{{$product->id}}" >
+                      </div>
+                    </td>
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
                     <td class="d-flex">
@@ -106,6 +125,9 @@
               </table>
             </div>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'products'])
+
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 {{ $products->links() }}

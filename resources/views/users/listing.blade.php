@@ -103,16 +103,31 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">User List</h3>
+                            </div>
+
+                            <div class="card-header">
+                                <h3 class="card-title float-left">
+                                  <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                                    <span class="fa fa-trash"></span> &nbsp;
+                                    <span>Delete Selected Record</span>
+                                  </a>
+                                </h3>
                                 <a href="{{ route('users.create') }}" class="btn btn-secondary btn-sm float-right">
                                     <span class="fa fa-plus"></span>
                                     <span>Add New</span>
                                 </a>
                             </div>
+
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <div class="icheck-primary">
+                                                      <input type="checkbox" class="parent">
+                                                    </div>
+                                                </th>
                                                 <th>Name</th>
                                                 <th>User Role</th>
                                                 <th>Email</th>
@@ -126,6 +141,11 @@
                                         @if($users && $users->count())
                                             @foreach ($users as $key => $value)
                                             <tr>
+                                                <td>
+                                                    <div class="icheck-primary">
+                                                      <input type="checkbox" class="child" value="{{$value->id}}" >
+                                                    </div>
+                                                </td>
                                                 <td>{{ $value->name }}</td>
                                                 <td style="text-transform: capitalize;">{{ $value->getRole->name ?? null }}
                                                 <td>{{ $value->email }}</td>
@@ -152,6 +172,9 @@
                                     </table>
                                 </div>
                             </div>
+
+                            @include('includes.multiple_delete',['table_name' => 'users'])
+
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                   {{ $users->links() }}

@@ -117,6 +117,15 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Template List</h3>
+                            </div>
+
+                            <div class="card-header">
+                                <h3 class="card-title float-left">
+                                  <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                                    <span class="fa fa-trash"></span> &nbsp;
+                                    <span>Delete Selected Record</span>
+                                  </a>
+                                </h3>
                                 <a href="{{ route('templates.create') }}" class="btn btn-secondary btn-sm float-right">
                                     <span class="fa fa-plus"></span>
                                     <span>Add New</span>
@@ -128,6 +137,11 @@
                                     <table id="example1" class="table table-striped table-hover">
                                         <thead>
                                           <tr>
+                                            <th>
+                                                <div class="icheck-primary">
+                                                  <input type="checkbox" class="parent">
+                                                </div>
+                                            </th>
                                               <th>Template Name</th>
                                               <th>Season</th>
                                               <th>Created By</th>
@@ -139,6 +153,11 @@
                                         @if($templates && $templates->count())
                                             @foreach ($templates as $key => $template)
                                                 <tr>
+                                                    <td>
+                                                        <div class="icheck-primary">
+                                                            <input type="checkbox" class="child" value="{{$template->id}}" >
+                                                        </div>
+                                                    </td>
                                                     <td>{!! $template->title !!}</td>
                                                     <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
                                                     <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
@@ -158,6 +177,9 @@
                                       </table>
                                 </div>
                             </div>
+
+                            @include('includes.multiple_delete',['table_name' => 'templates'])
+
                             <div class="card-footer clearfix">
                                 {{$templates->links()}}
                             </div>

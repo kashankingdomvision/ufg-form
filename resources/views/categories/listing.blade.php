@@ -63,17 +63,31 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Category List</h3>
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('categories.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
               </a>
             </div>
+
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr>
-                      <th>#</th>
+                      <th>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="parent">
+                        </div>
+                      </th>
                       <th>Category Name</th>
                       <th>Action</th>
                     </tr>
@@ -82,7 +96,11 @@
                   @if($categories && $categories->count())
                     @foreach ($categories as $key => $category)
                     <tr>
-                      <td>{{ $loop->iteration }}</td>
+                      <td>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="child" value="{{$category->id}}" >
+                        </div>
+                      </td>
                       <td>{{ $category->name }}</td>
                       <td class="d-flex">
                         <a href="{{ route('categories.edit', encrypt($category->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
@@ -103,6 +121,9 @@
                 </table>
               </div>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'categories'])
+
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 {{ $categories->links() }}

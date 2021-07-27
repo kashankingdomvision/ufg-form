@@ -71,17 +71,32 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Role List</h3>
+                            </div>
+
+                            <div class="card-header">
+                                <h3 class="card-title float-left">
+                                  <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                                    <span class="fa fa-trash"></span> &nbsp;
+                                    <span>Delete Selected Record</span>
+                                  </a>
+                                </h3>
                                 <a href="{{ route('roles.create') }}" class="btn btn-secondary btn-sm float-right">
                                     <span class="fa fa-plus"></span>
                                     <span>Add New</span>
                                 </a>
                             </div>
 
+
                             <div class="card-body p-0">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <div class="icheck-primary">
+                                                      <input type="checkbox" class="parent">
+                                                    </div>
+                                                </th>
                                                 <th>Role</th>
                                                 <th>Action</th>
                                             </tr>
@@ -90,6 +105,13 @@
                                             @if($roles && $roles->count())
                                                 @foreach ($roles as $key => $value)
                                                 <tr>
+                                                    <td>
+                                                        @if($value->id != 1)
+                                                            <div class="icheck-primary">
+                                                            <input type="checkbox" class="child" value="{{$value->id}}" >
+                                                            </div>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>
                                                         <form method="post" action="{{ route('roles.destroy', encrypt($value->id)) }}">
@@ -111,6 +133,8 @@
                                     </table>
                                 </div>
                             </div>
+
+                            @include('includes.multiple_delete',['table_name' => 'roles'])
 
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
