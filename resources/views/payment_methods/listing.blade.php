@@ -36,7 +36,7 @@
 
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
+                        <i class="text-dark fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
                     </button>
                 </div>
             </div>
