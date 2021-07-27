@@ -374,10 +374,10 @@
                                 @endforeach
                                 @endif
                                 
-                                <div class="col-md-12 ">
-                                  <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                                </div>
-                    </div>
+                              </div>
+                              <div class="col-md-12 ">
+                                <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                              </div>
                   </div>
                   <div class="row mb-2">
                       <div class="col-md-2 offset-md-10">
