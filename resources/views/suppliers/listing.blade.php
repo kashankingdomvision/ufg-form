@@ -116,10 +116,10 @@
                                                 <td class="d-flex">
                                                 <form method="post" action="{{ route('suppliers.destroy', encrypt($supplier->id)) }}">
                                                 <a  href="{{ route('suppliers.edit', encrypt($supplier->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                                                <a class="mr-2  btn btn-outline-info btn-xs"href="{{ route('suppliers.show', encrypt($supplier->id)) }}" title="show"><i class="fa fa-fw fa-eye"></i></a>
+                                                <a class="mr-2  btn btn-outline-info btn-xs" href="{{ route('suppliers.show', encrypt($supplier->id)) }}" title="View"><i class="fa fa-fw fa-eye"></i></a>
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="mr-2  btn btn-outline-danger btn-xs" onclick="return confirm('Are you sure want to Delete this record?');">
+                                                    <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                                                         <span class="fa fa-trash"></span>
                                                     </button>
                                                 </form>
