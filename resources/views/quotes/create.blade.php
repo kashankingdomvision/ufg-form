@@ -196,6 +196,7 @@
                             <label>Contact Number <span style="color:red">*</span></label> 
                             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
                             <span class="text-danger error_msg0" role="alert"></span>
+                            <span class="text-success valid_msg0" role="alert"></span>
                           </div>
                         </div>
                       
@@ -255,6 +256,9 @@
                     
                     <div id="appendPaxName" class="col-md-12 ">
                     
+                    </div>
+                    <div class="col-md-12 col-offset-md-4">
+                      <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div>
                   </div>
                 

@@ -178,7 +178,7 @@
                             <span class="text-danger" role="alert" > </span>
                           </div>
                           <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
+                            <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $quote['agency_contact_name'] }}" name="agency_contact_name" id="agency_contact_name" class="form-control">
                             <span class="text-danger" role="alert" > </span>
                           </div>

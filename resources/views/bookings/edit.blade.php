@@ -251,14 +251,17 @@
                             <span class="text-danger" role="alert" > </span>
                           </div>
                           <div class="col form-group">
-                            <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
+                            <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $booking->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control">
                             <span class="text-danger" role="alert" > </span>
+                            
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                             <input type="tel" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
                             <span class="text-danger error_msg0 hide" role="alert"></span>
+                            <span class="text-success valid_msg0" role="alert"></span>
+                            
                           </div>
                         
                           <div class="col form-group">
@@ -288,6 +291,7 @@
                               <label>Contact Number <span style="color:red">*</span></label> 
                               <input type="tel" value="{{ $booking->lead_passenger_contact }}" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
                               <span class="text-danger error_msg0" role="alert"></span>
+                              <span class="text-success valid_msg0" role="alert"></span>
                             </div>
                           </div>
                         
@@ -351,7 +355,7 @@
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
-                                            <label >Passenger #{{ ($booking->agency == 1)? $count : $count +1  }} Full Name</label> 
+                                            <label class="mainLabel" >Passenger #{{ ($booking->agency == 1)? $count : $count +1  }} Full Name</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
@@ -373,7 +377,8 @@
                                             <label >Contact Number</label> 
                                             <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
                                             <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
-                                            <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
+                                            <span class="text-success valid_msg{{ $count }}" role="alert"></span>
+
                                         </div>
                                     </div>
                                     <div class="row">
@@ -393,10 +398,16 @@
                                             <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="DINNING PREFERENCES" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
+                                        <div class="col-md-3 mb-2">
+                                          <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                        </div>
                                     </div>
                                 </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                                @endif
+                                <div class="col-md-12 col-offset-md-4">
+                                  <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
                         
                     </div>
                   </div>

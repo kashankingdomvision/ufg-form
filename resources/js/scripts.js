@@ -219,14 +219,15 @@ $(document).on('change', '.select-agency', function() {
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact name </label> <span style="color:red"> *</span>
+                          <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
                           <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                           <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                          <span class="text-danger error_msg0 hide" role="alert"></span>
+                            <span class="text-danger error_msg0 hide" role="alert"></span>
+                            <span class="text-success valid_msg0" role="alert"></span>
                         </div>
                       
                         <div class="col form-group">
@@ -258,6 +259,7 @@ $(document).on('change', '.select-agency', function() {
             <label>Contact Number <span style="color:red">*</span></label> 
             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
             <span class="text-danger error_msg0" role="alert"></span>
+            <span class="text-success valid_msg0" role="alert"></span>
           </div>
         </div>
       
@@ -719,88 +721,7 @@ $(document).on('click', '.addChild', function () {
         return (yyyy+sp+mm+sp+dd);
     };
 
-    $(document).on('change', '.pax-number', function () {
-        
-        $('.nationality-select2').select2('destroy');
 
-        var $_val = $(this).val();
-        var agencyVal = $('.select-agency:checked').val();
-     
-        var currentDate = curday('-');
-        var countries = $('#content').data('countries');
-        if($_val > $('.appendCount').length){
-            var countable = ($_val - $('.appendCount').length) - 1;
-            if(agencyVal == 1){
-                var countable = ($_val - $('.appendCount').length);
-            }
-            
-            for (i = 1; i <= countable; ++i) {
-                var count = $('.appendCount').length + 1;
-                var c = count + 1;
-                
-                if(agencyVal == 1){
-                    c = count;
-                }
-                const $_html = `
-                        <div class="mb-1 appendCount" id="appendCount${count}">
-                            <div class="row" >
-                                <div class="col-md-3 mb-2">
-                                    <label>Passenger #${c} Full Name</label> 
-                                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Email Address</label> 
-                                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
-                                </div>
-                                
-                              
-                                <div class="col-md-3 mb-2">
-                                    <label>Contact Number</label> 
-                                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
-                                        <span class="text-danger error_msg${count}" role="alert"></span>
-                                    <span class="text-danger valid_msg${count}" role="alert"></span>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Date Of Birth</label> 
-                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <label>Nationality</label>
-                                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
-                                        <option selected value="" >Select Nationality</option>
-                                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
-                                    </select>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Bedding Preference</label> 
-                                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
-                                </div>
-                                
-                                <div class="col-md-3 mb-2">
-                                    <label>Dinning Preference</label> 
-                                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
-                                </div>
-                            </div>
-                        </div>`;
-                        $('#appendPaxName').append($_html);
-                        // console.log('countable'+count);
-                        // integrate_intlTelInput('#phone'+count);
-                        intTelinput(count);
-            }
-        }else{
-            var countable = $('.appendCount').length + 1;
-            for (var i = countable - 1; i >= $_val; i--) {
-                $("#appendCount"+i).remove();
-            }
-        }
-        $('.nationality-select2').select2({
-            width: '100%',
-            theme: "bootstrap",
-        });
-        getSellingPrice();
-    });
 
     $(document).on('change', '.booking-currency-id',function () {
 
@@ -1588,14 +1509,14 @@ function intTelinput(key = null, inVal = null) {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
         separateDialCode: true,
         formatOnDisplay:true,
-        initialCountry: "auto",
+        initialCountry: "US",
         nationalMode: true,
         hiddenInput: "full_number",
         autoPlaceholder: "polite",
         placeholderNumberType: "MOBILE",
     });
     input.nextElementSibling.value = iti.getNumber();
-    
+    // iti.setCountry("US");
     // on blur: validate
     var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
     input.addEventListener('blur', function() {
@@ -1604,9 +1525,12 @@ function intTelinput(key = null, inVal = null) {
             if (input.value.trim()) {
                 if (iti.isValidNumber()) {
                     $('.buttonSumbit').removeAttr('disabled');
+                    input.classList.add("is-valid");
+                    validMsg.innerHTML = 'The number is valid';
                 } else {
                     $('.buttonSumbit').attr('disabled', 'disabled');
                     input.classList.add("is-invalid");
+                    validMsg.innerHTML = '';
                     var errorCode = iti.getValidationError();
                     errorMsg.innerHTML = errorMap[errorCode];
                     errorMsg.classList.remove("hide");
@@ -1623,6 +1547,186 @@ function intTelinput(key = null, inVal = null) {
 }
 //intl-tel-input ************** End ******************** //
 
+
+/// pax append work  start//
+
+
+
+$(document).on('change', '.pax-number', function () {
+        
+    $('.nationality-select2').select2('destroy');
+
+    var $_val = $(this).val();
+    var agencyVal = $('.select-agency:checked').val();
+ 
+    var currentDate = curday('-');
+    var countries = $('#content').data('countries');
+    if(agencyVal == $_val){
+        console.log(agencyVal, $_val, 'values');
+        var count = 1;
+        var $v_html = `
+        <div class="mb-1 appendCount" id="appendCount${count}">
+            <div class="row" >
+                <div class="col-md-3 mb-2">
+                    <label>Passenger #${count} Full Name</label> 
+                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Email Address</label> 
+                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Contact Number</label> 
+                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
+                    <span class="text-danger error_msg${count}" role="alert"></span>
+                    <span class="text-success valid_msg${count}" role="alert"></span>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Date Of Birth</label> 
+                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label>Nationality</label>
+                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
+                        <option selected value="" >Select Nationality</option>
+                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                    </select>
+                </div>
+                <div class="col-md-3 mb-2">
+                    <label>Bedding Preference</label> 
+                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+                </div>
+                
+                <div class="col-md-3 mb-2">
+                    <label>Dinning Preference</label> 
+                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+                </div>
+                <div class="col-md-3 mb-2">
+                    <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>`;
+        $('#appendPaxName').html($v_html);
+        intTelinput(1);
+        
+    }
+    if($_val > $('.appendCount').length){
+        var countable = ($_val - $('.appendCount').length) - 1;
+        if(agencyVal == 1){
+            var countable = ($_val - $('.appendCount').length);
+        }
+        
+                  
+        for (i = 1; i <= countable; ++i) {
+            var count = $('.appendCount').length + 1;
+            var c = count + 1;
+            
+            if(agencyVal == 1){
+                c = count;
+            }
+            const $_html = `
+                    <div class="mb-1 appendCount" id="appendCount${count}">
+                        <div class="row" >
+                            <div class="col-md-3 mb-2">
+                                <label class="mainLabel">Passenger #${c} Full Name</label> 
+                                <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Email Address</label> 
+                                <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
+                            </div>
+                            
+                          
+                            <div class="col-md-3 mb-2">
+                                <label>Contact Number</label> 
+                                <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
+                                <span class="text-danger error_msg${count}" role="alert"></span>
+                                <span class="text-success valid_msg${count}" role="alert"></span>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Date Of Birth</label> 
+                                <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label>Nationality</label>
+                                <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
+                                    <option selected value="" >Select Nationality</option>
+                                    ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <label>Bedding Preference</label> 
+                                <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+                            </div>
+                            
+                            <div class="col-md-3 mb-2">
+                                <label>Dinning Preference</label> 
+                                <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                    $('#appendPaxName').append($_html);
+                    // console.log('countable'+count);
+                    // integrate_intlTelInput('#phone'+count);
+                    intTelinput(count);
+        }
+    }else{
+        if(agencyVal != $_val){
+            var countable = $('.appendCount').length + 1;
+            for (var i = countable - 1; i >= $_val; i--) {
+                $("#appendCount"+i).remove();
+            }
+        }
+    }
+    $('.nationality-select2').select2({
+        width: '100%',
+        theme: "bootstrap",
+    });
+    getSellingPrice();
+});
+
+$(document).on('click', '.add-pax-column', function () {
+    var pax_value = $('#pax_no').val();
+    console.log(pax_value);
+    var updateCount = (pax_value != '')? parseInt(pax_value) + 1 : 1;
+    $('#pax_no').val(updateCount).change();
+});
+
+
+$(document).on('click', '.remove-pax-column', function () {
+    var agency_Val =  $('.select-agency:checked').val();
+    $(this).closest('.appendCount').remove();
+    var pax_value = $('#pax_no').val();
+    var updateCount = parseInt(pax_value) - 1;
+    $('#pax_no').val(updateCount).change();
+    
+    var ids = [];
+    $('.appendCount').each(function(){
+        ids.push($(this).attr('id')); 
+      });
+    let _val  = 2
+    let idLength = ids.length + _val;
+    if(agency_Val == 1){
+        _val = 1
+        idLength = ids.length + _val;
+    }
+    for (let i = 0; i <= ids.length; i++) {
+        console.log($('#'+ids[i]).find('.mainLabel'));
+        var count = 2 + i;
+        if(agency_Val == 1){
+            count = 1 + i;
+        }
+        $('#'+ids[i]).find('.mainLabel').text('Passenger #'+count+' Full Name');
+    }
+});
+//pax appednd work end
 });
 
 
