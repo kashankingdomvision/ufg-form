@@ -32,6 +32,9 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('dashboard', 'DashboardController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
+
+    Route::delete('multiple-delete/{ids}',array('as'=>'multiple-delete','uses'=>'DashboardController@multiple_delete'));
+
     /*
     |--------------------------------------------------------------------------
     | Booking

@@ -74,6 +74,15 @@
               <h3 class="card-title float-left">
                 Commission List
               </h3>
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('setting.commissions.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
@@ -84,6 +93,11 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>
+                      <div class="icheck-primary">
+                        <input type="checkbox" class="parent">
+                      </div>
+                    </th>
                     <th>#</th>
                     <th>Name</th>
                     <th>Percentage</th>
@@ -94,6 +108,11 @@
                 @if($commissions && $commissions->count())
                   @foreach ($commissions as $commission)
                     <tr>
+                      <td>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="child" value="{{$commission->id}}" >
+                        </div>
+                      </td>
                       <td>{{ $commission->id }}</td>
                       <td>{{ $commission->name }}</td>
                       <td>{{ $commission->percentage }} %</td>
@@ -116,6 +135,8 @@
                 </tbody>
               </table>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'commissions'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">

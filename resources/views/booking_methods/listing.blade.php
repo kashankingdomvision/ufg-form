@@ -71,6 +71,15 @@
               <h3 class="card-title float-left">
                 Booking Method List
               </h3>
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('setting.booking_methods.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
@@ -82,6 +91,11 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
+                      <th>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="parent">
+                        </div>
+                      </th>
                       <th>Booking Method</th>
                       <th>Action</th>
                     </tr>
@@ -90,6 +104,11 @@
                   @if($booking_methods && $booking_methods->count())
                     @foreach ($booking_methods as $key => $value)
                     <tr>
+                      <td>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="child" value="{{$value->id}}" >
+                        </div>
+                      </td>
                       <td>{{ $value->name }}</td>
                       <td>
                         <form method="post" action="{{ route('setting.booking_methods.destroy', encrypt($value->id)) }}">
@@ -112,6 +131,8 @@
                 </table>
               </div>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'booking_methods'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">

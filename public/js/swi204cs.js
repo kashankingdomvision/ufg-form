@@ -21836,6 +21836,57 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.deposit-due-date', function () {
     var close = $(this).closest('.finance-clonning');
     close.find('.plus').removeAttr('disabled');
+  });
+  $('.parent').on('click', function (e) {
+    if ($(this).is(':checked', true)) {
+      $(".child").prop('checked', true);
+    } else {
+      $(".child").prop('checked', false);
+    }
+  });
+  $('#delete_all').on('click', function (e) {
+    e.preventDefault();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get(); // console.log(checkedValues);
+
+    if (checkedValues.length > 0) {
+      jQuery('#multiple_delete_modal').modal('show');
+    } else {
+      alert("Please Check any Record First");
+    }
+  });
+  $('#multiple_delete').on('click', function (e) {
+    e.preventDefault();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var tableName = $('.table-name').val();
+    $.ajax({
+      url: REDIRECT_BASEURL + '/multiple-delete/' + checkedValues,
+      type: 'delete',
+      dataType: "JSON",
+      data: {
+        "checkedValues": checkedValues,
+        "tableName": tableName
+      },
+      beforeSend: function beforeSend() {
+        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(response) {
+        if (response.status == true) {
+          $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+          jQuery('#multiple_delete_modal').modal('hide');
+          setTimeout(function () {
+            alert(response.message);
+            location.reload();
+          }, 600);
+        }
+      },
+      error: function error(xhr) {
+        console.log(xhr.responseText);
+      }
+    });
   }); ///booking incremnet and
 
   $(document).on('click', '.increment', function () {

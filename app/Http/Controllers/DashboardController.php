@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -82,5 +83,14 @@ class DashboardController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function multiple_delete(Request $request,$id)
+    {
+        $ids = explode(",", $id);
+        $table_name = $request->tableName;
+        DB::table($table_name)->whereIn('id', $ids)->delete(); 
+
+        return ['status' => true, 'message' => 'Records Deleted Successfully !!'];
     }
 }

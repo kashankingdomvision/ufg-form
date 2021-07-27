@@ -74,6 +74,16 @@
               <h3 class="card-title float-left">
                 Brands List
               </h3>
+
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('setting.brands.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
@@ -85,6 +95,11 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
+                      <th>
+                        <div class="icheck-primary">
+                          <input type="checkbox" class="parent">
+                        </div>
+                      </th>
                       <th>Name</th>
                       <th>Email Address</th>
                       <th>Address</th>
@@ -97,6 +112,11 @@
                   @if($brands && $brands->count())
                     @foreach ($brands as $key => $value)
                       <tr>
+                        <td>
+                          <div class="icheck-primary">
+                            <input type="checkbox" class="child" value="{{$value->id}}" >
+                          </div>
+                        </td>
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->email }}</td>
                         <td>{{ $value->address  }}</td>
@@ -121,6 +141,8 @@
                 </table>
               </div>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'brands'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">

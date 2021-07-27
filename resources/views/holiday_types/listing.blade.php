@@ -74,6 +74,16 @@
               <h3 class="card-title float-left">
                 Holiday Type List
               </h3>
+
+            </div>
+
+            <div class="card-header">
+              <h3 class="card-title float-left">
+                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                  <span class="fa fa-trash"></span> &nbsp;
+                  <span>Delete Selected Record</span>
+                </a>
+              </h3>
               <a href="{{ route('setting.holidaytypes.create') }}" class="btn btn-secondary btn-sm float-right">
                 <span class="fa fa-plus"></span>
                 <span>Add New</span>
@@ -84,6 +94,11 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
+                    <th>
+                      <div class="icheck-primary">
+                        <input type="checkbox" class="parent">
+                      </div>
+                    </th>
                     <th>Holiday Type</th>
                     <th>Brand</th>
                     <th>Action</th>
@@ -93,6 +108,11 @@
                   @if($holiday_types && $holiday_types->count())
                     @foreach ($holiday_types as $value)
                       <tr>
+                        <td>
+                          <div class="icheck-primary">
+                            <input type="checkbox" class="child" value="{{$value->id}}" >
+                          </div>
+                        </td>
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->getBrand->name ?? NULL }}</td>
                         <td>
@@ -113,6 +133,8 @@
                 </tbody>
               </table>
             </div>
+
+            @include('includes.multiple_delete',['table_name' => 'holiday_types'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
