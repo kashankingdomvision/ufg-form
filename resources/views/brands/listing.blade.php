@@ -82,7 +82,7 @@
 
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                   <thead>
                     <tr>
                       <th>Name</th>

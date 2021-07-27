@@ -107,8 +107,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'UserController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-        Route::post('update/{id}', array('as' => 'update', 'uses' => 'UserController@update'));
+        Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+        Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
     	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
 

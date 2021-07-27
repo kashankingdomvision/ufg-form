@@ -121,7 +121,7 @@
 
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table id="example1" class="table table-striped">
+                                    <table id="example1" class="table table-striped table-hover">
                                         <thead>
                                           <tr>
                                               <th>Template Name</th>

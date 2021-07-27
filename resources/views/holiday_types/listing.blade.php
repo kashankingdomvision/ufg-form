@@ -81,7 +81,7 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped">
+              <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th>Holiday Type</th>

@@ -57,4 +57,9 @@ class User extends Authenticatable
     function getBrand() {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
+    
+    public function hasAdmin()
+    {
+        return $this->getRole()->where('slug', 'admin')->exists();
+    }
 }

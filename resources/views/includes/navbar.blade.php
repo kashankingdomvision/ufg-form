@@ -17,12 +17,14 @@
 
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <div class="dropdown-divider"></div>
-
-          <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-            <i class="fas fa-sign-out-alt mr-2"></i>Logout
-          </a>    
-          <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+          <a href="{{ route('users.edit', [encrypt(Auth::id()), 'profile']) }}" class="dropdown-item">
+            <i class="fas fa-user-edit mr-2"></i>Edit Profile
+          </a>   
+          <form id="frm-logout" action="{{ route('logout') }}" method="POST" >
             @csrf
+            <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+              <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            </a>    
           </form>
 
           {{-- <a href="#" >

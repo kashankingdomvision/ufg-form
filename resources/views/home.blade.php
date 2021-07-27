@@ -10,11 +10,16 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
+                    {{-- @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                    @endif
+                    @endif --}}
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            @include('includes.flash_message')
+                        </div>
+                    </div>
 
                     You are logged in!
 
