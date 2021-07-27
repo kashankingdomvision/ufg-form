@@ -2,10 +2,10 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1467,7 +1467,7 @@ $('#multiple_delete').on('click', function(e) {
     var tableName      =  $('.table-name').val();
 
     $.ajax({
-        url: REDIRECT_BASEURL+'/multiple-delete/'+checkedValues,
+        url: REDIRECT_BASEURL+'multiple-delete/'+checkedValues,
         type: 'delete',  
         dataType: "JSON",
         data: { "checkedValues": checkedValues, "tableName": tableName },
