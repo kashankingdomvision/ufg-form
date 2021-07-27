@@ -53,7 +53,8 @@ class BookingController extends Controller
                 $booking = $booking->where(function ($query) use ($request) {
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
                     ->orWhere('quote_ref', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%');
+                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%');
                 });
             }
             if($request->has('client_type') && !empty($request->client_type)){
@@ -163,15 +164,22 @@ class BookingController extends Controller
             'ref_no'              =>  $request->ref_no,
             'ref_name'            =>  $request->ref_name??'zoho',
             'quote_ref'           =>  $request->quote_no,
-            'lead_passenger'      =>  $request->lead_passenger,
+            'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
+            'agency_name'                       =>  $request->agency_name??NULL,
+            'agency_contact'                    =>  ($request->agency_contact != NULL)? $request->full_number : NULL,
+            'agency_email'                      =>  $request->agency_email??NULL,
+            'agency_contact_name'               =>  $request->agency_contact_name??NULL,
+            'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
+            'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
+            'lead_passenger_contact'            =>  ($request->lead_passenger_contact != NULL)? $request->full_number : NULL,
+            'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
+            'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
+            'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
+            'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
             'brand_id'            =>  $request->brand_id,
             'holiday_type_id'     =>  $request->holiday_type_id,
             'sale_person_id'      =>  $request->sale_person_id,
             'season_id'           =>  $request->season_id,
-            'country_id'          =>  $request->nationality_id??$request->country_id,
-            'agency'              =>  ((int)$request->agency == 1)? '1' : false,
-            'dinning_preference'  =>  $request->dinning_preference,
-            'bedding_preference'  =>  $request->bedding_preference,
             'currency_id'         =>  $request->currency_id,
             'pax_no'              =>  $request->pax_no,
             'net_price'           =>  $request->total_net_price??$request->total_net_price,
@@ -280,7 +288,7 @@ class BookingController extends Controller
                      'date_of_birth'         => $pax_data['date_of_birth']??NULL,
                      'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                      'dinning_preference'    => $pax_data['dinning_preference']??NULL,
-                     'country_id'            => $pax_data['nationality_id']??NULL,
+                     'nationality_id'            => $pax_data['nationality_id']??NULL,
                  ]);
              }
         }

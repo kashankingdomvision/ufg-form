@@ -73,7 +73,8 @@ class QuoteController extends Controller
             if($request->has('search') && !empty($request->search)){
                 $quote->where(function($query) use($request){
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%')                    
+                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
                     ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
                 });
             }
@@ -496,7 +497,8 @@ class QuoteController extends Controller
             if($request->has('search') && !empty($request->search)){
                 $quote->where(function($query) use($request){
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger', 'like', '%'.$request->search.'%')                    
+                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')                    
+                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
                     ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
                 });
             }
