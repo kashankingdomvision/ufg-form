@@ -216,24 +216,24 @@ $(document).on('change', '.select-agency', function() {
         $v_html = `<div class="row mt-1" >
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_name" id="agency_name" class="form-control">
+                          <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control">
+                          <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                          <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
+                          <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0" placeholder="Agency Contact Number">
                             <span class="text-danger error_msg0 hide" role="alert"></span>
                             <span class="text-success valid_msg0" role="alert"></span>
                         </div>
 
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                          <input type="email" name="agency_email" id="agency_email" class="form-control">
+                          <input type="email" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                     </div>
@@ -251,7 +251,7 @@ $(document).on('change', '.select-agency', function() {
         <div class="col-md-3">
           <div class="form-group">
             <label>Email Address <span style="color:red">*</span></label>
-            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="EMAIL ADDRESS" >
+            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
@@ -284,13 +284,6 @@ $(document).on('change', '.select-agency', function() {
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="form-group">
-            <label>Dinning Preferences <span style="color:red">*</span></label>
-            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-
         <div class="col-sm-3">
           <div class="form-group">
             <label>Bedding Preferences <span style="color:red">*</span></label>
@@ -298,6 +291,13 @@ $(document).on('change', '.select-agency', function() {
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
+          <div class="form-group">
+            <label>Dinning Preferences <span style="color:red">*</span></label>
+            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+            <span class="text-danger" role="alert"></span>
+          </div>
+        </div>
+
       </div>`
 
         $('#pax_no').val(1).change();
