@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-4  offset-md-4">
                                 <a href="{{ route('seasons.index') }}" class="float-right btn btn-md btn-outline-dark mt-4">Reset<span class="fa fa-repeats"></span></a>
-                                <button type="submit" class=" float-right btn btn-outline-success mr-2 mt-4">Search</button>
+                                <button type="submit" class=" float-right btn btn-outline-success mr-2 mt-4">Filter</button>
                             </div>
                         </div>
                        
