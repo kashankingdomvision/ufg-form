@@ -38,8 +38,14 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('bookings.view.seasons') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'active' : '' }}">
+                        <i class="fas fa-pen-square nav-icon"></i>
+                        <p>Booking Seasons</p>
+                    </a>
+                </li>
 
-                <li class="nav-item {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'menu-open': '' }}">
+                {{-- <li class="nav-item {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-pen-square nav-icon"></i>
                         <p>
@@ -55,7 +61,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
                 <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
@@ -87,7 +93,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
+                
+                <li class="nav-item">
+                    <a href="{{ route('templates.index') }}"class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit'  ? 'active' : '' }}">
+                        <i class="fa fa-clone nav-icon"></i>
+                        <p>Templates</p>
+                    </a>
+                </li>
+                {{-- <li class="nav-item {{  $route == 'templates.index' || $route == 'templates.create' || $route == 'templates.edit'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-clone nav-icon"></i>
                         <p>
@@ -104,9 +117,16 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
-                <li class="nav-item {{ ($route == 'seasons.index' || $route == 'seasons.create' || $route == 'seasons.edit') ? 'menu-open': '' }}">
+                <li class="nav-item">
+                    <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
+                        <i class="fa fa-cloud nav-icon"></i>
+                        <p>Seasons</p>
+                    </a>
+                </li>
+                
+                {{-- <li class="nav-item {{ ($route == 'seasons.index' || $route == 'seasons.create' || $route == 'seasons.edit') ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-cloud nav-icon"></i>
                         <p>
@@ -123,7 +143,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
                 @if(Auth::user()->hasAdmin())
 
                     <li class="nav-item {{ ($route == 'users.index' || $route == 'users.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
