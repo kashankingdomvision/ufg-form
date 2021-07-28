@@ -1855,8 +1855,10 @@ $(".bulkDeleteData").submit(function(e) {
         message = 'Are you sure you want to add this records in archive?'
     }else if(btnname == 'unarchive'){
         message = 'Are you sure you want to revert this records from archive?'
+    }else if(btnname = 'quote delete'){
+        message = 'Are you sure you want to cancel this quotes?';
+        
     }
-
      if(checkedValues.length > 0){
          Swal.fire({
              title: 'Are you sure?',
