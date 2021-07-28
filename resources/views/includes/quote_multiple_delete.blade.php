@@ -2,7 +2,7 @@
     <div class="modal-dialog ">
         <div class="modal-content">
             <form action="" method="POST"  id="update-override">
-                @csrf  
+                @csrf   @method('delete')
                 <input type="hidden" name="action_name" class="action_name" value="">
         
                 <div class="modal-header">
