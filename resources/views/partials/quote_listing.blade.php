@@ -1,5 +1,6 @@
 @foreach ($quotes as $key => $quote)
 <tr>
+  <td></td>
   <td>
     @if($quote->quote_count > 1)
     <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
