@@ -41,7 +41,7 @@ class QuoteController extends Controller
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1);
         if(count($request->all()) >0){
             if($request->has('client_type') && !empty($request->client_type)){
-                $client_type = ($request->client_type == 'client')? 0 : 1;
+                $client_type = ($request->client_type == 'client')? '0' : '1';
                 $quote->where('agency', $client_type);    
             }
             
