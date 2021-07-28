@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1850,9 +1850,9 @@ $(".bulkDeleteData").submit(function(e) {
     var formData = $(this).serializeArray();
     formData.push({name:'id', value: checkedValues});
     formData.push({name:'btn', value: btnname});
-    var message= 'Are you sure you want to Delete Records?';
+    var message= 'Are you sure you want to delete records?';
     if(btnname == 'archive'){
-        message = 'Are you sure you want to Records add in archive?'
+        message = 'Are you sure you want to add this records in archive?'
     }
 
      if(checkedValues.length > 0){
@@ -1862,7 +1862,7 @@ $(".bulkDeleteData").submit(function(e) {
              focusConfirm: false,
              showCancelButton: true,
              confirmButtonText: 'Yes, '+btnname+' it!',
-             confirmButtonColor: '#45f542',
+             confirmButtonColor: '#5cb85c',
              cancelButtonText: 'No, keep it',
              showLoaderOnConfirm: true,
            }).then((result) => {
@@ -1873,10 +1873,10 @@ $(".bulkDeleteData").submit(function(e) {
                      data: $.param(formData), 
                      success: function(data)
                      {
-                        //  setTimeout(function() {
-                        //      alert(data.message);
-                        //      location.reload();
-                        //  }, 600);
+                         setTimeout(function() {
+                             alert(data.message);
+                             location.reload();
+                         }, 600);
                      }
                  });
              } else if (result.dismiss === Swal.DismissReason.cancel) {

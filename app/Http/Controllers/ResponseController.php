@@ -272,14 +272,14 @@ class ResponseController extends Controller
     public function bulkDataDelete(Request $request)
     {
         $ids = explode(",", $request->id);
+        $table_name = $request->tab;
         $respons['status'] = FALSE;
-        if($request->btn == 'archive'){
+        $isArchive  = ($request->btn == 'restore')? 0 : 1;
+        if($request->btn == 'archive' || $request->btn){
             
-            dd('archive');
             DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
-            $respons['message'] = "add in archived successfully";
+            $respons['message'] = ($isArchive == 1)? "quotes add in archived successfully" : 'quotes is revert from archive successfully';
         }else{
-            $table_name = $request->tab;
             DB::table($table_name)->whereIn('id', $ids)->delete();
             $respons['message'] = 'Records Deleted Successfully !!';
         }

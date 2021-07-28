@@ -23746,11 +23746,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -25273,10 +25273,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       name: 'btn',
       value: btnname
     });
-    var message = 'Are you sure you want to Delete Records?';
+    var message = 'Are you sure you want to delete records?';
 
     if (btnname == 'archive') {
-      message = 'Are you sure you want to Records add in archive?';
+      message = 'Are you sure you want to add this records in archive?';
     }
 
     if (checkedValues.length > 0) {
@@ -25286,7 +25286,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         focusConfirm: false,
         showCancelButton: true,
         confirmButtonText: 'Yes, ' + btnname + ' it!',
-        confirmButtonColor: '#45f542',
+        confirmButtonColor: '#5cb85c',
         cancelButtonText: 'No, keep it',
         showLoaderOnConfirm: true
       }).then(function (result) {
@@ -25295,10 +25295,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             type: "DELETE",
             url: url,
             data: $.param(formData),
-            success: function success(data) {//  setTimeout(function() {
-              //      alert(data.message);
-              //      location.reload();
-              //  }, 600);
+            success: function success(data) {
+              setTimeout(function () {
+                alert(data.message);
+                location.reload();
+              }, 600);
             }
           });
         } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.DismissReason.cancel) {///no action here
