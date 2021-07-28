@@ -1,6 +1,12 @@
 @foreach ($quotes as $key => $quote)
 <tr>
-  <td></td>
+  <td>
+    @if($quote->booking_status == 'quote')
+        <div class="icheck-primary">
+            <input type="checkbox" class="child" value="{{$quote->id}}" >
+        </div>
+    @endif
+  </td>
   <td>
     @if($quote->quote_count > 1)
     <button class="btn btn-sm addChild" id="show{{$quote->id}}" data-remove="#remove{{$quote->id}}" data-append="#appendChild{{$quote->id}}" data-ref="{{ $quote->ref_no }}" data-id="{{$quote->id}}">
