@@ -70,6 +70,14 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Season List</h3>
+                            </div>
+                            <div class="card-header">
+                                <h3 class="card-title float-left">
+                                  <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
+                                    <span class="fa fa-trash"></span> &nbsp;
+                                    <span>Delete Selected Record</span>
+                                  </a>
+                                </h3>
                                 <a href="{{ route('seasons.create') }}" class="btn btn-secondary btn-sm float-right">
                                     <span class="fa fa-plus"></span>
                                     <span>Add New</span>
@@ -81,6 +89,11 @@
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                    <div class="icheck-primary">
+                                                      <input type="checkbox" class="parent">
+                                                    </div>
+                                                </th>
                                                 <th>Season</th>
                                                 <th>Action</th>
                                             </tr>
@@ -89,7 +102,11 @@
                                         @if($seasons && $seasons->count())
                                             @foreach ($seasons as $key => $value)
                                                 <tr>
-
+                                                    <td>
+                                                        <div class="icheck-primary">
+                                                          <input type="checkbox" class="child" value="{{$value->id}}" >
+                                                        </div>
+                                                    </td>
                                                 <td>
                                                     {{ $value->name }} &nbsp;
                                                     
@@ -119,7 +136,7 @@
                                     </table>
                                 </div>
                             </div>
-
+                            @include('includes.multiple_delete',['table_name' => 'seasons'])
                             <div class="card-footer clearfix">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                   {{ $seasons->links() }}
