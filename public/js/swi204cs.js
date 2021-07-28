@@ -23746,11 +23746,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+ // var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-
+var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -25279,6 +25279,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       message = 'Are you sure you want to add this records in archive?';
     } else if (btnname == 'unarchive') {
       message = 'Are you sure you want to revert this records from archive?';
+    } else if (btnname = 'quote delete') {
+      message = 'Are you sure you want to cancel this quotes?';
     }
 
     if (checkedValues.length > 0) {
