@@ -29,6 +29,8 @@ use DB;
 use Carbon\Carbon;
 use App\Country;
 use App\QuoteUpdateDetail;
+use Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class QuoteController extends Controller
 {
@@ -370,8 +372,11 @@ class QuoteController extends Controller
 
 
     public function delete($id)
-    {
-        Quote::destroy(decrypt($id));
+    { 
+
+        $quote =  Quote::findOrFail(decrypt($id)); 
+        $quote->delete();
+        // Quote::destroy(decrypt($id));
         return redirect()->route('quotes.index')->with('success_message', 'Quote deleted successfully');        
     }
 

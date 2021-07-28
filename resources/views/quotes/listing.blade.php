@@ -167,7 +167,7 @@
                                                 Select Action
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <button type="submit" name="delete" class="dropdown-item btn-link btnbulkClick">Delete</button>
+                                                <button type="submit" name="quote delete" class="dropdown-item btn-link btnbulkClick">Cancel</button>
                                                 <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
                                             </div>
                                         </div>
@@ -252,31 +252,26 @@
                                                         </a>
 
                                                         @if($quote->booking_status == 'quote')
-                                                            <a onclick="return confirm('Are you sure want to Delete {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                            <a onclick="return confirm('Are you sure want to cancel {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel" data-target="#Cancel"><span class="fa fa-times "></span></a>
                                                         @endif
-
                                                         @if($quote->booking_status == 'booked')
-                                                       
-                                                                <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
-                                                                    @csrf @method('patch')
-                                                                    @if(isset($status))
-                                                                    <input type="hidden" value="true" name="status">
+                                                            <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
+                                                                @csrf @method('patch')
+                                                                @if(isset($status))
+                                                                <input type="hidden" value="true" name="status">
+                                                                @endif
+                                                                <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
+                                                                <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
+                                                                    @if(isset($status) || $quote->is_archive == 1)
+                                                                        <i class="fa fa-recycle" ></i>
+                                                                    @else
+                                                                        <i class="fa fa-archive" ></i>
                                                                     @endif
-                                                                    <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
-                                                                    <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
-                                                                        @if(isset($status) || $quote->is_archive == 1)
-                                                                            <i class="fa fa-recycle" ></i>
-                                                                        @else
-                                                                            <i class="fa fa-archive" ></i>
-                                                                        @endif
-                                                                        </button>
-                                                                </form>
-                                                            
+                                                                    </button>
+                                                            </form>
                                                         @endif
-                                                        
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
-                                                    
                                                     </tbody>
                                                 </tr>
                                             @endforeach
