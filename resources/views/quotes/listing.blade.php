@@ -168,7 +168,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                 <button type="submit" name="delete" class="dropdown-item btn-link btnbulkClick">Delete</button>
-                                                <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'restore': 'archive' }}" class="dropdown-item btn-link btnbulkClick">Archive</button>
+                                                <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
                                             </div>
                                         </div>
                                     </form>

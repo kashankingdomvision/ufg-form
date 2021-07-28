@@ -274,8 +274,8 @@ class ResponseController extends Controller
         $ids = explode(",", $request->id);
         $table_name = $request->tab;
         $respons['status'] = FALSE;
-        $isArchive  = ($request->btn == 'restore')? 0 : 1;
-        if($request->btn == 'archive' || $request->btn){
+        $isArchive  = ($request->btn == 'unarchive')? 0 : 1;
+        if($request->btn == 'archive' || $request->btn == 'unarchive'){
             
             DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
             $respons['message'] = ($isArchive == 1)? "quotes add in archived successfully" : 'quotes is revert from archive successfully';

@@ -1853,6 +1853,8 @@ $(".bulkDeleteData").submit(function(e) {
     var message= 'Are you sure you want to delete records?';
     if(btnname == 'archive'){
         message = 'Are you sure you want to add this records in archive?'
+    }else if(btnname == 'unarchive'){
+        message = 'Are you sure you want to revert this records from archive?'
     }
 
      if(checkedValues.length > 0){

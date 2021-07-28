@@ -25277,6 +25277,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (btnname == 'archive') {
       message = 'Are you sure you want to add this records in archive?';
+    } else if (btnname == 'unarchive') {
+      message = 'Are you sure you want to revert this records from archive?';
     }
 
     if (checkedValues.length > 0) {
