@@ -12,15 +12,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to Delete Records?</p>
+                    <p>Are you sure you want to Delete Recordss?</p>
                 </div>
                 <div class="modal-footer">
-
                     <button class="" type="submit" id="quote_multiple_action">
                         <span class="mr-2" role="status" aria-hidden="true"></span>
                         Delete
                     </button>
-
                    
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>

@@ -17,6 +17,7 @@ use App\Currency;
 use App\Season;
 use App\BookingType;
 use App\Country;
+use DB;
 
 
 class ResponseController extends Controller
@@ -266,5 +267,23 @@ class ResponseController extends Controller
         $data['count']     = $count;
         $re['response']    = View::make('partials.paxdetail', $data)->render();
         return response()->json($re);
+    }
+    
+    public function bulkDataDelete(Request $request)
+    {
+        $ids = explode(",", $request->id);
+        $respons['status'] = FALSE;
+        if($request->btn == 'archive'){
+            
+            dd('archive');
+            DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
+            $respons['message'] = "add in archived successfully";
+        }else{
+            $table_name = $request->tab;
+            DB::table($table_name)->whereIn('id', $ids)->delete();
+            $respons['message'] = 'Records Deleted Successfully !!';
+        }
+        $respons['status']  = true;
+        return response()->json($respons);
     }
 }

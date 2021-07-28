@@ -34,6 +34,8 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     Route::delete('multiple-delete/{ids}',array('as'=>'multiple-delete','uses'=>'DashboardController@multiple_delete'));
+    
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -218,6 +220,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
         Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
+        
+        Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
 
    });
     /*

@@ -1,6 +1,7 @@
 import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
+import Swal from  'sweetalert2'
 
 // var BASEURL = window.location.origin+'/ufg-form/public/json/';
 // var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
@@ -47,7 +48,6 @@ function convertDate(date) {
 
 
 $(document).ready(function($) {
-
     $('.select2').select2({
         width: '100%',
         theme: "classic",
@@ -1017,61 +1017,61 @@ $(".update-quote").submit(function(event) {
 });
 
 
-$("#update-override").submit(function(event) {
-    event.preventDefault();
+// $("#update-override").submit(function(event) {
+//     event.preventDefault();
 
-    var $form = $(this),
-    url = $form.attr('action');
-
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data:  new FormData(this),
-        contentType: false,
-        cache: false,
-        processData:false,
-        beforeSend: function() {
-            $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
-        },
-        success: function (data) {
-
-
-            if(data.success_message){
-
-                $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
-                jQuery('#override_modal').modal('hide');
-            }
+//     var $form = $(this),
+//     url = $form.attr('action');
+// console.log(url);
+//     // $.ajax({
+//     //     type: 'POST',
+//     //     url: url,
+//     //     data:  new FormData(this),
+//     //     contentType: false,
+//     //     cache: false,
+//     //     processData:false,
+//     //     beforeSend: function() {
+//     //         $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
+//     //     },
+//     //     success: function (data) {
 
 
-            // $("#overlay").removeClass('overlay').html('');
-            // setTimeout(function() {
-            //     alert('Quote updated Successfully');
-            //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-            // }, 800);
-        },
-        error: function (reject) {
+//     //         if(data.success_message){
 
-            if( reject.status === 422 ) {
-
-                var errors = $.parseJSON(reject.responseText);
+//     //             $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+//     //             jQuery('#override_modal').modal('hide');
+//     //         }
 
 
-                // setTimeout(function() {
-                //     $("#overlay").removeClass('overlay').html('');
+//     //         // $("#overlay").removeClass('overlay').html('');
+//     //         // setTimeout(function() {
+//     //         //     alert('Quote updated Successfully');
+//     //         //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+//     //         // }, 800);
+//     //     },
+//     //     error: function (reject) {
 
-                //     jQuery.each(errors.errors, function( index, value ) {
+//     //         if( reject.status === 422 ) {
 
-                //         index = index.replace(/\./g,'_');
-                //         $('#'+index).addClass('is-invalid');
-                //         $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                //     });
+//     //             var errors = $.parseJSON(reject.responseText);
 
-                // }, 800);
 
-            }
-        },
-    });
-});
+//     //             // setTimeout(function() {
+//     //             //     $("#overlay").removeClass('overlay').html('');
+
+//     //             //     jQuery.each(errors.errors, function( index, value ) {
+
+//     //             //         index = index.replace(/\./g,'_');
+//     //             //         $('#'+index).addClass('is-invalid');
+//     //             //         $('#'+index).closest('.form-group').find('.text-danger').html(value);
+//     //             //     });
+
+//     //             // }, 800);
+
+//     //         }
+//     //     },
+//     // });
+// });
 
 $('.search-reference').on('click', function () {
     var searchRef = $(this);
@@ -1463,10 +1463,9 @@ $('#multiple_delete').on('click', function(e) {
  
     var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
     var tableName      =  $('.table-name').val();
-
     $.ajax({
         url: REDIRECT_BASEURL+'multiple-delete/'+checkedValues,
-        type: 'delete',  
+        type: 'Delete',  
         dataType: "JSON",
         data: { "checkedValues": checkedValues, "tableName": tableName },
         beforeSend: function() {
@@ -1500,24 +1499,17 @@ $('#multiple_delete').on('click', function(e) {
 $('.multiple-action').on('change', function(e) {
 
     var action = $(this).val();
-
     var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-
     if(checkedValues.length > 0){
-
         jQuery('#multiple_delete_modal').modal('show');
         $('.action_name').val(action);
         $('#multiple_delete').addClass('btn btn-danger');
         $("#multiple_delete").html(action);
         $('#multiple_delete').removeClass();
-
+        $('#multiple_delete').addClass('btn btn-primary');
         if(action == 'Delete'){
-            
             $('#multiple_delete').addClass('btn btn-danger');
         }
-
-        $('#multiple_delete').addClass('btn btn-primary');
-
     }else{
         alert("Please Check any Record First");
         $('.multiple-action').val("");
@@ -1810,7 +1802,11 @@ $(document).on('change', '.pax-number', function () {
 $(document).on('click', '.add-pax-column', function () {
     var pax_value = $('#pax_no').val();
     var updateCount = (pax_value != '')? parseInt(pax_value) + 1 : 1;
-    $('#pax_no').val(updateCount).change();
+    if (isNaN(updateCount)) {
+        $('#pax_no').val(1).change();
+    }else{
+        $('#pax_no').val(updateCount).change();
+    }
 });
 
 
@@ -1840,6 +1836,58 @@ $(document).on('click', '.remove-pax-column', function () {
     }
 });
 //pax appednd work end
+
+var btnname = null;
+//BUlk DATA DELETE
+$('.btnbulkClick').on('click', function (e) {
+    btnname = $(this).attr('name');
+})
+
+$(".bulkDeleteData").submit(function(e) {
+    e.preventDefault(); 
+    var url = $(this).attr('action');
+    var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
+    var formData = $(this).serializeArray();
+    formData.push({name:'id', value: checkedValues});
+    formData.push({name:'btn', value: btnname});
+    var message= 'Are you sure you want to Delete Records?';
+    if(btnname == 'archive'){
+        message = 'Are you sure you want to Records add in archive?'
+    }
+
+     if(checkedValues.length > 0){
+         Swal.fire({
+             title: 'Are you sure?',
+             text: message,
+             focusConfirm: false,
+             showCancelButton: true,
+             confirmButtonText: 'Yes, '+btnname+' it!',
+             confirmButtonColor: '#45f542',
+             cancelButtonText: 'No, keep it',
+             showLoaderOnConfirm: true,
+           }).then((result) => {
+             if (result.isConfirmed) {
+                 $.ajax({
+                     type: "DELETE",
+                     url: url,
+                     data: $.param(formData), 
+                     success: function(data)
+                     {
+                        //  setTimeout(function() {
+                        //      alert(data.message);
+                        //      location.reload();
+                        //  }, 600);
+                     }
+                 });
+             } else if (result.dismiss === Swal.DismissReason.cancel) {
+              ///no action here
+             }
+           })
+     }else{
+         alert('Please Check any Record First');
+     }
+});
+//BUlk DATA DELETE
 });
 
 

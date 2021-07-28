@@ -153,11 +153,25 @@
                             <div class="card-header">
                                 <h3 class="card-title float-left">
 
-                                    <select name="multiple_action" class="form-control multiple-action" id="">
+                                    {{-- <select name="multiple_action" class="form-control multiple-action" id="">
                                         <option value="">Select Action</option>
                                         <option value="Delete">Delete</option>
                                         <option value="Archive">Archive</option>
-                                    </select>
+                                    </select> --}}
+                                    
+                                    <form method="POST" action="{{ route('bulk.delete') }}" class="bulkDeleteData">
+                                        @csrf @method('delete')
+                                        <input  type="hidden" name="tab" value="quotes" >
+                                        <div class="dropdown show">
+                                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Action
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                <button type="submit" name="delete" class="dropdown-item btn-link btnbulkClick">Delete</button>
+                                                <button type="submit"  name="archive" class="dropdown-item btn-link btnbulkClick">Archive</button>
+                                            </div>
+                                        </div>
+                                    </form>
                               
                                 </h3>
                                 <a href="{{ route('quotes.create') }}" class="btn btn-secondary btn-sm float-right">

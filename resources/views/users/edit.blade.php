@@ -48,7 +48,6 @@
                     <div class="form-group">
                       <label>Email <span style="color:red">*</span></label>
                       <input type="email" name="email" value="{{ $user->email }}" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" required>
-
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
@@ -57,7 +56,6 @@
                     <div class="form-group">
                       <label>Password</label>
                       <input type="password" name="password" value="" class="form-control @error('password') is-invalid @enderror" placeholder="Password">
-
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
