@@ -6,12 +6,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Recently Deleted</h4>
+                        <h4>Quote Trash</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
-                            <li class="breadcrumb-item active">Recently Deleted</li>
+                            <li class="breadcrumb-item active">Quote Trash</li>
                         </ol>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Quote List</h3>
+                                <h3 class="card-title">Quote Trash</h3>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
