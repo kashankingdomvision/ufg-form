@@ -126,26 +126,15 @@ class BookingController extends Controller
         $data['payment_methods']  = PaymentMethod::all();
         $data['commission_types'] = Commission::all();
 
-        $url = "https://payments.unforgettabletravel.com/backend/api/payment/zoho_payment_status";
+        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
-        $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
 
-        $args = array(
-            'body' => json_encode(
-                array('param' => array(
-                    'zoho_booking_reference' => $zoho_booking_reference
-                ))
-            ),
-
-            'headers' => array( "Content-Type: application/json" ),
-        );
-
-        $response = \Helper::cf_remote_request($url, $args);
-
-        if ($response['status'] == 200) {
-            $data['payment_details'] = $response['body']['old_records'];
+            if ($response['status'] == 200) {
+                $data['payment_details'] = $response['body']['old_records'];
+            }
         }
-
 
         return view('bookings.edit',$data);
     }

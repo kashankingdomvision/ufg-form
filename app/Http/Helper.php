@@ -15,6 +15,23 @@ class Helper
        return "QR-".sprintf("%04s", ++$last_id);
     }
 
+	public static function get_payment_detial_by_ref_no($zoho_booking_reference) {
+
+		$url = "https://payments.unforgettabletravel.com/backend/api/payment/zoho_payment_status";
+
+		$args = array(
+            'body' => json_encode(
+                array('param' => array(
+                    'zoho_booking_reference' => $zoho_booking_reference
+                ))
+            ),
+
+            'headers' => array( "Content-Type: application/json" ),
+        );
+
+        return \Helper::cf_remote_request($url, $args);
+	}
+
     public static function cf_remote_request($url, $_args = array()) {
 		// prepare array
 		$array = array(
