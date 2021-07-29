@@ -1857,8 +1857,8 @@ $(".bulkDeleteData").submit(function(e) {
         message = 'Are you sure you want to revert this records from archive?'
     }else if(btnname = 'quote delete'){
         message = 'Are you sure you want to cancel this quotes?';
-        
     }
+    
      if(checkedValues.length > 0){
          Swal.fire({
              title: 'Are you sure?',
@@ -1870,22 +1870,22 @@ $(".bulkDeleteData").submit(function(e) {
              cancelButtonText: 'No, keep it',
              showLoaderOnConfirm: true,
            }).then((result) => {
-             if (result.isConfirmed) {
-                 $.ajax({
-                     type: "DELETE",
-                     url: url,
-                     data: $.param(formData), 
-                     success: function(data)
-                     {
-                         setTimeout(function() {
-                             alert(data.message);
-                             location.reload();
-                         }, 600);
-                     }
-                 });
-             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              ///no action here
-             }
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "DELETE",
+                    url: url,
+                    data: $.param(formData), 
+                    success: function(data)
+                    {
+                        setTimeout(function() {
+                            alert(data.message);
+                            location.reload();
+                        }, 600);
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                ///no action here
+            }
            })
      }else{
          alert('Please Check any Record First');

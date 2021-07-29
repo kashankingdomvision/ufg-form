@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
         Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
         Route::get('show/{id}', array('as' => 'show', 'uses' => 'BookingController@show'));
+        Route::get('cancel/{id}', array('as' => 'cancel', 'uses' => 'BookingController@bookingCancel'));
     });
 
 

@@ -91,6 +91,11 @@ class Quote extends Model
         return date('d/m/Y', strtotime($this->created_at));
     }
     
+    public function getFormatedDeletedAtAttribute()
+    {
+        return date('d/m/Y', strtotime($this->deleted_at));
+    }
+    
     function getBrand() {
         return $this->hasOne(Brand::class,'id', 'brand_id' );
     }

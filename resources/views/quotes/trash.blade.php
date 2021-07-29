@@ -6,12 +6,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>Quote Trash</h4>
+                        <h4>Cancel Quotes</h4>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
-                            <li class="breadcrumb-item active">Quote Trash</li>
+                            <li class="breadcrumb-item active">Cancel Quotes</li>
                         </ol>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Quote Trash</h3>
+                                <h3 class="card-title">Cancel Quotes</h3>
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -43,7 +43,7 @@
                                             <th>Booking Currency</th>
                                             <th>Status</th>
                                             <th>Booking Date</th>
-                                            <th>Created At</th>
+                                            <th>Canceled At</th>
                                             <th>Action</th>
                                           </tr>
                                         </thead>
@@ -68,7 +68,7 @@
                                                     <td>{{ $quote->getBookingCurrency->code.' - '.$quote->getBookingCurrency->name }}</td>
                                                     <td>{!! $quote->booking_formated_status !!}</td>
                                                     <td>{{ $quote->formated_booking_date }}</td>
-                                                    <td>{{ $quote->formated_created_at }}</td>
+                                                    <td>{{ $quote->formated_deleted_at }}</td>
                                                     <td width="10%" class="d-flex" >
                                                         <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
                                                     </td>
