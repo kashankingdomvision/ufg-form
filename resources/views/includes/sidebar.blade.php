@@ -13,20 +13,20 @@
 
 
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-1 pb-3 mb-3 d-flex text-white">
+        {{-- <!-- Sidebar user panel (optional) --> --}}
+        {{-- <div class="user-panel mt-1 pb-3 mb-3 d-flex text-white">
             <div class="image">
-                {{-- Main Navigation --}}
-                {{-- <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image"> --}}
+                Main Navigation
+                <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                {{-- <a href="#" class="d-block">Welcome, {{ ucfirst(auth()->user()->name) }}</a> --}}
+                <a href="#" class="d-block">Welcome, {{ ucfirst(auth()->user()->name) }}</a>
             </div>
-        </div>
+        </div> --}}
 
 
         <nav>
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+            <ul class="nav nav-pills nav-sidebar flex-column mt-1" data-widget="treeview" role="menu"
                 data-accordion="false">
 
                 <li class="nav-item">

@@ -38,6 +38,8 @@
               </div>
               <div class="card-body">
                  
+                
+                  <div class="row mb-2">
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Zoho Reference <span class="text-danger">*</span></label>
@@ -50,51 +52,49 @@
                         <input type="text" value="{{ old('quote_no')??$booking['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Currency Rate Type <span class="text-danger">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <div class="row mb-2">
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Currency Rate Type <span class="text-danger">*</span></label>
-                          <div>
-                            <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
-                              <span>&nbsp;Live Rate</span>
-                            </label>
-                            <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
-                              <span>&nbsp;Manual Rate</span>
-                            </label>
-                          </div>
-                        </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Sales Person <span class="text-danger">*</span></label>
+                        <select name="sale_person_id" id="sales_person_id" class="form-control select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
+                          <option value="">Select Sales Person</option>
+                          @foreach ($sale_persons as $person)
+                            <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
+                          @endforeach
+                        </select>
+                        @error('sales_person_id')
+                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                       </div>
-                      
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Sales Person <span class="text-danger">*</span></label>
-                          <select name="sale_person_id" id="sales_person_id" class="form-control select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
-                            <option value="">Select Sales Person</option>
-                            @foreach ($sale_persons as $person)
-                              <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
-                            @endforeach
-                          </select>
-                          @error('sales_person_id')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                        </div>
+                    </div>
+                  
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
                       </div>
-                    
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Commission Type <span style="color:red">*</span></label>
-                          <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
-                            <option selected value="" >Select Commission Type </option>
-                            @foreach ($commission_types as $commission_type)
-                              <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
-                            @endforeach
-                          </select>
-                          <span class="text-danger" role="alert"></span>
-                        </div>
-                      </div>
+                    </div>
                  
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -870,6 +870,58 @@
                       </div>
                     </div>
                   </div>
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Payment Details</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                      <table class="table table-hover text-nowrap">
+                        <thead>
+                          <tr>
+                            <th>Status</th>
+                            <th>Payment For</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          @if(isset($payment_details) && !empty($payment_details))
+
+                            @foreach ($payment_details as $key => $payment_detail)
+
+                              @if(is_array($payment_details[$key]))
+                                @if(!empty($key))
+                                  <tr><td colspan="4" class="text-center font-weight-bold tbody-highlight">{{ strtoupper($key) }}</td></tr>
+                                @endif
+                                @foreach ($payment_details[$key] as $key => $detail)
+                                  <tr>
+                                    <td>{{ ucfirst($detail['status']) }}</td>
+                                    <td>{{$detail['payment_for']}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($detail['date'])->format('d/m/Y') }} </td>
+                                    <td>{{$detail['amount']}}</td>
+                                  </tr>
+                                @endforeach
+                              @endif
+                            @endforeach
+                            
+                            {{-- <tr>
+                              <td colspan="3" class="text-right">Total Completed :	</td>
+                              <td colspan="1" class="text-left"> {{ ucfirst($payment_details['total_completed']).' '.$payment_details['total_completed_symbol'] }}</td>
+                            </tr> --}}
+                                
+                            @else
+                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                          @endif
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+
+
                 </div>
             </div>
           </div>

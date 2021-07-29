@@ -125,7 +125,16 @@ class BookingController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['commission_types'] = Commission::all();
-   
+
+        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
+
+            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+
+            if ($response['status'] == 200) {
+                $data['payment_details'] = $response['body']['old_records'];
+            }
+        }
 
         return view('bookings.edit',$data);
     }
@@ -151,8 +160,17 @@ class BookingController extends Controller
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
 
-        return view('bookings.show',$data);
+        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
+            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+
+            if ($response['status'] == 200) {
+                $data['payment_details'] = $response['body']['old_records'];
+            }
+        }
+
+        return view('bookings.show',$data);
     }
 
     public function bookingArray($request)
@@ -333,6 +351,16 @@ class BookingController extends Controller
         $data['booking_types']      = BookingType::all();
         $data['payment_methods']    = PaymentMethod::all();
         $data['commission_types']   = Commission::all();
+
+        if(isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no'])){
+
+            $zoho_booking_reference = isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no']) ? $data['booking']['ref_no'] : '' ;
+            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+
+            if ($response['status'] == 200) {
+                $data['payment_details'] = $response['body']['old_records'];
+            }
+        }
         
         return view('bookings.version',$data);
     }
