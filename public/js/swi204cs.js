@@ -23748,11 +23748,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 
+ // var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-
+var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -24002,7 +24002,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       $v_html = "<div class=\"row mt-1\" >\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Lead Passenger Name <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_name\" id=\"lead_passenger_name\" class=\"form-control\" placeholder=\"Lead Passenger Name\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Email Address <span style=\"color:red\">*</span></label>\n            <input type=\"email\" name=\"lead_passenger_email\" id=\"lead_passenger_email\" class=\"form-control\" placeholder=\"Email Address\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Contact Number <span style=\"color:red\">*</span></label>\n            <input type=\"tel\" name=\"lead_passenger_contact\" id=\"lead_passenger_contact\"  class=\"form-control phone phone0\" >\n            <span class=\"text-danger error_msg0\" role=\"alert\"></span>\n            <span class=\"text-success valid_msg0\" role=\"alert\"></span>\n          </div>\n        </div>\n\n        <div class=\"col-md-3\">\n          <div class=\"form-group\">\n            <label>Date Of Birth <span style=\"color:red\">*</span></label>\n            <input type=\"date\" max=\"{{ date('Y-m-d') }}\" id=\"lead_passenger_dbo\" name=\"lead_passenger_dbo\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n      </div>\n      <div class=\"row\">\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Nationality <span style=\"color:red\">*</span></label>\n            <select name=\"lead_passsenger_nationailty_id\" id=\"lead_passsenger_nationailty_id\" class=\"form-control select2single nationality-id\">\n              <option selected value=\"\" >Select Nationality</option>\n              ".concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n            </select>\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-sm-3\">\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Bedding Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_bedding_preference\" id=\"lead_passenger_bedding_preference\" class=\"form-control \" placeholder=\"Bedding Preferences\" id=\"bedding_preference\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n          <div class=\"form-group\">\n            <label>Dinning Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_dinning_preference\" id=\"lead_passenger_dinning_preference\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n\n      </div>");
+      }).join(""), "\n            </select>\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Bedding Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_bedding_preference\" id=\"lead_passenger_bedding_preference\" class=\"form-control \" placeholder=\"Bedding Preferences\" id=\"bedding_preference\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n        <div class=\"col-sm-3\">\n          <div class=\"form-group\">\n            <label>Dinning Preferences <span style=\"color:red\">*</span></label>\n            <input type=\"text\" name=\"lead_passenger_dinning_preference\" id=\"lead_passenger_dinning_preference\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n            <span class=\"text-danger\" role=\"alert\"></span>\n          </div>\n        </div>\n\n      </div>");
       $('#pax_no').val(1).change();
       $('.agency-columns').append($v_html).show(500);
     }
@@ -25339,123 +25339,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       alert('Please Check any Record First');
     }
   }); //BUlk DATA DELETE
-}); // var integrate_intlTelInput = function (id, key = null) {
-//     var input_id= id??'#phone'
-//     console.log(input_id, ' int input funcation');
-//     var input =    document.querySelector(input_id);
-//     var errorMsg =    document.querySelector('#error_msg'+key);
-//     var validMsg =    document.querySelector('#valid_msg'+key);
-//     console.log(errorMsg);
-//     // input = window.intlTelInputGlobals.getInstance(input);
-//     var iti = intlTelInput(input, {
-//         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-//         separateDialCode: true,
-//         formatOnDisplay:true,
-//         initialCountry: "auto",
-//         nationalMode: true,
-//         hiddenInput: "full_number",
-//         autoPlaceholder: "polite",
-//         placeholderNumberType: "MOBILE",
-//     });
-//     input.addEventListener('blur', function() {
-//         reset(input, errorMsg, validMsg);
-//         if (input.value.trim()) {
-//             if (iti.isValidNumber()) {
-//                 validMsg.classList.remove("hide");
-//             } else {
-//                 input.classList.add("is-invalid");
-//                 var errorCode = iti.getValidationError();
-//                 console.log(errorMap);
-//                 errorMsg.innerHTML = errorMap[errorCode];
-//                 errorMsg.classList.remove("hide");
-//             }
-//         }
-//     });
-//     // console.log(iti.getSelectedCountryData);
-//     return iti
-// }
-// $(document).on('blur', '.phone', function() {
-//     var key      =    $(this).data('key');
-//     integrate_intlTelInput('#phone'+key, key);
-//     // var input    =    document.querySelector('#phone'+key);
-//     // input.addEventListener('blur', function(iti) {
-//     //     var errorMsg =    document.querySelector('#error_msg'+key);
-//     //     var validMsg =    document.querySelector('#valid_msg'+key);
-//     //     reset(input, errorMsg, validMsg);
-//     //     // var iti = integrate_intlTelInput('#phone'+key);/
-//     //     console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
-//         // console.log(integrate_intlTelInput().getSelectedCountryData());
-//     // // var iti = intlTelInput(input, {
-//     // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-//     // //     separateDialCode: true,
-//     // //     formatOnDisplay:true,
-//     // //     initialCountry: "auto",
-//     // //     nationalMode: false,
-//     // //     hiddenInput: "full_number",
-//     // //     autoPlaceholder: "polite",
-//     // //     placeholderNumberType: "MOBILE",
-//     // // });
-//     // if (input.value.trim()) {
-//     //     console.log(iti.getSelectedCountryData());
-//     //     if (iti.isValidNumber()) {
-//     //         validMsg.classList.remove("hide");
-//     //     } else {
-//     //         input.classList.add("is-invalid");
-//     //         var errorCode = iti.getValidationError();
-//     //         errorMsg.innerHTML = errorMap[errorCode];
-//     //         errorMsg.classList.remove("hide");
-//     //     }
-//     // }
-//     // iti.destroy();
-//     // });
-// });
-// // $('.phone1').on("countrychange", function() {
-// //         var key      =    $(this).data('key');
-// //         var input    =    document.querySelector('#phone'+key);
-// //         console.log(input, 'countrycahnge');
-// //         var errorMsg =    document.querySelector('#error_msg'+key);
-// //         var validMsg =    document.querySelector('#valid_msg'+key);
-// //         reset(input, errorMsg, validMsg);
-// //         var iti      = integrate_intlTelInput('#phone'+key);
-// //         iti.destroy();
-// //         iti = integrate_intlTelInput('#phone'+key);
-// //         console.log(iti.getSelectedCountryData());
-// //     // do something with iti.getSelectedCountryData()
-// // });
-//     var reset = function(input, errorMsg, validMsg) {
-//         input.classList.remove("is-invalid");
-//         errorMsg.innerHTML = "";
-//         errorMsg.classList.add("hide");
-//         console.log('reset funcction');
-//         validMsg.classList.add("hide");
-//     };
-//     // on keyup / change flag: reset
-//     // on blur: validate
-//     // input.addEventListener('blur', function() {
-//     //     reset(input, errorMsg, validMsg);
-//     //     if (input.value.trim()) {
-//     //         if (iti.isValidNumber()) {
-//     //             validMsg.classList.remove("hide");
-//     //         } else {
-//     //             input.classList.add("is-invalid");
-//     //             var errorCode = iti.getValidationError();
-//     //             errorMsg.innerHTML = errorMap[errorCode];
-//     //             errorMsg.classList.remove("hide");
-//     //         }
-//     //     }
-//     // });
-// //   var reset = function(inId = null, erId = null, valid =null) {
-// //     console.log('rest');
-// //     var input    =     document.querySelector('#phone');
-// //     var errorMsg =     document.querySelector('#error_msg');
-// //     var validMsg =     document.querySelector('#valid_msg');
-// //       console.log(input, validMsg, errorMsg);
-// //     input.classList.remove("is-invalid");
-// //     errorMsg.innerHTML = "";
-// //     errorMsg.classList.add("hide");
-// //     console.log(validMsg);
-// //     validMsg.classList.add("hide");
-// //   };
+});
 
 /***/ }),
 

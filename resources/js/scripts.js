@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -284,13 +284,13 @@ $(document).on('change', '.select-agency', function() {
           </div>
         </div>
         <div class="col-sm-3">
-        <div class="col-sm-3">
           <div class="form-group">
             <label>Bedding Preferences <span style="color:red">*</span></label>
             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
+        <div class="col-sm-3">
           <div class="form-group">
             <label>Dinning Preferences <span style="color:red">*</span></label>
             <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
@@ -1935,149 +1935,3 @@ $(".bulkDeleteData").submit(function(e) {
 });
 //BUlk DATA DELETE
 });
-
-
-
-
-
-
-
-
-
-// var integrate_intlTelInput = function (id, key = null) {
-//     var input_id= id??'#phone'
-//     console.log(input_id, ' int input funcation');
-//     var input =    document.querySelector(input_id);
-//     var errorMsg =    document.querySelector('#error_msg'+key);
-//     var validMsg =    document.querySelector('#valid_msg'+key);
-
-//     console.log(errorMsg);
-
-//     // input = window.intlTelInputGlobals.getInstance(input);
-//     var iti = intlTelInput(input, {
-//         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-//         separateDialCode: true,
-//         formatOnDisplay:true,
-//         initialCountry: "auto",
-//         nationalMode: true,
-//         hiddenInput: "full_number",
-//         autoPlaceholder: "polite",
-//         placeholderNumberType: "MOBILE",
-//     });
-
-//     input.addEventListener('blur', function() {
-//         reset(input, errorMsg, validMsg);
-//         if (input.value.trim()) {
-//             if (iti.isValidNumber()) {
-//                 validMsg.classList.remove("hide");
-//             } else {
-//                 input.classList.add("is-invalid");
-//                 var errorCode = iti.getValidationError();
-//                 console.log(errorMap);
-//                 errorMsg.innerHTML = errorMap[errorCode];
-//                 errorMsg.classList.remove("hide");
-//             }
-//         }
-//     });
-
-
-//     // console.log(iti.getSelectedCountryData);
-//     return iti
-// }
-
-// $(document).on('blur', '.phone', function() {
-//     var key      =    $(this).data('key');
-//     integrate_intlTelInput('#phone'+key, key);
-//     // var input    =    document.querySelector('#phone'+key);
-//     // input.addEventListener('blur', function(iti) {
-//     //     var errorMsg =    document.querySelector('#error_msg'+key);
-//     //     var validMsg =    document.querySelector('#valid_msg'+key);
-//     //     reset(input, errorMsg, validMsg);
-//     //     // var iti = integrate_intlTelInput('#phone'+key);/
-//     //     console.log(integrate_intlTelInput('#phone'+key).getSelectedCountryData());
-//         // console.log(integrate_intlTelInput().getSelectedCountryData());
-
-
-//     // // var iti = intlTelInput(input, {
-//     // //     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-//     // //     separateDialCode: true,
-//     // //     formatOnDisplay:true,
-//     // //     initialCountry: "auto",
-//     // //     nationalMode: false,
-//     // //     hiddenInput: "full_number",
-//     // //     autoPlaceholder: "polite",
-//     // //     placeholderNumberType: "MOBILE",
-//     // // });
-
-//     // if (input.value.trim()) {
-//     //     console.log(iti.getSelectedCountryData());
-//     //     if (iti.isValidNumber()) {
-//     //         validMsg.classList.remove("hide");
-//     //     } else {
-//     //         input.classList.add("is-invalid");
-//     //         var errorCode = iti.getValidationError();
-//     //         errorMsg.innerHTML = errorMap[errorCode];
-//     //         errorMsg.classList.remove("hide");
-//     //     }
-//     // }
-//     // iti.destroy();
-
-//     // });
-// });
-
-// // $('.phone1').on("countrychange", function() {
-// //         var key      =    $(this).data('key');
-// //         var input    =    document.querySelector('#phone'+key);
-// //         console.log(input, 'countrycahnge');
-// //         var errorMsg =    document.querySelector('#error_msg'+key);
-// //         var validMsg =    document.querySelector('#valid_msg'+key);
-// //         reset(input, errorMsg, validMsg);
-// //         var iti      = integrate_intlTelInput('#phone'+key);
-// //         iti.destroy();
-// //         iti = integrate_intlTelInput('#phone'+key);
-// //         console.log(iti.getSelectedCountryData());
-
-// //     // do something with iti.getSelectedCountryData()
-// // });
-
-//     var reset = function(input, errorMsg, validMsg) {
-//         input.classList.remove("is-invalid");
-//         errorMsg.innerHTML = "";
-//         errorMsg.classList.add("hide");
-//         console.log('reset funcction');
-//         validMsg.classList.add("hide");
-//     };
-
-
-
-//     // on keyup / change flag: reset
-
-//     // on blur: validate
-//     // input.addEventListener('blur', function() {
-//     //     reset(input, errorMsg, validMsg);
-//     //     if (input.value.trim()) {
-//     //         if (iti.isValidNumber()) {
-//     //             validMsg.classList.remove("hide");
-//     //         } else {
-//     //             input.classList.add("is-invalid");
-//     //             var errorCode = iti.getValidationError();
-//     //             errorMsg.innerHTML = errorMap[errorCode];
-//     //             errorMsg.classList.remove("hide");
-//     //         }
-//     //     }
-//     // });
-
-// //   var reset = function(inId = null, erId = null, valid =null) {
-// //     console.log('rest');
-
-// //     var input    =     document.querySelector('#phone');
-// //     var errorMsg =     document.querySelector('#error_msg');
-// //     var validMsg =     document.querySelector('#valid_msg');
-
-// //       console.log(input, validMsg, errorMsg);
-// //     input.classList.remove("is-invalid");
-// //     errorMsg.innerHTML = "";
-// //     errorMsg.classList.add("hide");
-// //     console.log(validMsg);
-// //     validMsg.classList.add("hide");
-// //   };
