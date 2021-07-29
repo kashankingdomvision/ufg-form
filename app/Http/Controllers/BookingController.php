@@ -336,4 +336,10 @@ class BookingController extends Controller
         
         return view('bookings.version',$data);
     }
+    
+    public function bookingCancel($id)
+    {
+        $booking = Booking::findOrFail(decrypt($id))->update(['cancel_date' => Carbon::now()]);
+        return redirect()->back()->with('success_message', 'Booking canceled successfully');    
+    }
 }

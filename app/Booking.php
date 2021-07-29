@@ -46,6 +46,7 @@ class Booking extends Model
         'rate_type',
         'booking_status',
         'booking_date',
+        'cancel_date',
     ];
     
     public function getVersionAttribute()

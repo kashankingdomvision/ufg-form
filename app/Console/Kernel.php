@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('quotation:delete')->monthly();
+        // $schedule->command('quotation:delete')->monthly();
         $schedule->command('zoho:credentials')->hourly();
     }
 

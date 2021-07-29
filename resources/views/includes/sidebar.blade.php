@@ -81,8 +81,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
-                                <i class="fa fa-trash-alt nav-icon"></i>
-                                <p>Trash</p>
+                                  <i class="fa fa-window-close nav-icon"></i>
+                                <p>Cancel Quote</p>
                             </a>
                         </li>
                         <li class="nav-item">
