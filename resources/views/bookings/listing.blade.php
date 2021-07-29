@@ -196,14 +196,14 @@
                                                     <a href="{{ route('bookings.show', encrypt($booking->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="View" >
                                                         <span class="fa fa-eye"></span>
                                                     </a>
-                                                    @if(empty($booking->cancel_date))
+                                                    {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
                                                         <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
                                                             <span class="fa fa-times"></span>
                                                         </a>
                                                     {{-- @else --}}
                                                         
-                                                    @endif
+                                                    {{-- @endif --}}
                                                     {{-- <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
                                                         @csrf @method('delete')
                                                         <input type="hidden" value="{{ encrypt($booking->season_id) }}" name="season">
