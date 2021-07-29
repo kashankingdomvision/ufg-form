@@ -38,6 +38,8 @@
               </div>
               <div class="card-body">
                  
+                
+                  <div class="row mb-2">
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Zoho Reference <span class="text-danger">*</span></label>
@@ -50,51 +52,49 @@
                         <input type="text" value="{{ old('quote_no')??$booking['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Currency Rate Type <span class="text-danger">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <div class="row mb-2">
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Currency Rate Type <span class="text-danger">*</span></label>
-                          <div>
-                            <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
-                              <span>&nbsp;Live Rate</span>
-                            </label>
-                            <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
-                              <span>&nbsp;Manual Rate</span>
-                            </label>
-                          </div>
-                        </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Sales Person <span class="text-danger">*</span></label>
+                        <select name="sale_person_id" id="sales_person_id" class="form-control select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
+                          <option value="">Select Sales Person</option>
+                          @foreach ($sale_persons as $person)
+                            <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
+                          @endforeach
+                        </select>
+                        @error('sales_person_id')
+                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                        @enderror
                       </div>
-                      
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Sales Person <span class="text-danger">*</span></label>
-                          <select name="sale_person_id" id="sales_person_id" class="form-control select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
-                            <option value="">Select Sales Person</option>
-                            @foreach ($sale_persons as $person)
-                              <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($booking['sale_person_id'] == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
-                            @endforeach
-                          </select>
-                          @error('sales_person_id')
-                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                          @enderror
-                        </div>
+                    </div>
+                  
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
                       </div>
-                    
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Commission Type <span style="color:red">*</span></label>
-                          <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
-                            <option selected value="" >Select Commission Type </option>
-                            @foreach ($commission_types as $commission_type)
-                              <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking['commission_id'] ? 'selected' : '' }}>{{ $commission_type->name }}</option>
-                            @endforeach
-                          </select>
-                          <span class="text-danger" role="alert"></span>
-                        </div>
-                      </div>
+                    </div>
                  
                     <div class="col-sm-6">
                       <div class="form-group">
