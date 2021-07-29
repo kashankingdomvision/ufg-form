@@ -870,6 +870,58 @@
                       </div>
                     </div>
                   </div>
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Payment Details</h3>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                      <table class="table table-hover text-nowrap">
+                        <thead>
+                          <tr>
+                            <th>Status</th>
+                            <th>Payment For</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          @if(isset($payment_details) && !empty($payment_details))
+
+                            @foreach ($payment_details as $key => $payment_detail)
+
+                              @if(is_array($payment_details[$key]))
+                                @if(!empty($key))
+                                  <tr><td colspan="4" class="text-center font-weight-bold tbody-highlight">{{ strtoupper($key) }}</td></tr>
+                                @endif
+                                @foreach ($payment_details[$key] as $key => $detail)
+                                  <tr>
+                                    <td>{{ ucfirst($detail['status']) }}</td>
+                                    <td>{{$detail['payment_for']}}</td>
+                                    <td>{{ \Carbon\Carbon::parse($detail['date'])->format('d/m/Y') }} </td>
+                                    <td>{{$detail['amount']}}</td>
+                                  </tr>
+                                @endforeach
+                              @endif
+                            @endforeach
+                            
+                            {{-- <tr>
+                              <td colspan="3" class="text-right">Total Completed :	</td>
+                              <td colspan="1" class="text-left"> {{ ucfirst($payment_details['total_completed']).' '.$payment_details['total_completed_symbol'] }}</td>
+                            </tr> --}}
+                                
+                            @else
+                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                          @endif
+
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+
+
                 </div>
             </div>
           </div>
