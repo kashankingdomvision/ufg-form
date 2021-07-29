@@ -284,13 +284,13 @@ $(document).on('change', '.select-agency', function() {
           </div>
         </div>
         <div class="col-sm-3">
-        <div class="col-sm-3">
           <div class="form-group">
             <label>Bedding Preferences <span style="color:red">*</span></label>
             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
             <span class="text-danger" role="alert"></span>
           </div>
         </div>
+        <div class="col-sm-3">
           <div class="form-group">
             <label>Dinning Preferences <span style="color:red">*</span></label>
             <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
