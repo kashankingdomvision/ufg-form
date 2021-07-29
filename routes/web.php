@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -225,6 +224,15 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
 
    });
+    
+    
+    Route::get('pdf', function()
+    {
+        return view('quote_documents.index');
+    });
+    
+    Route::get('html-pdf',  'DashboardController@pdf')->name('pdf');
+
     /*
     |--------------------------------------------------------------------------
     | Routes For Ajax Request End

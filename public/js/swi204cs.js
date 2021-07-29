@@ -23746,11 +23746,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
- // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 
@@ -24132,42 +24132,31 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $(removeBtnId).removeAttr("style");
       }
     });
-  }); // $('.pax-number').select2();
-  // $('.selling-price-other-currency').select2({
-  //     // width: '68%',
-  //     width: 'resolve',
-  //     templateResult: currencyImageFormate,
-  //     templateSelection: currencyImageFormate
-  // });
-  // $('.booking-currency-id, .supplier-currency-id').select2({
-  //     templateResult: currencyImageFormate,
-  //     templateSelection: currencyImageFormate
-  // });
-
+  });
   $(document).on('click', '#add_more', function (e) {
     if ($('.select2single').data('select2')) {
       $('.select2single').select2('destroy');
     }
 
     $(".quote").eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function (str, p1) {
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
     }).end().find("textarea").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + parseInt($('.quote').length) + ']';
       });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function (str, p1) {
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
     }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function (str, p1) {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function (str, p1) {
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
     }).end().show().insertAfter(".quote:last");
@@ -24179,10 +24168,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.quote:last input, .quote:last select').removeClass('is-invalid');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
     datepickerReset(1);
-    reinitializedDynamicFeilds(); // datePickerSetDate();
-    // $('.select2').select2({
-    //     width: '100%',
-    // });
+    reinitializedDynamicFeilds();
   });
   $(document).on('click', '.close', function () {
     $(this).closest(".quote").remove();
@@ -24198,15 +24184,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       theme: "bootstrap",
       templateResult: formatState,
       templateSelection: formatState
-    }); //     if ($('.select2').hasClass("select2-hidden-accessible")) {
-    //         $('.select2').select2('destroy');
-    //     }
-    //         // $('.select2').select2('remove');
-    //     // $('.select2:last').removeClass('select2-hidden-accessible').next().remove();
-    //     $('.select2').select2({
-    //         width: '100%',
-    //         theme: "classic",
-    //     });
+    });
   }
 
   var currencyConvert = getJson();

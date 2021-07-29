@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
+// use Illuminate\View\View;
 use App\Booking;
 use App\Quote;
 use App\User;
 use App\Supplier;
 use DB;
-
+use Illuminate\Support\Facades\View;
+use PDF;
 class DashboardController extends Controller
 {
     /**
@@ -102,5 +103,15 @@ class DashboardController extends Controller
         DB::table($table_name)->whereIn('id', $ids)->delete(); 
 
         return ['status' => true, 'message' => 'Records Deleted Successfully !!'];
+    }
+    
+    public function pdf()
+    {
+        // $html = View::make('quote_documents.index')->render();
+        $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->download('invoice.pdf');
+        // $pdf->loadHTML($html);
+        // return $pdf->stream();
+        // $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape')->setWarnings(false)->save('myfile.pdf');
     }
 }
