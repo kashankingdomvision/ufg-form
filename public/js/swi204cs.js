@@ -23743,6 +23743,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 
 
 
@@ -24699,6 +24701,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 searchRef.prop('disabled', true);
               },
               success: function success(data) {
+                var tbody = '';
+
                 if (data.response) {
                   // lead Passenger
                   $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name); // lead Passenger
@@ -24742,6 +24746,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                       $('input[name="pax[' + $_count + '][dinning_preference]"]').val($_value.dinning_prefrences);
                     });
                   }
+
+                  if (data.response.payment_details && data.response.payment_details != null) {
+                    var payment_details = data.response.payment_details;
+                    jQuery.each(payment_details, function (key, item) {
+                      if (_typeof(payment_details[key]) === 'object' && payment_details[key].length > 0) {
+                        tbody += "<tr><td colspan=\"4\" class=\"text-center font-weight-bold tbody-highlight\"> ".concat(key.toUpperCase(), " </td></tr>");
+                        jQuery.each(payment_details[key], function (key, detail) {
+                          var date = new Date(detail.date);
+                          var result = date.toLocaleDateString("en-GB", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit"
+                          });
+                          tbody += "<tr>\n                                                            <td> ".concat(detail.status, " </td>\n                                                            <td> ").concat(detail.payment_for, " </td>\n                                                            <td> ").concat(result, " </td>\n                                                            <td> ").concat(detail.amount, " </td>\n                                                        </tr>");
+                        });
+                      }
+                    });
+                  } else {
+                    tbody += "<tr><td colspan=\"8\" class=\"text-center\"> No record found. </td></tr>";
+                  }
+
+                  $('#payment_detials').html(tbody);
                 } else {
                   alert(data.error);
                 }

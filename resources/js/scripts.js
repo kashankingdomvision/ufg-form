@@ -1107,6 +1107,9 @@ $('.search-reference').on('click', function () {
                             searchRef.prop('disabled', true);
                         },
                         success: function (data) {
+
+                            var tbody = '';
+                            
                             if(data.response)
                             {
                             // lead Passenger
@@ -1154,6 +1157,45 @@ $('.search-reference').on('click', function () {
                                         $('input[name="pax['+$_count+'][dinning_preference]"]').val($_value.dinning_prefrences);
                                     });
                                 }
+
+                          
+                                if(data.response.payment_details && data.response.payment_details != null){
+                                   
+                                    var payment_details = data.response.payment_details;
+                                    
+
+                                    jQuery.each(payment_details, function(key, item) {
+
+                                        if(typeof payment_details[key] === 'object' && payment_details[key].length > 0){
+
+                                            tbody += `<tr><td colspan="4" class="text-center font-weight-bold tbody-highlight"> ${key.toUpperCase()} </td></tr>`;
+
+                                            jQuery.each(payment_details[key], function(key, detail) {
+
+                                                var date = new Date(detail.date);
+                                                var result = date.toLocaleDateString("en-GB", { 
+                                                    year: "numeric",
+                                                    month: "2-digit",
+                                                    day: "2-digit",
+                                                });
+
+                                                tbody += `<tr>
+                                                            <td> ${detail.status} </td>
+                                                            <td> ${detail.payment_for} </td>
+                                                            <td> ${result} </td>
+                                                            <td> ${detail.amount} </td>
+                                                        </tr>`;
+                                            });
+                                        }
+
+                                    });
+                                   
+                                }else{
+                                    tbody += `<tr><td colspan="8" class="text-center"> No record found. </td></tr>`;
+                                }
+
+                                $('#payment_detials').html(tbody);
+
                             }else{
                                 alert(data.error);
                             }
