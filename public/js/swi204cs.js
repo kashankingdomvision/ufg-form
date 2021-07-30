@@ -23783,6 +23783,10 @@ _ckeditor_ckeditor5_build_decoupled_document__WEBPACK_IMPORTED_MODULE_4___defaul
 });
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '.generate-pdf', function () {
+  var editor = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editor').html();
+  console.log(editor);
+});
 
 function todayDate() {
   var today = new Date();

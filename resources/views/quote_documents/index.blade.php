@@ -59,7 +59,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col">
-                        <button class="btn btn-block btn-outline-dark">Genereate PDF</button>
+                        <button type="button" class="btn btn-block btn-outline-dark generate-pdf">Genereate PDF</button>
                     </div>
                 </div>
             </form>

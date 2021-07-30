@@ -26,6 +26,13 @@ DecoupledEditor
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
+
+$(document).on('click', '.generate-pdf', function () {
+    var editor = $('#editor').html();
+    console.log(editor);
+});
+
+
 function todayDate() {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
