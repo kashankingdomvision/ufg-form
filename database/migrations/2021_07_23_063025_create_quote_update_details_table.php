@@ -15,10 +15,10 @@ class CreateQuoteUpdateDetailsTable extends Migration
     {
         Schema::create('quote_update_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('quote_id');
+            $table->unsignedBigInteger('foreign_id');
             $table->unsignedBigInteger('user_id');
+            $table->enum('status',['quotes','bookings'])->nullable();
             $table->timestamps();
-            $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

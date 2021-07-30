@@ -1,9 +1,10 @@
 <div class="modal fade" id="override_modal">
     <div class="modal-dialog ">
         <div class="modal-content">
-            <form action="{{ route('quotes.update.override', encrypt($quote->id)) }}"  method="POST"  id="update-override">
+            <form action="{{ route('update.override', encrypt($quote->id)) }}"  method="POST"  id="update-override">
                 @csrf @method('put')
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                <input type="hidden" name="status" value="{{ $status }}">
         
                 <div class="modal-header">
                     <h4 class="modal-title">Alert</h4>
@@ -12,7 +13,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>Are you sure you want to override Quote Access? </p>
+                    <p>Are you sure you want to override @if($status == 'quotes') Quote @elseif($status == 'bookings') Booking @endif Access? </p>
                 </div>
                 <div class="modal-footer">
 

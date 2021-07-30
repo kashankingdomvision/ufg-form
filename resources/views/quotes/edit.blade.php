@@ -859,9 +859,9 @@
 
     @include('partials.template_modal')
 
-    @if($quote_exist && $quote_user_id)
-      @if($quote_exist == 1 && $quote_user_id != Auth::id())
-        @include('partials.override_modal')
+    @if($exist && $user_id)
+      @if($exist == 1 && $user_id != Auth::id())
+        @include('partials.override_modal',[ 'status' => 'quotes', 'id' => $quote->id ])
       @endif
     @endif
 
@@ -881,14 +881,14 @@
     });
 
     var id = "{{encrypt($quote->id)}}";
-    var url = "{{ route('quotes.has-user-edit', ":id") }}";
+    var url = "{{ route('has-user-edit', ":id") }}";
     url = url.replace(':id', id);
 
     $.ajax({
       url: url,
       type: 'delete',  
       dataType: "JSON",
-      data: { "id": id },
+      data: { "id": id, "status": 'quotes' },
       success: function (response)
       {
         console.log(response); 

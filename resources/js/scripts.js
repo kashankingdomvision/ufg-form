@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
@@ -1017,61 +1017,61 @@ $(".update-quote").submit(function(event) {
 });
 
 
-// $("#update-override").submit(function(event) {
-//     event.preventDefault();
+$("#update-override").submit(function(event) {
+    event.preventDefault();
 
-//     var $form = $(this),
-//     url = $form.attr('action');
-// console.log(url);
-//     // $.ajax({
-//     //     type: 'POST',
-//     //     url: url,
-//     //     data:  new FormData(this),
-//     //     contentType: false,
-//     //     cache: false,
-//     //     processData:false,
-//     //     beforeSend: function() {
-//     //         $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
-//     //     },
-//     //     success: function (data) {
-
-
-//     //         if(data.success_message){
-
-//     //             $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
-//     //             jQuery('#override_modal').modal('hide');
-//     //         }
+    var $form = $(this),
+    url = $form.attr('action');
+ 
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        beforeSend: function() {
+            $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
+        },
+        success: function (data) {
 
 
-//     //         // $("#overlay").removeClass('overlay').html('');
-//     //         // setTimeout(function() {
-//     //         //     alert('Quote updated Successfully');
-//     //         //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-//     //         // }, 800);
-//     //     },
-//     //     error: function (reject) {
+            if(data.success_message){
 
-//     //         if( reject.status === 422 ) {
-
-//     //             var errors = $.parseJSON(reject.responseText);
+                $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+                jQuery('#override_modal').modal('hide');
+            }
 
 
-//     //             // setTimeout(function() {
-//     //             //     $("#overlay").removeClass('overlay').html('');
+            // $("#overlay").removeClass('overlay').html('');
+            // setTimeout(function() {
+            //     alert('Quote updated Successfully');
+            //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+            // }, 800);
+        },
+        error: function (reject) {
 
-//     //             //     jQuery.each(errors.errors, function( index, value ) {
+            if( reject.status === 422 ) {
 
-//     //             //         index = index.replace(/\./g,'_');
-//     //             //         $('#'+index).addClass('is-invalid');
-//     //             //         $('#'+index).closest('.form-group').find('.text-danger').html(value);
-//     //             //     });
+                var errors = $.parseJSON(reject.responseText);
 
-//     //             // }, 800);
 
-//     //         }
-//     //     },
-//     // });
-// });
+                setTimeout(function() {
+                    $("#overlay").removeClass('overlay').html('');
+
+                    jQuery.each(errors.errors, function( index, value ) {
+
+                        index = index.replace(/\./g,'_');
+                        $('#'+index).addClass('is-invalid');
+                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                    });
+
+                }, 800);
+
+            }
+        },
+    });
+});
 
 $('.search-reference').on('click', function () {
     var searchRef = $(this);

@@ -124,7 +124,7 @@ class Quote extends Model
 
     public function getQuoteUpdateDetail()
     {
-        return $this->hasOne(QuoteUpdateDetail::class, 'quote_id', 'id' );
+        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','quotes');
     }
 
     public function getHasUserEditAttribute()

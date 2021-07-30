@@ -34,8 +34,8 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     Route::delete('multiple-delete/{ids}',array('as'=>'multiple-delete','uses'=>'DashboardController@multiple_delete'));
-    
-    
+    Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'DashboardController@has_user_edit'));
+    Route::put('update_override/{id}', array('as' => 'update.override', 'uses' => 'DashboardController@update_override'));
 
     /*
     |--------------------------------------------------------------------------
@@ -68,7 +68,7 @@ Route::group(['middleware' => ['auth']], function(){
     	Route::get('delete/{id}',array('as'=>'delete','uses'=>'QuoteController@delete'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'QuoteController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
-        Route::put('update_override/{id}', array('as' => 'update.override', 'uses' => 'QuoteController@update_override'));
+        // Route::put('update_override/{id}', array('as' => 'update.override', 'uses' => 'QuoteController@update_override'));
 
         Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));

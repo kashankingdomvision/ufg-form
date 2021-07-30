@@ -128,10 +128,6 @@ class QuoteController extends Controller
         return Commission::all();
     }
 
-    public function has_user_edit($id)
-    {
-        QuoteUpdateDetail::where('quote_id',decrypt($id))->where('user_id',Auth::id())->delete();
-    }
     
     public function quoteArray($request, $type = null)
     {
@@ -253,26 +249,29 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
 
 
-        $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->first();
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','quotes')->first();
 
         if($quote_update_detail && $quote_update_detail->exists()){
-            $data['quote_exist']   = 1;
-            $data['quote_user_id'] = $quote_update_detail->user_id;
+            $data['exist']   = 1;
+            $data['user_id'] = $quote_update_detail->user_id;
         }
         else{    
+
             $quote_update_details = QuoteUpdateDetail::create([
-                    'user_id'    => Auth::id(),
-                    'quote_id'   => decrypt($id)
-                ]);
-            $data['quote_exist']   = null;
-            $data['quote_user_id'] = null;
+                'user_id'      =>  Auth::id(),
+                'foreign_id'   =>  decrypt($id),
+                'status'       =>  'quotes'
+            ]);
+
+            $data['exist']   = null;
+            $data['user_id'] = null;
         }
         return view('quotes.edit',$data);
     }
     
     public function update(QuoteRequest $request, $id)
     {
-        $quote_update_detail = QuoteUpdateDetail::where('quote_id',decrypt($id))->where('user_id',Auth::id())->first();
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
  
         if ($quote_update_detail == null){
             return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
@@ -324,11 +323,6 @@ class QuoteController extends Controller
        return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
     }
 
-    public function update_override(Request $request,$id){
-
-        QuoteUpdateDetail::where("quote_id", decrypt($id))->update([ "user_id" => $request->user_id ]);
-        return \Response::json(['success_message' => 'User Updated'], 200);
-    }
 
     public function quoteVersion($id, $type = null)
     {
