@@ -58,7 +58,7 @@
 
                   <div class="form-group">
                     <label>Address</label>
-                    <textarea name="address" value="{{ old('address') }}" class="form-control" rows="3" placeholder="Enter Address">{{ old('address') }}</textarea>
+                    <textarea name="address" value="{{ old('address') }}" class="form-control" rows="1" placeholder="Enter Address">{{ old('address') }}</textarea>
 
                     @error('address')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -70,6 +70,14 @@
                     <input type="number" name="phone" value="{{ old('phone') }}" class="form-control hide-arrows @error('phone') is-invalid @enderror"  placeholder="132456789" >
 
                     @error('phone')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
+                  <div class="form-group">
+                    <label>About Us</label>
+                    <textarea name="about_us"  class="form-control summernote">{{ old('about_us') }}</textarea>
+                    @error('about_us')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                   </div>

@@ -41,7 +41,7 @@
         $(document).ready(function() {
             $('.summernote').summernote({
                 height: 150,   //set editable area's height
-                placeholder: 'Enter the description here ..........',
+                placeholder: 'Enter Text Here..',
                 codemirror: { // codemirror options
                     theme: 'monokai'
                 }

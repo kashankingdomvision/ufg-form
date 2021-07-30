@@ -84,6 +84,14 @@
                     @enderror
                   </div>
 
+                  <div class="form-group">
+                    <label>About Us</label>
+                    <textarea name="about_us" class="form-control summernote">{{ old('about_us')??$brand->about_us }}</textarea>
+                    @error('about_us')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
                   <div class="form-group text-center">
                     @if($brand->image_path)
                       <img src="{{ $brand->image_path }}" width="100" height="100" alt="brand logo" />

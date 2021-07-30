@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button class="" type="submit" id="multiple_delete">
+                    <button class="btn btn-danger" type="submit" id="multiple_delete">
                         <span class="mr-2" role="status" aria-hidden="true"></span>
                         Delete
                     </button>
