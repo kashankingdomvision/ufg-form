@@ -266,6 +266,7 @@ class QuoteController extends Controller
             $data['exist']   = null;
             $data['user_id'] = null;
         }
+
         return view('quotes.edit',$data);
     }
     

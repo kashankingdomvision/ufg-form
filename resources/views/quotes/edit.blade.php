@@ -393,7 +393,7 @@
                   </div>
                   
                   <div class="parent" id="parent">
-                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'DESC')->get() as $key  => $q_detail )
+                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get() as $key  => $q_detail )
                         <div class="quote" data-key="{{$key}}">
                             @if($loop->iteration > 1)
                             <div class="row">
