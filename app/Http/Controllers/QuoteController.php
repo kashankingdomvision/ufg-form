@@ -32,6 +32,7 @@ use App\QuoteUpdateDetail;
 use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use PDF;
+use App\QuoteDocument;
 
 class QuoteController extends Controller
 {
@@ -540,15 +541,23 @@ class QuoteController extends Controller
     
     public function documentIndex($id)
     {
-        return view('quote_documents.index');
-      
+        $doc = QuoteDocument::where('quote_id', decrypt($id))->firstOrFail();
+        $data['quote_id'] = $id;
+        if($doc->exists()){
+            $data['doc']      = $doc;
+        }
+        return view('quote_documents.index', $data);
     }
     
-    public function generatePDF(Request $request)
+    public function generatePDF(Request $request, $id)
     {
-        dd($request->all());
-        $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->download('invoice.pdf');
+        QuoteDocument::create([
+            'quote_id'  => decrypt($id),
+            'data'      => $request->data,
+        ]);
+        dd('quote doc create successfully');
+        // $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
+        // return $pdf->download('invoice.pdf');
     }
     
 }

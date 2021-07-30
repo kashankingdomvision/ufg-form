@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-decoupled-document": "^29.0.0",
+        "@ckeditor/ckeditor5-build-inline": "^29.0.0",
         "@ckeditor/ckeditor5-page-break": "^29.0.0",
         "@sweetalert2/theme-bootstrap-4": "^5.0.2",
         "bootstrap-datepicker": "^1.9.0",

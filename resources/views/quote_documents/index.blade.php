@@ -19,13 +19,16 @@
     <section class="content">
       <div class="container-fluid bd-dark">
         <div class="container">
-            <form method="POST" action="{{ route('quotes.document.pdf') }}">
+            <form method="POST" action="{{ route('quotes.document.pdf', $quote_id) }}" id="generate-pdf">
             @csrf
                 <div class="row">
                     <div class="col-md-12" >
                         <div id="toolbar-container"></div>
                         <div id="editor">
-                            <header class="mb-5">
+                        @if(isset($doc))
+                            {!! $doc !!}
+                        @endif 
+                            {{-- <header class="mb-5">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="text-center">
@@ -53,13 +56,13 @@
                                 <div class="text-center">
                                     <small  >Company Registered in England Company Reg. 09738411. Vat Registeration No. GB267893051 | ATOL No. 7583</small>
                                 </div>
-                            </footer>
+                            </footer> --}}
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col">
-                        <button type="button" class="btn btn-block btn-outline-dark generate-pdf">Genereate PDF</button>
+                        <button type="submit" class="btn btn-block btn-outline-dark">Genereate PDF</button>
                     </div>
                 </div>
             </form>

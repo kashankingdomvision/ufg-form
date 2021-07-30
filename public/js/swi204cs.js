@@ -23783,9 +23783,43 @@ _ckeditor_ckeditor5_build_decoupled_document__WEBPACK_IMPORTED_MODULE_4___defaul
 });
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on('click', '.generate-pdf', function () {
+jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
+  event.preventDefault();
+  var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
+      url = $form.attr('action');
   var editor = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editor').html();
-  console.log(editor);
+  var formData = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serializeArray();
+  formData.push({
+    name: 'data',
+    value: editor
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    type: 'POST',
+    url: url,
+    data: formData,
+    success: function success(data) {
+      console.log(data, 'data');
+    },
+    error: function error(reject) {
+      if (reject.status === 422) {
+        var errors = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.parseJSON(reject.responseText);
+        setTimeout(function () {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#overlay").removeClass('overlay').html('');
+
+          if (errors.hasOwnProperty("overrride_errors")) {
+            alert(errors.overrride_errors);
+            window.location.href = REDIRECT_BASEURL + "quotes/index";
+          } else {
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()('#' + index).addClass('is-invalid');
+              jquery__WEBPACK_IMPORTED_MODULE_0___default()('#' + index).closest('.form-group').find('.text-danger').html(value);
+            });
+          }
+        }, 800);
+      }
+    }
+  });
 });
 
 function todayDate() {

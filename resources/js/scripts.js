@@ -27,10 +27,49 @@ var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
 
 
-$(document).on('click', '.generate-pdf', function () {
+$("#generate-pdf").submit(function(event) {
+    event.preventDefault();
+    var $form = $(this),
+    url = $form.attr('action');
     var editor = $('#editor').html();
-    console.log(editor);
+    var formData = $(this).serializeArray();
+    formData.push({name:'data', value: editor});
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: formData,
+        success: function (data) {
+            console.log(data, 'data');
+        },
+        error: function (reject) {
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                setTimeout(function() {
+                    $("#overlay").removeClass('overlay').html('');
+
+                    if(errors.hasOwnProperty("overrride_errors")){
+                        alert(errors.overrride_errors);
+                        window.location.href = REDIRECT_BASEURL + "quotes/index";
+                    }
+                    else{
+
+                        jQuery.each(errors.errors, function( index, value ) {
+
+                            index = index.replace(/\./g,'_');
+                            $('#'+index).addClass('is-invalid');
+                            $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                        });
+                    }
+
+                }, 800);
+            }
+        },
+    });
 });
+
 
 
 function todayDate() {
