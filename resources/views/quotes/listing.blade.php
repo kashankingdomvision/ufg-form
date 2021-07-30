@@ -250,6 +250,7 @@
                                                         <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                             <span class="fa fa-eye"></span>
                                                         </a>
+                                                      
 
                                                         @if($quote->booking_status == 'quote')
                                                             <a onclick="return confirm('Are you sure want to cancel {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel" data-target="#Cancel"><span class="fa fa-times "></span></a>
@@ -270,6 +271,9 @@
                                                                     </button>
                                                             </form>
                                                         @endif
+                                                        <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
+                                                            <i class="fas fa-file"></i>
+                                                        </a>
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>
