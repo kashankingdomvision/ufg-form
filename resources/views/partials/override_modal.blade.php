@@ -1,7 +1,7 @@
 <div class="modal fade" id="override_modal">
     <div class="modal-dialog ">
         <div class="modal-content">
-            <form action="{{ route('update.override', encrypt($quote->id)) }}"  method="POST"  id="update-override">
+            <form action="{{ route('update.override', encrypt($id)) }}"  method="POST"  id="update-override">
                 @csrf @method('put')
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                 <input type="hidden" name="status" value="{{ $status }}">

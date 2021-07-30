@@ -111,8 +111,8 @@ class DashboardController extends Controller
         QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status',$request->status)->delete();
     }
 
-    public function update_override(Request $request,$id){
-
+    public function update_override(Request $request,$id)
+    {
         QuoteUpdateDetail::where("foreign_id", decrypt($id))->where("status", $request->status)->update([ "user_id" => $request->user_id ]);
         return \Response::json(['success_message' => 'User Updated'], 200);
     }

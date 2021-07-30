@@ -22,6 +22,7 @@ use App\BookingDetailFinance;
 use App\BookingLog;
 use App\BookingPaxDetail;
 use App\Commission;
+use App\QuoteUpdateDetail;
 use App\Http\Requests\BookingRequest;
 use Auth;
 use App\Country;
@@ -134,6 +135,24 @@ class BookingController extends Controller
             if ($response['status'] == 200) {
                 $data['payment_details'] = $response['body']['old_records'];
             }
+        }
+
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
+
+        if($quote_update_detail && $quote_update_detail->exists()){
+            $data['exist']   = 1;
+            $data['user_id'] = $quote_update_detail->user_id;
+        }
+        else{    
+
+            $quote_update_details = QuoteUpdateDetail::create([
+                'user_id'      =>  Auth::id(),
+                'foreign_id'   =>  decrypt($id),
+                'status'       =>  'bookings'
+            ]);
+
+            $data['exist']   = null;
+            $data['user_id'] = null;
         }
 
         return view('bookings.edit',$data);
@@ -261,6 +280,13 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
+
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','bookings')->first();
+ 
+        if ($quote_update_detail == null){
+            return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
+        }
+
         $booking = Booking::findOrFail(decrypt($id));
         $array =  $booking->toArray();
         $book =[];
@@ -310,6 +336,8 @@ class BookingController extends Controller
                  ]);
              }
         }
+
+        $quote_update_detail->delete();
 
         return redirect()->route('bookings.index',encrypt($request->season_id))->with('success_message', 'Booking update successfully');    
     }

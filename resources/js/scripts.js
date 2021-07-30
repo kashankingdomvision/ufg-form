@@ -1449,14 +1449,22 @@ $("#update-booking").submit(function(event) {
                 var errors = $.parseJSON(reject.responseText);
 
                 setTimeout(function() {
+
                     $("#overlay").removeClass('overlay').html('');
 
-                    jQuery.each(errors.errors, function( index, value ) {
+                    if(errors.hasOwnProperty("overrride_errors")){
+                        alert(errors.overrride_errors);
+                        window.history.back();
+                    }
+                    else{
 
-                        index = index.replace(/\./g,'_');
-                        $('#'+index).addClass('is-invalid');
-                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                    });
+                        jQuery.each(errors.errors, function( index, value ) {
+
+                            index = index.replace(/\./g,'_');
+                            $('#'+index).addClass('is-invalid');
+                            $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                        });
+                    }
 
                 }, 800);
 

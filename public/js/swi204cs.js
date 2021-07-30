@@ -24969,11 +24969,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           var errors = $.parseJSON(reject.responseText);
           setTimeout(function () {
             $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
-            });
+
+            if (errors.hasOwnProperty("overrride_errors")) {
+              alert(errors.overrride_errors);
+              window.history.back();
+            } else {
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $('#' + index).addClass('is-invalid');
+                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              });
+            }
           }, 800);
         }
       }

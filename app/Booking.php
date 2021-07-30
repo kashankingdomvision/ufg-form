@@ -108,5 +108,18 @@ class Booking extends Model
     {
         return $this->hasMany(BookingLog::class, 'booking_id', 'id')->orderBy('log_no','DESC');
     }
+
+    public function getQuoteUpdateDetail()
+    {
+        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','bookings');
+    }
+
+    public function getHasUserEditAttribute()
+    {
+        $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
+        if($checkUserExist){
+            return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
+        }
+    }
    
 }

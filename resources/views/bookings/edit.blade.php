@@ -1078,7 +1078,45 @@
         </div>
       </div>
     </section>
-
+    @if($exist && $user_id)
+      @if($exist == 1 && $user_id != Auth::id())
+        @include('partials.override_modal',[ 'status' => 'bookings' , 'id' => $booking->id ])
+      @endif
+    @endif
   </div>
 
 @endsection
+
+ 
+@push('js')
+
+<script>
+  $(window).on('beforeunload', function() {
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    var id = "{{encrypt($booking->id)}}";
+    var url = "{{ route('has-user-edit', ":id") }}";
+    url = url.replace(':id', id);
+
+    $.ajax({
+      url: url,
+      type: 'delete',  
+      dataType: "JSON",
+      data: { "id": id, "status": 'bookings' },
+      success: function (response)
+      {
+        console.log(response); 
+      },
+      error: function(xhr) {
+        console.log(xhr.responseText);  
+      }
+    });
+  
+  });
+</script>
+@endpush

@@ -147,6 +147,7 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
+                                            <th width="8"></th>
                                             <th>Zoho Ref #</th>
                                             <th>Quote Ref #</th>
                                             <th>Lead Passenger</th>
@@ -175,6 +176,7 @@
                                     @if($bookings && $bookings->count())
                                         @foreach ($bookings as $booking)
                                             <tr>
+                                                <td width="8">{!! $booking->has_user_edit !!}</td>
                                                 <td>{{$booking->ref_no}}</td>
                                                 <td>
                                                     <a href="{{ route('bookings.show', encrypt($booking->id)) }}"> {{$booking->quote_ref}} </a>
