@@ -58,11 +58,15 @@ class BrandController extends Controller
             'email'     => $request->email,
             'address'   => $request->address,
             'phone'     => $request->phone,
+            'about_us'  => $request->about_us,
             'user_id'   => Auth::id(),
         ];
         if ($request->hasFile('logo')) {
             $data['logo'] = $this->fileStore($request);
         }
+
+        // dd($data);
+
         Brand::create($data);
         return redirect()->route('setting.brands.index')->with('success_message', 'Brand created successfully'); 
     }
@@ -107,6 +111,7 @@ class BrandController extends Controller
             'email'     => $request->email,
             'address'   => $request->address,
             'phone'     => $request->phone,
+            'about_us'  => $request->about_us
         ];
         
         if ($request->hasFile('logo')) {
