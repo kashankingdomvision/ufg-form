@@ -31,6 +31,7 @@ use App\Country;
 use App\QuoteUpdateDetail;
 use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
+use PDF;
 
 class QuoteController extends Controller
 {
@@ -535,6 +536,19 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         // $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);      
+    }
+    
+    public function documentIndex($id)
+    {
+        return view('quote_documents.index');
+      
+    }
+    
+    public function generatePDF(Request $request)
+    {
+        dd($request->all());
+        $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
+        return $pdf->download('invoice.pdf');
     }
     
 }

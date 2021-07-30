@@ -119,14 +119,5 @@ class DashboardController extends Controller
         return \Response::json(['success_message' => 'User Updated'], 200);
     }
 
-    
-    public function pdf()
-    {
-        // $html = View::make('quote_documents.index')->render();
-        $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
-        return $pdf->download('invoice.pdf');
-        // $pdf->loadHTML($html);
-        // return $pdf->stream();
-        // $pdf = PDF::loadHTML($html)->setPaper('a4', 'landscape')->setWarnings(false)->save('myfile.pdf');
-    }
+
 }
