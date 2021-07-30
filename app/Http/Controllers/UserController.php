@@ -8,6 +8,7 @@ use App\User;
 use App\Role;
 use App\Brand;
 use App\Currency;
+use Hash;
 
 class UserController extends Controller
 {
@@ -78,7 +79,7 @@ class UserController extends Controller
             'name'           => $request->name,
             'email'          => $request->email,
             'role_id'        => $request->role,
-            'password'       => $request->password,
+            'password'       => Hash::make($request->password),
             'supervisor_id'  => $request->supervisor_id,
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
@@ -128,7 +129,7 @@ class UserController extends Controller
         }
 
         if ($request->has('password') && !empty($request->password)) {
-            $data['password'] = $request->password;
+            $data['password'] = Hash::make($request->password);
         }
 
         $user->update($data);
