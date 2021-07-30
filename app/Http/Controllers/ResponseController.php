@@ -101,7 +101,9 @@ class ResponseController extends Controller
                     }
                 }
             }
+
             $passengerArray['passengers'] = $passenger_data;
+
             $response = [
                 "brand"         => $holiday,
                 "holidayTypes"  => $holidayTypes,
@@ -110,8 +112,15 @@ class ResponseController extends Controller
                 "pax"           => isset($pax_no) && !empty($pax_no) ? $pax_no : null,
                 'passengers'    => $passengerArray,
             ];
+
+            $payment_detial_response = \Helper::get_payment_detial_by_ref_no($ref);
+            if ($payment_detial_response['status'] == 200) {
+                $response['payment_details'] = $payment_detial_response['body']['old_records'];
+            }
+
             $ajax_response['status']    = true;
             $ajax_response['response']  = $response;
+            
             return response()->json($ajax_response);
         }
 

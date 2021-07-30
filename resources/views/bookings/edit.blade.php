@@ -1031,7 +1031,7 @@
                             <th>Amount</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="payment_detials">
 
                           @if(isset($payment_details) && !empty($payment_details))
 
