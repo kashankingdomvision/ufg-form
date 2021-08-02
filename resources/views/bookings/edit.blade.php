@@ -586,7 +586,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Estimated Cost <span style="color:red">*</span></label>
+                                <label>Actual Cost <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -647,7 +647,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -659,7 +659,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -671,7 +671,7 @@
                               </div>
                             </div>
                               
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
