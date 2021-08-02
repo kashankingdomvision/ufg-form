@@ -29,7 +29,11 @@ use App\Country;
 use Carbon\Carbon;
 class BookingController extends Controller
 {
-    public $pagination = 10;
+    public $pagination = 10, $cacheTimeOut;
+    public function __construct(Request $request)
+    {
+        $this->cacheTimeOut = 180000;
+    }
 
     public function view_seasons(Request $request)
     {
@@ -130,7 +134,9 @@ class BookingController extends Controller
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
-            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            });
 
             if ($response['status'] == 200) {
                 $data['payment_details'] = $response['body']['old_records'];
@@ -182,7 +188,9 @@ class BookingController extends Controller
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
-            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            });
 
             if ($response['status'] == 200) {
                 $data['payment_details'] = $response['body']['old_records'];
@@ -383,7 +391,9 @@ class BookingController extends Controller
         if(isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no'])){
 
             $zoho_booking_reference = isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no']) ? $data['booking']['ref_no'] : '' ;
-            $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            });
 
             if ($response['status'] == 200) {
                 $data['payment_details'] = $response['body']['old_records'];
