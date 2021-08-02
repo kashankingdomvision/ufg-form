@@ -541,11 +541,11 @@ class QuoteController extends Controller
     
     public function documentIndex($id)
     {
-        $doc = QuoteDocument::where('quote_id', decrypt($id))->firstOrFail();
+        // $doc = QuoteDocument::where('quote_id', decrypt($id))->firstOrFail();
         $data['quote_id'] = $id;
-        if($doc->exists()){
-            $data['doc']      = $doc;
-        }
+        // if($doc->exists()){
+        //     $data['doc']      = $doc;
+        // }
         return view('quote_documents.index', $data);
     }
     
