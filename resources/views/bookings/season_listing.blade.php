@@ -28,7 +28,7 @@
                 </div>
             </div>
         </section>
-        <section class="content">
+        {{-- <section class="content">
             <div class="container-fluid">
                 <div class="card card-default {{ (request()->has('seasons'))? '' : 'collapsed-card' }}">
                     <button type="button" class="btn btn-tool m-0 text-dark" data-card-widget="collapse">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> --}}
 
 
         <section class="content">
