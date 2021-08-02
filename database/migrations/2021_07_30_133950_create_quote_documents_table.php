@@ -14,7 +14,7 @@ class CreateQuoteDocumentsTable extends Migration
     public function up()
     {
         Schema::create('quote_documents', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('quote_id');
             $table->longText('data')->nullable();
