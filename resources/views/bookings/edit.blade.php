@@ -415,7 +415,7 @@
                   <div class="parent" id="parent">
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       @foreach ($booking->getBookingDetail as $key  => $booking_detail )
-                        <div class="quote" data-key="0">
+                        <div class="quote" data-key="{{$key}}">
                           @if($loop->iteration > 1)
                             <div class="row">
                               <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
@@ -716,7 +716,7 @@
                               @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                 @php $count =  $fkey + 1; @endphp
-                                  <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
+                                  <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 finance-parent-{{$key}}">
                                     <div class="col-sm-2">
                                       <div class="form-group">
                                         <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #{{ $count }}</label>

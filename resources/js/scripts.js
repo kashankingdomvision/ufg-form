@@ -1,4 +1,4 @@
-import $, { ajax } from 'jquery';
+import $, { ajax, cssNumber } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2';
@@ -1186,21 +1186,32 @@ $('.search-reference').on('click', function () {
 
 $('.clone_booking_finance').on('click', function () {
 
+    // var test = $(this).closest('.quote').find('.finance-clonning').first().clone();
+    // console.log(test);
+
     var depositeLabelId  = 'deposite_heading'+$(this).data('key');
-    var countHeading =$('.finance-clonning').length + 1;
-    $('.finance-clonning').eq(0).clone().find("input").val("").each(function(){
+    var key = $(this).closest('.quote').data('key');
+
+    var financeLength =  $(".finance-parent-"+key+".finance-clonning").length;
+  
+
+    $(this).closest('.quote').find('.finance-clonning').first().clone().find("input").val("").each(function(){
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
-            return ']['+$('.finance-clonning').length+']';
+            return ']['+financeLength+']';
         });
 
         this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){
             return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
         });
     }).end().find('.depositeLabel').each(function () {
-        this.id = 'deposite_heading'+$('.finance-clonning').length;
-    var countHeading =$('.finance-clonning').length + 1;
+
+        this.id = 'deposite_heading'+ financeLength;
+
+        var countHeading = $(".finance-parent-"+key+".finance-clonning").length + 1  ;
         $(this).text('Deposit Payment #'+countHeading);
+
     }).end()
+    
     .find("select").val("").each(function(){
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
             return ']['+$('.finance-clonning').length+']';
@@ -1213,11 +1224,11 @@ $('.clone_booking_finance').on('click', function () {
         theme: "bootstrap",
     }).end()
     .show()
-    .insertAfter(".finance-clonning:last");
+    .insertAfter(".finance-parent-"+key+".finance-clonning:last");
 
     // remove checked attribute after clone
-    $('.finance-clonning:last').find(':checked').attr('checked', false);
-    $('.deposit-amount:last').val('0.00');
+    // $(".finance-parent-"+key+":last").find(':checked').attr('checked', false);
+    $(".finance-parent-"+key+" .deposit-amount:last").val('0.00');
 
 
 });
