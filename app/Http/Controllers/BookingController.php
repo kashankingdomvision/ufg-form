@@ -102,7 +102,7 @@ class BookingController extends Controller
             }
         }
         
-        $data['bookings']    = $booking->paginate($this->pagination);
+        $data['bookings']    = $booking->orderBy('created_at','DESC')->paginate($this->pagination);
         $data['season_id']   = $season->id;
         $data['currencies']  = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']      = Brand::orderBy('id','ASC')->get();
