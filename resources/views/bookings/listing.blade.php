@@ -185,7 +185,7 @@
                                                 <td>{{$booking->getBrand->name??NULL}}</td>
                                                 <td>{{$booking->getHolidayType->name??NULL}}</td>
                                                 <td>{{$booking->sale_person}}</td>
-                                                <td>{{$booking->agency_booking == 1 ? 'No' : 'Yes'}}</td>
+                                                <td>{{$booking->agency_booking == 1 ? 'Yes' : 'No'}}</td>
                                                 <td>{{!empty($booking->getCurrency->code) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : NULL }}</td>
                                                 <td>{{$booking->pax_no}}</td>
                                                 <td>{{$booking->lead_passenger_dinning_preference}}</td>
