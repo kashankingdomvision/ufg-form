@@ -40,7 +40,7 @@ class QuoteController extends Controller
     
     public function index(Request $request)
     {
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', '!=', 1);
+        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
         if(count($request->all()) >0){
             if($request->has('client_type') && !empty($request->client_type)){
                 $client_type = ($request->client_type == 'client')? '0' : '1';
@@ -135,6 +135,7 @@ class QuoteController extends Controller
     {
 
         return [
+            'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
             'user_id'                           =>  Auth::id(),
             'season_id'                         =>  $request->season_id,
@@ -541,11 +542,15 @@ class QuoteController extends Controller
     
     public function documentIndex($id)
     {
-        // $doc = QuoteDocument::where('quote_id', decrypt($id))->firstOrFail();
+        $quote = Quote::findOrFail(decrypt($id));
+        $data['quote_details'] = $quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get(); 
+        $doc = QuoteDocument::where('quote_id', decrypt($id))->first();
         $data['quote_id'] = $id;
-        // if($doc->exists()){
-        //     $data['doc']      = $doc;
-        // }
+        if($doc){
+            if($doc->exists()){
+                $data['doc']      = $doc;
+            }
+        }
         return view('quote_documents.index', $data);
     }
     

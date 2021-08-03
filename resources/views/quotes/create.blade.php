@@ -64,6 +64,15 @@
                       </div>
                     </div>
                     
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
+                        <input type="text" name="tas_ref" class="form-control" value="{{ isset($tas_ref) & !empty($tas_ref) ? $tas_ref : '' }}"  placeholder="TAS Reference Number" >
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span></label>
@@ -72,7 +81,6 @@
                             <input type="radio" name="rate_type" value="live" class="rate-type" checked>
                             <span>&nbsp;Live Rate</span>
                           </label>
-                          
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" value="manual" class="rate-type">
                             <span>&nbsp;Manual Rate</span>

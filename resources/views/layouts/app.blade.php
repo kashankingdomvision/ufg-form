@@ -18,6 +18,7 @@
         <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/swi204cs.js') }}" defer></script>
+        
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     </head>
@@ -49,7 +50,89 @@
         });
     </script>
 @endauth
-    
+
+
+<script src="{{ asset('js/ck-editor-custom/build/ckeditor.js') }}"></script>
+<script>DecoupledDocumentEditor
+        .create( document.querySelector( '#editor' ), {
+            
+        toolbar: {
+            items: [
+                'exportPdf',
+                'exportWord',
+                '|',
+                'heading',
+                'fontFamily',
+                'fontSize',
+                'fontColor',
+                'fontBackgroundColor',
+                '|',
+                'bold',
+                'italic',
+                'underline',
+                'strikethrough',
+                '|',
+                'alignment',
+                '|',
+                'numberedList',
+                'bulletedList',
+                '|',
+                'outdent',
+                'indent',
+                '|',
+                'todoList',
+                'link',
+                'blockQuote',
+                'imageInsert',
+                'imageUpload',
+                'insertTable',
+                'mediaEmbed',
+                '|',
+                'highlight',
+                'pageBreak',
+                'findAndReplace',
+                'undo',
+                'redo',
+                'CKFinder',
+                'codeBlock',
+                // 'htmlEmbed'
+            ]
+        },
+        language: 'en',
+        image: {
+            toolbar: [
+                'imageTextAlternative',
+                'imageStyle:inline',
+                'imageStyle:block',
+                'imageStyle:side'
+            ]
+        },
+        table: {
+            contentToolbar: [
+                'tableColumn',
+                'tableRow',
+                'mergeTableCells',
+                'tableCellProperties',
+                'tableProperties'
+            ]
+        },
+            licenseKey: '',
+            
+            
+            
+        } )
+        .then( editor => {
+            window.editor = editor;
+            document.querySelector( '#document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
+            document.querySelector( '#toolbar-container' ).classList.add( 'ck-reset_all' );
+        } )
+        .catch( error => {
+            console.error( 'Oops, something went wrong!' );
+            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
+            console.warn( 'Build id: 3jsrijwq6ra6-nmur7pivyya9' );
+            console.error( error );
+        } );
+</script>
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>

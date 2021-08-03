@@ -251,9 +251,11 @@
                                                             <span class="fa fa-eye"></span>
                                                         </a>
                                                       
-
-                                                        @if($quote->booking_status == 'quote')
+                                                        @if($quote->booking_status == 'quote' && $quote->deleted_at == null)
                                                             <a onclick="return confirm('Are you sure want to cancel {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel" data-target="#Cancel"><span class="fa fa-times "></span></a>
+                                                            @elseif($quote->deleted_at != null)
+                                                            <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
+                                                            
                                                         @endif
                                                         @if($quote->booking_status == 'booked')
                                                             <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">

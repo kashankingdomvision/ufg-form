@@ -46,7 +46,7 @@ class ResponseController extends Controller
     
     public function getChildReference(Request $request)
     {
-        $data['quotes'] = Quote::where('ref_no', $request->ref_no)->where('id', '!=' ,$request->id)->orderBy('created_at')->get();
+        $data['quotes'] = Quote::withTrashed()->where('ref_no', $request->ref_no)->where('id', '!=' ,$request->id)->orderBy('created_at')->get();
         return response()->json(View::make('partials.quote_listing', $data)->render());
     }
     // FIND QUOTE REFERENCES

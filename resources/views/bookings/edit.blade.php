@@ -129,6 +129,14 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
+                        <input type="text" name="tas_ref" class="form-control" value="{{ $booking->tas_ref }}"  placeholder="TAS Reference Number" >
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
