@@ -801,7 +801,7 @@
                                 @endforeach
                               @else
                                 {{-- /////for single value/ --}}
-                                <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
+                                <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 finance-parent-{{$key}}">
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Payment #1</label>
