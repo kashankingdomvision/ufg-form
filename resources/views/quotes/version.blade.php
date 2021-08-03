@@ -576,6 +576,7 @@
                                     </div>
                                 </div>
                                 </div>
+                                @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accounts')
                                 <div class="col-sm-2 d-flex justify-content-center">
                                 <div class="form-group"> 
                                     <label>Added in Sage</label>
@@ -589,6 +590,7 @@
                                     </div>
                                 </div>
                                 </div>
+                                @endif
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Service Details</label>
