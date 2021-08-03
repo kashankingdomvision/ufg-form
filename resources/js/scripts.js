@@ -1183,6 +1183,10 @@ $('.clone_booking_finance').on('click', function () {
 
     var financeLength =  $(".finance-parent-"+key+".finance-clonning").length;
 
+    if ($('.select2single').data('select2')) {
+        $('.select2single').select2('destroy');
+    }
+
     $(this).closest('.quote').find('.finance-clonning').first().clone().find("input").val("").each(function(){
         this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
             return ']['+financeLength+']';
@@ -1216,7 +1220,7 @@ $('.clone_booking_finance').on('click', function () {
     // remove checked attribute after clone & set deposit amount 0.00
     $(this).closest('.quote').find('.finance-clonning:last .checkbox').prop('checked', false);
     $(this).closest('.quote').find('.finance-clonning:last .deposit-amount').val('0.00');
-     
+    reinitializedDynamicFeilds();
 });
 
 $('#tempalte_id').on('change', function () {
