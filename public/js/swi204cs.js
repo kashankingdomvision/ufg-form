@@ -24843,8 +24843,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $('.clone_booking_finance').on('click', function () {
-    // var test = $(this).closest('.quote').find('.finance-clonning').first().clone();
-    // console.log(test);
     var depositeLabelId = 'deposite_heading' + $(this).data('key');
     var key = $(this).closest('.quote').data('key');
     var financeLength = $(".finance-parent-" + key + ".finance-clonning").length;
@@ -24869,10 +24867,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).end().find('.select2single').select2({
       width: '100%',
       theme: "bootstrap"
-    }).end().show().insertAfter(".finance-parent-" + key + ".finance-clonning:last"); // remove checked attribute after clone
-    // $(".finance-parent-"+key+":last").find(':checked').attr('checked', false);
+    }).end().show().insertAfter(".finance-parent-" + key + ".finance-clonning:last"); // remove checked attribute after clone & set deposit amount 0.00
 
-    $(".finance-parent-" + key + " .deposit-amount:last").val('0.00');
+    $(this).closest('.quote').find('.finance-clonning:last .checkbox').prop('checked', false);
+    $(this).closest('.quote').find('.finance-clonning:last .deposit-amount').val('0.00');
   });
   $('#tempalte_id').on('change', function () {
     var confirmAlert = null;
