@@ -423,7 +423,7 @@
                   <div class="parent" id="parent">
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       @foreach ($booking->getBookingDetail as $key  => $booking_detail )
-                        <div class="quote" data-key="0">
+                        <div class="quote" data-key="{{$key}}">
                           @if($loop->iteration > 1)
                             <div class="row">
                               <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
@@ -594,7 +594,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Estimated Cost <span style="color:red">*</span></label>
+                                <label>Actual Cost <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -655,7 +655,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -667,7 +667,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -679,7 +679,7 @@
                               </div>
                             </div>
                               
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -724,7 +724,7 @@
                               @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                 @php $count =  $fkey + 1; @endphp
-                                  <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2">
+                                  <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 finance-parent-{{$key}}">
                                     <div class="col-sm-2">
                                       <div class="form-group">
                                         <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #{{ $count }}</label>
