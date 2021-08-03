@@ -657,7 +657,7 @@
 
                             <div class="col-sm-3">
                               <div class="form-group">
-                                <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                <label>Actual Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
