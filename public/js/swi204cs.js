@@ -23748,24 +23748,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 
- // window.DecoupledEditor = require('./ck-editor-custom/build/ckeditor');
-// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
-// import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak';
 
 var BASEURL = window.location.origin + '/ufg-form/public/json/';
 var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
 // var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-// DecoupledEditor
-//     // .create( document.querySelector( '#editor' ))
-//     .create( document.querySelector( '#editor'))
-//     .then( editor => {
-//         console.log(editor);
-//         const toolbarContainer = document.querySelector( '#toolbar-container' );
-//         toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-//     } )
-//     .catch( error => {
-//         console.error( error );
-//     } );
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
@@ -23913,14 +23899,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   ;
-  datepickerReset();
-  DecoupledEditor.create(document.querySelector('#editor')).then(function (editor) {
-    console.log(editor);
-    var toolbarContainer = document.querySelector('#toolbar-container');
-    toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-  })["catch"](function (error) {
-    console.error(error);
-  }); /////////////////////////////
+  datepickerReset(); /////////////////////////////
   // / Date Picker
   // /
   // /
