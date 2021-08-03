@@ -79,12 +79,12 @@
                                 <p>View Quote</p>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
                                   <i class="fa fa-window-close nav-icon"></i>
                                 <p>Cancel Quote</p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ route('quotes.archive') }}" class="nav-link {{ $route == 'quotes.view.archive' || $route == 'quotes.archive' ? 'active' : '' }}">
                                 <i class="fa fa-archive nav-icon"></i>

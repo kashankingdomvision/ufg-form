@@ -25,6 +25,7 @@ class CreateQuotesTable extends Migration
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
+            $table->string('tas_ref')->nullable();
             $table->enum('agency', [0, 1])->default(0);
             $table->string('agency_name')->nullable();
             $table->string('agency_contact')->nullable();

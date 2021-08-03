@@ -47,6 +47,7 @@ class Quote extends Model
         'booking_status',
         'booking_date',
         'is_archive',
+        'tas_ref'
     ];
     
     public function getQuotelogs()
@@ -66,6 +67,9 @@ class Quote extends Model
     public function getBookingFormatedStatusAttribute()
     {
         $status = $this->booking_status;
+        if($this->deleted_at != null){
+            return '<h5><span class="badge badge-danger">Cancelled</span></h5>';
+        }
         switch ($status) {
             case 'booked':
                 return '<h5><span class="badge badge-success">Booked</span></h5>';

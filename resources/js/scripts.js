@@ -2,7 +2,9 @@ import $, { ajax } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
-import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
+// window.DecoupledEditor = require('./ck-editor-custom/build/ckeditor');
+
+// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 // import PageBreak from '@ckeditor/ckeditor5-page-break/src/pagebreak';
 var BASEURL = window.location.origin+'/ufg-form/public/json/';
 var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
@@ -10,18 +12,18 @@ var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 // var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 
-DecoupledEditor
-    // .create( document.querySelector( '#editor' ))
-    .create( document.querySelector( '#editor'))
+// DecoupledEditor
+//     // .create( document.querySelector( '#editor' ))
+//     .create( document.querySelector( '#editor'))
     
-    .then( editor => {
-        console.log(editor);
-        const toolbarContainer = document.querySelector( '#toolbar-container' );
-        toolbarContainer.appendChild( editor.ui.view.toolbar.element );
-    } )
-    .catch( error => {
-        console.error( error );
-    } );
+//     .then( editor => {
+//         console.log(editor);
+//         const toolbarContainer = document.querySelector( '#toolbar-container' );
+//         toolbarContainer.appendChild( editor.ui.view.toolbar.element );
+//     } )
+//     .catch( error => {
+//         console.error( error );
+//     } );
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 import datepicker from 'bootstrap-datepicker';
