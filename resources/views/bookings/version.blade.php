@@ -495,7 +495,7 @@
                             </div>
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Estimated Cost <span class="text-danger">*</span></label>
+                                <label>Actual Cost <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
@@ -554,9 +554,9 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
-                                <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                <label>Actual Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
@@ -565,7 +565,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -576,7 +576,7 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span class="text-danger">*</span></label>
                                 <div class="input-group">

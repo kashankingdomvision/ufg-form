@@ -654,7 +654,7 @@
 
                             <div class="col-sm-3">
                               <div class="form-group">
-                                <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                <label>Actual Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
@@ -751,7 +751,7 @@
                                     <div class="col-2">
                                       <div class="form-group">
                                         <label>Payment</label>
-                                        <select  name="quote[{{ $key }}][finance][{{ $fkey }}][payment_method]" data-name="payment_method"  class="form-control payment-method" >
+                                        <select  name="quote[{{ $key }}][finance][{{ $fkey }}][payment_method]" data-name="payment_method"  class="form-control payment-method select2single" >
                                           <option value="">Select Payment Method</option>
                                           @foreach ($payment_methods as $payment_method)
                                             <option value="{{ $payment_method->id }}" {{ $payment_method->id == $finance->payment_method_id ? 'selected' : '' }}> {{ $payment_method->name }} </option>
