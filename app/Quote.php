@@ -58,6 +58,10 @@ class Quote extends Model
     public function getSeason(){
     	return $this->hasOne(Season::class, 'id' ,'season_id');
     }
+    
+    public function getSalePerson(){
+    	return $this->hasOne(User::class, 'id' ,'sale_person_id');
+    }
 
     public function getQuoteDetails()
     {

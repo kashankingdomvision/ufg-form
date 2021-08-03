@@ -251,8 +251,7 @@
                     </div>
 
                     <div class="col-md-12 agency-columns" >
-                      @if($booking->agency == 1)  {{--  Agency  --}}
-                        <div class="row mt-1" >
+                        <div class="row mt-1  agencyField {{ ($booking->agency == 0)? 'd-none': '' }}" >
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $booking->agency_name }}" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
@@ -266,9 +265,9 @@
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="tel" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                            <span class="text-danger error_msg0 hide" role="alert"></span>
-                            <span class="text-success valid_msg0" role="alert"></span>
+                            <input type="tel" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phonegc">
+                            <span class="text-danger error_msggc hide" role="alert"></span>
+                            <span class="text-success valid_msggc" role="alert"></span>
                             
                           </div>
                         
@@ -278,8 +277,7 @@
                             <span class="text-danger" role="alert" > </span>
                           </div>
                         </div>
-                      @else  {{--  lead passenger  --}}
-                        <div class="row mt-1" >
+                        <div class="row mt-1  PassengerField {{ ($booking->agency == 1)? 'd-none': '' }}" >
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Lead Passenger Name <span style="color:red">*</span></label>
@@ -311,7 +309,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row  PassengerField {{ ($booking->agency == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
                               <label>Nationality <span style="color:red">*</span></label>
@@ -340,7 +338,6 @@
                           </div>
                           
                         </div>
-                      @endif
                     </div>
 
 
@@ -690,7 +687,7 @@
                                 </div>
                               </div>
                             </div>
-                            @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accounts')
+                            @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                             <div class="col-sm-2 d-flex justify-content-center">
                               <div class="form-group">
                                 <label>Added in Sage</label>

@@ -44,7 +44,7 @@
               <div class="icon">
                 <i class="ion ion-bag"></i>
               </div>
-              <a href="{{ route('bookings.view.seasons') }}" class="small-box-footer">View Bookings <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{{ route('bookings.index') }}" class="small-box-footer">View Bookings <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

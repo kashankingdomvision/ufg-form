@@ -38,62 +38,78 @@ class QuoteController extends Controller
 {
     public $pagiantion = 10;
     
+    public function searchFilters($quote, $request)
+    {
+        if($request->has('client_type') && !empty($request->client_type)){
+            $client_type = ($request->client_type == 'client')? '0' : '1';
+            $quote->where('agency', 'like', '%'.$client_type.'%' );    
+        }
+        
+        if($request->has('staff') && !empty($request->staff)){
+            $quote->whereHas('getSalePerson', function($query) use($request){
+                $query->where('name', 'like', '%'.$request->staff.'%' );
+             });
+        }
+        
+        if($request->has('status') && !empty($request->status)){
+            $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+        }
+        
+        if($request->has('booking_currency') && !empty($request->booking_currency)){
+            $quote->whereHas('getCurrency', function($query) use($request){
+                foreach ($request->booking_currency as $currency) {
+                    $query->where('code', 'like', '%'.$currency.'%' );
+                }
+            });
+        }            
+        
+        if($request->has('booking_season') && !empty($request->booking_season)){
+            $quote->whereHas('getSeason', function($query) use($request){
+               $query->where('name', 'like', '%'. $request->booking_season.'%' );
+            });
+        }        
+        
+        if($request->has('brand') && !empty($request->brand)){
+            $quote->whereHas('getBrand', function($query) use($request){
+                foreach ($request->brand as $brand) {
+                    $query->where('name', 'like', '%'.$brand.'%' );
+                }
+            });
+        }            
+        
+        if($request->has('search') && !empty($request->search)){
+            $quote->where(function($query) use($request){
+                $query->where('ref_no', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
+                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
+            });
+        }
+        
+        if($request->has('created_date')){
+            $quote->where(function($query) use($request){
+                if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
+                    $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
+                }
+                if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
+                    $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
+                }
+            });
+        }
+        return $quote;
+    }
+    
     public function index(Request $request)
     {
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
         if(count($request->all()) >0){
-            if($request->has('client_type') && !empty($request->client_type)){
-                $client_type = ($request->client_type == 'client')? '0' : '1';
-                $quote->where('agency', $client_type);    
-            }
-            
-            if($request->has('status') && !empty($request->status)){
-                $quote->where('booking_status', $request->status);
-            }
-            
-            if($request->has('booking_currency') && !empty($request->booking_currency)){
-                $quote->whereHas('getCurrency', function($query) use($request){
-                   $query->where('code', $request->booking_currency);
-                });
-            }            
-            
-            if($request->has('booking_season') && !empty($request->booking_season)){
-                $quote->whereHas('getSeason', function($query) use($request){
-                   $query->where('name', $request->booking_season);
-                });
-            }        
-            
-            if($request->has('brand') && !empty($request->brand)){
-                $quote->whereHas('getBrand', function($query) use($request){
-                   $query->where('name', $request->brand);
-                });
-            }            
-            
-            if($request->has('search') && !empty($request->search)){
-                $quote->where(function($query) use($request){
-                    $query->where('ref_no', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
-                    ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
-                });
-            }
-            
-            if($request->has('created_date')){
-                $quote->where(function($query) use($request){
-                    if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-                        $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-                    }
-                    if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-                        $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-                    }
-                });
-            }
-            
+            $quote = $this->searchFilters($quote, $request);
         }
         $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         $data['booking_seasons']  = Season::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['users']            = User::get();
         
         return view('quotes.listing', $data);       
     }
@@ -484,59 +500,13 @@ class QuoteController extends Controller
         $data['status'] = 'archive';
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1);
         if(count($request->all()) >0){
-            if($request->has('client_type') && !empty($request->client_type)){
-                $client_type = ($request->client_type == 'client')? 0 : 1;
-                $quote->where('agency', $client_type);    
-            }
-            
-            if($request->has('status') && $request->status != null && $request->status != 'all'){
-                $quote->where('booking_status', $request->status);
-            }
-            
-            if($request->has('booking_currency') && !empty($request->booking_currency)){
-                $quote->whereHas('getCurrency', function($query) use($request){
-                   $query->where('code', $request->booking_currency);
-                });
-            }            
-            
-            if($request->has('booking_season') && !empty($request->booking_season)){
-                $quote->whereHas('getSeason', function($query) use($request){
-                   $query->where('name', $request->booking_season);
-                });
-            }        
-            
-            if($request->has('brand') && !empty($request->brand)){
-                $quote->whereHas('getBrand', function($query) use($request){
-                   $query->where('name', $request->brand);
-                });
-            }            
-            
-            if($request->has('search') && !empty($request->search)){
-                $quote->where(function($query) use($request){
-                    $query->where('ref_no', 'like', '%'.$request->search.'%')
-                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')                    
-                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
-                    ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
-                });
-            }
-            
-            if($request->has('created_date')){
-                $quote->where(function($query) use($request){
-                    if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-                        $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-                    }
-                    if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-                        $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-                    }
-                });
-            }
-            
+            $quote = $this->searchFilters($quote, $request);
         }
         $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         $data['booking_seasons']  = Season::all();
+        $data['users']            = User::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        // $data['quotes'] = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1)->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         return view('quotes.listing', $data);      
     }
     
