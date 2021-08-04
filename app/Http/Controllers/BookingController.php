@@ -279,6 +279,7 @@ class BookingController extends Controller
             'selling_price_bc'      => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency'],
             'added_in_sage'         => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
+            'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
         ];
     }
 
@@ -293,6 +294,7 @@ class BookingController extends Controller
             "payment_method_id"     => $quoteD['payment_method']??NULL,
             "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
             "additional_date"       => $quoteD['ab_number_of_days']??NULL,
+            "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
         ];
     }
 
@@ -333,7 +335,10 @@ class BookingController extends Controller
                 foreach ($qu_details['finance'] as $finance){
                     $fin = $this->getFinanceBookingDetailsArray($finance);
                     $fin['booking_detail_id'] = $booking_Details->id;
-                    BookingDetailFinance::create($fin);
+
+                    if($fin['deposit_amount'] > 0){
+                        BookingDetailFinance::create($fin);
+                    }
                 }
             }
         }

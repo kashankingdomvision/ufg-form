@@ -851,6 +851,30 @@ $(".quote").eq(0).clone()
         getSellingPrice();
     });
 
+    $(document).on('change', '.deposit-amount',function(){
+
+        var quoteKey        =  $(this).closest('.quote').data('key');
+        var financeKey      =  $(this).closest('.finance-clonning').data('financekey');
+        var depositAmount   =  parseFloat($(this).val()).toFixed(2);
+
+        var estimated_cost     =  parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+        var actualCost         =  parseFloat($(`#quote_${quoteKey}_outstanding_amount_left`).val()).toFixed(2);
+
+        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstandingAmountLeft   = estimated_cost - totalDepositAmount;
+
+
+        if(outstandingAmountLeft >= 0){
+            $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+        }else{
+            alert("Please Enter Correct Deposit Amount");
+            $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
+        }
+
+    });
+
     $(document).on('change', '.rate-type',function(){
         changeCurrenyRate();
     });
@@ -1248,49 +1272,59 @@ $('.search-reference').on('click', function () {
 
 $('.clone_booking_finance').on('click', function () {
 
-
-    var depositeLabelId  = 'deposite_heading'+$(this).data('key');
-    var key = $(this).closest('.quote').data('key');
-
-    var financeLength =  $(".finance-parent-"+key+".finance-clonning").length;
-
     if ($('.select2single').data('select2')) {
         $('.select2single').select2('destroy');
     }
 
-    $(this).closest('.quote').find('.finance-clonning').first().clone().find("input").val("").each(function(){
-        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
-            return ']['+financeLength+']';
+    var $quote               = $(this).closest('.quote');
+    var quoteKey             = $quote.data('key');
+    var financeCloningLength = $quote.find(".finance-clonning").length;
+
+    $quote.find('.finance-clonning').first().clone().find("input").val("").each(function(){
+
+        let n = 1;
+        let name = $(this).attr("data-name");
+
+        this.name = this.name.replace(/]\[(\d+)]/g, function(){
+            return ']['+financeCloningLength+']';
         });
 
-        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){
-            return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
+        this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? financeCloningLength : v , function(){
+            return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
         });
+
     }).end().find('.depositeLabel').each(function () {
 
-        this.id = 'deposite_heading'+ financeLength;
-
-        var countHeading = $(".finance-parent-"+key+".finance-clonning").length + 1  ;
-        $(this).text('Deposit Payment #'+countHeading);
+        this.id = 'deposite_heading'+ financeCloningLength;
+        $(this).text(`Deposit Payment #${financeCloningLength+1}`);
 
     }).end()
     .find("select").val("").each(function(){
-        this.name = this.name.replace(/]\[(\d+)]/g, function(str,p1){
-            return ']['+$('.finance-clonning').length+']';
+        
+        let n = 1;
+        let name = $(this).attr("data-name");
+
+        this.name = this.name.replace(/]\[(\d+)]/g, function(){
+            return ']['+ financeCloningLength +']';
         });
-        this.id = this.id.replace(/\d+/g, $('.finance-clonning').length, function(str,p1){
-            return 'quote_' + parseInt($('.finance-clonning').length) + '_' + $(this).attr("data-name")
+    
+        this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? financeCloningLength : v , function(){
+            return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
         });
+
     }).end().find('.select2single').select2({
         width: '100%',
         theme: "bootstrap",
     }).end()
     .show()
-    .insertAfter(".finance-parent-"+key+".finance-clonning:last");
+    .insertAfter($quote.find('.finance-clonning:last'));
 
-    // remove checked attribute after clone & set deposit amount 0.00
-    $(this).closest('.quote').find('.finance-clonning:last .checkbox').prop('checked', false);
-    $(this).closest('.quote').find('.finance-clonning:last .deposit-amount').val('0.00');
+    // set feild after clone
+    $quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+    $quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+    $quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+    $quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
+ 
     reinitializedDynamicFeilds();
 });
 
@@ -1641,39 +1675,41 @@ $(document).on('click', '.increment', function() {
     var close = $(this).closest('.finance-clonning');
 
         var valueElement = close.find('.ab_number_of_days');
-        var dueDate = close.find('.deposit-due-date').val();
-        var nowDate  =todayDate();
+        var dueDate      = close.find('.deposit-due-date').val();
+        var nowDate      = todayDate();
         const firstDate = new Date(dueDate);
         const secondDate = convertDate(nowDate);
 
         if(firstDate == 'Invalid Date'){
-            alert('deposite date required');
+            alert('Deposite Date is Required');
         }else{
-            const oneDay = 24 * 60 * 60 * 1000;
-            const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-            if(firstDate > secondDate){
-                $(this).attr('disabled', true);
-            }else{
-                if(valueElement.val() == ''){
-                    valueElement.val(0);
-                }
-                var count = Math.max(parseInt(valueElement.val()??0));
-                var diffcount = diffDays - valueElement.val();
-                var b =1;
-                if($(this).hasClass('plus'))
-                {
-                    if(diffcount < 1){
-                        close.find('.plus').attr('disabled', true);
-                    }else{
-                        count = count + b;
+            if(!$(valueElement).is('[readonly]')) { 
+                const oneDay = 24 * 60 * 60 * 1000;
+                const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+                if(firstDate < secondDate){
+                    $(this).attr('disabled', true);
+                }else{
+                    if(valueElement.val() == ''){
+                        valueElement.val(0);
+                    }
+                    var count = Math.max(parseInt(valueElement.val()??0));
+                    var diffcount = diffDays - valueElement.val();
+                    var b =1;
+                    if($(this).hasClass('plus'))
+                    {
+                        if(diffcount < 1){
+                            close.find('.plus').attr('disabled', true);
+                        }else{
+                            count = count + b;
+                            valueElement.val(count);
+                        }
+                    }
+                    else if (valueElement.val() > 0) // Stops the value going into negatives
+                    {
+                        close.find('.plus').attr('disabled', false);
+                        count -=b;
                         valueElement.val(count);
                     }
-                }
-                else if (valueElement.val() > 0) // Stops the value going into negatives
-                {
-                    close.find('.plus').attr('disabled', false);
-                    count -=b;
-                    valueElement.val(count);
                 }
             }
         }

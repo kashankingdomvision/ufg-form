@@ -32,7 +32,8 @@ class BookingDetail extends Model
         'selling_price_bc',
         'markup_amount_bc',
         'added_in_sage', 
-        'inovice'
+        'inovice',
+        'outstanding_amount_left'
     ];
 
     public function getCategory()

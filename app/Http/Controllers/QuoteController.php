@@ -398,7 +398,10 @@ class QuoteController extends Controller
         
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
-            $quoteDetail['booking_id'] = $booking->id;
+
+            $quoteDetail['booking_id']              = $booking->id;
+            $quoteDetail['outstanding_amount_left'] = $quoteDetail['estimated_cost'];
+            
             BookingDetail::create($quoteDetail);
         }
         
