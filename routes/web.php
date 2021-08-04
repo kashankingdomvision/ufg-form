@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'BookingController@update'));
         Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));
         Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
-        Route::get('show/{id}', array('as' => 'show', 'uses' => 'BookingController@show'));
+        Route::get('show/{id}/{status?}', array('as' => 'show', 'uses' => 'BookingController@show'));
         Route::get('cancel/{id}', array('as' => 'cancel', 'uses' => 'BookingController@bookingCancel'));
     });
 

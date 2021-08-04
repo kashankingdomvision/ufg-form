@@ -161,8 +161,8 @@
                                     <thead>
                                         <tr>
                                             <th width="8"></th>
-                                            <th>Zoho Ref #</th>
-                                            <th>Quote Ref #</th>
+                                            <th class="w-5">Zoho Ref #</th>
+                                            <th class="w-5">Quote Ref #</th>
                                             <th>Lead Passenger</th>
                                             <th>Brand</th>
                                             <th>Type Of Holidays</th>
@@ -208,9 +208,14 @@
                                                     <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" title="Edit" >
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a href="{{ route('bookings.show', encrypt($booking->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="View" >
+                                                    <a href="{{ route('bookings.show',encrypt($booking->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="View Booking" >
                                                         <span class="fa fa-eye"></span>
                                                     </a>
+
+                                                    <a href="{{ route('bookings.show', [ 'id' => encrypt($booking->id), 'status' => 'payment' ] ) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="Add Payment" >
+                                                        <span class="fa fa-money-bill-alt"></span>
+                                                    </a>
+
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
                                                         <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">

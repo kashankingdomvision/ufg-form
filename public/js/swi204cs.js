@@ -24604,7 +24604,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.selling-price-other-currency-code').text($(this).val());
     getSellingPrice();
   });
-  $(document).on('change', '.deposit-amount', function () {
+  $(document).on('keyup', '.deposit-amount', function () {
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
     var depositAmount = parseFloat($(this).val()).toFixed(2);
@@ -24637,7 +24637,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
-  $('.booking-show :input').prop('disabled', true);
   $('#reCall').prop("disabled", false);
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
@@ -25123,6 +25122,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   $("#update-booking").submit(function (event) {
     event.preventDefault();
+    $('#update-booking :input').prop('disabled', false);
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
@@ -25145,7 +25145,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
           alert('Booking updated Successfully');
-          window.history.back();
+          window.location.href = REDIRECT_BASEURL + "bookings/index";
         }, 800);
       },
       error: function error(reject) {
