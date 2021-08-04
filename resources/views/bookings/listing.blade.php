@@ -43,7 +43,7 @@
                 </button>
      
                 <div class="card-body">
-                    <form method="get" action="{{ route('bookings.index', encrypt($season_id)) }}">
+                    <form method="get" action="{{ route('bookings.index') }}">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -63,38 +63,51 @@
                                 </select>
                             </div>
                         </div>
-                       
                         <div class="col">
                             <div class="form-group">
-                                <label>Booking Currency</label>
-                                <select class="form-control select2single" name="booking_currency">
-                                    <option value="" selected >Select Booking Currency</option>
-                                    @foreach ($currencies as $curren)
-                                        <option value="{{ $curren->code }}"  data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ((request()->get('booking_currency') ==  $curren->code )? 'selected' : null) }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                                <label>Agent / Staff</label>
+                                <select class="form-control select2single" name="staff">
+                                    <option value="" selected>Select Agent / Staff </option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->name }}" {{ (old('staff') == $user->name)? 'selected': ((request()->get('staff') == $user->name)? 'selected' : null) }} >{{ $user->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
-                        
-                        {{-- <div class="col">
+                        <div class="col">
                             <div class="form-group">
                                 <label>Booking Season</label>
                                 <select class="form-control select2single" name="booking_season">
-                                    <option value="" selected >Select Booking Season </option>
+                                    <option value="" selected >Select Booking Season</option>
                                     @foreach ($booking_seasons as $seasons)
                                         <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div> --}}
-                        
+                        </div>
+                       
+                       
+                    </div>
+                    <div class="row">
                         <div class="col">
                             <div class="form-group">
+                                <label>Booking Currency</label>
+                                <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
+                                    @foreach ($currencies as $curren)
+                                        <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        
+                
+                        
+                        <div class="col">
+                            <div class="form-group"> 
                                 <label>Brand</label>
-                                <select class="form-control select2single" name="brand">
-                                    <option value="" selected >Select Brand</option>
+                                <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
                                     @foreach ($brands as $brand)
-                                        <option value="{{ $brand->name }}" {{ (old('brand') == $brand->name)? 'selected': ((request()->get('brand') == $brand->name)? 'selected' : null) }}>{{ $brand->name }} </option>
+                                        <option value="{{ $brand->name }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->name, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -124,7 +137,7 @@
                     <div class="row mt-1">
                         <div class="col-md-12 d-flex justify-content-end">
                             <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                            <a href="{{ route('bookings.index', encrypt($season_id)) }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                            <a href="{{ route('bookings.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
                         </div>
                     </div>
 

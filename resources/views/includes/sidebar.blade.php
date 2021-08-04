@@ -39,9 +39,9 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('bookings.view.seasons') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'active' : '' }}">
+                    <a href="{{ route('bookings.index') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'active' : '' }}">
                         <i class="fas fa-pen-square nav-icon"></i>
-                        <p>Booking Seasons</p>
+                        <p>Bookings</p>
                     </a>
                 </li>
 

@@ -43,8 +43,8 @@ Route::group(['middleware' => ['auth']], function(){
     */
 
     Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
-        Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
-        Route::get('season/{id}', array('as' => 'index', 'uses' => 'BookingController@index'));
+        // Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
+        Route::get('index', array('as' => 'index', 'uses' => 'BookingController@index'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BookingController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'BookingController@update'));
         Route::delete('destroy/{id}', array('as' => 'delete', 'uses' => 'BookingController@destroy'));

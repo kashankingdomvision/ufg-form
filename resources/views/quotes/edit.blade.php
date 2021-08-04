@@ -220,8 +220,8 @@
                     
                     
                     <div class="col-md-12 agency-columns" >
-                      @if($quote->agency == 1)  {{--  Agency  --}}
-                        <div class="row mt-1" >
+                     {{--  Agency  --}}
+                        <div class="row mt-1 agencyField {{ ($quote->agency == 0)? 'd-none': '' }}" >
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $quote->agency_name }}" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
@@ -234,9 +234,9 @@
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                            <input type="tel" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                            <span class="text-danger error_msg0 hide" role="alert"></span>
-                            <span class="text-success valid_msg0" role="alert"></span>
+                            <input type="tel" value="{{ $quote->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phonegc">
+                            <span class="text-danger error_msggc hide" role="alert"></span>
+                            <span class="text-success valid_msggc" role="alert"></span>
                             
                           </div>
                         
@@ -246,8 +246,8 @@
                             <span class="text-danger" role="alert" > </span>
                           </div>
                         </div>
-                      @else  {{--  lead passenger  --}}
-                        <div class="row mt-1" >
+                        
+                        <div class="row mt-1 PassengerField  {{ ($quote->agency == 1)? 'd-none': '' }}" >
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Lead Passenger Name <span style="color:red">*</span></label>
@@ -280,7 +280,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="row">
+                        <div class="row PassengerField {{ ($quote->agency == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
                               <label>Nationality <span style="color:red">*</span></label>
@@ -309,7 +309,6 @@
                           </div>
                           
                         </div>
-                      @endif
                     </div>
 
                     
@@ -318,7 +317,7 @@
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
                         <select name="pax_no" id="pax_no" class="form-control  select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
-                          <option value="">Select Pax No</option>
+                          <option selected disabled value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
                             <option value="{{$i}}" {{ (old('pax_no') == $i)? "selected" : (($quote->pax_no == $i)? 'selected': NULL) }}>{{$i}}</option>
                           @endfor
@@ -333,31 +332,31 @@
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
-                                            <label class="mainLabel" >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }} Full Name</label> 
+                                            <label class="mainLabel" >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }} Full Name {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="Passsenger Name" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
-                                            <label >Email Address</label> 
+                                            <label >Email Address{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email }}" class="form-control" placeholder="Email Address" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                       
                                         <div class="col-md-3 mb-2">
-                                            <label >Contact Number</label> 
+                                            <label >Contact Number{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
                                             <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
                                             <span class="text-success valid_msg{{ $count }}" role="alert"></span>
                                         </div>
                                         <div class="col-md-3 mb-2">
-                                          <label>Date Of Birth</label> 
+                                          <label>Date Of Birth{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                           <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="Date Of Birth">
                                           <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                       </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                          <label>Nationality</label>
+                                          <label>Nationality{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
                                           <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
                                                   <option selected value="" >Select Nationality</option>
                                               @foreach ($countries as $country)
@@ -367,13 +366,13 @@
                                         </div>
                                        
                                         <div class="col-md-3 mb-2">
-                                            <label>Bedding Preference</label> 
+                                            <label>Bedding Preference{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="Bedding Preferences" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         
                                         <div class="col-md-3 mb-2">
-                                            <label>Dinning Preference</label> 
+                                            <label>Dinning Preference{!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="Dinning Preferences" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
@@ -671,7 +670,7 @@
                                     </div>
                                 </div>
                                 </div>
-                                @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accounts')
+                                @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                                 <div class="col-sm-2 d-flex justify-content-center">
                                   <div class="form-group">
                                       <label>Added in Sage</label>

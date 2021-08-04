@@ -48,12 +48,12 @@ class BookingController extends Controller
         return view('bookings.season_listing', $data);
     }
 
-    public function index(Request $request, $id)
+    public function index(Request $request)
     {
-        $season = Season::findOrFail(decrypt($id));
-        $booking = $season->getBooking();
+        // $season = Season::findOrFail(decrypt($id));
+        $booking = Booking::orderBy('created_at','DESC');
     
-        if (count($request->all()) > 0 && $season->getBooking()->count() > 0) {
+        if (count($request->all()) > 0 && $booking->count() > 0) {
             if ($request->has('search') && !empty($request->search)) {
                 $booking = $booking->where(function ($query) use ($request) {
                     $query->where('ref_no', 'like', '%'.$request->search.'%')
@@ -66,29 +66,39 @@ class BookingController extends Controller
                 $client_type = ($request->client_type == 'client')? 0 : 1;
                 if($client_type == 0)
                 {
-                    $quote->where('agency', '!=', 1);    
+                    $booking->where('agency', '!=', 1);    
                 }else{
-                    $quote->where('agency', (int)$client_type);    
+                    $booking->where('agency', (int)$client_type);    
                 }
             }
             
-            if($request->has('booking_currency') && !empty($request->booking_currency)){
+            if($request->has('staff') && !empty($request->staff)){
+                $booking->whereHas('getSalePerson', function($query) use($request){
+                    $query->where('name', 'like', '%'.$request->staff.'%' );
+                 });
+            }
+            
+           if($request->has('booking_currency') && !empty($request->booking_currency)){
                 $booking->whereHas('getCurrency', function($query) use($request){
-                   $query->where('code', $request->booking_currency);
+                    foreach ($request->booking_currency as $currency) {
+                        $query->where('code', 'like', '%'.$currency.'%' );
+                    }
                 });
-            }            
+            }          
             
             if($request->has('booking_season') && !empty($request->booking_season)){
                 $booking->whereHas('getSeason', function($query) use($request){
-                   $query->where('name', $request->booking_season);
+                   $query->where('name',  'like', '%'.$request->booking_season.'%');
                 });
             }        
                           
-            if ($request->has('brand') && !empty($request->brand)) {
-                $booking = $booking->whereHas('getBrand', function ($q) use($request) {
-                    $q->where('name', $request->brand);
+           if($request->has('brand') && !empty($request->brand)){
+                $booking->whereHas('getBrand', function($query) use($request){
+                    foreach ($request->brand as $brand) {
+                        $query->where('name', 'like', '%'.$brand.'%' );
+                    }
                 });
-            }
+            }      
             
             if($request->has('created_date')){
                 $booking->where(function($query) use($request){
@@ -102,11 +112,11 @@ class BookingController extends Controller
             }
         }
         
-        $data['bookings']    = $booking->orderBy('created_at','DESC')->paginate($this->pagination);
-        $data['season_id']   = $season->id;
-        $data['currencies']  = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']      = Brand::orderBy('id','ASC')->get();
+        $data['bookings']            = $booking->paginate($this->pagination);
+        $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']              = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']     = Season::all();
+        $data['users']               = User::all();
         
         return view('bookings.listing', $data);
     }

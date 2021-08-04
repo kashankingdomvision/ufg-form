@@ -184,7 +184,32 @@
                     </div>
                     
                     <div class="col-md-12 agency-columns" >
-                      <div class="row mt-1" >
+                    
+                      <div class="row mt-1 agencyField d-none" >
+                        <div class="col form-group">
+                          <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                          <input type="text"  name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
+                          <span class="text-danger" role="alert" > </span>
+                        </div>
+                        <div class="col form-group">
+                          <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
+                          <input type="text"  name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
+                          <span class="text-danger" role="alert" > </span>
+                        </div>
+                        <div class="col form-group">
+                          <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                          <input type="tel"  name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
+                            <span class="text-danger error_msggc hide" role="alert"></span>
+                            <span class="text-success valid_msggc" role="alert"></span>
+                        </div>
+
+                        <div class="col form-group">
+                          <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                          <input type="email"  name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
+                          <span class="text-danger" role="alert" > </span>
+                        </div>
+                      </div>
+                      <div class="row mt-1 PassengerField" >
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Lead Passenger Name <span style="color:red">*</span></label>
@@ -202,7 +227,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Contact Number <span style="color:red">*</span></label> 
-                            <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
+                            <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0 " >
                             <span class="text-danger error_msg0" role="alert"></span>
                             <span class="text-success valid_msg0" role="alert"></span>
                           </div>
@@ -216,7 +241,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
+                      <div class="row PassengerField">
                         <div class="col-sm-3">
                           <div class="form-group">
                             <label>Nationality <span style="color:red">*</span></label>
@@ -540,19 +565,19 @@
                             </div>
                           </div>
                         </div>
-                        @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accounts')
-                        <div class="col-sm-2 d-flex justify-content-center">
-                          <div class="form-group">
-                            <label>Added in Sage </label>
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <div class="icheck-primary">
-                                  <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                        @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                          <div class="col-sm-2 d-flex justify-content-center">
+                            <div class="form-group">
+                              <label>Added in Sage </label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="icheck-primary">
+                                    <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
                         @endif
 
                         <div class="col-sm-2">

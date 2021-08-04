@@ -40,6 +40,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->double('selling_price_bc')->nullable();
             $table->double('markup_amount_bc')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);
+            $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
             
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');

@@ -257,103 +257,37 @@ $(document).ready(function($) {
  /// brands holidays
 ///
 $(document).on('change', '.select-agency', function() {
-    $('.agency-columns').empty();
-    var countries = $('#content').data('countries');
-    var $v_html = null;
+    var agency_     = $('.agencyField');
+    var passenger_  = $('.PassengerField');
     if(($(this).val() == 1)){
-        $('#pax_no').val('').change();
-        $('#appendPaxName').html();
-        $v_html = `<div class="row mt-1" >
-                        <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
-                          <span class="text-danger" role="alert" > </span>
-                        </div>
-                        <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
-                          <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
-                          <span class="text-danger" role="alert" > </span>
-                        </div>
-                        <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                          <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phone0">
-                            <span class="text-danger error_msg0 hide" role="alert"></span>
-                            <span class="text-success valid_msg0" role="alert"></span>
-                        </div>
-
-                        <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                          <input type="email" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
-                          <span class="text-danger" role="alert" > </span>
-                        </div>
-                    </div>
-                `;
-        $('.agency-columns').append($v_html).show(500);
-    }else{
-        $v_html = `<div class="row mt-1" >
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Lead Passenger Name <span style="color:red">*</span></label>
-            <input type="text" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Email Address <span style="color:red">*</span></label>
-            <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Contact Number <span style="color:red">*</span></label>
-            <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0" >
-            <span class="text-danger error_msg0" role="alert"></span>
-            <span class="text-success valid_msg0" role="alert"></span>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="form-group">
-            <label>Date Of Birth <span style="color:red">*</span></label>
-            <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label>Nationality <span style="color:red">*</span></label>
-            <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
-              <option selected value="" >Select Nationality</option>
-              ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
-            </select>
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label>Bedding Preferences <span style="color:red">*</span></label>
-            <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="form-group">
-            <label>Dinning Preferences <span style="color:red">*</span></label>
-            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
-            <span class="text-danger" role="alert"></span>
-          </div>
-        </div>
-
-      </div>`
-
         $('#pax_no').val(1).change();
-        $('.agency-columns').append($v_html).show(500);
+        agency_.removeClass('d-none');
+        passenger_.addClass('d-none');
+        agency_.find('input, select').removeAttr('disabled');
+        passenger_.find('input, select').attr('disabled','disabled');
+        // $('#agency_contact').addClass('phone phone0');
+        // $('#lead_passenger_contact').removeClass('phone');
+        // $('#lead_passenger_contact').removeClass('phone0');
+        var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+        });
+        iti.destroy();
+        // intTelinput('gc');
+    }else{
+        $('#pax_no').val(1).change();
+        agency_.addClass('d-none');
+        passenger_.removeClass('d-none');
+        passenger_.find('input, select').removeAttr('disabled');
+        var iti = intlTelInput(document.querySelector('#agency_contact'), {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+        });
+        iti.destroy();
+        // $('#lead_passenger_contact').addClass('phone phone0');
+        // $('#agency_contact').removeClass('phone');
+        // $('#agency_contact').removeClass('phone0');
+        agency_.find('input, select').attr('disabled','disabled');
+        // intTelinput(0);
     }
-    intTelinput(0);
 });
 
 /// Category to supplier
@@ -1750,15 +1684,22 @@ $(document).on('click', '.increment', function() {
 // tel input  start
 if($('.phone').length > 0){
     for (let i = 0; i < $('.phone').length; i++) {
-        intTelinput(i);
+        if($('.phone'+i).length != 0){
+            intTelinput(i);
+        }
     }
 }
 
+if($('#agency_contact').length > 0){
+    intTelinput('gc');
+    // console.log(inTelinput);
+}
 
 
 //tel input end
 //intl-tel-input ************** Start ******************** //
 function intTelinput(key = null, inVal = null) {
+    // console.log(key);
     var input    =    document.querySelector('.phone'+key);
     var errorMsg =    document.querySelector('.error_msg'+key);
     var validMsg =    document.querySelector('.valid_msg'+key);
@@ -1824,48 +1765,47 @@ $(document).on('change', '.pax-number', function () {
         <div class="mb-1 appendCount" id="appendCount${count}">
             <div class="row" >
                 <div class="col-md-3 mb-2">
-                    <label>Passenger #${count} Full Name</label> 
+                    <label>Passenger #${count} Full Name <span class="text-danger">*</span></label> 
                     <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="Passsenger Name" >
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label>Email Address</label> 
+                    <label>Email Address <span class="text-danger">*</span></label> 
                     <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="Email Address" >
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label>Contact Number</label> 
+                    <label>Contact Number <span class="text-danger">*</span></label> 
                     <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
                     <span class="text-danger error_msg${count}" role="alert"></span>
                     <span class="text-success valid_msg${count}" role="alert"></span>
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label>Date Of Birth</label> 
+                    <label>Date Of Birth <span class="text-danger">*</span></label> 
                     <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-3">
-                    <label>Nationality</label>
+                    <label>Nationality <span class="text-danger">*</span></label>
                     <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
                         <option selected value="" >Select Nationality</option>
                         ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
                     </select>
                 </div>
                 <div class="col-md-3 mb-2">
-                    <label>Bedding Preference</label> 
+                    <label>Bedding Preference <span class="text-danger">*</span></label> 
                     <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
                 </div>
                 
                 <div class="col-md-3 mb-2">
-                    <label>Dinning Preference</label> 
+                    <label>Dinning Preference <span class="text-danger">*</span></label> 
                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
                 </div>
-                <div class="col-md-3 mb-2">
-                    <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                </div>
+              
             </div>
         </div>`;
         $('#appendPaxName').html($v_html);
         intTelinput(1);
+        $('#pax_no option').first().attr('disabled', 'disabled');
         
     }
     if($_val > $('.appendCount').length){
