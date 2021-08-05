@@ -17,7 +17,8 @@ class Helper
 
 	public static function get_payment_detial_by_ref_no($zoho_booking_reference) {
 
-		$url = "https://payments.unforgettabletravel.com/backend/api/payment/zoho_payment_status";
+		// $url = "https://payments.unforgettabletravel.com/backend/api/payment/zoho_payment_status";
+		$url = "https://utcstaging.unforgettabletravel.com/backend/api/payment/zoho_payment_status";
 
 		$args = array(
             'body' => json_encode(

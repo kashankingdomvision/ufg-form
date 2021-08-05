@@ -24626,6 +24626,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
     }
   });
+  $(document).on('click', '.view-payment_detail', function () {
+    var details = $(this).data('details');
+    var client_type = details.client_type == 1 ? 'Client' : 'Agency';
+    var tbody = '';
+    tbody += "<tr>\n                    <th>Ref #</th>\n                    <td>".concat(isEmpty(details.zoho_booking_reference), "</td>\n                </tr>\n                <tr>\n                    <th>Status</th>\n                    <td>").concat(isEmpty(details.status), "</td>\n                </tr>\n                <tr>\n                    <th>Payment For</th>\n                    <td>").concat(isEmpty(details.payment_for), "</td>\n                </tr>\n                <tr>\n                    <th>Date</th>\n                    <td>").concat(isEmpty(details.date), "</td>\n                </tr>\n                <tr>\n                    <th>Amount</th>\n                    <td>").concat(isEmpty(details.amount), "</td>\n                </tr>\n                <tr>\n                    <th>Type</th>\n                    <td>").concat(isEmpty(client_type), "</td>\n                </tr>\n                <tr>\n                    <th>Ref ID</th>\n                    <td>").concat(isEmpty(details.ref_id), "</td>\n                </tr>\n                <tr>\n                    <th>Card Holder Name</th>\n                    <td>").concat(isEmpty(details.card_holder_name), "</td>\n                </tr>\n                <tr>\n                    <th>Address</th>\n                    <td>").concat(isEmpty(details.b_street_address), "</td>\n                </tr>\n                <tr>\n                    <th>Post Code</th>\n                    <td>").concat(isEmpty(details.b_zip_code), "</td>\n                </tr>\n                <tr>\n                    <th>Note</th>\n                    <td>").concat(isEmpty(details.note), "</td>\n                </tr>\n                <tr>\n                    <th>Sort Code</th>\n                    <td>").concat(isEmpty(details.sort_code), "</td>\n                </tr>\n                <tr>\n                    <th>Created At</th>\n                    <td>").concat(isEmpty(details.created_at), "</td>\n                </tr>\n                <tr>\n                    <th>Amount Payable</th>\n                    <td>").concat(isEmpty(details.amount_payable), "</td>\n                </tr>");
+    jQuery('#payment_details_modal').modal('show');
+    jQuery('#payment_details_modal_body').html(tbody);
+  });
+
+  function isEmpty(value) {
+    return value == null ? 'N/A' : value;
+  }
+
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();
   });

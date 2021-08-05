@@ -875,6 +875,78 @@ $(".quote").eq(0).clone()
 
     });
 
+    
+    $(document).on('click', '.view-payment_detail',function(){
+
+        var details = $(this).data('details');
+        var client_type = details.client_type == 1 ? 'Client' : 'Agency';
+        var tbody = '';
+
+        tbody +=`<tr>
+                    <th>Ref #</th>
+                    <td>${isEmpty(details.zoho_booking_reference)}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>${(isEmpty(details.status))}</td>
+                </tr>
+                <tr>
+                    <th>Payment For</th>
+                    <td>${isEmpty(details.payment_for)}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>${isEmpty(details.date)}</td>
+                </tr>
+                <tr>
+                    <th>Amount</th>
+                    <td>${isEmpty(details.amount)}</td>
+                </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>${isEmpty(client_type)}</td>
+                </tr>
+                <tr>
+                    <th>Ref ID</th>
+                    <td>${isEmpty(details.ref_id)}</td>
+                </tr>
+                <tr>
+                    <th>Card Holder Name</th>
+                    <td>${isEmpty(details.card_holder_name)}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>${isEmpty(details.b_street_address)}</td>
+                </tr>
+                <tr>
+                    <th>Post Code</th>
+                    <td>${isEmpty(details.b_zip_code)}</td>
+                </tr>
+                <tr>
+                    <th>Note</th>
+                    <td>${isEmpty(details.note)}</td>
+                </tr>
+                <tr>
+                    <th>Sort Code</th>
+                    <td>${isEmpty(details.sort_code)}</td>
+                </tr>
+                <tr>
+                    <th>Created At</th>
+                    <td>${isEmpty(details.created_at)}</td>
+                </tr>
+                <tr>
+                    <th>Amount Payable</th>
+                    <td>${isEmpty(details.amount_payable)}</td>
+                </tr>`;
+
+        jQuery('#payment_details_modal').modal('show');
+        jQuery('#payment_details_modal_body').html(tbody);
+    });
+
+    function isEmpty(value){
+        return (value == null ? 'N/A' : value );
+    }
+
     $(document).on('change', '.rate-type',function(){
         changeCurrenyRate();
     });
@@ -1237,7 +1309,7 @@ $('.search-reference').on('click', function () {
                                     tbody += `<tr><td colspan="8" class="text-center"> No record found. </td></tr>`;
                                 }
 
-                                $('#payment_detials').html(tbody);
+                                $('#old_ufg_payment_records').html(tbody);
 
                             }else{
                                 alert(data.error);
