@@ -18,8 +18,6 @@ use App\Season;
 use App\BookingType;
 use App\Country;
 use DB;
-
-
 class ResponseController extends Controller
 {
     public function getBrandToHoliday(Request $request)
@@ -292,6 +290,16 @@ class ResponseController extends Controller
             DB::table($table_name)->whereIn('id', $ids)->delete();
             $respons['message'] = 'Records Deleted Successfully !!';
         }
+        $respons['status']  = true;
+        return response()->json($respons);
+    }
+    
+    public function updateCurrencyStatus(Request $request)
+    {
+        $ids = explode(',', $request->id);
+        $status  = ($request->btn == 'active')? '1' : '0'; 
+        Currency::whereIn('id', $ids)->update(['status' => $status]);
+        $respons['message'] = 'Records Status Updated Successfully !!';
         $respons['status']  = true;
         return response()->json($respons);
     }

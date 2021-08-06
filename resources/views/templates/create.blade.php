@@ -360,21 +360,20 @@
                             </div>
                           </div>
                         </div>
-
-                        <div class="col-sm-2 d-flex justify-content-center">
-                          <div class="form-group">
-                            <label>Added in Sage </label>
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <div class="icheck-primary">
-                                  <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                        @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                          <div class="col-sm-2 d-flex justify-content-center">
+                            <div class="form-group">
+                              <label>Added in Sage </label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="icheck-primary">
+                                    <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-
-                        </div>
-
+                        @endif
                         <div class="col-sm-2">
                           <div class="form-group">
                             <label>Service Details</label>

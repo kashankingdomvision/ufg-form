@@ -6,7 +6,7 @@
         <meta id="csrf-token" name="csrf-token" content="{{ csrf_token() }}">
 
         {{-- fav icon --}}
-        {{-- <link rel="icon" href="{{ asset('img/fav-icon.png') }}"  sizes="16x16"> --}}
+        <link rel="icon" href="{{ asset('img/fav-icon.png') }}"  sizes="16x16">
 
         {{-- title start --}}
         <title>{{ config('app.name', 'Laravel') }} | @yield('title') </title>

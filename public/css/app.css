@@ -4299,6 +4299,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   line-height: 2rem !important;
 }
 
+.m-12 {
+  margin: 12px !important;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Form Control

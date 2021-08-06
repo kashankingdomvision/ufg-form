@@ -4,8 +4,8 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-    <a href="{{ route('dashboard.index') }}" class="brand-link">
-        <img src="{{ asset('img/logo.png') }}" height="50" width="230">
+    <a href="{{ route('dashboard.index') }}" class="brand-link m-2">
+        <img src="{{ asset('img/logo.png') }}" class="img-fluid" width="160px">
     </a>
 
 
