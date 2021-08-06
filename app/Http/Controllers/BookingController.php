@@ -188,8 +188,6 @@ class BookingController extends Controller
             $data['user_id'] = null;
         }
 
-        // dd($response['body']['old_records']);
-
         return view('bookings.edit',$data);
     }
 
@@ -238,12 +236,16 @@ class BookingController extends Controller
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
-            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
                 return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
             });
 
-            if ($response['status'] == 200) {
-                $data['payment_details'] = $response['body']['old_records'];
+            if($response['status'] == 200 && isset($response['body']['old_records'])) {
+                $data['old_ufg_payment_records'] = $response['body']['old_records'];
+            }
+
+            if($response['status'] == 200 && isset($response['body']['message'])) {
+                $data['ufg_payment_records'] = $response['body']['message'];
             }
         }
 

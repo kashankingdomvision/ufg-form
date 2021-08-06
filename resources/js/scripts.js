@@ -880,8 +880,20 @@ $(".quote").eq(0).clone()
     $(document).on('click', '.view-payment_detail',function(){
 
         var details = $(this).data('details');
-        var client_type = details.client_type == 1 ? 'Client' : 'Agency';
         var tbody = '';
+        var client_type = details.client_type == 1 ? 'Client' : 'Agency';
+        var payment_method = '';
+        if(details.payment_type_id == 1){
+            payment_method = 'Bank';
+        }
+        else if(details.payment_type_id == 2){
+            payment_method = 'Paysafe';
+        }else{
+            payment_method = '';
+        }
+  
+        console.log(payment_method);
+
 
         tbody +=`<tr>
                     <th>Ref #</th>
@@ -894,6 +906,10 @@ $(".quote").eq(0).clone()
                 <tr>
                     <th>Payment For</th>
                     <td>${isEmpty(details.payment_for)}</td>
+                </tr>
+                <tr>
+                    <th>Payment Method</th>
+                    <td>${isEmpty(payment_method)}</td>
                 </tr>
                 <tr>
                     <th>Date</th>
@@ -945,7 +961,7 @@ $(".quote").eq(0).clone()
     });
 
     function isEmpty(value){
-        return (value == null ? 'N/A' : value );
+        return (value == null || value == '' || value == 'undefined' ? 'N/A' : value );
     }
 
     $(document).on('change', '.rate-type',function(){

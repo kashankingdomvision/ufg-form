@@ -887,7 +887,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="card">
+                  {{-- <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">Payment Details</h3>
                     </div>
@@ -921,12 +921,6 @@
                                 @endforeach
                               @endif
                             @endforeach
-                            
-                            {{-- <tr>
-                              <td colspan="3" class="text-right">Total Completed :	</td>
-                              <td colspan="1" class="text-left"> {{ ucfirst($payment_details['total_completed']).' '.$payment_details['total_completed_symbol'] }}</td>
-                            </tr> --}}
-                                
                             @else
                             <tr align="center"><td colspan="100%">No record found.</td></tr>
                           @endif
@@ -934,7 +928,7 @@
                         </tbody>
                       </table>
                     </div>
-                  </div>
+                  </div> --}}
 
                 </div>
 
