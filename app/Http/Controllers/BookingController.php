@@ -170,9 +170,13 @@ class BookingController extends Controller
     
         }
 
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings');
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
 
-        if(!$quote_update_detail->exists()){
+        if($quote_update_detail && $quote_update_detail->exists()){
+            $data['exist']   = 1;
+            $data['user_id'] = $quote_update_detail->user_id;
+        }
+        else{    
 
             $quote_update_details = QuoteUpdateDetail::create([
                 'user_id'      =>  Auth::id(),
@@ -182,12 +186,8 @@ class BookingController extends Controller
 
             $data['exist']   = null;
             $data['user_id'] = null;
-
-        }else{
-
-            $data['exist']   = 1;
-            $data['user_id'] = $quote_update_detail->first()->user_id;
         }
+
 
         return view('bookings.edit',$data);
     }
@@ -408,7 +408,7 @@ class BookingController extends Controller
 
         $quote_update_detail->delete(); 
 
-        return \Response::json(['success_message' => 'Booking update successfully'], 200);
+        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
     
     private function curl_data($url)

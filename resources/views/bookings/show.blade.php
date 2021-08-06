@@ -657,8 +657,12 @@
                             
                             <section class="finance">
                                 @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
+                                  @php $total_deposit = 0; @endphp
                                   @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
-                                  @php $count =  $fkey + 1; @endphp
+                                  @php
+                                    $count = $fkey + 1;
+                                    $total_deposit = $total_deposit + $finance->deposit_amount;
+                                  @endphp
                                     <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="{{$fkey}}">
                                       <div class="col-sm-3">
                                         <div class="form-group">
@@ -848,7 +852,7 @@
                                   </div>
                                   {{-- /////for single value/ --}}
                                 @endif
-                                <div class="row ">
+                                <div class="row {{ ($total_deposit >= $booking_detail->estimated_cost) ? 'd-none' : ''}}">
                                   <div class="col-12">
                                     <button type="button" data-key="0" class=" clone_booking_finance float-right btn btn-dark btn-sm">Add More Payments</button>
                                   </div>
