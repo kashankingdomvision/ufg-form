@@ -194,7 +194,7 @@
 
                             <div class="card-body p-0">
                                 <div class="table-responsive ">
-                                    <table id="example1" class="table table-hover table-responsive" >
+                                    <table id="example1" class="table table-hover" >
                                         <thead>
                                           <tr>
                                             <th width="8">
