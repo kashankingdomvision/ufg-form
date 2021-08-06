@@ -170,13 +170,9 @@ class BookingController extends Controller
     
         }
 
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings');
 
-        if($quote_update_detail && $quote_update_detail->exists()){
-            $data['exist']   = 1;
-            $data['user_id'] = $quote_update_detail->user_id;
-        }
-        else{    
+        if(!$quote_update_detail->exists()){
 
             $quote_update_details = QuoteUpdateDetail::create([
                 'user_id'      =>  Auth::id(),
@@ -186,6 +182,11 @@ class BookingController extends Controller
 
             $data['exist']   = null;
             $data['user_id'] = null;
+
+        }else{
+
+            $data['exist']   = 1;
+            $data['user_id'] = $quote_update_detail->first()->user_id;
         }
 
         return view('bookings.edit',$data);
