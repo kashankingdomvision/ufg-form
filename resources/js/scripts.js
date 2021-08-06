@@ -871,6 +871,7 @@ $(".quote").eq(0).clone()
         }else{
             alert("Please Enter Correct Deposit Amount");
             $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
+            $(this).closest('.finance').find('.outstanding-amount:last').val('');
         }
 
     });

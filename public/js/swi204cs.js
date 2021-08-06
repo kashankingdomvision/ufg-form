@@ -24624,6 +24624,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       alert("Please Enter Correct Deposit Amount");
       $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
+      $(this).closest('.finance').find('.outstanding-amount:last').val('');
     }
   });
   $(document).on('click', '.view-payment_detail', function () {
