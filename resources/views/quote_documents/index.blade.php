@@ -38,12 +38,12 @@
                                     <tbody>
                                         <tr>
                                             <td >Transfer To: </td>
-                                            <td >{{ $details->getProduct->name }}</td>
+                                            <td >{{ $details->getProduct->name??NULL }}</td>
                                         </tr>
-                                        @if($details->getCategory->slug == 'accommodation')
+                                        @if($details->getCategory->slug??NULL == 'accommodation')
                                         <tr>
                                             <td >Accommodation:</td>
-                                            <td >{{ $details->getProduct->name }}</td>
+                                            <td >{{ $details->getProduct->name??NULL }}</td>
                                         </tr>
                                         @endif
                                         <tr>
@@ -56,7 +56,7 @@
                                         </tr>
                                         <tr>
                                             <td >Transfer to </td>
-                                            <td >{{  $details->getProduct->name.'  at '. $details->time_of_service }}</td>
+                                            <td >{{  $details->getProduct->name??NULL.'  at '. $details->time_of_service }}</td>
                                         </tr>
                                     </tbody>
                                     
