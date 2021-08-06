@@ -90,7 +90,8 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped table-responsive table-hover">
+              <div class="table-responsive">
+                <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th>
@@ -130,7 +131,8 @@
                     <tr align="center"><td colspan="100%">No record found.</td></tr>
                   @endif
                 </tbody>
-              </table>
+                </table>
+              </div>
             </div>
 
             @include('includes.multiple_delete',['table_name' => 'holiday_types'])

@@ -89,50 +89,52 @@
             </div>
 
             <div class="card-body p-0">
-              <table class="table table-striped table-responsive table-hover">
-                <thead>
-                  <tr>
-                    <th>
-                      <div class="icheck-primary">
-                        <input type="checkbox" class="parent">
-                      </div>
-                    </th>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Percentage</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                @if($commissions && $commissions->count())
-                  @foreach ($commissions as $commission)
+              <div class="table-responsive">
+                <table class="table table-striped  table-hover">
+                  <thead>
                     <tr>
-                      <td>
+                      <th>
                         <div class="icheck-primary">
-                          <input type="checkbox" class="child" value="{{$commission->id}}" >
+                          <input type="checkbox" class="parent">
                         </div>
-                      </td>
-                      <td>{{ $commission->id }}</td>
-                      <td>{{ $commission->name }}</td>
-                      <td>{{ $commission->percentage }} %</td>
-                      <td>
-                        <form method="post" action="{{ route('setting.commissions.destroy', encrypt($commission->id)) }}">
-                          <a href="{{ route('setting.commissions.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                          @csrf
-                          @method('delete')
-                          <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
-                            <span class="fa fa-trash"></span>
-                          </button>
-                        </form>
-                      </td>
+                      </th>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Percentage</th>
+                      <th>Action</th>
                     </tr>
-                  @endforeach
-                @else
-                  <tr align="center"><td colspan="100%">No record found.</td></tr>
-                @endif
-                  
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                  @if($commissions && $commissions->count())
+                    @foreach ($commissions as $commission)
+                      <tr>
+                        <td>
+                          <div class="icheck-primary">
+                            <input type="checkbox" class="child" value="{{$commission->id}}" >
+                          </div>
+                        </td>
+                        <td>{{ $commission->id }}</td>
+                        <td>{{ $commission->name }}</td>
+                        <td>{{ $commission->percentage }} %</td>
+                        <td>
+                          <form method="post" action="{{ route('setting.commissions.destroy', encrypt($commission->id)) }}">
+                            <a href="{{ route('setting.commissions.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            @csrf
+                            @method('delete')
+                            <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                              <span class="fa fa-trash"></span>
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+                    @endforeach
+                  @else
+                    <tr align="center"><td colspan="100%">No record found.</td></tr>
+                  @endif
+                    
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             @include('includes.multiple_delete',['table_name' => 'commissions'])
