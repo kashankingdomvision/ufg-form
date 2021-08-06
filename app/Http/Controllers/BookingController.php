@@ -473,7 +473,7 @@ class BookingController extends Controller
     //storage url
     public function fileStore($request, $bookingID)
     {
-        if($request['invoice'] && $request['invoice'] != null){
+        if(isset($request['invoice']) && $request['invoice'] != null){
             $url     = 'public/booking/'.$bookingID.'/invoice/';
             $invoice = $request['invoice'];
             $path    = $invoice->store($url);
