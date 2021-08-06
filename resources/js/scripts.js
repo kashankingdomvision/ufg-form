@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 
 
@@ -871,6 +871,7 @@ $(".quote").eq(0).clone()
         }else{
             alert("Please Enter Correct Deposit Amount");
             $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
+            $(this).closest('.finance').find('.outstanding-amount:last').val('');
         }
 
     });

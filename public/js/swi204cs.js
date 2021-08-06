@@ -23748,11 +23748,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 
+ // var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-
+var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
@@ -24614,6 +24614,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       alert("Please Enter Correct Deposit Amount");
       $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
+      $(this).closest('.finance').find('.outstanding-amount:last').val('');
     }
   });
   $(document).on('click', '.view-payment_detail', function () {
