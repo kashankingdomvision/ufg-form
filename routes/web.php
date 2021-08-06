@@ -225,6 +225,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
         
         Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
+        Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
 
    });
     

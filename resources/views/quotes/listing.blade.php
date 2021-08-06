@@ -30,14 +30,21 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
-                    <button type="button" class="btn btn-tool m-0 text-dark" data-card-widget="collapse">
-                        <div class="card-header">
-                          <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
-                          <div class="card-tools">
-                              <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
-                          </div>
+                    <div class="row">
+                        <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
+                            <div class="card-header">
+                              <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
+                            </div>
+                        </button>
+          
+                        <div class="float-right col-md-2">
+                            <a href="{{ route('quotes.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
+                                <span class="fa fa-plus"></span>
+                                <span>Add New</span>
+                            </a>
                         </div>
-                    </button>
+                    </div>
+                      
          
                     <div class="card-body">
                         <form method="get" action="{{ (isset($status) && $status == 'archive')? route('quotes.archive') : route('quotes.index') }}">
@@ -151,7 +158,29 @@
                 </div>
             </div>
         </section>
-
+        
+        <section class="content p-2">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                    <form method="POST" action="{{ route('bulk.delete') }}" class="bulkDeleteData">
+                        @csrf @method('delete')
+                        <input  type="hidden" name="tab" value="quotes" >
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Action
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <button type="submit" name="quote delete" class="dropdown-item btn-link btnbulkClick">Cancel</button>
+                                <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </section>
+          
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -159,39 +188,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Quote @if(isset($status) && $status == 'archive') Archive @endif List</h3>
-
                             </div>
-
-                            <div class="card-header">
-                                <h3 class="card-title float-left">
-
-                                    {{-- <select name="multiple_action" class="form-control multiple-action" id="">
-                                        <option value="">Select Action</option>
-                                        <option value="Delete">Delete</option>
-                                        <option value="Archive">Archive</option>
-                                    </select> --}}
-                                    
-                                    <form method="POST" action="{{ route('bulk.delete') }}" class="bulkDeleteData">
-                                        @csrf @method('delete')
-                                        <input  type="hidden" name="tab" value="quotes" >
-                                        <div class="dropdown show">
-                                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Select Action
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                <button type="submit" name="quote delete" class="dropdown-item btn-link btnbulkClick">Cancel</button>
-                                                <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                              
-                                </h3>
-                                <a href="{{ route('quotes.create') }}" class="btn btn-secondary btn-sm float-right">
-                                    <span class="fa fa-plus"></span>
-                                    <span>Add New</span>
-                                </a>
-                            </div>
-
                             <div class="card-body p-0">
                                 <div class="table-responsive ">
                                     <table id="example1" class="table table-hover" >

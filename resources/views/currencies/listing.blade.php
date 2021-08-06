@@ -33,14 +33,20 @@
   <section class="content">
     <div class="container-fluid">
         <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
-          <button type="button" class="btn btn-tool m-0 text-dark" data-card-widget="collapse">
-            <div class="card-header">
-              <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
-              <div class="card-tools">
-                  <i class="fas fa-{{ (request()->has('search'))? 'minus' : 'plus' }}"></i>
-              </div>
+          <div class="row">
+            <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
+                <div class="card-header">
+                  <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
+                </div>
+            </button>
+
+            <div class="float-right col-md-2">
+                <a href="{{ route('setting.currencies.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
+                    <span class="fa fa-plus"></span>
+                    <span>Add New</span>
+                </a>
             </div>
-          </button>
+          </div>
  
             <div class="card-body">
                 <form method="get" action="{{ route('setting.currencies.index') }}">
@@ -64,6 +70,30 @@
         </div>
     </div>
   </section>
+
+
+  <section class="content p-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+            <form method="POST" action="{{ route('currency.status') }}" id="currencyStatus">
+                @csrf @method('post')
+                <div class="dropdown show">
+                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <button type="submit" name="active" class="dropdown-item btn-link active btnbulkClick">Active</button>
+                        <button type="submit" name="inactive" class="dropdown-item btn-link inactive btnbulkClick">In-Active</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -73,10 +103,6 @@
               <h3 class="card-title float-left">
                 Currency List
               </h3>
-              <a href="{{ route('setting.currencies.create') }}" class="btn btn-secondary btn-sm float-right">
-                <span class="fa fa-plus"></span>
-                <span>Add New</span>
-              </a>
             </div>
 
             <div class="card-body p-0">
@@ -84,6 +110,11 @@
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr>
+                      <th width="8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" class="parent">
+                        </div>
+                      </th>
                       <th>Name</th>
                       <th>Code</th>
                       <th>Status</th>
@@ -94,18 +125,16 @@
                     @if($currencies && $currencies->count())
                       @foreach ($currencies as $key => $value)
                         <tr>
+                          <td>
+                            <div class="icheck-primary">
+                                <input type="checkbox" class="child" value="{{$value->id}}" >
+                            </div>
+                          </td>
                           <td>{{ $value->name }}</td>
                           <td>{{ $value->code }}</td>
                           <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
                           <td>
                             <a href="{{ route('setting.currencies.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                            {{-- <form method="post" action="{{ route('setting.currencies.destroy', encrypt($value->id)) }}">
-                              @csrf
-                              @method('delete')
-                              <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
-                                <span class="fa fa-trash"></span>
-                              </button>
-                            </form> --}}
                           </td>
                         </tr>
                       @endforeach
