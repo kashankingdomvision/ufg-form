@@ -1076,6 +1076,7 @@
                               <th class="text-center">Ref #</th>
                               <th class="text-center">Status</th>
                               <th class="text-center">Payment For</th>
+                              <th class="text-center">Payment Method</th>
                               <th class="text-center">Date</th>
                               <th class="text-center">Amount</th>
                               <th class="text-center">Type</th>
@@ -1090,7 +1091,7 @@
 
                               @if(is_array($ufg_payment_records[$key]))
                                 @if(!empty($key))
-                                  <tr><td colspan="10" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
+                                  <tr><td colspan="11" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
                                 @endif
                                 @foreach ($ufg_payment_records[$key] as $key => $payment_record)
 
@@ -1098,6 +1099,14 @@
                                     <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
                                     <td class="text-center text-uppercase">{{ ucfirst($payment_record['status']) }}</td>
                                     <td class="text-center">{{ $payment_record['payment_for'] }}</td>
+                                    <td class="text-center">
+                                      @if($payment_record['payment_type_id'] == 1)
+                                        Bank
+                                      @endif
+                                      @if($payment_record['payment_type_id'] == 2)
+                                        Paysafe
+                                      @endif
+                                    </td>
                                     <td class="text-center">{{ \Carbon\Carbon::parse($payment_record['date'])->format('d/m/Y') }} </td>
                                     <td class="text-center">{{ $payment_record['amount'] }}</td>
                                     <td class="text-center">{{ $payment_record['client_type'] == 1 ? 'Client' : 'Agency' }}</td>
@@ -1121,60 +1130,68 @@
                   @endif
 
                   @if(isset($old_ufg_payment_records) && !empty($old_ufg_payment_records))
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title font-weight-bold">Old UFG Payment System</h3>
+                      </div>
+                      <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                          <thead>
+                            <tr>
+                              <th class="text-center">Ref #</th>
+                              <th class="text-center">Status</th>
+                              <th class="text-center">Payment For</th>
+                              <th class="text-center">Payment Method</th>
+                              <th class="text-center">Date</th>
+                              <th class="text-center">Amount</th>
+                              <th class="text-center">Type</th>
+                              <th class="text-center">Card Holder Name</th>
+                              <th class="text-center">Sort Code</th>
+                              <th class="text-center">Amount Payable</th>
+                              <th class="text-center">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody id="old_ufg_payment_records">
+                            @foreach ($old_ufg_payment_records as $key => $old_ufg_payment_record)
 
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title font-weight-bold">Old UFG Payment System</h3>
-                    </div>
-                    <div class="card-body table-responsive p-0">
-                      <table class="table table-hover text-nowrap">
-                        <thead>
-                          <tr>
-                            <th class="text-center">Ref #</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Payment For</th>
-                            <th class="text-center">Date</th>
-                            <th class="text-center">Amount</th>
-                            <th class="text-center">Type</th>
-                            <th class="text-center">Card Holder Name</th>
-                            <th class="text-center">Sort Code</th>
-                            <th class="text-center">Amount Payable</th>
-                            <th class="text-center">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody id="old_ufg_payment_records">
-                          @foreach ($old_ufg_payment_records as $key => $old_ufg_payment_record)
+                              @if(is_array($old_ufg_payment_records[$key]))
+                                @if(!empty($key))
+                                  <tr><td colspan="11" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
+                                @endif
+                                @foreach ($old_ufg_payment_records[$key] as $key => $payment_record)
 
-                            @if(is_array($old_ufg_payment_records[$key]))
-                              @if(!empty($key))
-                                <tr><td colspan="10" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
+                                  <tr>
+                                    <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
+                                    <td class="text-center text-uppercase">{{ $payment_record['status'] }}</td>
+                                    <td class="text-center">{{ $payment_record['payment_for'] }}</td>
+                                    <td class="text-center">
+                                      @if($payment_record['payment_type_id'] == 1)
+                                        Bank
+                                      @endif
+                                      @if($payment_record['payment_type_id'] == 2)
+                                        Paysafe
+                                      @endif
+                                    </td>
+                                    <td class="text-center">{{ \Carbon\Carbon::parse($payment_record['date'])->format('d/m/Y') }} </td>
+                                    <td class="text-center">{{ $payment_record['amount'] }}</td>
+                                    <td class="text-center">{{ $payment_record['client_type'] == 1 ? 'Client' : 'Agency' }}</td>
+                                    <td class="text-center">{{ $payment_record['card_holder_name'] }}</td>
+                                    <td class="text-center">{{ $payment_record['sort_code'] }}</td>
+                                    <td class="text-center">{{ $payment_record['amount_payable'] }}</td>
+                                    <td class="text-center">
+                                      <a href="javascript:void(0)" data-details="{{json_encode($payment_record)}}" class="mr-2 btn btn-outline-info btn-xs view-payment_detail" data-title="View Booking" title="View Details">
+                                        <span class="fa fa-eye"></span>
+                                      </a>
+                                    </td>
+
+                                  </tr>
+                                @endforeach
                               @endif
-                              @foreach ($old_ufg_payment_records[$key] as $key => $payment_record)
-
-                                <tr>
-                                  <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
-                                  <td class="text-center text-uppercase">{{ $payment_record['status'] }}</td>
-                                  <td class="text-center">{{ $payment_record['payment_for'] }}</td>
-                                  <td class="text-center">{{ \Carbon\Carbon::parse($payment_record['date'])->format('d/m/Y') }} </td>
-                                  <td class="text-center">{{ $payment_record['amount'] }}</td>
-                                  <td class="text-center">{{ $payment_record['client_type'] == 1 ? 'Client' : 'Agency' }}</td>
-                                  <td class="text-center">{{ $payment_record['card_holder_name'] }}</td>
-                                  <td class="text-center">{{ $payment_record['sort_code'] }}</td>
-                                  <td class="text-center">{{ $payment_record['amount_payable'] }}</td>
-                                  <td class="text-center">
-                                    <a href="javascript:void(0)" data-details="{{json_encode($payment_record)}}" class="mr-2 btn btn-outline-info btn-xs view-payment_detail" data-title="View Booking" title="View Details">
-                                      <span class="fa fa-eye"></span>
-                                    </a>
-                                  </td>
-
-                                </tr>
-                              @endforeach
-                            @endif
-                          @endforeach
-                        </tbody>
-                      </table>
+                            @endforeach
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
                   @endif
 
                 </div>
