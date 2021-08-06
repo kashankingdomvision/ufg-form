@@ -50,6 +50,18 @@ class UserTableSeeder extends Seeder
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),
             ],
+            
+            [
+                'role_id'           =>  6,
+                'supervisor_id'     =>  null,
+                'currency_id'       =>  3,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'louis Fonsi',
+                'email'             =>  'louisfonis@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+            ],
         ];
 
         User::insert($users);
