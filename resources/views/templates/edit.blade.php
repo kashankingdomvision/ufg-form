@@ -377,20 +377,20 @@
                                                         <span class="text-danger" role="alert"></span>
                                                     </div>
                                                 </div>
-
+                                                @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                                                 <div class="col-sm-2 d-flex justify-content-center">
-                                                <div class="form-group">
-                                                    <label>Added in Sage </label>
+                                                    <div class="form-group">
+                                                        <label>Added in Sage </label>
                                                     <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <div class="icheck-primary">
-                                                        <input type="hidden" name="quote[{{ $key }}][added_in_sage]"  value="{{ $q_detail->added_in_sage }}">
-                                                        <input data-name="added_in_sage" {{ ($q_detail->added_in_sage == 1)? 'checked': null }} id="quote_{{ $key }}_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                                        <div class="input-group-prepend">
+                                                            <div class="icheck-primary">
+                                                                <input type="hidden" name="quote[{{ $key }}][added_in_sage]"  value="{{ $q_detail->added_in_sage }}">
+                                                                <input data-name="added_in_sage" {{ ($q_detail->added_in_sage == 1)? 'checked': null }} id="quote_{{ $key }}_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    </div>
                                                 </div>
-
+                                                @endif
                                                 </div>
 
                                                 <div class="col-sm-2">
