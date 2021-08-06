@@ -100,7 +100,7 @@
                 </a>
               </div>
             
-            <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking"> 
+            <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking" enctype="multipart/form-data"> 
               @csrf @method('put')
                 <div class="card-body">
                   <div class="row mb-2">
@@ -717,7 +717,21 @@
                                 <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $booking_detail->comments }}</textarea>
                               </div>
                             </div>
-
+                            
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Invoice Upload</label>
+                                <input type="file" name="quote[{{ $key }}][invoice]" data-name="invoice" id="quote_{{ $key }}_inovice" class="form-control invoices hide-arrows" >
+                              </div>
+                            </div>
+                          @if($booking_detail->invoice)
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Invoice Preview</label>
+                                <a href="{{ $booking_detail->invoice_url }}" class="btn btn-outline-dark">Invoice</a>
+                              </div>
+                            </div>
+                          @endif
                             <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Outstanding Amount left</label>

@@ -27,6 +27,8 @@ use App\Http\Requests\BookingRequest;
 use Auth;
 use App\Country;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+
 class BookingController extends Controller
 {
     public $pagination = 10, $cacheTimeOut;
@@ -323,6 +325,8 @@ class BookingController extends Controller
             'added_in_sage'         => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
             'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
         ];
+        
+        
     }
 
 
@@ -342,10 +346,8 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
-
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','bookings')->first();
         if (is_null($quote_update_detail)){
-            
             return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
         }
 
@@ -360,10 +362,10 @@ class BookingController extends Controller
         $array['booking'] = $book;
         $array['pax'] = $booking->getBookingPaxDetail->toArray();
         BookingLog::create([
-                'booking_id'   => $booking->id,
-                'version_no' => $booking->version,
-                'data'       => $array,
-                'log_no'     =>  $booking->getBookingLogs()->count()
+                'booking_id'    => $booking->id,
+                'version_no'    => $booking->version,
+                'data'          => $array,
+                'log_no'        => $booking->getBookingLogs()->count()
             ]);
             
             
@@ -372,6 +374,7 @@ class BookingController extends Controller
             $booking->getBookingDetail()->delete();
             foreach ($request->quote as $qu_details) {
                 $bookingDetail = $this->getBookingDetailsArray($qu_details);
+                $bookingDetail['invoice'] = $this->fileStore($qu_details, $booking->id);
                 $bookingDetail['booking_id'] = $booking->id;
                 $booking_Details=  BookingDetail::create($bookingDetail);
                 foreach ($qu_details['finance'] as $finance){
@@ -465,4 +468,22 @@ class BookingController extends Controller
         $booking = Booking::findOrFail(decrypt($id))->update(['cancel_date' => Carbon::now()]);
         return redirect()->back()->with('success_message', 'Booking canceled successfully');    
     }
+    
+    
+    //storage url
+    public function fileStore($request, $bookingID)
+    {
+        if($request['invoice'] && $request['invoice'] != null){
+            $url     = 'public/booking/'.$bookingID.'/invoice/';
+            $invoice = $request['invoice'];
+            $path    = $invoice->store($url);
+            // if($old != NULL){
+            //     Storage::delete($old->getOriginal('logo'));
+            // }
+            $file_path = url(Storage::url($path));
+            return $path;
+        }
+        return;
+    }
+    //storage url
 }

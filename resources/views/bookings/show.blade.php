@@ -731,7 +731,15 @@
                                       </div>
                                     </div>
                                   </div>
-
+                                  @if($booking_detail->invoice_url)
+                                  <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <label>Invoice Preview</label>
+                                      <a href="{{ $booking_detail->invoice_url }}" class="btn btn-outline-dark">Invoice</a>
+                                    </div>
+                                  </div>
+                                  @endif
+                                  
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label class="outstanding_amount_label">Outstanding Amount</label>
