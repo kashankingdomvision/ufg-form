@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
 
 
@@ -1591,12 +1591,13 @@ $("#update-booking").submit(function(event) {
             $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
         },
         success: function (data) {
+            
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
-                alert('Booking updated Successfully');
+                alert(data.success_message);
                 window.location.href = REDIRECT_BASEURL + "bookings/index";
                 
-            }, 800);
+            }, 1000);
         },
         error: function (reject) {
 
@@ -1610,7 +1611,7 @@ $("#update-booking").submit(function(event) {
 
                     if(errors.hasOwnProperty("overrride_errors")){
                         alert(errors.overrride_errors);
-                        window.history.back();
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
                     }
                     else{
 
