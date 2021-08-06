@@ -14,7 +14,7 @@ class AlterAddRemainingAmountLeftInBookingDetailsTable extends Migration
     public function up()
     {
         Schema::table('booking_details', function (Blueprint $table) {
-            $table->double('outstanding_amount_left')->nullable()->after('inovice');
+            $table->double('outstanding_amount_left')->nullable()->after('invoice');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 class BookingDetail extends Model
 {
@@ -32,7 +33,7 @@ class BookingDetail extends Model
         'selling_price_bc',
         'markup_amount_bc',
         'added_in_sage', 
-        'inovice',
+        'invoice',
         'outstanding_amount_left'
     ];
 
@@ -48,6 +49,11 @@ class BookingDetail extends Model
 
     function getSupplierCurrency() {
         return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id');
+    }
+    
+    public function getInvoiceUrlAttribute()
+    {
+        return url(Storage::url($this->invoice));
     }
     
     public function getBookingFinance()

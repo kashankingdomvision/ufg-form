@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Auth;
-
 class Booking extends Model
 {
     protected $fillable = [ 
@@ -59,6 +58,7 @@ class Booking extends Model
     {
         return Carbon::parse($this->created_at)->format('d/m/Y');
     }
+    
     
     public function getBookingDetail()
     {

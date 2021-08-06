@@ -614,6 +614,14 @@
                               </div>
                             </div>
                           </div>{{-- ?>>>rown end --}}
+                          @if($booking_detail['invoice'])
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label>Invoice Preview</label>
+                              <a href="{{ url(Storage::url($booking_detail['invoice'])) }}" class="btn btn-outline-dark">Invoice</a>
+                            </div>
+                          </div>
+                          @endif
                           @if($booking_detail['finance'] && count($booking_detail['finance']) > 0)
                             @foreach ($booking_detail['finance'] as $finance)
                               <div class="row">
