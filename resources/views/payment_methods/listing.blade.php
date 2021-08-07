@@ -90,20 +90,6 @@
                 Payment Method List
               </h3>
             </div>
-
-            <div class="card-header">
-              <h3 class="card-title float-left">
-                <a href="" id="delete_all" class="btn btn-danger btn-xs btn-sm float-right">
-                  <span class="fa fa-trash"></span> &nbsp;
-                  <span>Delete Selected Record</span>
-                </a>
-              </h3>
-              <a href="{{ route('setting.payment_methods.create') }}" class="btn btn-secondary btn-sm float-right">
-                <span class="fa fa-plus"></span>
-                <span>Add New</span>
-              </a>
-            </div>
-
             <div class="card-body p-0">
               <div class="table-responsive">
                 <table class="table table-striped table-hover">
