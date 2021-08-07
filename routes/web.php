@@ -81,11 +81,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
 
         Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
-        Route::get('documents/{quote}',  'QuoteController@documentIndex')->name('document');
-        Route::POST('{id}/generate/pdf',  'QuoteController@generatePDF')->name('document.pdf');
+        Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+        Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         
     });
-
+    
     /*
     |--------------------------------------------------------------------------
     | Template Controller

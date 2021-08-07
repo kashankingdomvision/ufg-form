@@ -53,7 +53,7 @@ class TemplateController extends Controller
             'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency'],
             'selling_price_bc'      => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency'],
-            'added_in_sage'         => ($quoteD['added_in_sage'] == "0")? '0' : '1',
+            'added_in_sage'         => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '',
         ];
     }
     

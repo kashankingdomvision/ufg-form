@@ -513,29 +513,6 @@ class QuoteController extends Controller
         return view('quotes.listing', $data);      
     }
     
-    public function documentIndex($id)
-    {
-        $quote = Quote::findOrFail(decrypt($id));
-        $data['quote_details'] = $quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get(); 
-        $doc = QuoteDocument::where('quote_id', decrypt($id))->first();
-        $data['quote_id'] = $id;
-        if($doc){
-            if($doc->exists()){
-                $data['doc']      = $doc;
-            }
-        }
-        return view('quote_documents.index', $data);
-    }
-    
-    public function generatePDF(Request $request, $id)
-    {
-        QuoteDocument::create([
-            'quote_id'  => decrypt($id),
-            'data'      => $request->data,
-        ]);
-        dd('quote doc create successfully');
-        // $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
-        // return $pdf->download('invoice.pdf');
-    }
+
     
 }
