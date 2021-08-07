@@ -1,11 +1,7 @@
 @extends('layouts.app')
-
 @section('title','View Booking')
-
 @section('content')
-
 <div class="content-wrapper">
-
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
@@ -20,16 +16,13 @@
                     </ol>
                 </div>
             </div>
-
             <div class="row">
                 <div class="col-md-12 col-md-offset-3">
                     @include('includes.flash_message')
-
                 </div>
             </div>
         </div>
     </section>
-
     <section class="content">
         <div class="container-fluid">
             <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
@@ -41,10 +34,8 @@
                         </div>
                     </div>
                 </button>
-     
                 <div class="card-body">
                     <form method="get" action="{{ route('bookings.index') }}">
-                    
                     <div class="row">
                         <div class="col">
                             <div class="form-group">
@@ -78,8 +69,6 @@
                                 </select>
                             </div>
                         </div>
-                       
-                       
                     </div>
                     <div class="row">
                         <div class="col">
@@ -92,9 +81,6 @@
                                 </select>
                             </div>
                         </div>
-                        
-                
-                        
                         <div class="col">
                             <div class="form-group"> 
                                 <label>Brand</label>
@@ -140,13 +126,11 @@
                             <a href="{{ route('bookings.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
                         </div>
                     </div>
-
                 </form>
                 </div>
             </div>
         </div>
     </section>
-
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -185,7 +169,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                     @if($bookings && $bookings->count())
                                         @foreach ($bookings as $booking)
                                             <tr>
@@ -211,18 +194,15 @@
                                                     <a href="{{ route('bookings.show',encrypt($booking->id)) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="View Booking" >
                                                         <span class="fa fa-eye"></span>
                                                     </a>
-
                                                     <a href="{{ route('bookings.show', [ 'id' => encrypt($booking->id), 'status' => 'payment' ] ) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="Add Payment" >
                                                         <span class="fa fa-money-bill-alt"></span>
                                                     </a>
-
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
                                                         <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
                                                             <span class="fa fa-times"></span>
                                                         </a>
                                                     {{-- @else --}}
-                                                        
                                                     {{-- @endif --}}
                                                     {{-- <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
                                                         @csrf @method('delete')
@@ -230,7 +210,6 @@
                                                         <button onclick="return confirm('Are you sure want to Delete this record?');" class="mr-2  btn btn-outline-danger btn-xs" data-title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></button>
                                                     </form> --}}
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                     @else
@@ -251,6 +230,4 @@
         </div>
     </section>
 </div>
-
-
 @endsection
