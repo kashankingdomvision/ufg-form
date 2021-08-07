@@ -250,7 +250,6 @@ class BookingController extends Controller
         }
 
         $data['status'] = $status;
-
         return view('bookings.show',$data);
     }
 
