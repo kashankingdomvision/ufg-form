@@ -35,20 +35,20 @@ class QuoteDocumentsController extends Controller
     
     public function dataSorting($quoteDetail)
     {
-        $x = [];
-        foreach ($quoteDetail as $quoteDetail) {
-            if($quoteDetail->getCategory->slug == 'transfer'){
-                $data = [];
-                $data['transfer'] = $quoteDetail;
-            }else if($quoteDetail->getCategory->slug == 'accommodation'){
-                $data['accommodation'] = $quoteDetail;
-            }elseif ($quoteDetail->getCategory->slug == 'accommodation') {
-                # code...
-            }
-            if($quoteDetail)
-            array_push($x, $data);
-        }
+        return abort(403);
+        // $x = [];
+        // foreach ($quoteDetail as $quoteDetail) {
+        //     if($quoteDetail->getCategory->slug == 'transfer'){
+        //         $data = [];
+        //         $data['transfer'] = $quoteDetail;
+        //     }else if($quoteDetail->getCategory->slug == 'accommodation'){
+        //         $data['accommodation'] = $quoteDetail;
+        //     }elseif ($quoteDetail->getCategory->slug == 'accommodation') {
+        //         # code...
+        //     }
+        //     if($quoteDetail)
+        //     array_push($x, $data);
+        // }
         // $data['transfer_to'] = 'Transfer to '.$AProduct.' via '.$TProduct.' on '.$dataOFService.''.$timeservice;
-        return $x;
     }
 }
