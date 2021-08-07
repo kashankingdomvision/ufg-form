@@ -145,8 +145,8 @@
                                     <thead>
                                         <tr>
                                             <th width="8"></th>
-                                            <th class="w-5">Zoho Ref #</th>
-                                            <th class="w-5">Quote Ref #</th>
+                                            <th style="width: 7rem;">Zoho Ref #</th>
+                                            <th style="width: 7rem;">Quote Ref #</th>
                                             <th>Lead Passenger</th>
                                             <th>Brand</th>
                                             <th>Type Of Holidays</th>
