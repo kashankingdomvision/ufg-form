@@ -635,7 +635,6 @@
                           @if($booking_detail['finance'] && count($booking_detail['finance']) > 0)
                             @foreach ($booking_detail['finance'] as $fkey => $finance)
                               @php $count =  $fkey + 1; @endphp
-
                               <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="{{$fkey}}">
                                 <div class="col-sm-3">
                                   <div class="form-group">
@@ -723,11 +722,10 @@
                               </div>
                             @endforeach
                           @else
-                            {{-- /////for single value/ --}}
                             <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Payment #1</label>
+                                  <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Paymentsdsd #1</label>
                                   <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>

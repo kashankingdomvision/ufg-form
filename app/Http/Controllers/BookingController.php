@@ -188,6 +188,7 @@ class BookingController extends Controller
             $data['user_id'] = null;
         }
 
+
         return view('bookings.edit',$data);
     }
 
@@ -345,9 +346,9 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','bookings')->first();
-        if (is_null($quote_update_detail)){
-            return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        if(!$quote_update_detail->exists()) {
+            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
         }
 
         $booking = Booking::findOrFail(decrypt($id));
@@ -406,7 +407,7 @@ class BookingController extends Controller
 
         $quote_update_detail->delete(); 
 
-        return redirect()->route('bookings.index',encrypt($request->season_id))->with('success_message', 'Booking update successfully');    
+        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
     
     private function curl_data($url)

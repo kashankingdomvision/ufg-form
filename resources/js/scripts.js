@@ -473,6 +473,9 @@ $(".quote").eq(0).clone()
 
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
+
+        getTotalValues();
+        getSellingPrice();
     });
 
     $(document).on('change', '.supplier-currency-id',function () {
@@ -1591,12 +1594,13 @@ $("#update-booking").submit(function(event) {
             $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
         },
         success: function (data) {
+            
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
-                alert('Booking updated Successfully');
+                alert(data.success_message);
                 window.location.href = REDIRECT_BASEURL + "bookings/index";
                 
-            }, 800);
+            }, 1000);
         },
         error: function (reject) {
 
@@ -1610,7 +1614,7 @@ $("#update-booking").submit(function(event) {
 
                     if(errors.hasOwnProperty("overrride_errors")){
                         alert(errors.overrride_errors);
-                        window.history.back();
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
                     }
                     else{
 
