@@ -777,7 +777,7 @@
                                     </div>
 
                                     <div class="col-sm-2 d-flex justify-content-center">
-                                      <div class="form-group">
+                                      <div class="form-group {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                         <label>Calender</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
@@ -807,7 +807,7 @@
                                       </div>
                                     </div>
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-3 {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                       <div class="form-group">
                                         <label>Alert before the following days </label>
                                         <div class="input-group">
