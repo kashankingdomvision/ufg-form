@@ -24234,6 +24234,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '.close', function () {
     $(this).closest(".quote").remove();
+    getTotalValues();
+    getSellingPrice();
   });
   $(document).on('change', '.supplier-currency-id', function () {
     var code = $(this).find(':selected').data('code');

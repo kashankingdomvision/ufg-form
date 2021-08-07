@@ -473,6 +473,9 @@ $(".quote").eq(0).clone()
 
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
+
+        getTotalValues();
+        getSellingPrice();
     });
 
     $(document).on('change', '.supplier-currency-id',function () {
