@@ -706,9 +706,6 @@
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($quote['selling_currency_oc']) && !empty($quote['selling_currency_oc']) ? $quote['selling_currency_oc'] : '' }}</span>
                           </div>
                           <input type="number" value="{{ \Helper::number_format($quote['selling_price_ocr']) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
-                          <div class="input-group-append">
-                            <div class="input-group-text">%</div>
-                          </div>
                         </div>
                       </div>
                     </div>

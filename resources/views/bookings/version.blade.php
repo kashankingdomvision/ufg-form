@@ -926,9 +926,6 @@
                             <span class="input-group-text selling-price-other-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
                           </div>
                           <input type="number" value="{{ \Helper::number_format($booking['selling_price_ocr']) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
-                          <div class="input-group-append">
-                            <div class="input-group-text">%</div>
-                          </div>
                         </div>
                       </div>
                     </div>
