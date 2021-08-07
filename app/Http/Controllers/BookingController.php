@@ -170,23 +170,24 @@ class BookingController extends Controller
     
         }
 
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
 
-        if($quote_update_detail && $quote_update_detail->exists()){
-            $data['exist']   = 1;
-            $data['user_id'] = $quote_update_detail->user_id;
-        }
-        else{    
+        // if($quote_update_detail && $quote_update_detail->exists()){
+        //     $data['exist']   = 1;
+        //     $data['user_id'] = $quote_update_detail->user_id;
+        // }
 
-            $quote_update_details = QuoteUpdateDetail::create([
-                'user_id'      =>  Auth::id(),
-                'foreign_id'   =>  decrypt($id),
-                'status'       =>  'bookings'
-            ]);
+        // if(is_null($quote_update_detail)){
 
-            $data['exist']   = null;
-            $data['user_id'] = null;
-        }
+        //     $quote_update_details = QuoteUpdateDetail::create([
+        //         'user_id'      =>  Auth::id(),
+        //         'foreign_id'   =>  decrypt($id),
+        //         'status'       =>  'bookings'
+        //     ]);
+
+        //     $data['exist']   = null;
+        //     $data['user_id'] = null;
+        // }
 
 
         return view('bookings.edit',$data);
@@ -195,26 +196,26 @@ class BookingController extends Controller
     public function show($id,$status = null)
     {
 
-        if(!empty($status)){
+        // if(!empty($status)){
 
-            $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
+        //     $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
     
-            if($quote_update_detail && $quote_update_detail->exists()){
-                $data['exist']   = 1;
-                $data['user_id'] = $quote_update_detail->user_id;
-            }
-            else{    
+        //     if($quote_update_detail && $quote_update_detail->exists()){
+        //         $data['exist']   = 1;
+        //         $data['user_id'] = $quote_update_detail->user_id;
+        //     }
+        //     else{    
     
-                $quote_update_details = QuoteUpdateDetail::create([
-                    'user_id'      =>  Auth::id(),
-                    'foreign_id'   =>  decrypt($id),
-                    'status'       =>  'bookings'
-                ]);
+        //         $quote_update_details = QuoteUpdateDetail::create([
+        //             'user_id'      =>  Auth::id(),
+        //             'foreign_id'   =>  decrypt($id),
+        //             'status'       =>  'bookings'
+        //         ]);
     
-                $data['exist']   = null;
-                $data['user_id'] = null;
-            }
-        }
+        //         $data['exist']   = null;
+        //         $data['user_id'] = null;
+        //     }
+        // }
 
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
@@ -346,10 +347,10 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
-        if(!$quote_update_detail->exists()) {
-            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
-        }
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        // if(!$quote_update_detail->exists()) {
+        //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
+        // }
 
         $booking = Booking::findOrFail(decrypt($id));
         $array =  $booking->toArray();
@@ -405,7 +406,7 @@ class BookingController extends Controller
              }
         }
 
-        $quote_update_detail->delete(); 
+        // $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
