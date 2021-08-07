@@ -52,7 +52,11 @@ class QuoteController extends Controller
         }
         
         if($request->has('status') && !empty($request->status)){
-            $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+            if($request->status == 'cancelled'){
+                $quote->where('deleted_at', '!=', null);
+            }else{
+                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+            }
         }
         
         if($request->has('booking_currency') && !empty($request->booking_currency)){
