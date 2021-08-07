@@ -13,6 +13,11 @@
     </a>
 
 
+    {{-- <a href="/docs/3.0/index.html" class="brand-link logo-switch">
+        <img src="{{ asset('img/fav-icon.png') }}"  alt="AdminLTE Docs Logo Small" class="brand-image-xl logo-xs">
+        <img src="{{ asset('img/logo.png') }}"  style="width: 218px;" alt="AdminLTE Docs Logo Large" class="brand-image-xs logo-xl" style="left: 12px">
+    </a> --}}
+
     <div class="sidebar">
         {{-- <!-- Sidebar user panel (optional) --> --}}
         {{-- <div class="user-panel mt-1 pb-3 mb-3 d-flex text-white">
