@@ -48,14 +48,7 @@
          
                     <div class="card-body">
                         <form method="get" action="{{ (isset($status) && $status == 'archive')? route('quotes.archive') : route('quotes.index') }}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
-                                </div>
-                            </div>
-                        </div>
+                       
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
@@ -85,6 +78,7 @@
                                         <option value="" selected>Select Status</option>
                                         <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
                                         <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
+                                        <option {{ (old('search') == 'cancelled')? 'selected': ((request()->get('status') == 'cancelled')? 'selected' : null) }} value="cancelled" >Cancelled</option>
                                     </select>
                                 </div>
                             </div>
@@ -145,7 +139,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Search</label>
+                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row mt-1">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
