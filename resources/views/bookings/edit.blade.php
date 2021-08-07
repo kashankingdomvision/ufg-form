@@ -741,9 +741,9 @@
 
                           </div>{{-- ?>>>rown end --}}
                           
+                          @php $total_deposit = 0; @endphp
                           <section class="finance">
-                              @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
-                                @php $total_deposit = 0; @endphp
+                            @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                 @php
                                   $count = $fkey + 1;
@@ -931,7 +931,12 @@
                                 {{-- /////for single value/ --}}
                               @endif
 
-                              <div class="row {{ ($total_deposit >= $booking_detail->estimated_cost) ? 'd-none' : ''}}">
+                              <div class="row
+                                @if(isset($total_deposit) && isset($booking_detail->estimated_cost))
+                                  @if($total_deposit >= $booking_detail->estimated_cost)
+                                    d-none
+                                  @endif
+                                @endif">
                                 <div class="col-12">
                                   <button type="button" data-key="0" class=" clone_booking_finance float-right btn btn-dark btn-sm">Add More Payments </button>
                                 </div>
