@@ -45,18 +45,7 @@
                     </div>
                     <div class="card-body">
                         <form method="get" action="{{ route('templates.index') }}">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>Search</label>
-                                            <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Template Name and season">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
@@ -100,7 +89,14 @@
                             </div>
                         </div>
 
-    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Search</label>
+                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Template Name and season">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row mt-1">
                             <div class="col-md-12 d-flex justify-content-end">
                                 <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
