@@ -1221,6 +1221,7 @@
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right">Submit</button>
+                  <a href="{{ route('bookings.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
                 </div>
             </form>
             <div id="overlay" class=""></div>
