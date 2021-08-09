@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
         Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
         Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
+        Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
         
     });
     

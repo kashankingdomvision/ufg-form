@@ -38,6 +38,37 @@ class QuoteController extends Controller
 {
     public $pagiantion = 10;
     
+    
+    public function clone($id)
+    {
+        $quote      = Quote::findORFail(decrypt($id));
+        $getQuote   = $this->quoteArray($quote,'clone');
+        $clone      = Quote::create($getQuote);
+        foreach ($quote->getQuoteDetails as $qu_details) {
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id);
+            $quoteDetail['quote_id'] = $clone->id;
+            
+            QuoteDetail::create($quoteDetail);
+        }
+        
+        if($quote->getPaxDetail && $quote->pax_no >= 1){
+            foreach ($quote->getPaxDetail as $pax) {
+                QuotePaxDetail::create([
+                    'quote_id'              => $clone->id,
+                    'full_name'             => $pax['full_name'],
+                    'email'                 => $pax['email'],
+                    'contact'               => $pax['contact'],
+                    'date_of_birth'         => $pax['date_of_birth'],
+                    'bedding_preference'    => $pax['bedding_preference'],
+                    'dinning_preference'    => $pax['dinning_preference'],
+                    'nationality_id'        => $pax['nationality_id'],
+                ]);
+            }
+        }
+        
+       return redirect()->back()->with('success_message', 'Quote clone successfully');
+        
+    }
     public function searchFilters($quote, $request)
     {
         if($request->has('client_type') && !empty($request->client_type)){
@@ -164,16 +195,16 @@ class QuoteController extends Controller
             'holiday_type_id'                   =>  $request->holiday_type_id,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'ref_no'                            =>  $request->ref_no,
-            'quote_ref'                         =>  $request->quote_no??$request->quote_ref,
+            'quote_ref'                         =>  ($type == 'clone')? \Helper::getQuoteID() : ($request->quote_no??$request->quote_ref),
             'sale_person_id'                    =>  $request->sale_person_id,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
             'agency_name'                       =>  $request->agency_name??NULL,
-            'agency_contact'                    =>  (!empty($type))? $request->agency_contact : (($request->has('agency_contact'))? $request->full_number : NULL),
+            'agency_contact'                    =>  (!empty($type))? $request->agency_contact : (($request->agency_contact)? $request->full_number : NULL),
             'agency_email'                      =>  $request->agency_email??NULL,
             'agency_contact_name'               =>  $request->agency_contact_name??NULL,
             'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
             'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
-            'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->has('lead_passenger_contact'))? $request->full_number : NULL),
+            'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->lead_passenger_contact)? $request->full_number : NULL),
             'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
