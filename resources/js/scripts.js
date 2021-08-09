@@ -470,6 +470,83 @@ $(document).on('click', '.addChild', function () {
             reinitializedDynamicFeilds();
     });
 
+    $(document).on('click', '#add_more_booking', function(e) {
+
+        if($('.select2single').data('select2')){
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(".quote").eq(0).clone()
+            .find("input").val("") .each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){
+                    return '[' + ($('.quote').length) + ']';
+                });
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                });
+            }).end()
+            .find("textarea").val("").each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){
+                    return '[' + (parseInt($('.quote').length)) + ']';
+                });
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                });
+            }).end()
+            .find("select").val("").each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                });
+            }).end().show().insertAfter(".quote:last");
+
+            quote.find('.finance .row:not(:first):not(:last)').remove();
+            quote.find('.estimated-cost').attr("data-status", "");
+            quote.find('.markup-amount').attr("readonly", false);
+            quote.find('.markup-percentage').attr("readonly", false);
+            quote.find('.cal_selling_price').attr('checked','checked');
+            quote.find('.deposit-amount').val('0.00');
+
+            $('.quote:last .finance').find("input").val("") .each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){
+                    return '[' + ($('.quote').length - 1 ) + ']';
+                });
+
+                let n = 1;
+                let name = $(this).attr("data-name");
+
+                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? 0 : v , function(){
+                    return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
+                });
+                
+            }).end()
+
+            .find("select").val("").each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){
+                    return '[' + ($('.quote').length - 1 ) + ']';
+                });
+
+                let n = 1;
+                let name = $(this).attr("data-name");
+
+                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? 0 : v , function(){
+                    return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
+                });
+            });
+
+            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
+            $(".quote:last").attr('data-key', $('.quote').length - 1);
+            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+            $('.quote:last input, .quote:last select').removeClass('is-invalid');
+            $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+            
+            datepickerReset(1);
+            reinitializedDynamicFeilds();
+
+    });
+
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
 
@@ -713,11 +790,9 @@ $(document).on('click', '.addChild', function () {
 
         var key         = $(this).closest('.quote').data('key');
         var changeFeild = $(this).data('name');
-        var cal_selling_price  = $('#cal_selling_price').is(':checked');
+        var cal_selling_price  = $('.cal_selling_price').is(':checked');
         var status             = $(this).data('status');
 
-
-  
         if(status && status=='booking' && cal_selling_price == false){
             calculateBookingDetails(key);
 
@@ -728,7 +803,7 @@ $(document).on('click', '.addChild', function () {
     });
 
     
-    $(document).on('change', '#cal_selling_price',function(){
+    $(document).on('change', '.cal_selling_price',function(){
 
         var key         = $(this).closest('.quote').data('key');
         var changeFeild = 'estimated_cost';
@@ -738,14 +813,14 @@ $(document).on('click', '.addChild', function () {
 
             $(`#quote_${key}_markup_amount`).attr("readonly", false); 
             $(`#quote_${key}_markup_percentage`).attr("readonly", false); 
-            $(`#quote_${key}_estimated_cost`).attr("data-booking","");
+            $(`#quote_${key}_estimated_cost`).attr("data-status","");
             // calculateQuoteDetails(key,changeFeild);
 
         }else
         {
             $(`#quote_${key}_markup_amount`).attr("readonly", true); 
             $(`#quote_${key}_markup_percentage`).attr("readonly", true); 
-            $(`#quote_${key}_estimated_cost`).attr("data-booking","booking");
+            $(`#quote_${key}_estimated_cost`).attr("data-status","booking");
             // calculateBookingDetails(key);
         }
   
