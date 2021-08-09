@@ -286,6 +286,12 @@
                                                         <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
                                                             <i class="fas fa-file"></i>
                                                         </a>
+                                                        <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
+                                                            @csrf @method('patch')
+                                                            <button type="submit" title="View" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+                                                                <i class="fa fa-clone"></i>
+                                                            </button>
+                                                        </form>
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>
