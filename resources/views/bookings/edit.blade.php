@@ -752,7 +752,7 @@
                                   <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="{{$fkey}}">
                                     <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #{{ $count }}</label>
+                                        <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Payment #{{ $count }}</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -797,7 +797,7 @@
 
                                     <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label>Payment</label>
+                                        <label>Payment Method</label>
                                         <select  name="quote[{{ $key }}][finance][{{ $fkey }}][payment_method]" data-name="payment_method" id="quote_{{$key}}_finance_{{$fkey}}_payment_method" class="form-control payment-method select2single" >
                                           <option value="">Select Payment Method</option>
                                           @foreach ($payment_methods as $payment_method)
@@ -842,7 +842,7 @@
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                      <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Payment #1</label>
+                                      <label class="depositeLabel" id="deposite_heading{{ $key }}">Payment #1</label>
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -887,7 +887,7 @@
 
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                      <label>Payment</label>
+                                      <label>Payment Method</label>
                                       <select  name="quote[{{ $key }}][finance][0][payment_method]" data-name="payment_method" id="quote_{{$key}}_finance_0_payment_method" class="form-control payment-method select2single" >
                                         <option value="">Select Payment Method</option>
                                         @foreach ($payment_methods as $payment_method)

@@ -25005,7 +25005,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       });
     }).end().find('.depositeLabel').each(function () {
       this.id = 'deposite_heading' + financeCloningLength;
-      $(this).text("Deposit Payment #".concat(financeCloningLength + 1));
+      $(this).text("Payment #".concat(financeCloningLength + 1));
     }).end().find("select").val("").each(function () {
       var n = 1;
       var name = $(this).attr("data-name");

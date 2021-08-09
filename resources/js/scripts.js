@@ -1382,7 +1382,7 @@ $('.clone_booking_finance').on('click', function () {
     }).end().find('.depositeLabel').each(function () {
 
         this.id = 'deposite_heading'+ financeCloningLength;
-        $(this).text(`Deposit Payment #${financeCloningLength+1}`);
+        $(this).text(`Payment #${financeCloningLength+1}`);
 
     }).end()
     .find("select").val("").each(function(){
