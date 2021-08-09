@@ -430,32 +430,35 @@ $(document).on('click', '.addChild', function () {
 });
 
 $(document).on('click', '#add_more', function(e) {
-if ($('.select2single').data('select2')) {
-    $('.select2single').select2('destroy');
+
+    if($('.select2single').data('select2')){
+        $('.select2single').select2('destroy');
     }
-$(".quote").eq(0).clone()
-    .find("input").val("") .each(function(){
-        this.name = this.name.replace(/\[(\d+)\]/, function(){
-            return '[' + ($('.quote').length) + ']';
-        });
-        this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-        });
-    }).end()
-    .find("textarea").val("").each(function(){
-        this.name = this.name.replace(/\[(\d+)\]/, function(){
-            return '[' + (parseInt($('.quote').length)) + ']';
-        });
-        this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-        });
-    }).end()
-    .find("select").val("").each(function(){
-        this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
-        this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-        });
-    }).end().show().insertAfter(".quote:last");
+
+    $(".quote").eq(0).clone()
+        .find("input").val("") .each(function(){
+            this.name = this.name.replace(/\[(\d+)\]/, function(){
+                return '[' + ($('.quote').length) + ']';
+            });
+            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            });
+        }).end()
+        .find("textarea").val("").each(function(){
+            this.name = this.name.replace(/\[(\d+)\]/, function(){
+                return '[' + (parseInt($('.quote').length)) + ']';
+            });
+            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            });
+        }).end()
+        .find("select").val("").each(function(){
+            this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
+            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            });
+        }).end().show().insertAfter(".quote:last");
+
         $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
         $('.product-id:last').html(`<option selected value="">Select Product</option>`);
         $(".quote:last").attr('data-key', $('.quote').length - 1);
@@ -463,9 +466,9 @@ $(".quote").eq(0).clone()
         $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
         $('.quote:last input, .quote:last select').removeClass('is-invalid');
         $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
-});
+        datepickerReset(1);
+        reinitializedDynamicFeilds();
+    });
 
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
