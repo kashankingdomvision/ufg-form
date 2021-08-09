@@ -3,10 +3,10 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 
 
@@ -1386,7 +1386,7 @@ $('.clone_booking_finance').on('click', function () {
     }).end().find('.depositeLabel').each(function () {
 
         this.id = 'deposite_heading'+ financeCloningLength;
-        $(this).text(`Deposit Payment #${financeCloningLength+1}`);
+        $(this).text(`Payment #${financeCloningLength+1}`);
 
     }).end()
     .find("select").val("").each(function(){
