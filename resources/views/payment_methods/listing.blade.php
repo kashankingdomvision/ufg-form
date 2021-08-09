@@ -34,7 +34,7 @@
           <div class="row">
             <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
                 <div class="card-header">
-                  <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters</b></h3>
+                  <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
                 </div>
             </button>
 
