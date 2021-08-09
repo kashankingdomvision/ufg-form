@@ -24984,7 +24984,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }); //ajax for references
     }
   });
-  $('.clone_booking_finance').on('click', function () {
+  $(document).on('click', '.clone_booking_finance', function () {
     if ($('.select2single').data('select2')) {
       $('.select2single').select2('destroy');
     }
