@@ -66,7 +66,9 @@
         </button>
       </form>
     @endif
-    
+    <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
+      <i class="fas fa-file"></i>
+  </a>
   </td>
 </tr>
 @endforeach
