@@ -292,6 +292,11 @@
                                                                 <i class="fa fa-clone"></i>
                                                             </button>
                                                         </form>
+                                                        @if ($quote->getBooking != NULL)
+                                                            <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="m-0 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
+                                                                <i class="fas fa-book"></i>
+                                                            </a>
+                                                        @endif
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>

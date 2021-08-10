@@ -143,4 +143,8 @@ class Quote extends Model
         }
     }
     
+    public function getBooking()
+    {
+        return $this->hasOne(Booking::class, 'quote_id', 'id');
+    }
 }

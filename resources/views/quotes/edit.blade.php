@@ -140,7 +140,7 @@
                         <select name="commission_id" id="commission_id" class="form-control  select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} &nbsp; &nbsp; ({{ $commission_type->percentage.' %' }})</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
