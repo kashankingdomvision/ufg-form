@@ -23753,8 +23753,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 
 
 
@@ -24930,7 +24928,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       alert('Reference number is not found');
       searchRef.text('Search').prop('disabled', false);
     } else {
-      //ajax for references
+      //check refrence is already exist in system
       $.ajax({
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
@@ -24964,36 +24962,44 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 var tbody = '';
 
                 if (data.response) {
-                  // lead Passenger
-                  $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name); // lead Passenger
-                  // brand
+                  if (data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+                    $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
+                  }
 
-                  $('#brand_id').val(data.response.brand.brand_id).change(); // brand
-                  // holidaytype
+                  if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
+                    $('#brand_id').val(data.response.brand.brand_id).change();
+                  }
 
-                  setTimeout(function () {
-                    $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                  }, 500); // holidaytype
-                  // Sale person
+                  if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
+                    setTimeout(function () {
+                      $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                    }, 500);
+                  }
 
-                  $('#sale_person_id').val(data.response.sale_person).trigger('change'); // Sale person
-                  // Pax No
+                  if (data.response.sale_person) {
+                    $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                  }
 
-                  $('#pax_no').val(data.response.pax).trigger('change'); // Pax No
-                  // Booking Currency'
+                  if (data.response.pax) {
+                    $('#pax_no').val(data.response.pax).trigger('change');
+                  }
 
-                  $("#currency_id").find('option').each(function () {
-                    if ($(this).data('code') == data.response.currency) {
-                      $(this).attr("selected", "selected");
-                    }
-                  }); // $("#currency_id option:data-code"+data.response.currency+"]").trigger('change');
-                  // Booking Currency
-                  // Dinning Preference
+                  if (data.response.currency) {
+                    $("#currency_id").find('option').each(function () {
+                      if ($(this).data('code') == data.response.currency) {
+                        $(this).attr("selected", "selected");
+                      }
+                    });
+                  }
 
-                  $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences); // Dinning Preference
-                  // Bedding Preference
+                  if (data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
+                    $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                  }
 
-                  $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences); // Bedding Preference
+                  if (data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
+                    $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+                  } // Passengers Details
+
 
                   if (data.response.passengers.passengers.length > 0) {
                     data.response.passengers.passengers.forEach(function ($_value, $key) {
@@ -25006,28 +25012,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                       $('input[name="pax[' + $_count + '][dinning_preference]"]').val($_value.dinning_prefrences);
                     });
                   }
-
-                  if (data.response.payment_details && data.response.payment_details != null) {
-                    var payment_details = data.response.payment_details;
-                    jQuery.each(payment_details, function (key, item) {
-                      if (_typeof(payment_details[key]) === 'object' && payment_details[key].length > 0) {
-                        tbody += "<tr><td colspan=\"4\" class=\"text-center font-weight-bold tbody-highlight\"> ".concat(key.toUpperCase(), " </td></tr>");
-                        jQuery.each(payment_details[key], function (key, detail) {
-                          var date = new Date(detail.date);
-                          var result = date.toLocaleDateString("en-GB", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit"
-                          });
-                          tbody += "<tr>\n                                                            <td> ".concat(detail.status, " </td>\n                                                            <td> ").concat(detail.payment_for, " </td>\n                                                            <td> ").concat(result, " </td>\n                                                            <td> ").concat(detail.amount, " </td>\n                                                        </tr>");
-                        });
-                      }
-                    });
-                  } else {
-                    tbody += "<tr><td colspan=\"8\" class=\"text-center\"> No record found. </td></tr>";
-                  }
-
-                  $('#old_ufg_payment_records').html(tbody);
                 } else {
                   alert(data.error);
                 }
@@ -25046,6 +25030,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         error: function error(reject) {
           alert(reject);
           searchRef.text('Search').prop('disabled', false);
+          searchRef.prop('disabled', false);
+          $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
         }
       }); //ajax for references
     }

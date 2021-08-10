@@ -1291,7 +1291,7 @@ $('.search-reference').on('click', function () {
         searchRef.text('Search').prop('disabled', false);
     }else{
 
-        //ajax for references
+        //check refrence is already exist in system
         $.ajax({
             headers: {'X-CSRF-TOKEN': CSRFTOKEN},
             url: BASEURL+'find/reference/'+reference_no+'/exist',
@@ -1318,43 +1318,57 @@ $('.search-reference').on('click', function () {
                         success: function (data) {
 
                             var tbody = '';
-                            
                             if(data.response)
                             {
-                            // lead Passenger
-                                $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
-                            // lead Passenger
-                            // brand
-                                $('#brand_id').val(data.response.brand.brand_id).change();
-                            // brand
-                            // holidaytype
-
-                            setTimeout(function(){
-                                $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected').change();
-                                // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                            }, 500);
-
-                            // holidaytype
-                            // Sale person
-                                $('#sale_person_id').val(data.response.sale_person).trigger('change');
-                            // Sale person
-                            // Pax No
-                                $('#pax_no').val(data.response.pax).trigger('change');
-                            // Pax No
-                            // Booking Currency'
-                            $("#currency_id").find('option').each(function(){
-                                if( $(this).data('code') == data.response.currency ) {
-                                    $(this).attr("selected","selected");
+                     
+                                if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name') )
+                                {
+                                    $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
                                 }
-                            });
-                                // $("#currency_id option:data-code"+data.response.currency+"]").trigger('change');
-                            // Booking Currency
-                               // Dinning Preference
-                                $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                                // Dinning Preference
-                                // Bedding Preference
+
+                                if(data.response.brand && data.response.brand.hasOwnProperty('brand_id'))
+                                {
+                                    $('#brand_id').val(data.response.brand.brand_id).change();
+                                }
+
+                                if(data.response.brand && data.response.brand.hasOwnProperty('name'))
+                                {
+                                    setTimeout(function(){
+                                        $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected').change();
+                                        // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                                    }, 500);
+                                }
+
+                                if(data.response.sale_person)
+                                {
+                                    $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                                }
+
+                                if(data.response.pax)
+                                {
+                                    $('#pax_no').val(data.response.pax).trigger('change');
+                                }
+
+                                if(data.response.currency)
+                                {
+                                    $("#currency_id").find('option').each(function(){
+                                        if( $(this).data('code') == data.response.currency ) {
+                                            $(this).attr("selected","selected");
+                                        }
+                                    });
+                                }
+                     
+                               if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences') )
+                               {
+                                   $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                               }
+
+                               if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences') )
+                               {
                                 $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                                // Bedding Preference
+                               }
+                            
+                                // Passengers Details
                                 if(data.response.passengers.passengers.length > 0){
                                     data.response.passengers.passengers.forEach(($_value, $key) => {
                                         var $_count = $key + 1;
@@ -1366,44 +1380,6 @@ $('.search-reference').on('click', function () {
                                         $('input[name="pax['+$_count+'][dinning_preference]"]').val($_value.dinning_prefrences);
                                     });
                                 }
-
-                          
-                                if(data.response.payment_details && data.response.payment_details != null){
-                                   
-                                    var payment_details = data.response.payment_details;
-                                    
-
-                                    jQuery.each(payment_details, function(key, item) {
-
-                                        if(typeof payment_details[key] === 'object' && payment_details[key].length > 0){
-
-                                            tbody += `<tr><td colspan="4" class="text-center font-weight-bold tbody-highlight"> ${key.toUpperCase()} </td></tr>`;
-
-                                            jQuery.each(payment_details[key], function(key, detail) {
-
-                                                var date = new Date(detail.date);
-                                                var result = date.toLocaleDateString("en-GB", { 
-                                                    year: "numeric",
-                                                    month: "2-digit",
-                                                    day: "2-digit",
-                                                });
-
-                                                tbody += `<tr>
-                                                            <td> ${detail.status} </td>
-                                                            <td> ${detail.payment_for} </td>
-                                                            <td> ${result} </td>
-                                                            <td> ${detail.amount} </td>
-                                                        </tr>`;
-                                            });
-                                        }
-
-                                    });
-                                   
-                                }else{
-                                    tbody += `<tr><td colspan="8" class="text-center"> No record found. </td></tr>`;
-                                }
-
-                                $('#old_ufg_payment_records').html(tbody);
 
                             }else{
                                 alert(data.error);
@@ -1427,6 +1403,9 @@ $('.search-reference').on('click', function () {
 
                 alert(reject);
                 searchRef.text('Search').prop('disabled', false);
+
+                searchRef.prop('disabled', false);
+                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
 
             },
         });
