@@ -321,8 +321,65 @@ class QuoteController extends Controller
             $data['user_id'] = null;
         }
 
+        // qoute work 
+
+        // $arr   = [];
+        // $dates = QuoteDetail::distinct()->where('quote_id',1)->pluck('date_of_service')->toArray();
+        // foreach($dates as $key => $date) {
+
+        //     $date = date("Y-d-m", strtotime($date));
+        //     // foreach($iterations as $ik => $i) {
+        //     //     $iteration = $this->iteration($date, $i);
+        //     //     $arr[$date][$ik] = $iteration;
+        //     // }
+        //     $arr[$date] = $this->iteration($date);
+        // }
+ 
+        // $data['quote_documents'] = $arr;
+        // $quote = $data['quote'];
+
+        // qoute work end
+
         return view('quotes.edit',$data);
     }
+
+    // public function iteration($date)
+    // {
+    //     $iterations = QuoteDetail::distinct()->where('quote_id',1)->pluck('iteration')->toArray();
+    //     foreach($iterations as $ik => $i) {
+
+    //         $d =  QuoteDetail::where('date_of_service', $date)->where('iteration',$i)->orderBy('category_id','ASC')->get()->toArray();
+    //         $f = $this->iterationWithText($d);
+    //         $iteration[] = $f;
+    //     }
+    //     return $iteration;
+    // }
+
+    // public function iterationWithText($iterationObject){
+
+    //     $arr = [];
+        
+    //     $transfer_date_of_service = isset($iterationObject[0]['date_of_service']) ? $iterationObject[0]['date_of_service'] : '';
+    //     $transfer_time_of_service = isset($iterationObject[0]['time_of_service']) ? $iterationObject[0]['time_of_service'] : '';
+        
+    //     $accommodation_date_of_service = isset($iterationObject[1]['date_of_service']) ? $iterationObject[1]['date_of_service'] : '';
+    //     $accommodation_time_of_service = isset($iterationObject[1]['time_of_service']) ? $iterationObject[1]['time_of_service'] : '' ;
+        
+    //     $transfer_product_name      = $this->getProductName(isset($iterationObject[0]['product_id']) ? $iterationObject[0]['product_id'] : '');
+    //     $accommodation_product_name = $this->getProductName(isset($iterationObject[1]['product_id']) ? $iterationObject[1]['product_id'] : '');
+
+    //     $arr[0] = "Transfer to $accommodation_product_name via $transfer_product_name on $transfer_date_of_service $transfer_time_of_service";
+    //     $arr[1] = "$accommodation_product_name";
+    //     $arr[2] = "Check in: $accommodation_date_of_service $accommodation_time_of_service";
+    //     $arr[3] = "27 Days";
+
+    //     return $arr;
+    // }
+
+    // public function getProductName($id){
+    //    $product = Product::find($id);
+    //    return isset($product->name) ? $product->name : '';
+    // }
     
     public function update(QuoteRequest $request, $id)
     {
