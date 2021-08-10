@@ -1321,9 +1321,9 @@ $('.search-reference').on('click', function () {
                             if(data.response)
                             {
                      
-                                if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name') )
+                                if(data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name') )
                                 {
-                                    $('#lead_passenger').val(data.response.passengers.lead_passenger.passenger_name);
+                                    $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
                                 }
 
                                 if(data.response.brand && data.response.brand.hasOwnProperty('brand_id'))
@@ -1357,16 +1357,16 @@ $('.search-reference').on('click', function () {
                                         }
                                     });
                                 }
-                     
-                               if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences') )
-                               {
-                                   $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                               }
+                        
+                                if(data.response.passengers &&  data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences') )
+                                {
+                                    $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                                }
 
-                               if(data.response.passengers.length > 0 && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences') )
-                               {
-                                $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                               }
+                                if(data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences') )
+                                {
+                                    $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+                                }
                             
                                 // Passengers Details
                                 if(data.response.passengers.passengers.length > 0){
