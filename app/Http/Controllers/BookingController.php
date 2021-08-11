@@ -294,9 +294,11 @@ class BookingController extends Controller
             'selling_currency_oc' =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'   =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'   =>  $request->booking_amount_per_person??$request->amount_per_person,
-            'agency_name'        =>   (isset($request['agency_name']))? $request->agency_name : NULL,
-            'agency_contact'     =>   (isset($request['agency_contact']))? $request->full_number : NULL, 
-            'agency_email'        => (isset($request['agency_email'])) ? $request->agency_email : NULL, 
+            'agency_name'         =>  (isset($request['agency_name']))? $request->agency_name : NULL,
+            'agency_contact'      =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
+            'agency_email'        =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
+            'revelant_qoutes'     =>  $request->revelant_qoutes??NULL,
+        
         ];
     }
 

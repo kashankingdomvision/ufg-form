@@ -14,13 +14,19 @@ class PaymentMethodSeeder extends Seeder
     {
         $payment_methods = [
             [   
-                'name' => 'Paypal',
+                'name'       =>  'Paypal',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
 
             [
-                'name' => 'Credit Card',
+                'name'       =>  'Credit Card',
+                'created_at' =>  now(),
+                'updated_at' =>  now()
+
+            ],
+            [
+                'name'       =>  'Credit Notes',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
 

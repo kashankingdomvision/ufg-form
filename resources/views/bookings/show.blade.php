@@ -1003,6 +1003,36 @@
                             </div>
                         </div>
                         </div>
+                        <div class="form-group">
+                          <div class="row">
+                            <div class="col-sm-3 ">
+                              <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
+                            </div>
+                            <div class="col-md-9">
+                              <div class="row">
+                           
+                              @forelse  ($booking['revelant_quote'] as $revQuote)
+                                <div class="col-sm-2 relevant-quote">
+                                  <div class="form-group">
+                                    <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
+                                  </div>
+                                </div>
+                                @empty
+                                <div class="col-sm-2 relevant-quote">
+                                  <div class="form-group">
+                                    <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
+                                  </div>
+                                </div>
+                              @endforelse
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                      <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
 
                     @if(isset($ufg_payment_records) && !empty($ufg_payment_records))

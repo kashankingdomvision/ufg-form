@@ -76,6 +76,8 @@
 
                   <div class="card-footer">
                     <button type="submit" class="btn btn-secondary float-right">Submit</button>
+                    <a href="{{ route('setting.currency_conversions.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                    
                   </div>
 
                 </form>

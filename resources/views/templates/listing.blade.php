@@ -11,7 +11,9 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>View Template</h4>
+                        <div class="d-flex">
+                            <h4>View Template <x-add-new-button :route="route('templates.create')" /> </h4>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -27,89 +29,59 @@
                 </div>
             </div>
         </section>
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
-                    <div class="row">
-                        <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
-                            <div class="card-header">
-                              <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
-                            </div>
-                        </button>
-                        <div class="float-right col-md-2">
-                            <a href="{{ route('templates.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
-                                <span class="fa fa-plus"></span>
-                                <span>Add New</span>
-                            </a>
-                        </div>
+        
+        <x-page-filters :route="route('templates.index')">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Season</label>
+                        <select class="form-control select2single" name="season">
+                            <option value="">Search with Season</option>
+                            @foreach ($seasons as $season)
+                                <option value="{{ $season->name }}" {{ (old('season') == $season->name)? 'selected' :((request()->get('season') == $season->name)? 'selected' : null ) }}>{{ $season->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="card-body">
-                        <form method="get" action="{{ route('templates.index') }}">
-                        
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Season</label>
-                                    <select class="form-control select2single" name="season">
-                                        <option value="">Search with Season</option>
-                                        @foreach ($seasons as $season)
-                                            <option value="{{ $season->name }}" {{ (old('season') == $season->name)? 'selected' :((request()->get('season') == $season->name)? 'selected' : null ) }}>{{ $season->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Created By</label>
+                        <select class="form-control select2single" name="created_by">
+                            <option value="">Select User</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->name }}" {{ (old('created_by') == $user->name)? 'selected' :((request()->get('created_by') == $user->name)? 'selected' : null ) }}>{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <label><u> Created Date</u></label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>From</label>
+                                <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
                             </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Created By</label>
-                                    <select class="form-control select2single" name="created_by">
-                                        <option value="">Select User</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->name }}" {{ (old('created_by') == $user->name)? 'selected' :((request()->get('created_by') == $user->name)? 'selected' : null ) }}>{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            
                         </div>
                         <div class="col">
-                            <label><u> Created Date</u></label>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label>From</label>
-                                        <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group">
-                                        <label>To</label>
-                                        <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
-                                    </div>
-                                </div>
+                            <div class="form-group">
+                                <label>To</label>
+                                <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Template Name and season">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                                <a href="{{ route('templates.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
-                            </div>
-                        </div>
-    
-                    </form>
                     </div>
                 </div>
             </div>
-        </section>
-        
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Template Name and season">
+                    </div>
+                </div>
+            </div>
+        </x-page-filters>
+
         <section class="content p-2">
             <div class="container-fluid">
               <div class="row">

@@ -52,6 +52,7 @@ class CreateBookingsTable extends Migration
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('booking_status',['quote','booked'])->default('quote');
             $table->timestamp('booking_date')->nullable();
+            $table->text('revelant_quote')->nullable();
             $table->timestamps();
         });
     }

@@ -95,7 +95,7 @@
                         <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
                           <option selected value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
-                            <option value="{{ $person->id }}">{{ $person->name }}</option>
+                            <option value="{{ $person->id }}" {{ ($person->id == old('sale_person_id'))? 'selected' : (($person->id == Auth::id())? 'selected':NULL) }}>{{ $person->name }}</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -741,6 +741,27 @@
                             <span class="input-group-text selling-price-other-currency-code"></span>
                           </div>
                           <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-sm-3 ">
+                        <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-sm-2 relevant-quote">
+                            <div class="form-group">
+                                <input type="text" value="" class="form-control"  name="revelant_quote[]">
+                            </div>
+                          </div>
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                                <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>

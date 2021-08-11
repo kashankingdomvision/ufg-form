@@ -47,9 +47,16 @@ class Quote extends Model
         'booking_status',
         'booking_date',
         'is_archive',
-        'tas_ref'
+        'tas_ref',
+        'revelant_quote',
     ];
     
+    public function getUser()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+    
+
     public function getQuotelogs()
     {
         return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
@@ -146,5 +153,16 @@ class Quote extends Model
     public function getBooking()
     {
         return $this->hasOne(Booking::class, 'quote_id', 'id');
+    }
+    
+    public function setRevelantQuoteAttribute($value)
+    {
+        $this->attributes['revelant_quote'] = json_encode($value);
+    }
+    
+    
+    public function getRevelantQuoteAttribute($value)
+    {
+        return json_decode($value);
     }
 }
