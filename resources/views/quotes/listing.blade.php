@@ -202,6 +202,8 @@
                                             </th>
                                             <th></th>
                                             <th width="8"></th>
+                                            <th>User</th>
+                                            <th>Behalf</th>
                                             <th>Zoho Ref #</th>
                                             <th>Quote Ref #</th>
                                             <th>Season</th>
@@ -237,6 +239,8 @@
                                                         @endif
                                                     </td>
                                                     <td width="8">{!! $quote->has_user_edit !!}</td>
+                                                    <td>{{ $quote->getSalePerson->name }}</td>
+                                                    <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
                                                     <td>{{ $quote->ref_no }}</td>
                                                     <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     <td>{{ $quote->getSeason->name }}</td>

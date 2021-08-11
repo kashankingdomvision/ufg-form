@@ -52,7 +52,7 @@ class CreateQuotesTable extends Migration
             $table->enum('booking_status',['quote','booked'])->default('quote');
             $table->enum('is_archive',[1,0])->default(0);
             $table->dateTime('booking_date')->nullable();
-            
+            $table->text('revelant_quote')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -420,6 +420,8 @@
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-success float-right">Update</button>
+                                <a href="{{ route('templates.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
+
                             </div>
                         </form>
 

@@ -82,6 +82,8 @@
 
                   <div class="card-footer">
                     <button type="submit" class="btn btn-primary float-right">Submit</button>
+                    <a href="{{ route('seasons.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
+                    
                   </div>
 
                 </form>

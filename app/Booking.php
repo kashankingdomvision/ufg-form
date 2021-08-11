@@ -47,6 +47,7 @@ class Booking extends Model
         'booking_date',
         'cancel_date',
         'tas_ref',
+        'revelant_quote',
     ];
     
     public function getVersionAttribute()
@@ -122,5 +123,20 @@ class Booking extends Model
             return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
         }
     }
+    
+    public function getSalePerson()
+    {
+        return $this->hasOne(User::class, 'id', 'sale_person_id');
+    }
    
+    public function setRevelantQuoteAttribute($value)
+    {
+        $this->attributes['revelant_quote'] = json_encode($value);
+    }
+    
+    
+    public function getRevelantQuoteAttribute($value)
+    {
+        return json_decode($value);
+    }
 }

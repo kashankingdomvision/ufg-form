@@ -1107,10 +1107,10 @@ $("#quoteCreate").submit(function(event) {
         },
         success: function (data) {
             $("#overlay").removeClass('overlay').html('');
-            setTimeout(function() {
-                alert('Quote created Successfully');
-                window.location.href = REDIRECT_BASEURL + "quotes/index";
-            }, 800);
+            // setTimeout(function() {
+            //     alert('Quote created Successfully');
+            //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+            // }, 800);
         },
         error: function (reject) {
             if( reject.status === 422 ) {
@@ -2211,4 +2211,19 @@ $("#currencyStatus").submit(function(e) {
 });
 /// Update Currency Status
 //BUlk DATA DELETE
+
+
+///////////////// RELEVANT QUOTE FIELD
+
+$('#cloneRelevantquote').on('click', function() {
+   $('.relevant-quote').eq(0).clone().find("input").val("") .each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){
+                    return '[' + ($('.quote').length) + ']';
+                });
+                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                }); 
+            }).end().show().insertAfter(".relevant-quote:last");
+});
+///////////////// RELEVANT QUOTE FIELD
 });

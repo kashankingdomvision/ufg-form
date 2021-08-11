@@ -69,6 +69,7 @@ class QuoteController extends Controller
        return redirect()->back()->with('success_message', 'Quote clone successfully');
         
     }
+    
     public function searchFilters($quote, $request)
     {
         if($request->has('client_type') && !empty($request->client_type)){
@@ -220,6 +221,7 @@ class QuoteController extends Controller
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
+            'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
        
     }
@@ -478,7 +480,7 @@ class QuoteController extends Controller
         $quote =  Quote::findOrFail(decrypt($id)); 
         $quote->delete();
         // Quote::destroy(decrypt($id));
-        return redirect()->route('quotes.index')->with('success_message', 'Quote deleted successfully');        
+        return redirect()->route('quotes.index')->with('success_message', 'Quote cancelled successfully');        
     }
 
     public function booking($id)
