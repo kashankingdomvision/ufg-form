@@ -1353,7 +1353,7 @@ $('.search-reference').on('click', function () {
                                 {
                                     $("#currency_id").find('option').each(function(){
                                         if( $(this).data('code') == data.response.currency ) {
-                                            $(this).attr("selected","selected");
+                                            $(this).attr("selected","selected").change();
                                         }
                                     });
                                 }

@@ -24976,7 +24976,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                   if (data.response.currency) {
                     $("#currency_id").find('option').each(function () {
                       if ($(this).data('code') == data.response.currency) {
-                        $(this).attr("selected", "selected");
+                        $(this).attr("selected", "selected").change();
                       }
                     });
                   }
