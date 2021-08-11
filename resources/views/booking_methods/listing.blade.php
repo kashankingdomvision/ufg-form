@@ -9,7 +9,9 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-6">
-          <h4>View Booking Method</h4>
+          <div class="d-flex">
+            <h4>View Booking Method <x-add-new-button :route="route('setting.booking_methods.create')" /> </h4>
+          </div>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -27,46 +29,19 @@
       </div>
     </div>
   </section>
-  <section class="content">
-    <div class="container-fluid">
-        <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
-          <div class="row">
-            <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
-                <div class="card-header">
-                  <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
-                </div>
-            </button>
-
-            <div class="float-right col-md-2">
-                <a href="{{ route('setting.booking_methods.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
-                    <span class="fa fa-plus"></span>
-                    <span>Add New</span>
-                </a>
-            </div>
+  
+  
+  <x-page-filters :route="route('setting.booking_methods.index')">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="form-group">
+              <label>Search</label>
+              <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
           </div>
- 
-            <div class="card-body">
-                <form method="get" action="{{ route('setting.booking_methods.index') }}">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Search</label>
-                            <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-1">
-                    <div class="col-md-12 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                        <a href="{{ route('setting.booking_methods.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
-                    </div>
-                </div>
-
-            </form>
-            </div>
-        </div>
+      </div>
     </div>
-  </section>
+  </x-page-filters>
+
   <section class="content p-2">
     <div class="container-fluid">
       <div class="row">

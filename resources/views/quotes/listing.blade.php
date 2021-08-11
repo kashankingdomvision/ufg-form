@@ -10,7 +10,12 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4>View @if(isset($status) && $status == 'archive') Archive @endif Quote</h4>
+                        <h4></h4>
+                        <div class="d-flex">
+                            <h4>View @if(isset($status) && $status == 'archive') Archive @endif Quote 
+                                <x-add-new-button :route="route('quotes.create')" /> 
+                            </h4>
+                        </div>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -27,138 +32,103 @@
             </div>
         </section>
 
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
-                    <div class="row">
-                        <button type="button" class="btn btn-tool m-0 text-dark  col-md-10" data-card-widget="collapse">
-                            <div class="card-header">
-                              <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters  &nbsp;<i class="fa fa-angle-down"></i></b></h3>
-                            </div>
-                        </button>
-          
-                        <div class="float-right col-md-2">
-                            <a href="{{ route('quotes.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
-                                <span class="fa fa-plus"></span>
-                                <span>Add New</span>
-                            </a>
-                        </div>
+        <x-page-filters :route="route('quotes.index')">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Client Type</label>
+                        <select class="form-control select2single" name="client_type">
+                            <option value="" selected>Select Client Type </option>
+                            <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
+                            <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
+                        </select>
                     </div>
-                      
-         
-                    <div class="card-body">
-                        <form method="get" action="{{ (isset($status) && $status == 'archive')? route('quotes.archive') : route('quotes.index') }}">
-                       
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Client Type</label>
-                                    <select class="form-control select2single" name="client_type">
-                                        <option value="" selected>Select Client Type </option>
-                                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
-                                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Agent / Staff</label>
-                                    <select class="form-control select2single" name="staff">
-                                        <option value="" selected>Select Agent / Staff </option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->name }}" {{ (old('staff') == $user->name)? 'selected': ((request()->get('staff') == $user->name)? 'selected' : null) }} >{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <select class="form-control select2single" name="status">
-                                        <option value="" selected>Select Status</option>
-                                        <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
-                                        <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
-                                        <option {{ (old('search') == 'cancelled')? 'selected': ((request()->get('status') == 'cancelled')? 'selected' : null) }} value="cancelled" >Cancelled</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Booking Season</label>
-                                    <select class="form-control select2single" name="booking_season">
-                                        <option value="" selected >Select Booking Season</option>
-                                        @foreach ($booking_seasons as $seasons)
-                                            <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label>Booking Currency</label>
-                                    <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
-                                        @foreach ($currencies as $curren)
-                                            <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            
-                    
-                            
-                            <div class="col">
-                                <div class="form-group"> 
-                                    <label>Brand</label>
-                                    <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->name }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->name, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="row">
-                            <div class="col">
-                                <label><u> Created Date</u></label>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>From</label>
-                                            <input type="text" value="{{ (request()->get('created_date'))?request()->get('created_date')['from']: null }}" name="created_date[from]" class="form-control datepicker" >
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="form-group">
-                                            <label>To</label>
-                                            <input type="text" value="{{ (request()->get('created_date'))? request()->get('created_date')['to']: null }}" name="created_date[to]" class="form-control datepicker" >
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Search</label>
-                                    <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                                <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
-                            </div>
-                        </div>
-
-                    </form>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Agent / Staff</label>
+                        <select class="form-control select2single" name="staff">
+                            <option value="" selected>Select Agent / Staff </option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->name }}" {{ (old('staff') == $user->name)? 'selected': ((request()->get('staff') == $user->name)? 'selected' : null) }} >{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select class="form-control select2single" name="status">
+                            <option value="" selected>Select Status</option>
+                            <option {{ (old('search') == 'booked')? 'selected': ((request()->get('status') == 'booked')? 'selected' : null) }} value="booked" >Booked</option>
+                            <option {{ (old('search') == 'quote')? 'selected': ((request()->get('status') == 'quote')? 'selected' : null) }} value="quote" >Quote</option>
+                            <option {{ (old('search') == 'cancelled')? 'selected': ((request()->get('status') == 'cancelled')? 'selected' : null) }} value="cancelled" >Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Booking Season</label>
+                        <select class="form-control select2single" name="booking_season">
+                            <option value="" selected >Select Booking Season</option>
+                            @foreach ($booking_seasons as $seasons)
+                                <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
-        </section>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Booking Currency</label>
+                        <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
+                            @foreach ($currencies as $curren)
+                                <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group"> 
+                        <label>Brand</label>
+                        <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->name }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->name, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <label><u> Created Date</u></label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>From</label>
+                                <input type="text" value="{{ (request()->get('created_date'))?request()->get('created_date')['from']: null }}" name="created_date[from]" class="form-control datepicker" >
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>To</label>
+                                <input type="text" value="{{ (request()->get('created_date'))? request()->get('created_date')['to']: null }}" name="created_date[to]" class="form-control datepicker" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
+                    </div>
+                </div>
+            </div>
+        </x-page-filters>
         
         <section class="content p-2">
             <div class="container-fluid">
