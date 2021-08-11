@@ -323,25 +323,6 @@ class QuoteController extends Controller
             $data['user_id'] = null;
         }
 
-        // qoute work 
-
-        // $arr   = [];
-        // $dates = QuoteDetail::distinct()->where('quote_id',1)->pluck('date_of_service')->toArray();
-        // foreach($dates as $key => $date) {
-
-        //     $date = date("Y-d-m", strtotime($date));
-        //     // foreach($iterations as $ik => $i) {
-        //     //     $iteration = $this->iteration($date, $i);
-        //     //     $arr[$date][$ik] = $iteration;
-        //     // }
-        //     $arr[$date] = $this->iteration($date);
-        // }
- 
-        // $data['quote_documents'] = $arr;
-        // $quote = $data['quote'];
-
-        // qoute work end
-
         return view('quotes.edit',$data);
     }
 

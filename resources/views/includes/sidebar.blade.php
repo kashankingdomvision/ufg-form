@@ -4,10 +4,24 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-    <a href="{{ route('dashboard.index') }}" class="brand-link">
+    {{-- <a href="{{ route('dashboard.index') }}" class="brand-link d-xs-none ">
         <img src="{{ asset('img/logo.png') }}" >
     </a>
+    <a href="{{ route('dashboard.index') }}" class="brand-link d-md-none">
+        <img src="{{ asset('img/fav-icon.png') }}" >
+    </a> --}}
 
+
+    <li class="nav-item nav-sidebar flex-column ">
+        <a href="{{ route('dashboard.index') }}" class="nav-link  brand-link  {{ $route == 'dashboard.index' ? 'active' : '' }}">
+            <div class="d-flex">
+                <img src="{{ asset('img/fa.png') }}" class="ml-2" >
+                <p>
+                    <img src="{{ asset('img/logo.png') }}" >
+                </p>
+            </div>
+        </a>
+    </li>
 
     {{-- <a href="/docs/3.0/index.html" class="brand-link logo-switch">
         <img src="{{ asset('img/fav-icon.png') }}"  alt="AdminLTE Docs Logo Small" class="brand-image-xl logo-xs">

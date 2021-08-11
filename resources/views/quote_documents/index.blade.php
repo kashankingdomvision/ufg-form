@@ -56,6 +56,7 @@
     <section class="content">
       <div class="container-fluid bd-dark">
         <div class="container">
+        
             <form method="POST" action="{{ route('quotes.document.pdf', $quote_id) }}" id="generate-pdf">
             @csrf
      
@@ -70,7 +71,7 @@
 
     
     <!-- Begin page background -->
-    <div id="pg1Overlay" style="width:100%; height:100%; position:absolute; z-index:1; background-color:rgba(0,0,0,0); -webkit-user-select: none;"></div>
+    {{-- <div id="pg1Overlay" style="width:100%; height:100%; position:absolute; z-index:1; background-color:rgba(0,0,0,0); -webkit-user-select: none;"></div>
     <div id="pg1" style="-webkit-user-select: none;"><object width="909" height="1286" data="1/1.svg" type="image/svg+xml" id="pdf1" style="width:909px; height:1286px; -moz-transform:scale(1); z-index: 0;"></object></div>
     <!-- End page background -->
     
@@ -79,40 +80,37 @@
     <div class="text-container"><span id="t1_1" class="t s1_1">Signature Cruise Split to Dubrovnik </span>
     <span id="t2_1" class="t s2_1">26th July 2021 </span>
     <span id="t3_1" class="t s3_1">Mrs Susan Wehrli </span>
-    <span id="t4_1" class="t s3_1">TBA </span></div>
+    <span id="t4_1" class="t s3_1">TBA </span></div> --}}
     <!-- End text definitions -->
     
-    
     </div>
-                            @foreach ($quote_details as $key => $details)
-                            <h2><strong>{{ date('D d M Y', strtotime($details->date_of_service)) }}</strong></h2>
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td >Transfer To: </td>
-                                            <td >{{ $details->getProduct->name??NULL }}</td>
-                                        </tr>
-                                        @if($details->getCategory->slug??NULL == 'accommodation')
-                                        <tr>
-                                            <td >Accommodation:</td>
-                                            <td >{{ $details->getProduct->name??NULL }}</td>
-                                        </tr>
-                                        @endif
-                                        <tr>
-                                            <td >Check in: </td>
-                                            <td >{{ date('D-m-Y', strtotime($details->date_of_service)).' '. $details->time_of_service }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td >No. of Days: </td>
-                                            <td >[Calculate until the next service, related to Accommodation]</td>
-                                        </tr>
-                                        <tr>
-                                            <td >Transfer to </td>
-                                            <td >{{  $details->getProduct->name??NULL.'  at '. $details->time_of_service }}</td>
-                                        </tr>
-                                    </tbody>
-                                    
-                                </table>
+                            @foreach ($quoteDetail as $key => $details)
+                            <h2><strong>{{ date('D d M Y', strtotime($details['date'])) }}</strong></h2>
+                                @foreach ($details as $detail)
+                                    @if ($detail['text']??NULL)
+                                        
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td >Transfer To: </td>
+                                                    <td >{{ $detail['text']??NULL }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Accomodation Product Name</td>
+                                                    <td >{{ $detail['accomodation_product_name']??NULL }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Check in: </td>
+                                                    <td >{{ $detail['check_in']??NULL }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td >Service Exucrsion </td>
+                                                    <td >{{ $detail['service_exucrsion']??NULL }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    @endif
+                                @endforeach
                             @endforeach
                         </div>
                     </div>

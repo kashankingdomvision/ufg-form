@@ -49,6 +49,7 @@ class Quote extends Model
         'is_archive',
         'tas_ref',
         'revelant_quote',
+        'transfer',
     ];
     
     public function getUser()
@@ -56,6 +57,7 @@ class Quote extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     
+ 
 
     public function getQuotelogs()
     {

@@ -3,16 +3,7 @@
 @section('title', 'Edit Quote')
 
 @section('content')
-{{-- <div class="content-wrapper">
-  @foreach ($quote_documents as $key => $quote_document)
-    {{ $key }} <br>
-    @foreach ($quote_document as $key => $document)
-      @foreach ($document as $key => $doc)
-        {{ $doc }}<br>
-      @endforeach<br>
-    @endforeach
-  @endforeach
-</div> --}}
+
 
   <div class="content-wrapper">
     @if ($errors->any())
