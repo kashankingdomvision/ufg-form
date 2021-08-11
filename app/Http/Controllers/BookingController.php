@@ -23,6 +23,8 @@ use App\BookingLog;
 use App\BookingPaxDetail;
 use App\Commission;
 use App\QuoteUpdateDetail;
+use App\Bank;
+use App\BookingRefundPayment;
 use App\Http\Requests\BookingRequest;
 use Auth;
 use App\Country;
@@ -142,6 +144,7 @@ class BookingController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['commission_types'] = Commission::all();
+        $data['banks']            = Bank::all();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -347,8 +350,23 @@ class BookingController extends Controller
         ];
     }
 
+    public function getBookingRefundPaymentArray($quoteD)
+    {
+        return [
+         
+            "refund_amount"        => $quoteD['refund_amount']??NULL,
+            "refund_date"          => $quoteD['refund_date']??NULL,
+            "bank_id"              => $quoteD['bank']??NULL,
+            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL
+        ];
+    }
+
+
     public function update(BookingRequest $request, $id)
     {
+
+        // dd($request->all());
+
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         // if(!$quote_update_detail->exists()) {
         //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
@@ -388,6 +406,23 @@ class BookingController extends Controller
                         BookingDetailFinance::create($fin);
                     }
                 }
+
+                
+                
+                if($request->has('quote') && count($request->quote) > 0){
+                    
+                    foreach ($qu_details['refund'] as $refund){
+
+                        $refund = $this->getBookingRefundPaymentArray($refund);
+                        $refund['booking_detail_id'] = $booking_Details->id;
+
+                        if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+                            BookingRefundPayment::create($refund);
+                            BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                        }
+                    }
+                }
+
             }
         }
         

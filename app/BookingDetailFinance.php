@@ -15,6 +15,7 @@ class BookingDetailFinance extends Model
         'paid_date',
         'upload_to_calender',
         'additional_date',
-        'outstanding_amount'
+        'outstanding_amount',
+        'status'
     ];
 }
