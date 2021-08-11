@@ -61,6 +61,11 @@ class BookingDetail extends Model
         return $this->hasMany(BookingDetailFinance::class, 'booking_detail_id', 'id');   
     }
 
+    public function getBookingRefundPayment()
+    {
+        return $this->hasMany(BookingRefundPayment::class, 'booking_detail_id', 'id');   
+    }
+
     public function getDateOfServiceAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }

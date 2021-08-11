@@ -506,6 +506,7 @@ $(document).on('click', '.addChild', function () {
             quote.find('.markup-percentage').attr("readonly", false);
             quote.find('.cal_selling_price').attr('checked','checked');
             quote.find('.deposit-amount').val('0.00');
+            // quote.find('.cancel-payment-section').attr("hidden",'hidden');
 
             $('.quote:last .finance').find("input").val("") .each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
@@ -1650,8 +1651,8 @@ $("#update-booking").submit(function(event) {
             
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
-                alert(data.success_message);
-                window.location.href = REDIRECT_BASEURL + "bookings/index";
+                // alert(data.success_message);
+                // window.location.href = REDIRECT_BASEURL + "bookings/index";
                 
             }, 1000);
         },
@@ -1690,6 +1691,23 @@ $("#update-booking").submit(function(event) {
 
 
 
+
+$(document).on('change', '.refund_amount', function(){
+
+    var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+    var refundAmount = $(this).val();
+
+    if(refundAmount != totalDepositAmount){
+        alert("Please Enter Correct Amount");
+        $(this).val('0.00');
+    }
+});
+
+
+$(document).on('click', '.refund-to-bank', function(){
+    $(this).closest('.quote').find('.cancel-payment-row').removeAttr("hidden");
+});
 
 
 $(document).on('change', '.deposit-due-date', function(){

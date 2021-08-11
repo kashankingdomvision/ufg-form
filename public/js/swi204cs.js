@@ -24262,7 +24262,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find('.markup-amount').attr("readonly", false);
     quote.find('.markup-percentage').attr("readonly", false);
     quote.find('.cal_selling_price').attr('checked', 'checked');
-    quote.find('.deposit-amount').val('0.00');
+    quote.find('.deposit-amount').val('0.00'); // quote.find('.cancel-payment-section').attr("hidden",'hidden');
+
     $('.quote:last .finance').find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + ($('.quote').length - 1) + ']';
@@ -25222,9 +25223,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index";
+        setTimeout(function () {// alert(data.success_message);
+          // window.location.href = REDIRECT_BASEURL + "bookings/index";
         }, 1000);
       },
       error: function error(reject) {
@@ -25247,6 +25247,23 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }
     });
+  });
+  $(document).on('change', '.refund_amount', function () {
+    var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    var refundAmount = $(this).val();
+
+    if (refundAmount != totalDepositAmount) {
+      alert("Please Enter Correct Amount");
+      $(this).val('0.00');
+    }
+  });
+  $(document).on('click', '.refund-to-bank', function () {
+    $(this).closest('.quote').find('.cancel-payment-row').removeAttr("hidden");
   });
   $(document).on('change', '.deposit-due-date', function () {
     var close = $(this).closest('.finance-clonning');
