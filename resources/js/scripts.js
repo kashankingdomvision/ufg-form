@@ -9,7 +9,7 @@ var BASEURL = window.location.origin+'/ufg-form/public/json/';
 var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
 // var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
- 
+  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
     var $form = $(this),
