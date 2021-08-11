@@ -1033,12 +1033,7 @@
                             </section>
 
                           <section>
-                            <div class="row
-                              @if(isset($total_deposit) && isset($booking_detail->estimated_cost))
-                                @if($total_deposit >= $booking_detail->estimated_cost)
-                                  d-none
-                                @endif
-                              @endif">
+                            <div class="row">
 
                               <div class="col-12 text-right">
                                 <div class="btn-group mr-1">
@@ -1046,15 +1041,14 @@
                                     <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <span class="sr-only">Toggle Dropdown</span>
                                     </button>
-                                    <button type="button" class="btn btn-danger">Cancel Payment</button>
+                                    <button type="button" class="btn btn-md btn-danger">Cancel Payment</button>
                                     <div class="dropdown-menu">
                                       <a class="dropdown-item refund-to-bank" id="refund_to_bank">Refund to Bank</a>
                                       <a class="dropdown-item credit-note" id="credit_note">Credit Note</a>
                                     </div>
                                   @endif
                                 </div>
-                                  
-                                <button type="button" data-key="0" class=" clone_booking_finance float-right btn btn-dark btn-md">Add More Payments </button>
+                                <button type="button" data-key="0" class=" float-right btn btn-dark btn-md {{ isset($total_deposit) && isset($booking_detail->estimated_cost) && ($total_deposit >= $booking_detail->estimated_cost) ? 'd-none' : ''}}">Add More Payments </button>
                               </div>
                             </div>
                           </section>
