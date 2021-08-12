@@ -934,7 +934,6 @@
 
                           <section class="cancel-payment-section">
                             @if($booking_detail->getBookingRefundPayment && count($booking_detail->getBookingRefundPayment) > 0)
-
                               @foreach ($booking_detail->getBookingRefundPayment as $fkey => $payment)
                                 <div class="row cancel-payment-row row-cols-lg-7 g-0 g-lg-2 mt-2">
                                   <div class="col-sm-2">
@@ -983,7 +982,6 @@
                                 </div>
                               @endforeach
                               @else
-
                               <div class="row cancel-payment-row else-here row-cols-lg-7 g-0 g-lg-2 mt-2" hidden>
                                 <div class="col-sm-2">
                                   <div class="form-group">
@@ -1030,7 +1028,7 @@
 
                               </div>
                             @endif
-                            </section>
+                          </section>
 
                           <section>
                             <div class="row">

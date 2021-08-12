@@ -63,7 +63,8 @@ class Booking extends Model
     
     public function getBookingDetail()
     {
-        return $this->hasMany(BookingDetail::class, 'booking_id', 'id')->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC');
+        return $this->hasMany(BookingDetail::class, 'booking_id', 'id');
+        // ->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC');
     }
     
     function getSeason() {
