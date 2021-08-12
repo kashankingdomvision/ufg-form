@@ -9,7 +9,7 @@ use Throwable;
 class Handler extends ExceptionHandler
 {
     /**
-     * A list of the exception types that are not reported.
+     * A list of the Throwable types that are not reported.
      *
      * @var array
      */
@@ -18,7 +18,7 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * A list of the inputs that are never flashed for validation exceptions.
+     * A list of the inputs that are never flashed for validation Throwables.
      *
      * @var array
      */
@@ -28,25 +28,25 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * Report or log an exception.
+     * Report or log an Throwable.
      *
-     * @param  \Throwable  $exception
+     * @param  \Throwable  $Throwable
      * @return void
      */
-    public function report(Throwable $exception)
+    public function report(Throwable $Throwable)
     {
-        parent::report($exception);
+        parent::report($Throwable);
     }
 
     /**
-     * Render an exception into an HTTP response.
+     * Render an Throwable into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
+     * @param  \Throwable  $Throwable
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $Throwable)
     {
-        return parent::render($request, $exception);
+        return parent::render($request, $Throwable);
     }
 }
