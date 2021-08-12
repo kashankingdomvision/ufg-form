@@ -9,7 +9,7 @@
         <div class="col-md-5">
          
             <div class="login-logo py-3 mt-5">
-                <img src="{{ asset('img/logo1.png') }}" class="img-fluid" width="4s00px" >
+                <img src="{{ asset('img/logo1.png') }}" class="img-fluid" width="400px" >
             </div>
 
             <div class="card card-outline card-danger">
