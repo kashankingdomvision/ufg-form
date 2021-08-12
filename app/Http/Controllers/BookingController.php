@@ -26,6 +26,7 @@ use App\QuoteUpdateDetail;
 use App\Bank;
 use App\BookingRefundPayment;
 use App\Http\Requests\BookingRequest;
+use App\Http\Requests\BookingRefundPaymentRequest;
 use Auth;
 use App\Country;
 use Carbon\Carbon;
@@ -361,6 +362,20 @@ class BookingController extends Controller
         ];
     }
 
+    public function refund_to_bank(BookingRefundPaymentRequest $request)
+    {
+        BookingRefundPayment::create([
+            'booking_detail_id'   =>  $request->booking_detail_id,
+            'refund_amount'       =>  $request->refund_amount,
+            'refund_date'         =>  $request->refund_date,
+            'bank_id'             =>  $request->bank,
+            'refund_confirmed_by' =>  $request->refund_confirmed_by
+        ]);
+
+        BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
+
+        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    }
 
     public function update(BookingRequest $request, $id)
     {
@@ -409,19 +424,19 @@ class BookingController extends Controller
 
                 
                 
-                if($request->has('quote') && count($request->quote) > 0){
+                // if($request->has('quote') && count($request->quote) > 0){
                     
-                    foreach ($qu_details['refund'] as $refund){
+                //     foreach ($qu_details['refund'] as $refund){
 
-                        $refund = $this->getBookingRefundPaymentArray($refund);
-                        $refund['booking_detail_id'] = $booking_Details->id;
+                //         $refund = $this->getBookingRefundPaymentArray($refund);
+                //         $refund['booking_detail_id'] = $booking_Details->id;
 
-                        if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
-                            BookingRefundPayment::create($refund);
-                            BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
-                        }
-                    }
-                }
+                //         if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+                //             BookingRefundPayment::create($refund);
+                //             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                //         }
+                //     }
+                // }
 
             }
         }
