@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -1694,21 +1694,95 @@ $("#update-booking").submit(function(event) {
 
 $(document).on('change', '.refund_amount', function(){
 
-    var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-    var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+//     var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+//     var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
     var refundAmount = $(this).val();
 
-    if(refundAmount != totalDepositAmount){
-        alert("Please Enter Correct Amount");
+
+    var totalDepositedAmount = $('#total_deposit_amount').val();
+
+    if(refundAmount != totalDepositedAmount){
+        alert("Please Enter Correct Paid Amount");
         $(this).val('0.00');
     }
 });
 
 
 $(document).on('click', '.refund-to-bank', function(){
-    $(this).closest('.quote').find('.cancel-payment-row').removeAttr("hidden");
+
+    var booking_detail_id = $(this).data('booking_detail_id');
+
+    var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+    $('#total_deposit_amount').val(totalDepositAmount);
+
+    jQuery('#refund_to_bank_modal').modal('show');
+    $('#booking_detail_id').val(booking_detail_id);
+
 });
 
+$('#create_refund_to_bank').submit(function(event) {
+    event.preventDefault();
+    var $form = $(this);
+    var url = $form.attr('action');
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data:  new FormData(this),
+        contentType: false,
+        cache: false,
+        processData:false,
+        beforeSend: function() {
+            $("#loader_icon").find('span').addClass('spinner-border spinner-border-sm');
+        },
+        success: function (data) {
+     
+            
+            $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+            jQuery('#refund_to_bank_modal').modal('hide');
+            setTimeout(function() {
+                // alert(data.success_message);
+                // window.location.href = REDIRECT_BASEURL + "bookings/index";
+
+                if(data.success_message){
+                    alert(data.success_message);
+                    location.reload();
+                }
+                
+            }, 800);
+        },
+        error: function (reject) {
+
+            if( reject.status === 422 ) {
+
+                var errors = $.parseJSON(reject.responseText);
+
+                setTimeout(function() {
+ 
+                    $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+
+                    jQuery.each(errors.errors, function( index, value ) {
+
+                        index = index.replace(/\./g,'_');
+                        $('#'+index).addClass('is-invalid');
+                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+
+                        console.log(index);
+                        console.log(value);
+
+                    });
+
+                }, 800);
+
+            }
+        },
+    });
+});
+
+$(document).on('click', '.credit-note', function(){
+    $(this).closest('.quote').find('.credit-note-section').removeAttr("hidden");
+});
 
 $(document).on('change', '.deposit-due-date', function(){
     var close = $(this).closest('.finance-clonning');

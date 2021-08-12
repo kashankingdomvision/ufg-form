@@ -46,8 +46,12 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     margin-top: 3rem !important;
 } 
 
+.mb-1-half{
+    margin-bottom: 1.3rem !important;
+}
+
 .mb-2{
-    margin-bottom: 2rem !important;;
+    margin-bottom: 2rem !important;
 }
 
 .ml-5 {
@@ -65,6 +69,8 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
 .m-12{
     margin: 12px !important;
 }
+
+
 
 .cancelled-payment-styling{
     // background-image: url('http://localhost/ufg-form/public/img/cancelled.jpg');
