@@ -12,7 +12,7 @@
                 <div class="modal-body">
                   <div class="cancel-payment-row else-here row-cols-lg-7 g-0 g-lg-2">
                     <input type="hidden" name="booking_detail_id" id="booking_detail_id">
-                    <input type="hidden" name="total_deposit_amount" id="total_deposit_amount">
+                    <input type="hidden" name="total_deposit_amount" id="total_deposit_amount" class="total_deposit_amount">
 
                     <div class="form-group">
                       <label class="depositeLabel">Refund Amount <span style="color:red">*</span></label>
