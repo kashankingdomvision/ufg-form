@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','View Supplier')
+@section('title','View Wallet')
 @section('content')
     <div class="content-wrapper">
         <section class="content-header">
