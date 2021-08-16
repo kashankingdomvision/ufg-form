@@ -429,19 +429,6 @@ $(document).on('click', '.addChild', function () {
     });
 });
 
-<<<<<<< HEAD
-    $(document).on('click', '#add_package', function () {
-        // if($('select').data('select2')){
-        //     $('.select2single').select2('destroy');
-        // }
-        var id_key = $('.package:last').data('key');    
-        var quoteCount = $('#package'+id_key).children('.quote').length;
-        $('.package1').val(quoteCount);
-        var packageLengthCount  = $(".package").length;
-        $(".package").eq(0).clone().attr('id', 'package'+ packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
-        $("#package"+ packageLengthCount).children('.quote').not(':first').remove();
-        $("#package"+ packageLengthCount).children('.quote').find("input").val("") .each(function(){
-=======
     $(document).on('click', '#add_more', function(e) {
 
         if($('.select2single').data('select2')){
@@ -450,7 +437,6 @@ $(document).on('click', '.addChild', function () {
 
         $(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
->>>>>>> parent of d000f64 (quote document work)
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
                     return '[' + ($('.quote').length) + ']';
                 });
@@ -470,69 +456,8 @@ $(document).on('click', '.addChild', function () {
                 this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
                 this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-<<<<<<< HEAD
-            });
-        });
-            
-            $("packageinput:last").val(1);
-            
-            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-            $(".quote:last").attr('data-key', $('.quote').length - 1);
-            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-            $('.quote:last input, .quote:last select').removeClass('is-invalid');
-            $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-            datepickerReset(1);
-            // reinitializedDynamicFeilds();
-            $("#package"+ packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
-            $("#package"+ packageLengthCount).find('.packageinput').attr('id', 'packageinput'+packageLengthCount).val(0);
-
-
-        });
-
-    $(document).on('click', '.add_more', function(e) {
-        // if($('.select2single').data('select2')){
-        //     $('.select2single').select2('destroy');
-        // }
-        // if ($('select').data('select2')) {
-        //     console.log(true);
-        //     $('.select2single').select2('destroy');
-        //   }
-        var key_ = $(this).data('key');
-        console.log(key_);
-        
-        
-        let length = $(".quote").length;
-        let package_quoteCount = length + 1;
-        $("#packageinput"+ key_).val(package_quoteCount);
-        $('#package'+key_).children(".quote").eq(0).clone()
-            .find("input").val("") .each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + parseInt(package_quoteCount) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + (parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("textarea").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt(package_quoteCount)) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + (parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("select").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return package_quoteCount  });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' +( parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
-                });
-            }).end().show().insertAfter('#package'+key_+' .quote:last');
-=======
                 });
             }).end().show().insertAfter(".quote:last");
->>>>>>> parent of d000f64 (quote document work)
 
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
@@ -542,12 +467,7 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-<<<<<<< HEAD
-            // reinitializedDynamicFeilds();
-                
-=======
             reinitializedDynamicFeilds();
->>>>>>> parent of d000f64 (quote document work)
     });
 
     $(document).on('click', '#add_more_booking', function(e) {
