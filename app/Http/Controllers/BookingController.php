@@ -26,6 +26,7 @@ use App\QuoteUpdateDetail;
 use App\Bank;
 use App\BookingRefundPayment;
 use App\BookingCreditNote;
+use App\BookingTransaction;
 use App\Http\Requests\BookingRequest;
 use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
@@ -371,9 +372,17 @@ class BookingController extends Controller
             "credit_note_no"             => \Helper::getCreditNote(),
             "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
             "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
-            "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
+            // "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
         ];
     }
+
+    // public function getBookingTansaction($quoteD)
+    // {
+    //     return [
+    //         "amount"             => $quoteD['credit_note_recieved_by']??NULL,
+    //         "type"               => $quoteD['credit_note_supplier_id']??NULL
+    //     ];
+    // }
 
     public function refund_to_bank(BookingRefundPaymentRequest $request)
     {
@@ -406,10 +415,11 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
 
+    // BookingRequest
+    // Request
     public function update(BookingRequest $request, $id)
     {
 
-        // dd($request->all());
 
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         // if(!$quote_update_detail->exists()) {
@@ -448,6 +458,16 @@ class BookingController extends Controller
 
                     if($fin['deposit_amount'] > 0){
                         BookingDetailFinance::create($fin);
+
+                        if($fin['payment_method_id'] == 3){
+                            BookingTransaction::create([
+                                'booking_id'        => $booking->id,
+                                'booking_detail_id' => $booking_Details->id,
+                                'supplier_id'       => $booking_Details->supplier_id,
+                                'amount'            => $fin['deposit_amount'],
+                                'type'              => 'debit'
+                            ]);
+                        }
                     }
                 }
 
@@ -473,10 +493,20 @@ class BookingController extends Controller
 
                         $credit_note = $this->getBookingCreditNoteArray($credit_note);
                         $credit_note['booking_detail_id'] = $booking_Details->id;
+                        $credit_note['supplier_id']       = $booking_Details->supplier_id;
                         $credit_note['user_id']           = Auth::id();
 
                         if(!empty($credit_note['credit_note_amount']) && !empty($credit_note['credit_note_recieved_date'])){
+
                             BookingCreditNote::create($credit_note);
+                            BookingTransaction::create([
+                                'booking_id'        => $booking->id,
+                                'booking_detail_id' => $booking_Details->id,
+                                'supplier_id'       => $booking_Details->supplier_id,
+                                'amount'            => $credit_note['credit_note_amount'],
+                                'type'              => 'credit'
+                            ]);
+
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                         }
                     }

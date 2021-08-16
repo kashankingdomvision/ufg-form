@@ -55,6 +55,17 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('credit-note', array('as' => 'credit-note', 'uses' => 'BookingController@credit_note'));
     });
 
+    
+    /* Wallet */
+
+
+    Route::group(['prefix' => 'wallets', 'as' => 'wallets.'], function () {
+        Route::get('index', array('as' => 'index', 'uses' => 'WalletController@index'));
+        Route::get('get-supplier-wallet-amount/{supplier_id}', array('as' => 'get-supplier-wallet-amount', 'uses' => 'WalletController@get_supplier_wallet_amount'));
+    });
+
+
+
 
     /*
     |--------------------------------------------------------------------------

@@ -450,10 +450,7 @@
                                     <option value="{{ $category->id }}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                   @endforeach
                                 </select>
-
-                                @error('category_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
+                                <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
@@ -468,9 +465,7 @@
                                       @endforeach
                                     @endif
                                   </select>
-                                  @error('supplier_id')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                  @enderror
+                                  <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
@@ -485,9 +480,7 @@
                                     @endforeach
                                   @endif
                                 </select>
-                                @error('product_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
+                                <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
@@ -1107,22 +1100,22 @@
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any" readonly>
+                                    <input type="number" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
                                   </div>
                                 </div>
                               </div>
   
-                              <div class="col-sm-2" hidden>
+                              {{-- <div class="col-sm-2" >
                                 <div class="form-group">
                                   <label>Credit Note Supplier ID.</label>
                                   <input type="text" value="{{ $booking_detail->supplier_id  }}" name="quote[{{ $key }}][credit_note][0][credit_note_supplier_id]" data-name="credit_note_supplier_id" class="form-control">
                                 </div>
-                              </div>
+                              </div> --}}
   
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note Date</label>
-                                  <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control">
+                                  <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" >
                                 </div>
                               </div>
                         
@@ -1167,7 +1160,7 @@
                                     </div>
                                   @endif
                                 </div>
-                                <button type="button" data-key="0" class=" float-right btn btn-dark btn-md {{ isset($total_deposit) && isset($booking_detail->estimated_cost) && ($total_deposit >= $booking_detail->estimated_cost) || ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ? 'd-none' : ''}}">Add More Payments </button>
+                                <button type="button" data-key="0" class="clone_booking_finance float-right btn btn-dark btn-md {{ isset($total_deposit) && isset($booking_detail->estimated_cost) && ($total_deposit >= $booking_detail->estimated_cost) || ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ? 'd-none' : ''}}">Add More Payments </button>
                               </div>
                             </div>
                           </section>

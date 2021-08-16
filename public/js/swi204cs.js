@@ -20616,7 +20616,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.0.20
+* sweetalert2 v11.1.0
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -21160,6 +21160,8 @@ S2.define('jquery.select2',[
 
     if (!params.showConfirmButton && !params.showDenyButton && !params.showCancelButton) {
       hide(actions);
+    } else {
+      show(actions);
     } // Custom class
 
 
@@ -22052,7 +22054,7 @@ S2.define('jquery.select2',[
     didDestroy: undefined,
     scrollbarPadding: true
   };
-  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
+  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'preConfirm', 'preDeny', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
   const deprecatedParams = {};
   const toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'focusConfirm', 'focusDeny', 'focusCancel', 'returnFocus', 'heightAuto', 'keydownListenerCapture'];
   /**
@@ -23106,22 +23108,24 @@ S2.define('jquery.select2',[
     return inputValue && inputValue.toString() === optionValue.toString();
   };
 
-  const handleConfirmButtonClick = (instance, innerParams) => {
+  const handleConfirmButtonClick = instance => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableButtons();
 
     if (innerParams.input) {
-      handleConfirmOrDenyWithInput(instance, innerParams, 'confirm');
+      handleConfirmOrDenyWithInput(instance, 'confirm');
     } else {
-      confirm(instance, innerParams, true);
+      confirm(instance, true);
     }
   };
-  const handleDenyButtonClick = (instance, innerParams) => {
+  const handleDenyButtonClick = instance => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableButtons();
 
     if (innerParams.returnInputValueOnDeny) {
-      handleConfirmOrDenyWithInput(instance, innerParams, 'deny');
+      handleConfirmOrDenyWithInput(instance, 'deny');
     } else {
-      deny(instance, innerParams, false);
+      deny(instance, false);
     }
   };
   const handleCancelButtonClick = (instance, dismissWith) => {
@@ -23129,26 +23133,28 @@ S2.define('jquery.select2',[
     dismissWith(DismissReason.cancel);
   };
 
-  const handleConfirmOrDenyWithInput = (instance, innerParams, type
-  /* type is either 'confirm' or 'deny' */
+  const handleConfirmOrDenyWithInput = (instance, type
+  /* 'confirm' | 'deny' */
   ) => {
+    const innerParams = privateProps.innerParams.get(instance);
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
-      handleInputValidator(instance, innerParams, inputValue, type);
+      handleInputValidator(instance, inputValue, type);
     } else if (!instance.getInput().checkValidity()) {
       instance.enableButtons();
       instance.showValidationMessage(innerParams.validationMessage);
     } else if (type === 'deny') {
-      deny(instance, innerParams, inputValue);
+      deny(instance, inputValue);
     } else {
-      confirm(instance, innerParams, inputValue);
+      confirm(instance, inputValue);
     }
   };
 
-  const handleInputValidator = (instance, innerParams, inputValue, type
-  /* type is either 'confirm' or 'deny' */
+  const handleInputValidator = (instance, inputValue, type
+  /* 'confirm' | 'deny' */
   ) => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableInput();
     const validationPromise = Promise.resolve().then(() => asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage)));
     validationPromise.then(validationMessage => {
@@ -23158,14 +23164,16 @@ S2.define('jquery.select2',[
       if (validationMessage) {
         instance.showValidationMessage(validationMessage);
       } else if (type === 'deny') {
-        deny(instance, innerParams, inputValue);
+        deny(instance, inputValue);
       } else {
-        confirm(instance, innerParams, inputValue);
+        confirm(instance, inputValue);
       }
     });
   };
 
-  const deny = (instance, innerParams, value) => {
+  const deny = (instance, value) => {
+    const innerParams = privateProps.innerParams.get(instance || undefined);
+
     if (innerParams.showLoaderOnDeny) {
       showLoading(getDenyButton());
     }
@@ -23197,7 +23205,9 @@ S2.define('jquery.select2',[
     });
   };
 
-  const confirm = (instance, innerParams, value) => {
+  const confirm = (instance, value) => {
+    const innerParams = privateProps.innerParams.get(instance || undefined);
+
     if (innerParams.showLoaderOnConfirm) {
       showLoading(); // TODO: make showLoading an *instance* method
     }
@@ -23461,9 +23471,9 @@ S2.define('jquery.select2',[
 
       privateMethods.swalPromiseResolve.set(instance, resolve);
 
-      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance, innerParams);
+      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance);
 
-      domCache.denyButton.onclick = () => handleDenyButtonClick(instance, innerParams);
+      domCache.denyButton.onclick = () => handleDenyButtonClick(instance);
 
       domCache.cancelButton.onclick = () => handleCancelButtonClick(instance, dismissWith);
 
@@ -23710,7 +23720,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.0.20';
+  SweetAlert.version = '11.1.0';
 
   const Swal = SweetAlert;
   Swal.default = Swal;
@@ -25120,7 +25130,36 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
     $quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
     reinitializedDynamicFeilds();
-  });
+  }); // $(document).on('change','.payment-method', function(){
+  //     var payment_method = $(this).val();
+  //     var supplier_id    = $(this).closest('.quote').find('.supplier-id').val();
+  //     console.log(payment_method);
+  //     console.log(supplier_id);
+  //     if(supplier_id != null && payment_method== 3){
+  //     }
+  //     $.ajax({
+  //         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+  //         url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
+  //         type: 'get',
+  //         // dataType: "json",
+  //         success: function (data) {
+  //         },
+  //         error: function (reject) {
+  //             if( reject.status === 422 ) {
+  //                 var errors = $.parseJSON(reject.responseText);
+  //                 setTimeout(function() {
+  //                     $("#overlay").removeClass('overlay').html('');
+  //                     jQuery.each(errors.errors, function( index, value ) {
+  //                         index = index.replace(/\./g,'_');
+  //                         $('#'+index).addClass('is-invalid');
+  //                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
+  //                     });
+  //                 }, 800);
+  //             }
+  //         },
+  //     });
+  // });
+
   $('#tempalte_id').on('change', function () {
     var confirmAlert = null;
     $.ajax({
@@ -25241,8 +25280,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //////////////////////////////////
 
   $("#update-booking").submit(function (event) {
-    event.preventDefault();
-    $('#update-booking :input').prop('disabled', false);
+    event.preventDefault(); // $('#update-booking :input').prop('disabled', false);
+
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
@@ -25427,7 +25466,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   });
   $(document).on('click', '.credit-note', function () {
-    $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
+    $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden"); // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
+
     $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden", true);
     var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
       return parseFloat(e.value);
