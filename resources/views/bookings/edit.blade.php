@@ -1100,7 +1100,7 @@
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
+                                    <input type="number" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
                                   </div>
                                 </div>
                               </div>
@@ -1115,20 +1115,21 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note Date</label>
-                                  <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" >
+                                  <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_date" class="form-control" >
                                 </div>
                               </div>
                         
   
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Credit Note Recieved By</label>
-                                  <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
+                                  <label>Credit Note Recieved By <span style="color:red">*</span></label>
+                                  <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
                                     <option value="">Select User</option>
                                     @foreach ($sale_persons as $person)
                                       <option  value="{{ $person->id }}">{{ $person->name }}</option>
                                     @endforeach
                                   </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 

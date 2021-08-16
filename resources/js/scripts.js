@@ -1722,7 +1722,14 @@ $("#update-booking").submit(function(event) {
                             index = index.replace(/\./g,'_');
                             $('#'+index).addClass('is-invalid');
                             $('#'+index).closest('.form-group').find('.text-danger').html(value);
+
+
+                            console.log(index);
+
                         });
+
+
+                        console.log();
                     }
 
                 }, 800);

@@ -75,13 +75,15 @@ class BookingRequest extends FormRequest
             'agency_contact.required_if'        => 'The Agency Contact field is required.',
             'agency_email.required_if'          => 'The Agency Email field is required.',
             'agency_contact_name.required_if'   => 'The Agency contact name field is required.',
-            'lead_passenger_name.required_if'               => 'The lead passenger name field is required',
-            'lead_passenger_email.required_if'              => 'The lead passenger email field is required',
-            'lead_passenger_contact.required_if'            => 'The lead passenger contact field is required',    
-            'lead_passenger_dbo.required_if'                => 'The lead passenger date of birth field is required',
-            'lead_passsenger_nationailty_id.required_if'    => 'The lead passenger nationailty field is required',
-            'lead_passenger_dinning_preference.required_if' => 'The lead passenger dinning preference field is required',
-            'lead_passenger_bedding_preference.required_if' => 'The lead passenger bedding preference field is required',
+            'lead_passenger_name.required_if'                 => 'The lead passenger name field is required',
+            'lead_passenger_email.required_if'                => 'The lead passenger email field is required',
+            'lead_passenger_contact.required_if'              => 'The lead passenger contact field is required',    
+            'lead_passenger_dbo.required_if'                  => 'The lead passenger date of birth field is required',
+            'lead_passsenger_nationailty_id.required_if'      => 'The lead passenger nationailty field is required',
+            'lead_passenger_dinning_preference.required_if'   => 'The lead passenger dinning preference field is required',
+            'lead_passenger_bedding_preference.required_if'   => 'The lead passenger bedding preference field is required',
+            'quote.*.credit_note.*.credit_note_recieved_date.required_with' => 'The Credit Note Date  field is required',
+            'quote.*.credit_note.*.credit_note_recieved_by.required_with'   => 'The Credit Note Recieved By field is required',
         ];
     }
     
@@ -116,6 +118,8 @@ class BookingRequest extends FormRequest
             'quote.*.booking_method_id'         =>  'Booking method',
             'quote.*.booked_by_id'              =>  'Booked By',
             'quote.*.supervisor_id'             =>  'Supervisor',
+            'quote.*.credit_note.*.credit_note_recieved_date'  =>  'Credit Note Date',
+            'quote.*.credit_note.*.credit_note_recieved_by'  =>  'Credit Note Recieved Date',
         ];
     }
 }
