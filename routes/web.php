@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('versions/{id}', array('as' => 'version', 'uses' => 'BookingController@viewVersion'));
         Route::get('show/{id}/{status?}', array('as' => 'show', 'uses' => 'BookingController@show'));
         Route::get('cancel/{id}', array('as' => 'cancel', 'uses' => 'BookingController@bookingCancel'));
+        Route::post('refund-to-bank', array('as' => 'refund-to-bank', 'uses' => 'BookingController@refund_to_bank'));
+        Route::post('credit-note', array('as' => 'credit-note', 'uses' => 'BookingController@credit_note'));
     });
 
 

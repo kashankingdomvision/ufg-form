@@ -1,6 +1,7 @@
 <?php
 namespace App\Http;
 use App\Quote;
+use App\BookingCreditNote;
 
 class Helper
 {
@@ -13,6 +14,11 @@ class Helper
         
         $last_id = Quote::latest()->pluck('id')->first();
        return "QR-".sprintf("%04s", ++$last_id);
+    }
+
+	public static function getCreditNote(){
+        $last_id = BookingCreditNote::latest()->pluck('id')->first();
+       return "CN-".sprintf("%04s", ++$last_id);
     }
 
 	public static function get_payment_detial_by_ref_no($zoho_booking_reference) {

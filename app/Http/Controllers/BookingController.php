@@ -25,7 +25,10 @@ use App\Commission;
 use App\QuoteUpdateDetail;
 use App\Bank;
 use App\BookingRefundPayment;
+use App\BookingCreditNote;
 use App\Http\Requests\BookingRequest;
+use App\Http\Requests\BookingRefundPaymentRequest;
+use App\Http\Requests\BookingCreditNoteRequest;
 use Auth;
 use App\Country;
 use Carbon\Carbon;
@@ -353,7 +356,6 @@ class BookingController extends Controller
     public function getBookingRefundPaymentArray($quoteD)
     {
         return [
-         
             "refund_amount"        => $quoteD['refund_amount']??NULL,
             "refund_date"          => $quoteD['refund_date']??NULL,
             "bank_id"              => $quoteD['bank']??NULL,
@@ -361,6 +363,48 @@ class BookingController extends Controller
         ];
     }
 
+    
+    public function getBookingCreditNoteArray($quoteD)
+    {
+        return [
+            "credit_note_amount"         => $quoteD['credit_note_amount']??NULL,
+            "credit_note_no"             => \Helper::getCreditNote(),
+            "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
+            "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
+            "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
+        ];
+    }
+
+    public function refund_to_bank(BookingRefundPaymentRequest $request)
+    {
+        BookingRefundPayment::create([
+            'booking_detail_id'   =>  $request->booking_detail_id,
+            'refund_amount'       =>  $request->refund_amount,
+            'refund_date'         =>  $request->refund_date,
+            'bank_id'             =>  $request->bank,
+            'refund_confirmed_by' =>  $request->refund_confirmed_by
+        ]);
+
+        BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
+
+        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    }
+
+    public function credit_note(BookingCreditNoteRequest $request)
+    {
+        BookingCreditNote::create([
+            "booking_detail_id"         => $request->booking_detail_id,
+            "credit_note_amount"        => $request->credit_note_amount,
+            "credit_note_no"            => $request->credit_note_no,
+            "credit_note_recieved_date" => $request->credit_note_recieved_date,
+            "credit_note_recieved_by"   => $request->credit_note_recieved_by,
+            "user_id"                   => Auth::id(),
+        ]);
+
+        BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
+
+        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    }
 
     public function update(BookingRequest $request, $id)
     {
@@ -407,9 +451,9 @@ class BookingController extends Controller
                     }
                 }
 
+                // dd($qu_details['credit_note']);
                 
-                
-                if($request->has('quote') && count($request->quote) > 0){
+                // if($request->has('refund') && count($request->refund) > 0){
                     
                     foreach ($qu_details['refund'] as $refund){
 
@@ -418,6 +462,21 @@ class BookingController extends Controller
 
                         if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
                             BookingRefundPayment::create($refund);
+                            BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                        }
+                    }
+                // }
+
+                if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note']) > 0){
+                    
+                    foreach ($qu_details['credit_note'] as $credit_note){
+
+                        $credit_note = $this->getBookingCreditNoteArray($credit_note);
+                        $credit_note['booking_detail_id'] = $booking_Details->id;
+                        $credit_note['user_id']           = Auth::id();
+
+                        if(!empty($credit_note['credit_note_amount']) && !empty($credit_note['credit_note_recieved_date'])){
+                            BookingCreditNote::create($credit_note);
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                         }
                     }
