@@ -20616,7 +20616,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.1.0
+* sweetalert2 v11.0.20
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -21160,8 +21160,6 @@ S2.define('jquery.select2',[
 
     if (!params.showConfirmButton && !params.showDenyButton && !params.showCancelButton) {
       hide(actions);
-    } else {
-      show(actions);
     } // Custom class
 
 
@@ -22054,7 +22052,7 @@ S2.define('jquery.select2',[
     didDestroy: undefined,
     scrollbarPadding: true
   };
-  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'preConfirm', 'preDeny', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
+  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
   const deprecatedParams = {};
   const toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'focusConfirm', 'focusDeny', 'focusCancel', 'returnFocus', 'heightAuto', 'keydownListenerCapture'];
   /**
@@ -23108,24 +23106,22 @@ S2.define('jquery.select2',[
     return inputValue && inputValue.toString() === optionValue.toString();
   };
 
-  const handleConfirmButtonClick = instance => {
-    const innerParams = privateProps.innerParams.get(instance);
+  const handleConfirmButtonClick = (instance, innerParams) => {
     instance.disableButtons();
 
     if (innerParams.input) {
-      handleConfirmOrDenyWithInput(instance, 'confirm');
+      handleConfirmOrDenyWithInput(instance, innerParams, 'confirm');
     } else {
-      confirm(instance, true);
+      confirm(instance, innerParams, true);
     }
   };
-  const handleDenyButtonClick = instance => {
-    const innerParams = privateProps.innerParams.get(instance);
+  const handleDenyButtonClick = (instance, innerParams) => {
     instance.disableButtons();
 
     if (innerParams.returnInputValueOnDeny) {
-      handleConfirmOrDenyWithInput(instance, 'deny');
+      handleConfirmOrDenyWithInput(instance, innerParams, 'deny');
     } else {
-      deny(instance, false);
+      deny(instance, innerParams, false);
     }
   };
   const handleCancelButtonClick = (instance, dismissWith) => {
@@ -23133,28 +23129,26 @@ S2.define('jquery.select2',[
     dismissWith(DismissReason.cancel);
   };
 
-  const handleConfirmOrDenyWithInput = (instance, type
-  /* 'confirm' | 'deny' */
+  const handleConfirmOrDenyWithInput = (instance, innerParams, type
+  /* type is either 'confirm' or 'deny' */
   ) => {
-    const innerParams = privateProps.innerParams.get(instance);
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
-      handleInputValidator(instance, inputValue, type);
+      handleInputValidator(instance, innerParams, inputValue, type);
     } else if (!instance.getInput().checkValidity()) {
       instance.enableButtons();
       instance.showValidationMessage(innerParams.validationMessage);
     } else if (type === 'deny') {
-      deny(instance, inputValue);
+      deny(instance, innerParams, inputValue);
     } else {
-      confirm(instance, inputValue);
+      confirm(instance, innerParams, inputValue);
     }
   };
 
-  const handleInputValidator = (instance, inputValue, type
-  /* 'confirm' | 'deny' */
+  const handleInputValidator = (instance, innerParams, inputValue, type
+  /* type is either 'confirm' or 'deny' */
   ) => {
-    const innerParams = privateProps.innerParams.get(instance);
     instance.disableInput();
     const validationPromise = Promise.resolve().then(() => asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage)));
     validationPromise.then(validationMessage => {
@@ -23164,16 +23158,14 @@ S2.define('jquery.select2',[
       if (validationMessage) {
         instance.showValidationMessage(validationMessage);
       } else if (type === 'deny') {
-        deny(instance, inputValue);
+        deny(instance, innerParams, inputValue);
       } else {
-        confirm(instance, inputValue);
+        confirm(instance, innerParams, inputValue);
       }
     });
   };
 
-  const deny = (instance, value) => {
-    const innerParams = privateProps.innerParams.get(instance || undefined);
-
+  const deny = (instance, innerParams, value) => {
     if (innerParams.showLoaderOnDeny) {
       showLoading(getDenyButton());
     }
@@ -23205,9 +23197,7 @@ S2.define('jquery.select2',[
     });
   };
 
-  const confirm = (instance, value) => {
-    const innerParams = privateProps.innerParams.get(instance || undefined);
-
+  const confirm = (instance, innerParams, value) => {
     if (innerParams.showLoaderOnConfirm) {
       showLoading(); // TODO: make showLoading an *instance* method
     }
@@ -23471,9 +23461,9 @@ S2.define('jquery.select2',[
 
       privateMethods.swalPromiseResolve.set(instance, resolve);
 
-      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance);
+      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance, innerParams);
 
-      domCache.denyButton.onclick = () => handleDenyButtonClick(instance);
+      domCache.denyButton.onclick = () => handleDenyButtonClick(instance, innerParams);
 
       domCache.cancelButton.onclick = () => handleCancelButtonClick(instance, dismissWith);
 
@@ -23720,7 +23710,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.1.0';
+  SweetAlert.version = '11.0.20';
 
   const Swal = SweetAlert;
   Swal.default = Swal;
@@ -23861,13 +23851,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',
     theme: "classic"
-  });
-  $('.select2single').select2({
-    width: '100%',
-    theme: "bootstrap",
-    templateResult: formatState,
-    templateSelection: formatState
-  });
+  }); // $('.select2single').select2({
+  //     width: '100%',
+  //     theme: "bootstrap",
+  //     templateResult: formatState,
+  //     templateSelection: formatState,
+  // });
+
   $('.nationality-select2').select2({
     width: '100%',
     theme: "bootstrap",
@@ -24193,12 +24183,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
-  $(document).on('click', '#add_more', function (e) {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
-    $(".quote").eq(0).clone().find("input").val("").each(function () {
+  $(document).on('click', '#add_package', function () {
+    // if($('select').data('select2')){
+    //     $('.select2single').select2('destroy');
+    // }
+    var id_key = $('.package:last').data('key');
+    var quoteCount = $('#package' + id_key).children('.quote').length;
+    $('.package1').val(quoteCount);
+    var packageLengthCount = $(".package").length;
+    $(".package").eq(0).clone().attr('id', 'package' + packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
+    $("#package" + packageLengthCount).children('.quote').not(':first').remove().find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
@@ -24212,12 +24206,60 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
-    }).end().find("select").val("").each(function () {
+    }).end().find("select").select2('destroy').val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
       this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    });
+    $("packageinput:last").val(1);
+    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
+    $(".quote:last").attr('data-key', $('.quote').length - 1);
+    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+    $('.quote:last input, .quote:last select').removeClass('is-invalid');
+    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    datepickerReset(1);
+    reinitializedDynamicFeilds();
+    $("#package" + packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
+    $("#package" + packageLengthCount).find('.packageinput').attr('id', 'packageinput' + packageLengthCount).val(0);
+    console.log(packageLengthCount);
+  });
+  $(document).on('click', '.add_more', function (e) {
+    // if($('.select2single').data('select2')){
+    //     $('.select2single').select2('destroy');
+    // }
+    // if ($('select').data('select2')) {
+    //     console.log(true);
+    //     $('.select2single').select2('destroy');
+    //   }
+    var key_ = $(this).data('key');
+    var package_quoteCount = $('#package' + key_).children(".quote").length + 1;
+    $("#packageinput" + key_).val(package_quoteCount);
+    $('#package' + key_).children(".quote").eq(0).clone().find("input").val("").each(function () {
+      console.log(this.name);
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + parseInt(package_quoteCount) + ']';
+      });
+      this.id = this.id.replace(/\d+/g, package_quoteCount, function () {
+        return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("textarea").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + parseInt(package_quoteCount) + ']';
+      });
+      this.id = this.id.replace(/\d+/g, package_quoteCount, function () {
+        return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("select").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return package_quoteCount;
+      });
+      this.id = this.id.replace(/\d+/g, package_quoteCount, function () {
+        return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name");
       });
     }).end().show().insertAfter(".quote:last");
     $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");

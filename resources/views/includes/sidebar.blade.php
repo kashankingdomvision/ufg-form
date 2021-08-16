@@ -449,6 +449,7 @@
                                 </p>
                             </a>
                         </li>
+                        
 
                         {{-- <li class="nav-item {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'setting-child-active' : '' }}">
@@ -480,6 +481,14 @@
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Holiday Types
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('setting.banks.index') }}" class="nav-link {{ $route == 'setting.banks.index' || $route == 'setting.banks.create' || $route == 'setting.banks.edit' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Banks
                                 </p>
                             </a>
                         </li>
