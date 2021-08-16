@@ -66,7 +66,7 @@
                         <div id="toolbar-container"></div>
                         <div id="editor">
                          
-<div id="p1" style="overflow: hidden; position: relative; background-color: white; width: 909px; height: 1286px;">
+        <div id="p1" style="overflow: hidden; position: relative; background-color: white; width: 909px; height: 1286px;">
 
 
     

@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth']], function(){
 		'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
+
     /*
     |--------------------------------------------------------------------------
     | Setting
@@ -147,6 +148,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
 
+        /* Bank */
+        Route::resource('banks', 'SettingControllers\BankController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+        
         /* Airlines */
 		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
 			'index','create', 'store', 'edit', 'update', 'destroy'

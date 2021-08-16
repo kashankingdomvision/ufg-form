@@ -37,16 +37,6 @@ class QuoteDocumentsController extends Controller
             array_push($data, $_data);
 
         }
-        // $quote = Quote::findOrFail(decrypt($id));
-        // // $quoteDetail = $quote->getQuoteDetails()->orderByRaw('(category_id) DESC')->get();
-        // $quoteDetail = $quote->getQuoteDetails()->whereHas('getCategory', function ($query){ 
-        //                         $query->orderByRaw('FIELD(sort_by, "1", "2", "3")'); 
-        //                     })->toSql();
-        // dd($quoteDetail);
-        // dd($quote->getQuoteDetails()->orderByRaw('category_id')->orderBy('time_of_service', 'ASC')->get());
-        // dd($this->dataSorting($quote->getQuoteDetails));
-        // $data['quote_details'] = $quote->getQuoteDetails()->orderBy('raw')->orderBy('time_of_service', 'DESC')->get(); 
-        // $doc = QuoteDocument::where('quote_id', decrypt($id))->first();
         $c['quote_id']      = $id;
         $c['quoteDetail']   = $data;
         // if($doc){
