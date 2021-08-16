@@ -228,7 +228,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('bookings.index') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'active' : '' }}">
+                    <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
                         <i class="fas fa-wallet"></i>
                         <p> &nbsp; Wallet</p>
                     </a>

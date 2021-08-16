@@ -25079,7 +25079,36 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
     $quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
     reinitializedDynamicFeilds();
-  });
+  }); // $(document).on('change','.payment-method', function(){
+  //     var payment_method = $(this).val();
+  //     var supplier_id    = $(this).closest('.quote').find('.supplier-id').val();
+  //     console.log(payment_method);
+  //     console.log(supplier_id);
+  //     if(supplier_id != null && payment_method== 3){
+  //     }
+  //     $.ajax({
+  //         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+  //         url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
+  //         type: 'get',
+  //         // dataType: "json",
+  //         success: function (data) {
+  //         },
+  //         error: function (reject) {
+  //             if( reject.status === 422 ) {
+  //                 var errors = $.parseJSON(reject.responseText);
+  //                 setTimeout(function() {
+  //                     $("#overlay").removeClass('overlay').html('');
+  //                     jQuery.each(errors.errors, function( index, value ) {
+  //                         index = index.replace(/\./g,'_');
+  //                         $('#'+index).addClass('is-invalid');
+  //                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
+  //                     });
+  //                 }, 800);
+  //             }
+  //         },
+  //     });
+  // });
+
   $('#tempalte_id').on('change', function () {
     var confirmAlert = null;
     $.ajax({
@@ -25200,8 +25229,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //////////////////////////////////
 
   $("#update-booking").submit(function (event) {
-    event.preventDefault();
-    $('#update-booking :input').prop('disabled', false);
+    event.preventDefault(); // $('#update-booking :input').prop('disabled', false);
+
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
@@ -25388,7 +25417,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   });
   $(document).on('click', '.credit-note', function () {
-    $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
+    $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden"); // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
+
     $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden", true);
     var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
       return parseFloat(e.value);
