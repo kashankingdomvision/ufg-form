@@ -419,7 +419,7 @@ class BookingController extends Controller
     // Request
     public function update(BookingRequest $request, $id)
     {
-
+dd($request->all());
 
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         // if(!$quote_update_detail->exists()) {

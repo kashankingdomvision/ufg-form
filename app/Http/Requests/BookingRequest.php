@@ -62,6 +62,9 @@ class BookingRequest extends FormRequest
             'quote.*.booking_method_id'         =>  'nullable',
             'quote.*.booked_by_id'              =>  'nullable',
             'quote.*.supervisor_id'             =>  'nullable',
+            // 'quote.*.credit_note.*.credit_note_amount' => 'nullable|required',
+            'quote.*.credit_note.*.credit_note_recieved_date' => 'required_with:quote.*.credit_note.*.credit_note_amount',
+            'quote.*.credit_note.*.credit_note_recieved_by' => 'required_with:quote.*.credit_note.*.credit_note_amount'
         ];
     }
 
