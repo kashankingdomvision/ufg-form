@@ -30,25 +30,37 @@ class WalletController extends Controller
         return view('wallets.index', $data);
     }
 
-    // public function get_supplier_wallet_amount($supplier_id)
-    // {
+    public function get_supplier_wallet_amount($supplier_id)
+    {
+        $total = 0;
+        $booking_transactions = BookingTransaction::select(
+            DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
+            DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
+        )
+        ->where('supplier_id', $supplier_id)
+        ->first();
 
-    //     // dd($supplier_id);
+        if(!is_null($booking_transactions->credit) && !is_null($booking_transactions->debit)){
+            $total = $booking_transactions->credit - $booking_transactions->debit;
+        }
 
-    //     $booking_transactions = BookingTransaction::select(
-    //         'supplier_id',
-    //         DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
-    //         DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
-    //     )
-    //     ->where('supplier_id', $supplier_id)
-    //     // ->groupBy('supplier_id')
-    //     ->get();
+     
 
-    //     dd($booking_transactions);
+        if($total <= 0){
+            return "This Supplier Has no Credit Notes";
 
-    //     // $data['booking_transactions'] = $booking_transactions;
-    //     // return view('wallets.index', $data);
-    // }
+            // return \Response::json(['response' => false ,'message' => "This Supplier Has no Credit Notes"], 402);
+        }
+        
+        // else{
+        //     return \Response::json(['response' =>  true ,'message' => $total], 200);
+             
+        // }
+        // dd($total);
+
+        // $data['booking_transactions'] = $booking_transactions;
+        // return view('wallets.index', $data);
+    }
 
     /**
      * Show the form for creating a new resource.

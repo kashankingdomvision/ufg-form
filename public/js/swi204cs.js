@@ -23883,6 +23883,48 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     theme: "bootstrap",
     templateResult: formatState,
     templateSelection: formatState
+  });
+  $(document).on('change', '.payment-method', function () {
+    var payment_method = $(this).val();
+    var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
+    var current_payment_methods = $(this);
+    console.log(payment_method);
+    console.log(supplier_id);
+
+    if (supplier_id != null && payment_method == 3) {
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+        type: 'get',
+        // dataType: "json",
+        success: function success(data) {
+          console.log(!data.response);
+
+          if (data.response) {
+            alert(data);
+            $(current_payment_methods).val('').trigger('change');
+          } // if(data.response == true){
+          //     $('#quote_0_finance_0_deposit_amount').val(data.message);
+          // }
+
+        },
+        error: function error(reject) {
+          if (reject.status === 422) {
+            var errors = $.parseJSON(reject.responseText);
+            setTimeout(function () {
+              $("#overlay").removeClass('overlay').html('');
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $('#' + index).addClass('is-invalid');
+                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              });
+            }, 800);
+          }
+        }
+      });
+    }
   }); // ajaxSetup
 
   $.ajaxSetup({
@@ -25078,36 +25120,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
     $quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
     reinitializedDynamicFeilds();
-  }); // $(document).on('change','.payment-method', function(){
-  //     var payment_method = $(this).val();
-  //     var supplier_id    = $(this).closest('.quote').find('.supplier-id').val();
-  //     console.log(payment_method);
-  //     console.log(supplier_id);
-  //     if(supplier_id != null && payment_method== 3){
-  //     }
-  //     $.ajax({
-  //         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-  //         url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
-  //         type: 'get',
-  //         // dataType: "json",
-  //         success: function (data) {
-  //         },
-  //         error: function (reject) {
-  //             if( reject.status === 422 ) {
-  //                 var errors = $.parseJSON(reject.responseText);
-  //                 setTimeout(function() {
-  //                     $("#overlay").removeClass('overlay').html('');
-  //                     jQuery.each(errors.errors, function( index, value ) {
-  //                         index = index.replace(/\./g,'_');
-  //                         $('#'+index).addClass('is-invalid');
-  //                         $('#'+index).closest('.form-group').find('.text-danger').html(value);
-  //                     });
-  //                 }, 800);
-  //             }
-  //         },
-  //     });
-  // });
-
+  });
   $('#tempalte_id').on('change', function () {
     var confirmAlert = null;
     $.ajax({
@@ -25250,8 +25263,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {// alert(data.success_message);
-          // window.location.href = REDIRECT_BASEURL + "bookings/index";
+        setTimeout(function () {
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index";
         }, 1000);
       },
       error: function error(reject) {
@@ -25268,9 +25282,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 index = index.replace(/\./g, '_');
                 $('#' + index).addClass('is-invalid');
                 $('#' + index).closest('.form-group').find('.text-danger').html(value);
-                console.log(index);
               });
-              console.log();
             }
           }, 800);
         }
@@ -25347,12 +25359,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $(".loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
         jQuery('.create_credit_note').modal('hide');
         setTimeout(function () {
-          // alert(data.success_message);
-          // window.location.href = REDIRECT_BASEURL + "bookings/index";
-          if (data.success_message) {
-            alert(data.success_message);
-            location.reload();
-          }
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index"; // if(data.success_message){
+          //     alert(data.success_message);
+          //     location.reload();
+          // }
         }, 800);
       },
       error: function error(reject) {
@@ -25390,12 +25401,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
         jQuery('#refund_to_bank_modal').modal('hide');
         setTimeout(function () {
-          // alert(data.success_message);
-          // window.location.href = REDIRECT_BASEURL + "bookings/index";
-          if (data.success_message) {
-            alert(data.success_message);
-            location.reload();
-          }
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index"; // if(data.success_message){
+          //     alert(data.success_message);
+          //     location.reload();
+          // }
         }, 800);
       },
       error: function error(reject) {
