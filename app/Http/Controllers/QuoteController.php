@@ -260,25 +260,10 @@ class QuoteController extends Controller
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
-<<<<<<< HEAD
-            for ($i=0; $i < count($request->packages) ; $i++) { 
-                $quotePackage = QuoteDetialPackage::create(['quote_id' => $quote->id, 'package_val' => $request->packages[$i]]);
-                // foreach ($request->quote as $qu_details) {
-                    for ($y=0; $y <= (int)$request->packages[$i] ; $y++) {
-                        dd($request->quote[$y]);
-                        $qu_details = $request->quote[$y];
-                        $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
-                        $quoteDetail['quote_id'] = $quote->id;
-                        $quoteDetail['package_key'] = $quotePackage->id;
-                        QuoteDetail::create($quoteDetail);
-                    }
-                // }
-=======
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                 $quoteDetail['quote_id'] = $quote->id;
                 QuoteDetail::create($quoteDetail);
->>>>>>> parent of d000f64 (quote document work)
             }
         }
        //pax data 
