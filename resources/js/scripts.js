@@ -430,19 +430,16 @@ $(document).on('click', '.addChild', function () {
 });
 
     $(document).on('click', '#add_package', function () {
-        
         // if($('select').data('select2')){
         //     $('.select2single').select2('destroy');
         // }
-        
-        var id_key = $('.package:last').data('key');
+        var id_key = $('.package:last').data('key');    
         var quoteCount = $('#package'+id_key).children('.quote').length;
         $('.package1').val(quoteCount);
         var packageLengthCount  = $(".package").length;
         $(".package").eq(0).clone().attr('id', 'package'+ packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
-
-       $("#package"+ packageLengthCount).children('.quote').not(':first').remove()
-           .find("input").val("") .each(function(){
+        $("#package"+ packageLengthCount).children('.quote').not(':first').remove();
+        $("#package"+ packageLengthCount).children('.quote').find("input").val("") .each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
                     return '[' + ($('.quote').length) + ']';
                 });
@@ -458,12 +455,12 @@ $(document).on('click', '.addChild', function () {
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
                 });
             }).end()
-            .find("select").select2('destroy').val("").each(function(){
+            .find("select").val("").each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
                 this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                });
             });
+        });
             
             $("packageinput:last").val(1);
             
@@ -475,10 +472,10 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-            reinitializedDynamicFeilds();
+            // reinitializedDynamicFeilds();
             $("#package"+ packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
             $("#package"+ packageLengthCount).find('.packageinput').attr('id', 'packageinput'+packageLengthCount).val(0);
-            console.log(packageLengthCount);
+
 
         });
 
@@ -490,19 +487,20 @@ $(document).on('click', '.addChild', function () {
         //     console.log(true);
         //     $('.select2single').select2('destroy');
         //   }
-        
         var key_ = $(this).data('key');
-        let package_quoteCount = $('#package'+key_).children(".quote").length + 1;
+        console.log(key_);
+        
+        
+        let length = $(".quote").length;
+        let package_quoteCount = length + 1;
         $("#packageinput"+ key_).val(package_quoteCount);
-
         $('#package'+key_).children(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
-                console.log(this.name);
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
                     return '[' + parseInt(package_quoteCount) + ']';
                 });
                 this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                    return 'quote_' + (parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .find("textarea").val("").each(function(){
@@ -510,15 +508,15 @@ $(document).on('click', '.addChild', function () {
                     return '[' + (parseInt(package_quoteCount)) + ']';
                 });
                 this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                    return 'quote_' + (parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .find("select").val("").each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){ return package_quoteCount  });
                 this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                    return 'quote_' +( parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
                 });
-            }).end().show().insertAfter(".quote:last");
+            }).end().show().insertAfter('#package'+key_+' .quote:last');
 
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
@@ -528,7 +526,7 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-            reinitializedDynamicFeilds();
+            // reinitializedDynamicFeilds();
                 
     });
 
@@ -893,7 +891,6 @@ $(document).on('click', '.addChild', function () {
     function calculateQuoteDetails(key,changeFeild){
 
 
-        console.log('working calculateQuoteDetails');
 
         var estimatedCost               =  parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
         var supplierCurrency            =  $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
@@ -1780,7 +1777,6 @@ $(document).on('change', '.credit-note-amount', function(){
     var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
     var refundAmount            = parseFloat($(this).val());
 
-        console.log(refundAmount);
     console.log(refundAmount);
     console.log(totalDepositAmount);
 
@@ -1822,7 +1818,6 @@ $('#create_credit_note').submit(function(event) {
     var url = $form.attr('action');
 
 
-    console.log("sdsd");
 
     $.ajax({
         type: 'POST',

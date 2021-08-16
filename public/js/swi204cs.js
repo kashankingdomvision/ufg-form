@@ -24192,7 +24192,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.package1').val(quoteCount);
     var packageLengthCount = $(".package").length;
     $(".package").eq(0).clone().attr('id', 'package' + packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
-    $("#package" + packageLengthCount).children('.quote').not(':first').remove().find("input").val("").each(function () {
+    $("#package" + packageLengthCount).children('.quote').not(':first').remove();
+    $("#package" + packageLengthCount).children('.quote').find("input").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
@@ -24206,7 +24207,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
       });
-    }).end().find("select").select2('destroy').val("").each(function () {
+    }).end().find("select").val("").each(function () {
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + $('.quote').length + ']';
       });
@@ -24222,11 +24223,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
     $('.quote:last input, .quote:last select').removeClass('is-invalid');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
+    datepickerReset(1); // reinitializedDynamicFeilds();
+
     $("#package" + packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
     $("#package" + packageLengthCount).find('.packageinput').attr('id', 'packageinput' + packageLengthCount).val(0);
-    console.log(packageLengthCount);
   });
   $(document).on('click', '.add_more', function (e) {
     // if($('.select2single').data('select2')){
@@ -24237,10 +24237,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     //     $('.select2single').select2('destroy');
     //   }
     var key_ = $(this).data('key');
-    var package_quoteCount = $('#package' + key_).children(".quote").length + 1;
+    console.log(key_);
+    var length = $(".quote").length;
+    var package_quoteCount = length + 1;
     $("#packageinput" + key_).val(package_quoteCount);
     $('#package' + key_).children(".quote").eq(0).clone().find("input").val("").each(function () {
-      console.log(this.name);
       this.name = this.name.replace(/\[(\d+)\]/, function () {
         return '[' + parseInt(package_quoteCount) + ']';
       });
@@ -24261,7 +24262,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       this.id = this.id.replace(/\d+/g, package_quoteCount, function () {
         return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name");
       });
-    }).end().show().insertAfter(".quote:last");
+    }).end().show().insertAfter('#package' + key_ + ' .quote:last');
     $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
     $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
@@ -24269,8 +24270,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
     $('.quote:last input, .quote:last select').removeClass('is-invalid');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
+    datepickerReset(1); // reinitializedDynamicFeilds();
   });
   $(document).on('click', '#add_more_booking', function (e) {
     if ($('.select2single').data('select2')) {
@@ -24622,7 +24622,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function calculateQuoteDetails(key, changeFeild) {
-    console.log('working calculateQuoteDetails');
     var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
     var supplierCurrency = $("#quote_".concat(key, "_supplier_currency_id")).find(':selected').data('code');
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
@@ -25318,7 +25317,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }, 0);
     var refundAmount = parseFloat($(this).val());
     console.log(refundAmount);
-    console.log(refundAmount);
     console.log(totalDepositAmount);
 
     if (refundAmount != totalDepositAmount) {
@@ -25346,7 +25344,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     event.preventDefault();
     var $form = $(this);
     var url = $form.attr('action');
-    console.log("sdsd");
     $.ajax({
       type: 'POST',
       url: url,

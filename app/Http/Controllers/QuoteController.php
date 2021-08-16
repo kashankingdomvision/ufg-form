@@ -265,8 +265,9 @@ class QuoteController extends Controller
             for ($i=0; $i < count($request->packages) ; $i++) { 
                 $quotePackage = QuoteDetialPackage::create(['quote_id' => $quote->id, 'package_val' => $request->packages[$i]]);
                 // foreach ($request->quote as $qu_details) {
-                    for ($y=0; $y <= $request->packages[$i] ; $y++) {
-                        $qu_details = $request->quote[$i];
+                    for ($y=0; $y <= (int)$request->packages[$i] ; $y++) {
+                        dd($request->quote[$y]);
+                        $qu_details = $request->quote[$y];
                         $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                         $quoteDetail['quote_id'] = $quote->id;
                         $quoteDetail['package_key'] = $quotePackage->id;
