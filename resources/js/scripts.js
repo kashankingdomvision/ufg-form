@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -97,12 +97,12 @@ $(document).ready(function($) {
         theme: "classic",
     });
 
-    // $('.select2single').select2({
-    //     width: '100%',
-    //     theme: "bootstrap",
-    //     templateResult: formatState,
-    //     templateSelection: formatState,
-    // });
+    $('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
 
 
     $('.nationality-select2').select2({
@@ -429,6 +429,7 @@ $(document).on('click', '.addChild', function () {
     });
 });
 
+<<<<<<< HEAD
     $(document).on('click', '#add_package', function () {
         // if($('select').data('select2')){
         //     $('.select2single').select2('destroy');
@@ -440,6 +441,16 @@ $(document).on('click', '.addChild', function () {
         $(".package").eq(0).clone().attr('id', 'package'+ packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
         $("#package"+ packageLengthCount).children('.quote').not(':first').remove();
         $("#package"+ packageLengthCount).children('.quote').find("input").val("") .each(function(){
+=======
+    $(document).on('click', '#add_more', function(e) {
+
+        if($('.select2single').data('select2')){
+            $('.select2single').select2('destroy');
+        }
+
+        $(".quote").eq(0).clone()
+            .find("input").val("") .each(function(){
+>>>>>>> parent of d000f64 (quote document work)
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
                     return '[' + ($('.quote').length) + ']';
                 });
@@ -459,6 +470,7 @@ $(document).on('click', '.addChild', function () {
                 this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
                 this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
                     return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+<<<<<<< HEAD
             });
         });
             
@@ -517,6 +529,10 @@ $(document).on('click', '.addChild', function () {
                     return 'quote_' +( parseInt(package_quoteCount)) + '_' + $(this).attr("data-name")
                 });
             }).end().show().insertAfter('#package'+key_+' .quote:last');
+=======
+                });
+            }).end().show().insertAfter(".quote:last");
+>>>>>>> parent of d000f64 (quote document work)
 
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
@@ -526,8 +542,12 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
+<<<<<<< HEAD
             // reinitializedDynamicFeilds();
                 
+=======
+            reinitializedDynamicFeilds();
+>>>>>>> parent of d000f64 (quote document work)
     });
 
     $(document).on('click', '#add_more_booking', function(e) {

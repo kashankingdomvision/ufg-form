@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuoteDetialPackagesTable extends Migration
+class CreateQuoteBehalfUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateQuoteDetialPackagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('quote_detial_packages', function (Blueprint $table) {
-            $table->id();
+        Schema::create('quote_behalf_users', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('quote_id');
-            $table->unsignedBigInteger('package_val');
+            $table->unsignedBigInteger('behalf_user_id');
             $table->timestamps();
-            
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->foreign('behalf_user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -31,6 +32,6 @@ class CreateQuoteDetialPackagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quote_detial_packages');
+        Schema::dropIfExists('quote_behalf_users');
     }
 }
