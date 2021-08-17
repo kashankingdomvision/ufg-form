@@ -109,6 +109,7 @@ class ResponseController extends Controller
                 "currency"      => isset($responses_data['Currency']) && !empty($responses_data['Currency']) ? $responses_data['Currency'] : null,
                 "pax"           => isset($pax_no) && !empty($pax_no) ? $pax_no : null,
                 'passengers'    => $passengerArray,
+                'tas_ref'       => (isset($responses_data['TAS_REF_No']) && !empty($responses_data['TAS_REF_No']))? $responses_data['TAS_REF_No'] : NULL,
             ];
 
             $payment_detial_response = \Helper::get_payment_detial_by_ref_no($ref);
