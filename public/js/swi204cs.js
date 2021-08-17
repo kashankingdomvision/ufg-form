@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
   event.preventDefault();
   var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
@@ -23914,14 +23914,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           if (data.response == true) {
             wa = parseFloat(data.message);
 
-            if (outstanding_amount_left >= wa) {
+            if (outstanding_amount_left > wa) {
               console.log("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount"));
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(wa);
             }
 
-            if (outstanding_amount_left <= wa) {
+            if (outstanding_amount_left < wa) {
               var w = wa - outstanding_amount_left;
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(w);
+              console.log(w);
+            }
+
+            if (outstanding_amount_left == wa) {
+              // var w =  wa - outstanding_amount_left;
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(wa);
               console.log(w);
             }
           }

@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -153,7 +153,7 @@ $(document).ready(function($) {
                         if(data.response == true){
                             wa = parseFloat(data.message)
 
-                            if(outstanding_amount_left >= wa ){
+                            if(outstanding_amount_left > wa ){
 
                                 console.log(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`);
 
@@ -161,12 +161,19 @@ $(document).ready(function($) {
                        
                             }
 
-                            if(outstanding_amount_left <= wa ){
+                            if(outstanding_amount_left < wa ){
                                var w =  wa - outstanding_amount_left;
 
                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(w);
                                console.log(w);
                             }
+
+                            if(outstanding_amount_left == wa ){
+                                // var w =  wa - outstanding_amount_left;
+ 
+                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa);
+                                console.log(w);
+                             }
                         }
                     },
                     error: function (reject) {
