@@ -12,8 +12,9 @@ class QuoteDocumentsController extends Controller
     public function documentIndex($id)
     {
 
-        
+        dd('switch the branch');
         $quote = Quote::findOrFail(decrypt($id));
+        
         $parentQuote = $quote->getQuoteDetails()->where('parent_id', NULL)->get();
         $data = [];
         foreach ($parentQuote as $parent) {
