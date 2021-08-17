@@ -48,6 +48,8 @@ class QuoteRequest extends FormRequest
             'pax_no'                            =>  'required',
             'rate_type'                         =>  'required',
             'quote'                             =>  'required|array',
+            'quote.*.category_id'               =>  'required',
+            'quote.*.supplier_id'               =>  'required',
             'quote.*.booking_due_date'          =>  'required',
             'quote.*.supplier_currency_id'      =>  'required',
             'quote.*.estimated_cost'            =>  'required',
@@ -56,7 +58,7 @@ class QuoteRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency' => 'required',
             'quote.*.markup_amount_in_booking_currency' => 'required',
             // 'quote.*.added_in_sage'             =>  'required',
-            'quote.*.supplier_id'               =>  'nullable',
+            // 'quote.*.supplier_id'               =>  'nullable',
             'quote.*.product_id'                =>  'nullable',
             'quote.*.booking_method_id'         =>  'nullable',
             'quote.*.booked_by_id'              =>  'nullable',
@@ -81,6 +83,9 @@ class QuoteRequest extends FormRequest
             'lead_passsenger_nationailty_id.required_if'    => 'The lead passenger nationailty field is required',
             'lead_passenger_dinning_preference.required_if' => 'The lead passenger dinning preference field is required',
             'lead_passenger_bedding_preference.required_if' => 'The lead passenger bedding preference field is required',
+
+            'quote.*.category_id.required'               =>  'The Category field is required.',
+            'quote.*.supplier_id.required'               =>  'The Supplier field is required.',
         ];
     }
     
@@ -119,6 +124,8 @@ class QuoteRequest extends FormRequest
             'quote.*.booking_method_id'         =>  'Booking Method',
             'quote.*.booked_by_id'              =>  'Booked By',
             'quote.*.supervisor_id'             =>  'Supervisor',
+            'quote.*.category_id'             =>    'Category',
+            'quote.*.supplier_id'             =>    'Supplier',
         ];
     }
 }

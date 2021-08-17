@@ -326,30 +326,24 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Category</label>
+                              <label>Category <span style="color:red">*</span></label>
                               <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
                                 <option selected value="">Select Category</option>
                                 @foreach ($categories as $category)
                                   <option value="{{ $category->id }}" > {{ $category->name }} </option>
                                 @endforeach
                               </select>
-
-                              @error('category_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
+                              <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Supplier</label>
+                              <label>Supplier <span style="color:red">*</span></label>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single @error('supplier_id') is-invalid @enderror">
                                 <option selected value="">Select Supplier</option>
                               </select>
-
-                              @error('supplier_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
+                              <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
 

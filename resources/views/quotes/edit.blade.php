@@ -428,23 +428,20 @@
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Category</label>
+                                    <label>Category <span style="color:red">*</span></label>
                                     <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                     </select>
-
-                                    @error('category_id')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                                    <span class="text-danger" role="alert"></span>
                                 </div>
                                 </div>
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Supplier</label>
+                                    <label>Supplier <span style="color:red">*</span></label>
                                     <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                         <option value="">Select Supplier</option>
                                         @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier)
@@ -453,9 +450,7 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    @error('supplier_id')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                                    <span class="text-danger" role="alert"></span>
                                 </div>
                                 </div>
 
