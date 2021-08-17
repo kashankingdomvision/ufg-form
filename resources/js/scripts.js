@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -1794,10 +1794,20 @@ $(document).on('change', '.credit-note-amount', function(){
 
 $(document).on('click', '.refund-to-bank', function(){
 
+
+    
+    var quoteKey                 =  $(this).closest('.quote').data('key');
+ 
+    // var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
+
     $(this).closest('.quote').find('.refund-payment-hidden-section').removeAttr("hidden");
 
     $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
 
+
+  
+    $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
+     
     
     var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
     var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
@@ -1944,8 +1954,8 @@ $(document).on('click', '.credit-note', function(){
     $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
     // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
 
-
-
+    var quoteKey                 =  $(this).closest('.quote').data('key');
+    $(`#quote_${quoteKey}_refund_0_refund_amount`).val('');
 
     $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden",true);
 

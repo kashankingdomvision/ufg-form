@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
   event.preventDefault();
   var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
@@ -25342,8 +25342,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $(document).on('click', '.refund-to-bank', function () {
+    var quoteKey = $(this).closest('.quote').data('key'); // var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
+
     $(this).closest('.quote').find('.refund-payment-hidden-section').removeAttr("hidden");
     $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden", true);
+    $("#quote_".concat(quoteKey, "_credit_note_0_credit_note_amount")).val('');
     var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
@@ -25444,6 +25447,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('click', '.credit-note', function () {
     $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden"); // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
 
+    var quoteKey = $(this).closest('.quote').data('key');
+    $("#quote_".concat(quoteKey, "_refund_0_refund_amount")).val('');
     $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden", true);
     var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
       return parseFloat(e.value);
