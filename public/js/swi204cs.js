@@ -24986,7 +24986,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       alert('Reference number is not found');
       searchRef.text('Search').prop('disabled', false);
     } else {
-      //check refrence is already exist in system
+      $('#ref_no').closest('.form-group').find('.text-danger').html(''); //check refrence is already exist in system
+
       $.ajax({
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN

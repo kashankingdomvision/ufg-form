@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Edit Booking')
-
 @section('content')
   <div class="content-wrapper">
     @if ($errors->any())
@@ -29,7 +27,6 @@
         </div>
       </div>
     </section>
-
     <section class="content" id="content" data-countries="{{ $countries }}">
       <div class="container-fluid">
         <div class="row">
@@ -86,12 +83,8 @@
             </div>
           </div>
         </div>
-      
-      
-      
         <div class="row">
           <div class="col-md-12">
-
             <div class="card card-secondary">
               <div class="card-header">
                 <h1 class="card-title text-center card-title-style">Edit Booking</h1>
@@ -99,14 +92,10 @@
                   View Final Quote
                 </a>
               </div>
-            
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking" enctype="multipart/form-data"> 
               @csrf @method('put')
                 <div class="card-body">
                   <div class="row mb-2">
-
-                   
-
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
@@ -119,14 +108,12 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Quote Reference <span style="color:red">*</span></label>
                         <input type="text" value="{{ old('quote_no')??$booking->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
-                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
@@ -134,7 +121,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span></label>
@@ -143,7 +129,6 @@
                             <input type="radio" name="rate_type" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
                             <span>&nbsp;Live Rate</span>
                           </label>
-                          
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
                             <span>&nbsp;Manual Rate</span>
@@ -151,7 +136,6 @@
                         </div>
                       </div>
                     </div>
-                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
@@ -164,7 +148,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
@@ -177,8 +160,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
-                   
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
@@ -191,7 +172,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
@@ -207,7 +187,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
@@ -220,7 +199,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
@@ -235,7 +213,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
@@ -249,7 +226,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="col-md-12 agency-columns" >
                         <div class="row mt-1  agencyField {{ ($booking->agency == 0)? 'd-none': '' }}" >
                           <div class="col form-group">
@@ -261,16 +237,13 @@
                             <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $booking->agency_contact_name }}" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                             <span class="text-danger" role="alert" > </span>
-                            
                           </div>
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
                             <input type="tel" value="{{ $booking->agency_contact }}" name="agency_contact" id="agency_contact" class="form-control phone phonegc">
                             <span class="text-danger error_msggc hide" role="alert"></span>
                             <span class="text-success valid_msggc" role="alert"></span>
-                            
                           </div>
-                        
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
                             <input type="email" value="{{ $booking->agency_email }}" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
@@ -300,7 +273,6 @@
                               <span class="text-success valid_msg0" role="alert"></span>
                             </div>
                           </div>
-                        
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Date Of Birth <span style="color:red">*</span></label> 
@@ -336,11 +308,8 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-                          
                         </div>
                     </div>
-
-
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Pax No. <span style="color:red">*</span></label>
@@ -383,7 +352,6 @@
                                             <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
                                             <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
                                             <span class="text-success valid_msg{{ $count }}" role="alert"></span>
-
                                         </div>
                                     </div>
                                     <div class="row">
@@ -397,7 +365,6 @@
                                             <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="Bedding Preferences" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
-                                        
                                         <div class="col-md-3 mb-2">
                                             <label>Dinning Preference</label> 
                                             <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="Dinning Preferences" >
@@ -411,12 +378,10 @@
                                 @endforeach
                                 @endif
                               </div>
-                                
                               <div class="col-md-12 col-offset-md-4">
                                 <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                               </div>
                   </div>
-
                   <div class="parent" id="parent">
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       @foreach ($booking->getBookingDetail as $key  => $booking_detail )
@@ -433,14 +398,12 @@
                                   <input type="text" value="{{ $booking_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Time of Service</label>
                                 <input type="time" value="{{ $booking_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control" placeholder="Time of Service" autocomplete="off">
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Category <span style="color:red">*</span></label>
@@ -453,7 +416,6 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier <span style="color:red">*</span></label>
@@ -468,7 +430,6 @@
                                   <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product</label>
@@ -483,7 +444,6 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supervisor</label>
@@ -493,20 +453,17 @@
                                     <option value="{{ $supervisor->id }}" {{ ($booking_detail->supervisor_id == $supervisor->id) ? 'selected' : NULL }}> {{ $supervisor->name }} </option>
                                   @endforeach
                                 </select>
-
                                 @error('supervisor_id')
                                   <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Date</label>
                                 <input type="text" value="{{ $booking_detail->booking_date}}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Due Date <span style="color:red">*</span></label>
@@ -514,14 +471,12 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Reference</label>
                                 <input type="text" value="{{ $booking_detail->booking_reference }}" name="quote[{{ $key }}][booking_reference]" data-name="booking_refrence" id="quote_{{ $key }}_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Method</label>
@@ -531,13 +486,11 @@
                                       <option value="{{ $booking_method->id }}" {{ $booking_detail->booking_method_id == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
                                   @endforeach
                                 </select>
-
                                 @error('booking_method_id')
                                   <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booked By</label>
@@ -552,7 +505,6 @@
                                 @enderror
                               </div>
                             </div>
-
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Types</label>
@@ -562,13 +514,11 @@
                                       <option value="{{ $booking_type->id }}" {{ $booking_detail->booking_type_id == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
                                     @endforeach
                                   </select>
-
                                   @error('booking_type_id')
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
                               </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier Currency <span style="color:red">*</span></label>
@@ -581,7 +531,6 @@
                                   <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Actual Cost <span style="color:red">*</span></label>
@@ -593,7 +542,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Markup Amount <span style="color:red">*</span></label>
@@ -605,7 +553,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Markup % <span style="color:red">*</span></label>
@@ -617,7 +564,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <div class="d-flex">
@@ -632,7 +578,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                   <label>Profit % <span style="color:red">*</span></label>
@@ -647,7 +592,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Actual Cost in Booking Currency <span style="color:red">*</span></label>
@@ -659,7 +603,6 @@
                                 </div>
                               </div>
                             </div>
-
                             <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
@@ -671,7 +614,6 @@
                                 </div>
                               </div>
                             </div>
-                              
                             <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
@@ -703,14 +645,12 @@
                                 <textarea name="quote[{{ $key }}][service_details]" data-name="service_details" id="quote_{{ $key }}_service_details" class="form-control service-details" rows="2" placeholder="Enter Service Details">{{ $booking_detail->service_details }}</textarea>
                               </div>
                             </div>
-
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Comments</label>
                                 <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $booking_detail->comments }}</textarea>
                               </div>
                             </div>
-                            
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Invoice Upload</label>
@@ -731,9 +671,7 @@
                                 <input type="number" value="{{ \Helper::number_format($booking_detail->outstanding_amount_left) }}" name="quote[{{ $key }}][outstanding_amount_left]" data-name="outstanding_amount_left" id="quote_{{ $key }}_outstanding_amount_left" class="form-control outstanding_amount_left hide-arrows" >
                               </div>
                             </div>
-
                           </div>{{-- ?>>>rown end --}}
-                          
                           @php $total_deposit = 0; @endphp
                           <section class="finance">
                             @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
@@ -755,21 +693,18 @@
                                         </div>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Deposit Due Date</label>
                                         <input type="date" value="{{ $finance->deposit_due_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][deposit_due_date]" data-name="deposit_due_date" id="quote_{{$key}}_finance_{{$fkey}}_deposit_due_date" class="form-control deposit-due-date" {{ $finance->status == 'cancelled' ? 'readonly' : '' }}>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Paid Date</label>
                                         <input type="date" value="{{ $finance->paid_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][paid_date]" data-name="paid_date" id="quote_{{$key}}_finance_{{$fkey}}_paid_date" class="form-control paid-date" {{ $finance->status == 'cancelled' ? 'readonly' : '' }}>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-2 d-flex justify-content-center">
                                       <div class="form-group {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                         <label>Calender</label>
@@ -782,13 +717,11 @@
                                         </div>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-1 d-flex justify-content-center">
                                       <div class="form-group">
                                         <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" >X</button>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Payment Method</label>
@@ -800,7 +733,6 @@
                                         </select>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-3 {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                       <div class="form-group">
                                         <label>Alert before the following days </label>
@@ -815,7 +747,6 @@
                                         </div>
                                       </div>
                                     </div>
-
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label class="outstanding_amount_label">Outstanding Amount</label>
@@ -827,8 +758,6 @@
                                         </div>
                                       </div>
                                     </div>
-
-
                                   </div>
                                 @endforeach
                               @else
@@ -845,21 +774,18 @@
                                       </div>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Deposit Due Date</label>
                                       <input type="date" name="quote[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{$key}}_finance_0_deposit_due_date" value="" class="form-control deposit-due-date" >
                                     </div>
                                   </div>
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Paid Date</label>
                                       <input type="date" name="quote[{{ $key }}][finance][0][paid_date]" data-name="paid_date" id="quote_{{$key}}_finance_0_paid_date" value="" class="form-control paid-date" >
                                     </div>
                                   </div>
-
                                   <div class="col-2 d-flex justify-content-center">
                                     <div class="form-group">
                                       <label>Calender</label>
@@ -872,13 +798,11 @@
                                       </div>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-1 d-flex justify-content-center">
                                     <div class="form-group">
                                       <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm">X</button>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Payment Method</label>
@@ -890,7 +814,6 @@
                                       </select>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Alert before the following days </label>
@@ -905,7 +828,6 @@
                                       </div>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label class="outstanding_amount_label">Outstanding Amount</label>
@@ -917,7 +839,6 @@
                                       </div>
                                     </div>
                                   </div>
-
                                   {{-- <div class="col-1">
                                         <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-sm btn-outline-dark">X</button>
                                   </div> --}}
@@ -925,13 +846,12 @@
                                 {{-- /////for single value/ --}}
                             @endif
                           </section>
-
                           <section class="cancel-payment-section">
                           @if($booking_detail->getBookingRefundPayment && count($booking_detail->getBookingRefundPayment) > 0)
                           @foreach ($booking_detail->getBookingRefundPayment as $fkey => $payment)
                                 <h3 class="mt-2 mb-1-half">Refund Payments</h3>
                                 <div class="row cancel-payment-row row-cols-lg-7 g-0 g-lg-2 ">
-                                  <div class="col-sm-2">
+                                  <div class="col-sm-3">
                                     <div class="form-group">
                                       <label class="depositeLabel">Refund Amount</label>
                                       <div class="input-group">
@@ -942,15 +862,13 @@
                                       </div>
                                     </div>
                                   </div>
-
-                                  <div class="col-sm-2">
+                                  <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Refund Date</label>
                                       <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" data-name="refund_date"  class="form-control" disabled>
                                     </div>
                                   </div>
-
-                                  <div class="col-sm-2">
+                                  <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Bank</label>
                                       <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank"  class="form-control bank select2single" disabled>
@@ -961,8 +879,7 @@
                                       </select>
                                     </div>
                                   </div>
-
-                                  <div class="col-sm-2">
+                                  <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Refund Confirmed By</label>
                                       <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single" disabled>
@@ -973,10 +890,8 @@
                                       </select>
                                     </div>
                                   </div>
-
                                 </div>
                               @endforeach
-
                             @else
                               <div class="refund-payment-hidden-section" hidden>
                                 <h3 class="mt-2 mb-1-half">Refund Payments</h3>
@@ -992,14 +907,12 @@
                                       </div>
                                     </div>
                                   </div>
-  
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Refund Date</label>
                                       <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][refund][0][refund_date]" data-name="refund_date"  class="form-control">
                                     </div>
                                   </div>
-  
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Bank</label>
@@ -1012,8 +925,7 @@
                                       <span class="text-danger" role="alert"></span>
                                     </div>
                                   </div>
-  
-                                  <div class="col-sm-2">
+                                  <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Refund Confirmed By</label>
                                       <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by" id="quote_{{$key}}_refund_0_refund_confirmed_by" class="form-control refund_confirmed_by select2single" >
@@ -1025,26 +937,19 @@
                                       <span class="text-danger" role="alert"></span>
                                     </div>
                                   </div>
-
                                   <div class="col-sm-1 d-flex justify-content-end">
                                     <div class="form-group">
                                       <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm">X</button>
                                     </div>
                                   </div>
-  
                                 </div>
                               </div>
                             @endif
                           </section>
-
                         <section>
                         </section>
-
-
-
                         @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
                           @foreach ($booking_detail->getBookingCreditNote as $fkey => $payment)
-
                           <section class="credit-note-section">
                             <h3 class="mt-2 mb-1-half">Credit Note</h3>
                             <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
@@ -1059,22 +964,18 @@
                                   </div>
                                 </div>
                               </div>
-
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note No.</label>
                                   <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" readonly>
                                 </div>
                               </div>
-
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note Date</label>
                                   <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control">
                                 </div>
                               </div>
-                        
-
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note Received By</label>
@@ -1089,13 +990,11 @@
                             </div>
                           </section>
                           @endforeach
-
                           @else
-
                           <div class="credit-note-hidden-section" hidden>
                             <h3 class="mt-2 mb-1-half">Credit Note </h3>
                             <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2 mt-2">
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label class="depositeLabel">Credit Note Amount</label>
                                   <div class="input-group">
@@ -1106,23 +1005,19 @@
                                   </div>
                                 </div>
                               </div>
-  
                               {{-- <div class="col-sm-2" >
                                 <div class="form-group">
                                   <label>Credit Note Supplier ID.</label>
                                   <input type="text" value="{{ $booking_detail->supplier_id  }}" name="quote[{{ $key }}][credit_note][0][credit_note_supplier_id]" data-name="credit_note_supplier_id" class="form-control">
                                 </div>
                               </div> --}}
-  
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Credit Note Date</label>
                                   <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_date" class="form-control" >
                                 </div>
                               </div>
-                        
-  
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Credit Note Recieved By <span style="color:red">*</span></label>
                                   <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
@@ -1134,22 +1029,16 @@
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
-
                               <div class="col-sm-1 d-flex justify-content-end">
                                 <div class="form-group">
                                   <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm">X</button>
                                 </div>
                               </div>
-
                             </div>
                           </div>
-
-
                         @endif
-
                           <section class="mt-1">
                             <div class="row">
-
                               <div class="col-12 text-right">
                                 <div class="btn-group mr-1 {{ ( ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ) ? 'd-none' : '' }}">
                                   @if(isset($total_deposit) && ($total_deposit > 0))
@@ -1170,13 +1059,11 @@
                         </div>
                       @endforeach
                     @endif
-
                     <div class="row">
                       <div class="col-12 text-right">
                         <button type="button" id="add_more_booking" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       </div>
                     </div>
-                  
                     <div class="form-group row  mt-3">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                       <div class="col-sm-2">
@@ -1190,11 +1077,8 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="form-group row">
-                      
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
-                
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
@@ -1205,7 +1089,6 @@
                           </div>
                         </div>
                       </div>
-
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
@@ -1220,11 +1103,8 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="form-group row">
-                      
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Selling Price</label>
-                
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
@@ -1235,9 +1115,7 @@
                           </div>
                         </div>
                       </div>
-                
                     </div>
-
                     <div class="form-group row">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Profit Percentage</label>
                       <div class="col-sm-2">
@@ -1254,7 +1132,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="form-group row">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Potential Commission</label>
                       <div class="col-sm-2">
@@ -1268,9 +1145,7 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="form-group row">
-
                       <div class="col-sm-3">
                         <div class="form-group">
                           <label>Selling Price in Other Currency</label>
@@ -1280,13 +1155,11 @@
                             <option value="{{ $currency->code }}" {{ ($booking->selling_currency_oc == $currency->code) ? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                             @endforeach
                           </select>
-
                           @error('selling_price_other_currency')
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                           @enderror
                         </div>
                       </div>
-                  
                       <div class="col-sm-2">
                         <div class="form-group mt-2">
                           <label></label>
@@ -1295,13 +1168,10 @@
                               <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
                             </div>
                             <input type="number" value="{{ \Helper::number_format($booking->selling_price_ocr) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
-                            
                           </div>
                         </div>
                       </div>
-                  
                     </div>
-
                     <div class="form-group row">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
                       <div class="col-sm-2">
@@ -1322,7 +1192,6 @@
                         </div>
                         <div class="col-md-9">
                           <div class="row">
-                       
                           @forelse  ($booking['revelant_quote'] as $revQuote)
                             <div class="col-sm-2 relevant-quote">
                               <div class="form-group">
@@ -1346,7 +1215,6 @@
                       </div>
                     </div>
                   </div>
-
                   @if(isset($ufg_payment_records) && !empty($ufg_payment_records))
                     <div class="card">
                       <div class="card-header">
@@ -1371,13 +1239,11 @@
                           </thead>
                           <tbody id="ufg_payment_records">
                             @foreach ($ufg_payment_records as $key => $ufg_payment_record)
-
                               @if(is_array($ufg_payment_records[$key]))
                                 @if(!empty($key))
                                   <tr><td colspan="11" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
                                 @endif
                                 @foreach ($ufg_payment_records[$key] as $key => $payment_record)
-
                                   <tr>
                                     <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
                                     <td class="text-center text-uppercase">{{ ucfirst($payment_record['status']) }}</td>
@@ -1401,7 +1267,6 @@
                                         <span class="fa fa-eye"></span>
                                       </a>
                                     </td>
-
                                   </tr>
                                 @endforeach
                               @endif
@@ -1411,7 +1276,6 @@
                       </div>
                     </div>
                   @endif
-
                   @if(isset($old_ufg_payment_records) && !empty($old_ufg_payment_records))
                     <div class="card">
                       <div class="card-header">
@@ -1436,13 +1300,11 @@
                           </thead>
                           <tbody id="old_ufg_payment_records">
                             @foreach ($old_ufg_payment_records as $key => $old_ufg_payment_record)
-
                               @if(is_array($old_ufg_payment_records[$key]))
                                 @if(!empty($key))
                                   <tr><td colspan="11" class="text-center font-weight-bold tbody-highlight text-uppercase">{{ $key }}</td></tr>
                                 @endif
                                 @foreach ($old_ufg_payment_records[$key] as $key => $payment_record)
-
                                   <tr>
                                     <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
                                     <td class="text-center text-uppercase">{{ $payment_record['status'] }}</td>
@@ -1466,7 +1328,6 @@
                                         <span class="fa fa-eye"></span>
                                       </a>
                                     </td>
-
                                   </tr>
                                 @endforeach
                               @endif
@@ -1476,7 +1337,6 @@
                       </div>
                     </div>
                   @endif
-
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right">Submit</button>
@@ -1485,7 +1345,6 @@
             </form>
             <div id="overlay" class=""></div>
             </div>
- 
           </div>
         </div>
       </div>
@@ -1496,29 +1355,21 @@
       @endif
     @endif --}}
   </div>
-
   @include('partials.payment_details_modal')
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
-
 @endsection
-
- 
 @push('js')
-
 <script>
   $(window).on('beforeunload', function() {
-
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
-
     var id = "{{encrypt($booking->id)}}";
     var url = "{{ route('has-user-edit', ":id") }}";
     url = url.replace(':id', id);
-
     $.ajax({
       url: url,
       type: 'delete',  
@@ -1532,7 +1383,6 @@
         console.log(xhr.responseText);  
       }
     });
-  
   });
 </script>
 @endpush
