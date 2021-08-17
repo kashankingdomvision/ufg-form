@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -130,16 +130,17 @@ $(document).ready(function($) {
         var supplier_id              = $(this).closest('.quote').find('.supplier-id').val();
         var current_payment_methods  = $(this);
 
+        var quoteKey                 =  $(this).closest('.quote').data('key');
+        var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
 
-        // var actualCost = $(this).closest('.quote').find('.estimated-cost').val();
-        // var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var actualCost               = $(this).closest('.quote').find('.estimated-cost').val();
+        var totalDepositAmountArray  = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount       = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstanding_amount_left  = $(this).closest('.quote').find('.outstanding_amount_left').val();
+        var t = 0;
+        var dp = 0;
+        var wa = 0;
 
-
-        // console.log(payment_method);
-        // console.log(supplier_id);
-    
-    
         if(supplier_id != null && payment_method== 3){
             
                 $.ajax({
@@ -149,43 +150,31 @@ $(document).ready(function($) {
                     // dataType: "json",
                     success: function (data) {
 
-                        // t = actualCost - totalDepositAmount;
-                        // dp = t - wa;
-                 
-                   
-                        // console.log(actualCost);
-                        // console.log(totalDepositAmount);
+                        if(data.response == true){
+                            wa = parseFloat(data.message)
 
+                            if(outstanding_amount_left >= wa ){
 
-                        if(data){
-                            alert(data);
-                            $(current_payment_methods).val('').trigger('change');
+                                console.log(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`);
+
+                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa);
+                       
+                            }
+
+                            if(outstanding_amount_left <= wa ){
+                               var w =  wa - outstanding_amount_left;
+
+                               $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(w);
+                               console.log(w);
+                            }
                         }
-
-                        // if(data.response == true){
-                        //     $('#quote_0_finance_0_deposit_amount').val(data.message);
-                        // }
-            
                     },
                     error: function (reject) {
-            
+
                         if( reject.status === 422 ) {
-            
                             var errors = $.parseJSON(reject.responseText);
-            
-            
-                            setTimeout(function() {
-                                $("#overlay").removeClass('overlay').html('');
-            
-                                jQuery.each(errors.errors, function( index, value ) {
-            
-                                    index = index.replace(/\./g,'_');
-                                    $('#'+index).addClass('is-invalid');
-                                    $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                                });
-            
-                            }, 800);
-            
+                            alert(errors.message);
+                            $(current_payment_methods).val('').trigger('change');
                         }
                     },
                 });

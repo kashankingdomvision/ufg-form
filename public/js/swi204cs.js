@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
   event.preventDefault();
   var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
@@ -23887,11 +23887,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.payment-method', function () {
     var payment_method = $(this).val();
     var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
-    var current_payment_methods = $(this); // var actualCost = $(this).closest('.quote').find('.estimated-cost').val();
-    // var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-    // console.log(payment_method);
-    // console.log(supplier_id);
+    var current_payment_methods = $(this);
+    var quoteKey = $(this).closest('.quote').data('key');
+    var financeKey = $(this).closest('.finance-clonning').data('financekey');
+    var actualCost = $(this).closest('.quote').find('.estimated-cost').val();
+    var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    var outstanding_amount_left = $(this).closest('.quote').find('.outstanding_amount_left').val();
+    var t = 0;
+    var dp = 0;
+    var wa = 0;
 
     if (supplier_id != null && payment_method == 3) {
       $.ajax({
@@ -23902,29 +23911,26 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         type: 'get',
         // dataType: "json",
         success: function success(data) {
-          // t = actualCost - totalDepositAmount;
-          // dp = t - wa;
-          // console.log(actualCost);
-          // console.log(totalDepositAmount);
-          if (data) {
-            alert(data);
-            $(current_payment_methods).val('').trigger('change');
-          } // if(data.response == true){
-          //     $('#quote_0_finance_0_deposit_amount').val(data.message);
-          // }
+          if (data.response == true) {
+            wa = parseFloat(data.message);
 
+            if (outstanding_amount_left >= wa) {
+              console.log("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount"));
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(wa);
+            }
+
+            if (outstanding_amount_left <= wa) {
+              var w = wa - outstanding_amount_left;
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(w);
+              console.log(w);
+            }
+          }
         },
         error: function error(reject) {
           if (reject.status === 422) {
             var errors = $.parseJSON(reject.responseText);
-            setTimeout(function () {
-              $("#overlay").removeClass('overlay').html('');
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
-                $('#' + index).addClass('is-invalid');
-                $('#' + index).closest('.form-group').find('.text-danger').html(value);
-              });
-            }, 800);
+            alert(errors.message);
+            $(current_payment_methods).val('').trigger('change');
           }
         }
       });
