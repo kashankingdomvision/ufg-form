@@ -1178,10 +1178,10 @@ $("#quoteCreate").submit(function(event) {
         },
         success: function (data) {
             $("#overlay").removeClass('overlay').html('');
-            // setTimeout(function() {
-            //     alert('Quote created Successfully');
-            //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-            // }, 800);
+            setTimeout(function() {
+                alert('Quote created Successfully');
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
+            }, 800);
         },
         error: function (reject) {
             if( reject.status === 422 ) {
