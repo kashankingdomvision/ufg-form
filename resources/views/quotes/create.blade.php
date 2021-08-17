@@ -307,7 +307,6 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
-                    <div class="package border shadow " id="package0" data-key="0"> 
                       <div class="quote" data-key="0">
                         <div class="row">
                             
@@ -598,18 +597,13 @@
                       </div>
                         <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                         
-                        <div class="row p-3">
-                          <div class="col-12 text-right">
-                            <button type="button" data-key="0" class="mr-3 btn btn-outline-dark add_more pull-right">+ Add more </button>
-                          </div>
-                        </div>
-                    </div>
+                    
                   </div>
                   
                   <div class="row p-3">
                     <div class="col-12 text-right">
-                      <button type="button" id="add_package" class=" btn btn-outline-dark  pull-right">+ Add package </button>
-                      <button type="button" id="save_template" class="btn btn-outline-success add_more  pull-right">Save as Template</button>
+                      <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
+                      <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                     </div>
                   </div>
 
