@@ -1376,10 +1376,14 @@ $('.search-reference').on('click', function () {
                             searchRef.prop('disabled', true);
                         },
                         success: function (data) {
-
+                            console.log(data);
                             var tbody = '';
                             if(data.response)
                             {
+                                
+                                if(data.response.tas_ref){
+                                    $("#tas_ref").val(data.response.tas_ref);
+                                }
                      
                                 if(data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name') )
                                 {

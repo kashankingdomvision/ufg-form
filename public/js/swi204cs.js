@@ -20616,7 +20616,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.1.0
+* sweetalert2 v11.0.20
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -21160,8 +21160,6 @@ S2.define('jquery.select2',[
 
     if (!params.showConfirmButton && !params.showDenyButton && !params.showCancelButton) {
       hide(actions);
-    } else {
-      show(actions);
     } // Custom class
 
 
@@ -22054,7 +22052,7 @@ S2.define('jquery.select2',[
     didDestroy: undefined,
     scrollbarPadding: true
   };
-  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'preConfirm', 'preDeny', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
+  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
   const deprecatedParams = {};
   const toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'focusConfirm', 'focusDeny', 'focusCancel', 'returnFocus', 'heightAuto', 'keydownListenerCapture'];
   /**
@@ -23108,24 +23106,22 @@ S2.define('jquery.select2',[
     return inputValue && inputValue.toString() === optionValue.toString();
   };
 
-  const handleConfirmButtonClick = instance => {
-    const innerParams = privateProps.innerParams.get(instance);
+  const handleConfirmButtonClick = (instance, innerParams) => {
     instance.disableButtons();
 
     if (innerParams.input) {
-      handleConfirmOrDenyWithInput(instance, 'confirm');
+      handleConfirmOrDenyWithInput(instance, innerParams, 'confirm');
     } else {
-      confirm(instance, true);
+      confirm(instance, innerParams, true);
     }
   };
-  const handleDenyButtonClick = instance => {
-    const innerParams = privateProps.innerParams.get(instance);
+  const handleDenyButtonClick = (instance, innerParams) => {
     instance.disableButtons();
 
     if (innerParams.returnInputValueOnDeny) {
-      handleConfirmOrDenyWithInput(instance, 'deny');
+      handleConfirmOrDenyWithInput(instance, innerParams, 'deny');
     } else {
-      deny(instance, false);
+      deny(instance, innerParams, false);
     }
   };
   const handleCancelButtonClick = (instance, dismissWith) => {
@@ -23133,28 +23129,26 @@ S2.define('jquery.select2',[
     dismissWith(DismissReason.cancel);
   };
 
-  const handleConfirmOrDenyWithInput = (instance, type
-  /* 'confirm' | 'deny' */
+  const handleConfirmOrDenyWithInput = (instance, innerParams, type
+  /* type is either 'confirm' or 'deny' */
   ) => {
-    const innerParams = privateProps.innerParams.get(instance);
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
-      handleInputValidator(instance, inputValue, type);
+      handleInputValidator(instance, innerParams, inputValue, type);
     } else if (!instance.getInput().checkValidity()) {
       instance.enableButtons();
       instance.showValidationMessage(innerParams.validationMessage);
     } else if (type === 'deny') {
-      deny(instance, inputValue);
+      deny(instance, innerParams, inputValue);
     } else {
-      confirm(instance, inputValue);
+      confirm(instance, innerParams, inputValue);
     }
   };
 
-  const handleInputValidator = (instance, inputValue, type
-  /* 'confirm' | 'deny' */
+  const handleInputValidator = (instance, innerParams, inputValue, type
+  /* type is either 'confirm' or 'deny' */
   ) => {
-    const innerParams = privateProps.innerParams.get(instance);
     instance.disableInput();
     const validationPromise = Promise.resolve().then(() => asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage)));
     validationPromise.then(validationMessage => {
@@ -23164,16 +23158,14 @@ S2.define('jquery.select2',[
       if (validationMessage) {
         instance.showValidationMessage(validationMessage);
       } else if (type === 'deny') {
-        deny(instance, inputValue);
+        deny(instance, innerParams, inputValue);
       } else {
-        confirm(instance, inputValue);
+        confirm(instance, innerParams, inputValue);
       }
     });
   };
 
-  const deny = (instance, value) => {
-    const innerParams = privateProps.innerParams.get(instance || undefined);
-
+  const deny = (instance, innerParams, value) => {
     if (innerParams.showLoaderOnDeny) {
       showLoading(getDenyButton());
     }
@@ -23205,9 +23197,7 @@ S2.define('jquery.select2',[
     });
   };
 
-  const confirm = (instance, value) => {
-    const innerParams = privateProps.innerParams.get(instance || undefined);
-
+  const confirm = (instance, innerParams, value) => {
     if (innerParams.showLoaderOnConfirm) {
       showLoading(); // TODO: make showLoading an *instance* method
     }
@@ -23471,9 +23461,9 @@ S2.define('jquery.select2',[
 
       privateMethods.swalPromiseResolve.set(instance, resolve);
 
-      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance);
+      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance, innerParams);
 
-      domCache.denyButton.onclick = () => handleDenyButtonClick(instance);
+      domCache.denyButton.onclick = () => handleDenyButtonClick(instance, innerParams);
 
       domCache.cancelButton.onclick = () => handleCancelButtonClick(instance, dismissWith);
 
@@ -23720,7 +23710,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.1.0';
+  SweetAlert.version = '11.0.20';
 
   const Swal = SweetAlert;
   Swal.default = Swal;
@@ -25011,9 +25001,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 searchRef.prop('disabled', true);
               },
               success: function success(data) {
+                console.log(data);
                 var tbody = '';
 
                 if (data.response) {
+                  if (data.response.tas_ref) {
+                    $("#tas_ref").val(data.response.tas_ref);
+                  }
+
                   if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
                     $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
                   }
