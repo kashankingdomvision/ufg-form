@@ -677,7 +677,7 @@
                                     <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="{{$fkey}}">
                                       <div class="col-sm-3">
                                         <div class="form-group">
-                                          <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Deposit Payment #{{ $count }}</label>
+                                          <label class="depositeLabel" id="deposite_heading{{ $fkey }}">Payment #{{ $count }}</label>
                                           <div class="input-group">
                                             <div class="input-group-prepend">
                                               <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -767,7 +767,7 @@
                                   <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                                     <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label class="depositeLabel" id="deposite_heading{{ $key }}">Deposit Payment #1</label>
+                                        <label class="depositeLabel" id="deposite_heading{{ $key }}"> Payment #1</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
