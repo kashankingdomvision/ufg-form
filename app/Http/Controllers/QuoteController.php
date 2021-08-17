@@ -161,9 +161,10 @@ class QuoteController extends Controller
         $data['supervisors']      = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'supervisor');
                                     })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['sale_persons']     = User::get();
+        // whereHas('getRole', function($query){
+        //     $query->where('slug', 'sales-agent');
+        // })
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
@@ -294,9 +295,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'supervisor');
                                     })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
@@ -431,9 +430,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'supervisor');
                                     })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
@@ -543,9 +540,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::whereHas('getRole', function($query){
                                         $query->where('slug', 'supervisor');
                                     })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
