@@ -4454,3 +4454,7 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-color: #a7acb1;
 }
 
+.list-type-none {
+  list-style-type: none;
+}
+

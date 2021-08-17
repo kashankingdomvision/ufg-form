@@ -258,7 +258,7 @@ class QuoteController extends Controller
         ];
     }
     
-    public function store(Request $request)
+    public function store(QuoteRequest $request)
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
@@ -266,7 +266,7 @@ class QuoteController extends Controller
                 $quotePackage = QuoteDetialPackage::create(['quote_id' => $quote->id, 'package_val' => $request->packages[$i]]);
                 // foreach ($request->quote as $qu_details) {
                     for ($y=0; $y <= $request->packages[$i] ; $y++) {
-                        $qu_details = $request->quote[$i];
+                        $qu_details = $request->quote[$y];
                         $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                         $quoteDetail['quote_id'] = $quote->id;
                         $quoteDetail['package_key'] = $quotePackage->id;

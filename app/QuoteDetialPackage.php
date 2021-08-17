@@ -10,4 +10,10 @@ class QuoteDetialPackage extends Model
         'quote_id',
         'package_val',
     ];
+    
+    
+    public function getQuoteDetail()
+    {
+        return $this->hasMany(QuoteDetail::class, 'package_key', 'id');
+    }
 }

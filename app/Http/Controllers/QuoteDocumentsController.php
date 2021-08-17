@@ -11,40 +11,25 @@ class QuoteDocumentsController extends Controller
 {
     public function documentIndex($id)
     {
-
-        
         $quote = Quote::findOrFail(decrypt($id));
-        $parentQuote = $quote->getQuoteDetails()->where('parent_id', NULL)->get();
-        $data = [];
-        foreach ($parentQuote as $parent) {
-            $_data = [];
-            $parent_product = $parent->getProduct->name;
-            $x = [];
-            foreach ($parent->getChildQuote as $child) {
-                $text = (isset($child->getCategory) && $child->getCategory->slug == 'service-excursion')? 'Service Excursion' : 'Transfer';
-                $child_product = $child->getProduct->name??NULL;
-                if($child->getCategory->slug == 'accommodation'){
-                    $x = [
-                        "text"                      => "Transfer to ".$child_product." via ".$parent_product." on ".$parent->date_of_service??NULL." ".$parent->time_of_service??NULL,
-                        "accomodation_product_name" => $child_product,
-                        "check_in"                  => "Check in: ".$child->date_of_service??NULL." ".$child->time_of_service??NULL,
-                        "service_exucrsion"         => ($parent->getChildQuote[1]->getCategory->slug == 'service-excursion')? $parent->getChildQuote[1]->getProduct->name??NULL." ".$parent->getChildQuote[1]['date_of_service']??NULL." ".$parent->getChildQuote[1]['time_of_service']??NULL : NULL,
-                    ];
-                    array_push($_data, $x);
-                }
-            }      
-            $_data['date'] = $parent->date_of_service;
-            array_push($data, $_data);
+        $x = [];
+        foreach ($quote->getQuoteDetailWithPackage as $packages) {
+            $data = [];
 
+                $data['day_date']       =   $packages->getQuoteDetail[0]['date_of_service'];
+                $trasfer_product_name   =   $packages->getQuoteDetail[0]->getProduct->name;
+                $acc_product_name       =   (isset($packages->getQuoteDetail[1]))? $packages->getQuoteDetail[1]->getProduct->name : NULL;
+                $data['transfer']       =   "Transfer to ".$acc_product_name." via ".$trasfer_product_name." on ". $packages->getQuoteDetail[0]['date_of_service'].' '.$packages->getQuoteDetail[0]['time_of_service'];
+                $data['accommodation']  =   $acc_product_name;
+                $data['check_in']       =   $packages->getQuoteDetail[0]['date_of_service'].' '.$packages->getQuoteDetail[0]['time_of_service'];
+                $data['transfer_to']    =   "Transfer to ".$acc_product_name." via ".$trasfer_product_name." at ".$packages->getQuoteDetail[0]['time_of_service'];
+                array_push($x, $data);
         }
-        $c['quote_id']      = $id;
-        $c['quoteDetail']   = $data;
-        // if($doc){
-        //     if($doc->exists()){
-        //         $data['doc']      = $doc;
-        //     }
-        // }
-        return view('quote_documents.index', $c);
+        
+        $_data['quote_id']  = $quote->id;
+        $_data['documents'] = $x;
+        
+            return view('quote_documents.index', $_data);       
     }
     
     public function generatePDF(Request $request, $id)

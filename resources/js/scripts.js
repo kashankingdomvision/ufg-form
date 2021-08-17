@@ -25,11 +25,8 @@ $("#generate-pdf").submit(function(event) {
             console.log(data, 'data');
         },
         error: function (reject) {
-
             if( reject.status === 422 ) {
-
                 var errors = $.parseJSON(reject.responseText);
-
                 setTimeout(function() {
                     $("#overlay").removeClass('overlay').html('');
 
@@ -431,41 +428,47 @@ $(document).on('click', '.addChild', function () {
 
     $(document).on('click', '#add_package', function () {
         
+        console.log($('.quote').length);
+        console.log('run add package');
         // if($('select').data('select2')){
         //     $('.select2single').select2('destroy');
         // }
         
         var id_key = $('.package:last').data('key');
-        var quoteCount = $('#package'+id_key).children('.quote').length;
-        $('.package1').val(quoteCount);
+        // console.log(id_key);
+    //     var quoteCount = $('#package'+id_key).children('.quote').length;
         var packageLengthCount  = $(".package").length;
         $(".package").eq(0).clone().attr('id', 'package'+ packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
 
-       $("#package"+ packageLengthCount).children('.quote').not(':first').remove()
-           .find("input").val("") .each(function(){
+        $("#package"+ packageLengthCount).children('.quote').not(':first').remove();
+        
+
+        var quoteLength = $('.quote').length - 1;
+       
+        $("#package"+ packageLengthCount).children('.quote').find("input").val("") .each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + ($('.quote').length) + ']';
+                    return '[' + (quoteLength) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                this.id = this.id.replace(/\d+/g, quoteLength, function(){
+                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .find("textarea").val("").each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt($('.quote').length)) + ']';
+                    return '[' + (parseInt(quoteLength)) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                this.id = this.id.replace(/\d+/g, quoteLength, function(){
+                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
                 });
             }).end()
-            .find("select").select2('destroy').val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            .find("select").val("").each(function(){
+                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + (quoteLength) + ']'; });
+                this.id = this.id.replace(/\d+/g, quoteLength, function(){
+                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
                 });
             });
-            
-            $("packageinput:last").val(1);
+            // console.log('package'+ packageLengthCount);
+            // $("#packageinput"+packageLengthCount).val(1);
             
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
@@ -475,9 +478,9 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-            reinitializedDynamicFeilds();
+            // reinitializedDynamicFeilds();
             $("#package"+ packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
-            $("#package"+ packageLengthCount).find('.packageinput').attr('id', 'packageinput'+packageLengthCount).val(0);
+            $("#package"+ packageLengthCount).find('.packageinput').attr('id', 'packageinput'+packageLengthCount).val(1);
             console.log(packageLengthCount);
 
         });
@@ -492,33 +495,32 @@ $(document).on('click', '.addChild', function () {
         //   }
         
         var key_ = $(this).data('key');
-        let package_quoteCount = $('#package'+key_).children(".quote").length + 1;
+        let package_quoteCount = $("#package"+ key_).children(".quote").length + 1;
         $("#packageinput"+ key_).val(package_quoteCount);
 
         $('#package'+key_).children(".quote").eq(0).clone()
             .find("input").val("") .each(function(){
-                console.log(this.name);
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + parseInt(package_quoteCount) + ']';
+                    return '[' + parseInt($(".quote").length) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
+                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .find("textarea").val("").each(function(){
                 this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt(package_quoteCount)) + ']';
+                    return '[' + (parseInt($(".quote").length)) + ']';
                 });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
+                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
                 });
             }).end()
             .find("select").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return package_quoteCount  });
-                this.id = this.id.replace(/\d+/g, package_quoteCount, function(){
-                    return 'quote_' + parseInt(package_quoteCount) + '_' + $(this).attr("data-name")
+                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'  });
+                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
+                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
                 });
-            }).end().show().insertAfter(".quote:last");
+            }).end().show().insertAfter("#package"+key_+" .quote:last");
 
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
@@ -528,7 +530,7 @@ $(document).on('click', '.addChild', function () {
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
             datepickerReset(1);
-            reinitializedDynamicFeilds();
+        // reinitializedDynamicFeilds();
                 
     });
 

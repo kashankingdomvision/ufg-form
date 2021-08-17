@@ -58,6 +58,10 @@ class Quote extends Model
     }
     
  
+    public function getQuoteDetailWithPackage()
+    {
+        return $this->hasMany(QuoteDetialPackage::class);
+    }
 
     public function getQuotelogs()
     {
