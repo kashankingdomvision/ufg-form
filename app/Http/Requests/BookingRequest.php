@@ -88,6 +88,8 @@ class BookingRequest extends FormRequest
             'quote.*.credit_note.*.credit_note_recieved_by.required_with'   => 'The Credit Note Recieved By field is required',
             'quote.*.refund.*.bank.required_with' => 'The Bank feild is required',
             'quote.*.refund.*.refund_confirmed_by.required_with' => 'The Refund Confirmed By feild is required',
+            'quote.*.category_id.required'               =>  'The Category field is required.',
+            'quote.*.supplier_id.required'               =>  'The Supplier field is required.'
         ];
     }
     

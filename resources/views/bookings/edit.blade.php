@@ -443,7 +443,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Category</label>
+                                <label>Category <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control  select2single  category- select2single  category-id @error('category_id') is-invalid @enderror">
                                   <option value="">Select Category</option>
                                   @foreach ($categories as $category)
@@ -456,7 +456,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Supplier</label>
+                                <label>Supplier <span style="color:red">*</span></label>
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control  select2single  supplier-id @error('supplier_id') is-invalid @enderror">
                                     <option value="">Select Supplier</option>
                                     @if(isset($booking_detail->getCategory) && $booking_detail->getCategory->getSupplier)
