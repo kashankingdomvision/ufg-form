@@ -1690,7 +1690,7 @@ $("#update_template").submit(function(event) {
 $("#update-booking").submit(function(event) {
     event.preventDefault();
 
-    // $('#update-booking :input').prop('disabled', false);
+    $('#update-booking :input').prop('disabled', false);
 
     var $form = $(this),
     url = $form.attr('action');

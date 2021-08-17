@@ -938,7 +938,7 @@
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                         </div>
-                                        <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount"  class="form-control refund_amount hide-arrows" step="any">
+                                        <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount"  class="form-control refund_amount hide-arrows" step="any" disabled>
                                       </div>
                                     </div>
                                   </div>
@@ -946,14 +946,14 @@
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Refund Date</label>
-                                      <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" data-name="refund_date"  class="form-control">
+                                      <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" data-name="refund_date"  class="form-control" disabled>
                                     </div>
                                   </div>
 
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Bank</label>
-                                      <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank"  class="form-control bank select2single" >
+                                      <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank"  class="form-control bank select2single" disabled>
                                         <option value="">Select Bank</option>
                                         @foreach ($banks as $bank)
                                           <option value="{{ $bank->id }}" {{ ($bank->id == $payment->bank_id) ? 'selected' : '' }}> {{ $bank->name }} </option>
@@ -965,7 +965,7 @@
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Refund Confirmed By</label>
-                                      <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single" >
+                                      <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single" disabled>
                                         <option value="">Select User</option>
                                         @foreach ($sale_persons as $person)
                                           <option  value="{{ $person->id }}" {{ ($person->id == $payment->refund_confirmed_by) ? 'selected' : '' }}>{{ $person->name }}</option>
@@ -1003,24 +1003,26 @@
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Bank</label>
-                                      <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank"  class="form-control bank select2single" >
+                                      <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank" id="quote_{{$key}}_refund_0_bank" class="form-control bank select2single" >
                                         <option value="">Select Bank</option>
                                         @foreach ($banks as $bank)
                                           <option value="{{ $bank->id }}"> {{ $bank->name }} </option>
                                         @endforeach
                                       </select>
+                                      <span class="text-danger" role="alert"></span>
                                     </div>
                                   </div>
   
                                   <div class="col-sm-2">
                                     <div class="form-group">
                                       <label>Refund Confirmed By</label>
-                                      <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single" >
+                                      <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by" id="quote_{{$key}}_refund_0_refund_confirmed_by" class="form-control refund_confirmed_by select2single" >
                                         <option value="">Select User</option>
                                         @foreach ($sale_persons as $person)
                                           <option  value="{{ $person->id }}">{{ $person->name }}</option>
                                         @endforeach
                                       </select>
+                                      <span class="text-danger" role="alert"></span>
                                     </div>
                                   </div>
 
@@ -1075,7 +1077,7 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Credit Note Recieved By</label>
+                                  <label>Credit Note Received By</label>
                                   <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
                                     <option value="">Select User</option>
                                     @foreach ($sale_persons as $person)

@@ -25257,8 +25257,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //////////////////////////////////
 
   $("#update-booking").submit(function (event) {
-    event.preventDefault(); // $('#update-booking :input').prop('disabled', false);
-
+    event.preventDefault();
+    $('#update-booking :input').prop('disabled', false);
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
