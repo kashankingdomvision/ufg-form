@@ -47,15 +47,14 @@ class WalletController extends Controller
      
 
         if($total <= 0){
-            return "This Supplier Has no Credit Notes";
-
-            // return \Response::json(['response' => false ,'message' => "This Supplier Has no Credit Notes"], 402);
+            // return "This Supplier Has no Credit Notes";
+            return \Response::json(['response' => false ,'message' => "This Supplier Has no Credit Notes"], 422);
         }
         
-        // else{
-        //     return \Response::json(['response' =>  true ,'message' => $total], 200);
-             
-        // }
+        else{
+            // return $total;
+            return \Response::json(['response' =>  true ,'message' => $total], 200);
+        }
         // dd($total);
 
         // $data['booking_transactions'] = $booking_transactions;
