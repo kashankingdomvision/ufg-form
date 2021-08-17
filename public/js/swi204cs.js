@@ -23887,9 +23887,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.payment-method', function () {
     var payment_method = $(this).val();
     var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
-    var current_payment_methods = $(this);
-    console.log(payment_method);
-    console.log(supplier_id);
+    var current_payment_methods = $(this); // var actualCost = $(this).closest('.quote').find('.estimated-cost').val();
+    // var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+    // console.log(payment_method);
+    // console.log(supplier_id);
 
     if (supplier_id != null && payment_method == 3) {
       $.ajax({
@@ -23900,9 +23902,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         type: 'get',
         // dataType: "json",
         success: function success(data) {
-          console.log(!data.response);
-
-          if (data.response) {
+          // t = actualCost - totalDepositAmount;
+          // dp = t - wa;
+          // console.log(actualCost);
+          // console.log(totalDepositAmount);
+          if (data) {
             alert(data);
             $(current_payment_methods).val('').trigger('change');
           } // if(data.response == true){
