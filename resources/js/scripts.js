@@ -1357,7 +1357,7 @@ $('.search-reference').on('click', function () {
         alert('Reference number is not found');
         searchRef.text('Search').prop('disabled', false);
     }else{
-
+        $('#ref_no').closest('.form-group').find('.text-danger').html('');
         //check refrence is already exist in system
         $.ajax({
             headers: {'X-CSRF-TOKEN': CSRFTOKEN},
@@ -1369,7 +1369,7 @@ $('.search-reference').on('click', function () {
                 if(data.response == true){
                     r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
                 }
-
+              
                 if(r == true){
                     $.ajax({
                         headers: {'X-CSRF-TOKEN': CSRFTOKEN},
@@ -1458,7 +1458,7 @@ $('.search-reference').on('click', function () {
 
                             searchRef.prop('disabled', false);
                             $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-
+   
                         },
                         error: function (reject) {
 
