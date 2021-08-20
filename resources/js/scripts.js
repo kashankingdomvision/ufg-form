@@ -155,7 +155,6 @@ $(document).ready(function($) {
 
                             if(outstanding_amount_left > wa ){
 
-                                console.log(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`);
 
                                 $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa);
                        
@@ -1008,6 +1007,8 @@ $(document).on('click', '.addChild', function () {
         var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
         var outstandingAmountLeft   = estimated_cost - totalDepositAmount;
 
+        var closestFinance = $(this).closest('.finance');
+
 
         if(outstandingAmountLeft >= 0){
             $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
@@ -1016,6 +1017,36 @@ $(document).on('click', '.addChild', function () {
             alert("Please Enter Correct Deposit Amount");
             $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
             $(this).closest('.finance').find('.outstanding-amount:last').val('');
+        }
+
+        var payment_method = $(this).closest('.finance').find('.payment-method').val();
+        var wa = 0;
+        var supplier_id              = $(this).closest('.quote').find('.supplier-id').val();
+        if(payment_method && payment_method == 3){
+
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+                url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
+                type: 'get',
+                // dataType: "json",
+                success: function (data) {
+
+                    if(data.response == true){
+                        wa = parseFloat(data.message);
+                        if(depositAmount > wa){
+                            alert("Please Enter Correct Waller Amount.");
+                            closestFinance.find('.deposit-amount:last').val('0.00');
+                            closestFinance.find('.outstanding-amount:last').val('');
+                        }
+                    }
+                },
+                error: function (reject) {}
+            });
+
+
+            // console.log("payment_method is set");
+        }else{
+            // console.log("payment_method is not set");
         }
 
     });
