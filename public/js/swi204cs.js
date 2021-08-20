@@ -23897,7 +23897,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var outstanding_amount_left = $(this).closest('.quote').find('.outstanding_amount_left').val();
+    var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
     var t = 0;
     var dp = 0;
     var wa = 0;

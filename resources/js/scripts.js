@@ -136,7 +136,7 @@ $(document).ready(function($) {
         var actualCost               = $(this).closest('.quote').find('.estimated-cost').val();
         var totalDepositAmountArray  = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount       = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var outstanding_amount_left  = $(this).closest('.quote').find('.outstanding_amount_left').val();
+        var outstanding_amount_left  = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
 
         var t = 0;
         var dp = 0;
