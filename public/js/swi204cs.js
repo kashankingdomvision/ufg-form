@@ -24768,7 +24768,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             wa = parseFloat(data.message);
 
             if (depositAmount > wa) {
-              alert("Please Enter Correct Waller Amount.");
+              alert("Please Enter Correct Wallet Amount.");
               closestFinance.find('.deposit-amount:last').val('0.00');
               closestFinance.find('.outstanding-amount:last').val('');
             }

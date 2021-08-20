@@ -1034,7 +1034,7 @@ $(document).on('click', '.addChild', function () {
                     if(data.response == true){
                         wa = parseFloat(data.message);
                         if(depositAmount > wa){
-                            alert("Please Enter Correct Waller Amount.");
+                            alert("Please Enter Correct Wallet Amount.");
                             closestFinance.find('.deposit-amount:last').val('0.00');
                             closestFinance.find('.outstanding-amount:last').val('');
                         }
