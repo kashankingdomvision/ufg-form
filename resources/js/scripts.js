@@ -137,53 +137,53 @@ $(document).ready(function($) {
         var totalDepositAmountArray  = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount       = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
         var outstanding_amount_left  = $(this).closest('.quote').find('.outstanding_amount_left').val();
+
         var t = 0;
         var dp = 0;
         var wa = 0;
 
         if(supplier_id != null && payment_method== 3){
             
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                    url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
-                    type: 'get',
-                    // dataType: "json",
-                    success: function (data) {
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+                url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
+                type: 'get',
+                // dataType: "json",
+                success: function (data) {
 
-                        if(data.response == true){
-                            wa = parseFloat(data.message)
+                    if(data.response == true){
+                        wa = parseFloat(data.message)
 
-                            if(outstanding_amount_left > wa ){
-
-
-                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa);
-                       
-                            }
-
-                            if(outstanding_amount_left < wa ){
-                               var w =  wa - outstanding_amount_left;
-
-                               $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(w);
-                               console.log(w);
-                            }
-
-                            if(outstanding_amount_left == wa ){
-                                // var w =  wa - outstanding_amount_left;
- 
-                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa);
-                                console.log(w);
-                             }
+                        if(outstanding_amount_left > wa ){
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa.toFixed(2));
                         }
-                    },
-                    error: function (reject) {
 
-                        if( reject.status === 422 ) {
-                            var errors = $.parseJSON(reject.responseText);
-                            alert(errors.message);
-                            $(current_payment_methods).val('').trigger('change');
+                        if(outstanding_amount_left < wa ){
+                            //    var w =  wa - outstanding_amount_left;
+
+                            //    console.log(wa);
+                            //    console.log(outstanding_amount_left);
+                            // console.log(w);
+
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(outstanding_amount_left.toFixed(2));
                         }
-                    },
-                });
+
+                        if(outstanding_amount_left == wa ){
+                            // var w =  wa - outstanding_amount_left;
+
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa.toFixed(2));
+                        }
+                    }
+                },
+                error: function (reject) {
+
+                    if( reject.status === 422 ) {
+                        var errors = $.parseJSON(reject.responseText);
+                        alert(errors.message);
+                        $(current_payment_methods).val('').trigger('change');
+                    }
+                },
+            });
            
         }
     
