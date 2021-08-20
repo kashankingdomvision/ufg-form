@@ -24737,17 +24737,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }, 0);
     var outstandingAmountLeft = estimated_cost - totalDepositAmount;
     var closestFinance = $(this).closest('.finance');
+    var payment_method = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_payment_method")).val();
 
     if (outstandingAmountLeft >= 0) {
       $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
       $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
-    } else {
+    } else if (outstandingAmountLeft < 0 && payment_method != 3) {
       alert("Please Enter Correct Deposit Amount");
       $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
       $(this).closest('.finance').find('.outstanding-amount:last').val('');
     }
 
-    var payment_method = $(this).closest('.finance').find('.payment-method').val();
     var wa = 0;
     var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
 
