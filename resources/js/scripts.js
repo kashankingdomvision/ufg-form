@@ -152,26 +152,18 @@ $(document).ready(function($) {
                 success: function (data) {
 
                     if(data.response == true){
-                        wa = parseFloat(data.message)
-
+                        wa = parseFloat(data.message);
+                   
                         if(outstanding_amount_left > wa ){
-                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa.toFixed(2));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
                         }
 
                         if(outstanding_amount_left < wa ){
-                            //    var w =  wa - outstanding_amount_left;
-
-                            //    console.log(wa);
-                            //    console.log(outstanding_amount_left);
-                            // console.log(w);
-
-                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(outstanding_amount_left.toFixed(2));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((outstanding_amount_left.toFixed(2)));
                         }
 
                         if(outstanding_amount_left == wa ){
-                            // var w =  wa - outstanding_amount_left;
-
-                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val(wa.toFixed(2));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
                         }
                     }
                 },
@@ -1033,8 +1025,9 @@ $(document).on('click', '.addChild', function () {
 
                     if(data.response == true){
                         wa = parseFloat(data.message);
+
                         if(depositAmount > wa){
-                            alert("Please Enter Correct Wallet Amount.");
+                            alert("Please Enter Correct Wallet Amount");
                             closestFinance.find('.deposit-amount:last').val('0.00');
                             closestFinance.find('.outstanding-amount:last').val('');
                         }

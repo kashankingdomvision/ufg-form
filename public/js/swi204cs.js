@@ -23919,15 +23919,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             }
 
             if (outstanding_amount_left < wa) {
-              //    var w =  wa - outstanding_amount_left;
-              //    console.log(wa);
-              //    console.log(outstanding_amount_left);
-              // console.log(w);
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(outstanding_amount_left.toFixed(2));
             }
 
             if (outstanding_amount_left == wa) {
-              // var w =  wa - outstanding_amount_left;
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val(wa.toFixed(2));
             }
           }
@@ -24769,7 +24764,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             wa = parseFloat(data.message);
 
             if (depositAmount > wa) {
-              alert("Please Enter Correct Wallet Amount.");
+              alert("Please Enter Correct Wallet Amount");
               closestFinance.find('.deposit-amount:last').val('0.00');
               closestFinance.find('.outstanding-amount:last').val('');
             }
