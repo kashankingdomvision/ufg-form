@@ -1043,13 +1043,20 @@
                               <div class="col-12 text-right">
                                 <div class="btn-group mr-1 {{ ( ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ) ? 'd-none' : '' }}">
                                   @if(isset($total_deposit) && ($total_deposit > 0))
-                                    <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <button type="button" class="btn btn-md btn-danger">Cancel Payment</button>
-                                    <div class="dropdown-menu">
-                                      <a class="dropdown-item refund-to-bank" data-booking_detail_id="{{$booking_detail->id}}" >Refund to Bank</a>
-                                      <a class="dropdown-item credit-note" data-booking_detail_id="{{$booking_detail->id}}">Credit Note</a>
+                                    <div class="btn-group">
+                                      <div class="btn-group dropdown" role="group">
+                                        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu">
+
+                                          <a class="btn dropdown-item refund-to-bank" data-booking_detail_id="{{$booking_detail->id}}" >Refund to Bank</a>
+                                          <a class="btn dropdown-item credit-note" data-booking_detail_id="{{$booking_detail->id}}">Credit Note</a>
+                                        </div>
+                                      </div>
+                                      <button type="button" class="btn btn-danger">
+                                        Cancel Payment
+                                      </button>
                                     </div>
                                   @endif
                                 </div>
