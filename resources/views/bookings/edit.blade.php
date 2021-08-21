@@ -666,7 +666,7 @@
                             </div>
                           @endif
                           
-                            <div class="col-sm-2  d-none">
+                            <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Outstanding Amount left </label>
                                 <input type="number" value="{{ ($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0) ? \Helper::number_format($booking_detail->outstanding_amount_left) : \Helper::number_format($booking_detail->estimated_cost)  }}" name="quote[{{ $key }}][outstanding_amount_left]" data-name="outstanding_amount_left" id="quote_{{ $key }}_outstanding_amount_left" class="form-control outstanding_amount_left hide-arrows" >

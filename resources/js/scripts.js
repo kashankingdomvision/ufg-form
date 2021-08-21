@@ -133,7 +133,7 @@ $(document).ready(function($) {
         var quoteKey                 =  $(this).closest('.quote').data('key');
         var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
 
-        var actualCost               = $(this).closest('.quote').find('.estimated-cost').val();
+        var estimatedCost            = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
         var totalDepositAmountArray  = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount       = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
         var outstanding_amount_left  = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
@@ -141,6 +141,7 @@ $(document).ready(function($) {
         var t = 0;
         var dp = 0;
         var wa = 0;
+
 
         if(supplier_id != null && payment_method== 3){
             
@@ -156,14 +157,24 @@ $(document).ready(function($) {
                    
                         if(outstanding_amount_left > wa ){
                             $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
+
+                            var q = outstanding_amount_left - wa;
+                     
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((q.toFixed(2)));
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val((q.toFixed(2)));
                         }
 
                         if(outstanding_amount_left < wa ){
+
                             $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((outstanding_amount_left.toFixed(2)));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val('0.00');
                         }
 
                         if(outstanding_amount_left == wa ){
                             $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val('0.00');
                         }
                     }
                 },
@@ -988,31 +999,29 @@ $(document).on('click', '.addChild', function () {
 
     $(document).on('keyup', '.deposit-amount',function(){
 
-        var quoteKey        =  $(this).closest('.quote').data('key');
-        var financeKey      =  $(this).closest('.finance-clonning').data('financekey');
-        var depositAmount   =  parseFloat($(this).val()).toFixed(2);
+        var quoteKey        = $(this).closest('.quote').data('key');
+        var financeKey      = $(this).closest('.finance-clonning').data('financekey');
+        var closestFinance  = $(this).closest('.finance');
 
-        var estimated_cost     =  parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
-        var actualCost         =  parseFloat($(`#quote_${quoteKey}_outstanding_amount_left`).val()).toFixed(2);
+        var depositAmount   = parseFloat($(this).val()).toFixed(2);
+        var estimated_cost  = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+        var actualCost      = parseFloat($(`#quote_${quoteKey}_outstanding_amount_left`).val()).toFixed(2);
+        var payment_method  = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
+        var supplier_id     = $(`#quote_${quoteKey}_supplier_id`).val();
 
-        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
         var outstandingAmountLeft   = estimated_cost - totalDepositAmount;
-
-        var closestFinance = $(this).closest('.finance');
-        var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
+        var walletAmount = 0;
 
         if(outstandingAmountLeft >= 0){
             $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
             $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
         }else if (outstandingAmountLeft < 0 && payment_method != 3){
             alert("Please Enter Correct Deposit Amount");
-            $(this).closest('.finance').find('.deposit-amount:last').val('0.00');
-            $(this).closest('.finance').find('.outstanding-amount:last').val('');
+            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
         }
-
-        var wa = 0;
-        var supplier_id              = $(this).closest('.quote').find('.supplier-id').val();
 
         if(payment_method && payment_method == 3){
 
@@ -1020,26 +1029,20 @@ $(document).on('click', '.addChild', function () {
                 headers: {'X-CSRF-TOKEN': CSRFTOKEN},
                 url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
                 type: 'get',
-                // dataType: "json",
                 success: function (data) {
 
                     if(data.response == true){
-                        wa = parseFloat(data.message);
+                        walletAmount = parseFloat(data.message);
 
-                        if(depositAmount > wa){
+                        if(depositAmount > walletAmount){
                             alert("Please Enter Correct Wallet Amount");
-                            closestFinance.find('.deposit-amount:last').val('0.00');
-                            closestFinance.find('.outstanding-amount:last').val('');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
                         }
                     }
                 },
                 error: function (reject) {}
             });
-
-
-            // console.log("payment_method is set");
-        }else{
-            // console.log("payment_method is not set");
         }
 
     });
