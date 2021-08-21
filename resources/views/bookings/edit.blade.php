@@ -666,7 +666,7 @@
                             </div>
                           @endif
                           
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Outstanding Amount left </label>
                                 <input type="number" value="{{ ($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0) ? \Helper::number_format($booking_detail->outstanding_amount_left) : \Helper::number_format($booking_detail->estimated_cost)  }}" name="quote[{{ $key }}][outstanding_amount_left]" data-name="outstanding_amount_left" id="quote_{{ $key }}_outstanding_amount_left" class="form-control outstanding_amount_left hide-arrows" >
@@ -967,19 +967,19 @@
                               </div>
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Credit Note No.</label>
+                                  <label>Credit Note No. <span style="color:red">*</span></label>
                                   <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" readonly>
                                 </div>
                               </div>
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Credit Note Date</label>
+                                  <label>Credit Note Date <span style="color:red">*</span></label>
                                   <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control">
                                 </div>
                               </div>
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Credit Note Received By</label>
+                                  <label>Credit Note Received By <span style="color:red">*</span></label>
                                   <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
                                     <option value="">Select User</option>
                                     @foreach ($sale_persons as $person)
@@ -997,7 +997,7 @@
                             <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label class="depositeLabel">Credit Note Amount</label>
+                                  <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
                                   <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -1014,7 +1014,7 @@
                               </div> --}}
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Credit Note Date</label>
+                                  <label>Credit Note Date <span style="color:red">*</span></label>
                                   <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_date" class="form-control" >
                                 </div>
                               </div>
