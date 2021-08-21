@@ -961,26 +961,26 @@
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount"  class="form-control credit-note-amount hide-arrows" step="any" readonly>
+                                    <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount"  class="form-control credit-note-amount hide-arrows" step="any" disabled>
                                   </div>
                                 </div>
                               </div>
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note No. <span style="color:red">*</span></label>
-                                  <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" readonly>
+                                  <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" disabled>
                                 </div>
                               </div>
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Credit Note Date <span style="color:red">*</span></label>
-                                  <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control">
+                                  <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" disabled>
                                 </div>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Credit Note Received By <span style="color:red">*</span></label>
-                                  <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
+                                  <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" disabled>
                                     <option value="">Select User</option>
                                     @foreach ($sale_persons as $person)
                                       <option  value="{{ $person->id }}" {{ ($person->id == $payment->credit_note_recieved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
