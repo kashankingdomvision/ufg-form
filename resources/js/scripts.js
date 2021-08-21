@@ -143,11 +143,7 @@ $(document).ready(function($) {
         var wa = 0;
 
         var outstandingAmountLeft   = estimatedCost - totalDepositAmount;
-
-
         var currentDepositAmount =  $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
-
-        console.log("outstandingAmountLeft: " + outstandingAmountLeft);
 
 
         if(supplier_id != null && payment_method == 3 ){
@@ -221,7 +217,7 @@ $(document).ready(function($) {
     
     });
     
-    $(document).on('keyup', '.deposit-amount',function(){
+    $(document).on('change', '.deposit-amount',function(){
 
         var quoteKey        = $(this).closest('.quote').data('key');
         var financeKey      = $(this).closest('.finance-clonning').data('financekey');
@@ -251,10 +247,20 @@ $(document).ready(function($) {
 
                         if(depositAmount > walletAmount){
                             alert("Please Enter Correct Wallet Amount");
-
-                            
                             $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
                             $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                        }
+                        else{
+
+                            if(outstandingAmountLeft < 0){
+                                alert("Please Enter Correct Amount");
+                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                            }else{
+
+                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                            }
                         }
                     }
                 },
@@ -268,11 +274,10 @@ $(document).ready(function($) {
                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
     
             }else if (outstandingAmountLeft < 0 && payment_method != 3){
-                alert("Please Enter Correct Deposit Amount");
+                alert("Please Enter Correct Deposit Amounttt");
                 $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
             }
-    
 
         }
 

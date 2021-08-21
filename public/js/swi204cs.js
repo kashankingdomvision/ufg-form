@@ -23903,7 +23903,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var wa = 0;
     var outstandingAmountLeft = estimatedCost - totalDepositAmount;
     var currentDepositAmount = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val();
-    console.log("outstandingAmountLeft: " + outstandingAmountLeft);
 
     if (supplier_id != null && payment_method == 3) {
       $.ajax({
@@ -23958,7 +23957,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
     }
   });
-  $(document).on('keyup', '.deposit-amount', function () {
+  $(document).on('change', '.deposit-amount', function () {
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
     var closestFinance = $(this).closest('.finance');
@@ -23991,6 +23990,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               alert("Please Enter Correct Wallet Amount");
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+            } else {
+              if (outstandingAmountLeft < 0) {
+                alert("Please Enter Correct Amount");
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+              } else {
+                $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+              }
             }
           }
         },
@@ -24001,7 +24009,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
       } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-        alert("Please Enter Correct Deposit Amount");
+        alert("Please Enter Correct Deposit Amounttt");
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
       }
