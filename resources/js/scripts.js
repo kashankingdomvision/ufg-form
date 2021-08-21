@@ -274,7 +274,7 @@ $(document).ready(function($) {
                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
     
             }else if (outstandingAmountLeft < 0 && payment_method != 3){
-                alert("Please Enter Correct Deposit Amounttt");
+                alert("Please Enter Correct Deposit Amount");
                 $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
             }

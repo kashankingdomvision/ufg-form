@@ -24009,7 +24009,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
       } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-        alert("Please Enter Correct Deposit Amounttt");
+        alert("Please Enter Correct Deposit Amount");
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
       }
