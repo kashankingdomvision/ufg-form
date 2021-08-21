@@ -694,6 +694,19 @@ $(document).on('click', '.addChild', function () {
                 });
             });
 
+            $('.refund-payment-hidden-section:last').attr("hidden",true);
+            $('.credit-note-hidden-section:last').attr("hidden",true);
+            $('.finance-clonning:last').removeClass("cancelled-payment-styling");
+
+            $('.btn-group:last').removeClass("d-none");
+            $('.clone_booking_finance:last').removeClass("d-none");
+            $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false); 
+            $('.payment-method:last').attr("disabled", false); 
+            $('.outstanding-amount:last').attr("readonly", true); 
+            $('.cancel-payemnt-btn:last').attr("hidden", true); 
+            $('.credit-note-section:last').remove();
+            $('.refund-payment-section:last').remove();
+
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);

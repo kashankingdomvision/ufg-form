@@ -24418,6 +24418,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
       });
     });
+    $('.refund-payment-hidden-section:last').attr("hidden", true);
+    $('.credit-note-hidden-section:last').attr("hidden", true);
+    $('.finance-clonning:last').removeClass("cancelled-payment-styling");
+    $('.btn-group:last').removeClass("d-none");
+    $('.clone_booking_finance:last').removeClass("d-none");
+    $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
+    $('.payment-method:last').attr("disabled", false);
+    $('.outstanding-amount:last').attr("readonly", true);
+    $('.cancel-payemnt-btn:last').attr("hidden", true);
+    $('.credit-note-section:last').remove();
+    $('.refund-payment-section:last').remove();
     $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
     $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
     $(".quote:last").attr('data-key', $('.quote').length - 1);
