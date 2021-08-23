@@ -949,98 +949,99 @@
                               </div>
                             @endif
                           </section>
-                        @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
-                          @foreach ($booking_detail->getBookingCreditNote as $fkey => $payment)
                           <section>
-                            <div class="credit-note-section">
+                            @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
+                              @foreach ($booking_detail->getBookingCreditNote as $fkey => $payment)
+                                <div class="credit-note-section">
 
-                              <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
-                              <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
-                                <div class="col-sm-2">
-                                  <div class="form-group">
-                                    <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
-                                    <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                  <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                                  <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
+                                    <div class="col-sm-2">
+                                      <div class="form-group">
+                                        <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                          </div>
+                                          <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount"  class="form-control credit-note-amount hide-arrows" step="any" disabled>
+                                        </div>
                                       </div>
-                                      <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount"  class="form-control credit-note-amount hide-arrows" step="any" disabled>
+                                    </div>
+                                    <div class="col-sm-2">
+                                      <div class="form-group">
+                                        <label>Credit Note No. <span style="color:red">*</span></label>
+                                        <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" disabled>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                      <div class="form-group">
+                                        <label>Credit Note Date <span style="color:red">*</span></label>
+                                        <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" disabled>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <div class="form-group">
+                                        <label>Credit Note Received By <span style="color:red">*</span></label>
+                                        <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" disabled>
+                                          <option value="">Select User</option>
+                                          @foreach ($sale_persons as $person)
+                                            <option  value="{{ $person->id }}" {{ ($person->id == $payment->credit_note_recieved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-sm-2">
-                                  <div class="form-group">
-                                    <label>Credit Note No. <span style="color:red">*</span></label>
-                                    <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" disabled>
+                              
+                              @endforeach
+                              @else
+                              <div class="credit-note-hidden-section" hidden>
+                                <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                        </div>
+                                        <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                                <div class="col-sm-2">
-                                  <div class="form-group">
-                                    <label>Credit Note Date <span style="color:red">*</span></label>
-                                    <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" disabled>
+                                  {{-- <div class="col-sm-2" >
+                                    <div class="form-group">
+                                      <label>Credit Note Supplier ID.</label>
+                                      <input type="text" value="{{ $booking_detail->supplier_id  }}" name="quote[{{ $key }}][credit_note][0][credit_note_supplier_id]" data-name="credit_note_supplier_id" class="form-control">
+                                    </div>
+                                  </div> --}}
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label>Credit Note Date <span style="color:red">*</span></label>
+                                      <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_date" class="form-control" >
+                                    </div>
                                   </div>
-                                </div>
-                                <div class="col-sm-3">
-                                  <div class="form-group">
-                                    <label>Credit Note Received By <span style="color:red">*</span></label>
-                                    <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" disabled>
-                                      <option value="">Select User</option>
-                                      @foreach ($sale_persons as $person)
-                                        <option  value="{{ $person->id }}" {{ ($person->id == $payment->credit_note_recieved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
-                                      @endforeach
-                                    </select>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label>Credit Note Recieved By <span style="color:red">*</span></label>
+                                      <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
+                                        <option value="">Select User</option>
+                                        @foreach ($sale_persons as $person)
+                                          <option  value="{{ $person->id }}">{{ $person->name }}</option>
+                                        @endforeach
+                                      </select>
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-1 d-flex justify-content-end">
+                                    <div class="form-group">
+                                      <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm">X</button>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            @endif
                           </section>
-                          @endforeach
-                          @else
-                          <div class="credit-note-hidden-section" hidden>
-                            <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
-                            <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
-                              <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
-                                    </div>
-                                    <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
-                                  </div>
-                                </div>
-                              </div>
-                              {{-- <div class="col-sm-2" >
-                                <div class="form-group">
-                                  <label>Credit Note Supplier ID.</label>
-                                  <input type="text" value="{{ $booking_detail->supplier_id  }}" name="quote[{{ $key }}][credit_note][0][credit_note_supplier_id]" data-name="credit_note_supplier_id" class="form-control">
-                                </div>
-                              </div> --}}
-                              <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label>Credit Note Date <span style="color:red">*</span></label>
-                                  <input type="date" value="{{ date('Y-m-d') }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_date" class="form-control" >
-                                </div>
-                              </div>
-                              <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label>Credit Note Recieved By <span style="color:red">*</span></label>
-                                  <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" id="quote_{{ $key }}_credit_note_0_credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
-                                    <option value="">Select User</option>
-                                    @foreach ($sale_persons as $person)
-                                      <option  value="{{ $person->id }}">{{ $person->name }}</option>
-                                    @endforeach
-                                  </select>
-                                  <span class="text-danger" role="alert"></span>
-                                </div>
-                              </div>
-                              <div class="col-sm-1 d-flex justify-content-end">
-                                <div class="form-group">
-                                  <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm">X</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        @endif
                           <section class="mt-1">
                             <div class="row">
                               <div class="col-12 text-right">
