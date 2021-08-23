@@ -14,10 +14,11 @@ class BookingMethodSeeder extends Seeder
     {
         $booking_methods = [
             [   
-                'name' => 'Supplier Own',
+                'name' => 'Direct',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
+
 
             [
                 'name' => 'Stuba',
@@ -27,6 +28,12 @@ class BookingMethodSeeder extends Seeder
 
             [
                 'name' => 'Webhotelier',
+                'created_at' =>  now(),
+                'updated_at' =>  now()
+            ],
+
+            [
+                'name' => 'Booking.com',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
