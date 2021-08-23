@@ -179,9 +179,9 @@
                                                     </a>
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
-                                                        <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
+                                                        {{-- <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
                                                             <span class="fa fa-times"></span>
-                                                        </a>
+                                                        </a> --}}
                                                     {{-- @else --}}
                                                     {{-- @endif --}}
                                                     {{-- <form method="POST" action="{{ route("bookings.delete", encrypt($booking->id)) }}">
