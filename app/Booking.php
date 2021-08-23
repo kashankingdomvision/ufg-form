@@ -59,6 +59,32 @@ class Booking extends Model
     {
         return Carbon::parse($this->created_at)->format('d/m/Y');
     }
+
+    public function getAgencyBookingAttribute()
+    {
+        if($this->agency == 1){
+            return "Yes";
+        }else{
+            return "No";
+        }
+    }
+
+    public function getLeadPassengerDinningPreferencesAttribute()
+    {
+        if($this->agency == 1){
+            return "";
+        }else{
+            return $this->lead_passenger_dinning_preference;
+        }
+    }
+    public function getLeadPassengerBeddingPreferencesAttribute()
+    {
+        if($this->agency == 1){
+            return "";
+        }else{
+            return $this->lead_passenger_bedding_preference;
+        }
+    }
     
     
     public function getBookingDetail()
