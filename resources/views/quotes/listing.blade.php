@@ -257,9 +257,9 @@
                                                                     </button>
                                                             </form>
                                                         @endif
-                                                        <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
+                                                        {{-- <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
                                                             <i class="fas fa-file"></i>
-                                                        </a>
+                                                        </a> --}}
                                                         <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
                                                             @csrf @method('patch')
                                                             <button type="submit" title="quote clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
