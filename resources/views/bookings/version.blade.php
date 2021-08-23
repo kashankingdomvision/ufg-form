@@ -263,6 +263,23 @@
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>  
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Covid Vaccinated <span style="color:red">*</span></label>
+                            <div>
+                              <label class="radio-inline">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  0 ||  $booking['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > No
+                              </label>
+                            </div>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+
+
                       </div>
                     @endif
                   </div>
@@ -329,6 +346,28 @@
                                           <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax['dinning_preference'] }}" class="form-control" placeholder="DINNING PREFERENCES" >
                                           <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                       </div>
+
+                                      <div class="col-md-2">
+                                        <div class="form-group">
+                                          <label>Covid Vaccinated</label>
+                                          <div>
+                                            <label class="radio-inline">
+                                              <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="1" 
+                                              @if($pax['covid_vaccinated'] == 1)
+                                              checked
+                                              @endif> Yes
+                                            </label>
+                                            <label class="radio-inline">
+                                              <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="0"
+                                              @if($pax['covid_vaccinated'] == 0)
+                                              checked
+                                              @endif > No
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      
                                   </div>
                               </div>
                           @endforeach

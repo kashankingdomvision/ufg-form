@@ -22,6 +22,7 @@ class CreateBookingPaxDetailsTable extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('bedding_preference')->nullable();
             $table->string('dinning_preference')->nullable();
+            $table->enum('covid_vaccinated',[0, 1])->default(0);
             $table->timestamps();
             
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');

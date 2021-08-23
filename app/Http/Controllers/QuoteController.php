@@ -62,6 +62,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
                     'nationality_id'        => $pax['nationality_id'],
+                    'covid_vaccinated'      => ((int) $pax['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
         }
@@ -211,6 +212,7 @@ class QuoteController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
+            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
             'pax_no'                            =>  $request->pax_no??'0',
             'net_price'                         =>  $request->total_net_price??$request->net_price,
             'markup_amount'                     =>  $request->total_markup_amount??$request->markup_amount,
@@ -259,6 +261,10 @@ class QuoteController extends Controller
     
     public function store(QuoteRequest $request)
     {
+
+        // dd($this->quoteArray($request));
+
+
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
@@ -279,6 +285,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
                     'nationality_id'        => $pax_data['nationality_id'],
+                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
        }
@@ -407,7 +414,8 @@ class QuoteController extends Controller
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
-                    'nationality_id'            => $pax_data['nationality_id'],
+                    'nationality_id'        => $pax_data['nationality_id'],
+                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
        }

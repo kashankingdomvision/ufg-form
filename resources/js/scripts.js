@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -1257,8 +1257,8 @@ $("#quoteCreate").submit(function(event) {
         success: function (data) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
-                alert('Quote created Successfully');
-                window.location.href = REDIRECT_BASEURL + "quotes/index";
+                // alert('Quote created Successfully');
+                // window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -2361,9 +2361,26 @@ $(document).on('change', '.pax-number', function () {
                     <label>Dinning Preference <span class="text-danger">*</span></label> 
                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
                 </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Covid Vaccinated </label>
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No
+                            </label>
+                        </div>
+                    </div>
+                </div>
               
             </div>
         </div>`;
+
+        console.log($v_html);
+
         $('#appendPaxName').html($v_html);
         intTelinput(1);
         $('#pax_no option').first().attr('disabled', 'disabled');
@@ -2388,7 +2405,7 @@ $(document).on('change', '.pax-number', function () {
                         <div class="row" >
                             <div class="col-md-3 mb-2">
                                 <label class="mainLabel">Passenger #${c} Full Name</label> 
-                                <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER #${count} FULL NAME" >
+                                <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER FULL NAME" >
                             </div>
                             <div class="col-md-3 mb-2">
                                 <label>Email Address</label> 
@@ -2424,7 +2441,22 @@ $(document).on('change', '.pax-number', function () {
                                 <label>Dinning Preference</label> 
                                 <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                             </div>
-                            <div class="col-md-3 mb-2">
+                            
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label>Covid Vaccinated </label>
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 mb-2">
                                 <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
                             </div>
                         </div>

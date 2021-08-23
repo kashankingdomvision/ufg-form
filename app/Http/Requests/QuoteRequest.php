@@ -43,6 +43,7 @@ class QuoteRequest extends FormRequest
             'lead_passsenger_nationailty_id'    =>  'required_if:agency,0', 
             'lead_passenger_dinning_preference' =>  'required_if:agency,0', 
             'lead_passenger_bedding_preference' =>  'required_if:agency,0', 
+            'lead_passenger_covid_vaccinated'   =>  'required_if:agency,0', 
             'sale_person_id'                    =>  'required',
             'agency'                            =>  'required',
             'pax_no'                            =>  'required',
@@ -82,6 +83,7 @@ class QuoteRequest extends FormRequest
             'lead_passsenger_nationailty_id.required_if'    => 'The lead passenger nationailty field is required',
             'lead_passenger_dinning_preference.required_if' => 'The lead passenger dinning preference field is required',
             'lead_passenger_bedding_preference.required_if' => 'The lead passenger bedding preference field is required',
+            'lead_passenger_covid_vaccinated.required_if' => 'The lead passenger covid vaccinated field is required',
             'quote.*.category_id.required'               =>  'The Category field is required.',
             'quote.*.supplier_id.required'               =>  'The Supplier field is required.',
             'quote.*.date_of_service.required'           =>  'The Date of Service field is required.'

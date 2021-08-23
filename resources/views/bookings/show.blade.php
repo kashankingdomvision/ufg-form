@@ -271,7 +271,24 @@
                                 <input type="text" value="{{ $booking->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                                 <span class="text-danger" role="alert"></span>
                               </div>
-                            </div>  
+                            </div> 
+                            
+                            
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Covid Vaccinated <span style="color:red">*</span></label>
+                                <div>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ($booking->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}> Yes
+                                  </label>
+                                  <label class="radio-inline">
+                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ($booking->lead_passenger_covid_vaccinated ==  0 || $booking->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} > No
+                                  </label>
+                                </div>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+  
                           </div>
                         @endif
                       </div>
@@ -307,6 +324,21 @@
                                   <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                 </div>
 
+                                <div class="col-md-3 mb-2">
+                                  <label >Contact Number</label> 
+                                  <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                  <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                  <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
+                                </div>
+                                          
+                                <div class="col-md-3 mb-2">
+                                  <label>Date Of Birth</label> 
+                                  <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="row">
                                 <div class="col-sm-3">
                                   <label>Nationality</label>
                                   <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
@@ -316,20 +348,7 @@
                                     @endforeach
                                   </select>
                                 </div>
-
-                                <div class="col-md-3 mb-2">
-                                  <label >Contact Number</label> 
-                                  <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
-                                  <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
-                                  <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-3 mb-2">
-                                  <label>Date Of Birth</label> 
-                                  <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                </div>
+                      
                                 <div class="col-md-3 mb-2">
                                   <label>Bedding Preference</label> 
                                   <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
@@ -339,6 +358,26 @@
                                   <label>Dinning Preference</label> 
                                   <input type="text" name="pax[{{$count}}][dinning_preference]" value="{{ $pax->dinning_preference }}" class="form-control" placeholder="DINNING PREFERENCES" >
                                   <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+
+                                <div class="col-md-2">
+                                  <div class="form-group">
+                                    <label>Covid Vaccinated</label>
+                                    <div>
+                                      <label class="radio-inline">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="1" 
+                                        @if($pax->covid_vaccinated == 1)
+                                        checked
+                                        @endif> Yes
+                                      </label>
+                                      <label class="radio-inline">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="0"
+                                        @if($pax->covid_vaccinated == 0)
+                                        checked
+                                        @endif > No
+                                      </label>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -1270,7 +1309,7 @@
                                   @endif
                                   @foreach ($ufg_payment_records[$key] as $key => $payment_record)
 
-                                    <tr>
+                                    <tr class="{{ $payment_record['status'] == 'Pending' || $payment_record['status'] == 'pending' ? 'tr-bg-color' : '' }}">
                                       <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
                                       <td class="text-center text-uppercase">{{ ucfirst($payment_record['status']) }}</td>
                                       <td class="text-center">{{ $payment_record['payment_for'] }}</td>
@@ -1335,7 +1374,7 @@
                                   @endif
                                   @foreach ($old_ufg_payment_records[$key] as $key => $payment_record)
 
-                                    <tr>
+                                    <tr class="{{ $payment_record['status'] == 'Pending' || $payment_record['status'] == 'pending' ? 'tr-bg-color' : '' }}">
                                       <td class="text-center">{{ ucfirst($payment_record['zoho_booking_reference']) }}</td>
                                       <td class="text-center text-uppercase">{{ $payment_record['status'] }}</td>
                                       <td class="text-center">{{ $payment_record['payment_for'] }}</td>

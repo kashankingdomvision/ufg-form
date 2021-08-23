@@ -32,6 +32,7 @@ class Booking extends Model
         'lead_passsenger_nationailty_id',
         'lead_passenger_dinning_preference',
         'lead_passenger_bedding_preference',
+        'lead_passenger_covid_vaccinated',
         'pax_no',
         'net_price',
         'markup_amount',

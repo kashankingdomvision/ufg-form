@@ -280,6 +280,7 @@ class BookingController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
+            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
             'brand_id'            =>  $request->brand_id,
             'holiday_type_id'     =>  $request->holiday_type_id,
             'sale_person_id'      =>  $request->sale_person_id,
@@ -423,6 +424,8 @@ class BookingController extends Controller
         //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
         // }
 
+        // dd($this->bookingArray($request));
+
         $booking = Booking::findOrFail(decrypt($id));
         $array =  $booking->toArray();
         $book =[];
@@ -439,6 +442,9 @@ class BookingController extends Controller
                 'data'          => $array,
                 'log_no'        => $booking->getBookingLogs()->count()
             ]);
+
+
+        
             
             
         $booking->update($this->bookingArray($request));
@@ -515,18 +521,19 @@ class BookingController extends Controller
          //pax data 
          if($request->has('pax')){
             $booking->getPaxDetail()->delete();
-             foreach ($request->pax as $pax_data) {
-                 BookingPaxDetail::create([
-                     'booking_id'              => $booking->id,
-                     'full_name'             => $pax_data['full_name']??NULL,
-                     'email'                 => $pax_data['email_address']??NULL,
-                     'contact'               => $pax_data['full_number']??NULL,
-                     'date_of_birth'         => $pax_data['date_of_birth']??NULL,
-                     'bedding_preference'    => $pax_data['bedding_preference']??NULL,
-                     'dinning_preference'    => $pax_data['dinning_preference']??NULL,
-                     'nationality_id'            => $pax_data['nationality_id']??NULL,
-                 ]);
-             }
+            foreach ($request->pax as $pax_data) {
+                BookingPaxDetail::create([
+                    'booking_id'            => $booking->id,
+                    'full_name'             => $pax_data['full_name']??NULL,
+                    'email'                 => $pax_data['email_address']??NULL,
+                    'contact'               => $pax_data['full_number']??NULL,
+                    'date_of_birth'         => $pax_data['date_of_birth']??NULL,
+                    'bedding_preference'    => $pax_data['bedding_preference']??NULL,
+                    'dinning_preference'    => $pax_data['dinning_preference']??NULL,
+                    'nationality_id'        => $pax_data['nationality_id']??NULL,
+                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
+                ]);
+            }
         }
 
         // $quote_update_detail->delete(); 
