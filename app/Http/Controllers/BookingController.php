@@ -237,7 +237,8 @@ class BookingController extends Controller
         $data['booking']            = Booking::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
-
+        $data['banks']            = Bank::all();
+        
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
