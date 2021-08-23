@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
   event.preventDefault();
   var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
@@ -25359,8 +25359,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             $("#overlay").removeClass('overlay').html('');
 
             if (errors.hasOwnProperty("overrride_errors")) {
-              alert(errors.overrride_errors);
-              window.location.href = REDIRECT_BASEURL + "bookings/index";
+              alert(errors.overrride_errors); // window.location.href = REDIRECT_BASEURL + "bookings/index";
             } else {
               jQuery.each(errors.errors, function (index, value) {
                 index = index.replace(/\./g, '_');

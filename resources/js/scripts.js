@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -1821,7 +1821,7 @@ $("#update-booking").submit(function(event) {
 
                     if(errors.hasOwnProperty("overrride_errors")){
                         alert(errors.overrride_errors);
-                        window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        // window.location.href = REDIRECT_BASEURL + "bookings/index";
                     }
                     else{
 

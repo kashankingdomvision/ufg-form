@@ -48,6 +48,7 @@ class QuoteRequest extends FormRequest
             'pax_no'                            =>  'required',
             'rate_type'                         =>  'required',
             'quote'                             =>  'required|array',
+            'quote.*.date_of_service'           =>  'required',
             'quote.*.category_id'               =>  'required',
             'quote.*.supplier_id'               =>  'required',
             'quote.*.booking_due_date'          =>  'required',
@@ -86,6 +87,8 @@ class QuoteRequest extends FormRequest
 
             'quote.*.category_id.required'               =>  'The Category field is required.',
             'quote.*.supplier_id.required'               =>  'The Supplier field is required.',
+
+            'quote.*.date_of_service.required'           =>  'The Date of Service field is required.'
         ];
     }
     
@@ -119,6 +122,7 @@ class QuoteRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency' => 'Selling Price Booking',
             'quote.*.markup_amount_in_booking_currency' => 'Markup Amount Booking',
             // 'quote.*.added_in_sage'             =>  'Added in sage',
+            'quote.*.date_of_service'           =>  'Date of Service',
             'quote.*.supplier_id'               =>  'Supplier',
             'quote.*.product_id'                =>  'Product',
             'quote.*.booking_method_id'         =>  'Booking Method',
