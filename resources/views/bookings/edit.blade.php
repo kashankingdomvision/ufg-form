@@ -431,7 +431,8 @@
                                   <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-                            <div class="col-sm-2">
+
+                            {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product</label>
                                 <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
@@ -444,7 +445,15 @@
                                 </select>
                                 <span class="text-danger" role="alert"></span>
                               </div>
+                            </div> --}}
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Product</label>
+                                <input type="text" name="quote[{{ $key }}][product_id]"  data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id" value="{{ $booking_detail->product_id }}" placeholder="Enter Product">
+                              </div>
                             </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supervisor</label>

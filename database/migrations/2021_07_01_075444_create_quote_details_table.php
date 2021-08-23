@@ -18,7 +18,8 @@ class CreateQuoteDetailsTable extends Migration
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
-            $table->unsignedBigInteger('product_id')->nullable();
+            // $table->unsignedBigInteger('product_id')->nullable();
+            $table->string('product_id')->nullable();
             $table->unsignedBigInteger('booking_method_id')->nullable();
             $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('supervisor_id')->nullable();
@@ -46,7 +47,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booked_by_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('supervisor_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booking_method_id')->references('id')->on('booking_methods')->onUpdate('cascade')->onDelete('cascade');
