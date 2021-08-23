@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-var BASEURL = window.location.origin+'/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
+// var BASEURL = window.location.origin+'/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/'; 
  
 $("#generate-pdf").submit(function(event) {
     event.preventDefault();
@@ -2441,7 +2441,7 @@ $(document).on('change', '.pax-number', function () {
                                 <label>Dinning Preference</label> 
                                 <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                             </div>
-                            
+
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Covid Vaccinated </label>
