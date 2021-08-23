@@ -696,7 +696,7 @@
                                     </div>
                                     <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label>Deposit Due Date</label>
+                                        <label>Due Date</label>
                                         <input type="date" value="{{ $finance->deposit_due_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][deposit_due_date]" data-name="deposit_due_date" id="quote_{{$key}}_finance_{{$fkey}}_deposit_due_date" class="form-control deposit-due-date" {{ $finance->status == 'cancelled' ? 'readonly' : '' }}>
                                       </div>
                                     </div>
@@ -777,7 +777,7 @@
                                   </div>
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                      <label>Deposit Due Date</label>
+                                      <label>Due Date</label>
                                       <input type="date" name="quote[{{ $key }}][finance][0][deposit_due_date]" data-name="deposit_due_date" id="quote_{{$key}}_finance_0_deposit_due_date" value="" class="form-control deposit-due-date" >
                                     </div>
                                   </div>
