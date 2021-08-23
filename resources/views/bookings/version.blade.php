@@ -347,9 +347,10 @@
                         <div class="row">
                           <div class="col-sm-2">
                             <div class="form-group">
-                                <label>Date of Service</label>
+                                <label>Date of Service <span style="color:red">*</span></label>
                                 <input type="text" value="{{ $booking_detail['date_of_service']}}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
-                            </div>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
                           </div>
                           <div class="col-sm-2">
                             <div class="form-group">

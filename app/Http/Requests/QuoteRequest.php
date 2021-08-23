@@ -75,8 +75,6 @@ class QuoteRequest extends FormRequest
             'agency_contact.required_if'        => 'The Agency Contact field is required.',
             'agency_email.required_if'          => 'The Agency Email field is required.',
             'agency_contact_name.required_if'   => 'The Agency contact name field is required.',
-        
-
             'lead_passenger_name.required_if'               => 'The lead passenger name field is required',
             'lead_passenger_email.required_if'              => 'The lead passenger email field is required',
             'lead_passenger_contact.required_if'            => 'The lead passenger contact field is required',    
@@ -84,10 +82,8 @@ class QuoteRequest extends FormRequest
             'lead_passsenger_nationailty_id.required_if'    => 'The lead passenger nationailty field is required',
             'lead_passenger_dinning_preference.required_if' => 'The lead passenger dinning preference field is required',
             'lead_passenger_bedding_preference.required_if' => 'The lead passenger bedding preference field is required',
-
             'quote.*.category_id.required'               =>  'The Category field is required.',
             'quote.*.supplier_id.required'               =>  'The Supplier field is required.',
-
             'quote.*.date_of_service.required'           =>  'The Date of Service field is required.'
         ];
     }

@@ -49,6 +49,7 @@ class BookingRequest extends FormRequest
             'pax_no'                            =>  'required',
             'rate_type'                         =>  'required',
             'quote'                             =>  'required|array',
+            'quote.*.date_of_service'           =>  'required',
             'quote.*.booking_due_date'          =>  'required',
             'quote.*.supplier_currency_id'      =>  'required',
             'quote.*.estimated_cost'            =>  'required',
@@ -66,7 +67,8 @@ class BookingRequest extends FormRequest
             'quote.*.credit_note.*.credit_note_recieved_date' => 'required_with:quote.*.credit_note.*.credit_note_amount',
             'quote.*.credit_note.*.credit_note_recieved_by' => 'required_with:quote.*.credit_note.*.credit_note_amount',
             'quote.*.refund.*.bank'                => 'required_with:quote.*.refund.*.refund_amount',
-            'quote.*.refund.*.refund_confirmed_by' => 'required_with:quote.*.refund.*.refund_amount'
+            'quote.*.refund.*.refund_confirmed_by' => 'required_with:quote.*.refund.*.refund_amount',
+            'quote.*.date_of_service'           =>  'required'
         ];
     }
 
@@ -89,7 +91,8 @@ class BookingRequest extends FormRequest
             'quote.*.refund.*.bank.required_with' => 'The Bank feild is required',
             'quote.*.refund.*.refund_confirmed_by.required_with' => 'The Refund Confirmed By feild is required',
             'quote.*.category_id.required'               =>  'The Category field is required.',
-            'quote.*.supplier_id.required'               =>  'The Supplier field is required.'
+            'quote.*.supplier_id.required'               =>  'The Supplier field is required.',
+            'quote.*.date_of_service'                    =>  'The Date of Service field is required.'
         ];
     }
     
@@ -126,7 +129,8 @@ class BookingRequest extends FormRequest
             'quote.*.supervisor_id'             =>  'Supervisor',
             'quote.*.credit_note.*.credit_note_recieved_date'  =>  'Credit Note Date',
             'quote.*.credit_note.*.credit_note_recieved_by'  =>  'Credit Note Recieved Date',
-            'quote.*.refund.*.bank' => 'Bank'
+            'quote.*.refund.*.bank' => 'Bank',
+            'quote.*.date_of_service'           =>  'Date of Service'
         ];
     }
 }
