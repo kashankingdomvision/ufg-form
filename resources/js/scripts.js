@@ -1257,8 +1257,8 @@ $("#quoteCreate").submit(function(event) {
         success: function (data) {
             $("#overlay").removeClass('overlay').html('');
             setTimeout(function() {
-                // alert('Quote created Successfully');
-                // window.location.href = REDIRECT_BASEURL + "quotes/index";
+                alert('Quote created Successfully');
+                window.location.href = REDIRECT_BASEURL + "quotes/index";
             }, 800);
         },
         error: function (reject) {
@@ -1821,7 +1821,7 @@ $("#update-booking").submit(function(event) {
 
                     if(errors.hasOwnProperty("overrride_errors")){
                         alert(errors.overrride_errors);
-                        // window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
                     }
                     else{
 
