@@ -223,7 +223,7 @@
                     
                     <div class="col-md-12 agency-columns" >
                      {{--  Agency  --}}
-                        <div class="row mt-1 agencyField {{ ($quote->agency == 0)? 'd-none': '' }}" >
+                        <div class="row mt-1 agencyField {{ ($quote->agency == 0) ? 'd-none': '' }}" >
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $quote->agency_name }}" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
