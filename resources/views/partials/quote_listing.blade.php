@@ -25,7 +25,7 @@
   <td>{{ $quote->getSeason->name }}</td>
   <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
   
-  <td>{{ $quote->getBookingCurrency->code.'-'.$quote->getBookingCurrency->name }}</td>
+  <td>{{ $quote->getBookingCurrency->code.' - '.$quote->getBookingCurrency->name }}</td>
   <td>{!! $quote->booking_formated_status !!}</td>
   <td>{{ $quote->formated_booking_date }}</td>
   <td>{{ $quote->formated_created_at }}</td>

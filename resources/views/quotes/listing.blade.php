@@ -229,11 +229,16 @@
                                                                 @csrf @method('patch')
                                                                 <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><span class="fa fa-check"></span></button>
                                                             </form>
+                                                            <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                                                                <span class="fa fa-eye"></span>
+                                                            </a>
                                                         @endif
 
-                                                        <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
-                                                            <span class="fa fa-eye"></span>
-                                                        </a>
+                                                        @if ($quote->getBooking != NULL)
+                                                            <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        @endif
                                                       
                                                         @if($quote->booking_status == 'quote' && $quote->deleted_at == null)
                                                             <a onclick="return confirm('Are you sure want to cancel {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel" data-target="#Cancel"><span class="fa fa-times "></span></a>
@@ -266,11 +271,7 @@
                                                                 <i class="fa fa-clone"></i>
                                                             </button>
                                                         </form>
-                                                        @if ($quote->getBooking != NULL)
-                                                            <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="m-0 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
-                                                                <i class="fas fa-book"></i>
-                                                            </a>
-                                                        @endif
+                                            
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>
