@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function(){
 
 
+    /* Refresh Token */
 	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
 
     /*
@@ -28,6 +29,7 @@ Route::group(['middleware' => ['auth']], function(){
     | Dashboard
     |--------------------------------------------------------------------------
     */
+
     Route::resource('dashboard', 'DashboardController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
@@ -55,15 +57,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('credit-note', array('as' => 'credit-note', 'uses' => 'BookingController@credit_note'));
     });
 
-    
-    /* Wallet */
-
-
-    Route::group(['prefix' => 'wallets', 'as' => 'wallets.'], function () {
-        Route::get('index', array('as' => 'index', 'uses' => 'WalletController@index'));
-        Route::get('get-supplier-wallet-amount/{supplier_id}', array('as' => 'get-supplier-wallet-amount', 'uses' => 'WalletController@get_supplier_wallet_amount'));
-    });
-
 
 
 
@@ -80,24 +73,18 @@ Route::group(['middleware' => ['auth']], function(){
     	Route::get('delete/{id}',array('as'=>'delete','uses'=>'QuoteController@delete'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'QuoteController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
-        // Route::put('update_override/{id}', array('as' => 'update.override', 'uses' => 'QuoteController@update_override'));
-
         Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
         Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
         Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
-
         Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
-
         Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
         Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
-
         Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
         Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
         Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
-        
     });
     
     /*
@@ -151,6 +138,37 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('seasons', 'SeasonController',['only' => [
 		'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Supplier Managment
+    |--------------------------------------------------------------------------
+    */
+
+    Route::resource('suppliers', 'SupplierController');
+
+    /*  Supplier Product */
+    Route::resource('products', 'ProductController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+    /*  Supplier Categories */
+    Route::resource('categories', 'CategoryController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Wallet
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'wallets', 'as' => 'wallets.'], function () {
+        Route::get('index', array('as' => 'index', 'uses' => 'WalletController@index'));
+        Route::get('get-supplier-wallet-amount/{supplier_id}', array('as' => 'get-supplier-wallet-amount', 'uses' => 'WalletController@get_supplier_wallet_amount'));
+    });
 
 
     /*
@@ -208,26 +226,10 @@ Route::group(['middleware' => ['auth']], function(){
 
 	});
 
-    // Route::match(['get', 'post'],'create-quote',array('as'=>'create-quote','uses'=>'AdminController@create_quote'));
-
-    ////////////////////////////..supplier route start //////////////////////////////////////////
-    Route::resource('suppliers', 'SupplierController');
-
-    //supplier product start
-    Route::resource('products', 'ProductController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
-    //supplier product end
-
-    //supplier categories start
-    Route::resource('categories', 'CategoryController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
-    //supplier categories end
-    ////////////////////////////..supplier route end //////////////////////////////////////////
+ 
    /*
     |--------------------------------------------------------------------------
-    | Routes For Ajax Request Start
+    | Routes For Ajax Request
     |--------------------------------------------------------------------------
     */
     Route::prefix('json')->group(function () {
@@ -237,28 +239,18 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
-
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
         Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
-        
         Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
-
-   });
+    });
     
     
     Route::get('pdf', function()
     {
         return view('quote_documents.index');
     });
-    
-
-    /*
-    |--------------------------------------------------------------------------
-    | Routes For Ajax Request End
-    |--------------------------------------------------------------------------
-    */
 });
