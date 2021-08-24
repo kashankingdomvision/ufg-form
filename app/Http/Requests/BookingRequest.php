@@ -27,7 +27,7 @@ class BookingRequest extends FormRequest
         return [
             'agency'                            =>  'required',
             'agency_name'                       =>  'required_if:agency,1',
-            'agency_contact'                    =>  'required_if:agency,1',
+            // 'agency_contact'                    =>  'required_if:agency,1',
             'agency_email'                      =>  'required_if:agency,1',
             'agency_contact_name'               =>  'required_if:agency,1',
             'commission_id'                     =>  'required',
