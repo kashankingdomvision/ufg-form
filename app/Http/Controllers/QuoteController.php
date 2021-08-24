@@ -5,29 +5,30 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Requests\QuoteRequest;
-use App\Category;
-use App\Product;
-use App\Season;
-use App\User;
-use App\Supplier;
-use App\BookingMethod;
-use App\Currency;
-use App\Template;
+
 use App\Brand;
-use App\HolidayType;
+use App\Booking;
+use App\BookingMethod;
 use App\BookingType;
+use App\BookingDetail;
+use App\BookingPaxDetail;
+use App\Currency;
+use App\Category;
+use App\Commission;
+use App\Country;
 use App\CurrencyConversion;
+use App\HolidayType;
+use App\Product;
+use App\QuoteUpdateDetail;
+use App\QuoteDocument;
 use App\Quote;
 use App\QuoteDetail;
 use App\QuotePaxDetail;
 use App\QuoteLog;
-use App\Booking;
-use App\BookingDetail;
-use App\BookingPaxDetail;
-use App\Commission;
-use App\QuoteUpdateDetail;
-use App\Country;
-use App\QuoteDocument;
+use App\Season;
+use App\Supplier;
+use App\Template;
+use App\User;
 use Carbon\Carbon;
 use Crypt;
 use PDF;
@@ -118,30 +119,6 @@ class QuoteController extends Controller
         return $quote;
     }
     
-    public function create()
-    {
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['templates']        = Template::all()->sortBy('name');
-        $data['categories']       = Category::all()->sortBy('name');
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::get();
-        // whereHas('getRole', function($query){
-        //     $query->where('slug', 'sales-agent');
-        // })
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data['quote_id']         = \Helper::getQuoteID();
-
-        return view('quotes.create', $data);
-    }
-
     public function get_currency_conversion(){
         return CurrencyConversion::all();
     }
@@ -221,6 +198,30 @@ class QuoteController extends Controller
             'added_in_sage'         =>  (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
         ];
     }
+
+    public function create()
+    {
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        // whereHas('getRole', function($query){
+        //     $query->where('slug', 'sales-agent');
+        // })
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
+
+        return view('quotes.create', $data);
+    }
     
     public function store(QuoteRequest $request)
     {
@@ -269,25 +270,6 @@ class QuoteController extends Controller
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
         $data                     = array_merge($data, \Helper::checkAlreadyExistUser($id,'quotes'));
-
-        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','quotes')->first();
-        // if(!is_null($quote_update_detail)){
-
-        //     $data['exist']   = 1;
-        //     $data['user_id'] = $quote_update_detail->user_id;
-        // }
-
-        // if(is_null($quote_update_detail)){
-
-        //     QuoteUpdateDetail::create([
-        //         'user_id'      =>  Auth::id(),
-        //         'foreign_id'   =>  decrypt($id),
-        //         'status'       =>  'quotes'
-        //     ]);
-
-        //     $data['exist']   = null;
-        //     $data['user_id'] = null;
-        // }
 
         return view('quotes.edit',$data);
     }
@@ -466,6 +448,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
+        
         return view('quotes.show',$data);
     }
     ///View Final Quote 

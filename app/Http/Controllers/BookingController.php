@@ -3,41 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\BookingRequest;
+use App\Http\Requests\BookingRefundPaymentRequest;
+use App\Http\Requests\BookingCreditNoteRequest;
 use Illuminate\Support\Str;
-use App\Season;
-use Cache;
-use App\User;
-use App\Booking;
-use App\PaymentMethod;
+use Illuminate\Support\Facades\Storage;
+
 use App\Airline;
 use App\Brand;
-use App\HolidayType;
-use App\Currency;
-use App\Category;
-use App\Supplier;
+use App\Bank;
+use App\Booking;
+use App\BookingRefundPayment;
+use App\BookingCreditNote;
+use App\BookingTransaction;
 use App\BookingMethod;
 use App\BookingType;
 use App\BookingDetail;
 use App\BookingDetailFinance;
 use App\BookingLog;
 use App\BookingPaxDetail;
+use App\Currency;
 use App\Commission;
-use App\QuoteUpdateDetail;
-use App\Bank;
-use App\BookingRefundPayment;
-use App\BookingCreditNote;
-use App\BookingTransaction;
-use App\Http\Requests\BookingRequest;
-use App\Http\Requests\BookingRefundPaymentRequest;
-use App\Http\Requests\BookingCreditNoteRequest;
-use Auth;
 use App\Country;
+use App\Category;
+use App\HolidayType;
+use App\PaymentMethod;
+use App\QuoteUpdateDetail;
+use App\Season;
+use App\Supplier;
+use App\User;
+
+use Cache;
+use Auth;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Storage;
 
 class BookingController extends Controller
 {
     public $pagination = 10, $cacheTimeOut;
+
     public function __construct(Request $request)
     {
         $this->cacheTimeOut = 180000;
@@ -129,6 +132,116 @@ class BookingController extends Controller
         return view('bookings.listing', $data);
     }
 
+    public function bookingArray($request)
+    {
+        return [
+            'user_id'                           =>  Auth::id(),
+            'rate_type'                         =>  ($request->rate_type == 'live')? 'live': 'manual',
+            'commission_id'                     =>  $request->commission_id,
+            'ref_no'                            =>  $request->ref_no,
+            'ref_name'                          =>  $request->ref_name??'zoho',
+            'quote_ref'                         =>  $request->quote_no,
+            'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
+            'agency_name'                       =>  $request->agency_name??NULL,
+            'agency_contact'                    =>  ($request->agency_contact != NULL)? $request->full_number : NULL,
+            'agency_email'                      =>  $request->agency_email??NULL,
+            'agency_contact_name'               =>  $request->agency_contact_name??NULL,
+            'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
+            'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
+            'lead_passenger_contact'            =>  ($request->lead_passenger_contact != NULL)? $request->full_number : NULL,
+            'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
+            'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
+            'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
+            'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
+            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
+            'brand_id'                          =>  $request->brand_id,
+            'holiday_type_id'                   =>  $request->holiday_type_id,
+            'sale_person_id'                    =>  $request->sale_person_id,
+            'season_id'                         =>  $request->season_id,
+            'currency_id'                       =>  $request->currency_id,
+            'pax_no'                            =>  $request->pax_no,
+            'net_price'                         =>  $request->total_net_price??$request->total_net_price,
+            'markup_amount'                     =>  $request->total_markup_amount??$request->markup_amount,
+            'markup_percentage'                 =>  $request->total_markup_percent??$request->markup_percentage,
+            'selling_price'                     =>  $request->total_selling_price??$request->selling_price,
+            'profit_percentage'                 =>  $request->total_profit_percentage??$request->profit_percentage,
+            'commission_amount'                 =>  $request->commission_amount??$request->commission_amount,
+            'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
+            'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
+            'agency_name'                       =>  (isset($request['agency_name']))? $request->agency_name : NULL,
+            'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
+            'agency_email'                      =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
+            'revelant_qoutes'                   =>  $request->revelant_qoutes??NULL,
+        
+        ];
+    }
+
+    public function getBookingDetailsArray($quoteD)
+    {
+        return [
+            'category_id'             => $quoteD['category_id'],
+            'supplier_id'             => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
+            'product_id'              => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
+            'booking_method_id'       => $quoteD['booking_method_id'],
+            'booked_by_id'            => $quoteD['booked_by_id'],
+            'supervisor_id'           => $quoteD['supervisor_id'],
+            'date_of_service'         => $quoteD['date_of_service'],
+            'time_of_service'         => $quoteD['time_of_service'],
+            'booking_date'            => $quoteD['booking_date'],
+            'booking_due_date'        => $quoteD['booking_due_date'],
+            'service_details'         => $quoteD['service_details'],
+            'booking_reference'       => $quoteD['booking_reference'],
+            'booking_type_id'         => $quoteD['booking_type'],
+            'supplier_currency_id'    => $quoteD['supplier_currency_id'],
+            'comments'                => $quoteD['comments'],
+            'estimated_cost'          => $quoteD['estimated_cost'],
+            'markup_amount'           => $quoteD['markup_amount'],
+            'markup_percentage'       => $quoteD['markup_percentage'],
+            'selling_price'           => $quoteD['selling_price'],
+            'profit_percentage'       => $quoteD['profit_percentage'],
+            'estimated_cost_bc'       => $quoteD['estimated_cost_in_booking_currency'],
+            'selling_price_bc'        => $quoteD['selling_price_in_booking_currency'],
+            'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
+            'added_in_sage'           => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
+            'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
+        ];
+    }
+
+    public function getFinanceBookingDetailsArray($quoteD)
+    {
+        return [
+            "deposit_amount"        => $quoteD['deposit_amount']??NULL,
+            "deposit_due_date"      => $quoteD['deposit_due_date']??NULL,
+            "paid_date"             => $quoteD['paid_date']??NULL,
+            "payment_method_id"     => $quoteD['payment_method']??NULL,
+            "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
+            "additional_date"       => $quoteD['ab_number_of_days']??NULL,
+            "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
+        ];
+    }
+
+    public function getBookingCreditNoteArray($quoteD)
+    {
+        return [
+            "credit_note_amount"         => $quoteD['credit_note_amount']??NULL,
+            "credit_note_no"             => \Helper::getCreditNote(),
+            "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
+            "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
+            // "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
+        ];
+    }
+
+    public function getBookingRefundPaymentArray($quoteD)
+    {
+        return [
+            "refund_amount"        => $quoteD['refund_amount']??NULL,
+            "refund_date"          => $quoteD['refund_date']??NULL,
+            "bank_id"              => $quoteD['bank']??NULL,
+            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL
+        ];
+    }
+
     public function edit($id)
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -156,15 +269,6 @@ class BookingController extends Controller
                 return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
             });
 
-            // 'UC20190765'  payments.unforgettabletravel.com
-            // 'UC20189776'  utcstaging.unforgettabletravel.com
-            // $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
-            // $response = \Helper::get_payment_detial_by_ref_no('UC20189776');
-
-            // if($response['status'] == 200 && isset($response['body']['message'])) {
-            //     $data['ufg_travel_system'] = $response['body']['message'];
-            // }
-
             if($response['status'] == 200 && isset($response['body']['old_records'])) {
                 $data['old_ufg_payment_records'] = $response['body']['old_records'];
             }
@@ -172,30 +276,9 @@ class BookingController extends Controller
             if($response['status'] == 200 && isset($response['body']['message'])) {
                 $data['ufg_payment_records'] = $response['body']['message'];
             }
-    
         }
 
         $data = array_merge($data, \Helper::checkAlreadyExistUser($id,'bookings'));
-
-        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
-
-        // if($quote_update_detail && $quote_update_detail->exists()){
-        //     $data['exist']   = 1;
-        //     $data['user_id'] = $quote_update_detail->user_id;
-        // }
-
-        // if(is_null($quote_update_detail)){
-
-        //     $quote_update_details = QuoteUpdateDetail::create([
-        //         'user_id'      =>  Auth::id(),
-        //         'foreign_id'   =>  decrypt($id),
-        //         'status'       =>  'bookings'
-        //     ]);
-
-        //     $data['exist']   = null;
-        //     $data['user_id'] = null;
-        // }
-
 
         return view('bookings.edit',$data);
     }
@@ -261,159 +344,6 @@ class BookingController extends Controller
         return view('bookings.show',$data);
     }
 
-    public function bookingArray($request)
-    {
-        return [
-            'user_id'             =>  Auth::id(),
-            'rate_type'           =>  ($request->rate_type == 'live')? 'live': 'manual',
-            'commission_id'       =>  $request->commission_id,
-            'ref_no'              =>  $request->ref_no,
-            'ref_name'            =>  $request->ref_name??'zoho',
-            'quote_ref'           =>  $request->quote_no,
-            'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
-            'agency_name'                       =>  $request->agency_name??NULL,
-            'agency_contact'                    =>  ($request->agency_contact != NULL)? $request->full_number : NULL,
-            'agency_email'                      =>  $request->agency_email??NULL,
-            'agency_contact_name'               =>  $request->agency_contact_name??NULL,
-            'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
-            'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
-            'lead_passenger_contact'            =>  ($request->lead_passenger_contact != NULL)? $request->full_number : NULL,
-            'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
-            'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
-            'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
-            'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
-            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
-            'brand_id'            =>  $request->brand_id,
-            'holiday_type_id'     =>  $request->holiday_type_id,
-            'sale_person_id'      =>  $request->sale_person_id,
-            'season_id'           =>  $request->season_id,
-            'currency_id'         =>  $request->currency_id,
-            'pax_no'              =>  $request->pax_no,
-            'net_price'           =>  $request->total_net_price??$request->total_net_price,
-            'markup_amount'       =>  $request->total_markup_amount??$request->markup_amount,
-            'markup_percentage'   =>  $request->total_markup_percent??$request->markup_percentage,
-            'selling_price'       =>  $request->total_selling_price??$request->selling_price,
-            'profit_percentage'   =>  $request->total_profit_percentage??$request->profit_percentage,
-            'commission_amount'   =>  $request->commission_amount??$request->commission_amount,
-            'selling_currency_oc' =>  $request->selling_price_other_currency??$request->selling_currency_oc,
-            'selling_price_ocr'   =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
-            'amount_per_person'   =>  $request->booking_amount_per_person??$request->amount_per_person,
-            'agency_name'         =>  (isset($request['agency_name']))? $request->agency_name : NULL,
-            'agency_contact'      =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
-            'agency_email'        =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
-            'revelant_qoutes'     =>  $request->revelant_qoutes??NULL,
-        
-        ];
-    }
-
-    public function getBookingDetailsArray($quoteD)
-    {
-        return [
-            'category_id'           => $quoteD['category_id'],
-            'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
-            'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-            'booking_method_id'     => $quoteD['booking_method_id'],
-            'booked_by_id'          => $quoteD['booked_by_id'],
-            'supervisor_id'         => $quoteD['supervisor_id'],
-            'date_of_service'       => $quoteD['date_of_service'],
-            'time_of_service'       => $quoteD['time_of_service'],
-            'booking_date'          => $quoteD['booking_date'],
-            'booking_due_date'      => $quoteD['booking_due_date'],
-            'service_details'       => $quoteD['service_details'],
-            'booking_reference'     => $quoteD['booking_reference'],
-            'booking_type_id'       => $quoteD['booking_type'],
-            'supplier_currency_id'  => $quoteD['supplier_currency_id'],
-            'comments'              => $quoteD['comments'],
-            'estimated_cost'        => $quoteD['estimated_cost'],
-            'markup_amount'         => $quoteD['markup_amount'],
-            'markup_percentage'     => $quoteD['markup_percentage'],
-            'selling_price'         => $quoteD['selling_price'],
-            'profit_percentage'     => $quoteD['profit_percentage'],
-            'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency'],
-            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency'],
-            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency'],
-            'added_in_sage'         => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
-            'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
-        ];
-        
-        
-    }
-
-
-    public function getFinanceBookingDetailsArray($quoteD)
-    {
-        return [
-         
-            "deposit_amount"        => $quoteD['deposit_amount']??NULL,
-            "deposit_due_date"      => $quoteD['deposit_due_date']??NULL,
-            "paid_date"             => $quoteD['paid_date']??NULL,
-            "payment_method_id"     => $quoteD['payment_method']??NULL,
-            "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
-            "additional_date"       => $quoteD['ab_number_of_days']??NULL,
-            "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
-        ];
-    }
-
-    public function getBookingRefundPaymentArray($quoteD)
-    {
-        return [
-            "refund_amount"        => $quoteD['refund_amount']??NULL,
-            "refund_date"          => $quoteD['refund_date']??NULL,
-            "bank_id"              => $quoteD['bank']??NULL,
-            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL
-        ];
-    }
-
-    
-    public function getBookingCreditNoteArray($quoteD)
-    {
-        return [
-            "credit_note_amount"         => $quoteD['credit_note_amount']??NULL,
-            "credit_note_no"             => \Helper::getCreditNote(),
-            "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
-            "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
-            // "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
-        ];
-    }
-
-    // public function getBookingTansaction($quoteD)
-    // {
-    //     return [
-    //         "amount"             => $quoteD['credit_note_recieved_by']??NULL,
-    //         "type"               => $quoteD['credit_note_supplier_id']??NULL
-    //     ];
-    // }
-
-    public function refund_to_bank(BookingRefundPaymentRequest $request)
-    {
-        BookingRefundPayment::create([
-            'booking_detail_id'   =>  $request->booking_detail_id,
-            'refund_amount'       =>  $request->refund_amount,
-            'refund_date'         =>  $request->refund_date,
-            'bank_id'             =>  $request->bank,
-            'refund_confirmed_by' =>  $request->refund_confirmed_by
-        ]);
-
-        BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
-
-        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
-    }
-
-    public function credit_note(BookingCreditNoteRequest $request)
-    {
-        BookingCreditNote::create([
-            "booking_detail_id"         => $request->booking_detail_id,
-            "credit_note_amount"        => $request->credit_note_amount,
-            "credit_note_no"            => $request->credit_note_no,
-            "credit_note_recieved_date" => $request->credit_note_recieved_date,
-            "credit_note_recieved_by"   => $request->credit_note_recieved_by,
-            "user_id"                   => Auth::id(),
-        ]);
-
-        BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
-
-        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
-    }
 
     public function update(BookingRequest $request, $id)
     {
@@ -609,5 +539,55 @@ class BookingController extends Controller
         }
         return;
     }
+
     //storage url
+
+    // 'UC20190765'  payments.unforgettabletravel.com
+    // 'UC20189776'  utcstaging.unforgettabletravel.com
+    // $response = \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+    // $response = \Helper::get_payment_detial_by_ref_no('UC20189776');
+
+    // if($response['status'] == 200 && isset($response['body']['message'])) {
+    //     $data['ufg_travel_system'] = $response['body']['message'];
+    // }
+
+    
+    // public function getBookingTansaction($quoteD)
+    // {
+    //     return [
+    //         "amount"             => $quoteD['credit_note_recieved_by']??NULL,
+    //         "type"               => $quoteD['credit_note_supplier_id']??NULL
+    //     ];
+    // }
+
+    // public function refund_to_bank(BookingRefundPaymentRequest $request)
+    // {
+    //     BookingRefundPayment::create([
+    //         'booking_detail_id'   =>  $request->booking_detail_id,
+    //         'refund_amount'       =>  $request->refund_amount,
+    //         'refund_date'         =>  $request->refund_date,
+    //         'bank_id'             =>  $request->bank,
+    //         'refund_confirmed_by' =>  $request->refund_confirmed_by
+    //     ]);
+
+    //     BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
+
+    //     return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    // }
+
+    // public function credit_note(BookingCreditNoteRequest $request)
+    // {
+    //     BookingCreditNote::create([
+    //         "booking_detail_id"         => $request->booking_detail_id,
+    //         "credit_note_amount"        => $request->credit_note_amount,
+    //         "credit_note_no"            => $request->credit_note_no,
+    //         "credit_note_recieved_date" => $request->credit_note_recieved_date,
+    //         "credit_note_recieved_by"   => $request->credit_note_recieved_by,
+    //         "user_id"                   => Auth::id(),
+    //     ]);
+
+    //     BookingDetailFinance::where('booking_detail_id',$request->booking_detail_id)->update(['status' => 'cancelled']);
+
+    //     return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    // }
 }
