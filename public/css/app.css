@@ -4437,6 +4437,22 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   padding-right: 5px;
 }
 
+.select2-container .select2-search--inline .select2-search__field {
+  box-sizing: border-box;
+  border: none;
+  font-size: 100%;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding: 0;
+  max-width: 100%;
+  resize: none;
+  height: 25px;
+  vertical-align: bottom;
+  font-family: sans-serif;
+  overflow: hidden;
+  word-break: keep-all;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Quote Managment
