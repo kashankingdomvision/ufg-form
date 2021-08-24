@@ -227,7 +227,7 @@
                       </div>
                     </div>
                     <div class="col-md-12 agency-columns" >
-                        <div class="row mt-1 agencyField {{ ($booking->agency == 0) ? 'd-none': '' }}" >
+                        <div class="row agencyField {{ ($booking->agency == 0) ? 'd-none': '' }}" >
                           <div class="col form-group">
                             <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
                             <input type="text" value="{{ $booking->agency_name }}" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
@@ -340,7 +340,7 @@
                         @if($booking->pax_no >= 1)
                             @foreach ($booking->getPaxDetail as $paxKey => $pax )
                             @php $count = $paxKey + 1; @endphp
-                                <div class="mb-2 appendCount" id="appendCount{{ $count }}">
+                                <div class="mt-1 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
                                         <div class="col-md-3 mb-2">
                                             <label class="mainLabel" >Passenger #{{ ($booking->agency == 1)? $count : $count +1  }} Full Name</label> 
