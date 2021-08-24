@@ -23763,100 +23763,6 @@ var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').att
 
 var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
 var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
-jquery__WEBPACK_IMPORTED_MODULE_0___default()("#generate-pdf").submit(function (event) {
-  event.preventDefault();
-  var $form = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this),
-      url = $form.attr('action');
-  var editor = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#editor').html();
-  var formData = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serializeArray();
-  formData.push({
-    name: 'data',
-    value: editor
-  });
-  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    type: 'POST',
-    url: url,
-    data: formData,
-    success: function success(data) {
-      console.log(data, 'data');
-    },
-    error: function error(reject) {
-      if (reject.status === 422) {
-        var errors = jquery__WEBPACK_IMPORTED_MODULE_0___default.a.parseJSON(reject.responseText);
-        setTimeout(function () {
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()("#overlay").removeClass('overlay').html('');
-
-          if (errors.hasOwnProperty("overrride_errors")) {
-            alert(errors.overrride_errors);
-            window.location.href = REDIRECT_BASEURL + "quotes/index";
-          } else {
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()('#' + index).addClass('is-invalid');
-              jquery__WEBPACK_IMPORTED_MODULE_0___default()('#' + index).closest('.form-group').find('.text-danger').html(value);
-            });
-          }
-        }, 800);
-      }
-    }
-  });
-});
-
-function todayDate() {
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-
-  var yyyy = today.getFullYear();
-  return today = dd + '/' + mm + '/' + yyyy;
-}
-
-function datepickerReset() {
-  var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-  var $season = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#season_id");
-  var season_start_date = new Date($season.find(':selected').data('start'));
-  var season_end_date = new Date($season.find(':selected').data('end'));
-
-  if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
-    if (key != null) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDateOfService:last').datepicker('destroy').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        startDate: season_start_date,
-        endDate: season_end_date
-      });
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDate:last').datepicker('destroy').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        startDate: season_start_date,
-        endDate: season_end_date
-      });
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.bookingDueDate:last').datepicker('destroy').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy',
-        startDate: season_start_date,
-        endDate: season_end_date
-      });
-    } else {
-      // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker("destroy").datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy'
-      });
-    }
-  } else {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.datepicker').datepicker('destroy').datepicker({
-      autoclose: true,
-      format: 'dd/mm/yyyy'
-    });
-  }
-}
-
-function convertDate(date) {
-  var dateParts = date.split("/");
-  return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-}
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',
@@ -23884,136 +23790,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     templateResult: formatState,
     templateSelection: formatState
   });
-  $(document).on('change', '.payment-method', function () {
-    var payment_method = $(this).val();
-    var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
-    var current_payment_methods = $(this);
-    var quoteKey = $(this).closest('.quote').data('key');
-    var financeKey = $(this).closest('.finance-clonning').data('financekey');
-    var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
-    var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
-    var t = 0;
-    var dp = 0;
-    var wa = 0;
-    var outstandingAmountLeft = estimatedCost - totalDepositAmount;
-    var currentDepositAmount = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val();
-
-    if (supplier_id != null && payment_method == 3) {
-      $.ajax({
-        headers: {
-          'X-CSRF-TOKEN': CSRFTOKEN
-        },
-        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
-        type: 'get',
-        // dataType: "json",
-        success: function success(data) {
-          if (data.response == true) {
-            wa = parseFloat(data.message); // $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-
-            console.log(wa); // console.log(totalDepositAmountArray);
-
-            if (currentDepositAmount > wa) {
-              alert("Please Enter Correct Wallet Amount");
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
-            } else {
-              $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
-            } // if(outstanding_amount_left > wa ){
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
-            //     var q = outstanding_amount_left - wa;
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((q.toFixed(2)));
-            //     $(`#quote_${quoteKey}_outstanding_amount_left`).val((q.toFixed(2)));
-            // }
-            // if(outstanding_amount_left < wa ){
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((outstanding_amount_left.toFixed(2)));
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('0.00');
-            //     $(`#quote_${quoteKey}_outstanding_amount_left`).val('0.00');
-            // }
-            // if(outstanding_amount_left == wa ){
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val((wa.toFixed(2)));
-            //     $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('0.00');
-            //     $(`#quote_${quoteKey}_outstanding_amount_left`).val('0.00');
-            // }
-
-          }
-        },
-        error: function error(reject) {
-          if (reject.status === 422) {
-            var errors = $.parseJSON(reject.responseText);
-            alert(errors.message);
-            $(current_payment_methods).val('').trigger('change');
-          }
-        }
-      });
-    } else {
-      $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-      $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
-    }
-  });
-  $(document).on('change', '.deposit-amount', function () {
-    var quoteKey = $(this).closest('.quote').data('key');
-    var financeKey = $(this).closest('.finance-clonning').data('financekey');
-    var closestFinance = $(this).closest('.finance');
-    var depositAmount = parseFloat($(this).val()).toFixed(2);
-    var estimated_cost = parseFloat($("#quote_".concat(quoteKey, "_estimated_cost")).val()).toFixed(2); // var actualCost      = parseFloat($(`#quote_${quoteKey}_outstanding_amount_left`).val()).toFixed(2);
-
-    var payment_method = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_payment_method")).val();
-    var supplier_id = $("#quote_".concat(quoteKey, "_supplier_id")).val();
-    var totalDepositAmountArray = closestFinance.find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    var outstandingAmountLeft = estimated_cost - totalDepositAmount;
-    var walletAmount = 0;
-
-    if (payment_method && payment_method == 3) {
-      $.ajax({
-        headers: {
-          'X-CSRF-TOKEN': CSRFTOKEN
-        },
-        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
-        type: 'get',
-        success: function success(data) {
-          if (data.response == true) {
-            walletAmount = parseFloat(data.message);
-
-            if (depositAmount > walletAmount) {
-              alert("Please Enter Correct Wallet Amount");
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
-            } else {
-              if (outstandingAmountLeft < 0) {
-                alert("Please Enter Correct Amount");
-                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
-                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
-              } else {
-                $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
-              }
-            }
-          }
-        },
-        error: function error(reject) {}
-      });
-    } else {
-      if (outstandingAmountLeft >= 0 && payment_method != '') {
-        $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
-      } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-        alert("Please Enter Correct Deposit Amount");
-        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
-        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
-      }
-    }
+  $('.currencyImage').select2({
+    templateResult: currencyImageFormate,
+    templateSelection: currencyImageFormate
   }); // ajaxSetup
 
   $.ajaxSetup({
@@ -24021,6 +23800,73 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       'X-CSRF-TOKEN': CSRFTOKEN
     }
   });
+  datepickerReset();
+
+  function todayDate() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+
+    var yyyy = today.getFullYear();
+    return today = dd + '/' + mm + '/' + yyyy;
+  }
+
+  function datepickerReset() {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var $season = $("#season_id");
+    var season_start_date = new Date($season.find(':selected').data('start'));
+    var season_end_date = new Date($season.find(':selected').data('end'));
+
+    if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
+      if (key != null) {
+        $('.bookingDateOfService:last').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        });
+        $('.bookingDate:last').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        });
+        $('.bookingDueDate:last').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        });
+      } else {
+        // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        $('.datepicker').datepicker("destroy").datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy'
+        });
+      }
+    } else {
+      $('.datepicker').datepicker('destroy').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy'
+      });
+    }
+  }
+
+  function convertDate(date) {
+    var dateParts = date.split("/");
+    return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+  }
+
+  function currencyImageFormate(opt) {
+    var optimage = $(opt.element).attr('data-image');
+
+    if (!optimage) {
+      return opt.text;
+    }
+
+    var $opt = $('<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>');
+    return $opt;
+  }
 
   function formatState(opt) {
     if (!opt.id) {
@@ -24038,416 +23884,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   ;
-  datepickerReset(); /////////////////////////////
-  // / Date Picker
-  // /
-  // /
-
-  $('#season_id').on('change', function () {
-    $('.datepicker').datepicker("setDate", '');
-    datepickerReset();
-  });
-  $(document).on('change', '.datepicker', function () {
-    var datePicker_id = $(this).attr('id');
-    var name = $(this).data('name');
-    var key = $(this).closest('.quote').data('key');
-    var DateOFService = $('#quote_' + key + '_date_of_service').val();
-    var BookingDate = $('#quote_' + key + '_booking_date').val();
-    var BookingDueDate = $('#quote_' + key + '_booking_due_date').val();
-    var $season = $("#season_id");
-    var season_start_date = new Date($season.find(':selected').data('start'));
-    var season_end_date = new Date($season.find(':selected').data('end'));
-
-    switch (name) {
-      case 'date_of_service':
-        DateOFService = convertDate($(this).val());
-        BookingDueDate = BookingDueDate != '' ? convertDate(BookingDueDate) : season_start_date;
-        BookingDate = BookingDate != '' ? convertDate(BookingDate) : DateOFService;
-
-        if (DateOFService < BookingDueDate) {
-          $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
-          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-        }
-
-        $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: BookingDueDate,
-          endDate: DateOFService
-        });
-        $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: BookingDate
-        });
-        break;
-
-      case 'booking_date':
-        if (convertDate(BookingDate) > convertDate(DateOFService)) {
-          $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
-        }
-
-        if (convertDate(BookingDate) < convertDate(BookingDueDate)) {
-          $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
-        }
-
-        BookingDate = convertDate($(this).val());
-        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: BookingDate,
-          endDate: season_end_date
-        });
-        var setDueDate = BookingDate != '' ? BookingDate : DateOFService != '' ? convertDate(DateOFService) : season_end_date;
-        $('#quote_' + key + '_booking_due_date').datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: setDueDate
-        });
-        break;
-
-      case 'booking_due_date':
-        if (convertDate(BookingDueDate) > convertDate(DateOFService)) {
-          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-          $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
-        }
-
-        if (convertDate(BookingDueDate) > convertDate(BookingDate)) {
-          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-        }
-
-        BookingDueDate = convertDate($(this).val());
-        BookingDate = BookingDate != null ? convertDate(BookingDate) : season_start_date;
-        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date;
-        $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: BookingDueDate,
-          endDate: season_end_date
-        });
-        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: BookingDate,
-          endDate: season_end_date
-        });
-        break;
-
-      default:
-        datepickerReset();
-        break;
-    }
-  }); // /
-  // /
-  // / Date Picker
-  /////////////////////////////
-  /// brands holidays
-
-  $(document).on('change', '.getBrandtoHoliday', function () {
-    var brand_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_id': brand_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
-          options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
-        });
-        $('.appendHolidayType').html(options);
-      }
-    });
-  }); /// brands holidays
-  ///
-
-  $(document).on('change', '.select-agency', function () {
-    var agency_ = $('.agencyField');
-    var passenger_ = $('.PassengerField');
-
-    if ($(this).val() == 1) {
-      $('#pax_no').val(1).change();
-      agency_.removeClass('d-none');
-      passenger_.addClass('d-none');
-      agency_.find('input, select').removeAttr('disabled');
-      passenger_.find('input, select').attr('disabled', 'disabled'); // $('#agency_contact').addClass('phone phone0');
-      // $('#lead_passenger_contact').removeClass('phone');
-      // $('#lead_passenger_contact').removeClass('phone0');
-
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#lead_passenger_contact'), {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
-      });
-      iti.destroy(); // intTelinput('gc');
-    } else {
-      $('#pax_no').val(1).change();
-      agency_.addClass('d-none');
-      passenger_.removeClass('d-none');
-      passenger_.find('input, select').removeAttr('disabled');
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#agency_contact'), {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
-      });
-      iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');
-      // $('#agency_contact').removeClass('phone');
-      // $('#agency_contact').removeClass('phone0');
-
-      agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
-    }
-  }); /// Category to supplier
-
-  $(document).on('change', '.category-id', function () {
-    var $selector = $(this);
-    var category_id = $(this).val();
-    var options = '';
-    $.ajax({
-      type: 'get',
-      url: BASEURL + 'category/to/supplier',
-      data: {
-        'category_id': category_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Supplier</option>';
-        $.each(response, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
-        });
-        $selector.closest('.row').find('.supplier-id').html(options);
-        $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
-      }
-    });
-  }); /// Category to supplier
-  // Supplier to product
-
-  $(document).on('change', '.supplier-id', function () {
-    var $selector = $(this);
-    var supplier_id = $(this).val();
-    var options = '';
-    $.ajax({
-      type: 'get',
-      url: BASEURL + 'supplier/to/product/currency',
-      data: {
-        'id': supplier_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Product</option>';
-        $.each(response.product, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
-        });
-        $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
-        $selector.closest('.row').find('.product-id').html(options);
-      }
-    });
-  }); // Supplier to product
-
-  $(document).on('change', '.role', function () {
-    var role = $(this).find('option:selected').data('role');
-    var supervisor = $('#supervisor_feild');
-
-    if (role == 'Sales Agent' || role == 2) {
-      $(supervisor).removeClass("d-none");
-      $('#supervisor_id').attr("required", true).removeAttr('disabled');
-    } else {
-      $(supervisor).addClass("d-none");
-      $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
-    }
-  });
-  $('.currencyImage').select2({
-    templateResult: currencyImageFormate,
-    templateSelection: currencyImageFormate
-  });
-
-  function currencyImageFormate(opt) {
-    var optimage = $(opt.element).attr('data-image');
-
-    if (!optimage) {
-      return opt.text;
-    }
-
-    var $opt = $('<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>');
-    return $opt;
-  }
-  /**
-   * -------------------------------------------------------------------------------------
-   *                                Season Manangement
-   * -------------------------------------------------------------------------------------
-  */
-  // $('.date-picker').datetimepicker({
-  //     format: 'L'
-  // });
-
-
-  $('#seasons').keyup(function () {
-    var val = $(this).val();
-
-    if (val.length == 4) {
-      $(this).val(val + '-');
-    }
-  });
-  /**
-   * -------------------------------------------------------------------------------------
-   *                                Quote Manangement
-   * -------------------------------------------------------------------------------------
-  */
-
-  $(document).on('click', '.removeChild', function () {
-    var id = $(this).data('show');
-    $(id).removeAttr("style");
-    $($(this).data('append')).empty();
-    $(this).attr("style", "display:none");
-  });
-  $(document).on('click', '.addChild', function () {
-    $('.append').empty();
-    var id = $(this).data('id');
-    var refNumber = $(this).data('ref');
-    var appendId = $(this).data('append');
-    var url = '{{ route("get.child.reference", ":id") }}';
-    url = url.replace(':id', refNumber);
-    var removeBtnId = $(this).data('remove');
-    var showBtnId = $(this).data('show');
-    $('.addChild').removeAttr("style");
-    $('.removeChild').attr("style", "display:none");
-    $(this).attr("style", "display:none"); // $(appendId).empty();
-
-    $.ajax({
-      url: BASEURL + 'quotes/child/reference',
-      data: {
-        id: id,
-        ref_no: refNumber
-      },
-      type: 'get',
-      success: function success(response) {
-        $(appendId).append(response);
-        $(removeBtnId).removeAttr("style");
-      }
-    });
-  });
-  $(document).on('click', '#add_more', function (e) {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
-    $(".quote").eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("textarea").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + parseInt($('.quote').length) + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".quote:last");
-    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
-    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
-    $(".quote:last").attr('data-key', $('.quote').length - 1);
-    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
-  });
-  $(document).on('click', '#add_more_booking', function (e) {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
-    var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("textarea").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + parseInt($('.quote').length) + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".quote:last");
-    quote.find('.finance .row:not(:first):not(:last)').remove();
-    quote.find('.estimated-cost').attr("data-status", "");
-    quote.find('.markup-amount').attr("readonly", false);
-    quote.find('.markup-percentage').attr("readonly", false);
-    quote.find('.cal_selling_price').attr('checked', 'checked');
-    quote.find('.deposit-amount').val('0.00'); // quote.find('.cancel-payment-section').attr("hidden",'hidden');
-
-    $('.quote:last .finance').find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + ($('.quote').length - 1) + ']';
-      });
-      var n = 1;
-      var name = $(this).attr("data-name");
-      this.id = this.id.replace(/[0-9]+/g, function (v) {
-        return n++ == 2 ? 0 : v;
-      }, function () {
-        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + ($('.quote').length - 1) + ']';
-      });
-      var n = 1;
-      var name = $(this).attr("data-name");
-      this.id = this.id.replace(/[0-9]+/g, function (v) {
-        return n++ == 2 ? 0 : v;
-      }, function () {
-        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
-      });
-    });
-    $('.refund-payment-hidden-section:last').attr("hidden", true);
-    $('.credit-note-hidden-section:last').attr("hidden", true);
-    $('.finance-clonning:last').removeClass("cancelled-payment-styling");
-    $('.btn-group:last').removeClass("d-none");
-    $('.clone_booking_finance:last').removeClass("d-none");
-    $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
-    $('.payment-method:last').attr("disabled", false);
-    $('.outstanding-amount:last').attr("readonly", true);
-    $('.cancel-payemnt-btn:last').attr("hidden", true);
-    $('.credit-note-section:last').remove();
-    $('.refund-payment-section:last').remove();
-    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
-    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
-    $(".quote:last").attr('data-key', $('.quote').length - 1);
-    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
-  });
-  $(document).on('click', '.close', function () {
-    $(this).closest(".quote").remove();
-    getTotalValues();
-    getSellingPrice();
-  });
-  $(document).on('change', '.supplier-currency-id', function () {
-    var code = $(this).find(':selected').data('code');
-    $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
-  });
 
   function reinitializedDynamicFeilds() {
     $('.select2single').select2({
@@ -24635,92 +24071,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return yyyy + sp + mm + sp + dd;
   };
 
-  $(document).on('change', '.booking-currency-id', function () {
-    $('.booking-currency-code').html($(this).find(':selected').data('code'));
-    changeCurrenyRate();
-    getTotalValues();
-    getSellingPrice();
-  });
-  $(document).on("keyup change", '.change', function (event) {
-    // var key         = $(this).closest('.quote').data('key');
-    // var changeFeild = $(this).data('name');
-    // var estimatedCost               =  parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-    // var supplierCurrency            =  $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-    // var bookingCurrency             =  $(".booking-currency-id").find(':selected').data('code');
-    // var rateType                    =  $('input[name="rate_type"]:checked').val();
-    // var rate                        =  getRate(supplierCurrency,bookingCurrency,rateType);
-    // var markupPercentage            =  parseFloat($(`#quote_${key}_markup_percentage`).val());
-    // var markupAmount                =  parseFloat($(`#quote_${key}_markup_amount`).val());
-    // var calculatedSellingPrice                  = 0;
-    // var calculatedMarkupPercentage              = 0;
-    // var calculatedMarkupAmount                  = 0;
-    // var calculatedProfitPercentage              = 0;
-    // var calculatedMarkupAmountInBookingCurrency = 0;
-    // var calculatedEstimatedCostInBookingCurrency = 0;
-    // var calculatedSellingPriceInBookingCurrency = 0;
-    // if(changeFeild == 'estimated_cost'){
-    //     calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
-    //     calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-    //     calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-    //     $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-    //     $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    // }
-    // if(changeFeild == 'markup_amount'){
-    //     calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
-    //     calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-    //     calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
-    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-    //     $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-    //     $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-    //     $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    // }
-    // if(changeFeild == 'markup_percentage'){
-    //     calculatedMarkupAmount                  = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
-    //     calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
-    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-    //     calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
-    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-    //     $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-    //     $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-    //     $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    // }
-    // getTotalValues();
-    // getSellingPrice();
-    var key = $(this).closest('.quote').data('key');
-    var changeFeild = $(this).data('name');
-    var cal_selling_price = $('.cal_selling_price').is(':checked');
-    var status = $(this).data('status');
-
-    if (status && status == 'booking' && cal_selling_price == false) {
-      calculateBookingDetails(key);
-    } else {
-      calculateQuoteDetails(key, changeFeild);
-    }
-  });
-  $(document).on('change', '.cal_selling_price', function () {
-    var key = $(this).closest('.quote').data('key');
-    var changeFeild = 'estimated_cost';
-
-    if ($(this).is(':checked')) {
-      $("#quote_".concat(key, "_markup_amount")).attr("readonly", false);
-      $("#quote_".concat(key, "_markup_percentage")).attr("readonly", false);
-      $("#quote_".concat(key, "_estimated_cost")).attr("data-status", ""); // calculateQuoteDetails(key,changeFeild);
-    } else {
-      $("#quote_".concat(key, "_markup_amount")).attr("readonly", true);
-      $("#quote_".concat(key, "_markup_percentage")).attr("readonly", true);
-      $("#quote_".concat(key, "_estimated_cost")).attr("data-status", "booking"); // calculateBookingDetails(key);
-    }
-  });
-
   function calculateQuoteDetails(key, changeFeild) {
     var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
     var supplierCurrency = $("#quote_".concat(key, "_supplier_currency_id")).find(':selected').data('code');
@@ -24808,6 +24158,617 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     getSellingPrice();
   }
 
+  function isEmpty(value) {
+    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
+  }
+
+  $("#generate-pdf").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var editor = $('#editor').html();
+    var formData = $(this).serializeArray();
+    formData.push({
+      name: 'data',
+      value: editor
+    });
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      success: function success(data) {
+        console.log(data, 'data');
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+
+            if (errors.hasOwnProperty("overrride_errors")) {
+              alert(errors.overrride_errors);
+              window.location.href = REDIRECT_BASEURL + "quotes/index";
+            } else {
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $('#' + index).addClass('is-invalid');
+                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              });
+            }
+          }, 800);
+        }
+      }
+    });
+  });
+  $(document).on('change', '.payment-method', function () {
+    var payment_method = $(this).val();
+    var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
+    var current_payment_methods = $(this);
+    var quoteKey = $(this).closest('.quote').data('key');
+    var financeKey = $(this).closest('.finance-clonning').data('financekey');
+    var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
+    var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+    var wa = 0;
+    var outstandingAmountLeft = estimatedCost - totalDepositAmount;
+    var currentDepositAmount = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val();
+
+    if (supplier_id != null && payment_method == 3) {
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+        type: 'get',
+        success: function success(data) {
+          if (data.response == true) {
+            wa = parseFloat(data.message);
+
+            if (currentDepositAmount > wa) {
+              alert("Please Enter Correct Wallet Amount");
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+            } else {
+              $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+            }
+          }
+        },
+        error: function error(reject) {
+          if (reject.status === 422) {
+            var errors = $.parseJSON(reject.responseText);
+            alert(errors.message);
+            $(current_payment_methods).val('').trigger('change');
+          }
+        }
+      });
+    } else {
+      $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
+      $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+    }
+  });
+  $(document).on('change', '.deposit-amount', function () {
+    var quoteKey = $(this).closest('.quote').data('key');
+    var financeKey = $(this).closest('.finance-clonning').data('financekey');
+    var closestFinance = $(this).closest('.finance');
+    var depositAmount = parseFloat($(this).val()).toFixed(2);
+    var estimated_cost = parseFloat($("#quote_".concat(quoteKey, "_estimated_cost")).val()).toFixed(2);
+    var payment_method = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_payment_method")).val();
+    var supplier_id = $("#quote_".concat(quoteKey, "_supplier_id")).val();
+    var totalDepositAmountArray = closestFinance.find('.deposit-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+    var walletAmount = 0;
+
+    if (payment_method && payment_method == 3) {
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+        type: 'get',
+        success: function success(data) {
+          if (data.response == true) {
+            walletAmount = parseFloat(data.message);
+
+            if (depositAmount > walletAmount) {
+              alert("Please Enter Correct Wallet Amount");
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+            } else {
+              if (outstandingAmountLeft < 0) {
+                alert("Please Enter Correct Amount");
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+              } else {
+                $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+              }
+            }
+          }
+        },
+        error: function error(reject) {}
+      });
+    } else {
+      if (outstandingAmountLeft >= 0 && payment_method != '') {
+        $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
+        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+      } else if (outstandingAmountLeft < 0 && payment_method != 3) {
+        alert("Please Enter Correct Deposit Amount");
+        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
+        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
+      }
+    }
+  });
+  $('#season_id').on('change', function () {
+    $('.datepicker').datepicker("setDate", '');
+    datepickerReset();
+  });
+  $(document).on('change', '.datepicker', function () {
+    var datePicker_id = $(this).attr('id');
+    var name = $(this).data('name');
+    var key = $(this).closest('.quote').data('key');
+    var DateOFService = $('#quote_' + key + '_date_of_service').val();
+    var BookingDate = $('#quote_' + key + '_booking_date').val();
+    var BookingDueDate = $('#quote_' + key + '_booking_due_date').val();
+    var $season = $("#season_id");
+    var season_start_date = new Date($season.find(':selected').data('start'));
+    var season_end_date = new Date($season.find(':selected').data('end'));
+
+    switch (name) {
+      case 'date_of_service':
+        DateOFService = convertDate($(this).val());
+        BookingDueDate = BookingDueDate != '' ? convertDate(BookingDueDate) : season_start_date;
+        BookingDate = BookingDate != '' ? convertDate(BookingDate) : DateOFService;
+
+        if (DateOFService < BookingDueDate) {
+          $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
+          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+        }
+
+        $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: BookingDueDate,
+          endDate: DateOFService
+        });
+        $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: BookingDate
+        });
+        break;
+
+      case 'booking_date':
+        if (convertDate(BookingDate) > convertDate(DateOFService)) {
+          $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
+        }
+
+        if (convertDate(BookingDate) < convertDate(BookingDueDate)) {
+          $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
+        }
+
+        BookingDate = convertDate($(this).val());
+        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: BookingDate,
+          endDate: season_end_date
+        });
+        var setDueDate = BookingDate != '' ? BookingDate : DateOFService != '' ? convertDate(DateOFService) : season_end_date;
+        $('#quote_' + key + '_booking_due_date').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: setDueDate
+        });
+        break;
+
+      case 'booking_due_date':
+        if (convertDate(BookingDueDate) > convertDate(DateOFService)) {
+          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+          $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
+        }
+
+        if (convertDate(BookingDueDate) > convertDate(BookingDate)) {
+          $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+        }
+
+        BookingDueDate = convertDate($(this).val());
+        BookingDate = BookingDate != null ? convertDate(BookingDate) : season_start_date;
+        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date;
+        $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: BookingDueDate,
+          endDate: season_end_date
+        });
+        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: BookingDate,
+          endDate: season_end_date
+        });
+        break;
+
+      default:
+        datepickerReset();
+        break;
+    }
+  });
+  $(document).on('change', '.getBrandtoHoliday', function () {
+    var brand_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_id': brand_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Type Of Holiday</option>';
+        $.each(response, function (key, value) {
+          options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+        });
+        $('.appendHolidayType').html(options);
+      }
+    });
+  });
+  $(document).on('change', '.select-agency', function () {
+    var agency_ = $('.agencyField');
+    var passenger_ = $('.PassengerField');
+
+    if ($(this).val() == 1) {
+      $('#pax_no').val(1).change();
+      agency_.removeClass('d-none');
+      passenger_.addClass('d-none');
+      agency_.find('input, select').removeAttr('disabled');
+      passenger_.find('input, select').attr('disabled', 'disabled'); // $('#agency_contact').addClass('phone phone0');
+      // $('#lead_passenger_contact').removeClass('phone');
+      // $('#lead_passenger_contact').removeClass('phone0');
+
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#lead_passenger_contact'), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
+      });
+      iti.destroy(); // intTelinput('gc');
+    } else {
+      $('#pax_no').val(1).change();
+      agency_.addClass('d-none');
+      passenger_.removeClass('d-none');
+      passenger_.find('input, select').removeAttr('disabled');
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#agency_contact'), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
+      });
+      iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');
+      // $('#agency_contact').removeClass('phone');
+      // $('#agency_contact').removeClass('phone0');
+
+      agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
+    }
+  });
+  $(document).on('change', '.category-id', function () {
+    var $selector = $(this);
+    var category_id = $(this).val();
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: BASEURL + 'category/to/supplier',
+      data: {
+        'category_id': category_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Supplier</option>';
+        $.each(response, function (key, value) {
+          options += '<option value="' + value.id + '">' + value.name + '</option>';
+        });
+        $selector.closest('.row').find('.supplier-id').html(options);
+        $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+      }
+    });
+  });
+  $(document).on('change', '.supplier-id', function () {
+    var $selector = $(this);
+    var supplier_id = $(this).val();
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: BASEURL + 'supplier/to/product/currency',
+      data: {
+        'id': supplier_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Product</option>';
+        $.each(response.product, function (key, value) {
+          options += '<option value="' + value.id + '">' + value.name + '</option>';
+        });
+        $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
+        $selector.closest('.row').find('.product-id').html(options);
+      }
+    });
+  });
+  $(document).on('change', '.role', function () {
+    var role = $(this).find('option:selected').data('role');
+    var supervisor = $('#supervisor_feild');
+
+    if (role == 'Sales Agent' || role == 2) {
+      $(supervisor).removeClass("d-none");
+      $('#supervisor_id').attr("required", true).removeAttr('disabled');
+    } else {
+      $(supervisor).addClass("d-none");
+      $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
+    }
+  });
+  /**
+   * -------------------------------------------------------------------------------------
+   *                                Season Manangement
+   * -------------------------------------------------------------------------------------
+  */
+
+  $('#seasons').keyup(function () {
+    var val = $(this).val();
+
+    if (val.length == 4) {
+      $(this).val(val + '-');
+    }
+  });
+  /**
+   * -------------------------------------------------------------------------------------
+   *                                Quote Manangement
+   * -------------------------------------------------------------------------------------
+  */
+
+  $(document).on('click', '.removeChild', function () {
+    var id = $(this).data('show');
+    $(id).removeAttr("style");
+    $($(this).data('append')).empty();
+    $(this).attr("style", "display:none");
+  });
+  $(document).on('click', '.addChild', function () {
+    $('.append').empty();
+    var id = $(this).data('id');
+    var refNumber = $(this).data('ref');
+    var appendId = $(this).data('append');
+    var url = '{{ route("get.child.reference", ":id") }}';
+    url = url.replace(':id', refNumber);
+    var removeBtnId = $(this).data('remove');
+    var showBtnId = $(this).data('show');
+    $('.addChild').removeAttr("style");
+    $('.removeChild').attr("style", "display:none");
+    $(this).attr("style", "display:none"); // $(appendId).empty();
+
+    $.ajax({
+      url: BASEURL + 'quotes/child/reference',
+      data: {
+        id: id,
+        ref_no: refNumber
+      },
+      type: 'get',
+      success: function success(response) {
+        $(appendId).append(response);
+        $(removeBtnId).removeAttr("style");
+      }
+    });
+  });
+  $(document).on('click', '#add_more', function (e) {
+    if ($('.select2single').data('select2')) {
+      $('.select2single').select2('destroy');
+    }
+
+    $(".quote").eq(0).clone().find("input").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + $('.quote').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("textarea").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + parseInt($('.quote').length) + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("select").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + $('.quote').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().show().insertAfter(".quote:last");
+    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
+    $(".quote:last").attr('data-key', $('.quote').length - 1);
+    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+    $('.quote:last input, .quote:last select').removeClass('is-invalid');
+    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    datepickerReset(1);
+    reinitializedDynamicFeilds();
+  });
+  $(document).on('click', '#add_more_booking', function (e) {
+    if ($('.select2single').data('select2')) {
+      $('.select2single').select2('destroy');
+    }
+
+    var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + $('.quote').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("textarea").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + parseInt($('.quote').length) + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().find("select").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + $('.quote').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().show().insertAfter(".quote:last");
+    quote.find('.finance .row:not(:first):not(:last)').remove();
+    quote.find('.estimated-cost').attr("data-status", "");
+    quote.find('.markup-amount').attr("readonly", false);
+    quote.find('.markup-percentage').attr("readonly", false);
+    quote.find('.cal_selling_price').attr('checked', 'checked');
+    quote.find('.deposit-amount').val('0.00'); // quote.find('.cancel-payment-section').attr("hidden",'hidden');
+
+    $('.quote:last .finance').find("input").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + ($('.quote').length - 1) + ']';
+      });
+      var n = 1;
+      var name = $(this).attr("data-name");
+      this.id = this.id.replace(/[0-9]+/g, function (v) {
+        return n++ == 2 ? 0 : v;
+      }, function () {
+        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+      });
+    }).end().find("select").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + ($('.quote').length - 1) + ']';
+      });
+      var n = 1;
+      var name = $(this).attr("data-name");
+      this.id = this.id.replace(/[0-9]+/g, function (v) {
+        return n++ == 2 ? 0 : v;
+      }, function () {
+        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+      });
+    });
+    $('.refund-payment-hidden-section:last').attr("hidden", true);
+    $('.credit-note-hidden-section:last').attr("hidden", true);
+    $('.finance-clonning:last').removeClass("cancelled-payment-styling");
+    $('.btn-group:last').removeClass("d-none");
+    $('.clone_booking_finance:last').removeClass("d-none");
+    $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
+    $('.payment-method:last').attr("disabled", false);
+    $('.outstanding-amount:last').attr("readonly", true);
+    $('.cancel-payemnt-btn:last').attr("hidden", true);
+    $('.credit-note-section:last').remove();
+    $('.refund-payment-section:last').remove();
+    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
+    $(".quote:last").attr('data-key', $('.quote').length - 1);
+    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+    $('.quote:last input, .quote:last select').removeClass('is-invalid');
+    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    datepickerReset(1);
+    reinitializedDynamicFeilds();
+  });
+  $(document).on('click', '.close', function () {
+    $(this).closest(".quote").remove();
+    getTotalValues();
+    getSellingPrice();
+  });
+  $(document).on('change', '.supplier-currency-id', function () {
+    var code = $(this).find(':selected').data('code');
+    $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
+  });
+  $(document).on('change', '.booking-currency-id', function () {
+    $('.booking-currency-code').html($(this).find(':selected').data('code'));
+    changeCurrenyRate();
+    getTotalValues();
+    getSellingPrice();
+  });
+  $(document).on("keyup change", '.change', function (event) {
+    // var key         = $(this).closest('.quote').data('key');
+    // var changeFeild = $(this).data('name');
+    // var estimatedCost               =  parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
+    // var supplierCurrency            =  $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+    // var bookingCurrency             =  $(".booking-currency-id").find(':selected').data('code');
+    // var rateType                    =  $('input[name="rate_type"]:checked').val();
+    // var rate                        =  getRate(supplierCurrency,bookingCurrency,rateType);
+    // var markupPercentage            =  parseFloat($(`#quote_${key}_markup_percentage`).val());
+    // var markupAmount                =  parseFloat($(`#quote_${key}_markup_amount`).val());
+    // var calculatedSellingPrice                  = 0;
+    // var calculatedMarkupPercentage              = 0;
+    // var calculatedMarkupAmount                  = 0;
+    // var calculatedProfitPercentage              = 0;
+    // var calculatedMarkupAmountInBookingCurrency = 0;
+    // var calculatedEstimatedCostInBookingCurrency = 0;
+    // var calculatedSellingPriceInBookingCurrency = 0;
+    // if(changeFeild == 'estimated_cost'){
+    //     calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
+    //     calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+    //     calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+    //     $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+    //     $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    // }
+    // if(changeFeild == 'markup_amount'){
+    //     calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
+    //     calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //     calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
+    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+    //     $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //     $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+    //     $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    // }
+    // if(changeFeild == 'markup_percentage'){
+    //     calculatedMarkupAmount                  = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
+    //     calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
+    //     calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //     calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
+    //     calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+    //     $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+    //     $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //     $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+    //     $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+    //     $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    // }
+    // getTotalValues();
+    // getSellingPrice();
+    var key = $(this).closest('.quote').data('key');
+    var changeFeild = $(this).data('name');
+    var cal_selling_price = $('.cal_selling_price').is(':checked');
+    var status = $(this).data('status');
+
+    if (status && status == 'booking' && cal_selling_price == false) {
+      calculateBookingDetails(key);
+    } else {
+      calculateQuoteDetails(key, changeFeild);
+    }
+  });
+  $(document).on('change', '.cal_selling_price', function () {
+    var key = $(this).closest('.quote').data('key');
+    var changeFeild = 'estimated_cost';
+
+    if ($(this).is(':checked')) {
+      $("#quote_".concat(key, "_markup_amount")).attr("readonly", false);
+      $("#quote_".concat(key, "_markup_percentage")).attr("readonly", false);
+      $("#quote_".concat(key, "_estimated_cost")).attr("data-status", ""); // calculateQuoteDetails(key,changeFeild);
+    } else {
+      $("#quote_".concat(key, "_markup_amount")).attr("readonly", true);
+      $("#quote_".concat(key, "_markup_percentage")).attr("readonly", true);
+      $("#quote_".concat(key, "_estimated_cost")).attr("data-status", "booking"); // calculateBookingDetails(key);
+    }
+  });
   $(document).on('change', '.selling-price-other-currency', function () {
     $('.selling-price-other-currency-code').text($(this).val());
     getSellingPrice();
@@ -24831,11 +24792,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     jQuery('#payment_details_modal').modal('show');
     jQuery('#payment_details_modal_body').html(tbody);
   });
-
-  function isEmpty(value) {
-    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
-  }
-
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();
   });
@@ -24866,20 +24822,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('#addMoreButton').append();
       $('#btnSubmitversion').append();
     }
-  }); //////////////////////////////////
-  // / Quote FORM SUBMISSION START
-  // /
-  // /
-
+  });
   $("#quoteCreate").submit(function (event) {
     event.preventDefault();
     var $form = $(this),
         url = $form.attr('action');
-    var formdata = $(this).serialize();
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html('');
-    /* Send the data using post */
-
     $.ajax({
       type: 'POST',
       url: url,
@@ -25282,11 +25231,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     event.preventDefault();
     var $form = $(this),
         url = $form.attr('action');
-    var formdata = $(this).serialize();
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html('');
-    /* Send the data using post */
-
     $.ajax({
       type: 'POST',
       url: url,
@@ -25319,11 +25265,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }
     });
-  }); // /
-  // /
-  // / Quote FORM SUBMISSION END
-  //////////////////////////////////
-
+  });
   $("#update-booking").submit(function (event) {
     event.preventDefault();
     $('#update-booking :input').prop('disabled', false);
@@ -25410,8 +25352,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $(document).on('click', '.refund-to-bank', function () {
-    var quoteKey = $(this).closest('.quote').data('key'); // var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
-
+    var quoteKey = $(this).closest('.quote').data('key');
     $(this).closest('.quote').find('.refund-payment-hidden-section').removeAttr("hidden");
     $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden", true);
     $("#quote_".concat(quoteKey, "_credit_note_0_credit_note_amount")).val('');
@@ -25634,7 +25575,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     //     });
     // }
 
-  }); ///booking incremnet and
+  }); // booking incremnet and
 
   $(document).on('click', '.increment', function () {
     var close = $(this).closest('.finance-clonning');
@@ -25682,8 +25623,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     return false;
-  }); ///booking incremnet and
-  // tel input  start
+  }); // tel input  start
 
   if ($('.phone').length > 0) {
     for (var i = 0; i < $('.phone').length; i++) {
@@ -25758,9 +25698,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (agencyVal == $_val) {
       var count = 1;
-      var $v_html = "\n        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n            <div class=\"row\" >\n                <div class=\"col-md-3 mb-2\">\n                    <label>Passenger #").concat(count, " Full Name <span class=\"text-danger\">*</span></label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Email Address <span class=\"text-danger\">*</span></label> \n                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Contact Number <span class=\"text-danger\">*</span></label> \n                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Date Of Birth <span class=\"text-danger\">*</span></label> \n                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-sm-3\">\n                    <label>Nationality <span class=\"text-danger\">*</span></label>\n                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                        <option selected value=\"\" >Select Nationality</option>\n                        ").concat(countries.map(function (co) {
+      var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address <span class=\"text-danger\">*</span></label> \n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number <span class=\"text-danger\">*</span></label> \n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth <span class=\"text-danger\">*</span></label> \n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality <span class=\"text-danger\">*</span></label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n                    </select>\n                </div>\n                <div class=\"col-md-3 mb-2\">\n                    <label>Bedding Preference <span class=\"text-danger\">*</span></label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                </div>\n                \n                <div class=\"col-md-3 mb-2\">\n                    <label>Dinning Preference <span class=\"text-danger\">*</span></label> \n                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                </div>\n\n                <div class=\"col-sm-3\">\n                    <div class=\"form-group\">\n                        <label>Covid Vaccinated </label>\n                        <div>\n                            <label class=\"radio-inline\">\n                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                            </label>\n                            <label class=\"radio-inline\">\n                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                            </label>\n                        </div>\n                    </div>\n                </div>\n              \n            </div>\n        </div>");
+      }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n                    \n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dinning Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                    </div>\n\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                            <label>Covid Vaccinated </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n                \n                </div>\n            </div>");
       console.log($v_html);
       $('#appendPaxName').html($v_html);
       intTelinput(1);
@@ -25782,9 +25722,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           c = count;
         }
 
-        var $_html = "\n                    <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                        <div class=\"row\" >\n                            <div class=\"col-md-3 mb-2\">\n                                <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER FULL NAME\" >\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Email Address</label> \n                                <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                            </div>\n                            \n                          \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Contact Number</label> \n                                <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Date Of Birth</label> \n                                <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-sm-3\">\n                                <label>Nationality</label>\n                                <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                    <option selected value=\"\" >Select Nationality</option>\n                                    ").concat(countries.map(function (co) {
+        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                                <div class=\"col-md-3 mb-2\">\n                                    <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                \n                            \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
           return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                </select>\n                            </div>\n                            <div class=\"col-md-3 mb-2\">\n                                <label>Bedding Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                            </div>\n                            \n                            <div class=\"col-md-3 mb-2\">\n                                <label>Dinning Preference</label> \n                                <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                            </div>\n\n                            <div class=\"col-sm-2\">\n                                <div class=\"form-group\">\n                                    <label>Covid Vaccinated </label>\n                                    <div>\n                                        <label class=\"radio-inline\">\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                        </label>\n                                        <label class=\"radio-inline\">\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                        </label>\n                                    </div>\n                                </div>\n                            </div>\n\n                            <div class=\"col-md-1 mb-2\">\n                                <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                            </div>\n                        </div>\n                    </div>");
+        }).join(""), "\n                                    </select>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n\n                                <div class=\"col-sm-2\">\n                                    <div class=\"form-group\">\n                                        <label>Covid Vaccinated </label>\n                                        <div>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                            </label>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                            </label>\n                                        </div>\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-1 mb-2\">\n                                    <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                                </div>\n                            </div>\n                        </div>");
         $('#appendPaxName').append($_html);
         intTelinput(count);
       }
