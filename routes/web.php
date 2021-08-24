@@ -20,7 +20,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => ['auth']], function(){
 
-
     /* Refresh Token */
 	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
 
@@ -58,8 +57,6 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-
-
     /*
     |--------------------------------------------------------------------------
     | Quote Manangement
@@ -87,6 +84,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
     });
     
+
     /*
     |--------------------------------------------------------------------------
     | Template Controller
@@ -107,7 +105,6 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-
     /*
     |--------------------------------------------------------------------------
     | Users Manangement
@@ -122,7 +119,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
     	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
-
 
     Route::resource('roles', 'RoleController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
