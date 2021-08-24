@@ -16,6 +16,62 @@
 
     <section class="content-header">
       <div class="container-fluid">
+
+        <div class="row">
+          <div class="col-md-6">
+            <div>
+              @if($booking->getBookingLogs->count())
+                <p>
+                  <a class="btn btn-info btn-sm" data-toggle="collapse" href="#view_booking_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                    View Booking Versions {{  (count($booking->getBookingLogs) > 0 ) ? '('.count($booking->getBookingLogs).')' : '' }}
+                  </a>
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <div class="collapse multi-collapse" id="view_booking_version">
+                      <div class="card card-body">
+                        <table>
+                          @foreach ($booking->getBookingLogs as $logKey =>  $logs)
+                            <thead>
+                              <th><a href="{{ route('bookings.version', encrypt($logs->id)) }}" target="_blank">Booking Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
+                            </thead>
+                            @endforeach
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endif
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="float-right">
+              @if($booking->getQuote->getQuotelogs->count())
+                <p class="">
+                  <a class="btn btn-info btn-sm " data-toggle="collapse" href="#view_quote_version" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">
+                    View Quote Versions {{  (count($booking->getQuote->getQuotelogs) > 0 ) ? '('.count($booking->getQuote->getQuotelogs).')' : '' }}
+                  </a>
+                </p>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="collapse multi-collapse" id="view_quote_version">
+                      <div class="card card-body float-right">
+                        <table>
+                          @foreach ($booking->getQuote->getQuotelogs as $logKey =>  $logs)
+                            <thead>
+                              <th><a href="{{ route('quotes.view.version', [encrypt($logs->id), 'booking']) }}" target="_blank">Quote Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
+                            </thead>
+                            @endforeach
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endif
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           <div class="col-sm-6">
             <h4>View Booking</h4>
@@ -39,7 +95,13 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h1 class="card-title text-center card-title-style">View Booking</h1>
-                <a href="{{ route('bookings.index', encrypt($booking->season_id)) }}" data-recall="true" class="btn btn-outline-light btn-sm float-right">Back</a>
+                <a href="{{ url()->previous() }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">
+                  Back
+                </a>
+
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary mr-3 btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
+                  View Final Quote
+                </a>
               </div>
               
               <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking">

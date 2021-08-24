@@ -60,7 +60,11 @@
           <div class="col-md-12">
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Final Quote</h3>
+                <h3 class="card-title text-center card-title-style">Final Quote</h3>
+
+                <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">
+                  Back
+                </a>
               </div>
               <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
                 <div class="card-body">
