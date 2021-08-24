@@ -4384,6 +4384,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.tr-bg-color {
+  background-color: #ff000038;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2
@@ -4456,9 +4460,5 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   color: #fff;
   background-color: #343a40;
   border-color: #a7acb1;
-}
-
-.tr-bg-color {
-  background-color: #ff000038;
 }
 

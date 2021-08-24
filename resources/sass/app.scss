@@ -70,8 +70,6 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     margin: 12px !important;
 }
 
-
-
 .cancelled-payment-styling{
     // background-image: url('http://localhost/ufg-form/public/img/cancelled.jpg');
     background-repeat: no-repeat;
@@ -134,13 +132,11 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     width: 68% !important;
 }
 
-
 .card-title-style{
 
     font-size: 1.5rem;
     line-height: 2rem;
 }
-
 
 /**
  * -------------------------------------------------------------------------------------
@@ -156,7 +152,6 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     width: 60rem;
 }
 
-
 .table td, .table th {
     padding: .75rem;
     vertical-align: top;
@@ -170,6 +165,10 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
 
 .tbody-highlight{
     background-color: rgba(0,0,0,.05);
+}
+
+.tr-bg-color{
+    background-color: #ff000038;
 }
 
 /**
@@ -219,7 +218,6 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     padding-right: 5px;
 }
 
-
 /**
  * -------------------------------------------------------------------------------------
  *                                Quote Managment
@@ -244,8 +242,3 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     background-color: #343a40;
     border-color: #a7acb1;
 }
-
-.tr-bg-color{
-    background-color: #ff000038;
-}
- 
