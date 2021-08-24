@@ -57,7 +57,6 @@ $(document).ready(function($) {
 
     datepickerReset();
 
-
     function todayDate() {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -661,7 +660,6 @@ $(document).ready(function($) {
             // intTelinput(0);
         }
     });
-
 
     $(document).on('change', '.category-id',function(){
         var $selector = $(this);

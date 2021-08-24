@@ -22,12 +22,13 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     display: inline-flex;
 }
 
-
 .iti__flag {background-image: url("https://stagingwebsite.tk/php/ufg-form/resources/img/flags.png") ;}
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .iti__flag {background-image: url("https://stagingwebsite.tk/php/ufg-form/resources/img/flags@2x.png") !important;}
 }
+
 .iti{ width: 100%;}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Margin
