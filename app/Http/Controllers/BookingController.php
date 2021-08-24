@@ -173,7 +173,6 @@ class BookingController extends Controller
             'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
             'agency_email'                      =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
             'revelant_qoutes'                   =>  $request->revelant_qoutes??NULL,
-        
         ];
     }
 
@@ -228,7 +227,6 @@ class BookingController extends Controller
             "credit_note_no"             => \Helper::getCreditNote(),
             "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
             "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
-            // "supplier_id"                => $quoteD['credit_note_supplier_id']??NULL
         ];
     }
 

@@ -431,7 +431,7 @@ class QuoteController extends Controller
         return redirect()->route('quotes.index')->with('success_message', 'Quote restored successfully');        
     }
     
-    ///View Final Quote 
+    /* view final quote */
     public function finalQuote($id)
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -448,12 +448,11 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
-        
+
         return view('quotes.show',$data);
     }
-    ///View Final Quote 
     
-    //update status in archive 
+    /* update status in archive */
     public function addInArchive(Request $request, $id)
     {
         $isArchive = ((int)$request->is_archive == 0)? 1 : 0;
@@ -468,8 +467,8 @@ class QuoteController extends Controller
         
         return redirect()->back();
     }
-    //update status in archive 
-    
+   
+    /* archive listing */
     public function getArchive(Request $request)
     {
         $data['status'] = 'archive';
@@ -482,9 +481,11 @@ class QuoteController extends Controller
         $data['users']            = User::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+
         return view('quotes.listing', $data);      
     }
       
+    /* quote clone */
     public function clone($id)
     {
         $quote      = Quote::findORFail(decrypt($id));
