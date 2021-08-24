@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Requests\QuoteRequest;
-use Auth;
 use App\Category;
 use App\Product;
 use App\Season;
@@ -25,50 +25,32 @@ use App\Booking;
 use App\BookingDetail;
 use App\BookingPaxDetail;
 use App\Commission;
-use DB;
-use Carbon\Carbon;
-use App\Country;
 use App\QuoteUpdateDetail;
-use Crypt;
-use Illuminate\Contracts\Encryption\DecryptException;
-use PDF;
+use App\Country;
 use App\QuoteDocument;
+use Carbon\Carbon;
+use Crypt;
+use PDF;
+use DB;
+use Auth;
 
 class QuoteController extends Controller
 {
     public $pagiantion = 10;
-    
-    
-    public function clone($id)
+
+    public function index(Request $request)
     {
-        $quote      = Quote::findORFail(decrypt($id));
-        $getQuote   = $this->quoteArray($quote,'clone');
-        $clone      = Quote::create($getQuote);
-        foreach ($quote->getQuoteDetails as $qu_details) {
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id);
-            $quoteDetail['quote_id'] = $clone->id;
-            
-            QuoteDetail::create($quoteDetail);
+        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
+        if(count($request->all()) >0){
+            $quote = $this->searchFilters($quote, $request);
         }
+        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        $data['booking_seasons']  = Season::all();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['users']            = User::get();
         
-        if($quote->getPaxDetail && $quote->pax_no >= 1){
-            foreach ($quote->getPaxDetail as $pax) {
-                QuotePaxDetail::create([
-                    'quote_id'              => $clone->id,
-                    'full_name'             => $pax['full_name'],
-                    'email'                 => $pax['email'],
-                    'contact'               => $pax['contact'],
-                    'date_of_birth'         => $pax['date_of_birth'],
-                    'bedding_preference'    => $pax['bedding_preference'],
-                    'dinning_preference'    => $pax['dinning_preference'],
-                    'nationality_id'        => $pax['nationality_id'],
-                    'covid_vaccinated'      => ((int) $pax['covid_vaccinated'] == '1')? '1' : '0'
-                ]);
-            }
-        }
-        
-       return redirect()->back()->with('success_message', 'Quote clone successfully');
-        
+        return view('quotes.listing', $data);       
     }
     
     public function searchFilters($quote, $request)
@@ -136,22 +118,6 @@ class QuoteController extends Controller
         return $quote;
     }
     
-    public function index(Request $request)
-    {
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
-        if(count($request->all()) >0){
-            $quote = $this->searchFilters($quote, $request);
-        }
-        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
-        $data['booking_seasons']  = Season::all();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['users']            = User::get();
-        
-        return view('quotes.listing', $data);       
-    }
-    
-    
     public function create()
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -183,11 +149,9 @@ class QuoteController extends Controller
     public function get_commission(){
         return Commission::all();
     }
-
     
     public function quoteArray($request, $type = null)
     {
-
         return [
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
@@ -226,7 +190,6 @@ class QuoteController extends Controller
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
-       
     }
     
     public function getQuoteDetailsArray($quoteD, $id)
@@ -261,10 +224,6 @@ class QuoteController extends Controller
     
     public function store(QuoteRequest $request)
     {
-
-        // dd($this->quoteArray($request));
-
-
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
@@ -310,7 +269,6 @@ class QuoteController extends Controller
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
 
-
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','quotes')->first();
 
         if($quote_update_detail && $quote_update_detail->exists()){
@@ -331,44 +289,6 @@ class QuoteController extends Controller
 
         return view('quotes.edit',$data);
     }
-
-    // public function iteration($date)
-    // {
-    //     $iterations = QuoteDetail::distinct()->where('quote_id',1)->pluck('iteration')->toArray();
-    //     foreach($iterations as $ik => $i) {
-
-    //         $d =  QuoteDetail::where('date_of_service', $date)->where('iteration',$i)->orderBy('category_id','ASC')->get()->toArray();
-    //         $f = $this->iterationWithText($d);
-    //         $iteration[] = $f;
-    //     }
-    //     return $iteration;
-    // }
-
-    // public function iterationWithText($iterationObject){
-
-    //     $arr = [];
-        
-    //     $transfer_date_of_service = isset($iterationObject[0]['date_of_service']) ? $iterationObject[0]['date_of_service'] : '';
-    //     $transfer_time_of_service = isset($iterationObject[0]['time_of_service']) ? $iterationObject[0]['time_of_service'] : '';
-        
-    //     $accommodation_date_of_service = isset($iterationObject[1]['date_of_service']) ? $iterationObject[1]['date_of_service'] : '';
-    //     $accommodation_time_of_service = isset($iterationObject[1]['time_of_service']) ? $iterationObject[1]['time_of_service'] : '' ;
-        
-    //     $transfer_product_name      = $this->getProductName(isset($iterationObject[0]['product_id']) ? $iterationObject[0]['product_id'] : '');
-    //     $accommodation_product_name = $this->getProductName(isset($iterationObject[1]['product_id']) ? $iterationObject[1]['product_id'] : '');
-
-    //     $arr[0] = "Transfer to $accommodation_product_name via $transfer_product_name on $transfer_date_of_service $transfer_time_of_service";
-    //     $arr[1] = "$accommodation_product_name";
-    //     $arr[2] = "Check in: $accommodation_date_of_service $accommodation_time_of_service";
-    //     $arr[3] = "27 Days";
-
-    //     return $arr;
-    // }
-
-    // public function getProductName($id){
-    //    $product = Product::find($id);
-    //    return isset($product->name) ? $product->name : '';
-    // }
     
     public function update(QuoteRequest $request, $id)
     {
@@ -425,12 +345,11 @@ class QuoteController extends Controller
        return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
     }
 
-
     public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
-        $data['quote'] = $log->data;
-        $data['log']  = $log;
+        $data['quote']            = $log->data;
+        $data['log']              = $log;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -448,24 +367,15 @@ class QuoteController extends Controller
         if($type != NULL){
             $data['type'] = $type;
         }
-        // dd($log->data);
+  
         return view('quotes.version', $data);
-
-
-        $currency_conver = CurrencyConversions::whereNull('live');
-        
-        
-        $from   = $currency_conver->pluck(['from', 'to']);
-        $count  = $currency_conver->count();
     }
-
 
     public function delete($id)
     { 
-
         $quote =  Quote::findOrFail(decrypt($id)); 
         $quote->delete();
-        // Quote::destroy(decrypt($id));
+
         return redirect()->route('quotes.index')->with('success_message', 'Quote cancelled successfully');        
     }
 
@@ -590,7 +500,74 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         return view('quotes.listing', $data);      
     }
+      
+    public function clone($id)
+    {
+        $quote      = Quote::findORFail(decrypt($id));
+        $getQuote   = $this->quoteArray($quote,'clone');
+        $clone      = Quote::create($getQuote);
+        foreach ($quote->getQuoteDetails as $qu_details) {
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id);
+            $quoteDetail['quote_id'] = $clone->id;
+            
+            QuoteDetail::create($quoteDetail);
+        }
+        
+        if($quote->getPaxDetail && $quote->pax_no >= 1){
+            foreach ($quote->getPaxDetail as $pax) {
+                QuotePaxDetail::create([
+                    'quote_id'              => $clone->id,
+                    'full_name'             => $pax['full_name'],
+                    'email'                 => $pax['email'],
+                    'contact'               => $pax['contact'],
+                    'date_of_birth'         => $pax['date_of_birth'],
+                    'bedding_preference'    => $pax['bedding_preference'],
+                    'dinning_preference'    => $pax['dinning_preference'],
+                    'nationality_id'        => $pax['nationality_id'],
+                    'covid_vaccinated'      => ((int) $pax['covid_vaccinated'] == '1')? '1' : '0'
+                ]);
+            }
+        }
+        
+       return redirect()->back()->with('success_message', 'Quote clone successfully');
+    }
     
+   // public function iteration($date)
+    // {
+    //     $iterations = QuoteDetail::distinct()->where('quote_id',1)->pluck('iteration')->toArray();
+    //     foreach($iterations as $ik => $i) {
 
+    //         $d =  QuoteDetail::where('date_of_service', $date)->where('iteration',$i)->orderBy('category_id','ASC')->get()->toArray();
+    //         $f = $this->iterationWithText($d);
+    //         $iteration[] = $f;
+    //     }
+    //     return $iteration;
+    // }
+
+    // public function iterationWithText($iterationObject){
+
+    //     $arr = [];
+        
+    //     $transfer_date_of_service = isset($iterationObject[0]['date_of_service']) ? $iterationObject[0]['date_of_service'] : '';
+    //     $transfer_time_of_service = isset($iterationObject[0]['time_of_service']) ? $iterationObject[0]['time_of_service'] : '';
+        
+    //     $accommodation_date_of_service = isset($iterationObject[1]['date_of_service']) ? $iterationObject[1]['date_of_service'] : '';
+    //     $accommodation_time_of_service = isset($iterationObject[1]['time_of_service']) ? $iterationObject[1]['time_of_service'] : '' ;
+        
+    //     $transfer_product_name      = $this->getProductName(isset($iterationObject[0]['product_id']) ? $iterationObject[0]['product_id'] : '');
+    //     $accommodation_product_name = $this->getProductName(isset($iterationObject[1]['product_id']) ? $iterationObject[1]['product_id'] : '');
+
+    //     $arr[0] = "Transfer to $accommodation_product_name via $transfer_product_name on $transfer_date_of_service $transfer_time_of_service";
+    //     $arr[1] = "$accommodation_product_name";
+    //     $arr[2] = "Check in: $accommodation_date_of_service $accommodation_time_of_service";
+    //     $arr[3] = "27 Days";
+
+    //     return $arr;
+    // }
+
+    // public function getProductName($id){
+    //    $product = Product::find($id);
+    //    return isset($product->name) ? $product->name : '';
+    // }
     
 }
