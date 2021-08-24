@@ -13,6 +13,34 @@
     @endif
     <section class="content-header">
       <div class="container-fluid">
+
+        @if($quote->getQuotelogs && $quote->getQuotelogs->count())
+          <div class="row">
+            <div class="col-md-12">
+              <div>
+                <p>
+                  <a class="btn btn-info btn-sm" data-toggle="collapse" href="#viewQuoteVersion" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">View Quote Versions {{  (count($quote->getQuotelogs) > 0 ) ? '('.count($quote->getQuotelogs).')' : '' }}</a>
+                </p>
+                <div class="row">
+                  <div class="col">
+                    <div class="collapse multi-collapse" id="viewQuoteVersion">
+                      <div class="card card-body">
+                        <table>
+                          @foreach ($quote->getQuotelogs as $logKey =>  $logs)
+                            <thead>
+                              <th><a href="{{ route('quotes.view.version', encrypt($logs->id)) }}"  target="_blank">Quote Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
+                            </thead>
+                          @endforeach
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        @endif
+
         <div class="row">
           <div class="col-sm-6">
               <h4>View Final Quote</h4>
