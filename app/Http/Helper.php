@@ -2,6 +2,8 @@
 namespace App\Http;
 use App\Quote;
 use App\BookingCreditNote;
+use App\QuoteUpdateDetail;
+use Auth;
 
 class Helper
 {
@@ -134,6 +136,32 @@ class Helper
 		
 		$response = array_merge($curl_info, $response);
 		return $response;
+	}
+
+	public static function checkAlreadyExistUser($id, $status){
+
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status',$status)->first();
+		$response            = [];
+
+        if(!is_null($quote_update_detail)){
+
+            $response['exist']   = 1;
+            $response['user_id'] = $quote_update_detail->user_id;
+        }
+
+        if(is_null($quote_update_detail)){
+
+            QuoteUpdateDetail::create([
+                'user_id'      =>  Auth::id(),
+                'foreign_id'   =>  decrypt($id),
+                'status'       =>  $status
+            ]);
+
+			$response['exist']   = null;
+            $response['user_id'] = null;
+        }
+
+       return $response;
 	}
 
 }

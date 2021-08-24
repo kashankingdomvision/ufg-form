@@ -268,34 +268,35 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
+        $data                     = array_merge($data, \Helper::checkAlreadyExistUser($id,'quotes'));
 
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','quotes')->first();
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','quotes')->first();
+        // if(!is_null($quote_update_detail)){
 
-        if($quote_update_detail && $quote_update_detail->exists()){
-            $data['exist']   = 1;
-            $data['user_id'] = $quote_update_detail->user_id;
-        }
-        else{    
+        //     $data['exist']   = 1;
+        //     $data['user_id'] = $quote_update_detail->user_id;
+        // }
 
-            $quote_update_details = QuoteUpdateDetail::create([
-                'user_id'      =>  Auth::id(),
-                'foreign_id'   =>  decrypt($id),
-                'status'       =>  'quotes'
-            ]);
+        // if(is_null($quote_update_detail)){
 
-            $data['exist']   = null;
-            $data['user_id'] = null;
-        }
+        //     QuoteUpdateDetail::create([
+        //         'user_id'      =>  Auth::id(),
+        //         'foreign_id'   =>  decrypt($id),
+        //         'status'       =>  'quotes'
+        //     ]);
+
+        //     $data['exist']   = null;
+        //     $data['user_id'] = null;
+        // }
 
         return view('quotes.edit',$data);
     }
-    
+
     public function update(QuoteRequest $request, $id)
     {
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
- 
-        if ($quote_update_detail == null){
-            return \Response::json(['overrride_errors' => 'Someone Has override update access'], 422); // Status code here
+        if(is_null($quote_update_detail)){
+            return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
         }
 
         $quote = Quote::findOrFail(decrypt($id));

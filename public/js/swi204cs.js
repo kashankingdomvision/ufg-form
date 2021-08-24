@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',

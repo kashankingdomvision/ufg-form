@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
 
 $(document).ready(function($) {
 

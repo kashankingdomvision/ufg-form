@@ -4,7 +4,7 @@
             <form action="{{ route('update.override', encrypt($id)) }}"  method="POST"  id="update-override">
                 @csrf @method('put')
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                <input type="hidden" name="status" value="{{ $status }}">
+                <input type="hidden" name="status"  value="{{ $status }}">
         
                 <div class="modal-header">
                     <h4 class="modal-title">Alert</h4>
@@ -21,7 +21,6 @@
                         <span class="mr-2" role="status" aria-hidden="true"></span>
                         Override
                     </button>
-
                    
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>

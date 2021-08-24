@@ -175,6 +175,8 @@ class BookingController extends Controller
     
         }
 
+        $data = array_merge($data, \Helper::checkAlreadyExistUser($id,'bookings'));
+
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
 
         // if($quote_update_detail && $quote_update_detail->exists()){
@@ -413,43 +415,42 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
 
-    // BookingRequest
-    // Request
     public function update(BookingRequest $request, $id)
     {
-        // dd($request->all());
-
-        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
-        // if(!$quote_update_detail->exists()) {
-        //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has override update access'], 422); // Status code here
-        // }
-
-        // dd($this->bookingArray($request));
+        // check update access
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        if(!$quote_update_detail->exists()) {
+            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
+        }
+        
+        //- check update access
 
         $booking = Booking::findOrFail(decrypt($id));
-        $array =  $booking->toArray();
-        $book =[];
+        $array   = $booking->toArray();
+        $book    = [];
+
         foreach ($booking->getBookingDetail as $bookingde) {
             $d = $bookingde->toArray();
             $d['finance'] = $bookingde->getBookingFinance->toArray();
             array_push($book, $d);
         }
+
         $array['booking'] = $book;
-        $array['pax'] = $booking->getBookingPaxDetail->toArray();
+        $array['pax']     = $booking->getBookingPaxDetail->toArray();
+
         BookingLog::create([
-                'booking_id'    => $booking->id,
-                'version_no'    => $booking->version,
-                'data'          => $array,
-                'log_no'        => $booking->getBookingLogs()->count()
-            ]);
+            'booking_id'    => $booking->id,
+            'version_no'    => $booking->version,
+            'data'          => $array,
+            'log_no'        => $booking->getBookingLogs()->count()
+        ]);
 
-
-        
-            
-            
         $booking->update($this->bookingArray($request));
+
         if($request->has('quote') && count($request->quote) > 0){
+
             $booking->getBookingDetail()->delete();
+
             foreach ($request->quote as $qu_details) {
                 $bookingDetail = $this->getBookingDetailsArray($qu_details);
                 $bookingDetail['invoice'] = $this->fileStore($qu_details, $booking->id);
@@ -473,22 +474,17 @@ class BookingController extends Controller
                         }
                     }
                 }
-
-                // dd($qu_details['credit_note']);
-                
-                // if($request->has('refund') && count($request->refund) > 0){
                     
-                    foreach ($qu_details['refund'] as $refund){
+                foreach ($qu_details['refund'] as $refund){
 
-                        $refund = $this->getBookingRefundPaymentArray($refund);
-                        $refund['booking_detail_id'] = $booking_Details->id;
+                    $refund = $this->getBookingRefundPaymentArray($refund);
+                    $refund['booking_detail_id'] = $booking_Details->id;
 
-                        if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
-                            BookingRefundPayment::create($refund);
-                            BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
-                        }
+                    if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+                        BookingRefundPayment::create($refund);
+                        BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                     }
-                // }
+                }
 
                 if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note']) > 0){
                     
@@ -518,10 +514,13 @@ class BookingController extends Controller
             }
         }
         
-         //pax data 
-         if($request->has('pax')){
+        // booking pax details
+        if($request->has('pax')){
+
             $booking->getPaxDetail()->delete();
+
             foreach ($request->pax as $pax_data) {
+
                 BookingPaxDetail::create([
                     'booking_id'            => $booking->id,
                     'full_name'             => $pax_data['full_name']??NULL,
@@ -531,12 +530,12 @@ class BookingController extends Controller
                     'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                     'dinning_preference'    => $pax_data['dinning_preference']??NULL,
                     'nationality_id'        => $pax_data['nationality_id']??NULL,
-                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
+                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1') ? '1' : '0'
                 ]);
             }
         }
 
-        // $quote_update_detail->delete(); 
+        $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
@@ -550,7 +549,6 @@ class BookingController extends Controller
         return $output = curl_exec($ch);
     }
     
-    
     public function destroy(Request $request, $id)
     {
         Booking::destroy(decrypt($id));
@@ -559,7 +557,7 @@ class BookingController extends Controller
     
     public function viewVersion($id)
     {
-        $booking_log = BookingLog::findOrFail(decrypt($id));
+        $booking_log                = BookingLog::findOrFail(decrypt($id));
         $data['log']                = $booking_log;
         $data['booking']            = $booking_log->data;
         $data['countries']          = Country::orderBy('name', 'ASC')->get();
@@ -595,7 +593,6 @@ class BookingController extends Controller
         $booking = Booking::findOrFail(decrypt($id))->update(['cancel_date' => Carbon::now()]);
         return redirect()->back()->with('success_message', 'Booking canceled successfully');    
     }
-    
     
     //storage url
     public function fileStore($request, $bookingID)
