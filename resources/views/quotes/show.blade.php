@@ -299,7 +299,7 @@
                       </div>
                     </div>
                     <div id="appendPaxName" class="col-md-12">
-                        @if($quote->pax_no > 1)
+                        @if($quote->pax_no >= 1)
                             @foreach ($quote->getPaxDetail as $paxKey => $pax )
                             @php $count = $paxKey + 1; @endphp
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
