@@ -8,6 +8,7 @@ use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Helper;
 
 use App\Airline;
 use App\Brand;
@@ -224,7 +225,7 @@ class BookingController extends Controller
     {
         return [
             "credit_note_amount"         => $quoteD['credit_note_amount']??NULL,
-            "credit_note_no"             => \Helper::getCreditNote(),
+            "credit_note_no"             => Helper::getCreditNote(),
             "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
             "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
         ];
@@ -264,7 +265,7 @@ class BookingController extends Controller
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
 
             $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
             });
 
             if($response['status'] == 200 && isset($response['body']['old_records'])) {
@@ -276,7 +277,7 @@ class BookingController extends Controller
             }
         }
 
-        $data = array_merge($data, \Helper::checkAlreadyExistUser($id,'bookings'));
+        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
         return view('bookings.edit',$data);
     }
@@ -326,7 +327,7 @@ class BookingController extends Controller
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
             $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
             });
 
             if($response['status'] == 200 && isset($response['body']['old_records'])) {
@@ -505,7 +506,7 @@ class BookingController extends Controller
 
             $zoho_booking_reference = isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no']) ? $data['booking']['ref_no'] : '' ;
             $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return \Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
             });
 
             if ($response['status'] == 200) {

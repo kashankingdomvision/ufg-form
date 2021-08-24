@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Requests\QuoteRequest;
+use App\Http\Helper;
 
 use App\Brand;
 use App\Booking;
@@ -139,7 +140,7 @@ class QuoteController extends Controller
             'holiday_type_id'                   =>  $request->holiday_type_id,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'ref_no'                            =>  $request->ref_no,
-            'quote_ref'                         =>  ($type == 'clone')? \Helper::getQuoteID() : ($request->quote_no??$request->quote_ref),
+            'quote_ref'                         =>  ($type == 'clone')? Helper::getQuoteID() : ($request->quote_no??$request->quote_ref),
             'sale_person_id'                    =>  $request->sale_person_id,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
             'agency_name'                       =>  $request->agency_name??NULL,
@@ -218,7 +219,7 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
-        $data['quote_id']         = \Helper::getQuoteID();
+        $data['quote_id']         = Helper::getQuoteID();
 
         return view('quotes.create', $data);
     }
@@ -269,7 +270,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
-        $data                     = array_merge($data, \Helper::checkAlreadyExistUser($id,'quotes'));
+        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
 
         return view('quotes.edit',$data);
     }
