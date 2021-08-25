@@ -267,7 +267,7 @@
                                                         </a> --}}
                                                         <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
                                                             @csrf @method('patch')
-                                                            <button type="submit" title="quote clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+                                                            <button type="submit" title="Quote Clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
                                                                 <i class="fa fa-clone"></i>
                                                             </button>
                                                         </form>
