@@ -21,9 +21,10 @@
             <label>Category</label>
             <select name="quote[{{ $quote_count }}][category_id]" data-name="category_id" id="quote_{{ $quote_count }}_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
               <option selected value="">Select Category</option>
-              @foreach ($categories as $category)
+              <option value="1">Transfer</option>
+              {{-- @foreach ($categories as $category)
                 <option value="{{ $category->id }}" > {{ $category->name }} </option>
-              @endforeach
+              @endforeach --}}
             </select>
 
             @error('category_id')
