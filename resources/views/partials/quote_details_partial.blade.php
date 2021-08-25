@@ -1,4 +1,4 @@
-  <div class="quote m-4" data-key="{{ $count }}">
+  <div class="quote mts-4" data-key="{{ $count }}">
   
     <div class='row'>
       <div class='col-sm-12'>
