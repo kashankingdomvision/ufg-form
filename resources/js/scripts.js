@@ -5,13 +5,14 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
 
 $(document).ready(function($) {
 
+  
     $('.select2').select2({
         width: '100%',
         theme: "classic",
@@ -1233,11 +1234,16 @@ $(document).ready(function($) {
         var formdata = $(this).serialize();
         $('input, select').removeClass('is-invalid');
         $('.text-danger').html('');
+        console.log($("input[name='full_number']").val()+ 'asdsa');
+              
+        var formData = new FormData(this);
+        formData.append('full_number', $("input[name='full_number']").val());
+        
         /* Send the data using post */
         $.ajax({
             type: 'POST',
             url: url,
-            data:  new FormData(this),
+            data:  formData,
             contentType: false,
             cache: false,
             processData:false,
@@ -2504,4 +2510,8 @@ $(document).ready(function($) {
                 }).end().show().insertAfter(".relevant-quote:last");
     });
     ///////////////// RELEVANT QUOTE FIELD
+    
+    
+
+
 });
