@@ -94,12 +94,12 @@ $(document).ready(function($) {
         theme: "classic",
     });
 
-    // $('.select2single').select2({
-    //     width: '100%',
-    //     theme: "bootstrap",
-    //     templateResult: formatState,
-    //     templateSelection: formatState,
-    // });
+    $('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
 
 
     $('.nationality-select2').select2({
@@ -426,113 +426,58 @@ $(document).on('click', '.addChild', function () {
     });
 });
 
-    $(document).on('click', '#add_package', function () {
-        
-        console.log($('.quote').length);
-        console.log('run add package');
-        // if($('select').data('select2')){
-        //     $('.select2single').select2('destroy');
-        // }
-        
-        var id_key = $('.package:last').data('key');
-        // console.log(id_key);
-    //     var quoteCount = $('#package'+id_key).children('.quote').length;
-        var packageLengthCount  = $(".package").length;
-        $(".package").eq(0).clone().attr('id', 'package'+ packageLengthCount).attr('data-key', packageLengthCount).insertAfter(".package:last");
+$(document).on('click', '#add_package', function () {
 
-        $("#package"+ packageLengthCount).children('.quote').not(':first').remove();
+    if($('select').data('select2')){
+        $('.select2single').select2('destroy');
+    }
+    
         
-
-        var quoteLength = $('.quote').length - 1;
-       
-        $("#package"+ packageLengthCount).children('.quote').find("input").val("") .each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (quoteLength) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, quoteLength, function(){
-                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("textarea").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt(quoteLength)) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, quoteLength, function(){
-                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("select").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + (quoteLength) + ']'; });
-                this.id = this.id.replace(/\d+/g, quoteLength, function(){
-                    return 'quote_' + parseInt(quoteLength) + '_' + $(this).attr("data-name")
-                });
-            });
-            // console.log('package'+ packageLengthCount);
-            // $("#packageinput"+packageLengthCount).val(1);
-            
-            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-            $(".quote:last").attr('data-key', $('.quote').length - 1);
-            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-            $('.quote:last input, .quote:last select').removeClass('is-invalid');
-            $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+        url: BASEURL+'quote_details/'+$('.quote').length+'/package/'+$('.package').length,
+        type: 'get',
+        dataType: "json",
+        success: function (data) {
+            $('#parent').append(data);
+            reinitializedDynamicFeilds();
             datepickerReset(1);
-            // reinitializedDynamicFeilds();
-            $("#package"+ packageLengthCount).find('.add_more').attr('data-key', packageLengthCount);
-            $("#package"+ packageLengthCount).find('.packageinput').attr('id', 'packageinput'+packageLengthCount).val(1);
-            console.log(packageLengthCount);
-
-        });
-
-    $(document).on('click', '.add_more', function(e) {
-        // if($('.select2single').data('select2')){
-        //     $('.select2single').select2('destroy');
-        // }
-        // if ($('select').data('select2')) {
-        //     console.log(true);
-        //     $('.select2single').select2('destroy');
-        //   }
-        
-        var key_ = $(this).data('key');
-        let package_quoteCount = $("#package"+ key_).children(".quote").length + 1;
-        $("#packageinput"+ key_).val(package_quoteCount);
-
-        $('#package'+key_).children(".quote").eq(0).clone()
-            .find("input").val("") .each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + parseInt($(".quote").length) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
-                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("textarea").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt($(".quote").length)) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
-                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("select").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'  });
-                this.id = this.id.replace(/\d+/g, $(".quote").length, function(){
-                    return 'quote_' + parseInt($(".quote").length) + '_' + $(this).attr("data-name")
-                });
-            }).end().show().insertAfter("#package"+key_+" .quote:last");
-
-            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-            $(".quote:last").attr('data-key', $('.quote').length - 1);
-            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-            $('.quote:last input, .quote:last select').removeClass('is-invalid');
-            $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-            datepickerReset(1);
-        // reinitializedDynamicFeilds();
-                
+        },
+        error: function (reject) {
+            alert(reject);
+    
+        },
     });
+        
+});
+
+$(document).on('click', '.add_more', function(e) {
+    if($('select').data('select2')){
+        $('.select2single').select2('destroy');
+    }
+    
+    var getKeyPackage = $(this).closest('.package').data('key');
+        
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+        url: BASEURL+'quote_details/'+$('.quote').length,
+        type: 'get',
+        dataType: "json",
+        success: function (data) {
+            $('#package'+getKeyPackage).append(data);
+            $('#package'+getKeyPackage).find('.addmorebuttonrow:first').remove();
+            var quoteCount = $('#package'+getKeyPackage).children('.quote').length;
+            $('#packageinput'+getKeyPackage).val(quoteCount);
+            reinitializedDynamicFeilds();
+            datepickerReset(1);
+        },
+        error: function (reject) {
+            alert(reject);
+    
+        },
+    });
+        
+});
 
     $(document).on('click', '#add_more_booking', function(e) {
 

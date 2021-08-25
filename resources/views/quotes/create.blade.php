@@ -45,7 +45,7 @@
                   <div class="row mb-2">
 
                     <div class="col-sm-6"> 
-                      <label>Zoho Reference <span style="color:red">*</span></label>
+                      <label>Zoho Reference <span class="text-danger">*</span></label>
                       <div class="form-group">
                         <div class="input-group">
                           <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
@@ -59,7 +59,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Quote Reference <span style="color:red">*</span></label>
+                        <label>Quote Reference <span class="text-danger">*</span></label>
                         <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
@@ -75,7 +75,7 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span class="text-danger">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" value="live" class="rate-type" checked>
@@ -91,7 +91,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Sales Person <span style="color:red">*</span></label>
+                        <label>Sales Person <span class="text-danger">*</span></label>
                         <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
                           <option selected value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
@@ -104,7 +104,7 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Commission Type <span style="color:red">*</span></label>
+                        <label>Commission Type <span class="text-danger">*</span></label>
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
@@ -117,7 +117,7 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Brand <span style="color:red">*</span></label>
+                        <label>Brand <span class="text-danger">*</span></label>
                         <select name="brand_id" id="brand_id" class="form-control select2single getBrandtoHoliday brand-id">
                           <option selected value="" >Select Brand</option>
                           @foreach ($brands as $brand)
@@ -130,7 +130,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Type Of Holiday <span style="color:red">*</span></label>
+                        <label>Type Of Holiday <span class="text-danger">*</span></label>
                         <select name="holiday_type_id" id="holiday_type_id" class="form-control select2single appendHolidayType  holiday-type-id ">
                           <option value="">Select Type Of Holiday</option>
                           @if(Auth::user()->getBrand->getHolidayTypes && Auth::user()->getBrand->getHolidayTypes->count())
@@ -145,7 +145,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Booking Season <span style="color:red">*</span></label>
+                        <label>Booking Season <span class="text-danger">*</span></label>
                         <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
@@ -158,7 +158,7 @@
                     
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Booking Currency <span style="color:red">*</span></label>
+                        <label>Booking Currency <span class="text-danger">*</span></label>
                         <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option selected value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
@@ -171,7 +171,7 @@
                    
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Agency Booking <span style="color:red">*</span></label>
+                        <label>Agency Booking <span class="text-danger">*</span></label>
                         <div>
                           <label class="radio-inline">
                             <input type="radio" name="agency" class="select-agency" value="1" > Yes
@@ -187,24 +187,24 @@
                     
                       <div class="row mt-1 agencyField d-none" >
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
+                          <label for="inputEmail3" class="">Agency Name</label> <span class="text-danger"> *</span>
                           <input type="text"  name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
+                          <label for="inputEmail3" class="">Agency Contact Name </label> <span class="text-danger"> *</span>
                           <input type="text"  name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                           <span class="text-danger" role="alert" > </span>
                         </div>
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
+                          <label for="inputEmail3" class="">Agency Contact No.</label> <span class="text-danger"> *</span>
                           <input type="tel"  name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
                             <span class="text-danger error_msggc hide" role="alert"></span>
                             <span class="text-success valid_msggc" role="alert"></span>
                         </div>
 
                         <div class="col form-group">
-                          <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
+                          <label for="inputEmail3" class="">Agency Email </label> <span class="text-danger"> *</span>
                           <input type="email"  name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
                           <span class="text-danger" role="alert" > </span>
                         </div>
@@ -212,21 +212,21 @@
                       <div class="row mt-1 PassengerField" >
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Lead Passenger Name <span style="color:red">*</span></label>
+                            <label>Lead Passenger Name <span class="text-danger">*</span></label>
                             <input type="text" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Email Address <span style="color:red">*</span></label> 
+                            <label>Email Address <span class="text-danger">*</span></label> 
                             <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Contact Number <span style="color:red">*</span></label> 
+                            <label>Contact Number <span class="text-danger">*</span></label> 
                             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0 " >
                             <span class="text-danger error_msg0" role="alert"></span>
                             <span class="text-success valid_msg0" role="alert"></span>
@@ -235,7 +235,7 @@
                       
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Date Of Birth <span style="color:red">*</span></label> 
+                            <label>Date Of Birth <span class="text-danger">*</span></label> 
                             <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
                             <span class="text-danger" role="alert"></span>
                           </div>
@@ -244,7 +244,7 @@
                       <div class="row PassengerField">
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Nationality <span style="color:red">*</span></label>
+                            <label>Nationality <span class="text-danger">*</span></label>
                             <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                               <option selected value="" >Select Nationality</option>
                               @foreach ($countries as $country)
@@ -256,14 +256,14 @@
                         </div>
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Bedding Preferences <span style="color:red">*</span></label>
+                            <label>Bedding Preferences <span class="text-danger">*</span></label>
                             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>  
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Dinning Preferences <span style="color:red">*</span></label>
+                            <label>Dinning Preferences <span class="text-danger">*</span></label>
                             <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                             <span class="text-danger" role="alert"></span>
                           </div>
@@ -276,7 +276,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Pax No. <span style="color:red">*</span></label>
+                        <label>Pax No. <span class="text-danger">*</span></label>
                         <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
                           <option selected value="">Select Pax No</option>
                           @for($i=1;$i<=30;$i++)
@@ -286,10 +286,8 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+                    <div id="appendPaxName" class="col-md-12 "> </div>
                     
-                    <div id="appendPaxName" class="col-md-12 ">
-                    
-                    </div>
                     <div class="col-md-12 col-offset-md-4">
                       <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div>
@@ -330,9 +328,10 @@
                               <label>Category</label>
                               <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
                                 <option selected value="">Select Category</option>
-                                @foreach ($categories as $category)
+                                <option  value="1">Transfer</option>
+                                {{-- @foreach ($categories as $category)
                                   <option value="{{ $category->id }}" > {{ $category->name }} </option>
-                                @endforeach
+                                @endforeach --}}
                               </select>
 
                               @error('category_id')
@@ -391,7 +390,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Booking Due Date <span style="color:red">*</span></label>
+                              <label>Booking Due Date <span class="text-danger">*</span></label>
                               <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" autocomplete="off">
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -466,7 +465,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Estimated Cost <span style="color:red">*</span></label>
+                              <label>Estimated Cost <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
@@ -478,7 +477,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Markup Amount <span style="color:red">*</span></label>
+                              <label>Markup Amount <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
@@ -490,7 +489,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Markup % <span style="color:red">*</span></label>
+                              <label>Markup % <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
                                 <div class="input-group-append">
@@ -502,7 +501,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Selling Price <span style="color:red">*</span></label>
+                              <label>Selling Price <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">
@@ -516,7 +515,7 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Profit % <span style="color:red">*</span></label>
+                              <label>Profit % <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">
@@ -533,7 +532,7 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                              <label>Estimated Cost in Booking Currency <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
@@ -545,7 +544,7 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
+                              <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
@@ -557,7 +556,7 @@
                           
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
+                              <label>Markup Amount in Booking Currency <span class="text-danger">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
@@ -598,7 +597,7 @@
                       </div>
                         <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                         
-                        <div class="row p-3">
+                        <div class="row p-3 addmorebuttonrow">
                           <div class="col-12 text-right">
                             <button type="button" data-key="0" class="mr-3 btn btn-outline-dark add_more pull-right">+ Add more </button>
                           </div>

@@ -234,6 +234,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
 
+        Route::get('quote_details/{count}',  'ResponseController@quoteDetailsclone')->name('details.clone');
+        Route::get('quote_details/{qcount}/package/{pcount}',  'ResponseController@quoteDetailsPackageclone')->name('details.clone');
+
    });
     
     

@@ -262,15 +262,17 @@ class QuoteController extends Controller
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
+            $k=0;
             for ($i=0; $i < count($request->packages) ; $i++) { 
                 $quotePackage = QuoteDetialPackage::create(['quote_id' => $quote->id, 'package_val' => $request->packages[$i]]);
                 // foreach ($request->quote as $qu_details) {
-                    for ($y=0; $y <= $request->packages[$i] ; $y++) {
-                        $qu_details = $request->quote[$y];
+                    for ($y=0; $y < $request->packages[$i]; $y++) {
+                        $qu_details  = $request->quote[$k];
                         $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                         $quoteDetail['quote_id'] = $quote->id;
                         $quoteDetail['package_key'] = $quotePackage->id;
                         QuoteDetail::create($quoteDetail);
+                        $k++;
                     }
                 // }
             }
@@ -562,7 +564,5 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         return view('quotes.listing', $data);      
     }
-    
-
     
 }

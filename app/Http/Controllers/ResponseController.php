@@ -18,6 +18,8 @@ use App\Season;
 use App\BookingType;
 use App\Country;
 use DB;
+use App\Brand;
+use App\Commission;
 class ResponseController extends Controller
 {
     public function getBrandToHoliday(Request $request)
@@ -302,5 +304,54 @@ class ResponseController extends Controller
         $respons['message'] = 'Records Status Updated Successfully !!';
         $respons['status']  = true;
         return response()->json($respons);
+    }
+
+    public function quoteDetailsclone($count)
+    {
+        
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
+        $data['count'] = $count;
+        return response()->json(View::make('partials.quote_details_partial', $data)->render());
+    }
+    
+    public function quoteDetailsPackageclone($quoteCount, $packageCount)
+    {
+               
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
+        $data['pack_count']       = $packageCount;
+        $data['quote_count']      = $quoteCount;
+        return response()->json(View::make('partials.quote_details_package', $data)->render());
     }
 }
