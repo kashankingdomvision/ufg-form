@@ -212,7 +212,15 @@
                                                     <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
                                                     <td width="8">{{ $quote->getSalePerson->name }}</td>
                                                     <td>{{ $quote->ref_no }}</td>
-                                                    <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
+
+                                                    @if($quote->booking_status == 'quote')
+                                                        <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
+                                                    @endif
+
+                                                    @if($quote->booking_status == 'booked')
+                                                        <td> <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}">{{ $quote->quote_ref }}</a> </td>
+                                                    @endif
+
                                                     <td>{{ $quote->getSeason->name }}</td>
                                                     <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
                                                     
