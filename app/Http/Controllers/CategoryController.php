@@ -75,6 +75,8 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
         $category = Category::findOrFail(decrypt($id));
+        $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
+        
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
