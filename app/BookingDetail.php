@@ -71,6 +71,21 @@ class BookingDetail extends Model
         return $this->hasMany(BookingCreditNote::class, 'booking_detail_id', 'id');   
     }
 
+    public function getAccomodationDetials()
+    {
+        return $this->hasOne(AccomodationDetail::class, 'booking_detail_id', 'id');   
+    }
+
+    public function getTransferDetials()
+    {
+        return $this->hasOne(TransferDetail::class, 'booking_detail_id', 'id');   
+    }
+
+    public function getServiceExcussionDetials()
+    {
+        return $this->hasOne(ServiceExcursionDetail::class, 'booking_detail_id', 'id');   
+    }
+
     public function getDateOfServiceAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
@@ -93,5 +108,6 @@ class BookingDetail extends Model
     
     public function setBookingDueDateAttribute( $value ) {
         $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
-    }    
+    }  
+
 }

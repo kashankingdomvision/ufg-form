@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Helper;
 
 use App\Airline;
+use App\AccomodationDetail;
 use App\Brand;
 use App\Bank;
 use App\Booking;
@@ -32,7 +33,9 @@ use App\PaymentMethod;
 use App\QuoteUpdateDetail;
 use App\Season;
 use App\Supplier;
+use App\ServiceExcursionDetail;
 use App\User;
+use App\TransferDetail;
 
 use Cache;
 use Auth;
@@ -241,6 +244,77 @@ class BookingController extends Controller
         ];
     }
 
+    public function getAccommodationDetailsArray($quoteD)
+    {
+
+        // $confirmed_with_supplier = '';
+        // if(isset($quoteD['confirmed_with_supplier'])){
+        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
+        // }else{
+        //     $confirmed_with_supplier = '2';
+        // }
+
+        return [
+            "accomadation_name"       => $quoteD['accomadation_name']??NULL,
+            "arrival_date"            => $quoteD['arrival_date']??NULL,
+            "no_of_nights"            => $quoteD['no_of_nights']??NULL,
+            "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
+            "room_types"              => $quoteD['room_types']??NULL,
+            "meal_plan"               => $quoteD['meal_plan']??NULL,
+            "refrence"                => $quoteD['refrence']??NULL,
+            'day_event'               => isset($quoteD['day_event']) ? $quoteD['day_event']: null,
+            'confirmed_with_supplier' => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : null , 
+        ];
+    }
+
+    public function getTransferDetailsArray($quoteD)
+    {
+ 
+        // $confirmed_with_supplier = '';
+        // if(isset($quoteD['confirmed_with_supplier'])){
+        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
+        // }else{
+        //     $confirmed_with_supplier = '2';
+        // }
+
+        return [
+            "transfer_description"    => $quoteD['transfer_description']??NULL,
+            "quantity"                => $quoteD['quantity']??NULL,
+            "pickup_port"             => $quoteD['pickup_port']??NULL,
+            "pickup_accomodation"     => $quoteD['pickup_accomodation']??NULL,
+            "pickup_date"             => $quoteD['pickup_date']??NULL,
+            "pickup_time"             => $quoteD['pickup_time']??NULL,
+            "dropoff_port"            => $quoteD['dropoff_port']??NULL,
+            "dropoff_accomodation"    => $quoteD['dropoff_accomodation']??NULL,
+            "dropoff_date"            => $quoteD['dropoff_date']??NULL,
+            "dropoff_time"            => $quoteD['dropoff_time']??NULL,
+            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 , 
+        ];
+    }
+
+    public function getServiceExcursionDetailsArray($quoteD)
+    {
+ 
+        // $confirmed_with_supplier = '';
+        // if(isset($quoteD['confirmed_with_supplier'])){
+        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
+        // }else{
+        //     $confirmed_with_supplier = '2';
+        // }
+
+        return [
+            'name'                     => $quoteD['name']??NULL,
+            'description'              => $quoteD['description']??NULL,               
+            'date'                     => $quoteD['date']??NULL,        
+            'time'                     => $quoteD['time']??NULL,
+            'quantity'                 => $quoteD['quantity']??NULL,          
+            'refrence'                 => $quoteD['refrence']??NULL,      
+            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 ,    
+            'note'                     => $quoteD['note']??NULL,
+        ];
+    }
+
+
     public function edit($id)
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -284,28 +358,6 @@ class BookingController extends Controller
 
     public function show($id,$status = null)
     {
-
-        // if(!empty($status)){
-
-        //     $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
-    
-        //     if($quote_update_detail && $quote_update_detail->exists()){
-        //         $data['exist']   = 1;
-        //         $data['user_id'] = $quote_update_detail->user_id;
-        //     }
-        //     else{    
-    
-        //         $quote_update_details = QuoteUpdateDetail::create([
-        //             'user_id'      =>  Auth::id(),
-        //             'foreign_id'   =>  decrypt($id),
-        //             'status'       =>  'bookings'
-        //         ]);
-    
-        //         $data['exist']   = null;
-        //         $data['user_id'] = null;
-        //     }
-        // }
-
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -346,6 +398,9 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
+
+        // dd($request->all());
+
         // check update access
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         if(!$quote_update_detail->exists()) {
@@ -415,7 +470,7 @@ class BookingController extends Controller
                     }
                 }
 
-                if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note']) > 0){
+                if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note'])){
                     
                     foreach ($qu_details['credit_note'] as $credit_note){
 
@@ -438,6 +493,36 @@ class BookingController extends Controller
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                         }
                     }
+                }
+
+                // dd($qu_details['category_detials']['accommodation']);
+                
+                if(isset($qu_details['category_detials'])){
+                    
+                    if(isset($qu_details['category_detials']['accommodation']) && !empty($qu_details['category_detials']['accommodation'])){
+
+                        // dd($qu_details['category_detials']['accommodation']);
+                       
+                        $accommodation_details = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
+
+                        $accommodation_details['booking_detail_id'] = $booking_Details->id;
+                        AccomodationDetail::create($accommodation_details);
+                    }
+
+                    if(isset($qu_details['category_detials']['transfer'])){
+                       
+                        $transfer_details = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
+                        $transfer_details['booking_detail_id'] = $booking_Details->id;
+                        TransferDetail::create($transfer_details);
+                    }
+
+                    if(isset($qu_details['category_detials']['service_excursion'])){
+                       
+                        $service_excursion = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
+                        $service_excursion['booking_detail_id'] = $booking_Details->id;
+                        ServiceExcursionDetail::create($service_excursion);
+                    }
+
                 }
 
             }

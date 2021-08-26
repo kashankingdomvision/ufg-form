@@ -446,7 +446,7 @@
                                 <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control  select2single  category- select2single  category-id @error('category_id') is-invalid @enderror">
                                   <option value="">Select Category</option>
                                   @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                    <option value="{{ $category->id }}" data-slug="{{$category->slug}}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                   @endforeach
                                 </select>
                                 <span class="text-danger" role="alert"></span>
@@ -718,6 +718,21 @@
                               </div>
                             </div>
                           </div>{{-- ?>>>rown end --}}
+
+                          <div class="row">
+                            <div class="col-sm-12 justify-content-right mb-2">
+                              <div class="form-group">
+
+                                <div class="modal-parent">
+                                  @include('partials.accomadation_modal')
+                                  @include('partials.transfer_modal')
+                                  @include('partials.service_excersion_modal')
+                                </div>
+                                <button type="button" class="add-category-detail btn btn-dark float-right">Add Category Details</button>
+                              </div>
+                            </div>
+                          </div>
+
                           @php $total_deposit = 0; @endphp
                           <section class="finance">
                             @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)

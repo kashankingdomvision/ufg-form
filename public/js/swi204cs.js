@@ -23758,11 +23758,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',
@@ -24476,6 +24476,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });
+    jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input").attr('disabled', 'disabled');
   });
   $(document).on('change', '.supplier-id', function () {
     var $selector = $(this);
@@ -24864,6 +24865,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '#save_template', function () {
     jQuery('#modal-default').modal('show').find('input').val('');
+  });
+  $(document).on('click', '.add-category-detail', function () {
+    var key = $(this).closest('.quote').data('key');
+    var type = $("#quote_".concat(key, "_category_id")).find(':selected').data('slug');
+    console.log(".".concat(type, "_modal"));
+    jQuery(this).closest('.quote').find(".".concat(type, "_modal")).modal('show');
+    jQuery(this).closest('.quote').find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
   });
   $(document).on('click', '#submit_template', function () {
     var templateName = $('#template_name').val();
@@ -25267,8 +25275,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   });
   $("#update-booking").submit(function (event) {
-    event.preventDefault();
-    $('#update-booking :input').prop('disabled', false);
+    event.preventDefault(); // $('#update-booking :input').prop('disabled', false);
+
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
@@ -25290,8 +25298,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index";
+          alert(data.success_message); // window.location.href = REDIRECT_BASEURL + "bookings/index";
         }, 1000);
       },
       error: function error(reject) {

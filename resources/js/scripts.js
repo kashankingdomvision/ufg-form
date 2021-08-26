@@ -5,10 +5,10 @@ import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
 
 $(document).ready(function($) {
 
@@ -679,6 +679,9 @@ $(document).ready(function($) {
                 $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
             }
         })
+
+
+        jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input`).attr('disabled','disabled');
     });
  
     $(document).on('change', '.supplier-id',function(){
@@ -1188,6 +1191,20 @@ $(document).ready(function($) {
         jQuery('#modal-default').modal('show').find('input').val('');
     });
 
+    
+    $(document).on('click', '.add-category-detail', function(){
+        var key         = $(this).closest('.quote').data('key');
+        var type        = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+
+
+        console.log(`.${type}_modal`);
+
+        jQuery(this).closest('.quote').find(`.${type}_modal`).modal('show');
+        jQuery(this).closest('.quote').find(`.${type}_modal :input`).removeAttr('disabled');
+     
+        // jQuery('#accomadation_modal').modal('show').find('input').val('');
+    });
+
     $(document).on('click', '#submit_template', function(){
 
         let templateName = $('#template_name').val();
@@ -1676,7 +1693,7 @@ $(document).ready(function($) {
     $("#update-booking").submit(function(event) {
         event.preventDefault();
 
-        $('#update-booking :input').prop('disabled', false);
+        // $('#update-booking :input').prop('disabled', false);
 
         var $form = $(this),
         url = $form.attr('action');
@@ -1702,7 +1719,7 @@ $(document).ready(function($) {
                 $("#overlay").removeClass('overlay').html('');
                 setTimeout(function() {
                     alert(data.success_message);
-                    window.location.href = REDIRECT_BASEURL + "bookings/index";
+                    // window.location.href = REDIRECT_BASEURL + "bookings/index";
                     
                 }, 1000);
             },
