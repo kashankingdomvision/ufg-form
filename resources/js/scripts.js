@@ -9,7 +9,7 @@ var CSRFTOKEN = $('#csrf-token').attr('content');
 // var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
 var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
 var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
-
+ 
 $(document).ready(function($) {
 
   
