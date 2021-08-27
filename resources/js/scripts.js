@@ -1760,6 +1760,70 @@ $(document).ready(function($) {
         });
     });
 
+    $("#update-payment").submit(function(event) {
+        event.preventDefault();
+
+        $('#update-payment :input').prop('disabled', false);
+
+        var $form = $(this),
+        url = $form.attr('action');
+        var formdata = $(this).serialize();
+
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+
+        /* Send the data using post */
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:  new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function() {
+                $("#overlay").addClass('overlay');
+                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+            },
+            success: function (data) {
+                
+                $("#overlay").removeClass('overlay').html('');
+                setTimeout(function() {
+                    alert(data.success_message);
+                    window.location.href = REDIRECT_BASEURL + "bookings/index";
+                    
+                }, 1000);
+            },
+            error: function (reject) {
+
+                if( reject.status === 422 ) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+
+                        $("#overlay").removeClass('overlay').html('');
+
+                        if(errors.hasOwnProperty("overrride_errors")){
+                            alert(errors.overrride_errors);
+                            window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        }
+                        else{
+
+                            jQuery.each(errors.errors, function( index, value ) {
+
+                                index = index.replace(/\./g,'_');
+                                $('#'+index).addClass('is-invalid');
+                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                            });
+                        }
+
+                    }, 800);
+
+                }
+            },
+        });
+    });
+
     $(document).on('click', '.credit-note-hidden-btn', function(){
         $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
     });

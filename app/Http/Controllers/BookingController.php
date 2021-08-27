@@ -392,6 +392,8 @@ class BookingController extends Controller
         }
 
         $data['status'] = $status;
+        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
+
         return view('bookings.show',$data);
     }
 

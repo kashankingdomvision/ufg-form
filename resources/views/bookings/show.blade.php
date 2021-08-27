@@ -104,7 +104,7 @@
                 </a>
               </div>
               
-              <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking">
+              <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-payment">
                 @csrf @method('put')
                   <div class="card-body">
                     <div class="row mb-2">
@@ -1500,10 +1500,10 @@
 @push('js')
 <script>
   @if($status && !empty($status))
-    $('#update-booking :input').prop('disabled', true);
+    $('#update-payment :input').prop('disabled', true);
     $('.finance :input, .refund-payment-hidden-section :input, .credit-note-hidden-section  :input, .submit, #update-booking input:hidden, .cancel-payemnt-btn .btn, .clone_booking_finance').prop('disabled', false);
   @else
-    $('#update-booking :input').prop('disabled', true);
+    $('#update-payment :input').prop('disabled', true);
   @endif
 
   $(window).on('beforeunload', function() {
