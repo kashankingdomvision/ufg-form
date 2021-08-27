@@ -1173,14 +1173,29 @@ $(document).ready(function($) {
             }, 800);
         },
         error: function (reject) {
+
             if( reject.status === 422 ) {
+
                 var errors = $.parseJSON(reject.responseText);
+
                 setTimeout(function() {
+                    
+                    var flag=true;
+
                     $("#overlay").removeClass('overlay').html('');
+
                     jQuery.each(errors.errors, function( index, value ) {
+
                         index = index.replace(/\./g,'_');
-                        $('#'+index).addClass('is-invalid');
-                        $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                        $(`#${index}`).addClass('is-invalid');
+                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                        if(flag) {
+               
+                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                            flag = false;
+                        }
+
                     });
                 }, 800);
             }
