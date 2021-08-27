@@ -135,12 +135,7 @@
                     </ul>
                 </li> --}}
 
-                <li class="nav-item">
-                    <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
-                        <i class="fa fa-cloud nav-icon"></i>
-                        <p>Seasons</p>
-                    </a>
-                </li>
+
                 
                 {{-- <li class="nav-item {{ ($route == 'seasons.index' || $route == 'seasons.create' || $route == 'seasons.edit') ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
@@ -224,15 +219,17 @@
                                 <p>View Category</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
+                                <i class="fas fa-wallet"></i>
+                                <p> &nbsp; Wallet</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-                <li class="nav-item">
-                    <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
-                        <i class="fas fa-wallet"></i>
-                        <p> &nbsp; Wallet</p>
-                    </a>
-                </li>
+     
 
 
 
@@ -270,6 +267,13 @@
 
                             </ul>
                         </li> --}}
+
+                        <li class="nav-item">
+                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-cloud nav-icon"></i>
+                                <p>Seasons</p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="{{ route('setting.commissions.index') }}" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'active' : '' }}">
