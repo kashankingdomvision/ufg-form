@@ -26,6 +26,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
             $table->date('date_of_service')->nullable();
+            $table->date('end_date_of_service')->nullable();
             $table->time('time_of_service')->nullable();
             $table->date('booking_date')->nullable();
             $table->date('booking_due_date')->nullable();

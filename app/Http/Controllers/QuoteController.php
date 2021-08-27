@@ -180,6 +180,7 @@ class QuoteController extends Controller
             'booked_by_id'          => $quoteD['booked_by_id'],
             'supervisor_id'         => $quoteD['supervisor_id'],
             'date_of_service'       => $quoteD['date_of_service'],
+            'end_date_of_service'   => $quoteD['end_date_of_service'],
             'time_of_service'       => $quoteD['time_of_service'],
             'booking_date'          => $quoteD['booking_date'],
             'booking_due_date'      => $quoteD['booking_due_date'],
