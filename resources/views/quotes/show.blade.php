@@ -43,7 +43,7 @@
 
         <div class="row">
           <div class="col-sm-6">
-              <h4>View Quote > View(Booked Lead)</h4>
+              <h4>View Final Quote</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
@@ -69,7 +69,7 @@
                 @if($quote->booking_status == 'quote')
                   <form  class="mr-2 float-right"  method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                     @csrf @method('patch')
-                    <button type="submit" id="reCall" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-md" data-title="" data-target="#" title="Convert to Booking">Convert to booking</button>
+                    <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-md" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
                   </form>
                 @endif
               </div>
