@@ -489,6 +489,18 @@
                               </div>
                             </div>
 
+                            <div class="col-sm-2 d-flex justify-content-center">
+                              <div class="form-group ">
+
+                                <div class="modal-parent">
+                                  @include('partials.accomadation_modal')
+                                  @include('partials.transfer_modal')
+                                  @include('partials.service_excersion_modal')
+                                </div>
+                                <button type="button" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supervisor</label>
@@ -718,20 +730,7 @@
                               </div>
                             </div>
                           </div>{{-- ?>>>rown end --}}
-
-                          <div class="row">
-                            <div class="col-sm-12 justify-content-right mb-2">
-                              <div class="form-group">
-
-                                <div class="modal-parent">
-                                  @include('partials.accomadation_modal')
-                                  @include('partials.transfer_modal')
-                                  @include('partials.service_excersion_modal')
-                                </div>
-                                <button type="button" class="add-category-detail btn btn-dark float-right">Add Category Details</button>
-                              </div>
-                            </div>
-                          </div>
+      
 
                           @php $total_deposit = 0; @endphp
                           <section class="finance">

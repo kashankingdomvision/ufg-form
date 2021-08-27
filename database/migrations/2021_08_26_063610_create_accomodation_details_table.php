@@ -17,7 +17,7 @@ class CreateAccomodationDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('booking_detail_id');
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('accomadation_name')->nullable();
+            // $table->string('accomadation_name')->nullable();
             $table->date('arrival_date')->nullable();
             $table->integer('no_of_nights')->nullable();
             $table->integer('no_of_rooms')->nullable();

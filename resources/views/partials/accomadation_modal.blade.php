@@ -11,11 +11,11 @@
 
         <div class="modal-body">
 
-          <div class="form-group">
+          {{-- <div class="form-group">
             <label>Accomadation Name </label>
             <input type="text" name="quote[{{ $key }}][category_detials][accommodation][accomadation_name]" value="{{ isset($booking_detail->getAccomodationDetials) && isset($booking_detail->getAccomodationDetials->accomadation_name) ? $booking_detail->getAccomodationDetials->accomadation_name : '' }}" class="form-control accomadation-name" {{ !isset($booking_detail->getAccomodationDetials) && !isset($booking_detail->getAccomodationDetials->accomadation_name) ? 'disabled' : '' }}>
             <span class="text-danger" role="alert"></span>
-          </div>
+          </div> --}}
 
           <div class="form-group">
             <label>Arrival Date </label>

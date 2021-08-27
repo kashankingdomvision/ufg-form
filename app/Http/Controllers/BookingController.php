@@ -246,16 +246,8 @@ class BookingController extends Controller
 
     public function getAccommodationDetailsArray($quoteD)
     {
-
-        // $confirmed_with_supplier = '';
-        // if(isset($quoteD['confirmed_with_supplier'])){
-        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
-        // }else{
-        //     $confirmed_with_supplier = '2';
-        // }
-
         return [
-            "accomadation_name"       => $quoteD['accomadation_name']??NULL,
+            // "accomadation_name"       => $quoteD['accomadation_name']??NULL,
             "arrival_date"            => $quoteD['arrival_date']??NULL,
             "no_of_nights"            => $quoteD['no_of_nights']??NULL,
             "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
@@ -269,14 +261,6 @@ class BookingController extends Controller
 
     public function getTransferDetailsArray($quoteD)
     {
- 
-        // $confirmed_with_supplier = '';
-        // if(isset($quoteD['confirmed_with_supplier'])){
-        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
-        // }else{
-        //     $confirmed_with_supplier = '2';
-        // }
-
         return [
             "transfer_description"    => $quoteD['transfer_description']??NULL,
             "quantity"                => $quoteD['quantity']??NULL,
@@ -294,14 +278,6 @@ class BookingController extends Controller
 
     public function getServiceExcursionDetailsArray($quoteD)
     {
- 
-        // $confirmed_with_supplier = '';
-        // if(isset($quoteD['confirmed_with_supplier'])){
-        //     $confirmed_with_supplier = $quoteD['confirmed_with_supplier'];
-        // }else{
-        //     $confirmed_with_supplier = '2';
-        // }
-
         return [
             'name'                     => $quoteD['name']??NULL,
             'description'              => $quoteD['description']??NULL,               
