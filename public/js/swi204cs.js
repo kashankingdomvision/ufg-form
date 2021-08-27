@@ -24016,13 +24016,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function changeCurrenyRate() {
     var rateType = $('input[name="rate_type"]:checked').val();
     var estimatedCostArray = $('.estimated-cost').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(e.value).toFixed(2);
     }).get();
     var sellingPriceArray = $('.selling-price').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(e.value).toFixed(2);
     }).get();
     var markupAmountArray = $('.markup-amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(e.value).toFixed(2);
     }).get();
     var bookingCurrency = $('.booking-currency-id').find(':selected').data('code');
     var supplierCurrencyArray = $('.supplier-currency-id').map(function (i, e) {
@@ -24683,6 +24683,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('change', '.supplier-currency-id', function () {
     var code = $(this).find(':selected').data('code');
+    changeCurrenyRate();
     $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
   });
   $(document).on('change', '.booking-currency-id', function () {

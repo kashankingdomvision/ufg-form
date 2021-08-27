@@ -233,9 +233,9 @@ $(document).ready(function($) {
 
     function changeCurrenyRate(){
         var rateType               =  $('input[name="rate_type"]:checked').val();
-        var estimatedCostArray     =  $('.estimated-cost').map((i, e) => parseFloat(e.value)).get();
-        var sellingPriceArray      =  $('.selling-price').map((i, e) => parseFloat(e.value)).get();
-        var markupAmountArray      =  $('.markup-amount').map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostArray     =  $('.estimated-cost').map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var sellingPriceArray      =  $('.selling-price').map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var markupAmountArray      =  $('.markup-amount').map((i, e) => parseFloat(e.value).toFixed(2) ).get();
         var bookingCurrency        =  $('.booking-currency-id').find(':selected').data('code');
         var supplierCurrencyArray  =  $('.supplier-currency-id').map((i, e) => $(e).find(':selected').data('code') ).get();
         var calculatedEstimatedCostInBookingCurrency = 0
@@ -915,6 +915,7 @@ $(document).ready(function($) {
 
     $(document).on('change', '.supplier-currency-id',function () {
         var code = $(this).find(':selected').data('code');
+        changeCurrenyRate();
         $(this).closest(".quote").find('[class*="supplier-currency-code"]').html(code);
     });
 
