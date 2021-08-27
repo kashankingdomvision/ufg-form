@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class BookingDetail extends Model
 {
     protected $fillable = [
+        
         'booking_id',
         'category_id',
         'supplier_id',
@@ -18,6 +19,7 @@ class BookingDetail extends Model
         'supplier_currency_id',
         'booking_type_id',
         'date_of_service',
+        'end_date_of_service',
         'time_of_service',
         'booking_date',
         'booking_due_date',
@@ -89,6 +91,10 @@ class BookingDetail extends Model
     public function getDateOfServiceAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
+
+    public function getEndDateOfServiceAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
     
     public function getBookingDateAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
@@ -102,6 +108,10 @@ class BookingDetail extends Model
         $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
     
+    public function setEndDateOfServiceAttribute( $value ) {
+        $this->attributes['end_date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+
     public function setBookingDateAttribute( $value ) {
         $this->attributes['booking_date']       = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }

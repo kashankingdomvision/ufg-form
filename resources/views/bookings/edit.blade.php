@@ -427,13 +427,24 @@
                             </div>
                           @endif
                           <div class="row"> {{-- ?>>>rowStart --}}
+
+
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Date of Service <span style="color:red">*</span></label>
+                                <label>Start Date of Service <span style="color:red">*</span></label>
                                 <input type="text" value="{{ $booking_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>End Date of Service <span style="color:red">*</span></label>
+                                <input type="text" placeholder="DD/MM/YYYY" value="{{ $booking_detail->end_date_of_service }}" name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Time of Service</label>
@@ -452,6 +463,7 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier <span style="color:red">*</span></label>
@@ -464,6 +476,18 @@
                                     @endif
                                   </select>
                                   <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-1 d-flex justify-content-center">
+                              <div class="form-group ">
+
+                                <div class="modal-parent">
+                                  @include('partials.accomadation_modal')
+                                  @include('partials.transfer_modal')
+                                  @include('partials.service_excersion_modal')
+                                </div>
+                                <button type="button" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                               </div>
                             </div>
 
@@ -489,17 +513,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-flex justify-content-center">
-                              <div class="form-group ">
 
-                                <div class="modal-parent">
-                                  @include('partials.accomadation_modal')
-                                  @include('partials.transfer_modal')
-                                  @include('partials.service_excersion_modal')
-                                </div>
-                                <button type="button" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                              </div>
-                            </div>
 
                             <div class="col-sm-2">
                               <div class="form-group">
