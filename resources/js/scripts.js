@@ -7,7 +7,7 @@ var CSRFTOKEN = $('#csrf-token').attr('content');
 
 // var BASEURL = window.location.origin+'/ufg-form/public/json/';
 // var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/'; 
+var BASEURL = window.location.origin+'/php/ufg-form/public/json/';  
 var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';   
  
 $(document).ready(function($) {
@@ -1725,7 +1725,7 @@ $(document).ready(function($) {
                 $("#overlay").removeClass('overlay').html('');
                 setTimeout(function() {
                     alert(data.success_message);
-                    // window.location.href = REDIRECT_BASEURL + "bookings/index";
+                    window.location.href = REDIRECT_BASEURL + "bookings/index";
                     
                 }, 1000);
             },

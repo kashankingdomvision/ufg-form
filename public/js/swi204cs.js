@@ -25301,7 +25301,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message); // window.location.href = REDIRECT_BASEURL + "bookings/index";
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index";
         }, 1000);
       },
       error: function error(reject) {
