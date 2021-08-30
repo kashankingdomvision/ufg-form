@@ -197,7 +197,7 @@
                     <ul class="nav nav-treeview">
                         
                         <li class="nav-item">
-                            <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
+                            <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.create' || $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Supplier</p>
                             </a>
