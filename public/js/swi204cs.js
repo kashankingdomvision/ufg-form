@@ -25135,14 +25135,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('.select2single').select2('destroy');
     }
 
-    var $quote = $(this).closest('.quote');
-    var quoteKey = $quote.data('key');
-    var financeCloningLength = $quote.find(".finance-clonning").length;
-    $quote.find('.finance-clonning').first().clone().find("input").val("").each(function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var financeCloningLength = quote.find(".finance-clonning").length;
+    quote.find('.finance-clonning').first().clone().find("input").val("").each(function () {
       var n = 1;
       var name = $(this).attr("data-name");
       this.name = this.name.replace(/]\[(\d+)]/g, function () {
-        return '][' + financeCloningLength + ']';
+        return "][".concat(financeCloningLength, "]");
       });
       this.id = this.id.replace(/[0-9]+/g, function (v) {
         return n++ == 2 ? financeCloningLength : v;
@@ -25156,7 +25156,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var n = 1;
       var name = $(this).attr("data-name");
       this.name = this.name.replace(/]\[(\d+)]/g, function () {
-        return '][' + financeCloningLength + ']';
+        return "][".concat(financeCloningLength, "]");
       });
       this.id = this.id.replace(/[0-9]+/g, function (v) {
         return n++ == 2 ? financeCloningLength : v;
@@ -25166,12 +25166,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).end().find('.select2single').select2({
       width: '100%',
       theme: "bootstrap"
-    }).end().show().insertAfter($quote.find('.finance-clonning:last')); // set feild after clone
+    }).end().show().insertAfter(quote.find('.finance-clonning:last')); // set feild after clone
 
-    $quote.find('.finance-clonning:last .checkbox').prop('checked', false);
-    $quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
-    $quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
-    $quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
+    quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+    quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+    quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+    quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
     reinitializedDynamicFeilds();
   });
   $('#tempalte_id').on('change', function () {
@@ -25287,8 +25287,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   });
   $("#update-booking").submit(function (event) {
-    event.preventDefault(); // $('#update-booking :input').prop('disabled', false);
-
+    event.preventDefault();
+    $('#update-booking :input').prop('disabled', false);
     var $form = $(this),
         url = $form.attr('action');
     var formdata = $(this).serialize();
@@ -25385,21 +25385,41 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   });
   $(document).on('click', '.credit-note-hidden-btn', function () {
-    $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden", true);
+    var quote = $(this).closest('.quote');
+    quote.find('.credit-note-hidden-section').attr("hidden", true);
+    quote.find('.credit-note-hidden-section .credit-note-amount').val("");
   });
   $(document).on('click', '.refund-payment-hidden-btn', function () {
-    $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden", true);
+    // var quote = $(this).closest('.quote');
+    // quote.find('.refund-payment-section').attr("hidden",true);
+    // quote.find('.refund-payment-section .refund_amount').val("");
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+    if (parseInt(refundPaymentRowLength) == 1) {
+      quote.find('.refund-payment-section').attr("hidden", true);
+      quote.find('.refund-payment-section .refund_amount').val("");
+    } else {
+      $(this).closest('.refund-payment-row').remove();
+    }
   });
   $(document).on('change', '.refund_amount', function () {
-    var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
+    var quote = $(this).closest('.quote');
+    var totalDepositAmountArray = quote.find('.deposit-amount').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var refundAmount = parseFloat($(this).val());
+    var refundAmountArray = quote.find('.refund_amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var totalRefundAmount = refundAmountArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
 
-    if (refundAmount != totalDepositAmount) {
+    if (totalRefundAmount > totalDepositAmount) {
       alert("Please Enter Correct Paid Amount");
       $(this).val('0.00');
     }
@@ -25421,17 +25441,58 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $(document).on('click', '.refund-to-bank', function () {
-    var quoteKey = $(this).closest('.quote').data('key');
-    $(this).closest('.quote').find('.refund-payment-hidden-section').removeAttr("hidden");
-    $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden", true);
-    $("#quote_".concat(quoteKey, "_credit_note_0_credit_note_amount")).val('');
-    var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    $(this).closest('.quote').find('.refund_amount').val(totalDepositAmount.toFixed(2)); // var booking_detail_id = $(this).data('booking_detail_id');
+    if ($('.select2single').data('select2')) {
+      $('.select2single').select2('destroy');
+    }
+
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+    if (parseInt(refundPaymentRowLength) == 0) {
+      quote.find('.refund-payment-section').attr("hidden", false);
+    } else {
+      quote.find('.refund-payment-row').first().clone().find("input").val("").each(function () {
+        var n = 1;
+        var name = $(this).attr("data-name");
+        this.name = this.name.replace(/]\[(\d+)]/g, function () {
+          return "][".concat(refundPaymentRowLength, "]");
+        });
+        this.id = this.id.replace(/[0-9]+/g, function (v) {
+          return n++ == 2 ? refundPaymentRowLength : v;
+        }, function () {
+          return "quote_".concat(quoteKey, "_finance_").concat(refundPaymentRowLength, "_").concat(name);
+        });
+      }).end().find('.refund-payment-label').each(function () {
+        this.id = "refund_payment_label_".concat(refundPaymentRowLength);
+        $(this).text("Refund Payment #".concat(refundPaymentRowLength + 1));
+      }).end().find("select").val("").each(function () {
+        var n = 1;
+        var name = $(this).attr("data-name");
+        this.name = this.name.replace(/]\[(\d+)]/g, function () {
+          return "][".concat(refundPaymentRowLength, "]");
+        });
+        this.id = this.id.replace(/[0-9]+/g, function (v) {
+          return n++ == 2 ? refundPaymentRowLength : v;
+        }, function () {
+          return "quote_".concat(quoteKey, "_finance_").concat(refundPaymentRowLength, "_").concat(name);
+        });
+      }).end().find('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap"
+      }).end().show().insertAfter(quote.find('.refund-payment-row:last'));
+      quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+      quote.find('.refund-payment-row:last .refund_amount').val('');
+      quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
+    }
+
+    reinitializedDynamicFeilds(); // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
+    // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
+    // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
+    // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+    // $(this).closest('.quote').find('.refund_amount').val('0.00');
+    // var booking_detail_id = $(this).data('booking_detail_id');
     // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
     // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
     // $('#total_deposit_amount').val(totalDepositAmount);

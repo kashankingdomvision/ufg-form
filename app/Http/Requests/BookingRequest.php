@@ -68,7 +68,6 @@ class BookingRequest extends FormRequest
             'quote.*.credit_note.*.credit_note_recieved_by'   => 'required_with:quote.*.credit_note.*.credit_note_amount',
             'quote.*.refund.*.bank'                           => 'required_with:quote.*.refund.*.refund_amount',
             'quote.*.refund.*.refund_confirmed_by'            => 'required_with:quote.*.refund.*.refund_amount',
-            'quote.*.date_of_service'                         => 'required'
         ];
     }
 
