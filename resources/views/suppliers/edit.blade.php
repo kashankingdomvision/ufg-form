@@ -90,7 +90,7 @@
                     <div class="form-group">
                       <label  class="">Description :</label>
                       <textarea name="description"  class="form-control summernote">{{ $supplier->description }}</textarea>
-                      <div class="alert-danger" style="text-align:center">{{$errors->first('email')}}</div>
+                      
                     </div>
                   </div>
                   <div class="card-footer">

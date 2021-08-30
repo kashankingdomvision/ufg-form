@@ -10,6 +10,7 @@ use App\Currency;
 use App\SupplierCategory;
 use App\SupplierProduct;
 use App\Http\Requests\SupplierRequest;
+use App\Http\Requests\UpdateSupplierRequest;
 
 class SupplierController extends Controller
 {
@@ -134,9 +135,10 @@ class SupplierController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(SupplierRequest $request, $id)
+    public function update(UpdateSupplierRequest $request, $id)
     {
         $supplier = Supplier::findOrFail(decrypt($id));
+
         SupplierCategory::where('supplier_id', $supplier->id)->delete();
         SupplierProduct::where('supplier_id', $supplier->id)->delete();
 
@@ -166,7 +168,7 @@ class SupplierController extends Controller
             }
         }
         
-        return redirect()->route('suppliers.index')->with('success_message', 'Supplier updated successfully');
+        return redirect()->route('suppliers.index')->with('success_message', 'Supplier Updated Successfully.');
     }
 
     /**
