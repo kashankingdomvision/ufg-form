@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\BookingTransaction;
+use App\Wallet;
 use DB;
 
 
@@ -16,7 +16,7 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $booking_transactions = BookingTransaction::select(
+        $booking_transactions = Wallet::select(
             'supplier_id',
             DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
             DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
@@ -33,7 +33,7 @@ class WalletController extends Controller
     public function get_supplier_wallet_amount($supplier_id)
     {
         $total = 0;
-        $booking_transactions = BookingTransaction::select(
+        $booking_transactions = Wallet::select(
             DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
             DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
         )

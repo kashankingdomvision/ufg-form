@@ -17,7 +17,6 @@ use App\Bank;
 use App\Booking;
 use App\BookingRefundPayment;
 use App\BookingCreditNote;
-use App\BookingTransaction;
 use App\BookingMethod;
 use App\BookingType;
 use App\BookingDetail;
@@ -36,6 +35,7 @@ use App\Supplier;
 use App\ServiceExcursionDetail;
 use App\User;
 use App\TransferDetail;
+use App\Wallet;
 
 use Cache;
 use Auth;
@@ -291,7 +291,6 @@ class BookingController extends Controller
         ];
     }
 
-
     public function edit($id)
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -374,7 +373,6 @@ class BookingController extends Controller
         return view('bookings.show',$data);
     }
 
-
     public function update(BookingRequest $request, $id)
     {
 
@@ -427,7 +425,7 @@ class BookingController extends Controller
                         BookingDetailFinance::create($fin);
 
                         if($fin['payment_method_id'] == 3){
-                            BookingTransaction::create([
+                            Wallet::create([
                                 'booking_id'        => $booking->id,
                                 'booking_detail_id' => $booking_Details->id,
                                 'supplier_id'       => $booking_Details->supplier_id,
@@ -461,7 +459,7 @@ class BookingController extends Controller
                         if(!empty($credit_note['credit_note_amount']) && !empty($credit_note['credit_note_recieved_date'])){
 
                             BookingCreditNote::create($credit_note);
-                            BookingTransaction::create([
+                            Wallet::create([
                                 'booking_id'        => $booking->id,
                                 'booking_detail_id' => $booking_Details->id,
                                 'supplier_id'       => $booking_Details->supplier_id,
@@ -528,7 +526,7 @@ class BookingController extends Controller
             }
         }
 
-        $quote_update_detail->delete(); 
+        // $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
