@@ -205,7 +205,7 @@
 
                         
                         <li class="nav-item">
-                            <a href="{{ route('products.index')}}" class="nav-link {{ $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
+                            <a href="{{ route('products.index')}}" class="nav-link {{ $route == 'products.create' || $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Product</p>
                             </a>
@@ -214,7 +214,7 @@
 
                       
                         <li class="nav-item">
-                            <a href="{{ route('categories.index')}}" class="nav-link {{ $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
+                            <a href="{{ route('categories.index')}}" class="nav-link {{ $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Category</p>
                             </a>
