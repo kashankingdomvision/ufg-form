@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use Illuminate\Support\Str;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 
 class CategoryController extends Controller
@@ -72,7 +73,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::findOrFail(decrypt($id));
         $category->update([
