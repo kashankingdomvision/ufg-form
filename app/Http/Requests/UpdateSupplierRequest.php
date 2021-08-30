@@ -15,7 +15,7 @@ class UpdateSupplierRequest extends FormRequest
     {
         return [
             'username'      =>  'required|string',
-            'email'         => "unique:users,email,$this->id,id",
+            'email'         =>  "unique:users,email,$this->id,id",
             'categories'    =>  'required|array',
             'products'      =>  'required|array',
         ];
