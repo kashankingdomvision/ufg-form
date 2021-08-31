@@ -788,7 +788,7 @@
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
-                        <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                        <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
                            <option value="{{ $currency->code }}" {{ ($quote->selling_currency_oc == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
