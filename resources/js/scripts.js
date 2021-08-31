@@ -1147,60 +1147,60 @@ $(document).ready(function($) {
 
 
     $("#quoteCreate").submit(function(event) {
-    event.preventDefault();
-    var $form = $(this),
-    url = $form.attr('action');
+        event.preventDefault();
+        var $form = $(this),
+        url = $form.attr('action');
 
-    $('input, select').removeClass('is-invalid');
-    $('.text-danger').html('');
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
 
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data:  new FormData(this),
-        contentType: false,
-        cache: false,
-        processData:false,
-        beforeSend: function() {
-            $("#overlay").addClass('overlay');
-            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-        },
-        success: function (data) {
-            $("#overlay").removeClass('overlay').html('');
-            setTimeout(function() {
-                alert('Quote created Successfully');
-                window.location.href = REDIRECT_BASEURL + "quotes/index";
-            }, 800);
-        },
-        error: function (reject) {
-
-            if( reject.status === 422 ) {
-
-                var errors = $.parseJSON(reject.responseText);
-
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data:  new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+            beforeSend: function() {
+                $("#overlay").addClass('overlay');
+                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+            },
+            success: function (data) {
+                $("#overlay").removeClass('overlay').html('');
                 setTimeout(function() {
-                    
-                    var flag=true;
-
-                    $("#overlay").removeClass('overlay').html('');
-
-                    jQuery.each(errors.errors, function( index, value ) {
-
-                        index = index.replace(/\./g,'_');
-                        $(`#${index}`).addClass('is-invalid');
-                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                        if(flag) {
-               
-                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                            flag = false;
-                        }
-
-                    });
+                    alert('Quote created Successfully');
+                    window.location.href = REDIRECT_BASEURL + "quotes/index";
                 }, 800);
-            }
-        },
-    });
+            },
+            error: function (reject) {
+
+                if( reject.status === 422 ) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+                        
+                        var flag=true;
+
+                        $("#overlay").removeClass('overlay').html('');
+
+                        jQuery.each(errors.errors, function( index, value ) {
+
+                            index = index.replace(/\./g,'_');
+                            $(`#${index}`).addClass('is-invalid');
+                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                            if(flag) {
+                
+                                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                flag = false;
+                            }
+
+                        });
+                    }, 800);
+                }
+            },
+        });
     });
 
     $(document).on('click', '#save_template', function(){
@@ -1760,15 +1760,45 @@ $(document).ready(function($) {
                         }
                         else{
 
+                            var flag=true;
+
                             jQuery.each(errors.errors, function( index, value ) {
 
                                 index = index.replace(/\./g,'_');
-                                $('#'+index).addClass('is-invalid');
-                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                                $(`#${index}`).addClass('is-invalid');
+                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                if(flag) {
+                
+                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                    flag = false;
+                                }
                             });
                         }
 
                     }, 800);
+
+                    // setTimeout(function() {
+                        
+                    //     var flag=true;
+
+                    //     $("#overlay").removeClass('overlay').html('');
+
+                    //     jQuery.each(errors.errors, function( index, value ) {
+
+                    //         index = index.replace(/\./g,'_');
+                    //         $(`#${index}`).addClass('is-invalid');
+                    //         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                    //         if(flag) {
+                
+                    //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                    //             flag = false;
+                    //         }
+
+                    //     });
+                    // }, 800);
+
 
                 }
             },

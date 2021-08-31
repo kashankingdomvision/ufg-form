@@ -25324,13 +25324,33 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               alert(errors.overrride_errors);
               window.location.href = REDIRECT_BASEURL + "bookings/index";
             } else {
+              var flag = true;
               jQuery.each(errors.errors, function (index, value) {
                 index = index.replace(/\./g, '_');
-                $('#' + index).addClass('is-invalid');
-                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                $("#".concat(index)).addClass('is-invalid');
+                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+                if (flag) {
+                  $('html, body').animate({
+                    scrollTop: $("#".concat(index)).offset().top
+                  }, 1000);
+                  flag = false;
+                }
               });
             }
-          }, 800);
+          }, 800); // setTimeout(function() {
+          //     var flag=true;
+          //     $("#overlay").removeClass('overlay').html('');
+          //     jQuery.each(errors.errors, function( index, value ) {
+          //         index = index.replace(/\./g,'_');
+          //         $(`#${index}`).addClass('is-invalid');
+          //         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+          //         if(flag) {
+          //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+          //             flag = false;
+          //         }
+          //     });
+          // }, 800);
         }
       }
     });
