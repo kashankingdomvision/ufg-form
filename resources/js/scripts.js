@@ -985,10 +985,10 @@ $(document).ready(function($) {
         // getSellingPrice();
 
 
-        var key         = $(this).closest('.quote').data('key');
-        var changeFeild = $(this).data('name');
+        var key                = $(this).closest('.quote').data('key');
+        var changeFeild        = $(this).attr("data-name");
         var cal_selling_price  = $('.cal_selling_price').is(':checked');
-        var status             = $(this).data('status');
+        var status             = $(this).attr("data-status");
 
         if(status && status=='booking' && cal_selling_price == false){
             calculateBookingDetails(key);
