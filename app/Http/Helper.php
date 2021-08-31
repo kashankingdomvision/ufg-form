@@ -147,9 +147,11 @@ class Helper
 
             $response['exist']   = 1;
             $response['user_id'] = $quote_update_detail->user_id;
+
+			return $response;
         }
 
-        if(is_null($quote_update_detail)){
+        // if(is_null($quote_update_detail)){
 
             QuoteUpdateDetail::create([
                 'user_id'      =>  Auth::id(),
@@ -159,9 +161,9 @@ class Helper
 
 			$response['exist']   = null;
             $response['user_id'] = null;
-        }
-
-       return $response;
+        // }
+		
+		return $response;
 	}
 
 }
