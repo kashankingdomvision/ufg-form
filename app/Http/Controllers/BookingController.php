@@ -456,7 +456,7 @@ class BookingController extends Controller
                         $credit_note['supplier_id']       = $booking_Details->supplier_id;
                         $credit_note['user_id']           = Auth::id();
 
-                        if(!empty($credit_note['credit_note_amount']) && !empty($credit_note['credit_note_recieved_date'])){
+                        if(($credit_note['credit_note_amount']) > 0 && !empty($credit_note['credit_note_recieved_date'])){
 
                             BookingCreditNote::create($credit_note);
                             Wallet::create([

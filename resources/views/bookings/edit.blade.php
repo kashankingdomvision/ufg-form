@@ -923,13 +923,16 @@
 
                           <section class="refund-by-bank-section">
                             @if($booking_detail->getBookingRefundPayment && count($booking_detail->getBookingRefundPayment) > 0)
+                            <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
                               @foreach ($booking_detail->getBookingRefundPayment as $rpkey => $payment)
+                              @php
+                                $count = $rpkey + 1;
+                              @endphp
                                 <div class="refund-payment-section">
-                                  <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
                                   <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2">
                                     <div class="col-sm-2">
                                       <div class="form-group">
-                                        <label class="refund-payment-label" id="refund_payment_label_{{ $key }}">Refund Payment #1</label>
+                                        <label class="refund-payment-label" id="refund_payment_label_{{ $key }}">Refund Payment #{{ $count }}</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
@@ -1033,63 +1036,77 @@
                               </div>
                             @endif
                           </section>
-                          <section>
-                            @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
-                              @foreach ($booking_detail->getBookingCreditNote as $fkey => $payment)
-                                <div class="credit-note-section">
 
-                                  <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                          <section class="refund-by-credit-note-section" >
+                            @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
+                            <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                              @foreach ($booking_detail->getBookingCreditNote as $cnkey => $payment)
+
+                              @php
+                                $count = $cnkey + 1;
+                              @endphp
+
+                                <div class="credit-note-section">
                                   <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                        <label class="credit_note_label" id="credit_note_label_{{ $cnkey }}">Credit Note Amount Payment #{{$count}} <span style="color:red">*</span></label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                           </div>
-                                          <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any" disabled>
+                                          <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_amount]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_amount" data-name="credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any">
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="col-sm-2">
+                                    {{-- <div class="col-sm-2">
                                       <div class="form-group">
                                         <label>Credit Note No. <span style="color:red">*</span></label>
-                                        <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" disabled>
+                                        <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" >
                                       </div>
-                                    </div>
-                                    <div class="col-sm-2">
+                                    </div> --}}
+                                    <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Credit Note Date <span style="color:red">*</span></label>
-                                        <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" disabled>
+                                        <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_date]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_date" data-name="credit_note_recieved_date" class="form-control" >
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Credit Note Received By <span style="color:red">*</span></label>
-                                        <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" disabled>
+                                        <select  name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_by]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_by" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
                                           <option value="">Select User</option>
                                           @foreach ($sale_persons as $person)
                                             <option  value="{{ $person->id }}" {{ ($person->id == $payment->credit_note_recieved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
                                           @endforeach
                                         </select>
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
+
+                                    <div class="col-sm-1 d-flex justify-content-end">
+                                      <div class="form-group">
+                                        <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm d-none">X</button>
+                                      </div>
+                                    </div>
+
                                   </div>
                                 </div>
                               
                               @endforeach
                               @else
-                              <div class="credit-note-hidden-section" hidden>
+                              <div class="credit-note-section" hidden>
                                 <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
-                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
+                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2" >
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                      <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                      <label class="credit_note_label" id="credit_note_label_{{ $key }}">Credit Note Amount Payment #1 <span style="color:red">*</span></label>
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                         </div>
-                                        <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
+                                        <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any" >
                                       </div>
                                     </div>
                                   </div>
@@ -1126,6 +1143,7 @@
                               </div>
                             @endif
                           </section>
+
                           <section class="mt-1">
                             <div class="row">
                               <div class="col-12 text-right">

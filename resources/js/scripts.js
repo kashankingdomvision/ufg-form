@@ -1869,11 +1869,7 @@ $(document).ready(function($) {
         });
     });
 
-    $(document).on('click', '.credit-note-hidden-btn', function(){
-        var quote = $(this).closest('.quote');
-        quote.find('.credit-note-hidden-section').attr("hidden",true);
-        quote.find('.credit-note-hidden-section .credit-note-amount').val("");
-    });
+
 
     $(document).on('click', '.refund-payment-hidden-btn', function(){
         // var quote = $(this).closest('.quote');
@@ -1885,16 +1881,44 @@ $(document).ready(function($) {
         var quoteKey                   = quote.data('key');
         var refundPaymentRowLength     = quote.find(".refund-payment-row:not(:hidden)").length;
 
+
+        // console.log(refundPaymentRowLength);
+
         if(parseInt(refundPaymentRowLength) == 1){
             quote.find('.refund-payment-section').attr("hidden",true);
             quote.find('.refund-payment-section .refund_amount').val("");
+
+            // console.log('hide here');
         }
         else{
             $(this).closest('.refund-payment-row').remove();
+            // console.log('remove here');
+
         }
 
 
     });
+
+    $(document).on('click', '.credit-note-hidden-btn', function(){
+        var quote                      = $(this).closest('.quote');
+        var quoteKey                   = quote.data('key');
+        var creditNoteRowLength        = quote.find(".credit-note-row:not(:hidden)").length;
+
+        if(parseInt(creditNoteRowLength) == 1){
+            quote.find('.credit-note-section').attr("hidden",true);
+            quote.find('.credit-note-section .credit-note-amount').val("");
+
+
+            // console.log(' creditNoteRowLength hide here');
+        } 
+        else{
+            $(this).closest('.credit-note-row').remove();
+
+            // console.log('remove here');
+        }
+
+    });
+
 
     $(document).on('change', '.refund_amount', function(){
 
@@ -1902,10 +1926,41 @@ $(document).ready(function($) {
         var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
         
-        var refundAmountArray       = quote.find('.refund_amount').map((i, e) => parseFloat(e.value)).get();
+        var refundAmountArray       = quote.find('.refund_amount').not(this).map((i, e) => parseFloat(e.value)).get();
         var totalRefundAmount       = refundAmountArray.reduce((a, b) => (a + b), 0);
 
-        if(totalRefundAmount > totalDepositAmount){
+        var creditNoteAmountArray   = quote.find('.credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalCreditNoteAmount   = creditNoteAmountArray.reduce((a, b) => (a + b), 0);
+
+
+        // console.log("totalRefundAmount: " + totalRefundAmount);
+        // console.log("totalCreditNoteAmount: " + totalCreditNoteAmount);
+
+        if(!isNaN(totalCreditNoteAmount)){
+
+            var totalReturnedAmount = totalCreditNoteAmount + totalRefundAmount;
+            var totalAmount         = totalDepositAmount - totalReturnedAmount;
+        }else{
+            var totalAmount         = totalDepositAmount - totalRefundAmount;
+        }
+        
+        
+        // console.log("totalReturnedAmount: " + totalReturnedAmount);
+
+        // if(isNaN(totalAmount)){
+        //     totalAmount = totalRefundAmount;
+        // }
+        
+        // console.log("totalReturnedAmount: " + totalReturnedAmount);
+        
+        // console.log("totalCreditNoteAmount: " + totalCreditNoteAmount);
+        // console.log("totalDepositAmount: " + totalDepositAmount);
+
+        // console.log("totalRefundAmount: " + totalRefundAmount);
+        // console.log("totalAmount: " + totalAmount);
+
+        // if(totalRefundAmount > totalDepositAmount){
+        if($(this).val() > totalAmount){
             alert("Please Enter Correct Paid Amount");
             $(this).val('0.00');
         }
@@ -1913,18 +1968,135 @@ $(document).ready(function($) {
 
     $(document).on('change', '.credit-note-amount', function(){
 
-        var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var quote                   = $(this).closest('.quote');
+        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
         var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var refundAmount            = parseFloat($(this).val());
 
-        console.log(refundAmount);
-        console.log(totalDepositAmount);
+        var refundAmountArray       = quote.find('.refund_amount').map((i, e) => parseFloat(e.value)).get();
+        var totalRefundAmount       = refundAmountArray.reduce((a, b) => (a + b), 0);
+        
+        var creditNoteAmountArray   = quote.find('.credit-note-amount').not(this).map((i, e) => parseFloat(e.value)).get();
+        var totalCreditNoteAmount   = creditNoteAmountArray.reduce((a, b) => (a + b), 0);
 
+        var totalReturnedAmount     = totalCreditNoteAmount + totalRefundAmount;
+        var totalAmount             = totalDepositAmount - totalReturnedAmount;
 
-        if(refundAmount != totalDepositAmount){
+        if(!isNaN(totalRefundAmount)){
+
+            var totalReturnedAmount = totalRefundAmount + totalRefundAmount;
+            var totalAmount         = totalDepositAmount - totalReturnedAmount;
+        }else{
+            var totalAmount         = totalDepositAmount - totalCreditNoteAmount;
+        }
+        
+
+        // console.log("totalCreditNoteAmount: " + totalCreditNoteAmount);
+        // console.log("totalDepositAmount: " + totalDepositAmount);
+
+        // console.log("totalRefundAmount: " + totalRefundAmount);
+        // console.log("totalAmount: " + totalAmount);
+
+        if($(this).val() > totalAmount){
             alert("Please Enter Correct Paid Amount");
             $(this).val('0.00');
         }
+
+    });
+
+    $(document).on('click', '.credit-note', function(){
+
+        // $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
+        // // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
+
+        // var quoteKey                 =  $(this).closest('.quote').data('key');
+        // $(`#quote_${quoteKey}_refund_0_refund_amount`).val('');
+
+        // $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden",true);
+
+        // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+        // $(this).closest('.quote').find('.credit-note-amount').val(totalDepositAmount.toFixed(2));
+
+        // var booking_detail_id = $(this).data('booking_detail_id');
+
+        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+        // console.log(totalDepositAmount);
+        // console.log(booking_detail_id);
+
+        
+        // jQuery('#credit_note_modal').modal('show');
+        
+        // $('.total_deposit_amount').val(totalDepositAmount);
+        // $('.booking_detail_id').val(booking_detail_id);
+
+
+        
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote                      = $(this).closest('.quote');
+        var quoteKey                   = quote.data('key');
+        var creditNoteRowLength        = quote.find(".credit-note-row:not(:hidden)").length;
+
+        console.log(creditNoteRowLength);
+
+        if(parseInt(creditNoteRowLength) == 0){
+            quote.find('.credit-note-section').attr("hidden",false);
+        }
+        else{
+
+            quote.find('.credit-note-row').first().clone().find("input").val("").each(function(){
+    
+                let n = 1;
+                let name = $(this).attr("data-name");
+    
+                this.name = this.name.replace(/]\[(\d+)]/g, function(){
+                    return `][${creditNoteRowLength}]`;
+                });
+    
+                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? creditNoteRowLength : v , function(){
+                    return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                });
+    
+            }).end()
+            .find('.credit_note_label').each(function () {
+    
+                this.id = `credit_note_label_${creditNoteRowLength}`;
+                $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
+    
+            }).end()
+            .find("select").val("").each(function(){
+                
+                let n = 1;
+                let name = $(this).attr("data-name");
+    
+                this.name = this.name.replace(/]\[(\d+)]/g, function(){
+                    return `][${creditNoteRowLength}]`;
+                });
+            
+                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? creditNoteRowLength : v , function(){
+                    return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                });
+    
+            }).end()
+            .find('.select2single').select2({
+                width: '100%',
+                theme: "bootstrap",
+            }).end()
+            .show()
+            .insertAfter(quote.find('.credit-note-row:last'));
+
+            // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+            // quote.find('.refund-payment-row:last .refund_amount').val('');
+            quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
+        }
+        
+        reinitializedDynamicFeilds();
+    
     });
 
     $(document).on('click', '.refund-to-bank', function(){
@@ -2131,36 +2303,7 @@ $(document).ready(function($) {
         });
     });
 
-    $(document).on('click', '.credit-note', function(){
 
-        $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
-        // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
-
-        var quoteKey                 =  $(this).closest('.quote').data('key');
-        $(`#quote_${quoteKey}_refund_0_refund_amount`).val('');
-
-        $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden",true);
-
-        var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-
-        $(this).closest('.quote').find('.credit-note-amount').val(totalDepositAmount.toFixed(2));
-
-        // var booking_detail_id = $(this).data('booking_detail_id');
-
-        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-
-        // console.log(totalDepositAmount);
-        // console.log(booking_detail_id);
-
-        
-        // jQuery('#credit_note_modal').modal('show');
-        
-        // $('.total_deposit_amount').val(totalDepositAmount);
-        // $('.booking_detail_id').val(booking_detail_id);
-    
-    });
 
     $(document).on('change', '.deposit-due-date', function(){
         var close = $(this).closest('.finance-clonning');
