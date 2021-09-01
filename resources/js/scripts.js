@@ -823,6 +823,32 @@ $(document).ready(function($) {
             $('.select2single').select2('destroy');
         }
 
+        // var count = $('.quote').length;
+
+        // $.ajax({
+        //     headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+        //     url: REDIRECT_BASEURL+'bookings/booking-detail-clone/'+count,
+        //     type: 'get',
+        //     dataType: "json",
+        //     success: function (data) {
+
+        //         console.log(data);
+
+
+        //         // $('#package'+getKeyPackage).append(data);
+        //         // $('#package'+getKeyPackage).find('.addmorebuttonrow:first').remove();
+        //         // var quoteCount = $('#package'+getKeyPackage).children('.quote').length;
+        //         // $('#packageinput'+getKeyPackage).val(quoteCount);
+        //         // reinitializedDynamicFeilds();
+        //         // datepickerReset(1);
+        //     },
+        //     error: function (reject) {
+        //         alert(reject);
+        
+        //     },
+        // });
+
+
         var quote = $(".quote").eq(0).clone()
         .find("input").val("") .each(function(){
             this.name = this.name.replace(/\[(\d+)\]/, function(){

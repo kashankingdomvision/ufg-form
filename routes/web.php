@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('cancel/{id}', array('as' => 'cancel', 'uses' => 'BookingController@bookingCancel'));
         Route::post('refund-to-bank', array('as' => 'refund-to-bank', 'uses' => 'BookingController@refund_to_bank'));
         Route::post('credit-note', array('as' => 'credit-note', 'uses' => 'BookingController@credit_note'));
+
+        Route::get('booking-detail-clone/{id}', array('as' => 'booking.detail.clone', 'uses' => 'BookingController@booking_detail_clone'));
     });
 
 
