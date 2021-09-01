@@ -201,6 +201,7 @@ class BookingController extends Controller
             'supplier_currency_id'    => $quoteD['supplier_currency_id'],
             'comments'                => $quoteD['comments'],
             'estimated_cost'          => $quoteD['estimated_cost'],
+            'actual_cost'             => $quoteD['actual_cost'],
             'markup_amount'           => $quoteD['markup_amount'],
             'markup_percentage'       => $quoteD['markup_percentage'],
             'selling_price'           => $quoteD['selling_price'],

@@ -27,6 +27,7 @@ class BookingDetail extends Model
         'booking_reference',
         'comments',
         'estimated_cost',
+        'actual_cost',
         'markup_amount',
         'markup_percentage',
         'selling_price',

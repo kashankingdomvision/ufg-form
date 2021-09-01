@@ -34,6 +34,7 @@ class CreateBookingDetailsTable extends Migration
             $table->string('booking_reference')->nullable();
             $table->text('comments')->nullable();
             $table->double('estimated_cost')->nullable();
+            $table->double('actual_cost')->nullable();
             $table->double('markup_amount')->nullable();
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();
