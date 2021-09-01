@@ -911,7 +911,7 @@ $(document).ready(function($) {
         });
 
         $('.refund-payment-hidden-section:last').attr("hidden",true);
-        $('.credit-note-hidden-section:last').attr("hidden",true);
+        $('.refund-by-credit-note-section:last').attr("hidden",true);
         $('.finance-clonning:last').removeClass("cancelled-payment-styling");
 
         $('.btn-group:last').removeClass("d-none");
