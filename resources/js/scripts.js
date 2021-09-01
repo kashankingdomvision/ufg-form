@@ -1266,10 +1266,13 @@ $(document).ready(function($) {
         var formdata = $(this).serialize();
         $('input, select').removeClass('is-invalid');
         $('.text-danger').html('');
-        console.log($("input[name='full_number']").val()+ 'asdsa');
+        // $('#lead_passenger_contact').intlTelInput("getNumber");/
+        // console.log($("input[name='full_number']").val()+ 'asdsa');
+
+        // $('#lead_passenger_contact').intlTelInput("getNumber")
               
         var formData = new FormData(this);
-        formData.append('full_number', $("input[name='full_number']").val());
+        formData.append('full_number', $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val());
         
         /* Send the data using post */
         $.ajax({
@@ -1287,7 +1290,7 @@ $(document).ready(function($) {
                 $("#overlay").removeClass('overlay').html('');
                 setTimeout(function() {
                     alert('Quote updated Successfully');
-                    window.location.href = REDIRECT_BASEURL + "quotes/index";
+                    // window.location.href = REDIRECT_BASEURL + "quotes/index";
                 }, 800);
             },
             error: function (reject) {

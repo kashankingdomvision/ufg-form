@@ -992,6 +992,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="form-group">
                   <div class="row">
                     <div class="col-sm-3 ">
@@ -999,29 +1000,18 @@
                     </div>
                     <div class="col-md-9">
                       <div class="row">
-                    
-                      @forelse  ($booking['revelant_quote'] as $revQuote)
-                        <div class="col-sm-2 relevant-quote">
-                          <div class="form-group">
-                            <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                          </div>
-                        </div>
-                        @empty
-                        <div class="col-sm-2 relevant-quote">
-                          <div class="form-group">
-                            <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                          </div>
-                        </div>
-                      @endforelse
-                        <div class="col-sm-2">
-                          <div class="form-group">
-                              <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
-                          </div>
+                        <div class="col-sm-3 relevant-quote">
+                          <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                            @foreach ($booking['revelant_quote'] as $revQuote)
+                              <option selected value="{{$revQuote}}"> {{ $revQuote }} </option>
+                            @endforeach
+                          </select>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+          
                 {{-- <div class="card">
                   <div class="card-header">
                     <h3 class="card-title">Payment Details</h3>

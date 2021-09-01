@@ -221,7 +221,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
         $data['quote_id']         = Helper::getQuoteID();
-
+        $data['quote_ref']        = Quote::get('quote_ref');
         return view('quotes.create', $data);
     }
     
@@ -256,6 +256,8 @@ class QuoteController extends Controller
     
     public function edit($id)
     {
+        $quote = Quote::findOrFail(decrypt($id));
+        $data['quote']            = $quote;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
@@ -269,10 +271,9 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
-
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         return view('quotes.edit',$data);
     }
 
@@ -333,7 +334,9 @@ class QuoteController extends Controller
     public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
-        $data['quote']            = $log->data;
+        
+        $quote                      = $log->data;
+        $data['quote']            = $quote;
         $data['log']              = $log;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
@@ -348,7 +351,7 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
-
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
         if($type != NULL){
             $data['type'] = $type;
         }

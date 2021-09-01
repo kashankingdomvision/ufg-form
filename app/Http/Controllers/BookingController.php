@@ -36,7 +36,7 @@ use App\ServiceExcursionDetail;
 use App\User;
 use App\TransferDetail;
 use App\Wallet;
-
+use App\Quote;
 use Cache;
 use Auth;
 use Carbon\Carbon;
@@ -293,8 +293,9 @@ class BookingController extends Controller
 
     public function edit($id)
     {
+        $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['booking']          = Booking::findOrFail(decrypt($id));
+        $data['booking']          = $booking;
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -309,6 +310,7 @@ class BookingController extends Controller
         $data['payment_methods']  = PaymentMethod::all();
         $data['commission_types'] = Commission::all();
         $data['banks']            = Bank::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 

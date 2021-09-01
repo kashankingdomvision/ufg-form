@@ -776,15 +776,12 @@
                       </div>
                       <div class="col-md-9">
                         <div class="row">
-                          <div class="col-sm-2 relevant-quote">
-                            <div class="form-group">
-                                <input type="text" value="" class="form-control"  name="revelant_quote[]">
-                            </div>
-                          </div>
-                          <div class="col-sm-2">
-                            <div class="form-group">
-                                <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
-                            </div>
+                          <div class="col-sm-3 relevant-quote">
+                            <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                              @foreach ($quote_ref as $ref)
+                                <option value="{{$ref->quote_ref}}"> {{ $ref->quote_ref }} </option>
+                              @endforeach
+                            </select>
                           </div>
                         </div>
                       </div>
