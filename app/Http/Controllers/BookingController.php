@@ -8,6 +8,7 @@ use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 use App\Http\Helper;
 
 use App\Airline;
@@ -532,6 +533,34 @@ class BookingController extends Controller
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
+
+    public function booking_detail_clone($count){
+
+        // dd($count);
+
+
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        // $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
+        $data['count'] = $count;
+
+        return response()->json(View::make('partials.booking_detail', $data)->render());
+    }
+
     
     private function curl_data($url)
     {
