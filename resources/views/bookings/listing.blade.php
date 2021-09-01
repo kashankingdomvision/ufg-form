@@ -177,6 +177,11 @@
                                                     <a href="{{ route('bookings.show', [ 'id' => encrypt($booking->id), 'status' => 'payment' ] ) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="Add Payment" >
                                                         <span class="fa fa-money-bill-alt"></span>
                                                     </a>
+
+                                                    <a href="javascript:void(0)" class="cancel-booking float-right btn btn-outline-danger btn-xs " data-bookingid="{{ $booking->id  }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                                                        <span class="fa fa-times"></span>
+                                                    </a>
+
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
                                                         {{-- <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
@@ -210,4 +215,6 @@
         </div>
     </section>
 </div>
+
+@include('partials.cancel_booking_modal')
 @endsection

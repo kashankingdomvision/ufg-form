@@ -1135,6 +1135,51 @@ $(document).ready(function($) {
         jQuery('#payment_details_modal_body').html(tbody);
     });
 
+    $(document).on('click', '.cancel-booking',function(e){
+
+        e.preventDefault();
+
+                
+        if (confirm("Are you sure you want to Cancel Booking?") == true) {
+            
+      
+
+            var booking_id = $(this).attr('data-bookingid');
+
+            jQuery('#cancel_booking').modal('show');
+
+            $.ajax({
+                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+                url: `${REDIRECT_BASEURL}bookings/get-booking-net-price/${booking_id}`,
+                type: 'get',
+                success: function (data) {
+
+                    console.log(data);
+
+                    if(data !== null && data !== ''  && data!==undefined) {
+
+                    
+                        jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
+                        jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
+                        jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text(`Cancellation Charges should not be greater ${data.booking_net_price} ${data.booking_currency_code}`);
+                    }
+         
+
+
+                },
+                error: function (reject) {}
+            });
+
+
+            console.log(booking_id);
+
+            
+
+        }
+
+    });
+
+
     $(document).on('change', '.rate-type',function(){
         changeCurrenyRate();
     });

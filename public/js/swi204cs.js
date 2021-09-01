@@ -24813,6 +24813,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     jQuery('#payment_details_modal').modal('show');
     jQuery('#payment_details_modal_body').html(tbody);
   });
+  $(document).on('click', '.cancel-booking', function (e) {
+    e.preventDefault();
+
+    if (confirm("Are you sure you want to Cancel Booking?") == true) {
+      var booking_id = $(this).attr('data-bookingid');
+      jQuery('#cancel_booking').modal('show');
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: "".concat(REDIRECT_BASEURL, "bookings/get-booking-net-price/").concat(booking_id),
+        type: 'get',
+        success: function success(data) {
+          console.log(data);
+
+          if (data !== null && data !== '' && data !== undefined) {
+            jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
+            jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
+            jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text("Cancellation Charges should not be greater ".concat(data.booking_net_price, " ").concat(data.booking_currency_code));
+          }
+        },
+        error: function error(reject) {}
+      });
+      console.log(booking_id);
+    }
+  });
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();
   });
