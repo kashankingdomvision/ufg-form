@@ -27688,7 +27688,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.0.20
+* sweetalert2 v11.1.0
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -28232,6 +28232,8 @@ S2.define('jquery.select2',[
 
     if (!params.showConfirmButton && !params.showDenyButton && !params.showCancelButton) {
       hide(actions);
+    } else {
+      show(actions);
     } // Custom class
 
 
@@ -29124,7 +29126,7 @@ S2.define('jquery.select2',[
     didDestroy: undefined,
     scrollbarPadding: true
   };
-  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
+  const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'preConfirm', 'preDeny', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'willClose'];
   const deprecatedParams = {};
   const toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'focusConfirm', 'focusDeny', 'focusCancel', 'returnFocus', 'heightAuto', 'keydownListenerCapture'];
   /**
@@ -30178,22 +30180,24 @@ S2.define('jquery.select2',[
     return inputValue && inputValue.toString() === optionValue.toString();
   };
 
-  const handleConfirmButtonClick = (instance, innerParams) => {
+  const handleConfirmButtonClick = instance => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableButtons();
 
     if (innerParams.input) {
-      handleConfirmOrDenyWithInput(instance, innerParams, 'confirm');
+      handleConfirmOrDenyWithInput(instance, 'confirm');
     } else {
-      confirm(instance, innerParams, true);
+      confirm(instance, true);
     }
   };
-  const handleDenyButtonClick = (instance, innerParams) => {
+  const handleDenyButtonClick = instance => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableButtons();
 
     if (innerParams.returnInputValueOnDeny) {
-      handleConfirmOrDenyWithInput(instance, innerParams, 'deny');
+      handleConfirmOrDenyWithInput(instance, 'deny');
     } else {
-      deny(instance, innerParams, false);
+      deny(instance, false);
     }
   };
   const handleCancelButtonClick = (instance, dismissWith) => {
@@ -30201,26 +30205,28 @@ S2.define('jquery.select2',[
     dismissWith(DismissReason.cancel);
   };
 
-  const handleConfirmOrDenyWithInput = (instance, innerParams, type
-  /* type is either 'confirm' or 'deny' */
+  const handleConfirmOrDenyWithInput = (instance, type
+  /* 'confirm' | 'deny' */
   ) => {
+    const innerParams = privateProps.innerParams.get(instance);
     const inputValue = getInputValue(instance, innerParams);
 
     if (innerParams.inputValidator) {
-      handleInputValidator(instance, innerParams, inputValue, type);
+      handleInputValidator(instance, inputValue, type);
     } else if (!instance.getInput().checkValidity()) {
       instance.enableButtons();
       instance.showValidationMessage(innerParams.validationMessage);
     } else if (type === 'deny') {
-      deny(instance, innerParams, inputValue);
+      deny(instance, inputValue);
     } else {
-      confirm(instance, innerParams, inputValue);
+      confirm(instance, inputValue);
     }
   };
 
-  const handleInputValidator = (instance, innerParams, inputValue, type
-  /* type is either 'confirm' or 'deny' */
+  const handleInputValidator = (instance, inputValue, type
+  /* 'confirm' | 'deny' */
   ) => {
+    const innerParams = privateProps.innerParams.get(instance);
     instance.disableInput();
     const validationPromise = Promise.resolve().then(() => asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage)));
     validationPromise.then(validationMessage => {
@@ -30230,14 +30236,16 @@ S2.define('jquery.select2',[
       if (validationMessage) {
         instance.showValidationMessage(validationMessage);
       } else if (type === 'deny') {
-        deny(instance, innerParams, inputValue);
+        deny(instance, inputValue);
       } else {
-        confirm(instance, innerParams, inputValue);
+        confirm(instance, inputValue);
       }
     });
   };
 
-  const deny = (instance, innerParams, value) => {
+  const deny = (instance, value) => {
+    const innerParams = privateProps.innerParams.get(instance || undefined);
+
     if (innerParams.showLoaderOnDeny) {
       showLoading(getDenyButton());
     }
@@ -30269,7 +30277,9 @@ S2.define('jquery.select2',[
     });
   };
 
-  const confirm = (instance, innerParams, value) => {
+  const confirm = (instance, value) => {
+    const innerParams = privateProps.innerParams.get(instance || undefined);
+
     if (innerParams.showLoaderOnConfirm) {
       showLoading(); // TODO: make showLoading an *instance* method
     }
@@ -30533,9 +30543,9 @@ S2.define('jquery.select2',[
 
       privateMethods.swalPromiseResolve.set(instance, resolve);
 
-      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance, innerParams);
+      domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance);
 
-      domCache.denyButton.onclick = () => handleDenyButtonClick(instance, innerParams);
+      domCache.denyButton.onclick = () => handleDenyButtonClick(instance);
 
       domCache.cancelButton.onclick = () => handleCancelButtonClick(instance, dismissWith);
 
@@ -30782,7 +30792,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.0.20';
+  SweetAlert.version = '11.1.0';
 
   const Swal = SweetAlert;
   Swal.default = Swal;
@@ -31816,7 +31826,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       });
     });
     $('.refund-payment-hidden-section:last').attr("hidden", true);
-    $('.credit-note-hidden-section:last').attr("hidden", true);
+    $('.refund-by-credit-note-section:last').attr("hidden", true);
     $('.finance-clonning:last').removeClass("cancelled-payment-styling");
     $('.btn-group:last').removeClass("d-none");
     $('.clone_booking_finance:last').removeClass("d-none");
@@ -31953,6 +31963,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     tbody += "<tr>\n                    <th>Ref #</th>\n                    <td>".concat(isEmpty(details.zoho_booking_reference), "</td>\n                </tr>\n                <tr>\n                    <th>Status</th>\n                    <td>").concat(isEmpty(details.status), "</td>\n                </tr>\n                <tr>\n                    <th>Payment For</th>\n                    <td>").concat(isEmpty(details.payment_for), "</td>\n                </tr>\n                <tr>\n                    <th>Payment Method</th>\n                    <td>").concat(isEmpty(payment_method), "</td>\n                </tr>\n                <tr>\n                    <th>Date</th>\n                    <td>").concat(isEmpty(details.date), "</td>\n                </tr>\n                <tr>\n                    <th>Amount</th>\n                    <td>").concat(isEmpty(details.amount), "</td>\n                </tr>\n                <tr>\n                    <th>Type</th>\n                    <td>").concat(isEmpty(client_type), "</td>\n                </tr>\n                <tr>\n                    <th>Ref ID</th>\n                    <td>").concat(isEmpty(details.ref_id), "</td>\n                </tr>\n                <tr>\n                    <th>Card Holder Name</th>\n                    <td>").concat(isEmpty(details.card_holder_name), "</td>\n                </tr>\n                <tr>\n                    <th>Address</th>\n                    <td>").concat(isEmpty(details.b_street_address), "</td>\n                </tr>\n                <tr>\n                    <th>Post Code</th>\n                    <td>").concat(isEmpty(details.b_zip_code), "</td>\n                </tr>\n                <tr>\n                    <th>Note</th>\n                    <td>").concat(isEmpty(details.note), "</td>\n                </tr>\n                <tr>\n                    <th>Sort Code</th>\n                    <td>").concat(isEmpty(details.sort_code), "</td>\n                </tr>\n                <tr>\n                    <th>Created At</th>\n                    <td>").concat(isEmpty(details.created_at), "</td>\n                </tr>\n                <tr>\n                    <th>Amount Payable</th>\n                    <td>").concat(isEmpty(details.amount_payable), "</td>\n                </tr>");
     jQuery('#payment_details_modal').modal('show');
     jQuery('#payment_details_modal_body').html(tbody);
+  });
+  $(document).on('click', '.cancel-booking', function (e) {
+    e.preventDefault();
+
+    if (confirm("Are you sure you want to Cancel Booking?") == true) {
+      var booking_id = $(this).attr('data-bookingid');
+      jQuery('#cancel_booking').modal('show');
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: "".concat(REDIRECT_BASEURL, "bookings/get-booking-net-price/").concat(booking_id),
+        type: 'get',
+        success: function success(data) {
+          console.log(data);
+
+          if (data !== null && data !== '' && data !== undefined) {
+            jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
+            jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
+            jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text("Cancellation Charges should not be greater ".concat(data.booking_net_price, " ").concat(data.booking_currency_code));
+          }
+        },
+        error: function error(reject) {}
+      });
+      console.log(booking_id);
+    }
   });
   $(document).on('change', '.rate-type', function () {
     changeCurrenyRate();

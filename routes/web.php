@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('credit-note', array('as' => 'credit-note', 'uses' => 'BookingController@credit_note'));
 
         Route::get('booking-detail-clone/{id}', array('as' => 'booking.detail.clone', 'uses' => 'BookingController@booking_detail_clone'));
+        Route::get('get-booking-net-price/{id}', array('as' => 'get.booking.net.price', 'uses' => 'BookingController@get_booking_net_price'));
     });
 
 

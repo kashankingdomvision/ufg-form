@@ -535,6 +535,20 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
 
+    public function get_booking_net_price($id){
+      
+        $booking = Booking::find($id); 
+
+        $booking_data = array(
+            'booking_net_price'  => $booking->net_price,
+            'booking_currency_id' => $booking->currency_id,
+            'booking_currency_code' => $booking->getCurrency->code,
+        );
+
+        return $booking_data;
+    }
+
+
     public function booking_detail_clone($count){
 
         // dd($count);

@@ -88,8 +88,12 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h1 class="card-title text-center card-title-style">Edit Booking</h1>
-                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary btn-md cancel-booking" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
+                </a>
+
+                <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-md mr-2" data-bookingid="{{ $booking->id  }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                  Cancel Booking
                 </a>
               </div>
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking" enctype="multipart/form-data"> 
@@ -1478,6 +1482,9 @@
   @include('partials.payment_details_modal')
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
+
+  @include('partials.cancel_booking_modal')
+
 @endsection
 @push('js')
 <script>
