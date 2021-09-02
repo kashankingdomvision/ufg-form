@@ -459,7 +459,7 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>End Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                    <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
                                     <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
