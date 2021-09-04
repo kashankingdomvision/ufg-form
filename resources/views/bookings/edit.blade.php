@@ -1382,10 +1382,13 @@
                             </div>
                           </div>
 
+
+                          @php $total_booking_cancellation_refund_payment = 0; @endphp
                           @if($booking->getBookingCancellationRefundPaymentDetail && count($booking->getBookingCancellationRefundPaymentDetail) > 0)
                             @foreach ($booking->getBookingCancellationRefundPaymentDetail as $bcrpdKey => $payment)
                               @php
                                 $count = $bcrpdKey + 1;
+                                $total_booking_cancellation_refund_payment += $payment->refund_amount;
                               @endphp
 
                               <div class="row cancellation-refund-payment-row mb-2">
@@ -1464,7 +1467,10 @@
 
                             @endforeach
                             <div class="row">
-                              <div class="col-12 text-right">
+                              <div class="col-12 text-right 
+                              @if(isset($booking->getTotalRefundAmount->total_refund_amount) && isset($total_booking_cancellation_refund_payment) && $booking->getTotalRefundAmount->total_refund_amount == $total_booking_cancellation_refund_payment)
+                                d-none
+                              @endif">
                                 <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more </button>
                               </div>
                             </div>
@@ -1547,7 +1553,11 @@
       
                             <div class="row">
                               <div class="col-12 text-right">
-                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more </button>
+                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more
+                                  
+                             
+                                
+                                </button>
                               </div>
                             </div>
         
