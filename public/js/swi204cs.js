@@ -23766,11 +23766,11 @@ __webpack_require__.r(__webpack_exports__);
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',
@@ -23876,19 +23876,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return $opt;
   }
 
-  function formatState(opt) {
-    if (!opt.id) {
-      return opt.text;
+  function formatState(option) {
+    var optionImage = $(option.element).attr('data-image');
+
+    if (!optionImage) {
+      return option.text;
     }
 
-    var optimage = $(opt.element).attr('data-image');
-
-    if (!optimage) {
-      return opt.text;
-    } else {
-      var $opt = $('<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>');
-      return $opt;
-    }
+    return $("<span><img height=\"20\" width=\"20\" src=\"".concat(optionImage, "\" width=\"60px\" />").concat(option.text, "</span>"));
   }
 
   ;
@@ -23907,7 +23902,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function getJson() {
     return JSON.parse($.ajax({
       type: 'GET',
-      url: BASEURL + 'get-currency-conversion',
+      url: "".concat(BASEURL, "get-currency-conversion"),
       dataType: 'json',
       global: false,
       async: false,
@@ -23922,7 +23917,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function getCommissionJson() {
     return JSON.parse($.ajax({
       type: 'GET',
-      url: BASEURL + 'get-commission',
+      url: "".concat(BASEURL, "get-commission"),
       dataType: 'json',
       global: false,
       async: false,
@@ -23938,6 +23933,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     return x.toFixed(2);
+  }
+
+  function isEmpty(value) {
+    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
   }
 
   function getRate(supplierCurrency, bookingCurrency, rateType) {
@@ -24222,10 +24221,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#quote_".concat(key, "_markup_amount_in_booking_currency")).val(check(calculatedMarkupAmountInBookingCurrency));
     getTotalValues();
     getSellingPrice();
-  }
-
-  function isEmpty(value) {
-    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
   }
 
   $("#generate-pdf").submit(function (event) {
