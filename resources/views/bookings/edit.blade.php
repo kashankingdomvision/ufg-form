@@ -803,6 +803,7 @@
                                         <input type="date" value="{{ $finance->paid_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][paid_date]" data-name="paid_date" id="quote_{{$key}}_finance_{{$fkey}}_paid_date" class="form-control paid-date" {{ $finance->status == 'cancelled' ? 'readonly' : '' }}>
                                       </div>
                                     </div>
+                                  
                                     <div class="col-sm-2 d-flex justify-content-center">
                                       <div class="form-group {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                         <label>Calender</label>
@@ -815,6 +816,7 @@
                                         </div>
                                       </div>
                                     </div>
+
                                     <div class="col-sm-1 d-flex justify-content-center">
                                       <div class="form-group">
                                         <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" >X</button>
@@ -997,6 +999,19 @@
                                           @endforeach
                                         </select>
                                         <span class="text-danger" role="alert"></span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-2 d-flex justify-content-center">
+                                      <div class="form-group">
+                                        <label>Refund Recieved</label>
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <div class="icheck-primary">
+                                              <input type="hidden" name="quote[{{ $key }}][refund][{{ $fkey }}][refund_recieved]" value="{{ $payment->refund_recieved }}"><input data-name="refund_recieved" id="quote_{{$key}}_refund_{{$rpkey}}_refund_recieved" class="checkbox" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"  {{ ($payment->refund_recieved == 1)? 'checked': NULL }}> 
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
 

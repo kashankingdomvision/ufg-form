@@ -7,10 +7,10 @@ import datepicker from 'bootstrap-datepicker';
 // import { isArguments } from 'lodash-es';
 var CSRFTOKEN = $('#csrf-token').attr('content');
   
-// var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
-var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
+var BASEURL = window.location.origin+'/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+// var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
  
 $(document).ready(function($) {
   
@@ -2601,6 +2601,7 @@ $(document).ready(function($) {
             .show()
             .insertAfter(quote.find('.refund-payment-row:last'));
 
+            quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
             quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
             quote.find('.refund-payment-row:last .refund_amount').val('');
             quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');

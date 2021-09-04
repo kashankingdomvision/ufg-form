@@ -23766,11 +23766,11 @@ __webpack_require__.r(__webpack_exports__);
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content'); // var BASEURL = window.location.origin+'/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/ufg-form/public/';
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+var BASEURL = window.location.origin + '/ufg-form/public/json/';
+var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
+// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
 
-var BASEURL = window.location.origin + '/php/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/php/ufg-form/public/';
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.select2').select2({
     width: '100%',
@@ -25992,6 +25992,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         width: '100%',
         theme: "bootstrap"
       }).end().show().insertAfter(quote.find('.refund-payment-row:last'));
+      quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
       quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
       quote.find('.refund-payment-row:last .refund_amount').val('');
       quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');

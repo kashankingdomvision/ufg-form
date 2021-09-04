@@ -246,7 +246,9 @@ class BookingController extends Controller
             "refund_amount"        => $quoteD['refund_amount']??NULL,
             "refund_date"          => $quoteD['refund_date']??NULL,
             "bank_id"              => $quoteD['bank']??NULL,
-            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL
+            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL,
+            "refund_recieved"      => $quoteD['refund_recieved']??NULL,
+            "refund_recieved_date" => (isset($quoteD['refund_recieved']) && ($quoteD['refund_recieved'] == 1)) ? date('Y-m-d') : NULL,
         ];
     }
 
