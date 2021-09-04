@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\BookingRequest;
 use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
+use App\Http\Requests\CancelBookingRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -24,6 +25,8 @@ use App\BookingDetail;
 use App\BookingDetailFinance;
 use App\BookingLog;
 use App\BookingPaxDetail;
+use App\BookingCancellation;
+use App\BookingCancellationRefundPayment;
 use App\Currency;
 use App\Commission;
 use App\Country;
@@ -530,6 +533,26 @@ class BookingController extends Controller
             }
         }
 
+        if($request->has('cancellation_refund') && count($request->cancellation_refund) > 0){
+
+            $booking->getBookingCancellationRefundPaymentDetail()->delete();
+
+            foreach ($request->cancellation_refund as $cancellation_refund) {
+
+                BookingCancellationRefundPayment::create([
+
+                    "booking_id"            => $booking->id,
+                    "refund_amount"         => $cancellation_refund['refund_amount']??NULL,
+                    "refund_date"           => $cancellation_refund['refund_date']??NULL,
+                    "refund_approved_date"  => $cancellation_refund['refund_approved_date']??NULL,
+                    "refund_approved_by"    => $cancellation_refund['refund_approved_by']??NULL,
+                    "refund_processed_by"   => $cancellation_refund['refund_processed_by']??NULL,
+                    "bank_id"               => $cancellation_refund['refund_process_from']??NULL,
+                ]);
+            }
+
+        }
+
         // $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
@@ -548,6 +571,26 @@ class BookingController extends Controller
         return $booking_data;
     }
 
+    public function cancel_booking(CancelBookingRequest $request){ 
+
+
+        // dd($request->all());
+
+        $total_refund_amount = $request->booking_net_price - $request->cancellation_charges;
+
+        BookingCancellation::create([
+
+            'booking_id'           => $request->booking_id,
+            'cancellation_charges' => $request->cancellation_charges,
+            'cancellation_reason'  => $request->cancellation_reason,
+            'total_refund_amount'  => $total_refund_amount,
+            'currency_id'          => $request->booking_currency_id,
+        ]);
+
+        Booking::where('id', $request->booking_id)->update([ 'booking_status' => 'cancelled' ]);
+
+        return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
+    }
 
     public function booking_detail_clone($count){
 

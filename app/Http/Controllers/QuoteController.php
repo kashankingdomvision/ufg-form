@@ -371,7 +371,8 @@ class QuoteController extends Controller
     {
         $quote = Quote::findORFail(decrypt($id));
         $getQuote = $this->quoteArray($quote, 'booking');
-        $getQuote['quote_id'] = $quote->id; 
+        $getQuote['quote_id']       = $quote->id; 
+        $getQuote['booking_status'] = 'confirmed'; 
         $booking = Booking::create($getQuote);
         
         foreach ($quote->getQuoteDetails as $qu_details) {

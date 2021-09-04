@@ -87,6 +87,20 @@ class Booking extends Model
         }
     }
     
+    public function getBookingFormatedStatusAttribute()
+    {
+        $status = $this->booking_status;
+        switch ($status) {
+            case 'confirmed':
+                return '<h5><span class="badge badge-success">Confirmed</span></h5>';
+                break;
+            case 'cancelled':
+                return '<h5><span class="badge badge-danger">Cancelled</span></h5>';
+                break;
+        }
+        
+        return $status;
+    }
     
     public function getBookingDetail()
     {
@@ -101,6 +115,12 @@ class Booking extends Model
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
+
+    function getTotalRefundAmount() {
+        return $this->hasOne(BookingCancellation::class, 'booking_id', 'id');
+    }
+
+
 
     // function getSupplierCurrency() {
     //     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
@@ -132,6 +152,11 @@ class Booking extends Model
     public function getPaxDetail()
     {
         return $this->hasMany(BookingPaxDetail::class, 'booking_id', 'id');
+    }
+
+    public function getBookingCancellationRefundPaymentDetail()
+    {
+        return $this->hasMany(BookingCancellationRefundPayment::class, 'booking_id', 'id');
     }
     
     public function getBookingLogs()

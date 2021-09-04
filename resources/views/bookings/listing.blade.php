@@ -134,9 +134,10 @@
                                             <th>Agency Booking</th>
                                             <th>Booking Currency</th>
                                             <th>Pax No.</th>
-                                            <th>Dinning Preferences</th>
-                                            <th>Bedding Preferences</th>
-                                            <th>Created</th>
+                                            {{-- <th>Dinning Preferences</th>
+                                            <th>Bedding Preferences</th> --}}
+                                            <th>Booking Status</th>
+                                            <th>Created At</th>
                                             {{-- <th>Transfer Info Responsible Person</th>
                                             <th>Transfer Organized Responsible Person</th>
                                             <th>Itinerary Finalised Responsible Person</th>
@@ -164,8 +165,9 @@
                                                 <td>{{ $booking->agency_booking}}</td>
                                                 <td>{{!empty($booking->getCurrency->code) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : NULL }}</td>
                                                 <td>{{ $booking->pax_no}}</td>
-                                                <td>{{ $booking->lead_passenger_dinning_preferences  }}</td>
-                                                <td>{{ $booking->lead_passenger_bedding_preferences }}</td>
+                                                {{-- <td>{{ $booking->lead_passenger_dinning_preferences  }}</td>
+                                                <td>{{ $booking->lead_passenger_bedding_preferences }}</td> --}}
+                                                <td>{!! $booking->booking_formated_status !!}</td>
                                                 <td>{{ $booking->formated_created_at}}</td>
                                                 <td width="10%" class="d-flex" >
                                                     <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" title="Edit" >
