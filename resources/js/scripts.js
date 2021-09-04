@@ -3,8 +3,8 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
-import { Alert } from 'bootstrap';
-import { isArguments } from 'lodash-es';
+// import { Alert } from 'bootstrap';
+// import { isArguments } from 'lodash-es';
 var CSRFTOKEN = $('#csrf-token').attr('content');
   
 // var BASEURL = window.location.origin+'/ufg-form/public/json/';
