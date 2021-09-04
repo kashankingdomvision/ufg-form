@@ -274,10 +274,10 @@
                             <label>Covid Vaccinated <span style="color:red">*</span></label>
                             <div>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes
+                                <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" checked> No
+                                <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" checked> No
                               </label>
                             </div>
                             <span class="text-danger" role="alert"></span>
