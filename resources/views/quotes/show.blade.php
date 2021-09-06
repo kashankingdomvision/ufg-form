@@ -824,7 +824,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
+
+                  {{-- <div class="form-group">
                     <div class="row">
                       <div class="col-sm-3 ">
                         <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
@@ -853,7 +854,27 @@
                         </div>
                       </div>
                     </div>
+                  </div> --}}
+
+                  <div class="form-group">
+                    <div class="row">
+                      <div class="col-sm-3 ">
+                        <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
+                      </div>
+                      <div class="col-md-9">
+                        <div class="row">
+                          <div class="col-sm-3 relevant-quote">
+                            <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                              @foreach ($quote_ref as $ref)
+                                <option {{ (is_array($quote['revelant_quote']))? ((in_array($ref->quote_ref, $quote['revelant_quote']))? 'selected': NULL) : NULL }} value="{{$ref->quote_ref}}"> {{ $ref->quote_ref }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                  
                 </div>
               </form>
               <div id="overlay" class=""></div>

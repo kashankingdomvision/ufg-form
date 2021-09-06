@@ -453,8 +453,11 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['quote']            = Quote::findOrFail(decrypt($id));
+        $quote                    = Quote::findOrFail(decrypt($id));
+        $data['quote']            = $quote;
         $data['commission_types'] = Commission::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        
 
         return view('quotes.show',$data);
     }
