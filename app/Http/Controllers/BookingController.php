@@ -209,7 +209,7 @@ class BookingController extends Controller
             'markup_percentage'       => $quoteD['markup_percentage'],
             'selling_price'           => $quoteD['selling_price'],
             'profit_percentage'       => $quoteD['profit_percentage'],
-            'estimated_cost_bc'       => $quoteD['estimated_cost_in_booking_currency'],
+            'actual_cost_bc'          => $quoteD['actual_cost_in_booking_currency'],
             'selling_price_bc'        => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
             'added_in_sage'           => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',

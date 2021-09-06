@@ -282,70 +282,7 @@ $(document).ready(function($) {
         return (yyyy+sp+mm+sp+dd);
     };
 
-    function calculateQuoteDetailsCalcualtionForBooking(key,changeFeild){
 
-        var estimatedCost                            = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var supplierCurrency                         = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-        var bookingCurrency                          = $(".booking-currency-id").find(':selected').data('code');
-        var rateType                                 = $('input[name="rate_type"]:checked').val();
-        var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
-        var markupPercentage                         = parseFloat($(`#quote_${key}_markup_percentage`).val());
-        var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val());
-        var calculatedSellingPrice                   = 0;
-        var calculatedMarkupPercentage               = 0;
-        var calculatedMarkupAmount                   = 0;
-        var calculatedProfitPercentage               = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var calculatedEstimatedCostInBookingCurrency = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-
-        if(changeFeild == 'actual_cost'){
-
-            calculatedSellingPrice                   = parseFloat(markupAmount) + parseFloat(estimatedCost);
-            calculatedMarkupPercentage               = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-            calculatedProfitPercentage               = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedSellingPriceInBookingCurrency  = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-           
-            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        if(changeFeild == 'markup_amount'){
-
-            calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
-            calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        if(changeFeild == 'markup_percentage'){
-
-            calculatedMarkupAmount                  = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
-            calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            
-            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        getTotalValues();
-        getSellingPrice();
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -396,28 +333,50 @@ $(document).ready(function($) {
 
     function getQuoteTotalValues(){
 
-        var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        var estimatedCostInBookingCurrencyArray   = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostInBookingCurrency        = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
         
-        var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var sellingPriceInBookingCurrency      = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
         
-        var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
+        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var markupAmountInBookingCurrency      = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
         
-        var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
-        var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
+        var markupPercentageArray              = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+        var markupPercentage                   = markupPercentageArray.reduce((a, b) => (a + b), 0);
         
-        var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
-        var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
+        var profitPercentageArray              = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+        var profitPercentage                   = profitPercentageArray.reduce((a, b) => (a + b), 0);
         
         $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-        $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
-        $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
-        $(".total-profit-percentage").val(check(calculatedProfitPercentage));
-        $(".total-markup-percent").val(check(calculatedmarkupPercentage));
+        $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+        $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+        $(".total-markup-percent").val(check(markupPercentage));
+        $(".total-profit-percentage").val(check(profitPercentage));
 
-        getCommissionRate();
+
+        // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        
+        // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        
+        // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
+        
+        // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
+        
+        // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
+        
+        // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+        // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
+        // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
+        // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
+        // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
+
+        // getCommissionRate();
     }
 
     function getQuoteDetailsValues(key,changeFeild){
@@ -552,13 +511,115 @@ $(document).ready(function($) {
 
     /*
     |--------------------------------------------------------------------------
+    | End Quote Management
+    |--------------------------------------------------------------------------
+    */
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Booking Management
     |--------------------------------------------------------------------------
     */
 
-    function calculateBookingDetails(key){
+    function getBookingRateTypeValues(){
 
-        var estimatedCost     = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var rateType                                 = $("input[name=rate_type]:checked").val();
+        var actualCostArray                          = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray                    = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
+        var quoteSize                                = parseInt($('.quote').length);
+        var calculatedActualCostInBookingCurrency = 0
+        var calculatedSellingPriceInBookingCurrency  = 0;
+        var calculatedMarkupAmountInBookingCurrency  = 0;
+        var key                                      = 0;
+
+        while (key < quoteSize) {
+
+            var actualCost    = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice     = sellingPriceArray[key];
+            var markupAmount     = markupAmountArray[key];
+
+            console.log( supplierCurrency);
+
+            if(supplierCurrency && bookingCurrency){
+
+                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+            }else{
+                
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+
+        getBookingTotalValues();
+        getSellingPrice();
+    }
+
+    function getBookingTotalValues(){
+
+        var actualCostInBookingCurrencyArray   = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var actualCostInBookingCurrency        = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        
+        var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var sellingPriceInBookingCurrency      = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        
+        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var markupAmountInBookingCurrency      = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        
+        var markupPercentageArray              = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+        var markupPercentage                   = markupPercentageArray.reduce((a, b) => (a + b), 0);
+        
+        var profitPercentageArray              = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+        var profitPercentage                   = profitPercentageArray.reduce((a, b) => (a + b), 0);
+        
+        $(".total-net-price").val(check(actualCostInBookingCurrency));
+        $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+        $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+        $(".total-markup-percent").val(check(markupPercentage));
+        $(".total-profit-percentage").val(check(profitPercentage));
+
+        getCommissionRate();
+    }
+
+    function getBookingSupplierCurrencyValues(supplierCurrency, key){
+
+        var rateType                                = $("input[name=rate_type]:checked").val();
+        var bookingCurrency                         = $(".booking-currency-id").find(":selected").data("code");
+        var rate                                    = getRate(supplierCurrency,bookingCurrency,rateType);
+        var actualCost                              = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var markupAmount                            = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+        var sellingPrice                            = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var calculatedActualCostInBookingCurrency   = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        calculatedActualCostInBookingCurrency       = parseFloat(actualCost) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency     = parseFloat(markupAmount) * parseFloat(rate) ;
+        calculatedSellingPriceInBookingCurrency     = parseFloat(sellingPrice) * parseFloat(rate);
+         
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    function getBookingDetailValues(key){
+
+        var actualCost        = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
         var sellingPrice      = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
         var supplierCurrency  = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
         var bookingCurrency   = $(".booking-currency-id").find(':selected').data('code');
@@ -568,27 +629,215 @@ $(document).ready(function($) {
         var calculatedMarkupAmount                   = 0;
         var calculatedMarkupPercentage               = 0;
         var calculatedProfitPercentage               = 0;
-        var calculatedEstimatedCostInBookingCurrency = 0;
+        var calculatedActualCostInBookingCurrency    = 0;
         var calculatedSellingPriceInBookingCurrency  = 0;
         var calculatedMarkupAmountInBookingCurrency  = 0;
 
-        calculatedMarkupAmount                   = parseFloat(sellingPrice) - parseFloat(estimatedCost);
-        calculatedMarkupPercentage               = parseFloat(calculatedMarkupAmount) / parseFloat(estimatedCost / 100);
-        calculatedProfitPercentage               = ((parseFloat(sellingPrice) - parseFloat(estimatedCost)) / parseFloat(sellingPrice)) * 100;
-        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+        calculatedMarkupAmount                   = parseFloat(sellingPrice) - parseFloat(actualCost);
+        calculatedMarkupPercentage               = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
+        calculatedProfitPercentage               = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
+        calculatedActualCostInBookingCurrency    = parseFloat(actualCost) * parseFloat(rate);
         calculatedSellingPriceInBookingCurrency  = parseFloat(sellingPrice) * parseFloat(rate);
-        calculatedMarkupAmountInBookingCurrency  = parseFloat(calculatedMarkupAmount) * rate ;
+        calculatedMarkupAmountInBookingCurrency  = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
 
         $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
         $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
         $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-        $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
         $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
         $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
 
-        getTotalValues();
+        getBookingTotalValues();
         getSellingPrice();
     }
+
+    function getQuoteDetailValuesForBooking(key,changeFeild){
+
+        var actualCost                               = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var supplierCurrency                         = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency                          = $(".booking-currency-id").find(':selected').data('code');
+        var rateType                                 = $('input[name="rate_type"]:checked').val();
+        var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
+        var markupPercentage                         = parseFloat($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var calculatedSellingPrice                   = 0;
+        var calculatedMarkupPercentage               = 0;
+        var calculatedMarkupAmount                   = 0;
+        var calculatedProfitPercentage               = 0;
+        var calculatedMarkupAmountInBookingCurrency  = 0;
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency  = 0;
+    
+        if(changeFeild == 'actual_cost'){
+    
+            calculatedSellingPrice                   = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage               = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage               = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedSellingPriceInBookingCurrency  = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+           
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+    
+        if(changeFeild == 'markup_amount'){
+    
+            calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+    
+        if(changeFeild == 'markup_percentage'){
+    
+            calculatedMarkupAmount                  = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
+            calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
+            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            
+            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+    
+        getBookingTotalValues();
+        getSellingPrice();
+    }
+
+    function getBookingBookingCurrencyValues(){
+
+        var rateType                                 = $("input[name=rate_type]:checked").val();
+        var actualCostArray                          = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
+        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray                    = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
+        var quoteSize                                = parseInt($(".quote").length);
+        var calculatedActualCostInBookingCurrency    = 0;
+        var calculatedSellingPriceInBookingCurrency  = 0;
+        var calculatedMarkupAmountInBookingCurrency  = 0;
+        var key                                      = 0;
+    
+        while (key < quoteSize) {
+    
+            var actualCost    = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice     = sellingPriceArray[key];
+            var markupAmount     = markupAmountArray[key];
+    
+            if(supplierCurrency && bookingCurrency){
+    
+                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+    
+            }else{
+                
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+            
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+    }
+
+    $(document).on('change', '.booking-supplier-currency-id',function () {
+
+        var code     = $(this).find(":selected").data("code");
+        var quote    = $(this).closest(".quote");
+        var quoteKey = quote.data("key");
+        quote.find("[class*=supplier-currency-code]").html(code);
+        getBookingSupplierCurrencyValues(code,quoteKey);
+        getBookingTotalValues();
+        getSellingPrice();
+    });
+
+    // function calculateQuoteDetailsCalcualtionForBooking(key,changeFeild){
+
+    //     var estimatedCost                            = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+    //     var supplierCurrency                         = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+    //     var bookingCurrency                          = $(".booking-currency-id").find(':selected').data('code');
+    //     var rateType                                 = $('input[name="rate_type"]:checked').val();
+    //     var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
+    //     var markupPercentage                         = parseFloat($(`#quote_${key}_markup_percentage`).val());
+    //     var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val());
+    //     var calculatedSellingPrice                   = 0;
+    //     var calculatedMarkupPercentage               = 0;
+    //     var calculatedMarkupAmount                   = 0;
+    //     var calculatedProfitPercentage               = 0;
+    //     var calculatedMarkupAmountInBookingCurrency  = 0;
+    //     var calculatedEstimatedCostInBookingCurrency = 0;
+    //     var calculatedSellingPriceInBookingCurrency  = 0;
+
+    //     if(changeFeild == 'actual_cost'){
+
+    //         calculatedSellingPrice                   = parseFloat(markupAmount) + parseFloat(estimatedCost);
+    //         calculatedMarkupPercentage               = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+    //         calculatedProfitPercentage               = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //         calculatedSellingPriceInBookingCurrency  = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+    //         calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+           
+    //         $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+    //         $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+    //         $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //         $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    //     }
+
+    //     if(changeFeild == 'markup_amount'){
+
+    //         calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
+    //         calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+    //         calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //         calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
+    //         calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            
+    //         $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+    //         $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //         $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+    //         $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+    //         $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    //     }
+
+    //     if(changeFeild == 'markup_percentage'){
+
+    //         calculatedMarkupAmount                  = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
+    //         calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
+    //         calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+    //         calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
+    //         calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            
+    //         $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+    //         $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+    //         $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+    //         $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+    //         $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    //     }
+
+    //     getBookingTotalValues();
+    //     getSellingPrice();
+    // }
+
+    /*
+    |--------------------------------------------------------------------------
+    | End Booking Management
+    |--------------------------------------------------------------------------
+    */
 
 
 
@@ -1264,15 +1513,27 @@ $(document).ready(function($) {
 
 
 
+
+
     $(document).on('change', '.booking-currency-id',function () {
         $('.booking-currency-code').html($(this).find(':selected').data('code'));
-        // changeCurrenyRate();
-        // getTotalValues();
-        // getSellingPrice();
 
-        getQuoteBookingCurrencyValues();
-        getQuoteTotalValues();
+
+        var status        = $(this).attr("data-status");
+
+        if(status && status=='booking'){
+         
+            getBookingTotalValues();
+            getBookingBookingCurrencyValues();
+
+        }else{
+       
+            getQuoteBookingCurrencyValues();
+            getQuoteTotalValues();
+        }
+        
         getSellingPrice();
+
     });
 
     $(document).on("keyup change", '.change-calculation', function (event) {
@@ -1345,11 +1606,13 @@ $(document).ready(function($) {
         var cal_selling_price  = $('.cal_selling_price').is(':checked');
         var status             = $(this).attr("data-status");
 
+        console.log("status: " + status);
+
         if(status && status=='booking' && cal_selling_price == false){
-            calculateBookingDetails(key);
+            getBookingDetailValues(key);
 
         }else{
-            calculateQuoteDetailsCalcualtionForBooking(key,changeFeild);
+            getQuoteDetailValuesForBooking(key,changeFeild);
         }
 
     });
@@ -1370,7 +1633,7 @@ $(document).ready(function($) {
             $(`#quote_${key}_markup_amount`).attr("readonly", true); 
             $(`#quote_${key}_markup_percentage`).attr("readonly", true); 
             $(`#quote_${key}_actual_cost`).attr("data-status","booking");
-            // calculateBookingDetails(key);
+            // getBookingDetailValues(key);
         }
     });
 
@@ -1552,7 +1815,19 @@ $(document).ready(function($) {
 
     $(document).on('change', '.rate-type',function(){
 
-        getQuoteRateTypeValues();
+        var status = $(this).attr("data-status");
+
+        console.log("status: " + status);
+
+        if(status && status=='booking'){
+         
+            getBookingRateTypeValues();
+
+        }else{
+       
+            getQuoteRateTypeValues();
+        }
+
         // changeCurrenyRate();
     });
 
