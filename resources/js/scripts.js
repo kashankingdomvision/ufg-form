@@ -1374,7 +1374,7 @@ $(document).ready(function($) {
 
     $(document).on('click', '.close',function(){
         $(this).closest(".quote").remove();
-        getTotalValues();
+        getQuoteTotalValues();
         getSellingPrice();
     });
 
@@ -2478,7 +2478,7 @@ $(document).ready(function($) {
 
         quote.find('.actual-cost').val(actualCost);
         calculateSPAndAC(quote,actualCost,quoteKey)
-        getTotalValues();
+        getBookingTotalValues();
         getSellingPrice();
     });
 
@@ -2501,7 +2501,7 @@ $(document).ready(function($) {
 
         quote.find('.actual-cost').val(actualCost);
         calculateSPAndAC(quote,actualCost,quoteKey)
-        getTotalValues();
+        getBookingTotalValues();
         getSellingPrice();
 
     });
@@ -2550,7 +2550,7 @@ $(document).ready(function($) {
             quote.find('.selling-price').val((actualCost).toFixed(2));
             calculateSPAndAC(quote,actualCost,quoteKey)
 
-            getTotalValues();
+            getBookingTotalValues();
             getSellingPrice();
         }
 
@@ -2590,7 +2590,7 @@ $(document).ready(function($) {
             quote.find('.selling-price').val((actualCost).toFixed(2));
             calculateSPAndAC(quote,actualCost,quoteKey)
 
-            getTotalValues();
+            getBookingTotalValues();
             getSellingPrice();
         }
 

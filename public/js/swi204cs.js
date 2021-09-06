@@ -25111,7 +25111,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '.close', function () {
     $(this).closest(".quote").remove();
-    getTotalValues();
+    getQuoteTotalValues();
     getSellingPrice();
   });
   $(document).on('change', '.supplier-currency-id', function () {
@@ -25932,7 +25932,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var actualCost = getActualCost(quote).toFixed(2);
     quote.find('.actual-cost').val(actualCost);
     calculateSPAndAC(quote, actualCost, quoteKey);
-    getTotalValues();
+    getBookingTotalValues();
     getSellingPrice();
   });
   $(document).on('click', '.credit-note-hidden-btn', function () {
@@ -25950,7 +25950,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var actualCost = getActualCost(quote).toFixed(2);
     quote.find('.actual-cost').val(actualCost);
     calculateSPAndAC(quote, actualCost, quoteKey);
-    getTotalValues();
+    getBookingTotalValues();
     getSellingPrice();
   });
 
@@ -25997,7 +25997,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       quote.find('.profit-percentage').val('0.00');
       quote.find('.selling-price').val(actualCost.toFixed(2));
       calculateSPAndAC(quote, actualCost, quoteKey);
-      getTotalValues();
+      getBookingTotalValues();
       getSellingPrice();
     }
   });
@@ -26029,7 +26029,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       quote.find('.profit-percentage').val('0.00');
       quote.find('.selling-price').val(actualCost.toFixed(2));
       calculateSPAndAC(quote, actualCost, quoteKey);
-      getTotalValues();
+      getBookingTotalValues();
       getSellingPrice();
     }
   });
