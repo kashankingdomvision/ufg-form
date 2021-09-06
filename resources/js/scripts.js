@@ -214,6 +214,23 @@ $(document).ready(function($) {
         }
     }
 
+    $(document).on('change', '.rate-type',function(){
+
+        var status = $(this).attr("data-status");
+
+        if(status && status=='booking'){
+            getBookingRateTypeValues();
+
+        }else{
+       
+            getQuoteRateTypeValues();
+        }
+    });
+
+    $(document).on('change', '.commission-id', function () {
+        getCommissionRate();
+    });
+
     /*
     |--------------------------------------------------------------------------
     | Quote Management Calculation Functions
@@ -866,7 +883,6 @@ $(document).ready(function($) {
             },
         });
     });
-
 
 
     $('#season_id').on('change', function(){
@@ -1606,27 +1622,7 @@ $(document).ready(function($) {
     });
 
 
-    $(document).on('change', '.rate-type',function(){
 
-        var status = $(this).attr("data-status");
-
-        console.log("status: " + status);
-
-        if(status && status=='booking'){
-         
-            getBookingRateTypeValues();
-
-        }else{
-       
-            getQuoteRateTypeValues();
-        }
-
-        // changeCurrenyRate();
-    });
-
-    $(document).on('change', '.commission-id', function () {
-        getCommissionRate();
-    });
 
     $(".readonly").keypress(function (evt) {
         evt.preventDefault();
