@@ -189,3 +189,253 @@ function changeCurrenyRate(){
         // }
         // getTotalValues();
         // getSellingPrice();
+
+        $('#create_credit_note').submit(function(event) {
+            event.preventDefault();
+            var $form = $(this);
+            var url = $form.attr('action');
+    
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data:  new FormData(this),
+                contentType: false,
+                cache: false,
+                processData:false,
+                beforeSend: function() {
+                    $(".loader_icon").find('span').addClass('spinner-border spinner-border-sm');
+                },
+                success: function (data) {
+            
+                    
+                    $(".loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+                    jQuery('.create_credit_note').modal('hide');
+    
+                    setTimeout(function() {
+                        alert(data.success_message);
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
+    
+                        // if(data.success_message){
+                        //     alert(data.success_message);
+                        //     location.reload();
+                        // }
+                        
+                    }, 800);
+                },
+                error: function (reject) {
+    
+                    if( reject.status === 422 ) {
+    
+                        var errors = $.parseJSON(reject.responseText);
+    
+                        setTimeout(function() {
+        
+                            $(".loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+    
+                            jQuery.each(errors.errors, function( index, value ) {
+    
+                                index = index.replace(/\./g,'_');
+                                $('#'+index).addClass('is-invalid');
+                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
+    
+                                console.log(index);
+                                console.log(value);
+    
+                            });
+    
+                        }, 800);
+    
+                    }
+                },
+            });
+        });
+    
+        $('#create_refund_to_bank').submit(function(event) {
+            event.preventDefault();
+            var $form = $(this);
+            var url = $form.attr('action');
+    
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data:  new FormData(this),
+                contentType: false,
+                cache: false,
+                processData:false,
+                beforeSend: function() {
+                    $("#loader_icon").find('span').addClass('spinner-border spinner-border-sm');
+                },
+                success: function (data) {
+            
+                    
+                    $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+                    jQuery('#refund_to_bank_modal').modal('hide');
+                    setTimeout(function() {
+                        alert(data.success_message);
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
+    
+                        // if(data.success_message){
+                        //     alert(data.success_message);
+                        //     location.reload();
+                        // }
+                        
+                    }, 800);
+                },
+                error: function (reject) {
+    
+                    if( reject.status === 422 ) {
+    
+                        var errors = $.parseJSON(reject.responseText);
+    
+                        setTimeout(function() {
+        
+                            $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
+    
+                            jQuery.each(errors.errors, function( index, value ) {
+    
+                                index = index.replace(/\./g,'_');
+                                $('#'+index).addClass('is-invalid');
+                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
+    
+                                console.log(index);
+                                console.log(value);
+    
+                            });
+    
+                        }, 800);
+    
+                    }
+                },
+            });
+        });
+
+$(document).on('click', '.credit-note', function(){
+
+    // $(this).closest('.quote').find('.credit-note-hidden-section').removeAttr("hidden");
+    // // $(this).closest('.quote').find('input, .select2single').prop("disabled", false);
+
+    // var quoteKey                 =  $(this).closest('.quote').data('key');
+    // $(`#quote_${quoteKey}_refund_0_refund_amount`).val('');
+
+    // $(this).closest('.quote').find('.refund-payment-hidden-section').attr("hidden",true);
+
+    // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+    // $(this).closest('.quote').find('.credit-note-amount').val(totalDepositAmount.toFixed(2));
+
+    // var booking_detail_id = $(this).data('booking_detail_id');
+
+    // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+    // console.log(totalDepositAmount);
+    // console.log(booking_detail_id);
+
+    
+    // jQuery('#credit_note_modal').modal('show');
+    
+    // $('.total_deposit_amount').val(totalDepositAmount);
+    // $('.booking_detail_id').val(booking_detail_id);
+
+
+    
+
+});
+
+$(document).on('change', '.credit-note-amount', function(){
+
+    // var quote                   = $(this).closest('.quote');
+    // var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var refundAmountArray       = quote.find('.refund_amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalRefundAmount       = refundAmountArray.reduce((a, b) => (a + b), 0);
+    
+    // var creditNoteAmountArray   = quote.find('.credit-note-amount').not(this).map((i, e) => parseFloat(e.value)).get();
+    // var totalCreditNoteAmount   = creditNoteAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var totalReturnedAmount     = totalCreditNoteAmount + totalRefundAmount;
+    // var totalAmount             = totalDepositAmount - totalReturnedAmount;
+
+    // if(!isNaN(totalRefundAmount)){
+
+    //     var totalReturnedAmount = totalRefundAmount + totalRefundAmount;
+    //     var totalAmount         = totalDepositAmount - totalReturnedAmount;
+    // }else{
+    //     var totalAmount         = totalDepositAmount - totalCreditNoteAmount;
+    // }
+    
+
+    // // console.log("totalCreditNoteAmount: " + totalCreditNoteAmount);
+    // // console.log("totalDepositAmount: " + totalDepositAmount);
+
+    // // console.log("totalRefundAmount: " + totalRefundAmount);
+    // // console.log("totalAmount: " + totalAmount);
+
+    // if($(this).val() > totalAmount){
+    //     alert("Please Enter Correct Paid Amount");
+    //     $(this).val('0.00');
+    // }
+
+    // ______________________________________________________________________________
+
+
+    // var quote                   = $(this).closest('.quote');
+    // var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var amountArray       = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
+    // var amountTotalArray  = amountArray.filter(function (value) { return !Number.isNaN(value); });
+    // var totalAmount       = amountTotalArray.reduce((a, b) => (a + b), 0);
+    // var actualCost        = totalDepositAmount - totalAmount;
+
+    // quote.find('.actual-cost').val(actualCost);
+
+   
+
+});
+
+$(document).on('change', '.refund_amount', function(){
+
+    // var quote                   = $(this).closest('.quote');
+    // var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+    
+    // var refundAmountArray       = quote.find('.refund_amount').not(this).map((i, e) => parseFloat(e.value)).get();
+    // var totalRefundAmount       = refundAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var creditNoteAmountArray   = quote.find('.credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalCreditNoteAmount   = creditNoteAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var refundAmountWithArray       = quote.find('.refund_amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalRefundAmountWith       = refundAmountWithArray.reduce((a, b) => (a + b), 0);
+
+
+    // if(!isNaN(totalCreditNoteAmount)){
+
+    //     var totalReturnedAmount = totalCreditNoteAmount + totalRefundAmount;
+    //     var totalAmount         = totalDepositAmount - totalReturnedAmount;
+    // }else{
+    //     var totalAmount         = totalDepositAmount - totalRefundAmount;
+    // }
+
+    // if($(this).val() > totalAmount){
+    //     alert("Please Enter Correct Paid Amount");
+        // $(this).val('0.00');
+    // }
+
+    // ______________________________________________________________________________
+ 
+
+
+    // var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+    // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+    // var amountArray       = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
+    // var amountTotalArray  = amountArray.filter(function (value) { return !Number.isNaN(value); });
+    // var totalAmount       = amountTotalArray.reduce((a, b) => (a + b), 0);
+    // var actualCost        = totalDepositAmount - totalAmount;
+
+    // quote.find('.actual-cost').val(actualCost);
+});
