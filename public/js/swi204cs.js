@@ -24611,46 +24611,46 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $(document).on('change', '.category-id', function () {
-    var $selector = $(this);
+    // var selector    = $(this);
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
     var category_id = $(this).val();
     var options = '';
     $.ajax({
       type: 'get',
-      url: BASEURL + 'category/to/supplier',
+      url: "".concat(BASEURL, "category/to/supplier"),
       data: {
         'category_id': category_id
       },
       success: function success(response) {
-        options += '<option value="">Select Supplier</option>';
+        options += "<option value=''>Select Supplier</option>";
         $.each(response, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
+          options += "<option value='".concat(value.id, "'>").concat(value.name, "</option>");
         });
-        $selector.closest('.row').find('.supplier-id').html(options);
-        $selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+        selector.closest('.row').find('.supplier-id').html(options);
+        selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });
     jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input").attr('disabled', 'disabled');
-  });
-  $(document).on('change', '.supplier-id', function () {
-    var $selector = $(this);
-    var supplier_id = $(this).val();
-    var options = '';
-    $.ajax({
-      type: 'get',
-      url: BASEURL + 'supplier/to/product/currency',
-      data: {
-        'id': supplier_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Product</option>';
-        $.each(response.product, function (key, value) {
-          options += '<option value="' + value.id + '">' + value.name + '</option>';
-        });
-        $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
-        $selector.closest('.row').find('.product-id').html(options);
-      }
-    });
-  });
+  }); // $(document).on('change', '.supplier-id',function(){
+  //     var $selector = $(this);
+  //     var supplier_id = $(this).val();
+  //     var options = '';
+  //     $.ajax({
+  //         type: 'get',
+  //         url: BASEURL+'supplier/to/product/currency',
+  //         data: { 'id': supplier_id },
+  //         success: function(response) {
+  //             options += '<option value="">Select Product</option>';
+  //             $.each(response.product,function(key,value){
+  //                 options += '<option value="'+value.id+'">'+value.name+'</option>';
+  //             });
+  //             $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
+  //             $selector.closest('.row').find('.product-id').html(options);
+  //         }
+  //     })
+  // });
+
   $(document).on('change', '.role', function () {
     var role = $(this).find('option:selected').data('role');
     var supervisor = $('#supervisor_feild');
