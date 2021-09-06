@@ -23766,11 +23766,11 @@ __webpack_require__.r(__webpack_exports__);
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
-var BASEURL = window.location.origin + '/ufg-form/public/json/';
-var REDIRECT_BASEURL = window.location.origin + '/ufg-form/public/'; // var BASEURL = window.location.origin+'/php/ufg-form/public/json/';
-// var REDIRECT_BASEURL = window.location.origin+'/php/ufg-form/public/';
-
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   /*  ajaxSetup */
   $.ajaxSetup({
@@ -26133,90 +26133,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 $('#' + index).closest('.form-group').find('.text-danger').html(value);
               });
             }
-          }, 800);
-        }
-      }
-    });
-  });
-  $('#create_credit_note').submit(function (event) {
-    event.preventDefault();
-    var $form = $(this);
-    var url = $form.attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $(".loader_icon").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(data) {
-        $(".loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
-        jQuery('.create_credit_note').modal('hide');
-        setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index"; // if(data.success_message){
-          //     alert(data.success_message);
-          //     location.reload();
-          // }
-        }, 800);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $(".loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
-              console.log(index);
-              console.log(value);
-            });
-          }, 800);
-        }
-      }
-    });
-  });
-  $('#create_refund_to_bank').submit(function (event) {
-    event.preventDefault();
-    var $form = $(this);
-    var url = $form.attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $("#loader_icon").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(data) {
-        $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
-        jQuery('#refund_to_bank_modal').modal('hide');
-        setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index"; // if(data.success_message){
-          //     alert(data.success_message);
-          //     location.reload();
-          // }
-        }, 800);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#loader_icon").find('span').removeClass('spinner-border spinner-border-sm');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
-              console.log(index);
-              console.log(value);
-            });
           }, 800);
         }
       }
