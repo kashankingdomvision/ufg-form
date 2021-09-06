@@ -24199,35 +24199,35 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.total-net-price').val(check(estimatedCostInBookingCurrency));
     var markupAmountInBookingCurrencyArray = $('.selling-price-in-booking-currency').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.total-selling-price').val(check(calculatedMarkupAmountInBookingCurrency));
     var markupAmountInBookingCurrency = $('.markup-amount-in-booking-currency').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.total-markup-amount').val(check(calculatedMarkupAmountInBookingCurrency));
     var markupPercentageArray = $('.markup-percentage').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var calculatedmarkupPercentage = markupPercentageArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.total-markup-percent').val(check(calculatedmarkupPercentage));
     var profitPercentagetArray = $('.profit-percentage').map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var calculatedProfitPercentage = profitPercentagetArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+    $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+    $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
+    $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
+    $(".total-profit-percentage").val(check(calculatedProfitPercentage));
+    $(".total-markup-percent").val(check(calculatedmarkupPercentage));
     getCommissionRate();
   }
 
@@ -24235,7 +24235,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
     var supplierCurrency = $("#quote_".concat(key, "_supplier_currency_id")).find(':selected').data('code');
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
-    var rateType = $('input[name="rate_type"]:checked').val();
+    var rateType = $("input[name=rate_type]:checked").val();
     var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var markupPercentage = parseFloat($("#quote_".concat(key, "_markup_percentage")).val());
     var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val());
