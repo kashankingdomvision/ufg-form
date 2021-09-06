@@ -45,11 +45,6 @@ $(document).ready(function($) {
         templateSelection: formatState,
     });
 
-    $('.currencyImage').select2({
-        templateResult: currencyImageFormate,
-        templateSelection: currencyImageFormate
-    });
-
     // ajaxSetup
     $.ajaxSetup({
         headers: {
@@ -91,17 +86,6 @@ $(document).ready(function($) {
     function convertDate(date) {
         var dateParts = date.split("/");
         return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    }
-
-    function currencyImageFormate(opt) {
-        var optimage = $(opt.element).attr('data-image');
-        if (!optimage) {
-            return opt.text ;
-        }
-            var $opt = $(
-                '<span><img height="20" width="20" src="' + optimage + '" width="60px" /> ' + opt.text + '</span>'
-            );
-            return $opt;
     }
 
     function formatState(option) {
@@ -194,31 +178,6 @@ $(document).ready(function($) {
         $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 
-    function getTotalValues(){
-
-        var estimatedCostInBookingCurrencyArray = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        $('.total-net-price').val(check(estimatedCostInBookingCurrency));
-
-        var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        $('.total-selling-price').val(check(calculatedMarkupAmountInBookingCurrency));
-
-        var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
-        $('.total-markup-amount').val(check(calculatedMarkupAmountInBookingCurrency));
-
-        var markupPercentageArray      = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
-        var calculatedmarkupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
-        $('.total-markup-percent').val(check(calculatedmarkupPercentage));
-
-        var profitPercentagetArray     = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
-        var calculatedProfitPercentage = profitPercentagetArray.reduce((a, b) => (a + b), 0);
-        $('.total-profit-percentage').val(check(calculatedProfitPercentage));
-
-        getCommissionRate();
-    }
-    
     function getSellingPrice(){
 
         var sellingPriceOtherCurrency        =  $('.selling-price-other-currency').val();
@@ -245,6 +204,30 @@ $(document).ready(function($) {
         }
     }
 
+    function getTotalValues(){
+
+        var estimatedCostInBookingCurrencyArray = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        $('.total-net-price').val(check(estimatedCostInBookingCurrency));
+
+        var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        $('.total-selling-price').val(check(calculatedMarkupAmountInBookingCurrency));
+
+        var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
+        $('.total-markup-amount').val(check(calculatedMarkupAmountInBookingCurrency));
+
+        var markupPercentageArray      = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
+        var calculatedmarkupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+        $('.total-markup-percent').val(check(calculatedmarkupPercentage));
+
+        var profitPercentagetArray     = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
+        var calculatedProfitPercentage = profitPercentagetArray.reduce((a, b) => (a + b), 0);
+        $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+
+        getCommissionRate();
+    }
 
     function changeCurrenyRate(){
         var rateType                                 = $('input[name="rate_type"]:checked').val();
