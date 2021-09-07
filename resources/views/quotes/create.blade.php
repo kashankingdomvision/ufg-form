@@ -568,18 +568,6 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
-                                </div>
-                                <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div class="col-sm-3">
-                            <div class="form-group">
                               <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -589,6 +577,19 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                </div>
+                                <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                              </div>
+                            </div>
+                          </div>
+
                           @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                             <div class="col-sm-2 d-flex justify-content-center">
                               <div class="form-group">
