@@ -24279,6 +24279,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".total-markup-percent").val(check(markupPercentage));
     $(".total-profit-percentage").val(check(profitPercentage));
     getCommissionRate();
+    getBookingAmountPerPerson();
   }
 
   function getBookingRateTypeValues() {
@@ -24446,7 +24447,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return parseFloat(e.value).toFixed(2);
     }).get();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-    var supplierCurrencyArray = $(".supplier-currency-id").map(function (i, e) {
+    var supplierCurrencyArray = $(".booking-supplier-currency-id").map(function (i, e) {
       return $(e).find(":selected").data("code");
     }).get();
     var quoteSize = parseInt($(".quote").length);

@@ -502,6 +502,7 @@ $(document).ready(function($) {
         $(".total-profit-percentage").val(check(profitPercentage));
 
         getCommissionRate();
+        getBookingAmountPerPerson();
     }
 
     function getBookingRateTypeValues(){
@@ -677,7 +678,7 @@ $(document).ready(function($) {
         var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
         var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
         var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var supplierCurrencyArray                    = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
+        var supplierCurrencyArray                    = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
         var quoteSize                                = parseInt($(".quote").length);
         var calculatedActualCostInBookingCurrency    = 0;
         var calculatedSellingPriceInBookingCurrency  = 0;
