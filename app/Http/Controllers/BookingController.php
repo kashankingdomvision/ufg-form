@@ -401,12 +401,17 @@ class BookingController extends Controller
 
         foreach ($booking->getBookingDetail as $bookingde) {
             $d = $bookingde->toArray();
-            $d['finance'] = $bookingde->getBookingFinance->toArray();
+            $d['finance']         = $bookingde->getBookingFinance->toArray();
+            $d['refund_payments'] = $bookingde->getBookingRefundPayment->toArray();
+            $d['credit_notes']    = $bookingde->getBookingCreditNote->toArray();
+            
             array_push($book, $d);
         }
 
-        $array['booking'] = $book;
-        $array['pax']     = $booking->getBookingPaxDetail->toArray();
+        $array['booking']                        = $book;
+        $array['cancel_booking_refund_payments'] = $booking->getBookingCancellationRefundPaymentDetail->toArray();
+        $array['booking_cancellations']          = $booking->getTotalRefundAmount->toArray();
+        $array['pax']                            = $booking->getBookingPaxDetail->toArray();
 
         BookingLog::create([
             'booking_id'    => $booking->id,
@@ -622,15 +627,6 @@ class BookingController extends Controller
     }
 
     
-    private function curl_data($url)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "$url");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        return $output = curl_exec($ch);
-    }
-    
     public function destroy(Request $request, $id)
     {
         Booking::destroy(decrypt($id));
@@ -654,6 +650,7 @@ class BookingController extends Controller
         $data['booking_types']      = BookingType::all();
         $data['payment_methods']    = PaymentMethod::all();
         $data['commission_types']   = Commission::all();
+        $data['banks']              = Bank::all();
 
         if(isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no'])){
 
@@ -666,6 +663,8 @@ class BookingController extends Controller
                 $data['payment_details'] = $response['body']['old_records'];
             }
         }
+
+        // dd($data);
         
         return view('bookings.version',$data);
     }
@@ -693,6 +692,15 @@ class BookingController extends Controller
     }
 
     //storage url
+
+    private function curl_data($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "$url");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        return $output = curl_exec($ch);
+    }
 
     // 'UC20190765'  payments.unforgettabletravel.com
     // 'UC20189776'  utcstaging.unforgettabletravel.com

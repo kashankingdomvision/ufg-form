@@ -708,7 +708,7 @@
 
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Deposit Due Date</label>
+                                  <label>Due Date</label>
                                   <input type="date" value="{{ $finance['deposit_due_date'] }}" name="quote[{{ $key }}][finance][{{ $fkey }}][deposit_due_date]" data-name="deposit_due_date" id="quote_{{$key}}_finance_{{$fkey}}_deposit_due_date" class="form-control deposit-due-date">
                                 </div>
                               </div>
@@ -741,7 +741,7 @@
 
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Payment</label>
+                                  <label>Payment Method</label>
                                   <select  name="quote[{{ $key }}][finance][{{ $fkey }}][payment_method]" data-name="payment_method" id="quote_{{$key}}_finance_{{$fkey}}_payment_method" class="form-control payment-method select2single" >
                                     <option value="">Select Payment Method</option>
                                     @foreach ($payment_methods as $payment_method)
@@ -870,6 +870,140 @@
                             </div> --}}
                           </div>
                         @endif
+
+                        @if($booking_detail['refund_payments'] && count($booking_detail['refund_payments']) > 0)
+                          <section class="refund-by-credit-note-section" >
+                            <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
+                            @foreach ($booking_detail['refund_payments'] as $rpkey => $payment)
+                              <div class="refund-payment-section">
+                                <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2">
+                                  <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <label class="refund-payment-label" id="refund_payment_label_{{ $key }}">Refund Payment #{{ $count }}</label>
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                        </div>
+                                        <input type="number" value="{{ \Helper::number_format($payment['refund_amount']) }}" name="quote[{{ $key }}][refund][0][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount"  class="form-control refund_amount amount hide-arrows" step="any">
+                                        <span class="text-danger" role="alert"></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <label>Refund Date <span style="color:red">*</span></label>
+                                      <input type="date" value="{{ $payment['refund_date'] }}" name="quote[{{ $key }}][refund][0][refund_date]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_date" data-name="refund_date"  class="form-control">
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <label>Bank <span style="color:red">*</span></label>
+                                      <select  name="quote[{{ $key }}][refund][0][bank]" id="quote_{{$key}}_refund_{{$rpkey}}_bank" data-name="bank"  class="form-control bank select2single">
+                                        <option value="">Select Bank</option>
+                                        @foreach ($banks as $bank)
+                                          <option value="{{ $bank->id }}" {{ ($bank->id == $payment['bank_id']) ? 'selected' : '' }}> {{ $bank->name }} </option>
+                                        @endforeach
+                                      </select>
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label>Refund Confirmed By <span style="color:red">*</span></label>
+                                      <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_confirmed_by"  data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single">
+                                        <option value="">Select User</option>
+                                        @foreach ($sale_persons as $person)
+                                          <option  value="{{ $person->id }}" {{ ($person->id == $payment['refund_confirmed_by']) ? 'selected' : '' }}>{{ $person->name }}</option>
+                                        @endforeach
+                                      </select>
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-2 d-flex justify-content-center">
+                                    <div class="form-group">
+                                      <label>Refund Recieved</label>
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <div class="icheck-primary">
+                                            <input type="hidden" name="quote[{{ $key }}][refund][{{ $fkey }}][refund_recieved]" value="{{ $payment['refund_recieved'] }}"><input data-name="refund_recieved" id="quote_{{$key}}_refund_{{$rpkey}}_refund_recieved" class="checkbox" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"  {{ ($payment['refund_recieved'] == 1)? 'checked': NULL }}> 
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-1 d-flex justify-content-end">
+                                    <div class="form-group">
+                                      <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm d-none">X</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            @endforeach
+                          </section>
+                        @endif
+
+                        @if($booking_detail['credit_notes'] && count($booking_detail['credit_notes']) > 0)
+                          <section class="refund-by-credit-note-section" >
+                            <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                            @foreach ($booking_detail['credit_notes'] as $cnkey => $payment)
+                              @php
+                                $count = $cnkey + 1;
+                              @endphp
+
+                              <div class="credit-note-section">
+                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label class="credit_note_label" id="credit_note_label_{{ $cnkey }}">Credit Note Amount Payment #{{$count}} <span style="color:red">*</span></label>
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                        </div>
+                                        <input type="number" value="{{ \Helper::number_format($payment['credit_note_amount']) }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_amount]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_amount" data-name="credit_note_amount" class="form-control credit-note-amount amount hide-arrows" step="any">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {{-- <div class="col-sm-2">
+                                    <div class="form-group">
+                                      <label>Credit Note No. <span style="color:red">*</span></label>
+                                      <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" >
+                                    </div>
+                                  </div> --}}
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label>Credit Note Date <span style="color:red">*</span></label>
+                                      <input type="date" value="{{ $payment['credit_note_recieved_date'] }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_date]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_date" data-name="credit_note_recieved_date" class="form-control" >
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                    <div class="form-group">
+                                      <label>Credit Note Received By <span style="color:red">*</span></label>
+                                      <select  name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_by]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_by" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
+                                        <option value="">Select User</option>
+                                        @foreach ($sale_persons as $person)
+                                          <option  value="{{ $person->id }}" {{ ($person->id == $payment['credit_note_recieved_by']) ? 'selected' : '' }}>{{ $person->name }}</option>
+                                        @endforeach
+                                      </select>
+                                      <span class="text-danger" role="alert"></span>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-1 d-flex justify-content-end">
+                                    <div class="form-group">
+                                      <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm d-none">X</button>
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            @endforeach
+                          </section>
+                        @endif
+
                       </div>
                     @endforeach
                   @endif
@@ -893,7 +1027,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                         </div>
                         <input type="number" value="{{ \Helper::number_format($booking['markup_amount']) }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
                       </div>
@@ -919,7 +1053,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                         </div>
                         <input type="number" value="{{ \Helper::number_format($booking['selling_price']) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
                       </div>
@@ -932,7 +1066,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                         </div>
                         <input type="number" value="{{ \Helper::number_format($booking['profit_percentage']) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                         <div class="input-group-append">
@@ -948,7 +1082,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                         </div>
                         <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking['commission_amount']) }}" readonly>
                       </div>
@@ -1016,49 +1150,113 @@
                     </div>
                   </div>
                 </div>
-          
-                {{-- <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Payment Details</h3>
-                  </div>
-                  <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                      <thead>
-                        <tr>
-                          <th>Status</th>
-                          <th>Payment For</th>
-                          <th>Date</th>
-                          <th>Amount</th>
-                        </tr>
-                      </thead>
-                      <tbody>
 
-                        @if(isset($payment_details) && !empty($payment_details))
+              @if($booking['booking_status'] == 'cancelled' && count($booking['cancel_booking_refund_payments']) > 0)
+              
+                <section class="cancellation-payments-section mt-3 mb-2">
 
-                          @foreach ($payment_details as $key => $payment_detail)
+                  <div class="cancellation-payments">
+                    <h3 class="mb-2">Booking Cancellation Refund Payments</h3>
+                    <div class="row mb-2">
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <label>Total Refund Amount</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['booking_cancellations']['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['booking_cancellations']['currency_id'], 'Currency')->first()->code : '' }}</span>
+                            </div>
+                            <input type="number" value="{{ isset($booking['booking_cancellations']['total_refund_amount']) && !empty($booking['booking_cancellations']['total_refund_amount']) ? $booking['booking_cancellations']['total_refund_amount'] : '' }}" name="cancellation_refund_total_amount" data-name="cancellation_refund_total_amount" id="cancellation_refund_total_amount" class="form-control cancellation-refund-total-amount amount hide-arrows" step="any" readonly disabled>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                            @if(is_array($payment_details[$key]))
-                              @if(!empty($key))
-                                <tr><td colspan="4" class="text-center font-weight-bold tbody-highlight">{{ strtoupper($key) }}</td></tr>
-                              @endif
-                              @foreach ($payment_details[$key] as $key => $detail)
-                                <tr>
-                                  <td>{{ ucfirst($detail['status']) }}</td>
-                                  <td>{{$detail['payment_for']}}</td>
-                                  <td>{{ \Carbon\Carbon::parse($detail['date'])->format('d/m/Y') }} </td>
-                                  <td>{{$detail['amount']}}</td>
-                                </tr>
+                    @foreach ($booking['cancel_booking_refund_payments'] as $bcrpdKey => $payment)
+                      @php
+                        $count = $bcrpdKey + 1;
+                      @endphp
+
+                      <div class="row cancellation-refund-payment-row mb-2">
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <label class="cancellation-refund-payment-label" id="cancellation_refund_payment_label_{{$bcrpdKey}}">Refund Amount #{{$count}} </label>
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
+                              </div>
+                              <input type="number" value="{{ \Helper::number_format($payment['refund_amount']) }}" name="cancellation_refund[{{$bcrpdKey}}][refund_amount]" data-name="refund_amount" id="cancellation_refund_{{$bcrpdKey}}_refund_amount" class="form-control cancellation-refund-amount amount hide-arrows" step="any">
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Refund Date </label>
+                            <input type="date" value="{{ $payment['refund_date'] }}" name="cancellation_refund[{{$bcrpdKey}}][refund_date]" id="cancellation_refund_{{$bcrpdKey}}_refund_date" data-name="refund_date"  class="form-control">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Refund Approved Date </label>
+                            <input type="date" value="{{ $payment['refund_approved_date'] }}" name="cancellation_refund[{{$bcrpdKey}}][refund_approved_date]" id="cancellation_refund_{{$bcrpdKey}}_refund_approved_date" data-name="refund_approved_date"  class="form-control">
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Refund Approved By </label>
+                            <select  name="cancellation_refund[{{$bcrpdKey}}][refund_approved_by]" data-name="refund_approved_by" id="cancellation_refund_{{$bcrpdKey}}_refund_approved_by" class="form-control refund_approved_by select2single" >
+                              <option value="">Select User</option>
+                              @foreach ($sale_persons as $person)
+                                <option  value="{{ $person->id }}" {{ ($person->id == $payment['refund_approved_by']) ? 'selected' : '' }}>{{ $person->name }}</option>
                               @endforeach
-                            @endif
-                          @endforeach
-                          @else
-                          <tr align="center"><td colspan="100%">No record found.</td></tr>
-                        @endif
+                            </select>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
 
-                      </tbody>
-                    </table>
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Refund Processed By </label>
+                            <select  name="cancellation_refund[{{$bcrpdKey}}][refund_processed_by]" data-name="refund_processed_by" id="cancellation_refund_{{$bcrpdKey}}_refund_processed_by" class="form-control refund_processed_by select2single" >
+                              <option value="">Select User</option>
+                              @foreach ($sale_persons as $person)
+                                <option  value="{{ $person->id }}" {{ ($person->id == $payment['refund_processed_by']) ? 'selected' : '' }}>{{ $person->name }}</option>
+                              @endforeach
+                            </select>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Refund Process From </label>
+                            <select  name="cancellation_refund[{{$bcrpdKey}}][refund_process_from]" data-name="refund_process_from" id="cancellation_refund_{{$bcrpdKey}}_refund_process_from" class="form-control refund_process_from select2single" >
+                              <option value="">Select Bank</option>
+                              @foreach ($banks as $bank)
+                                <option value="{{ $bank->id }}" {{ ($bank->id == $payment['bank_id']) ? 'selected' : '' }}> {{ $bank->name }} </option>
+                              @endforeach
+                            </select>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-1 d-flex justify-content-center">
+                          <div class="form-group">
+                            <button type="button" onclick="this.closest('.cancellation-refund-payment-row').remove()" class="cancellation-refund-payment-row-remove-btn btn btn-outline-dark btn-sm d-none" >X</button>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    @endforeach
+              
                   </div>
-                </div> --}}
+                </section>
+              @endif
+          
+                
 
               </div>
 
