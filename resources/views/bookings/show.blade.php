@@ -639,12 +639,24 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
+                                  <label>Estimated Cost <span style="color:red">*</span></label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                    </div>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-status="booking" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost hide-arrows" value="0.00">
+                                  </div>
+                                </div>
+                              </div>
+  
+                              <div class="col-sm-2">
+                                <div class="form-group">
                                   <label>Actual Cost <span style="color:red">*</span></label>
                                   <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change hide-arrows" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->actual_cost) }}" name="quote[{{ $key }}][actual_cost]" data-name="actual_cost" data-status="booking" id="quote_{{ $key }}_actual_cost" class="form-control actual-cost change" value="0.00">
                                   </div>
                                 </div>
                               </div>

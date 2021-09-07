@@ -552,9 +552,10 @@
                                 @enderror
                             </div>
                           </div>
+
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Actual Cost <span class="text-danger">*</span></label>
+                              <label>Estimated Cost <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
@@ -563,6 +564,19 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label>Estimated Cost <span style="color:red">*</span></label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text supplier-currency-code">{{ ($log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span>
+                                </div>
+                                <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['actual_cost']) }}" name="quote[{{ $key }}][actual_cost]" data-name="actual_cost" data-status="booking" id="quote_{{ $key }}_actual_cost" class="form-control actual-cost change" value="0.00">
+                              </div>
+                            </div>
+                          </div>
+
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Markup Amount <span class="text-danger">*</span></label>
