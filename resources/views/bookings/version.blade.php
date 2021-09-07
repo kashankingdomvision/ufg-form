@@ -1065,9 +1065,6 @@
                   <div class="col-sm-2">
                     <div class="form-group">
                       <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
-                        </div>
                         <input type="number" value="{{ \Helper::number_format($booking['profit_percentage']) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
