@@ -381,6 +381,7 @@ class QuoteController extends Controller
             $quoteDetail['booking_id']              = $booking->id;
             $quoteDetail['outstanding_amount_left'] = $quoteDetail['estimated_cost'];
             $quoteDetail['actual_cost']             = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost_bc']          = $quoteDetail['estimated_cost_bc'];
 
             BookingDetail::create($quoteDetail);
         }

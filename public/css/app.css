@@ -4279,6 +4279,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   margin-top: 3rem !important;
 }
 
+.mt-4 {
+  margin-top: 4rem !important;
+}
+
 .mb-1-half {
   margin-bottom: 1.3rem !important;
 }

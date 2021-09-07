@@ -706,7 +706,7 @@
                     @endforeach
                   </div>
                   
-                  <div class="form-group row">
+                  <div class="form-group row mt-4">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                     <div class="col-sm-2">
                       <div class="form-group">
@@ -737,7 +737,7 @@
                           {{-- <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div> --}}
-                          <input type="number" value="{{ \Helper::number_format($quote->markup_percent) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote->markup_percentage) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>

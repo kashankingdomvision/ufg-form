@@ -8,8 +8,8 @@ import datepicker from 'bootstrap-datepicker';
   
 var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
  
@@ -302,6 +302,7 @@ $(document).ready(function($) {
         $(".total-markup-percent").val(check(markupPercentage));
         $(".total-profit-percentage").val(check(profitPercentage));
 
+        getCommissionRate();
 
         // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
         // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
@@ -323,8 +324,7 @@ $(document).ready(function($) {
         // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
         // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
         // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
-
-        // getCommissionRate();
+        
     }
 
     function getQuoteDetailsValues(key,changeFeild){
@@ -1405,7 +1405,7 @@ $(document).ready(function($) {
         })
 
 
-        jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input`).attr('disabled','disabled');
+        jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled','disabled');
     });
  
     // $(document).on('change', '.supplier-id',function(){

@@ -625,14 +625,14 @@
                     
                   </div>
                   
-                  <div class="row p-3">
+                  <div class="row">
                     <div class="col-12 text-right">
                       <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="form-group row mt-1">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                     <div class="col-sm-2">
                       <div class="form-group">

@@ -88,7 +88,7 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h1 class="card-title text-center card-title-style">Edit Booking</h1>
-                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary btn-md cancel-booking" data-title="Final Quotation" data-target="#Final_Quotation">
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
 
@@ -1571,11 +1571,7 @@
       
                             <div class="row">
                               <div class="col-12 text-right">
-                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more
-                                  
-                             
-                                
-                                </button>
+                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more</button>
                               </div>
                             </div>
         

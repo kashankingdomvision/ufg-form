@@ -23767,9 +23767,9 @@ __webpack_require__.r(__webpack_exports__);
 // import { isArguments } from 'lodash-es';
 
 var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   /*  ajaxSetup */

@@ -33,8 +33,8 @@
           <div class="col-md-12">
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Version Bookings #{{ $log->log_no }} {{ $log->version_no }} </h3>
-                <a href="{{ route('bookings.edit', encrypt($log['booking_id'])) }}" data-recall="true" class="btn btn-outline-light btn-sm float-right">Back</a>
+                <h3 class="card-title text-center lh-2">Version Bookings #{{ $log->log_no }} {{ $log->version_no }} </h3>
+                <a href="{{ route('bookings.edit', encrypt($log['booking_id'])) }}" data-recall="true" class="btn btn-outline-dark btn-md float-right">Back</a>
               </div>
               <div class="card-body">
                 <div class="row mb-2">
@@ -1005,9 +1005,11 @@
                       <div class="row">
                         <div class="col-sm-3 relevant-quote">
                           <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
-                            @foreach ($booking['revelant_quote'] as $revQuote)
-                              <option selected value="{{$revQuote}}"> {{ $revQuote }} </option>
-                            @endforeach
+                            @if(isset($booking['revelant_quote']) && !empty($booking['revelant_quote']))
+                              @foreach ($booking['revelant_quote'] as $revQuote)
+                                <option selected value="{{$revQuote}}"> {{ $revQuote }} </option>
+                              @endforeach
+                            @endif
                           </select>
                         </div>
                       </div>
