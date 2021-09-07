@@ -624,17 +624,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-sm-3">
-                            <div class="form-group">
-                              <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
-                                </div>
-                                <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['selling_price_bc']) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
-                              </div>
-                            </div>
-                          </div>
+
                           <div class="col-sm-3">
                             <div class="form-group">
                               <label>Markup Amount in Booking Currency <span class="text-danger">*</span></label>
@@ -646,6 +636,19 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Selling Price in Booking Currency <span class="text-danger">*</span></label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
+                                </div>
+                                <input type="number" step="any" value="{{ \Helper::number_format($booking_detail['selling_price_bc']) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                              </div>
+                            </div>
+                          </div>
+                          
                           @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                           <div class="col-sm-2 d-flex justify-content-center">
                             <div class="form-group">
