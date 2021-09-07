@@ -409,8 +409,8 @@ class BookingController extends Controller
         }
 
         $array['booking']                        = $book;
-        $array['cancel_booking_refund_payments'] = $booking->getBookingCancellationRefundPaymentDetail->toArray();
-        $array['booking_cancellations']          = $booking->getTotalRefundAmount->toArray();
+        $array['cancel_booking_refund_payments'] = (count( $booking->getBookingCancellationRefundPaymentDetail) > 0) ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
+        $array['booking_cancellations']          = (count((array) $booking->getTotalRefundAmount) > 0) ? $booking->getTotalRefundAmount->toArray() : [];
         $array['pax']                            = $booking->getBookingPaxDetail->toArray();
 
         BookingLog::create([
@@ -652,20 +652,6 @@ class BookingController extends Controller
         $data['commission_types']   = Commission::all();
         $data['banks']              = Bank::all();
 
-        if(isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no'])){
-
-            $zoho_booking_reference = isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no']) ? $data['booking']['ref_no'] : '' ;
-            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
-            });
-
-            if ($response['status'] == 200) {
-                $data['payment_details'] = $response['body']['old_records'];
-            }
-        }
-
-        // dd($data);
-        
         return view('bookings.version',$data);
     }
     

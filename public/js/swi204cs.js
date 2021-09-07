@@ -24081,7 +24081,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
     $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
     $(".total-markup-percent").val(check(markupPercentage));
-    $(".total-profit-percentage").val(check(profitPercentage)); // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+    $(".total-profit-percentage").val(check(profitPercentage));
+    getCommissionRate(); // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
     // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
     // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
     // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
@@ -24096,7 +24097,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
     // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
     // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
-    // getCommissionRate();
   }
 
   function getQuoteDetailsValues(key, changeFeild) {
@@ -25114,7 +25114,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });
-    jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input").attr('disabled', 'disabled');
+    jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input").attr('disabled', 'disabled');
   }); // $(document).on('change', '.supplier-id',function(){
   //     var $selector = $(this);
   //     var supplier_id = $(this).val();

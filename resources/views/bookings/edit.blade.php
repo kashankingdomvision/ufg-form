@@ -1379,8 +1379,6 @@
                       </div>
                     </div>
 
-
-                    
                     @if($booking->booking_status == 'cancelled')
                       <section class="cancellation-payments-section mt-3 mb-2">
 
