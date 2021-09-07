@@ -6,10 +6,10 @@ import datepicker from 'bootstrap-datepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
   
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
  
@@ -196,21 +196,21 @@ $(document).ready(function($) {
         if(sellingPriceOtherCurrency){
 
             var rateType                      = $('input[name="rate_type"]:checked').val();
-            var paxNumber                     = parseFloat($(".pax-number").val());
+            // var paxNumber                     = parseFloat($(".pax-number").val());
             var bookingCurrency               = $(".booking-currency-id").find(':selected').data('code');
             var totalSellingPrice             = parseFloat($('.total-selling-price').val());
             var rate                          = getRate(bookingCurrency,sellingPriceOtherCurrency,rateType);
             var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
-            var bookingAmountPerPerson        = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
+            // var bookingAmountPerPerson        = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
      
             $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
-            $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+            // $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
             $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
         }
 
         if(sellingPriceOtherCurrency == ''){
             $('.selling-price-other-currency-rate').val('0.00');
-            $('.booking-amount-per-person').val('0.00');
+            // $('.booking-amount-per-person').val('0.00');
             $('.selling-price-other-currency-code').val('');
         }
     }
@@ -237,6 +237,14 @@ $(document).ready(function($) {
     | Quote Management Calculation Functions
     |--------------------------------------------------------------------------
     */
+
+    function getBookingAmountPerPerson(){
+        var paxNumber                          = parseFloat($(".pax-number").val());
+        var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
+        var bookingAmountPerPerson             = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
+        
+        $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+    }
 
     function getQuoteBookingCurrencyValues(){
 
@@ -303,6 +311,7 @@ $(document).ready(function($) {
         $(".total-profit-percentage").val(check(profitPercentage));
 
         getCommissionRate();
+        getBookingAmountPerPerson();
 
         // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
         // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
@@ -3156,7 +3165,7 @@ $(document).ready(function($) {
             width: '100%',
             theme: "bootstrap",
         });
-        getSellingPrice();
+        getBookingAmountPerPerson();
     });
 
     $(document).on('click', '.add-pax-column', function () {

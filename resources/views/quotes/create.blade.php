@@ -725,6 +725,20 @@
                   </div>
 
                   <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
 
                     <div class="col-sm-3">
                       <div class="form-group">
@@ -757,19 +771,6 @@
                   
                   </div>
 
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text selling-price-other-currency-code"></span>
-                          </div>
-                          <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-3 ">
