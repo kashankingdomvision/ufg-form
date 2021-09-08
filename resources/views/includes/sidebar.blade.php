@@ -111,7 +111,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a href="{{ route('templates.index') }}"class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit'  ? 'active' : '' }}">
+                    <a href="{{ route('templates.index') }}" class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit' || $route == 'templates.create' ? 'active' : '' }}">
                         <i class="fa fa-clone nav-icon"></i>
                         <p>Templates</p>
                     </a>

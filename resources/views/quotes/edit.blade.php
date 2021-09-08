@@ -70,7 +70,7 @@
                 <h3 class="card-title text-center">Edit Quote</h3>
               </div>
             
-              <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
+              <form method="POST" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
                 <div class="card-body">
                   @csrf @method('put')
                   <div class="row mb-2">

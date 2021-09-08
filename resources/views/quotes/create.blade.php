@@ -40,7 +40,7 @@
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
             
-              <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" > @csrf
+              <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
                   <div class="row mb-2">
 

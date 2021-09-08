@@ -23765,11 +23765,11 @@ __webpack_require__.r(__webpack_exports__);
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   /*  ajaxSetup */
@@ -23824,6 +23824,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       templateResult: formatState,
       templateSelection: formatState
     });
+  }
+
+  function log(variable) {
+    console.log("".concat(variable, ": ").concat(variable));
+  }
+
+  function disabledFeild(p) {
+    $(p).attr("disabled", true);
   }
 
   datepickerReset();
@@ -25348,7 +25356,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var code = $(this).find(':selected').data('code');
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
+    var bookingCurrency = $('#currency_id').val();
     quote.find("[class*=supplier-currency-code]").html(code);
+
+    if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
+      alert("Please Select Booking Currency first");
+      return;
+    }
+
     getQuoteSupplierCurrencyValues(code, quoteKey);
     getQuoteTotalValues();
     getSellingPrice();
@@ -25558,25 +25573,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
+  /*
+  |--------------------------------------------------------------------------
+  | Template Management
+  |--------------------------------------------------------------------------
+  */
+
   $(document).on('click', '#save_template', function () {
     jQuery('#modal-default').modal('show').find('input').val('');
   });
-  $(document).on('click', '.add-category-detail', function () {
-    var quote = jQuery(this).closest('.quote');
-    var key = quote.data('key');
-    var type = $("#quote_".concat(key, "_category_id")).find(':selected').data('slug');
-
-    if (typeof type === 'undefined') {
-      alert("Please Select Category first");
-    }
-
-    quote.find(".".concat(type, "_modal")).modal('show');
-    quote.find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
-  });
   $(document).on('click', '#submit_template', function () {
+    disabledFeild(".create-template [name=_method]");
     var templateName = $('#template_name').val();
-    var formData = $('#quoteCreate').serialize() + '&template_name=' + templateName;
-    var url = REDIRECT_BASEURL + 'template/store';
+    var formData = $('.create-template').serialize() + '&template_name=' + templateName;
+    var url = "".concat(REDIRECT_BASEURL, "template/store");
     $.ajax({
       type: 'POST',
       url: url,
@@ -25590,7 +25600,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
         jQuery('#modal-default').modal('hide');
         setTimeout(function () {
-          alert('Template created Successfully');
+          alert('Template Created Successfully');
         }, 800);
       },
       error: function error(reject) {
@@ -25600,13 +25610,135 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
             jQuery.each(errors.errors, function (index, value) {
               index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
           }, 800);
         }
       }
     });
+  });
+  $('#tempalte_id').on('change', function () {
+    var templateID = $(this).val();
+    $.ajax({
+      url: "".concat(BASEURL, "template/").concat(templateID, "/partial"),
+      type: 'get',
+      dataType: "json",
+      success: function success(data) {
+        if (data) {
+          if (confirm("Are you sure! you want to override Quote Details?")) {
+            $('#parent').html(data.template_view);
+            $(".select2single").select2({
+              width: "100%",
+              theme: "bootstrap",
+              templateResult: formatState,
+              templateSelection: formatState
+            });
+            $(".booking-currency-id").val(data.template.currency_id).change();
+          }
+        }
+      },
+      error: function error(reject) {
+        alert(reject);
+        searchRef.text('Search').prop('disabled', false);
+      }
+    });
+  });
+  $("#create_template").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          alert('Template Created Successfully');
+          window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+        }, 800);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
+      }
+    });
+  });
+  $("#update_template").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          alert('Template Updated Successfully');
+          window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+        }, 800);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 800);
+        }
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------
+  | End Template Management
+  |--------------------------------------------------------------------------
+  */
+
+  $(document).on('click', '.add-category-detail', function () {
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
+    var type = $("#quote_".concat(key, "_category_id")).find(':selected').data('slug');
+
+    if (typeof type === 'undefined') {
+      alert("Please Select Category first");
+    }
+
+    quote.find(".".concat(type, "_modal")).modal('show');
+    quote.find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
   });
   $(".update-quote").submit(function (event) {
     event.preventDefault();
@@ -25921,118 +26053,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       alert("Please Enter Correct Refund Amount.");
       $(this).val("0.00");
     }
-  });
-  $('#tempalte_id').on('change', function () {
-    var confirmAlert = null;
-    $.ajax({
-      headers: {
-        'X-CSRF-TOKEN': CSRFTOKEN
-      },
-      url: BASEURL + 'template/' + $(this).val() + '/partial',
-      type: 'get',
-      dataType: "json",
-      success: function success(data) {
-        if (data) {
-          confirmAlert = confirm('Are you sure! you want to override Quote Details?');
-        }
-
-        if (confirmAlert == true) {
-          $('#parent').html(data.template_view);
-          $('.select2single').select2({
-            width: '100%',
-            theme: "bootstrap",
-            templateResult: formatState,
-            templateSelection: formatState
-          });
-          $(".booking-currency-id").val(data.template.currency_id).change();
-        }
-      },
-      error: function error(reject) {
-        alert(reject);
-        searchRef.text('Search').prop('disabled', false);
-      }
-    });
-  });
-  $("#create_template").submit(function (event) {
-    event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
-    var formdata = $(this).serialize();
-    $('input, select').removeClass('is-invalid');
-    $('.text-danger').html('');
-    /* Send the data using post */
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-      },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          alert('Template created Successfully');
-          window.location.href = REDIRECT_BASEURL + "template/index";
-        }, 800);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 800);
-        }
-      }
-    });
-  });
-  $("#update_template").submit(function (event) {
-    event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
-    $('input, select').removeClass('is-invalid');
-    $('.text-danger').html('');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-      },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          alert('Template updated Successfully');
-          window.location.href = REDIRECT_BASEURL + "template/index";
-        }, 800);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 800);
-        }
-      }
-    });
   });
   $("#update-booking").submit(function (event) {
     event.preventDefault();
