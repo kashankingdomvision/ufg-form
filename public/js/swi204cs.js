@@ -23765,11 +23765,11 @@ __webpack_require__.r(__webpack_exports__);
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   /*  ajaxSetup */
@@ -25562,11 +25562,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     jQuery('#modal-default').modal('show').find('input').val('');
   });
   $(document).on('click', '.add-category-detail', function () {
-    var key = $(this).closest('.quote').data('key');
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
     var type = $("#quote_".concat(key, "_category_id")).find(':selected').data('slug');
-    console.log(".".concat(type, "_modal"));
-    jQuery(this).closest('.quote').find(".".concat(type, "_modal")).modal('show');
-    jQuery(this).closest('.quote').find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
+
+    if (typeof type === 'undefined') {
+      alert("Please Select Category first");
+    }
+
+    quote.find(".".concat(type, "_modal")).modal('show');
+    quote.find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
   });
   $(document).on('click', '#submit_template', function () {
     var templateName = $('#template_name').val();

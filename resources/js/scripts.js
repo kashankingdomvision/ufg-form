@@ -6,10 +6,10 @@ import datepicker from 'bootstrap-datepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
   
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
  
@@ -2013,15 +2013,16 @@ $(document).ready(function($) {
 
     
     $(document).on('click', '.add-category-detail', function(){
-        var key         = $(this).closest('.quote').data('key');
+        
+        var quote       = jQuery(this).closest('.quote');
+        var key         = quote.data('key');
         var type        = $(`#quote_${key}_category_id`).find(':selected').data('slug');
 
-
-        console.log(`.${type}_modal`);
-
-        jQuery(this).closest('.quote').find(`.${type}_modal`).modal('show');
-        jQuery(this).closest('.quote').find(`.${type}_modal :input`).removeAttr('disabled');
-     
+        if (typeof type === 'undefined') {
+            alert("Please Select Category first");
+        }
+        quote.find(`.${type}_modal`).modal('show');
+        quote.find(`.${type}_modal :input`).removeAttr('disabled');
         // jQuery('#accomadation_modal').modal('show').find('input').val('');
     });
 
@@ -2125,7 +2126,6 @@ $(document).ready(function($) {
             },
         });
     });
-
 
     $("#update-override").submit(function(event) {
         event.preventDefault();
