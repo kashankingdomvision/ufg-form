@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Wallet;
-use DB;
 
 
 class WalletController extends Controller
@@ -30,6 +30,7 @@ class WalletController extends Controller
         return view('wallets.index', $data);
     }
 
+    /* get_supplier_wallet_amount in booking payment section */
     public function get_supplier_wallet_amount($supplier_id)
     {
         $total = 0;

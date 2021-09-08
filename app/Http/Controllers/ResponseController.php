@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+
+use App\BookingType;
+use App\BookingMethod;
+use App\Category;
+use App\Currency;
+use App\Country;
 use App\HolidayType;
-use App\Supplier;
 use App\Product;
 use App\Quote;
 use App\ReferenceCredential;
-use Illuminate\Support\Facades\View;
-use App\Template;
-use App\Category;
-use App\User;
-use App\BookingMethod;
-use App\Currency;
 use App\Season;
-use App\BookingType;
-use App\Country;
-use DB;
+use App\Supplier;
+use App\Template;
+use App\User;
+
 class ResponseController extends Controller
 {
     public function getBrandToHoliday(Request $request)

@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
-use App\User;
-use App\Role;
+use Illuminate\Support\Facades\Hash;
 use App\Brand;
 use App\Currency;
-use Hash;
+use App\Role;
+use App\User;
 
 class UserController extends Controller
 {

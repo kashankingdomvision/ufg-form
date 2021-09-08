@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TemplateRequest;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+use App\BookingType;
+use App\BookingMethod;
+use App\Category;
+use App\Currency;
+use App\Supplier;
+use App\Season;
 use App\Template;
 use App\TemplateDetail;
-use App\Category;
 use App\User;
-use App\Supplier;
-use App\BookingMethod;
-use App\Currency;
-use App\Season;
-use Auth;
-use App\BookingType;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\View;
-use App\Http\Requests\TemplateRequest;
 
 class TemplateController extends Controller
 {

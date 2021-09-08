@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Season;
-use Carbon\Carbon;
 use App\Http\Requests\SeasonRequest;
+use Illuminate\Support\Carbon;
+use App\Season;
 
 class SeasonController extends Controller
 {

@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-// use Illuminate\View\View;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use PDF;
+
 use App\Booking;
 use App\Quote;
-use App\User;
-use App\Supplier;
 use App\QuoteUpdateDetail;
-use DB;
-use Auth;
+use App\Supplier;
+use App\User;
 
-use Illuminate\Support\Facades\View;
-use PDF;
 class DashboardController extends Controller
 {
     /**

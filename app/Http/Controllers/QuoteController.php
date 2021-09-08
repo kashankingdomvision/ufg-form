@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Requests\QuoteRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use PDF;
 use App\Http\Helper;
 
 use App\Brand;
@@ -30,11 +35,6 @@ use App\Season;
 use App\Supplier;
 use App\Template;
 use App\User;
-use Carbon\Carbon;
-use Crypt;
-use PDF;
-use DB;
-use Auth;
 
 class QuoteController extends Controller
 {

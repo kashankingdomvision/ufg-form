@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
-use App\Product;
-use App\Supplier;
-use App\Currency;
-use App\SupplierCategory;
-use App\SupplierProduct;
 use App\Http\Requests\SupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use App\Category;
+use App\Currency;
+use App\Product;
+use App\Supplier;
+use App\SupplierCategory;
+use App\SupplierProduct;
 
 class SupplierController extends Controller
 {

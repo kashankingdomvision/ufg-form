@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\BookingRequest;
 use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
 use App\Http\Requests\CancelBookingRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Helper;
 
 use App\Airline;
@@ -34,16 +38,13 @@ use App\Category;
 use App\HolidayType;
 use App\PaymentMethod;
 use App\QuoteUpdateDetail;
+use App\Quote;
 use App\Season;
 use App\Supplier;
 use App\ServiceExcursionDetail;
-use App\User;
 use App\TransferDetail;
+use App\User;
 use App\Wallet;
-use App\Quote;
-use Cache;
-use Auth;
-use Carbon\Carbon;
 
 class BookingController extends Controller
 {
@@ -255,7 +256,6 @@ class BookingController extends Controller
     public function getAccommodationDetailsArray($quoteD)
     {
         return [
-            // "accomadation_name"       => $quoteD['accomadation_name']??NULL,
             "arrival_date"            => $quoteD['arrival_date']??NULL,
             "no_of_nights"            => $quoteD['no_of_nights']??NULL,
             "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
@@ -427,12 +427,16 @@ class BookingController extends Controller
             $booking->getBookingDetail()->delete();
 
             foreach ($request->quote as $qu_details) {
-                $bookingDetail = $this->getBookingDetailsArray($qu_details);
-                $bookingDetail['invoice'] = $this->fileStore($qu_details, $booking->id);
+
+                $bookingDetail               = $this->getBookingDetailsArray($qu_details);
+                $bookingDetail['invoice']    = $this->fileStore($qu_details, $booking->id);
                 $bookingDetail['booking_id'] = $booking->id;
-                $booking_Details=  BookingDetail::create($bookingDetail);
+                $booking_Details             = BookingDetail::create($bookingDetail);
+
+
                 foreach ($qu_details['finance'] as $finance){
-                    $fin = $this->getFinanceBookingDetailsArray($finance);
+
+                    $fin                      = $this->getFinanceBookingDetailsArray($finance);
                     $fin['booking_detail_id'] = $booking_Details->id;
 
                     if($fin['deposit_amount'] > 0){
@@ -452,7 +456,7 @@ class BookingController extends Controller
                     
                 foreach ($qu_details['refund'] as $refund){
 
-                    $refund = $this->getBookingRefundPaymentArray($refund);
+                    $refund                      = $this->getBookingRefundPaymentArray($refund);
                     $refund['booking_detail_id'] = $booking_Details->id;
 
                     if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
@@ -473,6 +477,7 @@ class BookingController extends Controller
                         if(($credit_note['credit_note_amount']) > 0 && !empty($credit_note['credit_note_recieved_date'])){
 
                             BookingCreditNote::create($credit_note);
+
                             Wallet::create([
                                 'booking_id'        => $booking->id,
                                 'booking_detail_id' => $booking_Details->id,
@@ -486,30 +491,25 @@ class BookingController extends Controller
                     }
                 }
 
-                // dd($qu_details['category_detials']['accommodation']);
-                
                 if(isset($qu_details['category_detials'])){
                     
                     if(isset($qu_details['category_detials']['accommodation']) && !empty($qu_details['category_detials']['accommodation'])){
 
-                        // dd($qu_details['category_detials']['accommodation']);
-                       
-                        $accommodation_details = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
-
+                        $accommodation_details                      = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
                         $accommodation_details['booking_detail_id'] = $booking_Details->id;
                         AccomodationDetail::create($accommodation_details);
                     }
 
                     if(isset($qu_details['category_detials']['transfer'])){
                        
-                        $transfer_details = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
+                        $transfer_details                      = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
                         $transfer_details['booking_detail_id'] = $booking_Details->id;
                         TransferDetail::create($transfer_details);
                     }
 
                     if(isset($qu_details['category_detials']['service_excursion'])){
                        
-                        $service_excursion = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
+                        $service_excursion                      = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
                         $service_excursion['booking_detail_id'] = $booking_Details->id;
                         ServiceExcursionDetail::create($service_excursion);
                     }
@@ -580,9 +580,6 @@ class BookingController extends Controller
 
     public function cancel_booking(CancelBookingRequest $request){ 
 
-
-        // dd($request->all());
-
         $total_refund_amount = $request->booking_net_price - $request->cancellation_charges;
 
         BookingCancellation::create([
@@ -600,9 +597,6 @@ class BookingController extends Controller
     }
 
     public function booking_detail_clone($count){
-
-        // dd($count);
-
 
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         // $data['templates']        = Template::all()->sortBy('name');
