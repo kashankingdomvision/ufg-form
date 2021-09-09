@@ -62,18 +62,23 @@
               <div class="card-header">
                 <h3 class="card-title text-center card-title-style">Final Quote</h3>
 
-
                 <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">
                   Back
                 </a>
+
                 @if($quote->booking_status == 'quote')
                   <form  class="mr-2 float-right"  method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                     @csrf @method('patch')
-                    <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-md" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
+                    <button type="button"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-md" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
                   </form>
+
+                  <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to this Edit Quotation?');" data-title="Edit" data-target="#edit" title="Edit">
+                    <button type="button" class="mr-2 btn btn-primary btn-md float-right" data-title="" data-target="#" title="Edit">Edit Quote</button>
+                  </a>
                 @endif
               </div>
-              <form id="versions" method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
+
+              <form id="versions" method="POST" class="update-quote versions" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
                 <div class="card-body">
                   @csrf @method('put')
                   <div class="row mb-2">
