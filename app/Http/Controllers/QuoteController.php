@@ -236,8 +236,8 @@ class QuoteController extends Controller
             }
         }
        //pax data 
-       if($request->has('pax')){
-           foreach ($request->pax as $pax_data) {
+        if($request->has('pax')){
+            foreach ($request->pax as $pax_data) {
                 QuotePaxDetail::create([
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],
@@ -250,7 +250,7 @@ class QuoteController extends Controller
                     'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
-       }
+        }
        return redirect()->route('quotes.index')->with('success_message', 'Quote created successfully');
     }
     
