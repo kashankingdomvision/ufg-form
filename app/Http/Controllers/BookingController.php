@@ -596,6 +596,14 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
     }
 
+    public function revert_cancel_booking($id){ 
+
+        Booking::where('id',decrypt($id))->update([ 'booking_status' => 'confirmed' ]);
+        BookingCancellation::where('booking_id',decrypt($id))->delete();
+
+        return redirect()->back()->with('success_message', 'Booking Reverted Successfully');    
+    }
+
     public function booking_detail_clone($count){
 
         $data['countries']        = Country::orderBy('name', 'ASC')->get();

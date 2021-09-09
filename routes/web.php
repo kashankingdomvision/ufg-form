@@ -59,6 +59,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-booking-net-price/{id}', array('as' => 'get.booking.net.price', 'uses' => 'BookingController@get_booking_net_price'));
         
         Route::post('cancel-booking', array('as' => 'cancel.booking', 'uses' => 'BookingController@cancel_booking'));
+        Route::get('revert-cancel-booking/{id}', array('as' => 'revert.cancel.booking', 'uses' => 'BookingController@revert_cancel_booking'));
     });
 
 
