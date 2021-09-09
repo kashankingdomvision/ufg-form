@@ -103,7 +103,7 @@
                   View Final Quote
                 </a>
 
-                <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to this Edit Booking?');" data-title="Edit" data-target="#edit" title="Edit">
+                <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Edit this Booking?');" data-title="Edit" data-target="#edit" title="Edit">
                   <button type="button" class="mr-2 btn btn-info btn-md float-right" data-title="" data-target="#" title="Edit">Edit Booking</button>
                 </a>
 

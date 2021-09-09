@@ -72,7 +72,7 @@
                     <button type="button"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-md" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
                   </form>
 
-                  <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to this Edit Quotation?');" data-title="Edit" data-target="#edit" title="Edit">
+                  <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Edit this Quotation?');" data-title="Edit" data-target="#edit" title="Edit">
                     <button type="button" class="mr-2 btn btn-primary btn-md float-right" data-title="" data-target="#" title="Edit">Edit Quote</button>
                   </a>
                 @endif
