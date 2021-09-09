@@ -102,6 +102,11 @@
                 <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary mr-3 btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
+
+                <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to this Edit Booking?');" data-title="Edit" data-target="#edit" title="Edit">
+                  <button type="button" class="mr-2 btn btn-info btn-md float-right" data-title="" data-target="#" title="Edit">Edit Booking</button>
+                </a>
+
               </div>
               
               <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-payment">
