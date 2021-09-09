@@ -46,7 +46,6 @@ class BookingRequest extends FormRequest
             'lead_passsenger_nationailty_id'                  => 'required_if:agency,0', 
             'lead_passenger_bedding_preference'               => 'required_if:agency,0', 
             'lead_passenger_dinning_preference'               => 'required_if:agency,0', 
-            'lead_passenger_covid_vaccinated'                 => 'required_if:agency,0', 
             'pax_no'                                          => 'required',
             'quote'                                           => 'required|array',
             'quote.*.date_of_service'                         => 'required',

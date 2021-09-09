@@ -266,7 +266,7 @@
 
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Covid Vaccinated <span style="color:red">*</span></label>
+                            <label>Covid Vaccinated </label>
                             <div>
                               <label class="radio-inline">
                                 <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes
