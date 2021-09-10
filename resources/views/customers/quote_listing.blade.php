@@ -197,15 +197,16 @@
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12">
-                    <form method="POST" action="{{ route('bulk.delete') }}" class="bulkDeleteData">
-                        @csrf @method('delete')
-                        <input  type="hidden" name="tab" value="quotes" >
+                    <form method="POST" action="{{ route('bulk.action') }}" class="bulk-action">
+                        @csrf @method('PUT')
+                        <input  type="hidden" name="table" value="quotes" >
                         <div class="dropdown show">
                             <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Select Action
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <button type="submit" name="quote delete" class="dropdown-item btn-link btnbulkClick">Cancel</button>
+                                <button type="submit" name="cancel" class="dropdown-item btn-link btnbulkClick">Cancel</button>
+                                <button type="submit" name="quote" class="dropdown-item btn-link btnbulkClick">Revert Cancel</button>
                                 <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
                             </div>
                         </div>
@@ -254,7 +255,7 @@
                                                 <tr class="{{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}">
                                                 
                                                     <td>
-                                                        @if($quote->booking_status == 'quote')
+                                                        @if($quote->booking_status != 'booked')
                                                             <div class="icheck-primary">
                                                                 <input type="checkbox" class="child" value="{{$quote->id}}" >
                                                             </div>
@@ -276,7 +277,7 @@
                                                     <td width="8">{{ $quote->getSalePerson->name }}</td>
                                                     <td>{{ $quote->ref_no }}</td>
 
-                                                    @if($quote->booking_status == 'quote')
+                                                    @if($quote->booking_status != 'booked')
                                                         <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     @endif
 
@@ -300,6 +301,8 @@
                                                                 @csrf @method('patch')
                                                                 <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><span class="fa fa-check"></span></button>
                                                             </form>
+                                                        @endif
+                                                        @if($quote->booking_status != 'booked')
                                                             <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                                 <span class="fa fa-eye"></span>
                                                             </a>
@@ -336,13 +339,14 @@
                                                         {{-- <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
                                                             <i class="fas fa-file"></i>
                                                         </a> --}}
-                                                        <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
-                                                            @csrf @method('patch')
-                                                            <button type="submit" title="Quote Clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
-                                                                <i class="fa fa-clone"></i>
-                                                            </button>
-                                                        </form>
-                                            
+                                                        @if($quote->booking_status == 'quote')
+                                                            <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
+                                                                @csrf @method('patch')
+                                                                <button type="submit" title="Quote Clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+                                                                    <i class="fa fa-clone"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>

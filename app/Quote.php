@@ -82,15 +82,15 @@ class Quote extends Model
     public function getBookingFormatedStatusAttribute()
     {
         $status = $this->booking_status;
-        if($this->deleted_at != null){
-            return '<h5><span class="badge badge-danger">Cancelled</span></h5>';
-        }
         switch ($status) {
             case 'booked':
                 return '<h5><span class="badge badge-success">Booked</span></h5>';
                 break;
             case 'quote':
                 return '<h5><span class="badge badge-info">Quote</span></h5>';
+                break;
+            case 'cancelled':
+                return '<h5><span class="badge badge-danger">Cancelled</span></h5>';
                 break;
         }
         

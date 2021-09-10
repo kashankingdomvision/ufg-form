@@ -6,10 +6,10 @@ import datepicker from 'bootstrap-datepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
   
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
  
 var CSRFTOKEN = $('#csrf-token').attr('content');
  
@@ -3237,36 +3237,46 @@ $(document).ready(function($) {
         btnname = $(this).attr('name');
     })
 
-    $(".bulkDeleteData").submit(function(e) {
+    $(".bulk-action").submit(function(e) {
+
         e.preventDefault(); 
-        var url = $(this).attr('action');
-        var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-        var formData = $(this).serializeArray();
+
+        var url            = $(this).attr('action');
+        var checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
+        var formData       = $(this).serializeArray();
+        var message        = '';
+
         formData.push({name:'id', value: checkedValues});
         formData.push({name:'btn', value: btnname});
-        var message= 'Are you sure you want to delete records?';
-        if(btnname == 'archive'){
-            message = 'Are you sure you want to add this records in archive?'
-        }else if(btnname == 'unarchive'){
-            message = 'Are you sure you want to revert this records from archive?'
-        }else if(btnname = 'quote delete'){
-            message = 'Are you sure you want to cancel this quotes?';
+
+        switch(btnname) {
+            case "archive":
+                message = 'Are you sure you want to Archive Quotes?'
+                break;
+            case "unarchive":
+                message = 'Are you sure you want to Revert Quotes from Archive?'
+                break;
+            case "quote":
+                message = 'Are you sure you want to Revert Cancelled Quotes?';
+                break;
+            case "cancel":
+                message = 'Are you sure you want to Cancel Quotes?';
         }
-        
+
         if(checkedValues.length > 0){
             Swal.fire({
                 title: 'Are you sure?',
                 text: message,
                 focusConfirm: false,
                 showCancelButton: true,
-                confirmButtonText: 'Yes, '+btnname+' it!',
+                confirmButtonText: `Yes`,
                 confirmButtonColor: '#5cb85c',
-                cancelButtonText: 'No, keep it',
+                cancelButtonText: 'No',
                 showLoaderOnConfirm: true,
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        type: "DELETE",
+                        type: "PUT",
                         url: url,
                         data: $.param(formData), 
                         success: function(data)
