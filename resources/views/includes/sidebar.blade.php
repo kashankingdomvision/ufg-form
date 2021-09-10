@@ -111,6 +111,13 @@
                 </li>
                 
                 <li class="nav-item">
+                    <a href="{{ route('customers.index') }}" class="nav-link {{ $route == 'customers.index' || $route == 'customers.quote.listing' || $route == 'customers.booking.listing'  ? 'active' : '' }}">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>Customers</p>
+                    </a>
+                </li>
+                
+                <li class="nav-item">
                     <a href="{{ route('templates.index') }}" class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit' || $route == 'templates.create' ? 'active' : '' }}">
                         <i class="fa fa-clone nav-icon"></i>
                         <p>Templates</p>

@@ -89,7 +89,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
     });
+
     
+    /*
+    |--------------------------------------------------------------------------
+    | Customer
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'CustomerController@index'));
+        Route::get('quote-listing/{email}', array('as' => 'quote.listing', 'uses' => 'CustomerController@quote_listing'));
+        Route::get('booking-listing/{email}', array('as' => 'booking.listing', 'uses' => 'CustomerController@booking_listing'));
+    });
 
     /*
     |--------------------------------------------------------------------------

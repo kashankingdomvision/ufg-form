@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Auth;
+use Carbon\Carbon;
 
 class Quote extends Model
 {
@@ -113,6 +114,11 @@ class Quote extends Model
     {
         return date('d/m/Y', strtotime($this->deleted_at));
     }
+
+    public function getFormatedDateOfBirthAttribute()
+    {
+        return Carbon::parse($this->lead_passenger_dbo)->format('d/m/Y');
+    }
     
     function getBrand() {
         return $this->hasOne(Brand::class,'id', 'brand_id' );
@@ -156,6 +162,11 @@ class Quote extends Model
     public function getBooking()
     {
         return $this->hasOne(Booking::class, 'quote_id', 'id');
+    }
+    
+    public function getLeadPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
     }
     
     public function setRevelantQuoteAttribute($value)
