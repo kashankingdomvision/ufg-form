@@ -26284,7 +26284,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var secondDate = convertDate(nowDate);
 
     if (firstDate == 'Invalid Date') {
-      alert('Deposite Date is Required');
+      alert('Due Date is Required');
     } else {
       if (!$(valueElement).is('[readonly]')) {
         var oneDay = 24 * 60 * 60 * 1000;

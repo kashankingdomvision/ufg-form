@@ -2927,7 +2927,7 @@ $(document).ready(function($) {
             const secondDate = convertDate(nowDate);
 
             if(firstDate == 'Invalid Date'){
-                alert('Deposite Date is Required');
+                alert('Due Date is Required');
             }else{
                 if(!$(valueElement).is('[readonly]')) { 
                     const oneDay = 24 * 60 * 60 * 1000;
