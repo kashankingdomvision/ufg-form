@@ -42,7 +42,18 @@
             
               <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
+                  
+                  <div class="row">
+                    <div class="col-sm-12"> 
+                      <label>Quote Title <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" name="quote_title" id="quote_title" class="form-control" placeholder="Enter Quote Title">
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+                  </div>
                   <div class="row mb-2">
+                  
 
                     <div class="col-sm-6"> 
                       <label>Zoho Reference <span style="color:red">*</span></label>

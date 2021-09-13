@@ -11,10 +11,12 @@ class Helper
 		return str_replace( ',', '', number_format($number,2));
     }
 
-	public static function document_date_format($datetime){
-        return date("l M d, Y",strtotime($datetime));
-    }
+	public static function document_date_format($date){
 
+		$date = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $date))->format('Y-m-d')));
+        return date("l M d, Y",strtotime($date));
+    }
+	
 	public static function date_difference($start_date, $end_date)
 	{
 		// dd($start_date);

@@ -58,6 +58,7 @@ class QuoteRequest extends FormRequest
             'quote.*.markup_percentage'                 => 'required',
             'quote.*.selling_price_in_booking_currency' => 'required',
             'quote.*.markup_amount_in_booking_currency' => 'required',
+            'quote_title'                               => 'required',
         ];
     }
 
@@ -86,7 +87,7 @@ class QuoteRequest extends FormRequest
     public function attributes()
     {
         return [
-
+            'quote_title'                               => 'Quote Title',
             'ref_no'                                    => 'Zoho Reference',
             'quote_no'                                  => 'Quote Reference',
             'rate_type'                                 => 'Currency Rate Type',

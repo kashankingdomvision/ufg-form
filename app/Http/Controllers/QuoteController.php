@@ -35,6 +35,7 @@ use App\Season;
 use App\Supplier;
 use App\Template;
 use App\User;
+use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 
 class QuoteController extends Controller
 {
@@ -43,40 +44,10 @@ class QuoteController extends Controller
     public function quote_document(Request $request, $id)
     {
 
-        // dd(decrypt( $id));
-
-       
-
-        $quote = Quote::findOrFail(decrypt($id));
-        $data['quote']            = $quote;
-
-        $date_of_services_array   = $quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->distinct()->pluck('date_of_service');
- 
-        
-        foreach($date_of_services_array as $key => $date_of_services){
-
-         
-           $qd[$date_of_services] = QuoteDetail::where('date_of_service', Helper::db_date_format($date_of_services))->get();
-        }
-        $data['quote_detials']            = $qd;
-
-        // dd(Carbon::tomorrow()->format('l'));
-
-        // dd($qd);
-        // dd($data['quote_detials'] );
-
-        // dd($date_of_services_array);
-        
-        // $data['quote_details']    = $quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get();
-
-        // dd($data['quote_details']);
-
-        // $data = [
-        //     'title' => 'First PDF for Medium',
-        //     'heading' => 'Hello from 99Points.info',
-        //     'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.'        
-        // ];
-          
+        $quote          = Quote::findOrFail(decrypt($id));
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
+        $data['quote_details'] = $quoteDetails;
+        $data['created_at']    =  $quote->doc_formated_created_at;
         $pdf = PDF::loadView('quote_documents.pdf', $data);  
         return $pdf->stream();
         // return $pdf->download('medium.pdf');
@@ -175,6 +146,7 @@ class QuoteController extends Controller
     public function quoteArray($request, $type = null)
     {
         return [
+            'quote_title'                       =>  $request->quote_title,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
             'user_id'                           =>  Auth::id(),

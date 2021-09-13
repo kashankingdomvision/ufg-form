@@ -22,6 +22,7 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
+            $table->string('quote_title');
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');

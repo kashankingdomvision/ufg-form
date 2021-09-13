@@ -12,6 +12,7 @@ class Quote extends Model
 {
     use SoftDeletes;
     protected $fillable = [ 
+        'quote_title',
         'commission_id',
         'user_id',
         'season_id',
@@ -108,6 +109,11 @@ class Quote extends Model
     public function getFormatedCreatedAtAttribute()
     {
         return date('d/m/Y', strtotime($this->created_at));
+    }
+    
+    public function getDocFormatedCreatedAtAttribute()
+    {
+        return date('d M Y', strtotime($this->created_at));
     }
     
     public function getFormatedDeletedAtAttribute()

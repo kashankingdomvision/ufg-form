@@ -372,7 +372,7 @@
                                       </div>
                                     </div>
                                     <div class="row">
-                                   
+                                    
                                       <div class="col-md-3 mb-2">
                                           <label>Bedding Preference</label> 
                                           <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
