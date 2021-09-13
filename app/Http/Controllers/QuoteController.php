@@ -45,9 +45,12 @@ class QuoteController extends Controller
     {
 
         $quote          = Quote::findOrFail(decrypt($id));
-        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
-        $data['quote_details'] = $quoteDetails;
-        $data['created_at']    =  $quote->doc_formated_created_at;
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
+        $data['quote_details']  = $quoteDetails;
+        $data['created_at']     =  $quote->doc_formated_created_at;
+        $data['title']          =  $quote->quote_title;
+        $data['person_name']    =  $quote->getSalePerson->name;
+        $data['brand_about']    =  $quote->getBrand->about_us;
         $pdf = PDF::loadView('quote_documents.pdf', $data);  
         return $pdf->stream();
         // return $pdf->download('medium.pdf');

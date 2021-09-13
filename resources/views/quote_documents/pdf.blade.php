@@ -75,7 +75,7 @@
     </head>
     <body>
         <!-- Define header and footer blocks before your content -->
-        <header>
+        <header >
             <img src="{{ asset('img/logo1.png') }}" width="300px" height="100px" >
         </header>
 
@@ -90,11 +90,11 @@
                     <div class="center">
                         <h1>
                             <strong>
-                                Signature Cruise Split to Dubrovnik
+                                {{ $title }}
                             </strong> 
                         </h1>
-                        <p class="textsize-25">26th July 2021</p>
-                        <p class="textsize-25">Name </p>
+                        <p class="textsize-25">{{ $created_at }}</p>
+                        <p class="textsize-25">{{ $person_name }} </p>
                         <p class="textsize-25">TAS</p>
                         <br />
                         <h2></h2>
@@ -113,11 +113,7 @@
                             About us
                         </strong>
                     </h3> 
-                    <h4>Unforgettable Croatia </h4>
-                    <p >
-                        Welcome to Unforgettable Croatia, we are the largest luxury tour operator to Croatia with offices in San Francisco, New York, London and Split, Croatia. We are connoisseurs of unique travel experiences and truly unforgettable trips to this magnificent country.
-                        We live and breathe Croatia, with the majority of our team of Croatian heritage. As Croatia’s leading travel specialists we have developed an enviable VIP list of contacts throughout the country, which we use to ensure our clients enjoy unparalleled levels of service at top hotels, restaurants and with our hand-picked private guides.
-                        </p>
+                   {!! $brand_about !!}
                 </div>
             </p>
             {{-- /// page 2 (about us) --}}
