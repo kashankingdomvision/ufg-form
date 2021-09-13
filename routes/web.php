@@ -89,8 +89,22 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
         Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
+        Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
     });
+
     
+    /*
+    |--------------------------------------------------------------------------
+    | Customer
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'CustomerController@index'));
+        Route::get('quote-listing/{email}', array('as' => 'quote.listing', 'uses' => 'CustomerController@quote_listing'));
+        Route::get('booking-listing/{email}', array('as' => 'booking.listing', 'uses' => 'CustomerController@booking_listing'));
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -247,7 +261,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
         Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
         Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
-        Route::delete('bulk/delete', ['as' => 'bulk.delete', 'uses' => 'ResponseController@bulkDataDelete']);
+        Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
     });
     

@@ -61,6 +61,11 @@ class Booking extends Model
         return Carbon::parse($this->created_at)->format('d/m/Y');
     }
 
+    public function getFormatedDateOfBirthAttribute()
+    {
+        return Carbon::parse($this->lead_passenger_dbo)->format('d/m/Y');
+    }
+
     public function getAgencyBookingAttribute()
     {
         if($this->agency == 1){
@@ -181,6 +186,12 @@ class Booking extends Model
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
     }
+
+    public function getLeadPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
+    }
+   
    
     public function setRevelantQuoteAttribute($value)
     {

@@ -12,13 +12,30 @@ use App\BookingCreditNote;
 use App\QuoteUpdateDetail;
 use App\User;
 use Auth;
-
+use Illuminate\Support\Carbon;
 class Helper
 {
     public static function number_format($number){
-
 		return str_replace( ',', '', number_format($number,2));
-        // return number_format($number,2);
+    }
+
+	public static function document_date_format($datetime){
+        return date("l M d, Y",strtotime($datetime));
+    }
+
+	public static function date_difference($start_date, $end_date)
+	{
+		// dd($start_date);
+		// calulating the difference in timestamps 
+		$diff = strtotime($start_date) - strtotime($end_date);
+		
+		// 1 day = 24 hours 
+		// 24 * 60 * 60 = 86400 seconds
+		return ceil(abs($diff / 86400));
+	}
+
+	public static function db_date_format($value){
+		return date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 
     public static function getQuoteID(){
