@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Encryption\DecryptException;
 use App\Http\Requests\QuoteRequest;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use PDF;
 use App\Http\Helper;
 
 use App\Brand;
@@ -30,11 +35,6 @@ use App\Season;
 use App\Supplier;
 use App\Template;
 use App\User;
-use Carbon\Carbon;
-use Crypt;
-use PDF;
-use DB;
-use Auth;
 
 class QuoteController extends Controller
 {
@@ -180,6 +180,7 @@ class QuoteController extends Controller
             'booked_by_id'          => $quoteD['booked_by_id'],
             'supervisor_id'         => $quoteD['supervisor_id'],
             'date_of_service'       => $quoteD['date_of_service'],
+            'end_date_of_service'   => $quoteD['end_date_of_service'],
             'time_of_service'       => $quoteD['time_of_service'],
             'booking_date'          => $quoteD['booking_date'],
             'booking_due_date'      => $quoteD['booking_due_date'],
@@ -220,7 +221,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
         $data['quote_id']         = Helper::getQuoteID();
-
+        $data['quote_ref']        = Quote::get('quote_ref');
         return view('quotes.create', $data);
     }
     
@@ -235,8 +236,8 @@ class QuoteController extends Controller
             }
         }
        //pax data 
-       if($request->has('pax')){
-           foreach ($request->pax as $pax_data) {
+        if($request->has('pax')){
+            foreach ($request->pax as $pax_data) {
                 QuotePaxDetail::create([
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],
@@ -249,12 +250,14 @@ class QuoteController extends Controller
                     'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
-       }
+        }
        return redirect()->route('quotes.index')->with('success_message', 'Quote created successfully');
     }
     
     public function edit($id)
     {
+        $quote = Quote::findOrFail(decrypt($id));
+        $data['quote']            = $quote;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::all()->sortBy('name');
@@ -268,10 +271,9 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['quote']            = Quote::findOrFail(decrypt($id));
         $data['commission_types'] = Commission::all();
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
-
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         return view('quotes.edit',$data);
     }
 
@@ -332,7 +334,9 @@ class QuoteController extends Controller
     public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
-        $data['quote']            = $log->data;
+        
+        $quote                      = $log->data;
+        $data['quote']            = $quote;
         $data['log']              = $log;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
@@ -347,7 +351,7 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
-
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
         if($type != NULL){
             $data['type'] = $type;
         }
@@ -367,7 +371,8 @@ class QuoteController extends Controller
     {
         $quote = Quote::findORFail(decrypt($id));
         $getQuote = $this->quoteArray($quote, 'booking');
-        $getQuote['quote_id'] = $quote->id; 
+        $getQuote['quote_id']       = $quote->id; 
+        $getQuote['booking_status'] = 'confirmed'; 
         $booking = Booking::create($getQuote);
         
         foreach ($quote->getQuoteDetails as $qu_details) {
@@ -375,7 +380,9 @@ class QuoteController extends Controller
 
             $quoteDetail['booking_id']              = $booking->id;
             $quoteDetail['outstanding_amount_left'] = $quoteDetail['estimated_cost'];
-            
+            $quoteDetail['actual_cost']             = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost_bc']          = $quoteDetail['estimated_cost_bc'];
+
             BookingDetail::create($quoteDetail);
         }
         
@@ -447,8 +454,11 @@ class QuoteController extends Controller
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['quote']            = Quote::findOrFail(decrypt($id));
+        $quote                    = Quote::findOrFail(decrypt($id));
+        $data['quote']            = $quote;
         $data['commission_types'] = Commission::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        
 
         return view('quotes.show',$data);
     }

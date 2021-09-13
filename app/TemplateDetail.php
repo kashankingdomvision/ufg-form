@@ -7,10 +7,33 @@ use Carbon\Carbon;
 class TemplateDetail extends Model
 {
     protected $fillable = [ 
-        'template_id', 'category_id', 'supplier_id', 'product_id', 'booking_method_id', 'booked_by_id', 'supervisor_id', 
-        'supplier_currency_id', 'booking_type_id', 'date_of_service', 'time_of_service', 'booking_date', 'booking_due_date', 
-        'service_details', 'booking_reference', 'comments', 'estimated_cost', 'markup_amount', 'markup_percentage', 'selling_price',
-        'profit_percentage','estimated_cost_bc', 'selling_price_bc', 'markup_amount_bc', 'added_in_sage',
+        
+        'template_id',
+        'date_of_service',
+        'end_date_of_service',
+        'time_of_service',
+        'category_id',
+        'supplier_id',
+        'product_id',
+        'supervisor_id',
+        'booking_date',
+        'booking_due_date',
+        'booking_reference',
+        'booking_method_id',
+        'booked_by_id',
+        'booking_type_id',
+        'supplier_currency_id',
+        'estimated_cost',
+        'markup_amount',
+        'markup_percentage',
+        'selling_price',
+        'profit_percentage',
+        'estimated_cost_bc',
+        'markup_amount_bc',
+        'selling_price_bc',
+        'added_in_sage',
+        'service_details',
+        'comments',
     ];
 
     public function getCategory()
@@ -31,6 +54,10 @@ class TemplateDetail extends Model
     public function getDateOfServiceAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
+
+    public function getEndDateOfServiceAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
     
     public function getBookingDateAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
@@ -42,6 +69,10 @@ class TemplateDetail extends Model
     
     public function setDateOfServiceAttribute( $value ) {
         $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+    
+    public function setEndDateOfServiceAttribute( $value ) {
+        $this->attributes['end_date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
     
     public function setBookingDateAttribute( $value ) {

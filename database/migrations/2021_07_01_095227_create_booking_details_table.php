@@ -26,6 +26,7 @@ class CreateBookingDetailsTable extends Migration
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
             $table->date('date_of_service')->nullable();
+            $table->date('end_date_of_service')->nullable();
             $table->time('time_of_service')->nullable();
             $table->date('booking_date')->nullable();
             $table->date('booking_due_date')->nullable();
@@ -33,11 +34,12 @@ class CreateBookingDetailsTable extends Migration
             $table->string('booking_reference')->nullable();
             $table->text('comments')->nullable();
             $table->double('estimated_cost')->nullable();
+            $table->double('actual_cost')->nullable();
             $table->double('markup_amount')->nullable();
             $table->double('markup_percentage')->nullable();
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
-            $table->double('estimated_cost_bc')->nullable();
+            $table->double('actual_cost_bc')->nullable();
             $table->double('selling_price_bc')->nullable();
             $table->double('markup_amount_bc')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);

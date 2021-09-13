@@ -8,6 +8,7 @@ use Carbon\Carbon;
 class BookingDetail extends Model
 {
     protected $fillable = [
+        
         'booking_id',
         'category_id',
         'supplier_id',
@@ -18,6 +19,7 @@ class BookingDetail extends Model
         'supplier_currency_id',
         'booking_type_id',
         'date_of_service',
+        'end_date_of_service',
         'time_of_service',
         'booking_date',
         'booking_due_date',
@@ -25,10 +27,11 @@ class BookingDetail extends Model
         'booking_reference',
         'comments',
         'estimated_cost',
+        'actual_cost',
         'markup_amount',
         'markup_percentage',
         'selling_price',
-        'estimated_cost_bc',
+        'actual_cost_bc',
         'profit_percentage',
         'selling_price_bc',
         'markup_amount_bc',
@@ -71,7 +74,26 @@ class BookingDetail extends Model
         return $this->hasMany(BookingCreditNote::class, 'booking_detail_id', 'id');   
     }
 
+    public function getAccomodationDetials()
+    {
+        return $this->hasOne(AccomodationDetail::class, 'booking_detail_id', 'id');   
+    }
+
+    public function getTransferDetials()
+    {
+        return $this->hasOne(TransferDetail::class, 'booking_detail_id', 'id');   
+    }
+
+    public function getServiceExcussionDetials()
+    {
+        return $this->hasOne(ServiceExcursionDetail::class, 'booking_detail_id', 'id');   
+    }
+
     public function getDateOfServiceAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
+    public function getEndDateOfServiceAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
     
@@ -87,11 +109,16 @@ class BookingDetail extends Model
         $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
     
+    public function setEndDateOfServiceAttribute( $value ) {
+        $this->attributes['end_date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+
     public function setBookingDateAttribute( $value ) {
         $this->attributes['booking_date']       = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
     
     public function setBookingDueDateAttribute( $value ) {
         $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
-    }    
+    }  
+
 }

@@ -2828,10 +2828,6 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   padding: 0.375rem 0.75rem;
 }
 
-.swal2-input[type=number] {
-  max-width: 10em;
-}
-
 .swal2-file {
   width: 75%;
   margin-right: auto;
@@ -4283,6 +4279,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   margin-top: 3rem !important;
 }
 
+.mt-4 {
+  margin-top: 4rem !important;
+}
+
 .mb-1-half {
   margin-bottom: 1.3rem !important;
 }
@@ -4459,7 +4459,8 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
  * -------------------------------------------------------------------------------------
 */
 
-.quote {
+.quote,
+.cancellation-payments {
   border: solid 1px #DCDCDC;
   padding: 20px;
   margin: 0 auto 15px;

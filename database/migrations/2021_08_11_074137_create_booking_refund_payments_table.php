@@ -16,14 +16,14 @@ class CreateBookingRefundPaymentsTable extends Migration
         Schema::create('booking_refund_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('booking_detail_id');
-            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
-           
             $table->double('refund_amount')->nullable();
             $table->date('refund_date')->nullable();
             $table->unsignedBigInteger('refund_confirmed_by');
             $table->unsignedBigInteger('bank_id');
+            $table->enum('refund_recieved', [0,1])->default(0)->nullable();
+            $table->date('refund_recieved_date')->nullable();
 
-
+            $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('refund_confirmed_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('bank_id')->references('id')->on('banks')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

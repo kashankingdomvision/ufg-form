@@ -3,21 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+
+use App\BookingType;
+use App\BookingMethod;
+use App\Category;
+use App\Currency;
+use App\Country;
 use App\HolidayType;
-use App\Supplier;
 use App\Product;
 use App\Quote;
 use App\ReferenceCredential;
-use Illuminate\Support\Facades\View;
-use App\Template;
-use App\Category;
-use App\User;
-use App\BookingMethod;
-use App\Currency;
 use App\Season;
-use App\BookingType;
-use App\Country;
-use DB;
+use App\Supplier;
+use App\Template;
+use App\User;
+
 class ResponseController extends Controller
 {
     public function getBrandToHoliday(Request $request)
@@ -277,21 +279,31 @@ class ResponseController extends Controller
         return response()->json($re);
     }
     
-    public function bulkDataDelete(Request $request)
+    public function bulkAction(Request $request)
     {
-        $ids = explode(",", $request->id);
-        $table_name = $request->tab;
+        $ids               = explode(",", $request->id);
+        $table_name        = $request->table;
         $respons['status'] = FALSE;
-        $isArchive  = ($request->btn == 'unarchive')? 0 : 1;
+        $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
+
         if($request->btn == 'archive' || $request->btn == 'unarchive'){
             
             DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
-            $respons['message'] = ($isArchive == 1)? "quotes add in archived successfully" : 'quotes is revert from archive successfully';
-        }else{
-            DB::table($table_name)->whereIn('id', $ids)->delete();
-            $respons['message'] = 'Records Deleted Successfully !!';
+            $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
+
+        }elseif ($request->btn  == 'cancel'){
+
+            DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+            $respons['message'] = 'Quotes Cancelled Successfully !!';
         }
+        elseif ($request->btn  == 'quote'){
+
+            DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+            $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
+        }
+
         $respons['status']  = true;
+
         return response()->json($respons);
     }
     

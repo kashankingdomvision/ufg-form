@@ -134,9 +134,10 @@
                                             <th>Agency Booking</th>
                                             <th>Booking Currency</th>
                                             <th>Pax No.</th>
-                                            <th>Dinning Preferences</th>
-                                            <th>Bedding Preferences</th>
-                                            <th>Created</th>
+                                            {{-- <th>Dinning Preferences</th>
+                                            <th>Bedding Preferences</th> --}}
+                                            <th>Booking Status</th>
+                                            <th>Created At</th>
                                             {{-- <th>Transfer Info Responsible Person</th>
                                             <th>Transfer Organized Responsible Person</th>
                                             <th>Itinerary Finalised Responsible Person</th>
@@ -164,8 +165,9 @@
                                                 <td>{{ $booking->agency_booking}}</td>
                                                 <td>{{!empty($booking->getCurrency->code) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : NULL }}</td>
                                                 <td>{{ $booking->pax_no}}</td>
-                                                <td>{{ $booking->lead_passenger_dinning_preferences  }}</td>
-                                                <td>{{ $booking->lead_passenger_bedding_preferences }}</td>
+                                                {{-- <td>{{ $booking->lead_passenger_dinning_preferences  }}</td>
+                                                <td>{{ $booking->lead_passenger_bedding_preferences }}</td> --}}
+                                                <td>{!! $booking->booking_formated_status !!}</td>
                                                 <td>{{ $booking->formated_created_at}}</td>
                                                 <td width="10%" class="d-flex" >
                                                     <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" title="Edit" >
@@ -177,6 +179,19 @@
                                                     <a href="{{ route('bookings.show', [ 'id' => encrypt($booking->id), 'status' => 'payment' ] ) }}" class="mr-2 btn btn-outline-info btn-xs" data-title="View Booking" title="Add Payment" >
                                                         <span class="fa fa-money-bill-alt"></span>
                                                     </a>
+
+                                                    @if($booking->booking_status == 'confirmed')
+                                                        <a href="javascript:void(0)" class="cancel-booking float-right btn btn-outline-danger btn-xs " data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                                                            <span class="fa fa-times"></span>
+                                                        </a>
+                                                    @endif
+
+                                                    @if($booking->booking_status == 'cancelled')
+                                                        <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
+                                                            <span class="fa fa-undo-alt"></span>
+                                                        </a>
+                                                    @endif
+
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}
                                                         {{-- <a href="#" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel Booking" title="Booking Canceled">
@@ -210,4 +225,6 @@
         </div>
     </section>
 </div>
+
+@include('partials.cancel_booking_modal')
 @endsection

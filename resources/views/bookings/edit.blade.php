@@ -91,6 +91,16 @@
                 <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
+
+                @if($booking->booking_status == 'confirmed')
+                  <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-md mr-2" data-bookingid="{{ $booking->id  }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                    Cancel Booking
+                  </a>
+                  @else
+                  <a href="javascript:void(0)" class="cancelled-booking float-right btn btn-danger btn-md mr-2" data-bookingid="{{ $booking->id  }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                    Cancelled
+                  </a>
+                @endif
               </div>
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking" enctype="multipart/form-data"> 
               @csrf @method('put')
@@ -126,11 +136,11 @@
                         <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
+                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
                             <span>&nbsp;Live Rate</span>
                           </label>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
+                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
                             <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
@@ -154,7 +164,7 @@
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                            <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}  ({{ $commission_type->percentage.' %' }})</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -202,7 +212,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
+                        <select name="currency_id" id="currency_id" data-status="booking" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
                           <option value="">Select Booking Currency </option>
                           @foreach ($currencies as $currency)
                             <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}" 
@@ -310,7 +320,7 @@
                           </div>
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Covid Vaccinated <span style="color:red">*</span></label>
+                              <label>Covid Vaccinated</label>
                               <div>
                                 <label class="radio-inline">
                                   <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ($booking->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}> Yes
@@ -427,13 +437,24 @@
                             </div>
                           @endif
                           <div class="row"> {{-- ?>>>rowStart --}}
+
+
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Date of Service <span style="color:red">*</span></label>
+                                <label>Start Date of Service <span style="color:red">*</span></label>
                                 <input type="text" value="{{ $booking_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>End Date of Service <span style="color:red">*</span></label>
+                                <input type="text" placeholder="DD/MM/YYYY" value="{{ $booking_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Time of Service</label>
@@ -446,12 +467,13 @@
                                 <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control  select2single  category- select2single  category-id @error('category_id') is-invalid @enderror">
                                   <option value="">Select Category</option>
                                   @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                    <option value="{{ $category->id }}" data-slug="{{$category->slug}}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                   @endforeach
                                 </select>
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier <span style="color:red">*</span></label>
@@ -464,6 +486,18 @@
                                     @endif
                                   </select>
                                   <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-1 d-flex justify-content-center">
+                              <div class="form-group ">
+
+                                <div class="modal-parent">
+                                  @include('partials.accomadation_modal')
+                                  @include('partials.transfer_modal')
+                                  @include('partials.service_excersion_modal')
+                                </div>
+                                <button type="button" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                               </div>
                             </div>
 
@@ -488,6 +522,8 @@
                                 <input type="text" name="quote[{{ $key }}][product_id]"  data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id" value="{{ $booking_detail->product_id }}" placeholder="Enter Product">
                               </div>
                             </div>
+
+
 
                             <div class="col-sm-2">
                               <div class="form-group">
@@ -567,7 +603,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier Currency <span style="color:red">*</span></label>
-                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control  select2single  supplier-currency-id @error('currency_id') is-invalid @enderror">
+                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single booking-supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)
                                       <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $booking_detail->supplier_currency_id == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -576,6 +612,19 @@
                                   <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Estimated Cost <span style="color:red">*</span></label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                  </div>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-status="booking" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost hide-arrows" value="0.00">
+                                </div>
+                              </div>
+                            </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Actual Cost <span style="color:red">*</span></label>
@@ -583,10 +632,11 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-status="booking" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->actual_cost) }}" name="quote[{{ $key }}][actual_cost]" data-name="actual_cost" data-status="booking" id="quote_{{ $key }}_actual_cost" class="form-control actual-cost change" value="0.00">
                                 </div>
                               </div>
                             </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Markup Amount <span style="color:red">*</span></label>
@@ -644,21 +694,11 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency"  readonly>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->actual_cost_bc) }}" name="quote[{{ $key }}][actual_cost_in_booking_currency]" data-name="actual_cost_in_booking_currency" id="quote_{{ $key }}_actual_cost_in_booking_currency" class="form-control actual-cost-in-booking-currency"  readonly>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-sm-3">
-                              <div class="form-group">
-                                <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
-                                  </div>
-                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->selling_price_bc) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
-                                </div>
-                              </div>
-                            </div>
+
                             <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
@@ -670,6 +710,19 @@
                                 </div>
                               </div>
                             </div>
+
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                  </div>
+                                  <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->selling_price_bc) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                                </div>
+                              </div>
+                            </div>
+
                             <div class="col-sm-2 d-flex justify-content-center">
                               @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                               <div class="form-group">
@@ -718,6 +771,8 @@
                               </div>
                             </div>
                           </div>{{-- ?>>>rown end --}}
+      
+
                           @php $total_deposit = 0; @endphp
                           <section class="finance">
                             @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
@@ -751,6 +806,7 @@
                                         <input type="date" value="{{ $finance->paid_date }}" name="quote[{{ $key }}][finance][{{ $fkey }}][paid_date]" data-name="paid_date" id="quote_{{$key}}_finance_{{$fkey}}_paid_date" class="form-control paid-date" {{ $finance->status == 'cancelled' ? 'readonly' : '' }}>
                                       </div>
                                     </div>
+                                  
                                     <div class="col-sm-2 d-flex justify-content-center">
                                       <div class="form-group {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'd-none' : '' }}">
                                         <label>Calender</label>
@@ -763,6 +819,7 @@
                                         </div>
                                       </div>
                                     </div>
+
                                     <div class="col-sm-1 d-flex justify-content-center">
                                       <div class="form-group">
                                         <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" >X</button>
@@ -892,66 +949,95 @@
                                 {{-- /////for single value/ --}}
                             @endif
                           </section>
-                          <section class="cancel-payment-section">
+
+                          @php $refund_amount = 0; @endphp
+                          <section class="refund-by-bank-section">
                             @if($booking_detail->getBookingRefundPayment && count($booking_detail->getBookingRefundPayment) > 0)
-                              @foreach ($booking_detail->getBookingRefundPayment as $fkey => $payment)
+                            <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
+                              @foreach ($booking_detail->getBookingRefundPayment as $rpkey => $payment)
+                              @php
+                                $count = $rpkey + 1;
+                                $total_refund_amount = $refund_amount + $payment->refund_amount;
+                              @endphp
                                 <div class="refund-payment-section">
-                                  <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
-                                  <div class="row cancel-payment-row row-cols-lg-7 g-0 g-lg-2 ">
+                                  <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2">
                                     <div class="col-sm-2">
                                       <div class="form-group">
-                                        <label class="depositeLabel">Refund Amount <span style="color:red">*</span></label>
+                                        <label class="refund-payment-label" id="refund_payment_label_{{ $key }}">Refund Payment #{{ $count }}</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                           </div>
-                                          <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount"  class="form-control refund_amount hide-arrows" step="any" disabled>
+                                          <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][0][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount"  class="form-control refund_amount amount hide-arrows" step="any">
+                                          <span class="text-danger" role="alert"></span>
                                         </div>
                                       </div>
                                     </div>
                                     <div class="col-sm-2">
                                       <div class="form-group">
                                         <label>Refund Date <span style="color:red">*</span></label>
-                                        <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" data-name="refund_date"  class="form-control" disabled>
+                                        <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_date" data-name="refund_date"  class="form-control">
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
                                     <div class="col-sm-2">
                                       <div class="form-group">
                                         <label>Bank <span style="color:red">*</span></label>
-                                        <select  name="quote[{{ $key }}][refund][0][bank]" data-name="bank"  class="form-control bank select2single" disabled>
+                                        <select  name="quote[{{ $key }}][refund][0][bank]" id="quote_{{$key}}_refund_{{$rpkey}}_bank" data-name="bank"  class="form-control bank select2single">
                                           <option value="">Select Bank</option>
                                           @foreach ($banks as $bank)
                                             <option value="{{ $bank->id }}" {{ ($bank->id == $payment->bank_id) ? 'selected' : '' }}> {{ $bank->name }} </option>
                                           @endforeach
                                         </select>
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Refund Confirmed By <span style="color:red">*</span></label>
-                                        <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single" disabled>
+                                        <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_confirmed_by"  data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single">
                                           <option value="">Select User</option>
                                           @foreach ($sale_persons as $person)
                                             <option  value="{{ $person->id }}" {{ ($person->id == $payment->refund_confirmed_by) ? 'selected' : '' }}>{{ $person->name }}</option>
                                           @endforeach
                                         </select>
+                                        <span class="text-danger" role="alert"></span>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-2 d-flex justify-content-center">
+                                      <div class="form-group">
+                                        <label>Refund Recieved</label>
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <div class="icheck-primary">
+                                              <input type="hidden" name="quote[{{ $key }}][refund][{{ $fkey }}][refund_recieved]" value="{{ $payment->refund_recieved }}"><input data-name="refund_recieved" id="quote_{{$key}}_refund_{{$rpkey}}_refund_recieved" class="checkbox" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"  {{ ($payment->refund_recieved == 1)? 'checked': NULL }}> 
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-sm-1 d-flex justify-content-end">
+                                      <div class="form-group">
+                                        <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm d-none">X</button>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               @endforeach
                             @else
-                              <div class="refund-payment-hidden-section" hidden>
-                                <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
-                                <div class="row cancel-payment-row row-cols-lg-7 g-0 g-lg-2" >
+                            <div class="refund-payment-section" hidden>
+                              <h3 class="mt-2 mb-1-half">Refund - By Bank</h3>
+                                <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2" >
                                   <div class="col-sm-2">
                                     <div class="form-group">
-                                      <label class="depositeLabel">Refund Amount <span style="color:red">*</span></label>
+                                      <label class="refund-payment-label" id="refund_payment_label_{{ $key }}">Refund Payment #1</label>
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                         </div>
-                                        <input type="number" value=""  name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount" id="quote_{{$key}}_refund_0_refund_amount" class="form-control refund_amount hide-arrows" step="any" readonly>
+                                        <input type="number" value=""  name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount" id="quote_{{$key}}_refund_0_refund_amount" class="form-control refund_amount amount hide-arrows" step="any" >
                                       </div>
                                     </div>
                                   </div>
@@ -994,63 +1080,79 @@
                               </div>
                             @endif
                           </section>
-                          <section>
-                            @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
-                              @foreach ($booking_detail->getBookingCreditNote as $fkey => $payment)
-                                <div class="credit-note-section">
 
-                                  <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                          @php $credit_note_amount = 0; @endphp
+                          <section class="refund-by-credit-note-section" >
+                            @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
+                            <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                              @foreach ($booking_detail->getBookingCreditNote as $cnkey => $payment)
+
+                              @php
+                                $count = $cnkey + 1;
+                                $total_credit_note_amount = $credit_note_amount + $payment->credit_note_amount;
+                              @endphp
+
+                                <div class="credit-note-section">
                                   <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
-                                    <div class="col-sm-2">
+                                    <div class="col-sm-3">
                                       <div class="form-group">
-                                        <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                        <label class="credit_note_label" id="credit_note_label_{{ $cnkey }}">Credit Note Amount Payment #{{$count}} <span style="color:red">*</span></label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                           </div>
-                                          <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount"  class="form-control credit-note-amount hide-arrows" step="any" disabled>
+                                          <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_amount]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_amount" data-name="credit_note_amount" class="form-control credit-note-amount amount hide-arrows" step="any">
                                         </div>
                                       </div>
                                     </div>
-                                    <div class="col-sm-2">
+                                    {{-- <div class="col-sm-2">
                                       <div class="form-group">
                                         <label>Credit Note No. <span style="color:red">*</span></label>
-                                        <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" disabled>
+                                        <input type="text" value="{{$payment->credit_note_no}}" name="quote[{{ $key }}][credit_note][0][credit_note_no]" data-name="credit_note_no"  class="form-control" >
                                       </div>
-                                    </div>
-                                    <div class="col-sm-2">
+                                    </div> --}}
+                                    <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Credit Note Date <span style="color:red">*</span></label>
-                                        <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][0][credit_note_recieved_date]" data-name="credit_note_recieved_date" class="form-control" disabled>
+                                        <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_date]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_date" data-name="credit_note_recieved_date" class="form-control" >
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
                                     <div class="col-sm-3">
                                       <div class="form-group">
                                         <label>Credit Note Received By <span style="color:red">*</span></label>
-                                        <select  name="quote[{{ $key }}][credit_note][0][credit_note_recieved_by]" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" disabled>
+                                        <select  name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_by]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_by" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
                                           <option value="">Select User</option>
                                           @foreach ($sale_persons as $person)
                                             <option  value="{{ $person->id }}" {{ ($person->id == $payment->credit_note_recieved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
                                           @endforeach
                                         </select>
+                                        <span class="text-danger" role="alert"></span>
                                       </div>
                                     </div>
+
+                                    <div class="col-sm-1 d-flex justify-content-end">
+                                      <div class="form-group">
+                                        <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm d-none">X</button>
+                                      </div>
+                                    </div>
+
                                   </div>
                                 </div>
                               
                               @endforeach
                               @else
-                              <div class="credit-note-hidden-section" hidden>
+                              <div class="credit-note-section" hidden>
                                 <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
-                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2">
+                                <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2" >
                                   <div class="col-sm-3">
                                     <div class="form-group">
-                                      <label class="depositeLabel">Credit Note Amount <span style="color:red">*</span></label>
+                                      <label class="credit_note_label" id="credit_note_label_{{ $key }}">Credit Note Amount Payment #1 <span style="color:red">*</span></label>
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                           <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                         </div>
-                                        <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount hide-arrows" step="any"  readonly>
+                                        <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount amount hide-arrows" step="any" >
                                       </div>
                                     </div>
                                   </div>
@@ -1087,12 +1189,20 @@
                               </div>
                             @endif
                           </section>
+
                           <section class="mt-1">
                             <div class="row">
                               <div class="col-12 text-right">
-                                <div class="btn-group mr-1 cancel-payemnt-btn {{ ( ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ) ? 'd-none' : '' }}">
+                                {{-- {{ ( ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ) ? 'd-none' : '' }} --}}
+                                <div class="btn-group mr-1 cancel-payemnt-btn ">
                                   @if(isset($total_deposit) && ($total_deposit > 0))
-                                    <div class="btn-group">
+                                    <div class="btn-group  
+                                    @if(isset($total_refund_amount) && isset($total_credit_note_amount))
+                                      @if($total_refund_amount == $total_deposit || $total_credit_note_amount == $total_deposit || ($total_credit_note_amount + $total_refund_amount) == $total_deposit)
+                                      d-none
+                                      @endif
+                                    @endif
+                                    ">
                                       <div class="btn-group dropdown" role="group">
                                         <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <span class="sr-only">Toggle Dropdown</span>
@@ -1103,13 +1213,20 @@
                                           <a class="btn dropdown-item credit-note" data-booking_detail_id="{{$booking_detail->id}}">Credit Note</a>
                                         </div>
                                       </div>
-                                      <button type="button" class="btn btn-danger">
+                                      <button type="button" class="btn btn-danger ">
                                         Cancel Payment
                                       </button>
                                     </div>
                                   @endif
                                 </div>
-                                <button type="button" data-key="0" class="clone_booking_finance float-right btn btn-dark btn-md {{ isset($total_deposit) && isset($booking_detail->estimated_cost) && ($total_deposit >= $booking_detail->estimated_cost) || ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ? 'd-none' : ''}}">Add More Payments </button>
+                                {{-- {{ isset($total_deposit) && isset($booking_detail->estimated_cost) && ($total_deposit >= $booking_detail->estimated_cost) || ($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0) || ($booking_detail->getBookingCreditNote) && (count($booking_detail->getBookingCreditNote) > 0) ? 'd-none' : ''}} --}}
+                                <button type="button" data-key="0" class="clone_booking_finance float-right btn btn-dark btn-md 
+                                
+                                @if(isset($total_deposit) && isset($booking_detail->actual_cost) && ($total_deposit == $booking_detail->actual_cost) || isset($booking_detail->getBookingRefundPayment) && (count($booking_detail->getBookingRefundPayment) > 0)             )
+                                d-none
+                                @endif()
+                                
+                                ">Add More Payments </button>
                               </div>
                             </div>
                           </section>
@@ -1121,7 +1238,7 @@
                         <button type="button" id="add_more_booking" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       </div>
                     </div>
-                    <div class="form-group row  mt-3">
+                    <div class="form-group row mt-1">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                       <div class="col-sm-2">
                         <div class="form-group">
@@ -1178,9 +1295,6 @@
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
-                            </div>
                             <input type="number" value="{{ \Helper::number_format($booking->profit_percentage) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                             <div class="input-group-append">
                               <div class="input-group-text">%</div>
@@ -1202,11 +1316,26 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" value="{{ \Helper::number_format($booking->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="form-group row">
                       <div class="col-sm-3">
                         <div class="form-group">
                           <label>Selling Price in Other Currency</label>
-                          <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                          <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                             <option value="">Select Currency</option>
                             @foreach ($currencies as $currency)
                             <option value="{{ $currency->code }}" {{ ($booking->selling_currency_oc == $currency->code) ? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -1218,7 +1347,7 @@
                         </div>
                       </div>
                       <div class="col-sm-2">
-                        <div class="form-group mt-2">
+                        <div class="form-group">
                           <label></label>
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -1229,19 +1358,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                      <div class="col-sm-2">
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
-                            </div>
-                            <input type="number" value="{{ \Helper::number_format($booking->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+
                     <div class="form-group">
                       <div class="row">
                         <div class="col-sm-3 ">
@@ -1249,31 +1366,220 @@
                         </div>
                         <div class="col-md-9">
                           <div class="row">
-                          @forelse  ($booking['revelant_quote'] as $revQuote)
-                            <div class="col-sm-2 relevant-quote">
-                              <div class="form-group">
-                                <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                              </div>
-                            </div>
-                            @empty
-                            <div class="col-sm-2 relevant-quote">
-                              <div class="form-group">
-                                <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                              </div>
-                            </div>
-                          @endforelse
-                            <div class="col-sm-2">
-                              <div class="form-group">
-                                  <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
-                              </div>
+                            <div class="col-sm-3 relevant-quote">
+                              <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                                @foreach ($quote_ref as $ref)
+                                  <option {{ (is_array($booking['revelant_quote']))? ((in_array($ref->quote_ref, $booking['revelant_quote']))? 'selected': NULL) : NULL }} value="{{$ref->quote_ref}}"> {{ $ref->quote_ref }} </option>
+                                @endforeach
+                              </select>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
+
+                    @if($booking->booking_status == 'cancelled')
+                      <section class="cancellation-payments-section mt-3 mb-2">
+
+                        <div class="cancellation-payments">
+                          <h3 class="mb-2">Booking Cancellation Refund Payments</h3>
+                          <div class="row mb-2">
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Total Refund Amount</label>
+                                <div class="input-group">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                  </div>
+                                  <input type="number" value="{{ isset($booking->getTotalRefundAmount->total_refund_amount) && !empty($booking->getTotalRefundAmount->total_refund_amount) ? $booking->getTotalRefundAmount->total_refund_amount : '' }}" name="cancellation_refund_total_amount" data-name="cancellation_refund_total_amount" id="cancellation_refund_total_amount" class="form-control cancellation-refund-total-amount amount hide-arrows" step="any" readonly disabled>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                          @php $total_booking_cancellation_refund_payment = 0; @endphp
+                          @if($booking->getBookingCancellationRefundPaymentDetail && count($booking->getBookingCancellationRefundPaymentDetail) > 0)
+                            @foreach ($booking->getBookingCancellationRefundPaymentDetail as $bcrpdKey => $payment)
+                              @php
+                                $count = $bcrpdKey + 1;
+                                $total_booking_cancellation_refund_payment += $payment->refund_amount;
+                              @endphp
+
+                              <div class="row cancellation-refund-payment-row mb-2">
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label class="cancellation-refund-payment-label" id="cancellation_refund_payment_label_{{$bcrpdKey}}">Refund Amount #{{$count}} </label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                      </div>
+                                      <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="cancellation_refund[{{$bcrpdKey}}][refund_amount]" data-name="refund_amount" id="cancellation_refund_{{$bcrpdKey}}_refund_amount" class="form-control cancellation-refund-amount amount hide-arrows" step="any">
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label>Refund Date </label>
+                                    <input type="date" value="{{ $payment->refund_date }}" name="cancellation_refund[{{$bcrpdKey}}][refund_date]" id="cancellation_refund_{{$bcrpdKey}}_refund_date" data-name="refund_date"  class="form-control">
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label>Refund Approved Date </label>
+                                    <input type="date" value="{{ $payment->refund_approved_date }}" name="cancellation_refund[{{$bcrpdKey}}][refund_approved_date]" id="cancellation_refund_{{$bcrpdKey}}_refund_approved_date" data-name="refund_approved_date"  class="form-control">
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label>Refund Approved By </label>
+                                    <select  name="cancellation_refund[{{$bcrpdKey}}][refund_approved_by]" data-name="refund_approved_by" id="cancellation_refund_{{$bcrpdKey}}_refund_approved_by" class="form-control refund_approved_by select2single" >
+                                      <option value="">Select User</option>
+                                      @foreach ($sale_persons as $person)
+                                        <option  value="{{ $person->id }}" {{ ($person->id == $payment->refund_approved_by) ? 'selected' : '' }}>{{ $person->name }}</option>
+                                      @endforeach
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label>Refund Processed By </label>
+                                    <select  name="cancellation_refund[{{$bcrpdKey}}][refund_processed_by]" data-name="refund_processed_by" id="cancellation_refund_{{$bcrpdKey}}_refund_processed_by" class="form-control refund_processed_by select2single" >
+                                      <option value="">Select User</option>
+                                      @foreach ($sale_persons as $person)
+                                        <option  value="{{ $person->id }}" {{ ($person->id == $payment->refund_processed_by) ? 'selected' : '' }}>{{ $person->name }}</option>
+                                      @endforeach
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                  <div class="form-group">
+                                    <label>Refund Process From </label>
+                                    <select  name="cancellation_refund[{{$bcrpdKey}}][refund_process_from]" data-name="refund_process_from" id="cancellation_refund_{{$bcrpdKey}}_refund_process_from" class="form-control refund_process_from select2single" >
+                                      <option value="">Select Bank</option>
+                                      @foreach ($banks as $bank)
+                                        <option value="{{ $bank->id }}" {{ ($bank->id == $payment->bank_id) ? 'selected' : '' }}> {{ $bank->name }} </option>
+                                      @endforeach
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-1 d-flex justify-content-center">
+                                  <div class="form-group">
+                                    <button type="button" onclick="this.closest('.cancellation-refund-payment-row').remove()" class="cancellation-refund-payment-row-remove-btn btn btn-outline-dark btn-sm d-none" >X</button>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            @endforeach
+                            <div class="row">
+                              <div class="col-12 text-right 
+                              @if(isset($booking->getTotalRefundAmount->total_refund_amount) && isset($total_booking_cancellation_refund_payment) && $booking->getTotalRefundAmount->total_refund_amount == $total_booking_cancellation_refund_payment)
+                                d-none
+                              @endif">
+                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more </button>
+                              </div>
+                            </div>
+                       
+
+                          @else
+                            <div class="row cancellation-refund-payment-row mb-2">
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label class="cancellation-refund-payment-label" id="cancellation_refund_payment_label_0">Refund Amount #1 </label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                    </div>
+                                    <input type="number" value=""  name="cancellation_refund[0][refund_amount]" data-name="refund_amount" id="cancellation_refund_0_refund_amount" class="form-control cancellation-refund-amount amount hide-arrows" step="any">
+                                  </div>
+                                </div>
+                              </div>
+      
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Refund Date </label>
+                                  <input type="date" value="{{ date('Y-m-d') }}" name="cancellation_refund[0][refund_date]" id="cancellation_refund_0_refund_date" data-name="refund_date"  class="form-control">
+                                </div>
+                              </div>
+      
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Refund Approved Date </label>
+                                  <input type="date" value="{{ date('Y-m-d') }}" name="cancellation_refund[0][refund_approved_date]" id="cancellation_refund_0_refund_approved_date" data-name="refund_approved_date"  class="form-control">
+                                </div>
+                              </div>
+      
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Refund Approved By </label>
+                                  <select  name="cancellation_refund[0][refund_approved_by]" data-name="refund_approved_by" id="cancellation_refund_0_refund_approved_by" class="form-control refund_approved_by select2single" >
+                                    <option value="">Select User</option>
+                                    @foreach ($sale_persons as $person)
+                                      <option  value="{{ $person->id }}">{{ $person->name }}</option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+      
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Refund Processed By </label>
+                                  <select  name="cancellation_refund[0][refund_processed_by]" data-name="refund_processed_by" id="cancellation_refund_0_refund_processed_by" class="form-control refund_processed_by select2single" >
+                                    <option value="">Select User</option>
+                                    @foreach ($sale_persons as $person)
+                                      <option  value="{{ $person->id }}">{{ $person->name }}</option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+      
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Refund Process From </label>
+                                  <select  name="cancellation_refund[0][refund_process_from]" data-name="refund_process_from" id="cancellation_refund_0_refund_process_from" class="form-control refund_process_from select2single" >
+                                    <option value="">Select Bank</option>
+                                    @foreach ($banks as $bank)
+                                      <option value="{{ $bank->id }}"> {{ $bank->name }} </option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+  
+                              <div class="col-sm-1 d-flex justify-content-center">
+                                <div class="form-group">
+                                  <button type="button" onclick="this.closest('.cancellation-refund-payment-row').remove()" class="cancellation-refund-payment-row-remove-btn btn btn-outline-dark btn-sm d-none" >X</button>
+                                </div>
+                              </div>
+      
+                            </div>
+      
+                            <div class="row">
+                              <div class="col-12 text-right">
+                                <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments mt-1 btn btn-outline-dark btn-sm  pull-right">+ Add more</button>
+                              </div>
+                            </div>
+        
+                          @endif
+                        </div>
+                      </section>
+                    @endif
+
                   </div>
                   @if(isset($ufg_payment_records) && !empty($ufg_payment_records))
-                    <div class="card">
+                    <div class="card mt-2">
                       <div class="card-header">
                         <h3 class="card-title font-weight-bold">UFG Payment System</h3>
                       </div>
@@ -1334,7 +1640,7 @@
                     </div>
                   @endif
                   @if(isset($old_ufg_payment_records) && !empty($old_ufg_payment_records))
-                    <div class="card">
+                    <div class="card  mt-2">
                       <div class="card-header">
                         <h3 class="card-title font-weight-bold">Old UFG Payment System</h3>
                       </div>
@@ -1415,6 +1721,9 @@
   @include('partials.payment_details_modal')
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
+
+  @include('partials.cancel_booking_modal')
+
 @endsection
 @push('js')
 <script>

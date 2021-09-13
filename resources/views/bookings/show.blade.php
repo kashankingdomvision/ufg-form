@@ -102,9 +102,14 @@
                 <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary mr-3 btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
+
+                <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Edit this Booking?');" data-title="Edit" data-target="#edit" title="Edit">
+                  <button type="button" class="mr-2 btn btn-info btn-md float-right" data-title="" data-target="#" title="Edit">Edit Booking</button>
+                </a>
+
               </div>
               
-              <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking">
+              <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-payment">
                 @csrf @method('put')
                   <div class="card-body">
                     <div class="row mb-2">
@@ -142,12 +147,12 @@
                           <label>Currency Rate Type <span style="color:red">*</span></label>
                           <div>
                             <label class="radio-inline mr-1">
-                                <input type="radio" name="rate_type" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
+                                <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
                                 <span>&nbsp;Live Rate</span>
                             </label>
                           
                             <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
+                              <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
                               <span>&nbsp;Manual Rate</span>
                             </label>
                           </div>
@@ -173,7 +178,7 @@
                           <select name="commission_id" id="commission_id" class="form-control commission-id">
                             <option selected value="" >Select Commission Type </option>
                             @foreach ($commission_types as $commission_type)
-                                <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }}</option>
+                                <option value="{{ $commission_type->id }}" {{  $commission_type->id == $booking->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
                             @endforeach
                           </select>
                           <span class="text-danger" role="alert"></span>
@@ -225,7 +230,7 @@
                       <div class="col-sm-6">
                         <div class="form-group">
                           <label>Booking Currency <span style="color:red">*</span></label>
-                          <select name="currency_id" id="currency_id" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
+                          <select name="currency_id" id="currency_id" data-status="booking" class="form-control booking-currency-id @error('currency_id') is-invalid @enderror">
                             <option value="">Select Booking Currency </option>
                             @foreach ($currencies as $currency)
                               <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}" {{ $currency->id == $booking->currency_id ? 'selected' : ''  }} > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -338,7 +343,7 @@
                             
                             <div class="col-sm-3">
                               <div class="form-group">
-                                <label>Covid Vaccinated <span style="color:red">*</span></label>
+                                <label>Covid Vaccinated </label>
                                 <div>
                                   <label class="radio-inline">
                                     <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ($booking->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}> Yes
@@ -458,10 +463,19 @@
                               </div>
                             @endif
                             <div class="row">
+
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Date of Service <span style="color:red">*</span></label>
+                                  <label>Start Date of Service <span style="color:red">*</span></label>
                                   <input type="text" value="{{ $booking_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>End Date of Service <span style="color:red">*</span></label>
+                                  <input type="text" value="{{ $booking_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker"  placeholder="Date of Service" autocomplete="off">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
@@ -618,7 +632,7 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supplier Currency <span style="color:red">*</span></label>
-                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control  select2single  supplier-currency-id @error('currency_id') is-invalid @enderror">
+                                  <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single booking-supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)
                                     <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $booking_detail->supplier_currency_id == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -630,12 +644,24 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
+                                  <label>Estimated Cost <span style="color:red">*</span></label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
+                                    </div>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-status="booking" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost hide-arrows" value="0.00">
+                                  </div>
+                                </div>
+                              </div>
+  
+                              <div class="col-sm-2">
+                                <div class="form-group">
                                   <label>Actual Cost <span style="color:red">*</span></label>
                                   <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change" value="0.00">
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->actual_cost) }}" name="quote[{{ $key }}][actual_cost]" data-name="actual_cost" data-status="booking" id="quote_{{ $key }}_actual_cost" class="form-control actual-cost change" value="0.00">
                                   </div>
                                 </div>
                               </div>
@@ -693,12 +719,24 @@
 
                               <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
+                                  <label>Actual Cost in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
                                     <div class="input-group-prepend">
                                       <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                     </div>
-                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency"  readonly>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->actual_cost_bc) }}" name="quote[{{ $key }}][actual_cost_in_booking_currency]" data-name="actual_cost_in_booking_currency" id="quote_{{ $key }}_actual_cost_in_booking_currency" class="form-control actual-cost-in-booking-currency"  readonly>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                                    </div>
+                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_amount_bc) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                   </div>
                                 </div>
                               </div>
@@ -711,18 +749,6 @@
                                       <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                     </div>
                                     <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->selling_price_bc) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
-                                  </div>
-                                </div>
-                              </div>
-                                
-                              <div class="col-sm-3">
-                                <div class="form-group">
-                                  <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
-                                    </div>
-                                    <input type="number" step="any" value="{{ \Helper::number_format($booking_detail->markup_amount_bc) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
                                   </div>
                                 </div>
                               </div>
@@ -1240,9 +1266,6 @@
                         <div class="col-sm-2">
                           <div class="form-group">
                             <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
-                              </div>
                               <input type="number" value="{{ \Helper::number_format($booking->profit_percentage) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                               <div class="input-group-append"><div class="input-group-text">%</div></div>
                             </div>
@@ -1265,10 +1288,24 @@
                       </div>
 
                       <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                              </div>
+                              <input type="number" value="{{ \Helper::number_format($booking->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
                         <div class="col-sm-3">
                             <div class="form-group">
                             <label>Selling Price in Other Currency</label>
-                            <select  name="selling_price_other_currency" class="form-control select2single selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                            <select  name="selling_price_other_currency" class="form-control  selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
                                 <option value="">Select Currency</option>
                                 @foreach ($currencies as $currency)
                                 <option value="{{ $currency->code }}" {{ ($booking->selling_currency_oc == $currency->code) ? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
@@ -1282,7 +1319,7 @@
                         </div>
 
                         <div class="col-sm-2">
-                          <div class="form-group mt-2">
+                          <div class="form-group">
                             <label></label>
                             <div class="input-group">
                               <div class="input-group-prepend">
@@ -1294,46 +1331,23 @@
                         </div>
                       </div>
 
-                        <div class="form-group row">
-                          <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                          <div class="col-sm-2">
-                            <div class="form-group">
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
-                                </div>
-                                <input type="number" value="{{ \Helper::number_format($booking->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
                         <div class="form-group">
                           <div class="row">
-                            <div class="col-sm-3"><label for="inputEmail3" class="col-form-label">Relevant Quotes</label></div>
-                            
+                            <div class="col-sm-3 ">
+                              <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
+                            </div>
                             <div class="col-md-9">
                               <div class="row">
-                                @forelse($booking['revelant_quote'] as $revQuote)
-                                  <div class="col-sm-2 relevant-quote">
-                                    <div class="form-group">
-                                      <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                                    </div>
-                                  </div>
-                                  @empty
-                                  <div class="col-sm-2 relevant-quote">
-                                    <div class="form-group">
-                                      <input type="text" value="{{ $revQuote }}" class="form-control"  name="revelant_quote[]">
-                                    </div>
-                                  </div>
-                                @endforelse
-                                <div class="col-sm-2">
-                                  <div class="form-group">
-                                    <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
-                                  </div>
+                                <div class="col-sm-3 relevant-quote">
+                                  <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                                    @if(isset($booking['revelant_quote']) && !empty($booking['revelant_quote']))
+                                      @foreach ($booking['revelant_quote'] as $revQuote)
+                                        <option selected value="{{$revQuote}}"> {{ $revQuote }} </option>
+                                      @endforeach
+                                    @endif
+                                  </select>
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         </div>
@@ -1500,10 +1514,10 @@
 @push('js')
 <script>
   @if($status && !empty($status))
-    $('#update-booking :input').prop('disabled', true);
+    $('#update-payment :input').prop('disabled', true);
     $('.finance :input, .refund-payment-hidden-section :input, .credit-note-hidden-section  :input, .submit, #update-booking input:hidden, .cancel-payemnt-btn .btn, .clone_booking_finance').prop('disabled', false);
   @else
-    $('#update-booking :input').prop('disabled', true);
+    $('#update-payment :input').prop('disabled', true);
   @endif
 
   $(window).on('beforeunload', function() {

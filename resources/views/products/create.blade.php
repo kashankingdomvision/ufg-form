@@ -52,8 +52,8 @@
                 
                 </div>
                 <div class="card-footer">
-                  <a href="{{ route('products.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                   <button type="submit" class="btn btn-primary float-right">Submit</button>
+                  <a href="{{ route('products.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                 </div>
               </form>
             </div>

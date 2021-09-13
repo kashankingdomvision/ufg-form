@@ -3,26 +3,34 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests\BookingRequest;
 use App\Http\Requests\BookingRefundPaymentRequest;
 use App\Http\Requests\BookingCreditNoteRequest;
+use App\Http\Requests\CancelBookingRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Helper;
 
 use App\Airline;
+use App\AccomodationDetail;
 use App\Brand;
 use App\Bank;
 use App\Booking;
 use App\BookingRefundPayment;
 use App\BookingCreditNote;
-use App\BookingTransaction;
 use App\BookingMethod;
 use App\BookingType;
 use App\BookingDetail;
 use App\BookingDetailFinance;
 use App\BookingLog;
 use App\BookingPaxDetail;
+use App\BookingCancellation;
+use App\BookingCancellationRefundPayment;
 use App\Currency;
 use App\Commission;
 use App\Country;
@@ -30,13 +38,13 @@ use App\Category;
 use App\HolidayType;
 use App\PaymentMethod;
 use App\QuoteUpdateDetail;
+use App\Quote;
 use App\Season;
 use App\Supplier;
+use App\ServiceExcursionDetail;
+use App\TransferDetail;
 use App\User;
-
-use Cache;
-use Auth;
-use Carbon\Carbon;
+use App\Wallet;
 
 class BookingController extends Controller
 {
@@ -187,6 +195,7 @@ class BookingController extends Controller
             'booked_by_id'            => $quoteD['booked_by_id'],
             'supervisor_id'           => $quoteD['supervisor_id'],
             'date_of_service'         => $quoteD['date_of_service'],
+            'end_date_of_service'     => $quoteD['end_date_of_service'],
             'time_of_service'         => $quoteD['time_of_service'],
             'booking_date'            => $quoteD['booking_date'],
             'booking_due_date'        => $quoteD['booking_due_date'],
@@ -196,11 +205,12 @@ class BookingController extends Controller
             'supplier_currency_id'    => $quoteD['supplier_currency_id'],
             'comments'                => $quoteD['comments'],
             'estimated_cost'          => $quoteD['estimated_cost'],
+            'actual_cost'             => $quoteD['actual_cost'],
             'markup_amount'           => $quoteD['markup_amount'],
             'markup_percentage'       => $quoteD['markup_percentage'],
             'selling_price'           => $quoteD['selling_price'],
             'profit_percentage'       => $quoteD['profit_percentage'],
-            'estimated_cost_bc'       => $quoteD['estimated_cost_in_booking_currency'],
+            'actual_cost_bc'          => $quoteD['actual_cost_in_booking_currency'],
             'selling_price_bc'        => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
             'added_in_sage'           => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
@@ -237,14 +247,62 @@ class BookingController extends Controller
             "refund_amount"        => $quoteD['refund_amount']??NULL,
             "refund_date"          => $quoteD['refund_date']??NULL,
             "bank_id"              => $quoteD['bank']??NULL,
-            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL
+            "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL,
+            "refund_recieved"      => $quoteD['refund_recieved']??NULL,
+            "refund_recieved_date" => (isset($quoteD['refund_recieved']) && ($quoteD['refund_recieved'] == 1)) ? date('Y-m-d') : NULL,
+        ];
+    }
+
+    public function getAccommodationDetailsArray($quoteD)
+    {
+        return [
+            "arrival_date"            => $quoteD['arrival_date']??NULL,
+            "no_of_nights"            => $quoteD['no_of_nights']??NULL,
+            "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
+            "room_types"              => $quoteD['room_types']??NULL,
+            "meal_plan"               => $quoteD['meal_plan']??NULL,
+            "refrence"                => $quoteD['refrence']??NULL,
+            'day_event'               => isset($quoteD['day_event']) ? $quoteD['day_event']: null,
+            'confirmed_with_supplier' => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : null , 
+        ];
+    }
+
+    public function getTransferDetailsArray($quoteD)
+    {
+        return [
+            "transfer_description"    => $quoteD['transfer_description']??NULL,
+            "quantity"                => $quoteD['quantity']??NULL,
+            "pickup_port"             => $quoteD['pickup_port']??NULL,
+            "pickup_accomodation"     => $quoteD['pickup_accomodation']??NULL,
+            "pickup_date"             => $quoteD['pickup_date']??NULL,
+            "pickup_time"             => $quoteD['pickup_time']??NULL,
+            "dropoff_port"            => $quoteD['dropoff_port']??NULL,
+            "dropoff_accomodation"    => $quoteD['dropoff_accomodation']??NULL,
+            "dropoff_date"            => $quoteD['dropoff_date']??NULL,
+            "dropoff_time"            => $quoteD['dropoff_time']??NULL,
+            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 , 
+        ];
+    }
+
+    public function getServiceExcursionDetailsArray($quoteD)
+    {
+        return [
+            'name'                     => $quoteD['name']??NULL,
+            'description'              => $quoteD['description']??NULL,               
+            'date'                     => $quoteD['date']??NULL,        
+            'time'                     => $quoteD['time']??NULL,
+            'quantity'                 => $quoteD['quantity']??NULL,          
+            'refrence'                 => $quoteD['refrence']??NULL,      
+            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 ,    
+            'note'                     => $quoteD['note']??NULL,
         ];
     }
 
     public function edit($id)
     {
+        $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['booking']          = Booking::findOrFail(decrypt($id));
+        $data['booking']          = $booking;
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -259,6 +317,7 @@ class BookingController extends Controller
         $data['payment_methods']  = PaymentMethod::all();
         $data['commission_types'] = Commission::all();
         $data['banks']            = Bank::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -284,28 +343,6 @@ class BookingController extends Controller
 
     public function show($id,$status = null)
     {
-
-        // if(!empty($status)){
-
-        //     $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('status','bookings')->first();
-    
-        //     if($quote_update_detail && $quote_update_detail->exists()){
-        //         $data['exist']   = 1;
-        //         $data['user_id'] = $quote_update_detail->user_id;
-        //     }
-        //     else{    
-    
-        //         $quote_update_details = QuoteUpdateDetail::create([
-        //             'user_id'      =>  Auth::id(),
-        //             'foreign_id'   =>  decrypt($id),
-        //             'status'       =>  'bookings'
-        //         ]);
-    
-        //         $data['exist']   = null;
-        //         $data['user_id'] = null;
-        //     }
-        // }
-
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['categories']       = Category::all()->sortBy('name');
         $data['seasons']          = Season::all();
@@ -340,12 +377,16 @@ class BookingController extends Controller
         }
 
         $data['status'] = $status;
+        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
+
         return view('bookings.show',$data);
     }
 
-
     public function update(BookingRequest $request, $id)
     {
+
+        // dd($request->all());
+
         // check update access
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         if(!$quote_update_detail->exists()) {
@@ -360,12 +401,17 @@ class BookingController extends Controller
 
         foreach ($booking->getBookingDetail as $bookingde) {
             $d = $bookingde->toArray();
-            $d['finance'] = $bookingde->getBookingFinance->toArray();
+            $d['finance']         = $bookingde->getBookingFinance->toArray();
+            $d['refund_payments'] = $bookingde->getBookingRefundPayment->toArray();
+            $d['credit_notes']    = $bookingde->getBookingCreditNote->toArray();
+            
             array_push($book, $d);
         }
 
-        $array['booking'] = $book;
-        $array['pax']     = $booking->getBookingPaxDetail->toArray();
+        $array['booking']                        = $book;
+        $array['cancel_booking_refund_payments'] = (count( $booking->getBookingCancellationRefundPaymentDetail) > 0) ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
+        $array['booking_cancellations']          = (count((array) $booking->getTotalRefundAmount) > 0) ? $booking->getTotalRefundAmount->toArray() : [];
+        $array['pax']                            = $booking->getBookingPaxDetail->toArray();
 
         BookingLog::create([
             'booking_id'    => $booking->id,
@@ -381,19 +427,23 @@ class BookingController extends Controller
             $booking->getBookingDetail()->delete();
 
             foreach ($request->quote as $qu_details) {
-                $bookingDetail = $this->getBookingDetailsArray($qu_details);
-                $bookingDetail['invoice'] = $this->fileStore($qu_details, $booking->id);
+
+                $bookingDetail               = $this->getBookingDetailsArray($qu_details);
+                $bookingDetail['invoice']    = $this->fileStore($qu_details, $booking->id);
                 $bookingDetail['booking_id'] = $booking->id;
-                $booking_Details=  BookingDetail::create($bookingDetail);
+                $booking_Details             = BookingDetail::create($bookingDetail);
+
+
                 foreach ($qu_details['finance'] as $finance){
-                    $fin = $this->getFinanceBookingDetailsArray($finance);
+
+                    $fin                      = $this->getFinanceBookingDetailsArray($finance);
                     $fin['booking_detail_id'] = $booking_Details->id;
 
                     if($fin['deposit_amount'] > 0){
                         BookingDetailFinance::create($fin);
 
                         if($fin['payment_method_id'] == 3){
-                            BookingTransaction::create([
+                            Wallet::create([
                                 'booking_id'        => $booking->id,
                                 'booking_detail_id' => $booking_Details->id,
                                 'supplier_id'       => $booking_Details->supplier_id,
@@ -406,7 +456,7 @@ class BookingController extends Controller
                     
                 foreach ($qu_details['refund'] as $refund){
 
-                    $refund = $this->getBookingRefundPaymentArray($refund);
+                    $refund                      = $this->getBookingRefundPaymentArray($refund);
                     $refund['booking_detail_id'] = $booking_Details->id;
 
                     if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
@@ -415,7 +465,7 @@ class BookingController extends Controller
                     }
                 }
 
-                if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note']) > 0){
+                if(isset($qu_details['credit_note']) && !empty($qu_details['credit_note'])){
                     
                     foreach ($qu_details['credit_note'] as $credit_note){
 
@@ -424,10 +474,11 @@ class BookingController extends Controller
                         $credit_note['supplier_id']       = $booking_Details->supplier_id;
                         $credit_note['user_id']           = Auth::id();
 
-                        if(!empty($credit_note['credit_note_amount']) && !empty($credit_note['credit_note_recieved_date'])){
+                        if(($credit_note['credit_note_amount']) > 0 && !empty($credit_note['credit_note_recieved_date'])){
 
                             BookingCreditNote::create($credit_note);
-                            BookingTransaction::create([
+
+                            Wallet::create([
                                 'booking_id'        => $booking->id,
                                 'booking_detail_id' => $booking_Details->id,
                                 'supplier_id'       => $booking_Details->supplier_id,
@@ -438,6 +489,31 @@ class BookingController extends Controller
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                         }
                     }
+                }
+
+                if(isset($qu_details['category_detials'])){
+                    
+                    if(isset($qu_details['category_detials']['accommodation']) && !empty($qu_details['category_detials']['accommodation'])){
+
+                        $accommodation_details                      = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
+                        $accommodation_details['booking_detail_id'] = $booking_Details->id;
+                        AccomodationDetail::create($accommodation_details);
+                    }
+
+                    if(isset($qu_details['category_detials']['transfer'])){
+                       
+                        $transfer_details                      = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
+                        $transfer_details['booking_detail_id'] = $booking_Details->id;
+                        TransferDetail::create($transfer_details);
+                    }
+
+                    if(isset($qu_details['category_detials']['service_excursion'])){
+                       
+                        $service_excursion                      = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
+                        $service_excursion['booking_detail_id'] = $booking_Details->id;
+                        ServiceExcursionDetail::create($service_excursion);
+                    }
+
                 }
 
             }
@@ -464,19 +540,94 @@ class BookingController extends Controller
             }
         }
 
-        $quote_update_detail->delete(); 
+        if($request->has('cancellation_refund') && count($request->cancellation_refund) > 0){
+
+            $booking->getBookingCancellationRefundPaymentDetail()->delete();
+
+            foreach ($request->cancellation_refund as $cancellation_refund) {
+
+                BookingCancellationRefundPayment::create([
+
+                    "booking_id"            => $booking->id,
+                    "refund_amount"         => $cancellation_refund['refund_amount']??NULL,
+                    "refund_date"           => $cancellation_refund['refund_date']??NULL,
+                    "refund_approved_date"  => $cancellation_refund['refund_approved_date']??NULL,
+                    "refund_approved_by"    => $cancellation_refund['refund_approved_by']??NULL,
+                    "refund_processed_by"   => $cancellation_refund['refund_processed_by']??NULL,
+                    "bank_id"               => $cancellation_refund['refund_process_from']??NULL,
+                ]);
+            }
+
+        }
+
+        // $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     }
-    
-    private function curl_data($url)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "$url");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        return $output = curl_exec($ch);
+
+    public function get_booking_net_price($id){
+      
+        $booking = Booking::find($id); 
+
+        $booking_data = array(
+            'booking_net_price'  => $booking->net_price,
+            'booking_currency_id' => $booking->currency_id,
+            'booking_currency_code' => $booking->getCurrency->code,
+        );
+
+        return $booking_data;
     }
+
+    public function cancel_booking(CancelBookingRequest $request){ 
+
+        $total_refund_amount = $request->booking_net_price - $request->cancellation_charges;
+
+        BookingCancellation::create([
+
+            'booking_id'           => $request->booking_id,
+            'cancellation_charges' => $request->cancellation_charges,
+            'cancellation_reason'  => $request->cancellation_reason,
+            'total_refund_amount'  => $total_refund_amount,
+            'currency_id'          => $request->booking_currency_id,
+        ]);
+
+        Booking::where('id', $request->booking_id)->update([ 'booking_status' => 'cancelled' ]);
+
+        return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
+    }
+
+    public function revert_cancel_booking($id){ 
+
+        Booking::where('id',decrypt($id))->update([ 'booking_status' => 'confirmed' ]);
+        BookingCancellation::where('booking_id',decrypt($id))->delete();
+
+        return redirect()->back()->with('success_message', 'Booking Reverted Successfully');    
+    }
+
+    public function booking_detail_clone($count){
+
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        // $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'sales-agent');
+                                    })->get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_id']         = \Helper::getQuoteID();
+        $data['count'] = $count;
+
+        return response()->json(View::make('partials.booking_detail', $data)->render());
+    }
+
     
     public function destroy(Request $request, $id)
     {
@@ -501,19 +652,8 @@ class BookingController extends Controller
         $data['booking_types']      = BookingType::all();
         $data['payment_methods']    = PaymentMethod::all();
         $data['commission_types']   = Commission::all();
+        $data['banks']              = Bank::all();
 
-        if(isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no'])){
-
-            $zoho_booking_reference = isset($data['booking']['ref_no']) && !empty($data['booking']['ref_no']) ? $data['booking']['ref_no'] : '' ;
-            $response = Cache::remember('response', $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
-            });
-
-            if ($response['status'] == 200) {
-                $data['payment_details'] = $response['body']['old_records'];
-            }
-        }
-        
         return view('bookings.version',$data);
     }
     
@@ -540,6 +680,15 @@ class BookingController extends Controller
     }
 
     //storage url
+
+    private function curl_data($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "$url");
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        return $output = curl_exec($ch);
+    }
 
     // 'UC20190765'  payments.unforgettabletravel.com
     // 'UC20189776'  utcstaging.unforgettabletravel.com

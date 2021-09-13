@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
-use Illuminate\Support\Str;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Support\Str;
+use App\Product;
 
 class ProductController extends Controller
 {
@@ -69,7 +70,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $product = Product::findOrFail(decrypt($id));
         $request->validate([ 

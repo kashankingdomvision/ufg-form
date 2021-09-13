@@ -40,7 +40,7 @@
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
             
-              <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" > @csrf
+              <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
                   <div class="row mb-2">
 
@@ -108,7 +108,7 @@
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}">{{ $commission_type->name }} &nbsp; &nbsp; ({{ $commission_type->percentage.' %' }})</option>
+                            <option value="{{ $commission_type->id }}">{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -271,13 +271,13 @@
 
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Covid Vaccinated <span style="color:red">*</span></label>
+                            <label>Covid Vaccinated</label>
                             <div>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes
+                                <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" checked> No
+                                <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" checked> No
                               </label>
                             </div>
                             <span class="text-danger" role="alert"></span>
@@ -326,8 +326,16 @@
                             
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Date of Service <span style="color:red">*</span></label>
+                              <label>Start Date of Service <span style="color:red">*</span></label>
                               <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label>End Date of Service <span style="color:red">*</span></label>
+                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
@@ -486,7 +494,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change" min="0" value="0.00">
+                                <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation" min="0" value="0.00">
                               </div>
                             </div>
                           </div>
@@ -498,7 +506,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
                                 </div>
-                                <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change" value="0.00" min="0" step="any">
+                                <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change-calculation" value="0.00" min="0" step="any">
                               </div>
                             </div>
                           </div>
@@ -507,7 +515,7 @@
                             <div class="form-group">
                               <label>Markup % <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change" min="0" value="0.00">
+                                <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change-calculation" min="0" value="0.00">
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
                                 </div>
@@ -560,18 +568,6 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
-                              <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
-                                </div>
-                                <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div class="col-sm-3">
-                            <div class="form-group">
                               <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
@@ -581,6 +577,19 @@
                               </div>
                             </div>
                           </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                                </div>
+                                <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                              </div>
+                            </div>
+                          </div>
+
                           @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                             <div class="col-sm-2 d-flex justify-content-center">
                               <div class="form-group">
@@ -616,14 +625,14 @@
                     
                   </div>
                   
-                  <div class="row p-3">
+                  <div class="row">
                     <div class="col-12 text-right">
                       <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="form-group row mt-1">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                     <div class="col-sm-2">
                       <div class="form-group">
@@ -689,9 +698,6 @@
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
-                          </div>
                           <input type="number" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
@@ -710,6 +716,20 @@
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div>
                           <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="0.00" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          </div>
+                          <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -748,19 +768,6 @@
                   
                   </div>
 
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                    <div class="col-sm-2">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text selling-price-other-currency-code"></span>
-                          </div>
-                          <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-3 ">
@@ -768,15 +775,12 @@
                       </div>
                       <div class="col-md-9">
                         <div class="row">
-                          <div class="col-sm-2 relevant-quote">
-                            <div class="form-group">
-                                <input type="text" value="" class="form-control"  name="revelant_quote[]">
-                            </div>
-                          </div>
-                          <div class="col-sm-2">
-                            <div class="form-group">
-                                <button type="button" id="cloneRelevantquote" class="btn btn-outline-dark btn "><span class="fa fa-plus"></span></button>
-                            </div>
+                          <div class="col-sm-3 relevant-quote">
+                            <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
+                              @foreach ($quote_ref as $ref)
+                                <option value="{{$ref->quote_ref}}"> {{ $ref->quote_ref }} </option>
+                              @endforeach
+                            </select>
                           </div>
                         </div>
                       </div>

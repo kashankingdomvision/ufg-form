@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
 use App\Quote;
 use App\QuoteDocument;
 use App\QuoteDetail;
-use App\Product;
+
 class QuoteDocumentsController extends Controller
 {
     public function documentIndex($id)

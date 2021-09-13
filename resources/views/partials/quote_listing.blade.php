@@ -21,7 +21,15 @@
   <td>{{ $quote->getSalePerson->name }}</td>
   <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
   <td>{{ $quote->ref_no }}</td>
-  <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
+
+  @if($quote->booking_status == 'quote')
+    <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
+  @endif
+
+  @if($quote->booking_status == 'booked')
+    <td> <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}">{{ $quote->quote_ref }}</a> </td>
+  @endif
+
   <td>{{ $quote->getSeason->name }}</td>
   <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
   
@@ -79,7 +87,7 @@
     </a> --}}
   <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
     @csrf @method('patch')
-    <button type="submit" title="quote clone" onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+    <button type="submit" title="Quote Clone" onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
         <i class="fa fa-clone"></i>
     </button>
   </form>

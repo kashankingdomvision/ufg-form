@@ -61,6 +61,11 @@ class Booking extends Model
         return Carbon::parse($this->created_at)->format('d/m/Y');
     }
 
+    public function getFormatedDateOfBirthAttribute()
+    {
+        return Carbon::parse($this->lead_passenger_dbo)->format('d/m/Y');
+    }
+
     public function getAgencyBookingAttribute()
     {
         if($this->agency == 1){
@@ -87,6 +92,20 @@ class Booking extends Model
         }
     }
     
+    public function getBookingFormatedStatusAttribute()
+    {
+        $status = $this->booking_status;
+        switch ($status) {
+            case 'confirmed':
+                return '<h5><span class="badge badge-success">Confirmed</span></h5>';
+                break;
+            case 'cancelled':
+                return '<h5><span class="badge badge-danger">Cancelled</span></h5>';
+                break;
+        }
+        
+        return $status;
+    }
     
     public function getBookingDetail()
     {
@@ -101,6 +120,12 @@ class Booking extends Model
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
+
+    function getTotalRefundAmount() {
+        return $this->hasOne(BookingCancellation::class, 'booking_id', 'id');
+    }
+
+
 
     // function getSupplierCurrency() {
     //     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
@@ -133,6 +158,11 @@ class Booking extends Model
     {
         return $this->hasMany(BookingPaxDetail::class, 'booking_id', 'id');
     }
+
+    public function getBookingCancellationRefundPaymentDetail()
+    {
+        return $this->hasMany(BookingCancellationRefundPayment::class, 'booking_id', 'id');
+    }
     
     public function getBookingLogs()
     {
@@ -156,6 +186,12 @@ class Booking extends Model
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
     }
+
+    public function getLeadPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
+    }
+   
    
     public function setRevelantQuoteAttribute($value)
     {

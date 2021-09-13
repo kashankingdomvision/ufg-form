@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
-use Illuminate\Support\Str;
 use App\Http\Requests\CategoryRequest;
-
+use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Support\Str;
+use App\Category;
 
 class CategoryController extends Controller
 {
@@ -72,7 +72,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request, $id)
     {
         $category = Category::findOrFail(decrypt($id));
         $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
