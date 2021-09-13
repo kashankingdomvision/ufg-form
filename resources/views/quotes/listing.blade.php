@@ -12,8 +12,8 @@
                     <div class="col-sm-6">
                         <h4></h4>
                         <div class="d-flex">
-                            <h4>View @if(isset($status) && $status == 'archive') Archive @endif Quote 
-                                <x-add-new-button :route="route('quotes.create')" /> 
+                            <h4>View @if(isset($status) && $status == 'archive') Archive @endif Quote
+                                <x-add-new-button :route="route('quotes.create')" />
                             </h4>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="form-group"> 
+                    <div class="form-group">
                         <label>Brand</label>
                         <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
                             @foreach ($brands as $brand)
@@ -129,7 +129,7 @@
                 </div>
             </div>
         </x-page-filters>
-        
+
         <section class="content p-2">
             <div class="container-fluid">
               <div class="row">
@@ -152,7 +152,7 @@
               </div>
             </div>
         </section>
-          
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -190,7 +190,7 @@
                                         @if($quotes && $quotes->count())
                                             @foreach ($quotes as $key => $quote)
                                                 <tr class="{{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}">
-                                                
+
                                                     <td>
                                                         @if($quote->booking_status != 'booked')
                                                             <div class="icheck-primary">
@@ -224,7 +224,7 @@
 
                                                     <td>{{ $quote->getSeason->name }}</td>
                                                     <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
-                                                    
+
                                                     <td>{{ $quote->getBookingCurrency->code.' - '.$quote->getBookingCurrency->name }}</td>
                                                     <td>{!! $quote->booking_formated_status !!}</td>
                                                     <td>{{ $quote->formated_booking_date }}</td>
@@ -250,12 +250,12 @@
                                                                 <i class="fas fa-eye"></i>
                                                             </a>
                                                         @endif
-                                                      
+
                                                         @if($quote->booking_status == 'quote' && $quote->deleted_at == null)
                                                             <a onclick="return confirm('Are you sure want to cancel {{ $quote->ref_no }} ?');" href="{{ route('quotes.delete', encrypt($quote->id)) }}" class="mr-2  btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel" data-target="#Cancel"><span class="fa fa-times "></span></a>
                                                             @elseif($quote->deleted_at != null)
                                                             <a onclick="return confirm('Are you sure want to restore {{ $quote->ref_no }} ?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2  btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
-                                                            
+
                                                         @endif
                                                         @if($quote->booking_status == 'booked')
                                                             <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
@@ -276,6 +276,12 @@
                                                         {{-- <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
                                                             <i class="fas fa-file"></i>
                                                         </a> --}}
+                                                        <form class="mr-2 " method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
+                                                            @csrf
+                                                            <button type="submit" title="Export Quote"  onclick="return confirm('Are you sure you would like to export this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+                                                                <i class="fa fa-file-excel"></i>
+                                                            </button>
+                                                        </form>
                                                         @if($quote->booking_status == 'quote')
                                                             <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
                                                                 @csrf @method('patch')
@@ -284,7 +290,6 @@
                                                                 </button>
                                                             </form>
                                                         @endif
-
                                                         <a href="{{ route('quotes.quote.documment',encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Quote Document" title="View Quote Document" >
                                                             <i class="fas fa-file"></i>
                                                         </a>
