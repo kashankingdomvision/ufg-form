@@ -8,9 +8,7 @@ use Illuminate\Support\Carbon;
 class Helper
 {
     public static function number_format($number){
-
 		return str_replace( ',', '', number_format($number,2));
-        // return number_format($number,2);
     }
 
 	public static function document_date_format($datetime){
