@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
         Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
+        Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
     });
     
 

@@ -3,10 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Product;
-use App\Quote;
+
+use App\Exports\QuoteExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Helper;
+
+use App\Brand;
+use App\BookingMethod;
+use App\BookingType;
+use App\Currency;
+use App\Category;
+use App\Commission;
+use App\Country;
 use App\QuoteDocument;
-use App\QuoteDetail;
+use App\Quote;
+use App\Season;
+use App\Template;
+use App\User;
 
 class QuoteDocumentsController extends Controller
 {
@@ -105,7 +118,27 @@ class QuoteDocumentsController extends Controller
     //     // $data['transfer_to'] = 'Transfer to '.$AProduct.' via '.$TProduct.' on '.$dataOFService.''.$timeservice;
     // }
     
-    
-    
+    public function generateExport($id) {
+        $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
+        $data['quote']            = $quote;
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        // dd($data);
+        return Excel::download(new QuoteExport($data), 'quote.xlsx');
+    }
     
 }

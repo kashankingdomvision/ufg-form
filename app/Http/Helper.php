@@ -1,8 +1,16 @@
 <?php
 namespace App\Http;
+use App\Country;
 use App\Quote;
+use App\Category;
+use App\Product;
+use App\BookingMethod;
+use App\BookingType;
+use App\Currency;
+use App\Supplier;
 use App\BookingCreditNote;
 use App\QuoteUpdateDetail;
+use App\User;
 use Auth;
 
 class Helper
@@ -14,7 +22,7 @@ class Helper
     }
 
     public static function getQuoteID(){
-        
+
         $last_id = Quote::latest()->pluck('id')->first();
        return "QR-".sprintf("%04s", ++$last_id);
     }
@@ -53,7 +61,7 @@ class Helper
 				'400' => '400 Bad Request',
 			)
 		);
-		
+
 		// initalize args
 		$args = array(
 			'method' 		=> 'POST',
@@ -69,20 +77,20 @@ class Helper
 			'maxredirs' => 10,
 			'format' => 'JSON'
 		);
-		
+
 		if( empty($url) ) {
 			$code = 101;
 			$response = array('status' => $code, 'body' => $array['message'][$code]);
 			return $response;
 		}
-		
+
 		if( !empty($_args) && is_array($_args) )
 			$args = array_merge($args, $_args);
-		
+
 		$fields = $args['body'];
 		if( strtolower($args['method']) == 'post' && is_array($fields) )
 			$fields = http_build_query( $fields );
-		
+
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			CURLOPT_URL 			=> $url,
@@ -102,7 +110,7 @@ class Helper
 			CURLOPT_POSTFIELDS 		=> $fields,
 			CURLOPT_HTTPHEADER 		=> $args['headers'],
 		));
-	
+
 		$curl_response 	= curl_exec($curl);
 		$err 			= curl_error($curl);
 		$curl_info = array(
@@ -110,16 +118,16 @@ class Helper
 			'header' 		=> curl_getinfo($curl, CURLINFO_HEADER_OUT),
 			'total_time' 	=> curl_getinfo($curl, CURLINFO_TOTAL_TIME)
 		);
-		
+
 		curl_close($curl);
-		
-		
+
+
 		if( $err ) {
 			$response = array('message' => $err, 'body' => $err);
-			
+
 		} else {
 			if( $curl_info['status'] == 200
-			&& in_array($args['format'], array('ARRAY', 'OBJECT')) 
+			&& in_array($args['format'], array('ARRAY', 'OBJECT'))
 			&& !empty($curl_response) && is_string($curl_response) ) {
 				$curl_response = json_decode( $curl_response, $args['format'] == 'ARRAY' ? true : false );
                 $curl_response = ( json_last_error() == JSON_ERROR_NONE ) ? $curl_response : $curl_response;
@@ -127,13 +135,13 @@ class Helper
             else{
                 $curl_response = json_decode($curl_response, TRUE);
             }
-			
+
 			$response = array(
 				//'message' 	=> $array['message'][ $curl_info['status'] ],
 				'body' 		=> $curl_response
 			);
 		}
-		
+
 		$response = array_merge($curl_info, $response);
 		return $response;
 	}
@@ -162,8 +170,61 @@ class Helper
 			$response['exist']   = null;
             $response['user_id'] = null;
         // }
-		
+
 		return $response;
 	}
 
+	public static function getCategory($id){
+
+    	$category = Category::find($id);
+		return $category->name;
+    }
+
+	public static function getSupplier($id){
+
+    	$supplier = Supplier::find($id);
+		return $supplier->name;
+    }
+
+	public static function getProduct($id){
+
+    	$product = Product::find($id);
+		return $product->name;
+    }
+
+	public static function getSupervisor($id){
+
+    	$supervisor = User::find($id);
+		return $supervisor->name;
+    }
+
+	public static function getBookingMethod($id){
+
+    	$bookingMethod = BookingMethod::find($id);
+		return $bookingMethod->name;
+    }
+
+	public static function getBookedBy($id){
+
+    	$bookedBy = User::find($id);
+		return $bookedBy->name;
+    }
+
+	public static function getBookingType($id){
+
+    	$bookingType = BookingType::find($id);
+		return $bookingType->name;
+    }
+
+	public static function getSupplierCurrency($id){
+
+    	$currency = Currency::find($id);
+		return $currency->name;
+    }
+
+    public static function getCountry($id){
+
+        $country = Country::find($id);
+        return $country->name;
+    }
 }

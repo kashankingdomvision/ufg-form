@@ -163,9 +163,16 @@ class Quote extends Model
         $this->attributes['revelant_quote'] = json_encode($value);
     }
     
-    
     public function getRevelantQuoteAttribute($value)
     {
         return json_decode($value);
+    }
+
+    public function getCommission(){
+    	return $this->hasOne(Commission::class, 'id' ,'commission_id');
+    }
+
+    public function getNationality(){
+    	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
     }
 }
