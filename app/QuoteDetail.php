@@ -78,6 +78,10 @@ class QuoteDetail extends Model
     public function getBookingDueDateAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
+
+    public function getOriginalDateFormatAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
     
     public function setDateOfServiceAttribute( $value ) {
         $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));

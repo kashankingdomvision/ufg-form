@@ -284,6 +284,11 @@
                                                                 </button>
                                                             </form>
                                                         @endif
+
+                                                        <a href="{{ route('quotes.quote.documment',encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Quote Document" title="View Quote Document" >
+                                                            <i class="fas fa-file"></i>
+                                                        </a>
+
                                                     </td>
                                                     <tbody class="append {{ $quote->quote_count > 1 ? 'tbody-highlight' : ''}}" id="appendChild{{$quote->id}}">
                                                     </tbody>
