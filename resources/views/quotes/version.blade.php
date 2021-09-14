@@ -42,7 +42,7 @@
                   @csrf @method('put')
                   
                   <div class="row">
-                    <div class="col-sm-12"> 
+                    <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="quote_title" id="quote_title" class="form-control" value="{{ $quote['quote_title'] }}" placeholder="Enter Quote Title">
