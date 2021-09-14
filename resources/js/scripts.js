@@ -110,6 +110,7 @@ $(document).ready(function($) {
                 $('.bookingDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 $('.bookingDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 $('.bookingDueDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
             }else{
                 // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format:'dd/mm/yyyy'});
@@ -534,7 +535,7 @@ $(document).ready(function($) {
             var sellingPrice     = sellingPriceArray[key];
             var markupAmount     = markupAmountArray[key];
 
-            console.log( supplierCurrency);
+            // console.log( supplierCurrency);
 
             if(supplierCurrency && bookingCurrency){
 
@@ -1033,7 +1034,7 @@ $(document).ready(function($) {
         var quoteKey                   = quote.data('key');
         var creditNoteRowLength        = quote.find(".credit-note-row:not(:hidden)").length;
 
-        console.log(creditNoteRowLength);
+        // console.log(creditNoteRowLength);
 
         if(parseInt(creditNoteRowLength) == 0){
             if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
@@ -1156,7 +1157,7 @@ $(document).ready(function($) {
             url: url,
             data: formData,
             success: function (data) {
-                console.log(data, 'data');
+                // console.log(data, 'data');
             },
             error: function (reject) {
     
@@ -1248,14 +1249,14 @@ $(document).ready(function($) {
 
                 }
                     var BookingDate = (BookingDate != '')? convertDate(BookingDate) : ((BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date);
-                    console.log(BookingDate+ BookingDueDate);
+                    // console.log(BookingDate+ BookingDueDate);
                     $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: EndDateOFService});
                 //     $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
                 //     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
                 break;
 
             case 'date_of_service':
-                console.log('run date of service function');
+                // console.log('run date of service function');
               
 
 
@@ -1268,14 +1269,14 @@ $(document).ready(function($) {
                     EndDateOFService = '';
                 }
                 
-                if(DateOFService < convertDate(BookingDueDate)){
+                if(DateOFService < BookingDueDate){
                     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
                     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
                 }else{
                     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
                 }
                 
-                if(DateOFService < convertDate(BookingDate)){
+                if(DateOFService < BookingDate){
                     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
                     $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
                 }else{
@@ -1305,7 +1306,7 @@ $(document).ready(function($) {
                 var endDos_start = (DateOFService != '')? convertDate(DateOFService) : ((BookingDate != '')? BookingDate: season_start_date);
                 $('#quote_'+key+'_end_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: endDos_start, endDate: season_end_date});
                 var setDueDate = (BookingDate != '')? BookingDate: (DateOFService != '')? convertDate(DateOFService) : season_end_date;
-                console.log(setDueDate);
+                // console.log(setDueDate);
                 $('#quote_'+key+'_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate});
 
                 break;
@@ -3102,7 +3103,7 @@ $(document).ready(function($) {
                 </div>
             </div>`;
 
-            console.log($v_html);
+            // console.log($v_html);
 
             $('#appendPaxName').html($v_html);
             intTelinput(1);
@@ -3307,7 +3308,7 @@ $(document).ready(function($) {
     /// Update Currency Status
     $("#currencyStatus").submit(function(e) {
         e.preventDefault(); 
-        console.log('run');
+        // console.log('run');
         var url = $(this).attr('action');
         var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
         var formData = $(this).serializeArray();
