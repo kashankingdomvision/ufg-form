@@ -25018,8 +25018,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (BookingDueDate > convertDate(BookingDate)) {
           $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-          BookingDate = '';
-          console.log('run');
+          BookingDate = ''; // console.log('run');
         }
 
         if (BookingDueDate > convertDate(DateOFService)) {
@@ -25039,10 +25038,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // }
 
 
-        var Booking_Date = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate;
-        console.log(Booking_Date);
-        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date;
-        console.log('Date of service' + DateOFService);
+        var Booking_Date = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate; // console.log(Booking_Date);
+
+        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date; // console.log('Date of service'+ DateOFService);
+
         $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
@@ -25452,8 +25451,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         url: "".concat(REDIRECT_BASEURL, "bookings/get-booking-net-price/").concat(booking_id),
         type: 'get',
         success: function success(data) {
-          console.log(data);
-
+          // console.log(data);
           if (data !== null && data !== '' && data !== undefined) {
             jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
             jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
@@ -25876,7 +25874,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 searchRef.prop('disabled', true);
               },
               success: function success(data) {
-                console.log(data);
+                // console.log(data);
                 var tbody = '';
 
                 if (data.response) {

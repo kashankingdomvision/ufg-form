@@ -1315,7 +1315,7 @@ $(document).ready(function($) {
                     if(BookingDueDate > convertDate(BookingDate)){
                         $('#quote_'+key+'_booking_date').datepicker("setDate", '');
                         BookingDate = '';
-                        console.log('run');
+                        // console.log('run');
                     }
                     
                     if(BookingDueDate > convertDate(DateOFService)){
@@ -1338,9 +1338,9 @@ $(document).ready(function($) {
                     // }
                     
                     var Booking_Date = (BookingDate != '')? convertDate(BookingDate): BookingDueDate;
-                    console.log(Booking_Date);
+                    // console.log(Booking_Date);
                     DateOFService = (DateOFService != '')? convertDate(DateOFService): season_end_date;
-                    console.log('Date of service'+ DateOFService);
+                    // console.log('Date of service'+ DateOFService);
 
                     $('#quote_'+key+'_booking_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
                     $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: Booking_Date, endDate: DateOFService});
@@ -1870,7 +1870,7 @@ $(document).ready(function($) {
                 type: 'get',
                 success: function (data) {
 
-                    console.log(data);
+                    // console.log(data);
 
                     if(data !== null && data !== ''  && data!==undefined) {
 
@@ -2406,7 +2406,7 @@ $(document).ready(function($) {
                                 searchRef.prop('disabled', true);
                             },
                             success: function (data) {
-                                console.log(data);
+                                // console.log(data);
                                 var tbody = '';
                                 if(data.response)
                                 {
