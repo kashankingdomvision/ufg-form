@@ -42,7 +42,7 @@
                   @csrf @method('put')
                   
                   <div class="row">
-                    <div class="col-sm-12"> 
+                    <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="quote_title" id="quote_title" class="form-control" value="{{ $quote['quote_title'] }}" placeholder="Enter Quote Title">
@@ -396,7 +396,7 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>End Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control date-of-service datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
+                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control date-of-service bookingEndDateOfService datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
                                     <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>

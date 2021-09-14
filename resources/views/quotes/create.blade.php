@@ -44,7 +44,7 @@
                 <div class="card-body">
                   
                   <div class="row">
-                    <div class="col-sm-12"> 
+                    <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="quote_title" id="quote_title" class="form-control" placeholder="Enter Quote Title">
@@ -346,7 +346,7 @@
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>End Date of Service <span style="color:red">*</span></label>
-                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>

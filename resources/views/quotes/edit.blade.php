@@ -75,7 +75,7 @@
                   @csrf @method('put')
                   
                   <div class="row">
-                    <div class="col-sm-12"> 
+                    <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="quote_title" id="quote_title" class="form-control" value="{{ $quote->quote_title }}" placeholder="Enter Quote Title">
@@ -467,7 +467,7 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>End Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                    <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
                                     <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
@@ -527,7 +527,7 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product</label>
-                                    <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" value="{{ $q_detail->product_id }}" placeholder="Enter Product">
+                                    <input type="text" name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id " value="{{ $q_detail->product_id }}" placeholder="Enter Product">
                                   </div>
                                 </div>
 
