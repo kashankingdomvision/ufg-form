@@ -346,7 +346,7 @@
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>End Date of Service <span style="color:red">*</span></label>
-                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>

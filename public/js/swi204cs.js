@@ -23866,6 +23866,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           startDate: season_start_date,
           endDate: season_end_date
         });
+        $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        });
       } else {
         // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
         $('.datepicker').datepicker("destroy").datepicker({
@@ -24299,8 +24305,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var actualCost = actualCostArray[key];
       var supplierCurrency = supplierCurrencyArray[key];
       var sellingPrice = sellingPriceArray[key];
-      var markupAmount = markupAmountArray[key];
-      console.log(supplierCurrency);
+      var markupAmount = markupAmountArray[key]; // console.log( supplierCurrency);
 
       if (supplierCurrency && bookingCurrency) {
         var rate = getRate(supplierCurrency, bookingCurrency, rateType);
@@ -24730,8 +24735,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
-    var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
-    console.log(creditNoteRowLength);
+    var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length; // console.log(creditNoteRowLength);
 
     if (parseInt(creditNoteRowLength) == 0) {
       if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
@@ -24830,8 +24834,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       type: 'POST',
       url: url,
       data: formData,
-      success: function success(data) {
-        console.log(data, 'data');
+      success: function success(data) {// console.log(data, 'data');
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -24902,8 +24905,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $('#quote_' + key + '_date_of_service').datepicker("setDate", ''); // $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: EndDateOFService});
         }
 
-        var BookingDate = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate != '' ? convertDate(BookingDueDate) : season_start_date;
-        console.log(BookingDate + BookingDueDate);
+        var BookingDate = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate != '' ? convertDate(BookingDueDate) : season_start_date; // console.log(BookingDate+ BookingDueDate);
+
         $('#quote_' + key + '_date_of_service').datepicker('remove').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
@@ -24915,7 +24918,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         break;
 
       case 'date_of_service':
-        console.log('run date of service function');
+        // console.log('run date of service function');
         DateOFService = $(this).val() != '' ? convertDate($(this).val()) : season_end_date;
         BookingDueDate = BookingDueDate != '' ? convertDate(BookingDueDate) : season_start_date;
         BookingDate = BookingDate != '' ? convertDate(BookingDate) : DateOFService;
@@ -24925,7 +24928,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           EndDateOFService = '';
         }
 
-        if (DateOFService < convertDate(BookingDueDate)) {
+        if (DateOFService < BookingDueDate) {
           $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
           $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({
             autoclose: true,
@@ -24942,7 +24945,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         }
 
-        if (DateOFService < convertDate(BookingDate)) {
+        if (DateOFService < BookingDate) {
           $('#quote_' + key + '_booking_date').datepicker("setDate", '');
           $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({
             autoclose: true,
@@ -25000,8 +25003,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           startDate: endDos_start,
           endDate: season_end_date
         });
-        var setDueDate = BookingDate != '' ? BookingDate : DateOFService != '' ? convertDate(DateOFService) : season_end_date;
-        console.log(setDueDate);
+        var setDueDate = BookingDate != '' ? BookingDate : DateOFService != '' ? convertDate(DateOFService) : season_end_date; // console.log(setDueDate);
+
         $('#quote_' + key + '_booking_due_date').datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
@@ -25015,8 +25018,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (BookingDueDate > convertDate(BookingDate)) {
           $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-          BookingDate = '';
-          console.log('run');
+          BookingDate = ''; // console.log('run');
         }
 
         if (BookingDueDate > convertDate(DateOFService)) {
@@ -25036,10 +25038,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // }
 
 
-        var Booking_Date = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate;
-        console.log(Booking_Date);
-        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date;
-        console.log('Date of service' + DateOFService);
+        var Booking_Date = BookingDate != '' ? convertDate(BookingDate) : BookingDueDate; // console.log(Booking_Date);
+
+        DateOFService = DateOFService != '' ? convertDate(DateOFService) : season_end_date; // console.log('Date of service'+ DateOFService);
+
         $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
@@ -25449,8 +25451,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         url: "".concat(REDIRECT_BASEURL, "bookings/get-booking-net-price/").concat(booking_id),
         type: 'get',
         success: function success(data) {
-          console.log(data);
-
+          // console.log(data);
           if (data !== null && data !== '' && data !== undefined) {
             jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
             jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
@@ -25873,7 +25874,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 searchRef.prop('disabled', true);
               },
               success: function success(data) {
-                console.log(data);
+                // console.log(data);
                 var tbody = '';
 
                 if (data.response) {
@@ -26398,8 +26399,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var count = 1;
       var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address <span class=\"text-danger\">*</span></label> \n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number <span class=\"text-danger\">*</span></label> \n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth <span class=\"text-danger\">*</span></label> \n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality <span class=\"text-danger\">*</span></label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n                    \n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dinning Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                    </div>\n\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                            <label>Covid Vaccinated </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n                \n                </div>\n            </div>");
-      console.log($v_html);
+      }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n                    \n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dinning Preference <span class=\"text-danger\">*</span></label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                    </div>\n\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                            <label>Covid Vaccinated </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n                \n                </div>\n            </div>"); // console.log($v_html);
+
       $('#appendPaxName').html($v_html);
       intTelinput(1);
       $('#pax_no option').first().attr('disabled', 'disabled');
@@ -26552,8 +26553,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }); /// Update Currency Status
 
   $("#currencyStatus").submit(function (e) {
-    e.preventDefault();
-    console.log('run');
+    e.preventDefault(); // console.log('run');
+
     var url = $(this).attr('action');
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
