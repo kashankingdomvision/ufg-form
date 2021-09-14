@@ -24,16 +24,49 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
         $data = $this->data;
         $quote = $data['quote'];
 
+        if($data['quote']->agency > 0) {
+            $keyed[] = [
+                'Agency Name' => 'Agency Name',
+                'Agency Contact Name' => 'Agency Contact Name',
+                'Agency Contact No' => 'Agency Contact No#',
+                'Agency Email' => 'Agency Email'
+            ];
+            $keyed[] = [
+                'Agency Name' => isset($quote->agency_name) && !empty($quote->agency_name) ? $quote->agency_name : '---',
+                'Agency Contact Name' => isset($quote->agency_contact_name) && !empty($quote->agency_contact_name) ? $quote->agency_contact_name : '---',
+                'Agency Contact No' => isset($quote->agency_contact) && !empty($quote->agency_contact) ? $quote->agency_contact : '---' ,
+                'Agency Email' => isset($quote->agency_email) && !empty($quote->agency_email) ? $quote->agency_email : '---'
+            ];
+
+            // for skipping two lines
+            $keyed[] = [' ' => ' '];
+            $keyed[] = [' ' => ' '];
+        }
+
+        // pax details header
         $keyed[] = [
-            'PASSENGER NAME' => $quote->lead_passenger_name. ' (Lead)' ? $quote->lead_passenger_name. ' (Lead)' : '---',
-            'EMAIL ADDRESS' => $quote->lead_passenger_email ? $quote->lead_passenger_email : '---',
-            'CONTACT NUMBER' => $quote->lead_passenger_contact ? ' '.$quote->lead_passenger_contact.' ' : '---' ,
-            'DATE OF BIRTH' => $quote->lead_passenger_dbo ? $quote->lead_passenger_dbo : '---',
-            'NATIONALITY' => $quote->getNationality->name ? $quote->getNationality->name : '---',
-            'BEDDING PREFERENCES' => $quote->lead_passenger_bedding_preference ? $quote->lead_passenger_bedding_preference : '---',
-            'DINNING PREFERENCES' => $quote->lead_passenger_dinning_preference ? $quote->lead_passenger_dinning_preference : '---',
-            'COVID VACCINATED' => $quote->lead_passenger_covid_vaccinated == 0 ? 'No' : 'Yes',
+            'PASSENGER NAME' => 'PASSENGER NAME',
+            'EMAIL ADDRESS' => 'EMAIL ADDRESS',
+            'CONTACT NUMBER' => 'CONTACT NUMBER',
+            'DATE OF BIRTH' => 'DATE OF BIRTH',
+            'NATIONALITY' => 'NATIONALITY',
+            'BEDDING PREFERENCES' => 'BEDDING PREFERENCES',
+            'DINNING PREFERENCES' => 'DINNING PREFERENCES',
+            'COVID VACCINATED' => 'COVID VACCINATED',
         ];
+
+        if($data['quote']->agency == 0) {
+            $keyed[] = [
+                'PASSENGER NAME' => isset($quote->lead_passenger_name) && !empty($quote->lead_passenger_name) ? $quote->lead_passenger_name. ' (Lead)' : '---',
+                'EMAIL ADDRESS' => isset($quote->lead_passenger_email) && !empty($quote->lead_passenger_email) ? $quote->lead_passenger_email : '---',
+                'CONTACT NUMBER' => isset($quote->lead_passenger_contact) && !empty($quote->lead_passenger_contact) ? ' '.$quote->lead_passenger_contact.' ' : '---' ,
+                'DATE OF BIRTH' => isset($quote->lead_passenger_dbo) && !empty($quote->lead_passenger_dbo) ? $quote->lead_passenger_dbo : '---',
+                'NATIONALITY' => isset($quote->getNationality->name) && !empty($quote->getNationality->name) ? $quote->getNationality->name : '---',
+                'BEDDING PREFERENCES' => isset($quote->lead_passenger_bedding_preference) && !empty($quote->lead_passenger_bedding_preference) ? $quote->lead_passenger_bedding_preference : '---',
+                'DINNING PREFERENCES' => isset($quote->lead_passenger_dinning_preference) && !empty($quote->lead_passenger_dinning_preference) ? $quote->lead_passenger_dinning_preference : '---',
+                'COVID VACCINATED' => isset($quote->lead_passenger_covid_vaccinated) && !empty($quote->lead_passenger_covid_vaccinated) && $quote->lead_passenger_covid_vaccinated == 0 ? 'No' : 'Yes',
+            ];
+        }
 
         if(count($data['quote']->getPaxDetail) > 0) {
             foreach($data['quote']->getPaxDetail as $paxDetails) {
@@ -45,7 +78,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'NATIONALITY'         => isset($paxDetails->getPassengerNationality->name) && !empty($paxDetails->getPassengerNationality->name) ? $paxDetails->getPassengerNationality->name : '---' ,
                     'BEDDING PREFERENCES' => isset($paxDetails->bedding_preference) && !empty($paxDetails->bedding_preference) ? $paxDetails->bedding_preference : '---',
                     'DINNING PREFERENCES' => isset($paxDetails->dinning_preference) && !empty($paxDetails->dinning_preference) ? $paxDetails->dinning_preference : '---',
-                    'COVID VACCINATED'    => $paxDetails->covid_vaccinated == 0 ? 'No' : 'Yes',
+                    'COVID VACCINATED'    => isset($paxDetails->covid_vaccinated) && !empty($paxDetails->covid_vaccinated) && $paxDetails->covid_vaccinated == 0 ? 'No' : 'Yes',
                 ];
             }
         }
@@ -79,7 +112,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 'Estimated Cost in Booking Currency' => 'ESTIMATED COST IN BOOKING CURRENCY',
                 'Markup Amount in Booking Currency' => 'MARKUP AMOUNT IN BOOKING CURRENCY',
                 'Selling Price in Booking Currency' => 'SELLING PRICE IN BOOKING CURRENCY',
-                'Added in Sage' => 'Added in Sage',
+                'Added in Sage' => 'ADDED IN SAGE',
             ];
 
             foreach($data['quote']->getQuoteDetails as $quoteDetails) {
@@ -99,7 +132,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'Booking Type'                       => isset($quoteDetails->getBookingType->name) && !empty($quoteDetails->getBookingType->name) ? $quoteDetails->getBookingType->name : '---',
                     'Supplier Currency'                  => isset($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->getSupplierCurrency->code) ? $quoteDetails->getSupplierCurrency->code.' - '.$quoteDetails->getSupplierCurrency->name : '---',
                     'Estimated Cost'                     => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->estimated_cost) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->estimated_cost) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->estimated_cost : '---',
-                    'Markup Amount'                      => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->estimated_cost) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->markup_amount) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->markup_amount : '---', 
+                    'Markup Amount'                      => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->estimated_cost) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->markup_amount) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->markup_amount : '---',
                     'Markup %'                           => $quoteDetails->markup_percentage.' %' ? $quoteDetails->markup_percentage.' %' : '---',
                     'Selling Price'                      => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->selling_price) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->selling_price) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->selling_price : '---',
                     'Profit %'                           => $quoteDetails->profit_percentage.' %' ? $quoteDetails->profit_percentage.' %' : '---',
@@ -192,7 +225,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     [' '], // blank array for skip one line
                     [' '], // blank array for skip one line
 
-                    [
+                    /*[
                         'PASSENGER NAME',
                         'EMAIL ADDRESS',
                         'CONTACT NUMBER',
@@ -201,7 +234,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                         'BEDDING PREFERENCES',
                         'DINNING PREFERENCES',
                         'COVID VACCINATED',
-                    ],
+                    ],*/
                 ];
     }
 
@@ -230,9 +263,46 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             ]
         ];
 
+        $data = $this->data;
+        $totalPax = count($data['quote']->getPaxDetail);
+        $totalService = count($data['quote']->getQuoteDetails);
+
+        $forAgency = 0;
+        $forService = null;
+        $forFinalTotal = null;
+        if($data['quote']->agency != 0) {
+            $forAgency = 1;
+            if($totalPax > 0) {
+                $forService = 16 + $totalPax;
+                if($totalService > 1) {
+                    $forFinalTotal = $forService + $totalService + 2;
+                } else {
+                    $forFinalTotal = $forService + 2;
+                }
+            }
+        } else {
+            if($totalPax > 0) {
+                $forService = 13 + $totalPax;
+                if($totalService > 1) {
+                    $forFinalTotal = $forService + $totalService + 2;
+                } else {
+                    $forFinalTotal = $forService + 2;
+                }
+            } else {
+                $forService = 13;
+                if($totalService > 1) {
+                    $forFinalTotal = $forService + $totalService + 2;
+                } else {
+                    $forFinalTotal = $forService + 2;
+                }
+            }
+        }
+
+
+
         return
         [
-            AfterSheet::class => function(AfterSheet $event) use ($bold_align_left, $align_center, $bold)
+            AfterSheet::class => function(AfterSheet $event) use ($bold_align_left, $align_center, $bold, $forAgency, $forService, $forFinalTotal)
             {
                 /* Columns -- A1 TO A6 & D1 TO D6 -- BOLD AND ALIGN LEFT */
                 $event->getSheet()->getDelegate()->getStyle('A1:A6')->applyFromArray($bold_align_left);
@@ -240,7 +310,27 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
                 /* Columns -- B1 TO B40 & E1 TO E40 -- ALIGN CENTER  */
                 $event->getSheet()->getDelegate()->getStyle('B1:B40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('C2:C40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('D9:D40')->applyFromArray($align_center);
                 $event->getSheet()->getDelegate()->getStyle('E1:E40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('F2:F40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('G2:G40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('H1:H40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('I1:I40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('J1:J40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('K1:K40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('L1:L40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('M1:M40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('N1:N40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('O1:O40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('P1:P40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('Q1:Q40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('R1:R40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('S1:S40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('T1:T40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('U1:U40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('V1:V40')->applyFromArray($align_center);
+                $event->getSheet()->getDelegate()->getStyle('W1:W40')->applyFromArray($align_center);
 
                 /* Columns -- A9 TO A16, W9 TO W16 -- ALIGN CENTER  */
                 $event->getSheet()->getDelegate()->getStyle('A9:W9')->applyFromArray($align_center);
@@ -252,8 +342,21 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                 $event->getSheet()->getDelegate()->getStyle('A15:W15')->applyFromArray($align_center);
                 $event->getSheet()->getDelegate()->getStyle('A16:W16')->applyFromArray($align_center);
 
-                /* Columns -- A18 TO A40 -- BOLD  */
-                $event->getSheet()->getDelegate()->getStyle('A18:A40')->applyFromArray($bold);
+                /* Columns -- For Agency And Pax -- BOLD  */
+                if($forAgency != 0) {
+                    $event->getSheet()->getDelegate()->getStyle('A9:H9')->applyFromArray($bold);
+                    $event->getSheet()->getDelegate()->getStyle('A13:H13')->applyFromArray($bold);
+                }
+                else {
+                    $event->getSheet()->getDelegate()->getStyle('A9:H9')->applyFromArray($bold);
+                }
+
+                $event->getSheet()->getDelegate()->getStyle('A'.$forService.':W'.$forService)->applyFromArray($bold);
+                $event->getSheet()->getDelegate()->getStyle('A'.$forFinalTotal.':A100')->applyFromArray($bold);
+
+                /* FOR ALIGN CENTER */
+                $max = $forFinalTotal - 1;
+                $event->getSheet()->getDelegate()->getStyle('A9:A'.$max)->applyFromArray($align_center);
             },
         ];
     }
