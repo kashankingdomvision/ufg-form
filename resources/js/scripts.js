@@ -1212,13 +1212,10 @@ $(document).ready(function($) {
         // console.log('season end date', season_end_date);
         // console.log(name+ ' case name');
 
-        // if(convertDate(DateOFService) > convertDate(EndDateOFService)){
-        //     $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-        // }
+        if(convertDate(DateOFService) > convertDate(EndDateOFService)){
+            $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
+        }
 
-        // if(convertDate(DateOFService) > convertDate(EndDateOFService)){
-        //     $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-        // }
         
         switch (name) {
 
@@ -1259,25 +1256,36 @@ $(document).ready(function($) {
 
             case 'date_of_service':
                 console.log('run date of service function');
-                if(convertDate(DateOFService) > convertDate(EndDateOFService)){
-                    $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-                    DateOFService = '';
-                }
+              
 
 
                 DateOFService  = ($(this).val() != '')? convertDate($(this).val()) : season_end_date;
                 BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
                 BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
                 
-                // if(DateOFService < BookingDueDate){
-                //     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-                //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                // }
+                if(DateOFService > convertDate(EndDateOFService)){
+                    $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
+                    EndDateOFService = '';
+                }
+                
+                if(DateOFService < convertDate(BookingDueDate)){
+                    $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
+                    $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
+                }else{
+                    $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
+                }
+                
+                if(DateOFService < convertDate(BookingDate)){
+                    $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                    $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
+                }else{
+                    $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
+                }
+                
+                
                 
                 $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
                 $('#quote_'+key+'_end_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: DateOFService, endDate: season_end_date});
-                $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
-                $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
                 break;
             case 'booking_date':
                 BookingDate = convertDate($(this).val());
