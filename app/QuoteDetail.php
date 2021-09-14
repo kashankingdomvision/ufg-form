@@ -53,6 +53,22 @@ class QuoteDetail extends Model
     {
         return $this->hasOne(Supplier::class, 'id', 'supplier_id');
     }
+
+    function getSupervisor() {
+        return $this->hasOne(User::class, 'id', 'supervisor_id');
+    }
+
+    function getBookingMethod() {
+        return $this->hasOne(BookingMethod::class, 'id', 'booking_method_id');
+    }
+
+    function getBookingBy() {
+        return $this->hasOne(User::class, 'id', 'booked_by_id');
+    }
+    
+    function getBookingType() {
+        return $this->hasOne(BookingType::class, 'id', 'booking_type_id');
+    }
     
     public function getProduct()
     {
@@ -61,6 +77,11 @@ class QuoteDetail extends Model
 
     function getSupplierCurrency() {
         return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id');
+    }
+
+    public function getPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'nationality_id');
     }
     
     public function getDateOfServiceAttribute( $value ) {
