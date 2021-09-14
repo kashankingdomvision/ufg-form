@@ -17,4 +17,9 @@ class QuotePaxDetail extends Model
         'dinning_preference',
         'covid_vaccinated',
     ];
+
+    public function getPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'nationality_id');
+    }
 }

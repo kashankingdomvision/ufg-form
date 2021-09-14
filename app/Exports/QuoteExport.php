@@ -27,7 +27,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
         $keyed[] = [
             'PASSENGER NAME' => $quote->lead_passenger_name. ' (Lead)' ? $quote->lead_passenger_name. ' (Lead)' : '---',
             'EMAIL ADDRESS' => $quote->lead_passenger_email ? $quote->lead_passenger_email : '---',
-            'CONTACT NUMBER' => $quote->lead_passenger_contact ? $quote->lead_passenger_contact : '---' ,
+            'CONTACT NUMBER' => $quote->lead_passenger_contact ? ' '.$quote->lead_passenger_contact.' ' : '---' ,
             'DATE OF BIRTH' => $quote->lead_passenger_dbo ? $quote->lead_passenger_dbo : '---',
             'NATIONALITY' => $quote->getNationality->name ? $quote->getNationality->name : '---',
             'BEDDING PREFERENCES' => $quote->lead_passenger_bedding_preference ? $quote->lead_passenger_bedding_preference : '---',
@@ -38,14 +38,14 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
         if(count($data['quote']->getPaxDetail) > 0) {
             foreach($data['quote']->getPaxDetail as $paxDetails) {
                 $keyed[] = [
-                    'PASSENGER NAME' => $paxDetails->full_name ? $paxDetails->full_name : '---',
-                    'EMAIL ADDRESS' => $paxDetails->email ? $paxDetails->email : '---',
-                    'CONTACT NUMBER' => $paxDetails->contact ? $paxDetails->contact : '---',
-                    'DATE OF BIRTH' => $paxDetails->date_of_birth ? $paxDetails->date_of_birth : '---',
-                    'NATIONALITY' => Helper::getCountry($paxDetails->nationality_id) ? Helper::getCountry($paxDetails->nationality_id) : '---',
-                    'BEDDING PREFERENCES' => $paxDetails->bedding_preference ? $paxDetails->bedding_preference : '---',
-                    'DINNING PREFERENCES' => $paxDetails->dinning_preference ? $paxDetails->dinning_preference : '---',
-                    'COVID VACCINATED' => $paxDetails->covid_vaccinated == 0 ? 'No' : 'Yes',
+                    'PASSENGER NAME'      => isset($paxDetails->full_name) && !empty($paxDetails->full_name) ? $paxDetails->full_name : '---',
+                    'EMAIL ADDRESS'       => isset($paxDetails->email) && !empty($paxDetails->email) ? $paxDetails->email : '---',
+                    'CONTACT NUMBER'      => isset($paxDetails->contact) && !empty($paxDetails->contact) ? ' '.$paxDetails->contact.' ' : '---',
+                    'DATE OF BIRTH'       => isset($paxDetails->date_of_birth) && ($paxDetails->date_of_birth) ? $paxDetails->date_of_birth : '---',
+                    'NATIONALITY'         => isset($paxDetails->getPassengerNationality->name) && !empty($paxDetails->getPassengerNationality->name) ? $paxDetails->getPassengerNationality->name : '---' ,
+                    'BEDDING PREFERENCES' => isset($paxDetails->bedding_preference) && !empty($paxDetails->bedding_preference) ? $paxDetails->bedding_preference : '---',
+                    'DINNING PREFERENCES' => isset($paxDetails->dinning_preference) && !empty($paxDetails->dinning_preference) ? $paxDetails->dinning_preference : '---',
+                    'COVID VACCINATED'    => $paxDetails->covid_vaccinated == 0 ? 'No' : 'Yes',
                 ];
             }
         }
@@ -84,29 +84,29 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
             foreach($data['quote']->getQuoteDetails as $quoteDetails) {
                 $keyed[] = [
-                    'Start Date of Service' => $quoteDetails->date_of_service ? $quoteDetails->date_of_service : '---',
-                    'End Date of Service' => $quoteDetails->end_date_of_service ? $quoteDetails->end_date_of_service : '---',
-                    'Time of Service' => $quoteDetails->time_of_service ? $quoteDetails->time_of_service : '---',
-                    'Category' => Helper::getCategory($quoteDetails->category_id) ? Helper::getCategory($quoteDetails->category_id) : '---',
-                    'Supplier' => Helper::getSupplier($quoteDetails->supplier_id) ? Helper::getSupplier($quoteDetails->supplier_id) : '---',
-                    'Product' => $quoteDetails->product_id ? $quoteDetails->product_id : '---',
-                    'Supervisor' => Helper::getSupervisor($quoteDetails->supervisor_id) ? Helper::getSupervisor($quoteDetails->supervisor_id) : '---',
-                    'Booking Date' => $quoteDetails->booking_date ? $quoteDetails->booking_date : '---',
-                    'Booking Due Date' => $quoteDetails->booking_due_date ? $quoteDetails->booking_due_date : '---',
-                    'Booking Reference' => $quoteDetails->booking_reference ? $quoteDetails->booking_reference : '---',
-                    'Booking Method' => Helper::getBookingMethod($quoteDetails->booking_method_id) ? Helper::getBookingMethod($quoteDetails->booking_method_id) : '---',
-                    'Booked By' => Helper::getBookedBy($quoteDetails->booked_by_id) ? Helper::getBookedBy($quoteDetails->booked_by_id) : '---',
-                    'Booking Type' => Helper::getBookingType($quoteDetails->booking_type_id) ? Helper::getBookingType($quoteDetails->booking_type_id) : '---',
-                    'Supplier Currency' => Helper::getSupplierCurrency($quoteDetails->supplier_currency_id) ? Helper::getSupplierCurrency($quoteDetails->supplier_currency_id) : '---',
-                    'Estimated Cost' => $quoteDetails->estimated_cost ? $quoteDetails->estimated_cost : '---',
-                    'Markup Amount' => $quoteDetails->markup_amount ? $quoteDetails->markup_amount : '---',
-                    'Markup %' => $quoteDetails->markup_percentage.' %' ? $quoteDetails->markup_percentage.' %' : '---',
-                    'Selling Price' => $quoteDetails->selling_price ? $quoteDetails->selling_price : '---',
-                    'Profit %' => $quoteDetails->profit_percentage.' %' ? $quoteDetails->profit_percentage.' %' : '---',
-                    'Estimated Cost in Booking Currency' => $quoteDetails->estimated_cost_bc ? $quoteDetails->estimated_cost_bc : '---',
-                    'Markup Amount in Booking Currency ' => $quoteDetails->selling_price_bc ? $quoteDetails->selling_price_bc : '---',
-                    'Selling Price in Booking Currency' => $quoteDetails->markup_amount_bc ? $quoteDetails->markup_amount_bc : '---',
-                    'Added in Sage' => $quoteDetails->added_in_sage == '0' ? 'No' : 'Yes',
+                    'Start Date of Service'              => $quoteDetails->date_of_service ? $quoteDetails->date_of_service : '---',
+                    'End Date of Service'                => $quoteDetails->end_date_of_service ? $quoteDetails->end_date_of_service : '---',
+                    'Time of Service'                    => $quoteDetails->time_of_service ? $quoteDetails->time_of_service : '---',
+                    'Category'                           => isset($quoteDetails->getCategory->name) && !empty($quoteDetails->getCategory->name) ? $quoteDetails->getCategory->name : '---',
+                    'Supplier'                           => isset($quoteDetails->getSupplier->name) && !empty($quoteDetails->getSupplier->name) ? $quoteDetails->getSupplier->name : '---' ,
+                    'Product'                            => $quoteDetails->product_id ? $quoteDetails->product_id : '---',
+                    'Supervisor'                         => isset($quoteDetails->getSupervisor->name) && !empty($quoteDetails->getSupervisor->name) ? $quoteDetails->getSupervisor->name : '---' ,
+                    'Booking Date'                       => $quoteDetails->booking_date ? $quoteDetails->booking_date : '---',
+                    'Booking Due Date'                   => $quoteDetails->booking_due_date ? $quoteDetails->booking_due_date : '---',
+                    'Booking Reference'                  => $quoteDetails->booking_reference ? $quoteDetails->booking_reference : '---',
+                    'Booking Method'                     => isset($quoteDetails->getBookingMethod->name) && !empty($quoteDetails->getBookingMethod->name) ? $quoteDetails->getBookingMethod->name : '---',
+                    'Booked By'                          => isset($quoteDetails->getBookingBy->name) && !empty($quoteDetails->getBookingBy->name) ? $quoteDetails->getBookingBy->name : '---',
+                    'Booking Type'                       => isset($quoteDetails->getBookingType->name) && !empty($quoteDetails->getBookingType->name) ? $quoteDetails->getBookingType->name : '---',
+                    'Supplier Currency'                  => isset($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->getSupplierCurrency->code) ? $quoteDetails->getSupplierCurrency->code.' - '.$quoteDetails->getSupplierCurrency->name : '---',
+                    'Estimated Cost'                     => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->estimated_cost) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->estimated_cost) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->estimated_cost : '---',
+                    'Markup Amount'                      => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->estimated_cost) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->markup_amount) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->markup_amount : '---', 
+                    'Markup %'                           => $quoteDetails->markup_percentage.' %' ? $quoteDetails->markup_percentage.' %' : '---',
+                    'Selling Price'                      => isset($quoteDetails->getSupplierCurrency->code) && isset($quoteDetails->selling_price) && !empty($quoteDetails->getSupplierCurrency->code) && !empty($quoteDetails->selling_price) ? $quoteDetails->getSupplierCurrency->code.' '.$quoteDetails->selling_price : '---',
+                    'Profit %'                           => $quoteDetails->profit_percentage.' %' ? $quoteDetails->profit_percentage.' %' : '---',
+                    'Estimated Cost in Booking Currency' => isset($data['quote']->getCurrency->code) && isset($quoteDetails->estimated_cost_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->estimated_cost_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->estimated_cost_bc : '---',
+                    'Markup Amount in Booking Currency ' => isset($data['quote']->getCurrency->code) && isset($quoteDetails->selling_price_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->selling_price_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->selling_price_bc : '---',
+                    'Selling Price in Booking Currency'  => isset($data['quote']->getCurrency->code) && isset($quoteDetails->markup_amount_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->markup_amount_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->markup_amount_bc : '---',
+                    'Added in Sage'                      => $quoteDetails->added_in_sage == '0' ? 'No' : 'Yes',
                 ];
             }
         }
@@ -166,7 +166,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     [
                         'TAS REFERENCE:',''.$quote->tas_ref ? $quote->tas_ref : '---',
                         '', // blank array for skip one column
-                        'CURRENCY RATE TYPE:',''.$quote->rate_type ? $quote->rate_type :'---'
+                        'CURRENCY RATE TYPE:', isset($quote->rate_type) && ($quote->rate_type == 'live') ? 'Live Rate' : 'Manual Rate'
                     ],
                     [
                         'SALES PERSON:',''.$data['quote']->getSalePerson->name ? $data['quote']->getSalePerson->name : '---',
@@ -181,7 +181,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     [
                         'BOOKING SEASON:',''.$data['quote']->getSeason->name ? $data['quote']->getSeason->name : '---',
                         '', // blank array for skip one column
-                        'BOOKING CURRENCY:',''.$data['quote']->getCurrency->name ? $data['quote']->getCurrency->name : '---'
+                        'BOOKING CURRENCY:', ''.$data['quote']->getCurrency->name ? $data['quote']->getCurrency->code.' - '.$data['quote']->getCurrency->name : '---'
                     ],
                     [
                         'AGENCY BOOKING:',''.$quote->agency == 0 ? 'No' : 'Yes',
