@@ -527,7 +527,7 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product</label>
-                                    <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" value="{{ $q_detail->product_id }}" placeholder="Enter Product">
+                                    <input type="text" name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id " value="{{ $q_detail->product_id }}" placeholder="Enter Product">
                                   </div>
                                 </div>
 
