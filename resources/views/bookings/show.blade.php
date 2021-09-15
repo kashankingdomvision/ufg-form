@@ -95,16 +95,16 @@
             <div class="card card-secondary">
               <div class="card-header">
                 <h1 class="card-title text-center card-title-style">View Booking</h1>
-                <a href="{{ url()->previous() }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">
-                  Back
+                <a href="{{ url()->previous() }}" class="btn btn-dark btn-sm float-right" data-title="Final Quotation" data-target="#Final_Quotation">
+                  <span class="fa fa-arrow-left"></span>  &nbsp;Back to Listing
                 </a>
 
-                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary mr-3 btn-md" data-title="Final Quotation" data-target="#Final_Quotation">
+                <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="float-right btn btn-primary mr-2 btn-sm" data-title="Final Quotation" data-target="#Final_Quotation">
                   View Final Quote
                 </a>
 
                 <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Edit this Booking?');" data-title="Edit" data-target="#edit" title="Edit">
-                  <button type="button" class="mr-2 btn btn-info btn-md float-right" data-title="" data-target="#" title="Edit">Edit Booking</button>
+                  <button type="button" class="mr-2 btn btn-info btn-sm float-right" data-title="" data-target="#" title="Edit">Edit Booking</button>
                 </a>
 
               </div>

@@ -378,12 +378,16 @@ class QuoteController extends Controller
         return view('quotes.version', $data);
     }
 
-    public function delete($id)
+    public function cancel($id)
     { 
-        $quote =  Quote::findOrFail(decrypt($id)); 
-        $quote->delete();
-
-        return redirect()->route('quotes.index')->with('success_message', 'Quote cancelled successfully');        
+        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');        
+    }
+        
+    public function restore($id)
+    {
+        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
+        return redirect()->back()->with('success_message', 'Quote Restore Successfully');        
     }
 
     public function booking($id)
@@ -424,7 +428,7 @@ class QuoteController extends Controller
             'booking_date'   => Carbon::now()
         ]);
         
-        return redirect()->route('quotes.index')->with('success_message', 'Quote Booked successfully');        
+        return redirect()->back()->with('success_message', 'Quote Booked successfully');        
     }
 
     public function multiple_action(Request $request)
@@ -451,13 +455,7 @@ class QuoteController extends Controller
         $data['quotes'] = Quote::onlyTrashed()->paginate($this->pagiantion);
         return view('quotes.trash', $data);
     } 
-    
-    public function restore($id)
-    {
-        $quote = Quote::withTrashed()->find(decrypt($id))->restore();
-        return redirect()->route('quotes.index')->with('success_message', 'Quote restored successfully');        
-    }
-    
+
     /* view final quote */
     public function finalQuote($id)
     {

@@ -60,14 +60,45 @@
           </div>
         @endif
         
-      
-      
         <div class="row">
           <div class="col-md-12">
+            @include('includes.flash_message')
 
             <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title text-center">Edit Quote</h3>
+                <h3 class="card-title text-center card-title-style">Edit Quote</h3>
+
+                <a href="{{ route('quotes.index') }}" class="btn btn-dark btn-sm float-right" title="Back">
+                  <span class="fa fa-arrow-left"></span>  &nbsp;Back to  Listing
+                </a>
+
+                @if($quote->booking_status == 'quote')
+                  <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
+                    @csrf 
+                    <button type="submit" onclick="return confirm('Are you sure you would like to Export this Quote?');" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel">Export in Excel</button>
+                  </form>
+                @endif
+
+                @if($quote->booking_status == 'quote')
+                  <a href="{{ route('quotes.cancelled', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Cancel this Quote?');" data-title="Cancel" data-target="#cancel" title="Cancel Quote">
+                    <button type="button" class="mr-2 btn btn-danger btn-sm float-right" data-title="" data-target="#" title="Cancel Quote">Cancel Quote</button>
+                  </a>
+                @endif
+
+                @if($quote->booking_status == 'quote')
+                  <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
+                    @csrf @method('patch')
+                    <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
+                  </form>
+                @endif
+
+
+                @if($quote->booking_status == 'cancelled')
+                  <a href="{{ route('quotes.restore', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Restore this Quote?');" data-title="Cancel" title="Restore Quote">
+                    <button type="button" class="mr-2 btn btn-success btn-sm float-right">Restore</button>
+                  </a>
+                @endif
+
               </div>
             
               <form method="POST" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}"> 
@@ -922,10 +953,12 @@
                     </div>
                   </div>
                 </div>
+                @if($quote->booking_status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                   <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
                 </div>
+                @endif
               </form>
               <div id="overlay" class=""></div>
             </div>

@@ -187,7 +187,7 @@
                                                     @endif
 
                                                     @if($booking->booking_status == 'cancelled')
-                                                        <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
+                                                        <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class=" float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
                                                             <span class="fa fa-undo-alt"></span>
                                                         </a>
                                                     @endif

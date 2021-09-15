@@ -73,13 +73,13 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'QuoteController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'QuoteController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'QuoteController@store'));
-    	Route::get('delete/{id}',array('as'=>'delete','uses'=>'QuoteController@delete'));
+    	Route::get('cancel/{id}',array('as'=>'cancelled','uses'=>'QuoteController@cancel'));
+        Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'QuoteController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
         Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
         Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
-        Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
         Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
         Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
         Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
