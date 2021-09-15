@@ -39,7 +39,6 @@
                   Back
                 </a>
               </div>
-  Launch demo modal
 
                 <div class="card-body">
                     <form id="quote_doc" method="POST" class="quote_documents" action="#">
