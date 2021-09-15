@@ -1,215 +1,165 @@
 @extends('layouts.app')
-
-@section('title','Dashboard')
-
+@section('title', 'Final Quote')
 @section('content')
+  <div class="content-wrapper">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+    <section class="content-header">
+      <div class="container-fluid">
 
 
-<style>
-.mt-300{
-    margin-top: 300px;
-}
+        <div class="row">
+          <div class="col-sm-6">
+              <h4>View Final Quote</h4>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a>Home</a></li>
+                <li class="breadcrumb-item active">Quote Management</li>
+              </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="content " >
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title text-center card-title-style">Quote Documents</h3>
+                <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">
+                  Back
+                </a>
+              </div>
+  Launch demo modal
 
-.mb-300{
-    margin-bottom: 300px;
-}
-
-</style>
-    <!-- Begin shared CSS values -->
-    <style class="shared-css" type="text/css" >
-        .t {
-            transform-origin: bottom left;
-            z-index: 2;
-            position: absolute;
-            white-space: pre;
-            overflow: visible;
-            line-height: 1.5;
-        }
-        .text-container {
-            white-space: pre;
-        }
-        @supports (-webkit-touch-callout: none) {
-            .text-container {
-                white-space: normal;
-            }
-        }
-        </style>
-        <!-- End shared CSS values -->
-        
-        
-        <!-- Begin inline CSS -->
-        <style type="text/css" >
-        
-        #t1_1{left:210px;bottom:580px;letter-spacing:0.01px;}
-        #t2_1{left:381px;bottom:518px;letter-spacing:-0.06px;}
-        #t3_1{left:358px;bottom:431px;letter-spacing:-0.04px;}
-        #t4_1{left:426px;bottom:400px;letter-spacing:-0.05px;}
-        
-        .s1_1{font-size:29px;font-family:Helvetica, Arial, sans-serif;color:#000;font-weight:bold;}
-        .s2_1{font-size:20px;font-family:Helvetica, Arial, sans-serif;color:#000;}
-        .s3_1{font-size:23px;font-family:Helvetica, Arial, sans-serif;color:#000;}
-        </style>
-        <!-- End inline CSS -->
-<div class="content-wrapper">
-                    {{-- <a href="{{ route('pdf') }}" class="btn btn-dark">pdf</a> --}}
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid bd-dark">
-        <div class="container">
-        
-            <form method="POST" action="{{ route('quotes.document.pdf', $quote_id) }}" id="generate-pdf">
-            @csrf
-     
-                <div class="row">
-                    <div class="col-md-12" >
-                        <div id="document-editor__toolbar"></div>
-                        <div id="toolbar-container"></div>
-                        <div id="editor">
-                         
-<div id="p1" style="overflow: hidden; position: relative; background-color: white; width: 909px; height: 1286px;">
+                <div class="card-body">
+                    <form id="quote_doc" method="POST" class="quote_documents" action="#">
+                        @csrf @method('post')
+                        <div class="row">
+                            <div class="col-md-8">
+                            @foreach ($quote_details as $key => $qd)
+                                <h4><strong>{{ Helper::document_date_format($key) }}</strong></h4>
+                                @foreach ($qd as $key => $quote_detial)
+                                    <div class="card ">
+                                        <div class=" p-2 card-body bg-secondary ">
+                                            <a href="javaScript:void(0);" data-toggle="modal" data-target="#CallModal{{$quote_detial->id}}">
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="p-2 w-100 bd-highlight"> 
+                                                        {{$quote_detial->getCategory->name}} - {{$quote_detial->product_id}}
+                                                    </div>
+                                                    <div class="p-2 flex-shrink-1 bd-highlight">                                            
+                                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
 
 
-    
-    <!-- Begin page background -->
-    {{-- <div id="pg1Overlay" style="width:100%; height:100%; position:absolute; z-index:1; background-color:rgba(0,0,0,0); -webkit-user-select: none;"></div>
-    <div id="pg1" style="-webkit-user-select: none;"><object width="909" height="1286" data="1/1.svg" type="image/svg+xml" id="pdf1" style="width:909px; height:1286px; -moz-transform:scale(1); z-index: 0;"></object></div>
-    <!-- End page background -->
-    
-    
-    <!-- Begin text definitions (Positioned/styled in CSS) -->
-    <div class="text-container"><span id="t1_1" class="t s1_1">Signature Cruise Split to Dubrovnik </span>
-    <span id="t2_1" class="t s2_1">26th July 2021 </span>
-    <span id="t3_1" class="t s3_1">Mrs Susan Wehrli </span>
-    <span id="t4_1" class="t s3_1">TBA </span></div> --}}
-    <!-- End text definitions -->
-    
-    </div>
-                            @foreach ($quoteDetail as $key => $details)
-                            <h2><strong>{{ date('D d M Y', strtotime($details['date'])) }}</strong></h2>
-                                @foreach ($details as $detail)
-                                    @if ($detail['text']??NULL)
-                                        
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <td >Transfer To: </td>
-                                                    <td >{{ $detail['text']??NULL }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td >Accomodation Product Name</td>
-                                                    <td >{{ $detail['accomodation_product_name']??NULL }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td >Check in: </td>
-                                                    <td >{{ $detail['check_in']??NULL }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td >Service Exucrsion </td>
-                                                    <td >{{ $detail['service_exucrsion']??NULL }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    @endif
+                                    <!-- Modal -->
+                                    <div class="modal fade" data-backdrop="static" id="CallModal{{$quote_detial->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="quoteDetail[{{ $quote_detial->id }}]['id']" value="{{$quote_detial->id}}">
+                                                    <div class="form-group">
+                                                        <label>Images upload</label>
+                                                        <input type="file" class="form-control" name="quoteDetail[{{ $quote_detial->id }}]['uploadimage']">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Notes: </label>
+                                                        <textarea name="quoteDetail[{{ $quote_detial->id }}]['detials']"  class="form-control summernote">{{ old('about_us') }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             @endforeach
+                               
+
+                            <h4><strong>Trip Cost</strong></h4>
+                            <div class="card">
+                                <div class=" p-2 card-body bg-secondary ">
+                                    <a href="#">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="p-2 w-100 bd-highlight"> 
+                                                Whats Included?
+                                            </div>
+                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class=" p-2 card-body bg-secondary ">
+                                    <a href="#">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="p-2 w-100 bd-highlight"> 
+                                                Whats not Included?
+                                            </div>
+                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class=" p-2 card-body bg-secondary ">
+                                    <a href="#">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="p-2 w-100 bd-highlight"> 
+                                               Booking Conditions
+                                            </div>
+                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
+                                                <i class="fa fa-plus" aria-hidden="true"></i>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                               
+                            
+                            </div>
+                            <div class="col-md-4">
+                                <div class="position-sticky mt-2">
+                                    <div class="d-flex">
+                                        <button class="btn btn-success col-5 ml-3 btn-sm" title="SAVE DOCUMENTS">SAVE</button>
+                                        <a class="btn btn-outline-dark col-5 ml-3" href="#" title="WEB VIEW"><i class="fa fa-desktop" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <div class="row mt-2">
-                    <div class="col">
-                        <button type="submit" class="btn btn-block btn-outline-dark">Genereate PDF</button>
-                    </div>
-                </div>
-            </form>
+                <div id="overlay" class=""></div>
+            </div>
+          </div>
         </div>
-        
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
-    <!-- /.content -->
   </div>
-
 @endsection
-
-@push('scripts')
-    <script>DecoupledDocumentEditor
-        .create( document.querySelector( '#editor' ), {
-            
-        toolbar: {
-            items: [
-                'exportPdf',
-                'exportWord',
-                '|',
-                'heading',
-                'fontFamily',
-                'fontSize',
-                'fontColor',
-                'fontBackgroundColor',
-                '|',
-                'bold',
-                'italic',
-                'underline',
-                'strikethrough',
-                '|',
-                'alignment',
-                '|',
-                'numberedList',
-                'bulletedList',
-                '|',
-                'outdent',
-                'indent',
-                '|',
-                'todoList',
-                'link',
-                'blockQuote',
-                'imageInsert',
-                'imageUpload',
-                'insertTable',
-                'mediaEmbed',
-                '|',
-                'highlight',
-                'pageBreak',
-                'findAndReplace',
-                'undo',
-                'redo',
-                'CKFinder',
-                'codeBlock',
-                // 'htmlEmbed'
-            ]
-        },
-        language: 'en',
-        image: {
-            toolbar: [
-                'imageTextAlternative',
-                'imageStyle:inline',
-                'imageStyle:block',
-                'imageStyle:side'
-            ]
-        },
-        table: {
-            contentToolbar: [
-                'tableColumn',
-                'tableRow',
-                'mergeTableCells',
-                'tableCellProperties',
-                'tableProperties'
-            ]
-        },
-            licenseKey: '',
-            
-            
-            
-        } )
-        .then( editor => {
-            window.editor = editor;
-            document.querySelector( '#document-editor__toolbar' ).appendChild( editor.ui.view.toolbar.element );
-            document.querySelector( '#toolbar-container' ).classList.add( 'ck-reset_all' );
-        } )
-        .catch( error => {
-            console.error( 'Oops, something went wrong!' );
-            console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-            console.warn( 'Build id: 3jsrijwq6ra6-nmur7pivyya9' );
-            console.error( error );
-        } );
-</script>
-@endpush

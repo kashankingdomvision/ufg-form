@@ -23,54 +23,70 @@ use App\User;
 
 class QuoteDocumentsController extends Controller
 {
-    public function documentIndex($id)
+
+    public function index($id)
     {
+        $quote          = Quote::findOrFail(decrypt($id));
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'category_id', 'product_id', 'id'])->groupBy('date_of_service');
+        $data['quote_details']  = $quoteDetails;
+        $data['created_at']     =  $quote->doc_formated_created_at;
+        $data['title']          =  $quote->quote_title;
+        $data['person_name']    =  $quote->getSalePerson->name;
+        $data['brand_about']    =  $quote->getBrand->about_us;
 
-        dd('switch the branch');
-        $quote = Quote::findOrFail(decrypt($id));
-        
-        $parentQuote = $quote->getQuoteDetails()->where('parent_id', NULL)->get();
-        $data = [];
-        foreach ($parentQuote as $parent) {
-            $_data = [];
-            $parent_product = $parent->getProduct->name;
-            $x = [];
-            foreach ($parent->getChildQuote as $child) {
-                $text = (isset($child->getCategory) && $child->getCategory->slug == 'service-excursion')? 'Service Excursion' : 'Transfer';
-                $child_product = $child->getProduct->name??NULL;
-                if($child->getCategory->slug == 'accommodation'){
-                    $x = [
-                        "text"                      => "Transfer to ".$child_product." via ".$parent_product." on ".$parent->date_of_service??NULL." ".$parent->time_of_service??NULL,
-                        "accomodation_product_name" => $child_product,
-                        "check_in"                  => "Check in: ".$child->date_of_service??NULL." ".$child->time_of_service??NULL,
-                        "service_exucrsion"         => ($parent->getChildQuote[1]->getCategory->slug == 'service-excursion')? $parent->getChildQuote[1]->getProduct->name??NULL." ".$parent->getChildQuote[1]['date_of_service']??NULL." ".$parent->getChildQuote[1]['time_of_service']??NULL : NULL,
-                    ];
-                    array_push($_data, $x);
-                }
-            }      
-            $_data['date'] = $parent->date_of_service;
-            array_push($data, $_data);
-
-        }
-        // $quote = Quote::findOrFail(decrypt($id));
-        // // $quoteDetail = $quote->getQuoteDetails()->orderByRaw('(category_id) DESC')->get();
-        // $quoteDetail = $quote->getQuoteDetails()->whereHas('getCategory', function ($query){ 
-        //                         $query->orderByRaw('FIELD(sort_by, "1", "2", "3")'); 
-        //                     })->toSql();
-        // dd($quoteDetail);
-        // dd($quote->getQuoteDetails()->orderByRaw('category_id')->orderBy('time_of_service', 'ASC')->get());
-        // dd($this->dataSorting($quote->getQuoteDetails));
-        // $data['quote_details'] = $quote->getQuoteDetails()->orderBy('raw')->orderBy('time_of_service', 'DESC')->get(); 
-        // $doc = QuoteDocument::where('quote_id', decrypt($id))->first();
-        $c['quote_id']      = $id;
-        $c['quoteDetail']   = $data;
-        // if($doc){
-        //     if($doc->exists()){
-        //         $data['doc']      = $doc;
-        //     }
-        // }
-        return view('quote_documents.index', $c);
+        return view('quote_documents.index', $data);
     }
+
+
+
+    // public function documentIndex($id)
+    // {
+
+    //     dd('switch the branch');
+    //     $quote = Quote::findOrFail(decrypt($id));
+        
+    //     $parentQuote = $quote->getQuoteDetails()->where('parent_id', NULL)->get();
+    //     $data = [];
+    //     foreach ($parentQuote as $parent) {
+    //         $_data = [];
+    //         $parent_product = $parent->getProduct->name;
+    //         $x = [];
+    //         foreach ($parent->getChildQuote as $child) {
+    //             $text = (isset($child->getCategory) && $child->getCategory->slug == 'service-excursion')? 'Service Excursion' : 'Transfer';
+    //             $child_product = $child->getProduct->name??NULL;
+    //             if($child->getCategory->slug == 'accommodation'){
+    //                 $x = [
+    //                     "text"                      => "Transfer to ".$child_product." via ".$parent_product." on ".$parent->date_of_service??NULL." ".$parent->time_of_service??NULL,
+    //                     "accomodation_product_name" => $child_product,
+    //                     "check_in"                  => "Check in: ".$child->date_of_service??NULL." ".$child->time_of_service??NULL,
+    //                     "service_exucrsion"         => ($parent->getChildQuote[1]->getCategory->slug == 'service-excursion')? $parent->getChildQuote[1]->getProduct->name??NULL." ".$parent->getChildQuote[1]['date_of_service']??NULL." ".$parent->getChildQuote[1]['time_of_service']??NULL : NULL,
+    //                 ];
+    //                 array_push($_data, $x);
+    //             }
+    //         }      
+    //         $_data['date'] = $parent->date_of_service;
+    //         array_push($data, $_data);
+
+    //     }
+    //     // $quote = Quote::findOrFail(decrypt($id));
+    //     // // $quoteDetail = $quote->getQuoteDetails()->orderByRaw('(category_id) DESC')->get();
+    //     // $quoteDetail = $quote->getQuoteDetails()->whereHas('getCategory', function ($query){ 
+    //     //                         $query->orderByRaw('FIELD(sort_by, "1", "2", "3")'); 
+    //     //                     })->toSql();
+    //     // dd($quoteDetail);
+    //     // dd($quote->getQuoteDetails()->orderByRaw('category_id')->orderBy('time_of_service', 'ASC')->get());
+    //     // dd($this->dataSorting($quote->getQuoteDetails));
+    //     // $data['quote_details'] = $quote->getQuoteDetails()->orderBy('raw')->orderBy('time_of_service', 'DESC')->get(); 
+    //     // $doc = QuoteDocument::where('quote_id', decrypt($id))->first();
+    //     $c['quote_id']      = $id;
+    //     $c['quoteDetail']   = $data;
+    //     // if($doc){
+    //     //     if($doc->exists()){
+    //     //         $data['doc']      = $doc;
+    //     //     }
+    //     // }
+    //     return view('quote_documents.index', $c);
+    // }
     
     public function generatePDF(Request $request, $id)
     {
@@ -118,6 +134,8 @@ class QuoteDocumentsController extends Controller
     //     // $data['transfer_to'] = 'Transfer to '.$AProduct.' via '.$TProduct.' on '.$dataOFService.''.$timeservice;
     // }
     
+
+    // quote export work 
     public function generateExport($id) {
         $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
         $data['quote']            = $quote;
@@ -140,5 +158,7 @@ class QuoteDocumentsController extends Controller
         // dd($data);
         return Excel::download(new QuoteExport($data), 'quote.xlsx');
     }
+
+    
     
 }

@@ -2828,6 +2828,10 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   padding: 0.375rem 0.75rem;
 }
 
+.swal2-input[type=number] {
+  max-width: 10em;
+}
+
 .swal2-file {
   width: 75%;
   margin-right: auto;

@@ -85,11 +85,14 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
         Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
-        Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
-        Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
+        // Route::POST('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+        // Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
         Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
-        Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
+        // Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
+
+        Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
+
     });
 
     
