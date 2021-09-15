@@ -276,20 +276,24 @@
                                                         {{-- <a href="{{ route('quotes.document', encrypt($quote->id)) }}" title="View" class="mr-2 btn btn-outline-info btn-xs" data-title="Document Quotation" data-target="#Document_Quotation">
                                                             <i class="fas fa-file"></i>
                                                         </a> --}}
-                                                        <form class="mr-2 " method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
-                                                            @csrf
-                                                            <button type="submit" title="Export Quote"  onclick="return confirm('Are you sure you would like to export this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
-                                                                <i class="fa fa-file-excel"></i>
-                                                            </button>
-                                                        </form>
+
+
                                                         @if($quote->booking_status == 'quote')
-                                                            <form class="mr-2 " method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
+                                                            <form class="" method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
                                                                 @csrf @method('patch')
                                                                 <button type="submit" title="Quote Clone"  onclick="return confirm('Are you sure you would like to clone this quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
                                                                     <i class="fa fa-clone"></i>
                                                                 </button>
                                                             </form>
                                                         @endif
+
+                                                        <form class="" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
+                                                            @csrf
+                                                            <button type="submit" title="Export in Excel"  onclick="return confirm('Are you sure you would like to Export this Quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
+                                                                <i class="fa fa-file-excel"></i>
+                                                            </button>
+                                                        </form>
+
                                                         <a href="{{ route('quotes.quote.documment',encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Quote Document" title="View Quote Document" >
                                                             <i class="fas fa-file"></i>
                                                         </a>

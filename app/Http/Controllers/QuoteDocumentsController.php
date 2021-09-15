@@ -156,7 +156,7 @@ class QuoteDocumentsController extends Controller
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         // dd($data);
-        return Excel::download(new QuoteExport($data), 'quote.xlsx');
+        return Excel::download(new QuoteExport($data), "$quote->quote_ref.xlsx");
     }
 
     

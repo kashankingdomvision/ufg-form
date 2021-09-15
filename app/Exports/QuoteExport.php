@@ -34,7 +34,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             $keyed[] = [
                 'Agency Name' => isset($quote->agency_name) && !empty($quote->agency_name) ? $quote->agency_name : '---',
                 'Agency Contact Name' => isset($quote->agency_contact_name) && !empty($quote->agency_contact_name) ? $quote->agency_contact_name : '---',
-                'Agency Contact No' => isset($quote->agency_contact) && !empty($quote->agency_contact) ? $quote->agency_contact : '---' ,
+                'Agency Contact No' => isset($quote->agency_contact) && !empty($quote->agency_contact) ? ' '.$quote->agency_contact.' ' : '---' ,
                 'Agency Email' => isset($quote->agency_email) && !empty($quote->agency_email) ? $quote->agency_email : '---'
             ];
 
@@ -57,14 +57,14 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
 
         if($data['quote']->agency == 0) {
             $keyed[] = [
-                'PASSENGER NAME' => isset($quote->lead_passenger_name) && !empty($quote->lead_passenger_name) ? $quote->lead_passenger_name. ' (Lead)' : '---',
-                'EMAIL ADDRESS' => isset($quote->lead_passenger_email) && !empty($quote->lead_passenger_email) ? $quote->lead_passenger_email : '---',
-                'CONTACT NUMBER' => isset($quote->lead_passenger_contact) && !empty($quote->lead_passenger_contact) ? ' '.$quote->lead_passenger_contact.' ' : '---' ,
-                'DATE OF BIRTH' => isset($quote->lead_passenger_dbo) && !empty($quote->lead_passenger_dbo) ? $quote->lead_passenger_dbo : '---',
-                'NATIONALITY' => isset($quote->getNationality->name) && !empty($quote->getNationality->name) ? $quote->getNationality->name : '---',
+                'PASSENGER NAME'      => isset($quote->lead_passenger_name) && !empty($quote->lead_passenger_name) ? $quote->lead_passenger_name. ' (Lead)' : '---',
+                'EMAIL ADDRESS'       => isset($quote->lead_passenger_email) && !empty($quote->lead_passenger_email) ? $quote->lead_passenger_email : '---',
+                'CONTACT NUMBER'      => isset($quote->lead_passenger_contact) && !empty($quote->lead_passenger_contact) ? ' '.$quote->lead_passenger_contact.' ' : '---' ,
+                'DATE OF BIRTH'       => isset($quote->lead_passenger_dbo) && !empty($quote->lead_passenger_dbo) ? $quote->lead_passenger_dbo : '---',
+                'NATIONALITY'         => isset($quote->getNationality->name) && !empty($quote->getNationality->name) ? $quote->getNationality->name : '---',
                 'BEDDING PREFERENCES' => isset($quote->lead_passenger_bedding_preference) && !empty($quote->lead_passenger_bedding_preference) ? $quote->lead_passenger_bedding_preference : '---',
                 'DINNING PREFERENCES' => isset($quote->lead_passenger_dinning_preference) && !empty($quote->lead_passenger_dinning_preference) ? $quote->lead_passenger_dinning_preference : '---',
-                'COVID VACCINATED' => isset($quote->lead_passenger_covid_vaccinated) && !empty($quote->lead_passenger_covid_vaccinated) && $quote->lead_passenger_covid_vaccinated == 0 ? 'No' : 'Yes',
+                'COVID VACCINATED'    => $quote->lead_passenger_covid_vaccinated == 1 ? 'Yes' : 'No',
             ];
         }
 
@@ -78,7 +78,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'NATIONALITY'         => isset($paxDetails->getPassengerNationality->name) && !empty($paxDetails->getPassengerNationality->name) ? $paxDetails->getPassengerNationality->name : '---' ,
                     'BEDDING PREFERENCES' => isset($paxDetails->bedding_preference) && !empty($paxDetails->bedding_preference) ? $paxDetails->bedding_preference : '---',
                     'DINNING PREFERENCES' => isset($paxDetails->dinning_preference) && !empty($paxDetails->dinning_preference) ? $paxDetails->dinning_preference : '---',
-                    'COVID VACCINATED'    => isset($paxDetails->covid_vaccinated) && !empty($paxDetails->covid_vaccinated) && $paxDetails->covid_vaccinated == 0 ? 'No' : 'Yes',
+                    'COVID VACCINATED'    => $paxDetails->covid_vaccinated == 1 ? 'Yes' : 'No',
                 ];
             }
         }
@@ -139,7 +139,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     'Estimated Cost in Booking Currency' => isset($data['quote']->getCurrency->code) && isset($quoteDetails->estimated_cost_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->estimated_cost_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->estimated_cost_bc : '---',
                     'Markup Amount in Booking Currency ' => isset($data['quote']->getCurrency->code) && isset($quoteDetails->selling_price_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->selling_price_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->selling_price_bc : '---',
                     'Selling Price in Booking Currency'  => isset($data['quote']->getCurrency->code) && isset($quoteDetails->markup_amount_bc) && !empty($data['quote']->getCurrency->code) && !empty($quoteDetails->markup_amount_bc) ? $data['quote']->getCurrency->code.' '.$quoteDetails->markup_amount_bc : '---',
-                    'Added in Sage'                      => $quoteDetails->added_in_sage == '0' ? 'No' : 'Yes',
+                    'Added in Sage'                      => $quoteDetails->added_in_sage == 1 ? 'Yes' : 'NO',
                 ];
             }
         }
@@ -179,7 +179,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
         ];
         $keyed[] = [
             'Selling Price in Other Currency' => 'SELLING PRICE IN OTHER CURRENCY:',
-            'Selling Price in Other Currency Value' => $data['quote']->selling_currency_oc. ' '. $data['quote']->selling_price_ocr ? $data['quote']->selling_currency_oc. ' '. $data['quote']->selling_price_ocr : '---',
+            'Selling Price in Other Currency Value' => isset($data['quote']->selling_price_ocr) && !empty($data['quote']->selling_price_ocr) ? $data['quote']->selling_currency_oc. ' '. $data['quote']->selling_price_ocr : '---',
         ];
 
         return new Collection($keyed);
