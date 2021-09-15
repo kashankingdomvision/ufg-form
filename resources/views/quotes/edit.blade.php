@@ -735,8 +735,7 @@
                                       <div class="input-group">
                                         <div class="input-group-prepend">
                                             <div class="icheck-primary">
-                                              <input type="hidden" name="quote[{{ $key }}][added_in_sage]"  value="{{ $q_detail->added_in_sage }}">
-                                              <input data-name="added_in_sage" {{ ($q_detail->added_in_sage == 1)? 'checked': null }} id="quote_{{ $key }}_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                              <input type="hidden" name="quote[{{ $key }}][added_in_sage]" value="{{ $q_detail->added_in_sage }}"><input data-name="added_in_sage" id="quote_{{ $key }}_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($q_detail->added_in_sage == 1) ? 'checked': '' }}> 
                                             </div>
                                         </div>
                                       </div>
