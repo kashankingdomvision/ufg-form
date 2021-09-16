@@ -23,6 +23,11 @@ Route::group(['middleware' => ['auth']], function(){
     /* Refresh Token */
 	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
 
+
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+    
     /*
     |--------------------------------------------------------------------------
     | Dashboard

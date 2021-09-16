@@ -498,7 +498,6 @@
 
                             <div class="col-sm-1 d-flex justify-content-center">
                               <div class="form-group ">
-
                                 <div class="modal-parent">
                                   @include('partials.accomadation_modal')
                                   @include('partials.transfer_modal')
