@@ -1683,6 +1683,7 @@ $(document).ready(function($) {
             });
         });
 
+        $('.mediaModal').find('a').attr('id', '')
         $('.refund-payment-hidden-section:last').attr("hidden",true);
         $('.refund-by-credit-note-section:last').attr("hidden",true);
         $('.finance-clonning:last').removeClass("cancelled-payment-styling");
@@ -2263,8 +2264,18 @@ $(document).ready(function($) {
     |--------------------------------------------------------------------------
     */
 
-    $(document).on('click', '.add-category-detail', function(){
+    
+    $(document).on('click', '.addmodalforquote', function(){
         
+        var quote       = jQuery(this).closest('.quote');
+        var key         = quote.data('key');
+        quote.find(`.calladdmediaModal`).modal('show');
+        quote.find(`.calladdmediaModal :input`).removeAttr('disabled');
+        // jQuery('#accomadation_modal').modal('show').find('input').val('');
+    });
+    
+    $(document).on('click', '.add-category-detail', function(){
+    
         var quote       = jQuery(this).closest('.quote');
         var key         = quote.data('key');
         var type        = $(`#quote_${key}_category_id`).find(':selected').data('slug');

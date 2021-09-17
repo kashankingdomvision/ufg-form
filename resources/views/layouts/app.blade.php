@@ -54,9 +54,14 @@
         });
     </script>
 @endauth
+<script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
+<script>
+     var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+    $('#lfm').filemanager('image', {prefix: route_prefix});
 
+    
+</script>
 
-<script src="{{ asset('js/ck-editor-custom/build/ckeditor.js') }}"></script>
 @stack('scripts')
 
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>

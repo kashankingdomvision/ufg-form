@@ -23,6 +23,11 @@ Route::group(['middleware' => ['auth']], function(){
     /* Refresh Token */
 	Route::get('refresh-token',array('before'=>'csrf','as'=>'refresh-token','uses'=>'HomeController@refresh_token'));
 
+
+    Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+    
     /*
     |--------------------------------------------------------------------------
     | Dashboard
@@ -95,6 +100,22 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Stored Text 
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'store/text', 'as' => 'store.texts.'], function () {
+        Route::get('index', array('as' => 'index', 'uses' => 'StoreTextController@index'));
+        Route::get('create', ['as' => 'create', 'uses' => 'StoreTextController@create']);
+        Route::get('edit/{slug}', ['as' => 'edit', 'uses' => 'StoreTextController@edit']);
+        Route::put('update/{slug}', ['as' => 'update', 'uses' => 'StoreTextController@update']);
+        Route::post('store', ['as' => 'store', 'uses' => 'StoreTextController@store']);
+        Route::delete('destroy/{slug}', ['as' => 'destroy', 'uses' => 'StoreTextController@destroy']);
+    });
     
     /*
     |--------------------------------------------------------------------------
