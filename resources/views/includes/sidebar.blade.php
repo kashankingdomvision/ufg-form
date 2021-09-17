@@ -88,7 +88,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                      
+
                         <li class="nav-item">
                             <a href="{{ route('quotes.index') }}" class="nav-link {{ $route == 'quotes.index' || $route == 'quotes.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -109,14 +109,14 @@
                         </li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-item">
                     <a href="{{ route('customers.index') }}" class="nav-link {{ $route == 'customers.index' || $route == 'customers.quote.listing' || $route == 'customers.booking.listing'  ? 'active' : '' }}">
                         <i class="fa fa-user nav-icon"></i>
                         <p>Customers</p>
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a href="{{ route('templates.index') }}" class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit' || $route == 'templates.create' ? 'active' : '' }}">
                         <i class="fa fa-clone nav-icon"></i>
@@ -132,7 +132,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                       
+
                         <li class="nav-item">
                             <a href="{{ route('templates.index') }}"class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -143,7 +143,7 @@
                 </li> --}}
 
 
-                
+
                 {{-- <li class="nav-item {{ ($route == 'seasons.index' || $route == 'seasons.create' || $route == 'seasons.edit') ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-cloud nav-icon"></i>
@@ -153,7 +153,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                      
+
                         <li class="nav-item">
                             <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -173,7 +173,7 @@
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                          
+
                             <li class="nav-item">
                                 <a href="{{ route('users.index') }}" class="nav-link {{  $route == 'users.index' || $route == 'users.edit' ? 'active' : '' }}">
                                     <i class="fa fa-eye nav-icon"></i>
@@ -181,7 +181,7 @@
                                 </a>
                             </li>
 
-                          
+
                             <li class="nav-item">
                                 <a href="{{ route('roles.index')}}" class="nav-link {{ $route == 'roles.index' || $route == 'roles.edit' ? 'active' : ''}}">
                                     <i class="fa fa-eye nav-icon"></i>
@@ -202,7 +202,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        
+
                         <li class="nav-item">
                             <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.create' || $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -210,7 +210,7 @@
                             </a>
                         </li>
 
-                        
+
                         <li class="nav-item">
                             <a href="{{ route('products.index')}}" class="nav-link {{ $route == 'products.create' || $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -219,7 +219,7 @@
                         </li>
 
 
-                      
+
                         <li class="nav-item">
                             <a href="{{ route('categories.index')}}" class="nav-link {{ $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
@@ -229,14 +229,14 @@
 
                         <li class="nav-item">
                             <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
-                                <i class="fas fa-wallet"></i>
-                                <p> &nbsp; Wallet</p>
+                                <i class="fas fa-wallet nav-icon"></i>
+                                <p>Wallet</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
-     
+
 
 
 
@@ -460,7 +460,7 @@
                                 </p>
                             </a>
                         </li>
-                        
+
 
                         {{-- <li class="nav-item {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'setting-child-active' : '' }}">
@@ -525,7 +525,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ $route == 'reports.user.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || 'reports.supplier.report' || 'reports.wallet.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
@@ -534,13 +534,28 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                      
+
                         <li class="nav-item">
                             <a href="{{ route('reports.user.report') }}" class="nav-link {{  $route == 'reports.user.report' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>User Report</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('reports.supplier.report') }}" class="nav-link {{  $route == 'reports.supplier.report' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Supplier Report</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('reports.wallet.report') }}" class="nav-link {{  $route == 'reports.wallet.report' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Wallet Report</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                     

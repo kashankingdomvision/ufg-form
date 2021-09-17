@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
-    
+
     /*
     |--------------------------------------------------------------------------
     | Dashboard
@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('booking-detail-clone/{id}', array('as' => 'booking.detail.clone', 'uses' => 'BookingController@booking_detail_clone'));
         Route::get('get-booking-net-price/{id}', array('as' => 'get.booking.net.price', 'uses' => 'BookingController@get_booking_net_price'));
-        
+
         Route::post('cancel-booking', array('as' => 'cancel.booking', 'uses' => 'BookingController@cancel_booking'));
         Route::get('revert-cancel-booking/{id}', array('as' => 'revert.cancel.booking', 'uses' => 'BookingController@revert_cancel_booking'));
     });
@@ -101,10 +101,10 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-    
+
     /*
     |--------------------------------------------------------------------------
-    | Stored Text 
+    | Stored Text
     |--------------------------------------------------------------------------
     */
 
@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store', ['as' => 'store', 'uses' => 'StoreTextController@store']);
         Route::delete('destroy/{slug}', ['as' => 'destroy', 'uses' => 'StoreTextController@destroy']);
     });
-    
+
     /*
     |--------------------------------------------------------------------------
     | Customer
@@ -174,9 +174,11 @@ Route::group(['middleware' => ['auth']], function(){
     | Report
     |--------------------------------------------------------------------------
     */
-    
+
     Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
         Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
+        Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
+        Route::get('wallet-report', array('as' => 'wallet.report', 'uses' => 'ReportController@wallet_report'));
     });
 
 
@@ -190,7 +192,7 @@ Route::group(['middleware' => ['auth']], function(){
 		'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | Supplier Managment
@@ -234,7 +236,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('banks', 'SettingControllers\BankController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
-        
+
         /* Airlines */
 		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
 			'index','create', 'store', 'edit', 'update', 'destroy'
@@ -277,7 +279,7 @@ Route::group(['middleware' => ['auth']], function(){
 
 	});
 
- 
+
    /*
     |--------------------------------------------------------------------------
     | Routes For Ajax Request
@@ -298,8 +300,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
     });
-    
-    
+
+
     Route::get('pdf', function()
     {
         return view('quote_documents.index');
