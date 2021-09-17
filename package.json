@@ -29,6 +29,7 @@
         "@ckeditor/ckeditor5-page-break": "^29.2.0",
         "@sweetalert2/theme-bootstrap-4": "^5.0.3",
         "bootstrap-datepicker": "^1.9.0",
+        "daterangepicker": "^3.1.0",
         "fs": "0.0.1-security",
         "intl-tel-input": "^17.0.13",
         "jquery-datetimepicker": "^2.5.21",

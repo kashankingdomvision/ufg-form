@@ -517,6 +517,26 @@
                     </ul>
                 </li>
 
+
+                <li class="nav-item {{ $route == 'reports.user.report' ? 'menu-open': '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-chart-bar nav-icon"></i>
+                        <p>
+                            Reports
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      
+                        <li class="nav-item">
+                            <a href="{{ route('reports.user.report') }}" class="nav-link {{  $route == 'reports.user.report' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>User Report</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </nav>
 

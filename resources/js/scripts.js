@@ -3,6 +3,9 @@ import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'; 
 import datepicker from 'bootstrap-datepicker'; 
+
+import daterangepicker from 'daterangepicker'; 
+
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
   
@@ -14,6 +17,27 @@ var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 var CSRFTOKEN = $('#csrf-token').attr('content');
  
 $(document).ready(function($) {
+
+    $(function() {
+
+        $('.date-range-picker').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                format: 'DD/MM/YYYY',
+            }
+        });
+      
+        $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+      
+        $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+      
+    });
+
 
     /*  ajaxSetup */
     $.ajaxSetup({

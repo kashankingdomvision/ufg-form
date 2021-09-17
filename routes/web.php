@@ -148,6 +148,16 @@ Route::group(['middleware' => ['auth']], function(){
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
+    /*
+    |--------------------------------------------------------------------------
+    | Report
+    |--------------------------------------------------------------------------
+    */
+    
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
+    });
+
 
     /*
     |--------------------------------------------------------------------------
