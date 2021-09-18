@@ -170,9 +170,16 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                        @php $total_profit_percentage = 0; @endphp
+                                        @php 
+                                            $total_profit_percentage = 0; 
+                                            $total_selling_price = 0; 
+                                        @endphp
                                     @if($quotes && $quotes->count())
                                         @foreach ($quotes as $key => $quote)
+                                            @php
+                                                $total_profit_percentage +=  $quote->profit_percentage;
+                                                $total_selling_price     +=  $quote->selling_price;
+                                            @endphp
                                             <tr>
                                                 <td>
                                                     <button class="btn btn-sm parent-row"  data-id="{{$quote->id}}">
@@ -230,9 +237,7 @@
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                        @php
-                                                        $total_profit_percentage +=  $quote->profit_percentage;
-                                                        @endphp
+                                                     
                                                        <td colspan="11"></td>
                                                        <th>Total Profit Percentage</th>
                                                        <td> {{$quote->profit_percentage.' %' }} </td>
@@ -259,7 +264,11 @@
                                             <th>Total Profit Percentage</th>
                                             <td>{{ $total_profit_percentage.' %'}}</td>
                                         </tr>
-                                        
+                                        <tr>
+                                            <td colspan="12"></td>
+                                            <th>Total Selling Price</th>
+                                            <td>{{ $total_selling_price.' %'}}</td>
+                                        </tr>
                                     @else
                                         <tr align="center"><td colspan="100%">No record found.</td></tr>
                                     @endif
