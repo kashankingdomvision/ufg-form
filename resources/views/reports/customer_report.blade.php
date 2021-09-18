@@ -134,18 +134,18 @@
                                             @if($selected_type == null)
                                                 <th>Total Quotes</th>
                                                 <th>Quote</th>
-                                                <th class="border-right">Cancelled</th>
+                                                <th class="border-right">Cancelled Quote</th>
                                                 <th>Total Bookings</th>
-                                                <th>Confirmed</th>
-                                                <th>Cancelled</th>
+                                                <th>Confirmed Booking</th>
+                                                <th>Cancelled Booking</th>
                                             @elseif($selected_type == "quote")
                                                 <th>Total Quotes</th>
                                                 <th>Quote</th>
-                                                <th>Cancelled</th>
+                                                <th>Cancelled Quote</th>
                                             @else
                                                 <th>Total Bookings</th>
-                                                <th>Confirmed</th>
-                                                <th>Cancelled</th>
+                                                <th>Confirmed Booking</th>
+                                                <th>Cancelled Booking</th>
                                             @endif
                                         </tr>
                                         </thead>
