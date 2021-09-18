@@ -264,11 +264,6 @@
                                             <th>Total Profit Percentage</th>
                                             <td>{{ $total_profit_percentage.' %'}}</td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="12"></td>
-                                            <th>Total Selling Price</th>
-                                            <td>{{ $total_selling_price.' %'}}</td>
-                                        </tr>
                                     @else
                                         <tr align="center"><td colspan="100%">No record found.</td></tr>
                                     @endif
