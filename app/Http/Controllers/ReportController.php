@@ -13,8 +13,8 @@ use App\Role;
 use App\Supplier;
 use App\User;
 use App\Wallet;
-
-
+use App\Season;
+use App\Quote;
 
 
 class ReportController extends Controller
@@ -327,4 +327,88 @@ class ReportController extends Controller
         return view('reports.wallet_report', $data);
     }
 
+    public function quote_report(Request $request){
+        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+        $data['users'] = User::orderBy('name', 'ASC')->get();
+        $data['booking_seasons']  = Season::all();
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+
+        $quote = Quote::orderBy('created_at','DESC');
+        if (!empty(request()->all())) {
+            $quote = $this->searchFilters($quote, $request);
+        }
+      
+        $data['quotes'] = $quote->get();
+        return view('reports.quote_report', $data);
+    }
+
+    public function searchFilters($quote, $request)
+    {
+        if($request->has('client_type') && !empty($request->client_type)){
+            $client_type = ($request->client_type == 'client')? '0' : '1';
+            $quote->where('agency', 'like', '%'.$client_type.'%' );    
+        }
+        
+        if($request->has('staff') && !empty($request->staff)){
+            $quote->whereHas('getSalePerson', function($query) use($request){
+                $query->where('name', 'like', '%'.$request->staff.'%' );
+             });
+        }
+        
+        if($request->has('status') && !empty($request->status)){
+            if($request->status == 'cancelled'){
+                $quote->where('deleted_at', '!=', null);
+            }else{
+                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+            }
+        }
+        
+        if($request->has('booking_currency') && !empty($request->booking_currency)){
+            $quote->whereHas('getCurrency', function($query) use($request){
+                foreach ($request->booking_currency as $currency) {
+                    $query->where('code', 'like', '%'.$currency.'%' );
+                }
+            });
+        }            
+        
+        if($request->has('booking_season') && !empty($request->booking_season)){
+            $quote->whereHas('getSeason', function($query) use($request){
+               $query->where('name', 'like', '%'. $request->booking_season.'%' );
+            });
+        }        
+        
+        if($request->has('brand') && !empty($request->brand)){
+            $quote->whereHas('getBrand', function($query) use($request){
+                foreach ($request->brand as $brand) {
+                    $query->where('name', 'like', '%'.$brand.'%' );
+                }
+            });
+        }            
+        
+        if($request->has('search') && !empty($request->search)){
+            $quote->where(function($query) use($request){
+                $query->where('ref_no', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
+                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
+            });
+
+    
+        }
+
+        if($request->has('dates') && !empty($request->dates)){
+
+            $dates = explode ("-", $request->dates);
+
+            $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+            $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+            $quote->whereDate('created_at', '>=', $start_date);
+            $quote->whereDate('created_at', '<=', $end_date);
+        }
+        
+     
+        return $quote;
+    }
+    
 }

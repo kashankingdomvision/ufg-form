@@ -48432,6 +48432,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
+  $(document).on('click', '.parent-row', function (e) {
+    var parentID = $(this).data('id');
+    $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
+    $(this).html($(this).html() == "<span class=\"fa fa-minus\"></span>" ? "<span class=\"fa fa-plus\"></span>" : "<span class=\"fa fa-minus\"></span>");
+  });
   $(document).on('click', '#add_more', function (e) {
     if ($('.select2single').data('select2')) {
       $('.select2single').select2('destroy');
