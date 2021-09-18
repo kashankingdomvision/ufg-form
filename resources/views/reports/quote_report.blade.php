@@ -172,13 +172,11 @@
                                     <tbody>
                                         @php 
                                             $total_profit_percentage = 0; 
-                                            $total_selling_price = 0; 
                                         @endphp
                                     @if($quotes && $quotes->count())
                                         @foreach ($quotes as $key => $quote)
                                             @php
                                                 $total_profit_percentage +=  $quote->profit_percentage;
-                                                $total_selling_price     +=  $quote->selling_price;
                                             @endphp
                                             <tr>
                                                 <td>
