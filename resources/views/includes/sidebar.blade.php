@@ -525,7 +525,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ $route == 'reports.user.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
@@ -541,6 +541,14 @@
                                 <p>User Report</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('reports.activity.by.user') }}" class="nav-link {{  $route == 'reports.activity.by.user' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Activity By User</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                     

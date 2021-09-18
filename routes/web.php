@@ -177,6 +177,7 @@ Route::group(['middleware' => ['auth']], function(){
     
     Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
         Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
+        Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
     });
 
 
