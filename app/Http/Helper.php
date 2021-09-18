@@ -1,5 +1,6 @@
 <?php
 namespace App\Http;
+use App\Booking;
 use App\Country;
 use App\Quote;
 use App\Category;
@@ -13,6 +14,8 @@ use App\QuoteUpdateDetail;
 use App\User;
 use Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+
 class Helper
 {
     public static function number_format($number){
@@ -24,14 +27,14 @@ class Helper
 		$date = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $date))->format('Y-m-d')));
         return date("l M d, Y",strtotime($date));
     }
-	
+
 	public static function date_difference($start_date, $end_date)
 	{
 		// dd($start_date);
-		// calulating the difference in timestamps 
+		// calulating the difference in timestamps
 		$diff = strtotime($start_date) - strtotime($end_date);
-		
-		// 1 day = 24 hours 
+
+		// 1 day = 24 hours
 		// 24 * 60 * 60 = 86400 seconds
 		return ceil(abs($diff / 86400));
 	}
@@ -245,5 +248,18 @@ class Helper
 
         $country = Country::find($id);
         return $country->name;
+    }
+
+    public static function getTotalBooking($value){
+
+        $total_bookings = Booking::select(DB::raw('count(id) as total_bookings'))
+            ->where('agency', '0')
+            ->where('lead_passenger_email', $value)
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_bookings)) {
+            return isset($total_bookings[0]->total_bookings) && !empty($total_bookings[0]->total_bookings) ? $total_bookings[0]->total_bookings : 0 ;
+        }
     }
 }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+
+use App\Booking;
 use App\Brand;
 use App\Category;
 use App\Currency;
+use App\Quote;
 use App\Role;
 use App\Supplier;
 use App\User;
@@ -97,18 +99,18 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
 
             }]);
 
-            
+
             $user->withCount(['getQuote' => function($query) use($request) {
 
                 if($request->has('month') && !empty($request->month)){
@@ -121,11 +123,11 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
@@ -144,11 +146,11 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
@@ -167,11 +169,11 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
@@ -190,11 +192,11 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
@@ -213,11 +215,11 @@ class ReportController extends Controller
 
                 if($request->has('dates') && !empty($request->dates)){
 
-                    $dates = explode ("-", $request->dates); 
-    
+                    $dates = explode ("-", $request->dates);
+
                     $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
                     $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-    
+
                     $query->whereDate('created_at', '>=', $start_date);
                     $query->whereDate('created_at', '<=', $end_date);
                 }
@@ -411,4 +413,42 @@ class ReportController extends Controller
         return $quote;
     }
     
+    public function customer_report() {
+        $customers_quote = Quote::select('*', DB::raw('count(id) as total_quotes'))->where('agency', '0')->groupBy('lead_passenger_email');
+        $customers_booking = Booking::select('*', DB::raw('count(id) as total_bookings'))->where('agency', '0')->groupBy('lead_passenger_email');
+
+        if (!empty(request()->all())) {
+
+            if(request()->has('dates') && !empty(request()->dates)){
+
+                $dates = explode ("-", request()->dates);
+
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                $customers_quote->whereDate('created_at', '>=', $start_date);
+                $customers_quote->whereDate('created_at', '<=', $end_date);
+
+                $customers_booking->whereDate('created_at', '>=', $start_date);
+                $customers_booking->whereDate('created_at', '<=', $end_date);
+            }
+
+            if(request()->has('month') && !empty(request()->month)){
+                $customers_quote = $customers_quote->whereMonth('created_at', request()->month);
+                $customers_booking = $customers_booking->whereMonth('created_at', request()->month);
+            }
+
+            if(request()->has('year') && !empty(request()->year)){
+                $customers_quote = $customers_quote->whereYear('created_at', request()->year);
+                $customers_booking = $customers_booking->whereYear('created_at', request()->year);
+            }
+
+        }
+        $data['customers_quote'] = $customers_quote->get();
+        $data['customers_booking'] = $customers_booking->get();
+        $data['selected_type'] = request()->type;
+
+        return view('reports.customer_report', $data);
+    }
+
 }
