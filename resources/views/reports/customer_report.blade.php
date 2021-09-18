@@ -131,14 +131,21 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Contact No#</th>
                                             @if($selected_type == null)
-                                                <th>Total Quote</th>
-                                                <th>Total Booking</th>
+                                                <th>Total Quotes</th>
+                                                <th>Quote</th>
+                                                <th class="border-right">Cancelled</th>
+                                                <th>Total Bookings</th>
+                                                <th>Confirmed</th>
+                                                <th>Cancelled</th>
                                             @elseif($selected_type == "quote")
-                                                <th>Total Quote</th>
+                                                <th>Total Quotes</th>
+                                                <th>Quote</th>
+                                                <th>Cancelled</th>
                                             @else
-                                                <th>Total Booking</th>
+                                                <th>Total Bookings</th>
+                                                <th>Confirmed</th>
+                                                <th>Cancelled</th>
                                             @endif
                                         </tr>
                                         </thead>
@@ -148,14 +155,41 @@
                                                     <tr>
                                                         <td>{{ $customer_quote->lead_passenger_name }}</td>
                                                         <td>{{ $customer_quote->lead_passenger_email }}</td>
-                                                        <td>{{ $customer_quote->lead_passenger_contact }}</td>
                                                         @if($selected_type == null)
                                                             <td>{{ $customer_quote->total_quotes }}</td>
-                                                            <td>{{ \App\Http\Helper::getTotalBooking($customer_quote->lead_passenger_email) }}</td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalQuote($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td class="border-right">
+                                                                {{ \App\Http\Helper::getTotalCancelledQuote($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalConfirmBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalCancelledBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
                                                         @elseif($selected_type == "quote")
                                                             <td>{{ $customer_quote->total_quotes }}</td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalQuote($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td class="border-right">
+                                                                {{ \App\Http\Helper::getTotalCancelledQuote($customer_quote->lead_passenger_email) }}
+                                                            </td>
                                                         @else
-                                                            <td>{{ \App\Http\Helper::getTotalBooking($customer_quote->lead_passenger_email) }}</td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalConfirmBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
+                                                            <td>
+                                                                {{ \App\Http\Helper::getTotalCancelledBooking($customer_quote->lead_passenger_email) }}
+                                                            </td>
                                                         @endif
                                                     </tr>
                                                 @endforeach
