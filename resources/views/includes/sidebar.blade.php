@@ -525,7 +525,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
