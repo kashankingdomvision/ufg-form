@@ -22,7 +22,7 @@
   <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
   <td>{{ $quote->ref_no }}</td>
 
-  @if($quote->booking_status == 'quote')
+  @if($quote->booking_status != 'booked')
     <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
   @endif
 
