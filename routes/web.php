@@ -180,6 +180,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
         Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
         Route::get('wallet-report', array('as' => 'wallet.report', 'uses' => 'ReportController@wallet_report'));
+        Route::get('customer-report', array('as' => 'customer.report', 'uses' => 'ReportController@customer_report'));
     });
 
 

@@ -559,6 +559,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('reports.customer.report') }}" class="nav-link {{  $route == 'reports.customer.report' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Customer Report</p>
+                            </a>
+                        </li>
+
                     </ul>
                 </li>
                     
