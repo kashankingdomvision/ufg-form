@@ -34,7 +34,7 @@ class QuoteDocumentsController extends Controller
             $data['storetexts']     =  $storedText;
         }
 
-        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'DESC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
         $startDate      = $quote->getQuoteDetails()->min('date_of_service');
         $endDate        = $quote->getQuoteDetails()->max('date_of_service');
         $data['quote_details']  = $quoteDetails;
@@ -103,7 +103,7 @@ class QuoteDocumentsController extends Controller
     {       
         $quote          = Quote::findOrFail(decrypt($id));
         $storedText     = StoreText::whereIn('id', $quote->stored_text)->orderBy('id', 'desc')->get();
-        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'DESC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
         $startDate      = $quote->getQuoteDetails()->min('date_of_service');
         $endDate        = $quote->getQuoteDetails()->max('date_of_service');
         $data['quote_details']  = $quoteDetails;
