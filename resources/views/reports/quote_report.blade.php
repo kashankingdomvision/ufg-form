@@ -161,6 +161,7 @@
                                         <th>Booking Currency</th>
                                         <th>Currency Type</th>
                                         <th>Commission Type</th>
+                                        <th>Pax No.</th>
                                         <th>Status</th>
                                         <th>Booking Date</th>
                                         <th>Created At</th>
@@ -197,7 +198,7 @@
                                                 <td> {{ $quote->rate_type == 'live' ? 'Live Rate' : 'Manual Rate' }}</td>
 
                                                 <td> {{ $quote->getCommission->name }} ({{ $quote->getCommission->percentage.' %' }}) </td>
-
+                                                <td> {{ $quote->pax_no }} </td>
                                                 <td>{!! $quote->booking_formated_status !!}</td>
                                                 <td>{{ $quote->formated_booking_date }}</td>
                                                 <td>{{ $quote->formated_created_at }}</td>
