@@ -41,6 +41,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->enum('added_in_sage', [0, 1])->default(0);
             $table->text('service_details')->nullable();
             $table->text('comments')->nullable();
+            $table->string('image')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
             

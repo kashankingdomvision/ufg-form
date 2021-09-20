@@ -23724,6 +23724,46 @@ if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAle
 
 /***/ }),
 
+/***/ "./public/vendor/laravel-filemanager/js/stand-alone-button.js":
+/*!********************************************************************!*\
+  !*** ./public/vendor/laravel-filemanager/js/stand-alone-button.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  $.fn.filemanager = function (type, options) {
+    type = type || 'file';
+    this.on('click', function (e) {
+      var route_prefix = options && options.prefix ? options.prefix : '/filemanager';
+      var target_input = $('#' + $(this).data('input'));
+      var target_preview = $('#' + $(this).data('preview'));
+      window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
+
+      window.SetUrl = function (items) {
+        var file_path = items.map(function (item) {
+          return item.url;
+        }).join(','); // set the value of the desired input to image url
+
+        target_input.val('').val(file_path).trigger('change'); // clear previous preview
+
+        target_preview.html(''); // set or change the preview image src
+
+        items.forEach(function (item) {
+          console.log(item.thumb_url);
+          target_preview.append($('<img>').css('height', '5rem').attr('src', item.thumb_url));
+        }); // trigger change event
+
+        target_preview.trigger('change');
+      };
+
+      return false;
+    });
+  };
+})(jQuery);
+
+/***/ }),
+
 /***/ "./resources/js/scripts.js":
 /*!*********************************!*\
   !*** ./resources/js/scripts.js ***!
@@ -23743,6 +23783,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
+__webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
+
 
 
 
@@ -25250,7 +25292,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
     $('.quote:last input, .quote:last select').removeClass('is-invalid');
     $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    var qleng = $('.quote').length - 1;
+    $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
+    $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
+    $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
+    $('#quote_' + qleng + '_holder').empty();
+    callLaravelFileManger();
     datepickerReset(1);
+    calltextEditorSummerNote('#quote_' + qleng + '_service_details');
     reinitializedDynamicFeilds();
   });
   $(document).on('click', '#add_more_booking', function (e) {
@@ -25548,8 +25597,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert('Quote created Successfully');
-          window.location.href = REDIRECT_BASEURL + "quotes/index";
+          alert('Quote created Successfully'); // window.location.href = REDIRECT_BASEURL + "quotes/index";
         }, 800);
       },
       error: function error(reject) {
@@ -26624,6 +26672,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       });
     }).end().show().insertAfter(".relevant-quote:last");
   }); ///////////////// RELEVANT QUOTE FIELD
+  //////////// quote media modal close
+
+  $(document).on('click', '.QuotemediaModalClose', function () {
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).closest('.modal-body').children('.previewId').find('img').remove();
+    jQuery('.modal').modal('hide');
+  });
+  $(document).on('click', '#add_storeText', function () {
+    var x = document.getElementById("storedText");
+
+    if (x.style.display === "none") {
+      x.style.display = "block";
+      $('#selectstoretext').removeAttr('disabled');
+      console.log('show');
+      $(this).text('x Remove Stored Text');
+    } else {
+      console.log('hide');
+      x.style.display = "none";
+      $(this).text('+ Add Stored Text');
+      $('#selectstoretext').attr('disabled', true);
+    }
+  }); //////////// quote media modal close
 });
 
 /***/ }),

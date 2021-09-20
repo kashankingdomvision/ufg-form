@@ -35,6 +35,7 @@ use App\Season;
 use App\Supplier;
 use App\Template;
 use App\User;
+use App\StoreText;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 
 class QuoteController extends Controller
@@ -43,7 +44,6 @@ class QuoteController extends Controller
 
     public function quote_document(Request $request, $id)
     {
-
         $quote          = Quote::findOrFail(decrypt($id));
         $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
         $data['quote_details']  = $quoteDetails;
@@ -54,7 +54,6 @@ class QuoteController extends Controller
         $pdf = PDF::loadView('quote_documents.pdf', $data);  
         return $pdf->stream();
         // return $pdf->download('medium.pdf');
-
     }
 
 
@@ -186,6 +185,7 @@ class QuoteController extends Controller
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
+            'stored_text'                       => ($request->has('stored_text'))? $request->stored_text : NULL, 
         ];
     }
     
@@ -216,7 +216,7 @@ class QuoteController extends Controller
             'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
             'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
             'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
-            'added_in_sage'         => $quoteD['added_in_sage']??$quoteD['added_in_sage'],
+            'added_in_sage'         => ($quoteD['added_in_sage'] == NULL)? 0 : 1,
         ];
     }
 
@@ -241,16 +241,21 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data['quote_id']         = Helper::getQuoteID();
         $data['quote_ref']        = Quote::get('quote_ref');
+        $data['storetexts']       = StoreText::get();
         return view('quotes.create', $data);
     }
     
     public function store(QuoteRequest $request)
-    {
+    {   
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                 $quoteDetail['quote_id'] = $quote->id;
+                if(isset($qu_details['image']) && !empty($qu_details['image'])){
+                    $quoteDetail['image'] = $qu_details['image'];
+                }
+
                 QuoteDetail::create($quoteDetail);
             }
         }

@@ -52,14 +52,32 @@
                 }
             });
         });
+
+        
+        function calltextEditorSummerNote(val = null) {
+            $('.summernote:last').summernote('destroy');
+            $('.note-editor:last').remove();
+            $('.summernote').summernote({
+                    height: 150,   //set editable area's height
+                    placeholder: 'Enter Text Here..',
+                    codemirror: { // codemirror options
+                        theme: 'monokai'
+                    }
+                }, 'code', val);
+            }
     </script>
 @endauth
+
 <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 <script>
-     var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
-    $('#lfm').filemanager('image', {prefix: route_prefix});
 
-    
+    function callLaravelFileManger() {
+        console.log('run function');
+        var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+        $('.fileManger').filemanager('image', {prefix: route_prefix});
+    }
+
+    callLaravelFileManger();
 </script>
 
 @stack('scripts')

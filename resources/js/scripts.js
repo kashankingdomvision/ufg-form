@@ -1,18 +1,21 @@
+require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
+
 import $, { ajax, cssNumber } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from  'sweetalert2'; 
 import datepicker from 'bootstrap-datepicker'; 
+
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-  
+
 var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 // var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
- 
+
 var CSRFTOKEN = $('#csrf-token').attr('content');
- 
+
 $(document).ready(function($) {
 
     /*  ajaxSetup */
@@ -1557,6 +1560,7 @@ $(document).ready(function($) {
                 });
             }).end().show().insertAfter(".quote:last");
 
+
             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
             $(".quote:last").attr('data-key', $('.quote').length - 1);
@@ -1564,7 +1568,15 @@ $(document).ready(function($) {
             $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
             $('.quote:last input, .quote:last select').removeClass('is-invalid');
             $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+            
+            var qleng = $('.quote').length - 1;
+            $('.fileManger:last').attr('data-input', 'quote_'+qleng+'_image' );
+            $('.fileManger:last').attr('data-preview', 'quote_'+qleng+'_holder' );
+            $('.previewId:last').attr('id',  'quote_'+qleng+'_holder');
+            $('#quote_'+qleng+'_holder').empty();
+            callLaravelFileManger();
             datepickerReset(1);
+            calltextEditorSummerNote('#quote_'+qleng+'_service_details');
             reinitializedDynamicFeilds();
     });
 
@@ -1680,7 +1692,6 @@ $(document).ready(function($) {
         $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
         $('.quote:last input, .quote:last select').removeClass('is-invalid');
         $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-        
         datepickerReset(1);
         reinitializedDynamicFeilds();
     });
@@ -1999,7 +2010,7 @@ $(document).ready(function($) {
                 $("#overlay").removeClass('overlay').html('');
                 setTimeout(function() {
                     alert('Quote created Successfully');
-                    window.location.href = REDIRECT_BASEURL + "quotes/index";
+                    // window.location.href = REDIRECT_BASEURL + "quotes/index";
                 }, 800);
             },
             error: function (reject) {
@@ -3379,6 +3390,31 @@ $(document).ready(function($) {
     ///////////////// RELEVANT QUOTE FIELD
     
     
+//////////// quote media modal close
+$(document).on('click', '.QuotemediaModalClose', function () {
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).closest('.modal-body').children('.previewId').find('img').remove();
+    jQuery('.modal').modal('hide');
+});
 
+$(document).on('click', '#add_storeText', function () {
+    var x = document.getElementById("storedText");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+        $('#selectstoretext').removeAttr('disabled');
+        console.log('show');
+        $(this).text('x Remove Stored Text')
+    } else {
+        console.log('hide');
+        
+        x.style.display = "none";
+        $(this).text('+ Add Stored Text')
+        $('#selectstoretext').attr('disabled', true);
+
+    }
+})
+
+
+//////////// quote media modal close
 
 });

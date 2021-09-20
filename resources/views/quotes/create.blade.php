@@ -336,11 +336,11 @@
                         <div class="row">
                           <div class="col-md-12">
                             <div class="form-group ">
-                              <div class="modal fade calladdmediaModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 @include('partials.addmediaModal')
                               </div>
-                              <button type="button" class=" float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                             </div>
+                            <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                           </div>
                         </div>    
                         <div class="row">
@@ -626,30 +626,45 @@
                             </div>
                           @endif
 
-                          <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Service Details</label>
-                              <textarea name="quote[0][service_details]" data-name="service_details" id="quote_0_service_details" class="form-control summernote service-details" rows="2" placeholder="Enter Service Details"></textarea>
-                            </div>
-                          </div>
-
+                          
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Comments</label>
                               <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                             </div>
                           </div>
+                          <!-- <div class="col-sm-6">
+                            <div class="form-group">
+                              <label>Service Details</label>
+                              <textarea name="quote[0][service_details]" data-name="service_details" id="quote_0_service_details" class="form-control service-details summernote " rows="2" placeholder="Enter Service Details"></textarea>
+                            </div>
+                          </div> -->
                         </div>
                       </div>
                         <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                         
                     
                   </div>
-                  
+               
                   <div class="row">
                     <div class="col-12 text-right">
+                      <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  pull-right">+ Add Stored Text</button>
                       <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
+                    </div>
+                  </div>
+
+
+                  <div class="row" id="storedText" style="display:none;">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label " class="col-sm-3 col-form-label">Stored Text</label>
+                        <select multiple="multiple" name="stored_text[]" class="form-control select2-multiple" id="selectstoretext" disabled>
+                          @foreach ($storetexts as $text )
+                            <option value="{{$text->id}}" >{{ $text->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
                     </div>
                   </div>
 

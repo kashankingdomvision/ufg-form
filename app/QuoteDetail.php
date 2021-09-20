@@ -36,7 +36,8 @@ class QuoteDetail extends Model
         'time_of_service', 
         'amount_per_person',
         'booking_type_id',
-        'parent_id'
+        'parent_id',
+        'image',
     ];
     
     public function getChildQuote()

@@ -53,6 +53,7 @@ class Quote extends Model
         'tas_ref',
         'revelant_quote',
         'transfer',
+        'stored_text',
     ];
     
     public function getUser()
@@ -191,5 +192,13 @@ class Quote extends Model
 
     public function getNationality(){
     	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
+    }
+
+    public function getStoredTextAttribute( $value ) {
+        return json_decode($value);
+    }
+    
+    public function setStoredTextAttribute( $value ) {
+        $this->attributes['stored_text']    = json_encode($value);
     }
 }

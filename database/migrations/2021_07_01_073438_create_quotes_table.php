@@ -55,6 +55,7 @@ class CreateQuotesTable extends Migration
             $table->enum('is_archive',[1,0])->default(0);
             $table->dateTime('booking_date')->nullable();
             $table->text('revelant_quote')->nullable();
+            $table->string('stored_text')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

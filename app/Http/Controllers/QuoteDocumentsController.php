@@ -20,6 +20,8 @@ use App\Quote;
 use App\Season;
 use App\Template;
 use App\User;
+use App\StoreText;
+use PDF;
 
 class QuoteDocumentsController extends Controller
 {
@@ -27,13 +29,19 @@ class QuoteDocumentsController extends Controller
     public function index($id)
     {
         $quote          = Quote::findOrFail(decrypt($id));
-        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'category_id', 'product_id', 'id'])->groupBy('date_of_service');
+        $storedText     = StoreText::whereIn('id', $quote->stored_text)->orderBy('id', 'desc')->get();
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
+        $startDate      = $quote->getQuoteDetails()->min('date_of_service');
+        $endDate        = $quote->getQuoteDetails()->max('date_of_service');
         $data['quote_details']  = $quoteDetails;
         $data['created_at']     =  $quote->doc_formated_created_at;
         $data['title']          =  $quote->quote_title;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
-
+        $data['storetexts']     =  $storedText;
+        $data['startdate']      =  date('l, d M Y', strtotime($startDate));
+        $data['enddate']        =  date('l, d M Y', strtotime($endDate));
+        $data['quote_id']       =  $quote->id;
         return view('quote_documents.index', $data);
     }
 
@@ -89,13 +97,30 @@ class QuoteDocumentsController extends Controller
     // }
     
     public function generatePDF(Request $request, $id)
-    {
-        QuoteDocument::create([
-            'quote_id'  => decrypt($id),
-            'data'      => $request->data,
-        ]);
-        dd('quote doc create successfully');
+    {       
+        $quote          = Quote::findOrFail(decrypt($id));
+        $storedText     = StoreText::whereIn('id', $quote->stored_text)->orderBy('id', 'desc')->get();
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
+        $startDate      = $quote->getQuoteDetails()->min('date_of_service');
+        $endDate        = $quote->getQuoteDetails()->max('date_of_service');
+        $data['quote_details']  = $quoteDetails;
+        $data['created_at']     =  $quote->doc_formated_created_at;
+        $data['title']          =  $quote->quote_title;
+        $data['person_name']    =  $quote->getSalePerson->name;
+        $data['brand_about']    =  $quote->getBrand->about_us;
+        $data['storetexts']     =  $storedText;
+        $data['startdate']      =  date('l, d M Y', strtotime($startDate));
+        $data['enddate']        =  date('l, d M Y', strtotime($endDate));
+        $data['quote_id']       =  $quote->id;
+        $pdf  = PDF::loadView('quote_documents.pdf', $data);
+        // $pdf = PDF::loadView('quote_documents.pdf', $data);
+        // $pdf->setPaper('A4');
+
+        // $pdf->set_option('defaultMediaType', 'all');
+        return $pdf->stream();
+        
         // $pdf = PDF::loadView('quote_documents.index')->setOptions(['defaultFont' => 'sans-serif']);
+        // return view('quote_documents.pdf', $data);
         // return $pdf->download('invoice.pdf');
     }
     

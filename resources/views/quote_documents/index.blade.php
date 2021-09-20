@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Final Quote')
+@section('title', 'Documents Quote')
 @section('content')
   <div class="content-wrapper">
     @if ($errors->any())
@@ -17,12 +17,12 @@
 
         <div class="row">
           <div class="col-sm-6">
-              <h4>View Final Quote</h4>
+              <h4>View Documents Quote</h4>
             </div>
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item active">Quote Management</li>
+                <li class="breadcrumb-item active">Quote Documents</li>
               </ol>
           </div>
         </div>
@@ -41,118 +41,87 @@
               </div>
 
                 <div class="card-body">
-                    <form id="quote_doc" method="POST" class="quote_documents" action="#">
-                        @csrf @method('post')
+                    <div >
                         <div class="row">
-                            <div class="col-md-8">
-                            @foreach ($quote_details as $key => $qd)
-                                <h4><strong>{{ Helper::document_date_format($key) }}</strong></h4>
-                                @foreach ($qd as $key => $quote_detial)
-                                    <div class="card ">
-                                        <div class=" p-2 card-body bg-secondary ">
-                                            <a href="javaScript:void(0);" data-toggle="modal" data-target="#CallModal{{$quote_detial->id}}">
-                                                <div class="d-flex bd-highlight">
-                                                    <div class="p-2 w-100 bd-highlight"> 
-                                                        {{$quote_detial->getCategory->name}} - {{$quote_detial->product_id}}
-                                                    </div>
-                                                    <div class="p-2 flex-shrink-1 bd-highlight">                                            
-                                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
+                            <div class="col-md-8" id="quote_doc">
+                              <section class="logo">
+                                  <div class="text-center">
+                                    <img src="{{ asset('images/logo.png') }}">
+                                  </div>
+                              </section>
+                              <hr />
+                              <section class="heading ml-2">
+                                <div class="card bg-dark p-2">
+                                    <h3 class="text-center"><strong>{{ $startdate }}&nbsp;&nbsp; - &nbsp;&nbsp; {{$enddate}}</strong></h3>
+                                </div>
+                                <h2 class="text-center"><strong>{{$title}}</strong></h2>
+                                <h3 class="text-center">{{$person_name}} - {{ $created_at }}</h3>
+                                <hr />
+                              </section>
+                              
+                              <section class="details m-5">
+                                @foreach ($quote_details as $key => $qd)
+                                <div class="row mt-1">
+                                  <div class="col-md-6">
+                                      <h4 class="text-right mr-3">{{ Helper::document_date_format($key) }}</h4>
+                                  </div>
+                                  <div class="col-md-6">
+                                      @foreach ($qd as $key => $quote_detial)
+                                      <h5>
+                                        <a href="#category{{$quote_detial->category_id}}" class="ml-5 ">  {{$quote_detial->getCategory->name}}</a>
+                                      </h5>
+                                      @endforeach 
+                                  </div>
+                                </div>
+                              @endforeach
+                              </section>
 
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" data-backdrop="static" id="CallModal{{$quote_detial->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="hidden" name="quoteDetail[{{ $quote_detial->id }}]['id']" value="{{$quote_detial->id}}">
-                                                    <div class="form-group">
-                                                        <label>Images upload</label>
-                                                        <input type="file" class="form-control" name="quoteDetail[{{ $quote_detial->id }}]['uploadimage']">
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label>Notes: </label>
-                                                        <textarea name="quoteDetail[{{ $quote_detial->id }}]['detials']"  class="form-control summernote">{{ old('about_us') }}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                  
+                              @if($brand_about && !empty($brand_about))
+                              <section class="about-brand ml-2">
+                                <h4><strong>About Us:</strong></h4>
+                                {!! $brand_about !!}
+                              </section>
+                              @endif
+                          
+                              <section class="ml-2 mt-3">
+                                @foreach ($quote_details as $key => $qd)
+                                  <div class="card bg-dark ">
+                                      <h3 class="m-2"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
+                                  </div>
+                  
+                                  @foreach ($qd as $key => $quote_del)
+                                    <section id="category{{$quote_del->category_id}}">
+                                      <div class="mt-2 mb-2">
+                                          <img src="{{ $quote_del->image }}" class="img-fluid">
+                                          <h4 class="mt-1"><strong>{{$quote_del->getCategory->name}} - {{$quote_del->product_id}} </strong></h4>
+                                          <h5><strong class="mr-2">No. Of Nights: </strong> {{  Helper::date_difference(Helper::db_date_format($quote_del->date_of_service),Helper::db_date_format($quote_del->end_date_of_service))}}</h5>
+                                          <div>
+                                              {!! $quote_del->service_details !!}
+                                          </div>
+                                      </div>
+                                    </section>         
+                                  @endforeach
                                 @endforeach
-                            @endforeach
-                               
-
-                            <h4><strong>Trip Cost</strong></h4>
-                            <div class="card">
-                                <div class=" p-2 card-body bg-secondary ">
-                                    <a href="#">
-                                        <div class="d-flex bd-highlight">
-                                            <div class="p-2 w-100 bd-highlight"> 
-                                                Whats Included?
-                                            </div>
-                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class=" p-2 card-body bg-secondary ">
-                                    <a href="#">
-                                        <div class="d-flex bd-highlight">
-                                            <div class="p-2 w-100 bd-highlight"> 
-                                                Whats not Included?
-                                            </div>
-                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class=" p-2 card-body bg-secondary ">
-                                    <a href="#">
-                                        <div class="d-flex bd-highlight">
-                                            <div class="p-2 w-100 bd-highlight"> 
-                                               Booking Conditions
-                                            </div>
-                                            <div class="p-2 flex-shrink-1 bd-highlight">                                            
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                               
-                            
+                                  @if(count($storetexts) > 0)
+                                    @foreach ($storetexts as $text)
+                                    <h4 class="text-center"><strong>{{$text->page_title}}</strong></h4>
+                                    <hr />
+                                    {!! $text->description !!}
+                                    @endforeach
+                                  @endif
+                              </section>      
                             </div>
                             <div class="col-md-4">
-                                <div class="position-sticky mt-2">
+                                <div class="sticky-top" style="top:40px">
                                     <div class="d-flex">
-                                        <button class="btn btn-success col-5 ml-3 btn-sm" title="SAVE DOCUMENTS">SAVE</button>
-                                        <a class="btn btn-outline-dark col-5 ml-3" href="#" title="WEB VIEW"><i class="fa fa-desktop" aria-hidden="true"></i></a>
+                                        <!-- <button class="btn btn-success col-5 ml-3 btn-sm" title="SAVE DOCUMENTS">SAVE</button> -->
+                                        <a href="{{ route('quotes.document.pdf', encrypt($quote_id)) }}" class="btn btn-dark col-2 ml-3" href="#" title="Generate PDF "><i class="fa fa-file-pdf fa-lg" aria-hidden="true"></i></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div id="overlay" class=""></div>
             </div>

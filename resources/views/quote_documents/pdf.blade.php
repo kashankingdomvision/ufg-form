@@ -2,81 +2,58 @@
     <head>
         <title> Quote Document</title>
         <style>
-            /** Define the margins of your page **/
+            @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+            / Define the margins of your page /
             @page {
-                margin: 100px 25px;
+                margin: 50px 0px 100px;
             }
-
-            header {
-                position: fixed;
-                top: -60px;
-                left: 0px;
-                right: 0px;
-                height: 50px;
-
-                /** Extra personal styles **/
-       
-                text-align: center;
-                line-height: 35px;
-            }
-
-            footer {
-                position: fixed; 
-                bottom: -60px; 
-                left: 0px; 
-                right: 0px;
-                height: 50px; 
-
-                /** Extra personal styles **/
-                /* background-color: #03a9f4; */
-                color: black;
-                text-align: center;
-                line-height: 35px;
-            }
-
-            .page-break {
-                page-break-after: always;
-            }
-            .last-page-break {
-                page-break-after: never;
-            }
-            .ml-20{
-                margin-left: 20px !important;
-            }
-            .p-0{
-                padding: 0px !important;
-            }
-            .m-0{
-                margin: 0px !important;
-            }
-            
-            .main {
-                width: 100%;
-                margin-left:  100px;
-                margin-right:  100px;
-            }
-            .mt-100{
-                margin-top: 100px !important;
-            }
-            .ml-10{
-                margin-left: 10px;
-            }
-            
-            .center {
-                width: 100%;
-                text-align: center !important;
-            }
-            
-            .textsize-25{
-                font-size: 25px;
-            }
-            
+            body { font-family: 'Roboto', sans-serif; }
+            .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 { font-family: 'Roboto', sans-serif; font-weight: 500; line-height: 1.2; color: inherit; }
+            header {                / Extra personal styles /
+            text-align: center; }
+            footer { position: fixed; bottom: -60px; left: 0px; right: 0px; height: 50px;                / Extra personal styles / / background-color: #03a9f4; /
+            color: black; text-align: center; line-height: 35px; }
+            .page-break { page-break-after: always; }
+            .last-page-break { page-break-after: never; }
+            .ml-20 { margin-left: 20px !important; }
+            .p-0 { padding: 0px !important; }
+            .m-0 { margin: 0px !important; }
+            .main { width: 100%; min-width: 100%; margin: 0 auto; }
+            .mt-100 { margin-top: 100px !important; }
+            .ml-10 { margin-left: 10px; }
+            .center { width: 100%; text-align: center !important; }
+            .textsize-25 { font-size: 25px; }
+            .bg-dark { background-color: #343a40 !important; }
+            .card { box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%); margin-bottom: 1rem; }
+            .p-2 { padding: .2rem !important; }
+            .bg-dark,
+            .bg-dark>a { color: #fff !important; }
+            .text-center { text-align: center !important; }
+            b,
+            strong { font-weight: bolder; }
+            .m-5 { margin: 3rem !important; }
+            .mt-1 { margin-top: 1rem !important; }
+            .p-3 { padding: 1rem !important; }
+            .mb-0 { margin-bottom: 0 !important; }
+            .mt-5 { margin-top: .5rem !important; }
+            .mb-5 { margin-bottom: .5rem !important; }
+            .p-5 { padding: 5rem !important; }
+            .pr-2{padding-right: 2rem !important;}
+            .vertical-align-top {vertical-align: top !important;}
+            .pt-3 {padding-top: 3rem !important;}
+            .display-block{display: block !important; width: 100%; }
+            .row{display: block !important; width: 100%; }
+            .img-block{display: inline-block !important; width:100% !important; z-index: 9999999 !important;}
         </style>
     </head>
     <body>
         <!-- Define header and footer blocks before your content -->
-        <header >
-            <img src="{{ asset('img/logo1.png') }}" width="300px" height="100px" >
+        <header>
+            <section class="logo">
+                <div class="text-center">
+                    <img src="{{ asset('images/logo.png') }}">
+                </div>
+            </section>
         </header>
 
         <footer>
@@ -84,86 +61,89 @@
         </footer>
         
         <main class="main">
-            {{-- /// page 1  --}}
-            <p style="margin-top: 300px">
-                <div > 
-                    <div class="center">
-                        <h1>
-                            <strong>
-                                {{ $title }}
-                            </strong> 
-                        </h1>
-                        <p class="textsize-25">{{ $created_at }}</p>
-                        <p class="textsize-25">{{ $person_name }} </p>
-                        <p class="textsize-25">TAS</p>
-                        <br />
-                        <h2></h2>
-                    </div>
-                </div>
-            </p>
-            {{-- /// page 1  --}}
-            
-            {{-- /// page 2 (about us) --}}
-            <p class="page-break">
-                <div class="mt-100">
-                    <img src="{{ asset('img/doc-about.jpg') }}" width="600px" height="200px" >
-                
-                    <h3>
-                        <strong>
-                            About us
-                        </strong>
-                    </h3> 
-                   {!! $brand_about !!}
-                </div>
-            </p>
-            {{-- /// page 2 (about us) --}}
-            
-            {{-- /// page   --}}
-            <p class="page-break">
-                {{-- Content Page 1 --}}
-                
-                <div class="mt-100">
-                    @foreach ($quote_details as $key => $qd)
-                        <h2>
-                            <strong>
-                                {{ Helper::document_date_format($key) }}
-                            </strong>
-                        </h2> 
-                        
-                        <div class="ml-20" >
-                            @foreach ($qd as $key => $quote_detial)
-                            <table>
-                                <tr>
-                                    <th align="left" >{{$quote_detial->getCategory->name}}:</th>
-                                    <td></td>
-                                    <td>{{$quote_detial->product_id}}</td>
-                                </tr>
-                                {{-- <tr>
-                                    <th align="left" >Product:</th>
-                                    <td></td>
-                                    <td></td>
-                                </tr> --}}
-                                <tr>
-                                    <th align="left" >No. of Nights:</th>
-                                    <td></td>
-                                    <td>{{  Helper::date_difference(Helper::db_date_format($quote_detial->date_of_service),Helper::db_date_format($quote_detial->end_date_of_service))}}</td>
-                                </tr>
-                                
-                                <tr>
-                                    <th align="left" >Service Detail:</th>
-                                    <td></td>
-                                    <td>{{ $quote_detial->service_details }}</td>
-                                </tr>
-                            </table>
-                            <br />
-                            @endforeach
+            <hr>
+            <div class="page-break">
+                <section class="pt-3">
+                    <section class="heading ml-2">
+                        <div class="card bg-dark p-2">
+                            <h3 class="text-center"><strong>{{ $startdate }}&nbsp;&nbsp; - &nbsp;&nbsp; {{$enddate}}</strong></h3>
                         </div>
+                        <h2 class="text-center"><strong>{{$title}}</strong></h2>
+                        <h3 class="text-center">{{$person_name}} - {{ $created_at }}</h3>
+                        <hr>
+                    </section>      
+                   
+                        
+                    <section class="detail-section p-5">
+                        <table cellspacing="0" cellspacing="0" style="margin: 0 auto;">
+                        @foreach ($quote_details as $key => $qd)
+                            <tr class="vertical-align-top">
+                                <td class="pr-2">{{ Helper::document_date_format($key) }}</td>
+                                <td>
+                                @foreach ($qd as $key => $quote_del)
+                                    <a href="#category1"> {{$quote_del->getCategory->name}}</a><br/>
+                                @endforeach
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="15px" style="line-height: 15px; height: 15px;"> </td>
+                            </tr>
+                        @endforeach
+                            
+                        </table>
+                    </section>
+
+                     
+                    @if($brand_about && !empty($brand_about))
+                        <section class="about-brand ml-2">
+                        <h4><strong>About Us:</strong></h4>
+                        {!! $brand_about !!}
+                        </section>
+                    @endif
+                </section>
+            </div>
+            <section class="textimage ml-2">
+            @foreach ($quote_details as $key => $qd)
+                    <div class="card bg-dark p-3 display-block">
+                        <h3 class="text-left m-0"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
+                    </div>
+                    @foreach ($qd as $key => $quote_del)
+                    <section>    
+                    <div class="images display-block">
+                        <img src="{{ $quote_del->image }}" width="100%" class="img-block" />
+                        <div class="">
+                            <h3 class="mb-0">{{$quote_del->getCategory->name}} - {{$quote_del->product_id}}</h3>
+                            <h3 class="mt-5">No. of Night {{  Helper::date_difference(Helper::db_date_format($quote_del->date_of_service),Helper::db_date_format($quote_del->end_date_of_service))}}</h3>
+                        </div>
+                        <div class="p-0 m-0 display-block">
+                        {!! $quote_del->service_details !!}
+                        
+                        </div>
+                    </div>
+                    </section>
                     @endforeach
+            @endforeach
+            </section>
+            <section class="booking-condition">
+                <h2 class="text-center">Booking Condition</h2>
+                <hr>
+                <div class="cont-reapeat">
+                    <h4 class="mb-5">Lorem Ipsum</h4>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
                 </div>
-            </p>
-            <p class="last-page-break">
-                {{-- Content Page 2 --}}
-            </p>
+                <div class="cont-reapeat">
+                    <h4 class="mb-5">Lorem Ipsum</h4>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                </div>
+                <div class="cont-reapeat">
+                    <h4 class="mb-5">Lorem Ipsum</h4>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                </div>
+                <div class="cont-reapeat">
+                    <h4 class="mb-5">Lorem Ipsum</h4>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                </div>
+            </section>
         </main>
     </body>
 </html>
