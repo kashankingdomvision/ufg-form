@@ -127,9 +127,9 @@ return [
         'image/png',
     ],
 
-    'thumb_img_width'          => 200, // px
+    'thumb_img_width'          => 500, // px
 
-    'thumb_img_height'         => 200, // px
+    'thumb_img_height'         => 500, // px
 
     /*
     |--------------------------------------------------------------------------

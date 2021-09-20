@@ -486,6 +486,16 @@
                             </div>
                             @endif
                             <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group ">
+                                  <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    @include('partials.addmediaModal')
+                                  </div>
+                                </div>
+                                <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+                            <div class="row">
                                 
                                 <div class="col-sm-2">
                                   <div class="form-group">
@@ -773,12 +783,12 @@
                                   </div>
                                 </div>
                                 @endif
-                                <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Service Details</label>
                                     <textarea name="quote[{{ $key }}][service_details]" data-name="service_details" id="quote_{{ $key }}_service_details" class="form-control service-details" rows="2" placeholder="Enter Service Details">{{ $q_detail->service_details }}</textarea>
                                 </div>
-                                </div>
+                                </div> -->
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
