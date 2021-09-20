@@ -18,7 +18,7 @@ use App\Wallet;
 use App\Season;
 use App\PaymentMethod;
 use App\BookingDetailFinance;
-
+use App\Commission;
 
 
 class ReportController extends Controller
@@ -337,6 +337,7 @@ class ReportController extends Controller
         $data['users']            = User::orderBy('name', 'ASC')->get();
         $data['booking_seasons']  = Season::all();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['commission_types'] = Commission::all();
 
         $quote = Quote::orderBy('created_at','DESC');
         if (!empty(request()->all())) {
@@ -418,6 +419,10 @@ class ReportController extends Controller
 
         if($request->has('brand') && !empty($request->brand)){
             $quote->whereIn('brand_id', $request->brand);
+        }
+
+        if($request->has('commission_type') && !empty($request->commission_type)){
+            $quote->where('commission_id', $request->commission_type);
         }
 
         if($request->has('search') && !empty($request->search)){
