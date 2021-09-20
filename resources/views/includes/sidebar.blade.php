@@ -520,7 +520,7 @@
 
                 <li class="nav-item">
                     <a href="{{ route('store.texts.index') }}" class="nav-link {{ $route == 'store.texts.index' || $route == 'store.texts.create' || $route == 'store.texts.edit'  ? 'active' : '' }}">
-                        <i class="fa fa-user nav-icon"></i>
+                        <i class="fa fa-file-word nav-icon" aria-hidden="true"></i>
                         <p>Stored Text</p>
                     </a>
                 </li>

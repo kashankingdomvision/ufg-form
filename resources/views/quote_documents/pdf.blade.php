@@ -168,7 +168,7 @@
 
 
             <section class="booking-condition">
-                @if(count($storetexts) > 0)
+                @if($storetexts != NULL)
                     @foreach ($storetexts as $text)
 
                         <h2 class="text-center">{{$text->page_title}}</h2>
