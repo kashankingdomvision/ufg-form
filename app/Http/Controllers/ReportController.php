@@ -405,6 +405,14 @@ class ReportController extends Controller
             $quote->whereDate('created_at', '<=', $end_date);
         }
 
+        if($request->has('month') && !empty($request->month)){
+            $quote->whereMonth('created_at', $request->month);
+        }
+
+        if($request->has('year') && !empty($request->year)){
+            $quote->whereYear('created_at', $request->year);
+        }
+
 
         return $quote;
     }
