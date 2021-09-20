@@ -147,7 +147,7 @@ class QuoteController extends Controller
     
     public function quoteArray($request, $type = null)
     {
-        return [
+        $data = [
             'quote_title'                       =>  $request->quote_title,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
@@ -185,8 +185,12 @@ class QuoteController extends Controller
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
-            'stored_text'                       => ($request->has('stored_text'))? $request->stored_text : NULL, 
         ];
+        if($type != 'booking'){
+            $data['stored_text']                       = ($request->has('stored_text'))? $request->stored_text : NULL; 
+
+        }
+        return $data;
     }
     
     public function getQuoteDetailsArray($quoteD, $id)
