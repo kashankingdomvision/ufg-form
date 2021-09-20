@@ -183,6 +183,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('quote-report', array('as' => 'quote.report', 'uses' => 'ReportController@quote_report'));
         Route::get('customer-report', array('as' => 'customer.report', 'uses' => 'ReportController@customer_report'));
+        Route::get('payment-method-report', array('as' => 'payment.method.report', 'uses' => 'ReportController@payment_method_report'));
     });
 
 

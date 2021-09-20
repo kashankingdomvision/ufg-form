@@ -22,10 +22,13 @@ class CreateBookingDetailFinancesTable extends Migration
             $table->date('paid_date')->nullable();
             $table->enum('upload_to_calender', [0,1])->default(0)->nullable();
             $table->bigInteger('additional_date')->nullable();
+            $table->unsignedBigInteger('currency_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
-            
+            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

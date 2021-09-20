@@ -50,6 +50,11 @@ class BookingDetail extends Model
         return $this->hasOne(Supplier::class,'id','supplier_id');
     }
 
+    public function getBooking()
+    {
+        return $this->hasOne(Booking::class, 'id', 'booking_id');   
+    }
+
     function getSupplierCurrency() {
         return $this->hasOne(Currency::class,  'id' ,'supplier_currency_id');
     }

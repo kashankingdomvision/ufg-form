@@ -525,7 +525,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
@@ -570,6 +570,13 @@
                             <a href="{{ route('reports.customer.report') }}" class="nav-link {{ $route == 'reports.customer.report' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Customer Report</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('reports.payment.method.report') }}" class="nav-link {{ $route == 'reports.payment.method.report' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Payment Method Report</p>
                             </a>
                         </li>
 
