@@ -1,5 +1,6 @@
 <?php
 namespace App\Http;
+use App\Booking;
 use App\Country;
 use App\Quote;
 use App\Category;
@@ -13,6 +14,8 @@ use App\QuoteUpdateDetail;
 use App\User;
 use Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+
 class Helper
 {
     public static function number_format($number){
@@ -24,14 +27,14 @@ class Helper
 		$date = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $date))->format('Y-m-d')));
         return date("l M d, Y",strtotime($date));
     }
-	
+
 	public static function date_difference($start_date, $end_date)
 	{
 		// dd($start_date);
-		// calulating the difference in timestamps 
+		// calulating the difference in timestamps
 		$diff = strtotime($start_date) - strtotime($end_date);
-		
-		// 1 day = 24 hours 
+
+		// 1 day = 24 hours
 		// 24 * 60 * 60 = 86400 seconds
 		return ceil(abs($diff / 86400));
 	}
@@ -245,5 +248,73 @@ class Helper
 
         $country = Country::find($id);
         return $country->name;
+    }
+
+    public static function getTotalQuote($value){
+
+        $total_quote = Quote::select(DB::raw('count(id) as total_quote'))
+            ->where('agency', '0')
+            ->where('booking_status', 'quote')
+            ->where('lead_passenger_email', $value)
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_quote)) {
+            return isset($total_quote[0]->total_quote) && !empty($total_quote[0]->total_quote) ? $total_quote[0]->total_quote : 0 ;
+        }
+    }
+
+    public static function getTotalCancelledQuote($value){
+        $total_cancelled_quote = Quote::select(DB::raw('count(id) as total_cancelled_quote'))
+            ->where('agency', '0')
+            ->where('booking_status', 'cancelled')
+            ->where('lead_passenger_email', $value)
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_cancelled_quote)) {
+            return isset($total_cancelled_quote[0]->total_cancelled_quote) && !empty($total_cancelled_quote[0]->total_cancelled_quote) ? $total_cancelled_quote[0]->total_cancelled_quote : 0 ;
+        }
+    }
+
+    public static function getTotalBooking($value){
+
+        $total_bookings = Booking::select(DB::raw('count(id) as total_bookings'))
+            ->where('agency', '0')
+            ->where('lead_passenger_email', $value)
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_bookings)) {
+            return isset($total_bookings[0]->total_bookings) && !empty($total_bookings[0]->total_bookings) ? $total_bookings[0]->total_bookings : 0 ;
+        }
+    }
+
+    public static function getTotalConfirmBooking($value){
+
+        $total_confirmed_bookings = Booking::select(DB::raw('count(id) as total_confirmed_bookings'))
+            ->where('agency', '0')
+            ->where('lead_passenger_email', $value)
+            ->where('booking_status', 'confirmed')
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_confirmed_bookings)) {
+            return isset($total_confirmed_bookings[0]->total_confirmed_bookings) && !empty($total_confirmed_bookings[0]->total_confirmed_bookings) ? $total_confirmed_bookings[0]->total_confirmed_bookings : 0 ;
+        }
+    }
+
+    public static function getTotalCancelledBooking($value){
+
+        $total_cancelled_bookings = Booking::select(DB::raw('count(id) as total_cancelled_bookings'))
+            ->where('agency', '0')
+            ->where('lead_passenger_email', $value)
+            ->where('booking_status', 'cancelled')
+            ->groupBy('lead_passenger_email')
+            ->get();
+
+        if(!empty($total_cancelled_bookings)) {
+            return isset($total_cancelled_bookings[0]->total_cancelled_bookings) && !empty($total_cancelled_bookings[0]->total_cancelled_bookings) ? $total_cancelled_bookings[0]->total_cancelled_bookings : 0 ;
+        }
     }
 }

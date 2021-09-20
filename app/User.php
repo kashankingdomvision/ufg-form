@@ -57,6 +57,31 @@ class User extends Authenticatable
     function getBrand() {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
+
+    function getTotalQuote() {
+        return $this->hasMany(Quote::class, 'user_id', 'id');
+    }
+
+    function getQuote() {
+        return $this->hasMany(Quote::class, 'user_id', 'id')->where('booking_status','quote');
+    }
+
+    function getCancelledQuote() {
+        return $this->hasMany(Quote::class, 'user_id', 'id')->where('booking_status','cancelled');
+    }
+
+    function getTotalBooking() {
+        return $this->hasMany(Booking::class, 'user_id', 'id');
+    }
+
+    function getConfirmedBooking() {
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('booking_status','confirmed');
+    }
+
+    function getCancelledBooking() {
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('booking_status','cancelled');
+    }
+
     
     public function hasAdmin()
     {

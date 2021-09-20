@@ -22,7 +22,7 @@
         <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/swi204cs.js') }}" defer></script>
-        
+
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     </head>
