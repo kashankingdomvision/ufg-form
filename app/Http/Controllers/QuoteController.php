@@ -332,7 +332,9 @@ class QuoteController extends Controller
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
                 $quoteDetail['quote_id'] = $quote->id;
-                
+                if(isset($qu_details['image']) && !empty($qu_details['image'])){
+                    $quoteDetail['image'] = $qu_details['image'];
+                }
                 QuoteDetail::create($quoteDetail);
             }
         }

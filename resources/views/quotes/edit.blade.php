@@ -485,7 +485,7 @@
                               <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
                             </div>
                             @endif
-                            <!-- <div class="row">
+                            <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group ">
                                   <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -494,7 +494,7 @@
                                 </div>
                                 <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                               </div>
-                            </div> -->
+                            </div>
                             <div class="row">
                                 
                                 <div class="col-sm-2">
@@ -804,8 +804,22 @@
 
                   <div class="row">
                     <div class="col-12 text-right">
+                      <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  pull-right">{{ (isset($quote->stored_text) && $quote->stored_text != null)? '- Remove' : '+ Add' }} Stored Text</button>
                       <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right ">+ Add more </button>
                       <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
+                    </div>
+                  </div>
+
+                  <div class="row" id="storedText" @if(!$quote->stored_text) style="display:none; @endif">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label " class="col-sm-3 col-form-label">Stored Text</label>
+                        <select multiple="multiple" name="stored_text[]" class="form-control select2-multiple" id="selectstoretext" @if(!$quote->stored_text) disabled @endif>
+                          @foreach ($storetexts as $text )
+                            <option @if($quote->stored_text) {{ (in_array($text->id , $quote->stored_text))? 'selected': '' }} @endif value="{{$text->id}}" >{{ $text->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
                     </div>
                   </div>
 
