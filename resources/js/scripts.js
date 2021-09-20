@@ -16,6 +16,7 @@ import daterangepicker from 'daterangepicker';
 var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
+
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
