@@ -16,6 +16,8 @@ use App\Supplier;
 use App\User;
 use App\Wallet;
 use App\Season;
+use App\PaymentMethod;
+use App\BookingDetailFinance;
 
 
 
@@ -330,8 +332,9 @@ class ReportController extends Controller
     }
 
     public function quote_report(Request $request){
-        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
-        $data['users'] = User::orderBy('name', 'ASC')->get();
+
+        $data['brands']           = Brand::orderBy('id', 'ASC')->get();
+        $data['users']            = User::orderBy('name', 'ASC')->get();
         $data['booking_seasons']  = Season::all();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
 
@@ -342,6 +345,42 @@ class ReportController extends Controller
 
         $data['quotes'] = $quote->get();
         return view('reports.quote_report', $data);
+    }
+
+    public function payment_method_report(Request $request){
+
+        $booking_finance_details = BookingDetailFinance::orderBy('id', 'ASC');
+        
+        if (!empty(request()->all())) {
+            
+            if(request()->has('payment_method') && !empty(request()->payment_method)){
+                $booking_finance_details = $booking_finance_details->where('payment_method_id', $request->payment_method);
+            }
+
+            if($request->has('dates') && !empty($request->dates)){
+
+                $dates = explode ("-", $request->dates);
+
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                $booking_finance_details->whereDate('paid_date', '>=', $start_date);
+                $booking_finance_details->whereDate('paid_date', '<=', $end_date);
+            }
+
+            if($request->has('month') && !empty($request->month)){
+                $booking_finance_details = $booking_finance_details->whereMonth('paid_date', $request->month);
+            }
+
+            if($request->has('year') && !empty($request->year)){
+                $booking_finance_details = $booking_finance_details->whereYear('paid_date', $request->year);
+            }
+        }
+
+        $data['payment_methods']         = PaymentMethod::all();
+        $data['booking_finance_details'] = $booking_finance_details->get();
+
+        return view('reports.payment_method_report', $data);
     }
 
     public function searchFilters($quote, $request)

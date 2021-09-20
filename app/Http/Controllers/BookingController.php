@@ -228,6 +228,7 @@ class BookingController extends Controller
             "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
             "additional_date"       => $quoteD['ab_number_of_days']??NULL,
             "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
+            "user_id"               => Auth::id(),
         ];
     }
 
@@ -438,6 +439,7 @@ class BookingController extends Controller
 
                     $fin                      = $this->getFinanceBookingDetailsArray($finance);
                     $fin['booking_detail_id'] = $booking_Details->id;
+                    $fin['currency_id']       = $booking_Details->supplier_currency_id;
 
                     if($fin['deposit_amount'] > 0){
                         BookingDetailFinance::create($fin);
