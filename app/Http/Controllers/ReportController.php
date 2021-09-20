@@ -401,11 +401,13 @@ class ReportController extends Controller
         }
 
         if($request->has('booking_currency') && !empty($request->booking_currency)){
-            $quote->whereHas('getCurrency', function($query) use($request){
-                foreach ($request->booking_currency as $currency) {
-                    $query->where('code', 'like', '%'.$currency.'%' );
-                }
-            });
+            // $quote->whereHas('getCurrency', function($query) use($request){
+            //     foreach ($request->booking_currency as $currency) {
+            //         $query->where('code', 'like', '%'.$currency.'%' );
+            //     }
+            // });
+
+            $quote->whereIn('currency_id', $request->booking_currency);
         }
 
         if($request->has('booking_season') && !empty($request->booking_season)){
@@ -415,11 +417,7 @@ class ReportController extends Controller
         }
 
         if($request->has('brand') && !empty($request->brand)){
-            $quote->whereHas('getBrand', function($query) use($request){
-                foreach ($request->brand as $brand) {
-                    $query->where('name', 'like', '%'.$brand.'%' );
-                }
-            });
+            $quote->whereIn('brand_id', $request->brand);
         }
 
         if($request->has('search') && !empty($request->search)){
