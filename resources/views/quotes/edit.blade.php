@@ -485,7 +485,7 @@
                               <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
                             </div>
                             @endif
-                            <div class="row">
+                            <!-- <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group ">
                                   <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -494,7 +494,7 @@
                                 </div>
                                 <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                               </div>
-                            </div>
+                            </div> -->
                             <div class="row">
                                 
                                 <div class="col-sm-2">

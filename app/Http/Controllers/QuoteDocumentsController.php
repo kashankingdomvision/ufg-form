@@ -29,7 +29,11 @@ class QuoteDocumentsController extends Controller
     public function index($id)
     {
         $quote          = Quote::findOrFail(decrypt($id));
-        $storedText     = StoreText::whereIn('id', $quote->stored_text)->orderBy('id', 'desc')->get();
+        if($quote->stored_text != null ){
+            $storedText     = StoreText::whereIn('id', $quote->stored_text)->orderBy('id', 'desc')->get();
+            $data['storetexts']     =  $storedText;
+        }
+
         $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'id', 'image', 'service_details'])->groupBy('date_of_service');
         $startDate      = $quote->getQuoteDetails()->min('date_of_service');
         $endDate        = $quote->getQuoteDetails()->max('date_of_service');
@@ -38,7 +42,6 @@ class QuoteDocumentsController extends Controller
         $data['title']          =  $quote->quote_title;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
-        $data['storetexts']     =  $storedText;
         $data['startdate']      =  date('l, d M Y', strtotime($startDate));
         $data['enddate']        =  date('l, d M Y', strtotime($endDate));
         $data['quote_id']       =  $quote->id;

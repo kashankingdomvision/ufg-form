@@ -103,7 +103,7 @@
                                     </section>         
                                   @endforeach
                                 @endforeach
-                                  @if(count($storetexts) > 0)
+                                  @if(isset($storetexts) && count($storetexts) > 0)
                                     @foreach ($storetexts as $text)
                                     <h4 class="text-center"><strong>{{$text->page_title}}</strong></h4>
                                     <hr />

@@ -43,8 +43,9 @@
             .pt-3 {padding-top: 3rem !important;}
             .display-block{display: block !important; width: 100%; }
             .row{display: block !important; width: 100%; }
-            .img-block{display: inline-block !important; width:100% !important; z-index: 9999999 !important;}
-        </style>
+            .css-none div{ margin: 0 !important; padding: 0 !important }
+            .css-none p{ margin: 0 !important; padding: 0 !important }
+</style>
     </head>
     <body>
         <!-- Define header and footer blocks before your content -->
@@ -56,18 +57,28 @@
             </section>
         </header>
 
-        <footer>
+        <!-- <footer>
             Copyright &copy; <?php echo date("Y");?> 
         </footer>
-        
+         -->
         <main class="main">
             <hr>
             <div class="page-break">
                 <section class="pt-3">
                     <section class="heading ml-2">
-                        <div class="card bg-dark p-2">
-                            <h3 class="text-center"><strong>{{ $startdate }}&nbsp;&nbsp; - &nbsp;&nbsp; {{$enddate}}</strong></h3>
-                        </div>
+                        <table cellpadding="0" cellspacing="0" bgcolor="#343a40" width="100%" class="bg-dark">
+                            <tr>
+                                <td height="5px;" style="height: 5px;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 0 0 10px; ">
+                                <h3 class="text-center" style="margin: 0;"><strong>{{ $startdate }}&nbsp;&nbsp; - &nbsp;&nbsp; {{$enddate}}</strong></h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="5px;" style="height: 5px;">&nbsp;</td>
+                            </tr>
+                        </table>
                         <h2 class="text-center"><strong>{{$title}}</strong></h2>
                         <h3 class="text-center">{{$person_name}} - {{ $created_at }}</h3>
                         <hr>
@@ -89,6 +100,7 @@
                                 <td height="15px" style="line-height: 15px; height: 15px;"> </td>
                             </tr>
                         @endforeach
+                            
                         </table>
                     </section>
 
@@ -101,28 +113,60 @@
                     @endif
                 </section>
             </div>
+
+
             <section class="textimage ml-2">
             @foreach ($quote_details as $key => $qd)
-                    <div class="card bg-dark p-3 display-block">
-                        <h3 class="text-left m-0"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
-                    </div>
+                    <table cellpadding="0" cellspacing="0" bgcolor="#343a40" width="100%" class="bg-dark">
+                        <tr>
+                            <td height="5px;" style="height: 5px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0 0 0 10px; ">
+                                <h3 style="margin: 0;"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="5px;" style="height: 5px;">&nbsp;</td>
+                        </tr>
+                    </table>
                     @foreach ($qd as $key => $quote_del)
-                    <section>    
-                    <div class="images display-block">
-                        <img src="{{ $quote_del->image }}" width="100%" class="img-block" />
-                        <div class="">
-                            <h3 class="mb-0">{{$quote_del->getCategory->name}} - {{$quote_del->product_id}}</h3>
-                            <h3 class="mt-5">No. of Night {{  Helper::date_difference(Helper::db_date_format($quote_del->date_of_service),Helper::db_date_format($quote_del->end_date_of_service))}}</h3>
-                        </div>
-                        <div class="p-0 m-0 display-block">
-                        {!! $quote_del->service_details !!}
+                    <table cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td height="10px;" style="height: 10px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><img src="{{ $quote_del->image }}" width="100%" /></td>
+                        </tr>
+                        <tr>
+                            <td height="10px;" style="height: 10px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td><h3 style="margin: 0 ;">{{$quote_del->getCategory->name}} - {{$quote_del->product_id}}</h3></td>
+                        </tr>
                         
-                        </div>
-                    </div>
-                    </section>
+                        <tr>
+                            <td>
+                                <h3 style="margin: 0 ;">No. of Night {{  Helper::date_difference(Helper::db_date_format($quote_del->date_of_service),Helper::db_date_format($quote_del->end_date_of_service))}}</h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="2px;" style="height: 2px;">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="css-none">
+                                {!! $quote_del->service_details !!}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="10px;" style="height: 10px;   ">&nbsp;</td>
+                        </tr>
+                    </table>
                     @endforeach
             @endforeach
             </section>
+
+
             <section class="booking-condition">
                 @if(count($storetexts) > 0)
                     @foreach ($storetexts as $text)

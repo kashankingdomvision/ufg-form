@@ -298,6 +298,8 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        $data['storetexts']       = StoreText::get();
+
         return view('quotes.edit',$data);
     }
 
