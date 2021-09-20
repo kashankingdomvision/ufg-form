@@ -49,7 +49,6 @@ class QuoteDocumentsController extends Controller
     }
 
 
-
     // public function documentIndex($id)
     // {
 

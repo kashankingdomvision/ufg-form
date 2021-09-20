@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PDF;
 use App\Http\Helper;
-
 use App\Brand;
 use App\Booking;
 use App\BookingMethod;
