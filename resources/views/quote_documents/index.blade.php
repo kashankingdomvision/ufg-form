@@ -103,6 +103,22 @@
                                     </section>         
                                   @endforeach
                                 @endforeach
+
+                                <div class="page-break-avoid">                                
+                                  <div class="org-primary-color booking-separator"></div>                                             
+                                    <div class="">                  
+                                      <div>                    
+                                        <div class="prioritized-header">
+                                          <h4 class="text-center"><strong>Trip Cost</strong></h4>                      
+                                        </div>                                                     
+                                      </div>                  
+                                      <div class="prioritized-text">                    
+                                        <p>Total Selling Price  -  {{ $selling_amount }}</p>
+                                        <p>Deposit Per Person - US ${{ $booking_amount_person }}</p>
+                                        <p><em>Remaining balance due 90 days prior to the departure</em></p>
+                                    </div>                
+                                  </div>              
+                                </div>
                                   @if(isset($storetexts) && count($storetexts) > 0)
                                     @foreach ($storetexts as $text)
                                     <h4 class="text-center"><strong>{{$text->page_title}}</strong></h4>

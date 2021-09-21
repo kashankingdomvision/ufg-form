@@ -87,6 +87,7 @@
               <form id="versions" method="POST" class="update-quote versions" action="{{ route('quotes.update', encrypt($quote->id)) }}">
                 <div class="card-body">
                   @csrf @method('put')
+                
                   <div class="row">
                     <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
@@ -444,6 +445,16 @@
                               <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
                             </div>
                             @endif
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group ">
+                                  <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    @include('partials.addmediaModal')
+                                  </div>
+                                </div>
+                                <button type="button" class="float-right disablebutton btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
                             <div class="row"> {{-- ?>>>rowStart --}}
                                 <div class="col-sm-2">
                                   <div class="form-group">
@@ -720,12 +731,12 @@
                                   </div>
                                 </div>
                                 @endif
-                                <div class="col-sm-2">
+                                <!-- <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Service Details</label>
                                     <textarea name="quote[{{ $key }}][service_details]" data-name="service_details" id="quote_{{ $key }}_service_details" class="form-control service-details" rows="2" placeholder="Enter Service Details">{{ $q_detail->service_details }}</textarea>
                                 </div>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Comments</label>
@@ -736,6 +747,19 @@
                         </div>
                     @endforeach
                   </div>
+                  <div class="row" id="storedText" @if(!$quote->stored_text) style="display:none; @endif">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label " class="col-sm-3 col-form-label">Stored Text</label>
+                        <select multiple="multiple" name="stored_text[]" class="form-control select2-multiple" id="selectstoretext" @if(!$quote->stored_text) disabled @endif>
+                          @foreach ($storetexts as $text )
+                            <option @if($quote->stored_text) {{ (in_array($text->id , $quote->stored_text))? 'selected': '' }} @endif value="{{$text->id}}" >{{ $text->name }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
 
                   <div class="form-group row mt-4">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
