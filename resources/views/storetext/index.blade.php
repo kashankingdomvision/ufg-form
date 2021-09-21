@@ -81,11 +81,9 @@
                                             @forelse  ($storetexts as $value)
                                             <tr>
                                                 <td>
-                                                    @if($value->id != 1)
-                                                        <div class="icheck-primary">
+                                                    <div class="icheck-primary">
                                                         <input type="checkbox" class="child" value="{{$value->id}}" >
-                                                        </div>
-                                                    @endif
+                                                    </div>
                                                 </td>
                                                 <td>{{ $value->name }}</td>
                                                 <td>
