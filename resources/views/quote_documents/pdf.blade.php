@@ -94,7 +94,7 @@
                                 <td class="pr-2">{{ Helper::document_date_format($key) }}</td>
                                 <td>
                                 @foreach ($qd as $key => $quote_del)
-                                    <a href="#category1"> {{$quote_del->getCategory->name}}</a><br/>
+                                    <a href="#category{{$quote_del->category_id}}"> {{$quote_del->getCategory->name}}</a><br/>
                                 @endforeach
                                 </td>
                             </tr>
@@ -124,7 +124,7 @@
                         </div>
     
                     @foreach ($qd as $key => $quote_del)
-                    <table cellspacing="0" cellpadding="0">
+                    <table cellspacing="0" cellpadding="0" id="category{{$quote_del->category_id}}s">
                         <tr>
                             <td height="10px;" style="height: 10px;">&nbsp;</td>
                         </tr> 
