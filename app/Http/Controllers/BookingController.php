@@ -251,6 +251,7 @@ class BookingController extends Controller
             "refund_confirmed_by"  => $quoteD['refund_confirmed_by']??NULL,
             "refund_recieved"      => $quoteD['refund_recieved']??NULL,
             "refund_recieved_date" => (isset($quoteD['refund_recieved']) && ($quoteD['refund_recieved'] == 1)) ? date('Y-m-d') : NULL,
+            "user_id"              => Auth::id(),
         ];
     }
 
@@ -460,8 +461,10 @@ class BookingController extends Controller
 
                     $refund                      = $this->getBookingRefundPaymentArray($refund);
                     $refund['booking_detail_id'] = $booking_Details->id;
-
+                    $refund['currency_id']       = $booking_Details->supplier_currency_id;
+ 
                     if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+
                         BookingRefundPayment::create($refund);
                         BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                     }

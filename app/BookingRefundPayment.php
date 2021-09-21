@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Carbon\Carbon;
 class BookingRefundPayment extends Model
 {
     protected $fillable = [
@@ -14,6 +14,31 @@ class BookingRefundPayment extends Model
         'refund_confirmed_by',
         'bank_id',
         'refund_recieved',
-        'refund_recieved_date'
+        'refund_recieved_date',
+        'currency_id',
+        'user_id'
     ];
+
+    function getBookingDetail() {
+        return $this->hasOne(BookingDetail::class, 'id','booking_detail_id');
+    }
+
+    public function getBank()
+    {
+        return $this->hasOne(Bank::class,'id','bank_id');
+    }
+
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::class,'id','currency_id');
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class,'id','refund_confirmed_by');
+    }
+    
+    public function getRefundDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
 }

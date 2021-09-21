@@ -19,6 +19,8 @@ use App\Season;
 use App\PaymentMethod;
 use App\BookingDetailFinance;
 use App\Commission;
+use App\Bank;
+use App\BookingRefundPayment;
 
 
 class ReportController extends Controller
@@ -495,6 +497,43 @@ class ReportController extends Controller
         $data['selected_type'] = request()->type;
 
         return view('reports.customer_report', $data);
+    }
+
+    public function refund_by_bank_report(Request $request) {
+
+        $query = BookingRefundPayment::orderBy('id', 'ASC');
+        
+        if (!empty(request()->all())) {
+
+            if(request()->has('bank') && !empty(request()->bank)){
+                $query->where('bank_id', $request->bank);
+            }
+
+            if($request->has('dates') && !empty($request->dates)){
+
+                $dates = explode ("-", $request->dates);
+
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                $query->whereDate('refund_date', '>=', $start_date);
+                $query->whereDate('refund_date', '<=', $end_date);
+            }
+
+            if($request->has('month') && !empty($request->month)){
+                $query->whereMonth('refund_date', $request->month);
+            }
+
+            if($request->has('year') && !empty($request->year)){
+                $query->whereYear('refund_date', $request->year);
+            }
+        }
+
+        $data['banks']                   = Bank::all();
+        $data['users']                   = User::all();
+        $data['booking_refund_payments'] = $query->get();
+
+        return view('reports.refund_by_bank_report', $data);
     }
 
 }
