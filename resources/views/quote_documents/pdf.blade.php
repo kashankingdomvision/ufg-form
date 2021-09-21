@@ -26,6 +26,7 @@
             .bg-dark { background-color: #343a40 !important; }
             .card { box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%); margin-bottom: 1rem; }
             .p-2 { padding: .2rem !important; }
+            .p-1{padding: .1rem !important}
             .bg-dark,
             .bg-dark>a { color: #fff !important; }
             .text-center { text-align: center !important; }
@@ -45,6 +46,7 @@
             .row{display: block !important; width: 100%; }
             .css-none div{ margin: 0 !important; padding: 0 !important }
             .css-none p{ margin: 0 !important; padding: 0 !important }
+            .pl-5{padding-left: .5rem !important;}
 </style>
     </head>
     <body>
@@ -117,24 +119,17 @@
 
             <section class="textimage ml-2">
             @foreach ($quote_details as $key => $qd)
-                    <table cellpadding="0" cellspacing="0" bgcolor="#343a40" width="100%" class="bg-dark">
-                        <tr>
-                            <td height="5px;" style="height: 5px;">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0 0 0 10px; ">
-                                <h3 style="margin: 0;"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td height="5px;" style="height: 5px;">&nbsp;</td>
-                        </tr>
-                    </table>
+                        <div class="card bg-dark p-1">
+                            <h3 class="pl-5"><strong>{{ Helper::document_date_format($key) }}</strong></h3>
+                        </div>
+    
                     @foreach ($qd as $key => $quote_del)
                     <table cellspacing="0" cellpadding="0">
                         <tr>
                             <td height="10px;" style="height: 10px;">&nbsp;</td>
-                        </tr>
+                        </tr> 
+                       
+                        
                         <tr>
                             <td><img src="{{ $quote_del->image }}" width="100%" /></td>
                         </tr>
@@ -161,6 +156,7 @@
                         <tr>
                             <td height="10px;" style="height: 10px;   ">&nbsp;</td>
                         </tr>
+                        
                     </table>
                     @endforeach
             @endforeach
