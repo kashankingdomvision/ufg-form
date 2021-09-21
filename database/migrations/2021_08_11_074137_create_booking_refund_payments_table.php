@@ -22,7 +22,11 @@ class CreateBookingRefundPaymentsTable extends Migration
             $table->unsignedBigInteger('bank_id');
             $table->enum('refund_recieved', [0,1])->default(0)->nullable();
             $table->date('refund_recieved_date')->nullable();
+            $table->unsignedBigInteger('currency_id');
+            $table->unsignedBigInteger('user_id');
 
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('refund_confirmed_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('bank_id')->references('id')->on('banks')->onUpdate('cascade')->onDelete('cascade');

@@ -88,6 +88,19 @@
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label>Commission Type </label>
+                                            <select class="form-control select2single" name="commission_type">
+                                                <option selected value="" >Select Commission Type </option>
+                                                @foreach ($commission_types as $commission_type)
+                                                    <option value="{{ $commission_type->id }}" {{ (old('commission_type') == $commission_type->id) ? 'selected': ((request()->get('commission_type') == $commission_type->id) ? 'selected' : null) }}>{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
+                                                @endforeach
+                                            </select>
+
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -96,7 +109,7 @@
                                             <label>Booking Currency</label>
                                             <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
                                                 @foreach ($currencies as $curren)
-                                                    <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                                                    <option value="{{ $curren->id }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->id)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->id, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -106,7 +119,7 @@
                                             <label>Brand</label>
                                             <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
                                                 @foreach ($brands as $brand)
-                                                    <option value="{{ $brand->name }}" {{ (in_array($brand->name,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->name, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
+                                                    <option value="{{ $brand->id }}" {{ (in_array($brand->id,[old('brand')]))? 'selected': ( (!empty(request()->get('brand')))? ((in_array($brand->id, request()->get('brand')))? 'selected' : null): '') }}>{{ $brand->name }} </option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -209,7 +222,7 @@
                                     @if($quotes && $quotes->count())
                                         @foreach ($quotes as $key => $quote)
                                             @php
-                                                $total_profit_percentage +=  $quote->profit_percentage;
+                                                $total_profit_percentage    +=  $quote->profit_percentage;
                                             @endphp
                                             <tr>
                                                 <td>
@@ -249,39 +262,39 @@
                                                 </td>
                                                 <tbody class="child-row d-none" id="child-row-{{$quote->id}}" >
                                                     <tr>
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <tH>Total Net Price</tH>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->net_price}} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <th>Total Markup Amount</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount}} </td>
                                                        <td> {{$quote->markup_percentage.' %' }} </td>
                                                     
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <th>Total Selling Price</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->selling_price}} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
                                                      
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <th>Total Profit Percentage</th>
                                                        <td> {{$quote->profit_percentage.' %' }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <th>Potential Commission</th>
-                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->commission_amount.' %' }} </td>
+                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->commission_amount }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
-                                                       <td colspan="11"></td>
+                                                       <td colspan="12"></td>
                                                        <th> Amount Per Person</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->amount_per_person }} </td>
                                                        <td></td>
