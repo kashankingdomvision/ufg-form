@@ -124,7 +124,7 @@
                         </div>
     
                     @foreach ($qd as $key => $quote_del)
-                    <table cellspacing="0" cellpadding="0" id="category{{$quote_del->category_id}}s">
+                    <table cellspacing="0" cellpadding="0" id="category{{$quote_del->category_id}}">
                         <tr>
                             <td height="10px;" style="height: 10px;">&nbsp;</td>
                         </tr> 
