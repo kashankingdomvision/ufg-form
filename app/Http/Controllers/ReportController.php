@@ -21,6 +21,7 @@ use App\BookingDetailFinance;
 use App\Commission;
 use App\Bank;
 use App\BookingRefundPayment;
+use App\BookingCreditNote;
 
 
 class ReportController extends Controller
@@ -536,4 +537,40 @@ class ReportController extends Controller
         return view('reports.refund_by_bank_report', $data);
     }
 
+    public function refund_by_credit_note_report(Request $request) {
+
+        $query = BookingCreditNote::orderBy('id', 'ASC');
+
+        if (!empty(request()->all())) {
+
+            if(request()->has('credit_note_recieved_by') && !empty(request()->credit_note_recieved_by)){
+                $query->where('user_id', $request->credit_note_recieved_by);
+            }
+
+            if($request->has('dates') && !empty($request->dates)){
+
+                $dates = explode ("-", $request->dates);
+
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                $query->whereDate('credit_note_recieved_date', '>=', $start_date);
+                $query->whereDate('credit_note_recieved_date', '<=', $end_date);
+            }
+
+            if($request->has('month') && !empty($request->month)){
+                $query->whereMonth('credit_note_recieved_date', $request->month);
+            }
+
+            if($request->has('year') && !empty($request->year)){
+                $query->whereYear('credit_note_recieved_date', $request->year);
+            }
+
+        }
+
+        $data['users']                   = User::all();
+        $data['booking_credit_notes']    = $query->get();
+
+        return view('reports.refund_by_credit_note', $data);
+    }
 }

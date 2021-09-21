@@ -21,10 +21,13 @@ class CreateBookingCreditNotes extends Migration
             $table->string('credit_note_no')->nullable();
             $table->date('credit_note_recieved_date')->nullable();
             $table->unsignedBigInteger('credit_note_recieved_by');
-            $table->foreign('credit_note_recieved_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('supplier_id');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('currency_id');
+
+            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('credit_note_recieved_by')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

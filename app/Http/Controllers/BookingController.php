@@ -477,6 +477,7 @@ class BookingController extends Controller
                         $credit_note = $this->getBookingCreditNoteArray($credit_note);
                         $credit_note['booking_detail_id'] = $booking_Details->id;
                         $credit_note['supplier_id']       = $booking_Details->supplier_id;
+                        $credit_note['currency_id']       = $booking_Details->supplier_currency_id;
                         $credit_note['user_id']           = Auth::id();
 
                         if(($credit_note['credit_note_amount']) > 0 && !empty($credit_note['credit_note_recieved_date'])){

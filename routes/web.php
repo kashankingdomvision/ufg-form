@@ -186,6 +186,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('payment-method-report', array('as' => 'payment.method.report', 'uses' => 'ReportController@payment_method_report'));
 
         Route::get('refund-by-bank-report', array('as' => 'refund.by.bank.report', 'uses' => 'ReportController@refund_by_bank_report'));
+        Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
     });
 
 

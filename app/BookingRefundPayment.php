@@ -38,6 +38,11 @@ class BookingRefundPayment extends Model
         return $this->hasOne(User::class,'id','refund_confirmed_by');
     }
     
+    public function getSupplier()
+    {
+        return $this->hasOne(Supplier::class,'id','supplier_id');
+    }
+    
     public function getRefundDateAttribute( $value ) {
         return (new Carbon($value))->format('d/m/Y');
     }
