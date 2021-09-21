@@ -47,6 +47,9 @@
             .css-none div{ margin: 0 !important; padding: 0 !important }
             .css-none p{ margin: 0 !important; padding: 0 !important }
             .pl-5{padding-left: .5rem !important;}
+            .pb-1{padding-bottom: .5rem !important;}
+            .pl-7{padding-left: .7rem !important;}
+
 </style>
     </head>
     <body>
@@ -160,6 +163,31 @@
                     </table>
                     @endforeach
             @endforeach
+            </section>
+
+            <section>
+                <table cellpadding="0" cellspacing="0" bgcolor="#ddd" width="100%">
+                    <tr>
+                        <td width="30px" bgcolor="#2952a3">&nbsp;</td>
+                        <td class="pl-7"><h3>Trip Cost</h3></td>
+                    </tr>
+                    <tr>
+                        <td width="30px" bgcolor="#2952a3">&nbsp;</td>
+                        <td class="pb-1 pl-7">Total Selling Price  -  {{ $selling_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td width="30px" bgcolor="#2952a3">&nbsp;</td>
+                        <td class="pb-1 pl-7">Deposit Per Person - US ${{ $booking_amount_person }}</td>
+                    </tr>
+                    <tr>
+                        <td width="30px" bgcolor="#2952a3">&nbsp;</td>
+                        <td class="pb-1 pl-7">Remaining balance due 90 days prior to the departure</td>
+                    </tr>
+                    <tr>
+                        <td width="30px" bgcolor="#2952a3">&nbsp;</td>
+                        <td class="pb-1 pl-7">&nbsp;</td>
+                    </tr>
+                </table>
             </section>
 
 
