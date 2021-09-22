@@ -52,12 +52,11 @@
                                             <div class="row">
 
                                                 <div class="col">
-                                                    <div class="form-group">
+                                                    <div class="form-group"> 
                                                         <label>Booking Refrence</label>
-                                                        <select class="form-control select2single" name="quote_ref">
-                                                            <option value="">Select Booking Refrence</option>
-                                                            @foreach ($booking as $booking)
-                                                                <option value="{{ $booking->id }}" {{ (old('quote_ref') == $booking->id)? 'selected': ((request()->get('quote_ref') == $booking->id) ? 'selected' : null) }} >{{ $booking->quote_ref }}</option>
+                                                        <select class="form-control select2-multiple"  data-placeholder="Select Booking Refrence" multiple name="quote_ref[]">
+                                                            @foreach ($bookings as $booking)
+                                                                <option value="{{ $booking->id }}" {{ (in_array($booking->id,[old('quote_ref')]))? 'selected': ( (!empty(request()->get('quote_ref')))? ((in_array($booking->id, request()->get('quote_ref')))? 'selected' : null): '') }}>{{ $booking->quote_ref }} </option>
                                                             @endforeach
                                                         </select>
                                                     </div>

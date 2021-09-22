@@ -583,11 +583,10 @@ class ReportController extends Controller
             $query->where('booking_status','confirmed' );
         });
 
-
         if (!empty(request()->all())) {
 
             if(request()->has('quote_ref') && !empty(request()->quote_ref)){
-                $query->where('booking_id', $request->quote_ref);
+                $query->whereIn('booking_id', $request->quote_ref);
             }
 
             if($request->has('dates') && !empty($request->dates)){
@@ -612,9 +611,9 @@ class ReportController extends Controller
         }
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
-        $data['booking']         = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+        $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
-
+        $data['brands']          = Brand::all();
     
         return view('reports.transfer_report', $data);
     }
