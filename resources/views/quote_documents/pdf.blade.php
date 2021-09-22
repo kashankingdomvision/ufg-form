@@ -127,14 +127,14 @@
                         </div>
     
                     @foreach ($qd as $key => $quote_del)
+                <div class="page-break">
+
                     <table cellspacing="0" cellpadding="0" id="category{{$quote_del->category_id}}">
                         <tr>
                             <td height="10px;" style="height: 10px;">&nbsp;</td>
                         </tr> 
-                       
-                        
                         <tr>
-                            <td><img src="{{ $quote_del->image }}" width="100%" /></td>
+                            <td><img src="{{ $quote_del->image }}" width="100%" height="300px"/></td>
                         </tr>
                         <tr>
                             <td height="10px;" style="height: 10px;">&nbsp;</td>
@@ -161,6 +161,7 @@
                         </tr>
                         
                     </table>
+                </div>
                     @endforeach
             @endforeach
             </section>

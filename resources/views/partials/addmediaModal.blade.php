@@ -12,7 +12,7 @@
               <i class="fa fa-picture-o"></i> Choose
             </button>
           </span>
-          <input id="quote_{{ $val_ }}_image" class="form-control image" value="" data-name="image" type="text" name="quote[{{ $val_ }}][image]">
+          <input id="quote_{{ $val_ }}_image" class="form-control image" value="{{ (isset($q_detail['image']) && $q_detail['image'] != null)? $q_detail['image'] : NULL }}" data-name="image" type="text" name="quote[{{ $val_ }}][image]">
         </div>
           <div class="previewId m-3" id="quote_{{ $val_ }}_holder" ><img src="{{ (isset($q_detail['image']) && $q_detail['image'] != null)? $q_detail['image'] : NULL }}" class="img-fluid" /></div>  
           <div class="input-group mt-2">

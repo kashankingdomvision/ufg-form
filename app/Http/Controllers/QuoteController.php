@@ -186,8 +186,7 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
         if($type != 'booking'){
-            $data['stored_text']                       = ($request->has('stored_text'))? $request->stored_text : NULL; 
-
+            $data['stored_text']                =   $request->stored_text??NULL; 
         }
         return $data;
     }
@@ -490,8 +489,6 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        
-
         return view('quotes.show',$data);
     }
     
