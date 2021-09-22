@@ -589,6 +589,12 @@ class ReportController extends Controller
                 $query->whereIn('booking_id', $request->quote_ref);
             }
 
+            if(request()->has('booking_season') && !empty(request()->booking_season)){
+                $query->whereHas('getBooking', function($query) use($request){
+                    $query->where('season_id', $request->booking_season );
+                });
+            }
+
             if($request->has('dates') && !empty($request->dates)){
 
                 $dates = explode ("-", $request->dates);
@@ -614,6 +620,7 @@ class ReportController extends Controller
         $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
         $data['brands']          = Brand::all();
+        $data['booking_seasons'] = Season::all();
     
         return view('reports.transfer_report', $data);
     }

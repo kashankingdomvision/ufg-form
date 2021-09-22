@@ -64,6 +64,18 @@
 
                                                 <div class="col">
                                                     <div class="form-group">
+                                                        <label>Booking Season</label>
+                                                        <select class="form-control select2single" name="booking_season">
+                                                            <option value="" selected >Select Booking Season</option>
+                                                            @foreach ($booking_seasons as $seasons)
+                                                                <option value="{{ $seasons->id }}" {{ (old('booking_season') == $seasons->id)? 'selected': ((request()->get('booking_season') == $seasons->id)? 'selected' : null) }}>{{ $seasons->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col">
+                                                    <div class="form-group">
                                                         <label>Transfer Supplier</label>
                                                         <select class="form-control select2single" name="supplier">
                                                             <option value="">Select User</option>
@@ -150,6 +162,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Booking Ref # </th>
+                                                <th>Season</th>
                                                 <th>Start Date of Service</th>
                                                 <th>End Date of Service</th>
                                                 <th>Time of Service</th>
@@ -170,6 +183,7 @@
                                                             <a href="{{ route('bookings.show', encrypt($booking_detail->getBooking->id)) }}"> {{$booking_detail->getBooking->quote_ref}} </a>
                                                         @endif
                                                     </td>
+                                                    <td>{{ $booking_detail->getBooking->getSeason->name }}</td>
                                                     <td>{{ $booking_detail->date_of_service }}</td>
                                                     <td>{{ $booking_detail->end_date_of_service }}</td>
                                                     <td>{{ $booking_detail->time_of_service }}</td>
