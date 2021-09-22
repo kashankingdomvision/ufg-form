@@ -3,1836 +3,1827 @@ require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 import $, { ajax, cssNumber } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
-import Swal from  'sweetalert2'; 
-import datepicker from 'bootstrap-datepicker'; 
+import Swal from 'sweetalert2';
+import datepicker from 'bootstrap-datepicker';
 
-import daterangepicker from 'daterangepicker'; 
+import daterangepicker from 'daterangepicker';
 
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`; 
-// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`; 
+var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
-    
-    $(function() {
 
-        $('.date-range-picker').daterangepicker({
-            autoUpdateInput: false,
-            locale: {
-                cancelLabel: 'Clear',
-                format: 'DD/MM/YYYY',
-            }
-        });
-      
-        $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-        });
-      
-        $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });
-      
-    });
+            $(function() {
 
+                $('.date-range-picker').daterangepicker({
+                    autoUpdateInput: false,
+                    locale: {
+                        cancelLabel: 'Clear',
+                        format: 'DD/MM/YYYY',
+                    }
+                });
 
-    /*  ajaxSetup */
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': CSRFTOKEN
-        }
-    });
-  
-    $('.select2').select2({
-        width: '100%',
-        theme: "classic",
-    });
+                $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+                    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+                });
 
-    $('.select2single').select2({
-        width: '100%',
-        theme: "bootstrap",
-        templateResult: formatState,
-        templateSelection: formatState,
-    });
+                $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+                    $(this).val('');
+                });
 
-    $('.nationality-select2').select2({
-        width: '100%',
-        theme: "bootstrap",
-        templateResult: formatState,
-        templateSelection: formatState,
-    });
-
-    $('.select2-multiple').select2({
-        width: '100%',
-        theme: "classic",
-    });
-
-    $('.selling-price-other-currency').select2({
-        width: '68%',
-        theme: "bootstrap",
-        templateResult: formatState,
-        templateSelection: formatState,
-    });
-
-    function formatState(option) {
-        var optionImage = $(option.element).attr('data-image');
-        if (!optionImage) {
-            return option.text ;
-        }
-
-        return $(`<span><img height="20" width="20" src="${optionImage}" width="60px" />${option.text}</span>`);
-    };
-
-    function reinitializedDynamicFeilds(){
-        $('.select2single').select2({
-            width: '100%',
-            theme: "bootstrap",
-            templateResult: formatState,
-            templateSelection: formatState,
-        });
-    }
-
-    function log(variable) {
-        console.log(`${variable}: ${variable}`);
-    }
-
-    function disabledFeild(p) {
-        $(p).attr("disabled",true);
-    }
-
-    datepickerReset();
-
-    var curday = function(sp){
-        var today = new Date();
-        var dd    = today.getDate();
-        var mm    = today.getMonth()+1; //As January is 0.
-        var yyyy  = today.getFullYear();
-        if(dd<10) dd='0'+dd;
-        if(mm<10) mm='0'+mm;
-        return (yyyy+sp+mm+sp+dd);
-    };
-
-    function todayDate() {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        return today = dd + '/' + mm + '/' + yyyy;
-    }
-    
-    function datepickerReset(key = null) {
-    
-        var $season = $("#season_id");
-        var season_start_date = new Date($season.find(':selected').data('start'));
-        var season_end_date = new Date($season.find(':selected').data('end'));
-        if(season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date'){
-            if(key != null){
-    
-                $('.bookingDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.bookingDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.bookingDueDate:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-            }else{
-                // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format:'dd/mm/yyyy'});
-    
-           }
-        }else{
-            $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy'});
-        }
-    }
-    
-    function convertDate(date) {
-        var dateParts = date.split("/");
-        return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    }
-
-    var currencyConvert = getJson();
-    function getJson() {
-        return JSON.parse($.ajax({
-            type: 'GET',
-            url : `${BASEURL}get-currency-conversion`,
-            dataType: 'json',
-            global: false,
-            async: false,
-            success: function (data) {
-                return data;
-            }
-        }).responseText);
-    }
-
-    var commissionRate = getCommissionJson();
-    function getCommissionJson() {
-        return JSON.parse($.ajax({
-            type: 'GET',
-            url : `${BASEURL}get-commission`,
-            dataType: 'json',
-            global: false,
-            async: false,
-            success: function (data) {
-                return data;
-            }
-        }).responseText);
-    }
-    
-    function check(x) {
-
-        if(isNaN(x) || !isFinite(x) ){
-            return parseFloat(0).toFixed(2);
-        }
-
-        return x.toFixed(2);
-    }
-
-    function isEmpty(value){
-        return (value == null || value == '' || value == 'undefined' ? 'N/A' : value );
-    }
-
-    function getRate(supplierCurrency,bookingCurrency,rateType){
-
-        var object = currencyConvert.filter(function(elem) {
-            return elem.from == supplierCurrency && elem.to == bookingCurrency
-        });
-
-        return (object.shift()[rateType]);
-    }
-
-    function getCommissionRate(){
-
-        var totalNetPrice             = $('.total-net-price').val();
-        var commissionID              = $('.commission-id').val();
-        var calculatedCommisionAmount = 0;
-
-        if(commissionID){
-
-            var object = commissionRate.filter(function(elem) {
-                return elem.id == commissionID
             });
 
-            var commissionPercentage  = parseFloat(object.shift()['percentage']);
-            calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
 
-        }else{
-            calculatedCommisionAmount = 0.00;
-        }
-
-        $('.commission-amount').val(check(calculatedCommisionAmount));
-    }
-
-    function getSellingPrice(){
-
-        var sellingPriceOtherCurrency        =  $('.selling-price-other-currency').val();
-         
-        if(sellingPriceOtherCurrency){
-
-            var rateType                      = $('input[name="rate_type"]:checked').val();
-            // var paxNumber                     = parseFloat($(".pax-number").val());
-            var bookingCurrency               = $(".booking-currency-id").find(':selected').data('code');
-            var totalSellingPrice             = parseFloat($('.total-selling-price').val());
-            var rate                          = getRate(bookingCurrency,sellingPriceOtherCurrency,rateType);
-            var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
-            // var bookingAmountPerPerson        = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
-     
-            $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
-            // $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
-            $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
-        }
-
-        if(sellingPriceOtherCurrency == ''){
-            $('.selling-price-other-currency-rate').val('0.00');
-            // $('.booking-amount-per-person').val('0.00');
-            $('.selling-price-other-currency-code').val('');
-        }
-    }
-
-    $(document).on('change', '.rate-type',function(){
-
-        var status = $(this).attr("data-status");
-
-        if(status && status=='booking'){
-            getBookingRateTypeValues();
-
-        }else{
-       
-            getQuoteRateTypeValues();
-        }
-    });
-
-    $(document).on('change', '.commission-id', function () {
-        getCommissionRate();
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | Quote Management Calculation Functions
-    |--------------------------------------------------------------------------
-    */
-
-    function getBookingAmountPerPerson(){
-        var paxNumber                          = parseFloat($(".pax-number").val());
-        var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
-        var bookingAmountPerPerson             = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
-        
-        $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
-    }
-
-    function getQuoteBookingCurrencyValues(){
-
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var estimatedCostArray                       = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var supplierCurrencyArray                    = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
-        var quoteSize                                = parseInt($('.quote').length);
-        var calculatedEstimatedCostInBookingCurrency = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var key                                      = 0;
-
-        while (key < quoteSize) {
-
-            var estimatedCost    = estimatedCostArray[key];
-            var supplierCurrency = supplierCurrencyArray[key];
-            var sellingPrice     = sellingPriceArray[key];
-            var markupAmount     = markupAmountArray[key];
-
-            if(supplierCurrency && bookingCurrency){
-
-                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
-                calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-
-            }else{
-                
-                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-            }
-
-            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            key++;
-        }
-    }
-
-    function getQuoteTotalValues(){
-
-        var estimatedCostInBookingCurrencyArray   = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var estimatedCostInBookingCurrency        = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var sellingPriceInBookingCurrency      = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var markupAmountInBookingCurrency      = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var markupPercentageArray              = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
-        var markupPercentage                   = markupPercentageArray.reduce((a, b) => (a + b), 0);
-        
-        var profitPercentageArray              = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
-        var profitPercentage                   = profitPercentageArray.reduce((a, b) => (a + b), 0);
-        
-        $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-        $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-        $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-        $(".total-markup-percent").val(check(markupPercentage));
-        $(".total-profit-percentage").val(check(profitPercentage));
-
-        getCommissionRate();
-        getBookingAmountPerPerson();
-
-        // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
-        
-        // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
-        
-        // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
-        
-        // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-        // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
-        // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
-        // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
-        // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
-        
-    }
-
-    function getQuoteDetailsValues(key,changeFeild){
-
-        var estimatedCost                            = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-        var supplierCurrency                         = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-        var bookingCurrency                          = $(".booking-currency-id").find(':selected').data('code');
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
-        var markupPercentage                         = parseFloat($(`#quote_${key}_markup_percentage`).val());
-        var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val());
-        var calculatedSellingPrice                   = 0;
-        var calculatedMarkupPercentage               = 0;
-        var calculatedMarkupAmount                   = 0;
-        var calculatedProfitPercentage               = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var calculatedEstimatedCostInBookingCurrency = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-
-        if(changeFeild == 'estimated_cost'){
-
-            calculatedSellingPrice                   = parseFloat(markupAmount) + parseFloat(estimatedCost);
-            calculatedMarkupPercentage               = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-            calculatedProfitPercentage               = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedSellingPriceInBookingCurrency  = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-        
-            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        if(changeFeild == 'markup_amount'){
-
-            calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(estimatedCost);
-            calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-           
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        if(changeFeild == 'markup_percentage'){
-
-            calculatedMarkupAmount                  = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
-            calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-          
-            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-
-        getQuoteTotalValues();
-        getSellingPrice();
-    }
-       
-    function getQuoteRateTypeValues(){
-
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var estimatedCostArray                       = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var supplierCurrencyArray                    = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
-        var quoteSize                                = parseInt($('.quote').length);
-        var calculatedEstimatedCostInBookingCurrency = 0
-        var calculatedSellingPriceInBookingCurrency  = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var key                                      = 0;
-
-        while (key < quoteSize) {
-
-            var estimatedCost    = estimatedCostArray[key];
-            var supplierCurrency = supplierCurrencyArray[key];
-            var sellingPrice     = sellingPriceArray[key];
-            var markupAmount     = markupAmountArray[key];
-
-            if(supplierCurrency && bookingCurrency){
-
-                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
-                calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-
-            }else{
-                
-                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-            }
-
-            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            key++;
-        }
-
-        getQuoteTotalValues();
-        getSellingPrice();
-    }
-
-    function getQuoteSupplierCurrencyValues(supplierCurrency, key){
-
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
-        var estimatedCost                            = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-        var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-        var sellingPrice                             = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-        var calculatedEstimatedCostInBookingCurrency = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-
-        calculatedEstimatedCostInBookingCurrency     = parseFloat(estimatedCost) * parseFloat(rate);
-        calculatedMarkupAmountInBookingCurrency      = parseFloat(markupAmount) * parseFloat(rate) ;
-        calculatedSellingPriceInBookingCurrency      = parseFloat(sellingPrice) * parseFloat(rate);
-
-        $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    }
-
-    /*
-    |--------------------------------------------------------------------------
-    | End Quote Management
-    |--------------------------------------------------------------------------
-    */
-
-    /*
-    |--------------------------------------------------------------------------
-    | Booking Management Calculation Functions
-    |--------------------------------------------------------------------------
-    */
-
-    function getBookingTotalValues(){
-
-        var actualCostInBookingCurrencyArray   = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var actualCostInBookingCurrency        = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var sellingPriceInBookingCurrency      = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var markupAmountInBookingCurrency      = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-        
-        var markupPercentageArray              = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
-        var markupPercentage                   = markupPercentageArray.reduce((a, b) => (a + b), 0);
-        
-        var profitPercentageArray              = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
-        var profitPercentage                   = profitPercentageArray.reduce((a, b) => (a + b), 0);
-        
-        $(".total-net-price").val(check(actualCostInBookingCurrency));
-        $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-        $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-        $(".total-markup-percent").val(check(markupPercentage));
-        $(".total-profit-percentage").val(check(profitPercentage));
-
-        getCommissionRate();
-        getBookingAmountPerPerson();
-    }
-
-    function getBookingRateTypeValues(){
-
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var actualCostArray                          = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var supplierCurrencyArray                    = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
-        var quoteSize                                = parseInt($('.quote').length);
-        var calculatedActualCostInBookingCurrency = 0
-        var calculatedSellingPriceInBookingCurrency  = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var key                                      = 0;
-
-        while (key < quoteSize) {
-
-            var actualCost    = actualCostArray[key];
-            var supplierCurrency = supplierCurrencyArray[key];
-            var sellingPrice     = sellingPriceArray[key];
-            var markupAmount     = markupAmountArray[key];
-
-            // console.log( supplierCurrency);
-
-            if(supplierCurrency && bookingCurrency){
-
-                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
-                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-
-            }else{
-                
-                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-            }
-
-            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            key++;
-        }
-
-        getBookingTotalValues();
-        getSellingPrice();
-    }
-
-    function getBookingSupplierCurrencyValues(supplierCurrency, key){
-
-        var rateType                                = $("input[name=rate_type]:checked").val();
-        var bookingCurrency                         = $(".booking-currency-id").find(":selected").data("code");
-        var rate                                    = getRate(supplierCurrency,bookingCurrency,rateType);
-        var actualCost                              = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var markupAmount                            = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-        var sellingPrice                            = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-        var calculatedActualCostInBookingCurrency   = 0;
-        var calculatedMarkupAmountInBookingCurrency = 0;
-        var calculatedSellingPriceInBookingCurrency = 0;
-
-        calculatedActualCostInBookingCurrency       = parseFloat(actualCost) * parseFloat(rate);
-        calculatedMarkupAmountInBookingCurrency     = parseFloat(markupAmount) * parseFloat(rate) ;
-        calculatedSellingPriceInBookingCurrency     = parseFloat(sellingPrice) * parseFloat(rate);
-         
-        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    }
-
-    function getBookingDetailValues(key){
-
-        var actualCost        = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var sellingPrice      = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-        var supplierCurrency  = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-        var bookingCurrency   = $(".booking-currency-id").find(':selected').data('code');
-        var rateType          = $('input[name="rate_type"]:checked').val();
-        var rate              = getRate(supplierCurrency,bookingCurrency,rateType);
- 
-        var calculatedMarkupAmount                   = 0;
-        var calculatedMarkupPercentage               = 0;
-        var calculatedProfitPercentage               = 0;
-        var calculatedActualCostInBookingCurrency    = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-
-        calculatedMarkupAmount                   = parseFloat(sellingPrice) - parseFloat(actualCost);
-        calculatedMarkupPercentage               = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
-        calculatedProfitPercentage               = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
-        calculatedActualCostInBookingCurrency    = parseFloat(actualCost) * parseFloat(rate);
-        calculatedSellingPriceInBookingCurrency  = parseFloat(sellingPrice) * parseFloat(rate);
-        calculatedMarkupAmountInBookingCurrency  = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
-
-        $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-        $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-        $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-
-        getBookingTotalValues();
-        getSellingPrice();
-    }
-
-    function getQuoteDetailValuesForBooking(key,changeFeild){
-
-        var actualCost                               = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var supplierCurrency                         = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-        var bookingCurrency                          = $(".booking-currency-id").find(':selected').data('code');
-        var rateType                                 = $('input[name="rate_type"]:checked').val();
-        var rate                                     = getRate(supplierCurrency,bookingCurrency,rateType);
-        var markupPercentage                         = parseFloat($(`#quote_${key}_markup_percentage`).val());
-        var markupAmount                             = parseFloat($(`#quote_${key}_markup_amount`).val());
-        var calculatedSellingPrice                   = 0;
-        var calculatedMarkupPercentage               = 0;
-        var calculatedMarkupAmount                   = 0;
-        var calculatedProfitPercentage               = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var calculatedActualCostInBookingCurrency = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-    
-        if(changeFeild == 'actual_cost'){
-    
-            calculatedSellingPrice                   = parseFloat(markupAmount) + parseFloat(actualCost);
-            calculatedMarkupPercentage               = parseFloat(markupAmount) / parseFloat(actualCost / 100);
-            calculatedProfitPercentage               = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedSellingPriceInBookingCurrency  = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-           
-            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-    
-        if(changeFeild == 'markup_amount'){
-    
-            calculatedSellingPrice                  = parseFloat(markupAmount) + parseFloat(actualCost);
-            calculatedMarkupPercentage              = parseFloat(markupAmount) / parseFloat(actualCost / 100);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            
-            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-    
-        if(changeFeild == 'markup_percentage'){
-    
-            calculatedMarkupAmount                  = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
-            calculatedSellingPrice                  = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
-            calculatedProfitPercentage              = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate) ;
-            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-            
-            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-        }
-    
-        getBookingTotalValues();
-        getSellingPrice();
-    }
-
-    function getBookingBookingCurrencyValues(){
-
-        var rateType                                 = $("input[name=rate_type]:checked").val();
-        var actualCostArray                          = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var sellingPriceArray                        = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var markupAmountArray                        = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2) ).get();
-        var bookingCurrency                          = $(".booking-currency-id").find(":selected").data("code");
-        var supplierCurrencyArray                    = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code") ).get();
-        var quoteSize                                = parseInt($(".quote").length);
-        var calculatedActualCostInBookingCurrency    = 0;
-        var calculatedSellingPriceInBookingCurrency  = 0;
-        var calculatedMarkupAmountInBookingCurrency  = 0;
-        var key                                      = 0;
-    
-        while (key < quoteSize) {
-    
-            var actualCost    = actualCostArray[key];
-            var supplierCurrency = supplierCurrencyArray[key];
-            var sellingPrice     = sellingPriceArray[key];
-            var markupAmount     = markupAmountArray[key];
-    
-            if(supplierCurrency && bookingCurrency){
-    
-                var rate = getRate(supplierCurrency,bookingCurrency,rateType);
-                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-    
-            }else{
-                
-                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-            }
-            
-            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-            key++;
-        }
-    }
-
-    $(document).on('change', '.booking-supplier-currency-id',function () {
-
-        var code     = $(this).find(":selected").data("code");
-        var quote    = $(this).closest(".quote");
-        var quoteKey = quote.data("key");
-        quote.find("[class*=supplier-currency-code]").html(code);
-        getBookingSupplierCurrencyValues(code,quoteKey);
-        getBookingTotalValues();
-        getSellingPrice();
-    });
-
-    $(document).on('change','.payment-method', function(){
-
-        var payment_method           = $(this).val();
-        var supplier_id              = $(this).closest('.quote').find('.supplier-id').val();
-        var current_payment_methods  = $(this);
-
-        var quoteKey                 =  $(this).closest('.quote').data('key');
-        var financeKey               =  $(this).closest('.finance-clonning').data('financekey');
-
-        var estimatedCost            = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
-        var totalDepositAmountArray  = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount       = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var outstanding_amount_left  = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
-
-        var wa = 0;
-        var outstandingAmountLeft   = estimatedCost - totalDepositAmount;
-        var currentDepositAmount =  $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
-
-
-        if(supplier_id != null && payment_method == 3 ){
-            
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
-                type: 'get',
-                success: function (data) {
-
-                    if(data.response == true){
-                        wa = parseFloat(data.message);
-
-                        if(currentDepositAmount > wa){
-                            alert("Please Enter Correct Wallet Amount");
-
-                            
-                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                        }
-                        else{
-                            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
-                        }
-                    
-                    }
-                },
-                error: function (reject) {
-
-                    if( reject.status === 422 ) {
-                        var errors = $.parseJSON(reject.responseText);
-                        alert(errors.message);
-                        $(current_payment_methods).val('').trigger('change');
-                    }
-                },
+            /*  ajaxSetup */
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': CSRFTOKEN
+                }
             });
-           
-        }else{
-            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
-        }
-    });
-    
-    $(document).on('change', '.deposit-amount',function(){
 
-        var quoteKey                = $(this).closest('.quote').data('key');
-        var financeKey              = $(this).closest('.finance-clonning').data('financekey');
-        var closestFinance          = $(this).closest('.finance');
-        var depositAmount           = parseFloat($(this).val()).toFixed(2);
-        var estimated_cost          = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
-        var payment_method          = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
-        var supplier_id             = $(`#quote_${quoteKey}_supplier_id`).val();
-        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var outstandingAmountLeft   = estimated_cost - totalDepositAmount;
-        var walletAmount            = 0;
+            $('.select2').select2({
+                width: '100%',
+                theme: "classic",
+            });
 
-        if(payment_method && payment_method == 3){
+            $('.select2single').select2({
+                width: '100%',
+                theme: "bootstrap",
+                templateResult: formatState,
+                templateSelection: formatState,
+            });
 
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                url: REDIRECT_BASEURL+'wallets/get-supplier-wallet-amount/'+supplier_id,
-                type: 'get',
-                success: function (data) {
+            $('.nationality-select2').select2({
+                width: '100%',
+                theme: "bootstrap",
+                templateResult: formatState,
+                templateSelection: formatState,
+            });
 
-                    if(data.response == true){
-                        walletAmount = parseFloat(data.message);
+            $('.select2-multiple').select2({
+                width: '100%',
+                theme: "classic",
+            });
 
-                        if(depositAmount > walletAmount){
-                            alert("Please Enter Correct Wallet Amount");
-                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                        }
-                        else{
+            $('.selling-price-other-currency').select2({
+                width: '68%',
+                theme: "bootstrap",
+                templateResult: formatState,
+                templateSelection: formatState,
+            });
 
-                            if(outstandingAmountLeft < 0){
-                                alert("Please Enter Correct Amount");
-                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                            }else{
+            function formatState(option) {
+                var optionImage = $(option.element).attr('data-image');
+                if (!optionImage) {
+                    return option.text;
+                }
 
-                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                return $(`<span><img height="20" width="20" src="${optionImage}" width="60px" />${option.text}</span>`);
+            };
+
+            function reinitializedDynamicFeilds() {
+                $('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                    templateResult: formatState,
+                    templateSelection: formatState,
+                });
+            }
+
+            function log(variable) {
+                console.log(`${variable}: ${variable}`);
+            }
+
+            function disabledFeild(p) {
+                $(p).attr("disabled", true);
+            }
+
+            datepickerReset();
+
+            var curday = function(sp) {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1; //As January is 0.
+                var yyyy = today.getFullYear();
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+                return (yyyy + sp + mm + sp + dd);
+            };
+
+            function todayDate() {
+                var today = new Date();
+                var dd = String(today.getDate()).padStart(2, '0');
+                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                var yyyy = today.getFullYear();
+                return today = dd + '/' + mm + '/' + yyyy;
+            }
+
+            function datepickerReset(key = null) {
+
+                var $season = $("#season_id");
+                var season_start_date = new Date($season.find(':selected').data('start'));
+                var season_end_date = new Date($season.find(':selected').data('end'));
+                if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
+                    if (key != null) {
+
+                        $('.bookingDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                    } else {
+                        // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+
+                    }
+                } else {
+                    $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+                }
+            }
+
+            function convertDate(date) {
+                var dateParts = date.split("/");
+                return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+            }
+
+            var currencyConvert = getJson();
+
+            function getJson() {
+                return JSON.parse($.ajax({
+                    type: 'GET',
+                    url: `${BASEURL}get-currency-conversion`,
+                    dataType: 'json',
+                    global: false,
+                    async: false,
+                    success: function(data) {
+                        return data;
+                    }
+                }).responseText);
+            }
+
+            var commissionRate = getCommissionJson();
+
+            function getCommissionJson() {
+                return JSON.parse($.ajax({
+                    type: 'GET',
+                    url: `${BASEURL}get-commission`,
+                    dataType: 'json',
+                    global: false,
+                    async: false,
+                    success: function(data) {
+                        return data;
+                    }
+                }).responseText);
+            }
+
+            function check(x) {
+
+                if (isNaN(x) || !isFinite(x)) {
+                    return parseFloat(0).toFixed(2);
+                }
+
+                return x.toFixed(2);
+            }
+
+            function isEmpty(value) {
+                return (value == null || value == '' || value == 'undefined' ? 'N/A' : value);
+            }
+
+            function getRate(supplierCurrency, bookingCurrency, rateType) {
+
+                var object = currencyConvert.filter(function(elem) {
+                    return elem.from == supplierCurrency && elem.to == bookingCurrency
+                });
+
+                return (object.shift()[rateType]);
+            }
+
+            function getCommissionRate() {
+
+                var totalNetPrice = $('.total-net-price').val();
+                var commissionID = $('.commission-id').val();
+                var calculatedCommisionAmount = 0;
+
+                if (commissionID) {
+
+                    var object = commissionRate.filter(function(elem) {
+                        return elem.id == commissionID
+                    });
+
+                    var commissionPercentage = parseFloat(object.shift()['percentage']);
+                    calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+
+                } else {
+                    calculatedCommisionAmount = 0.00;
+                }
+
+                $('.commission-amount').val(check(calculatedCommisionAmount));
+            }
+
+            function getSellingPrice() {
+
+                var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
+
+                if (sellingPriceOtherCurrency) {
+
+                    var rateType = $('input[name="rate_type"]:checked').val();
+                    // var paxNumber                     = parseFloat($(".pax-number").val());
+                    var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+                    var totalSellingPrice = parseFloat($('.total-selling-price').val());
+                    var rate = getRate(bookingCurrency, sellingPriceOtherCurrency, rateType);
+                    var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
+                    // var bookingAmountPerPerson        = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
+
+                    $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
+                    // $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+                    $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
+                }
+
+                if (sellingPriceOtherCurrency == '') {
+                    $('.selling-price-other-currency-rate').val('0.00');
+                    // $('.booking-amount-per-person').val('0.00');
+                    $('.selling-price-other-currency-code').val('');
+                }
+            }
+
+            $(document).on('change', '.rate-type', function() {
+
+                var status = $(this).attr("data-status");
+
+                if (status && status == 'booking') {
+                    getBookingRateTypeValues();
+
+                } else {
+
+                    getQuoteRateTypeValues();
+                }
+            });
+
+            $(document).on('change', '.commission-id', function() {
+                getCommissionRate();
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Quote Management Calculation Functions
+            |--------------------------------------------------------------------------
+            */
+
+            function getBookingAmountPerPerson() {
+                var paxNumber = parseFloat($(".pax-number").val());
+                var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
+                var bookingAmountPerPerson = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
+
+                $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+            }
+
+            function getQuoteBookingCurrencyValues() {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+                var quoteSize = parseInt($('.quote').length);
+                var calculatedEstimatedCostInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var key = 0;
+
+                while (key < quoteSize) {
+
+                    var estimatedCost = estimatedCostArray[key];
+                    var supplierCurrency = supplierCurrencyArray[key];
+                    var sellingPrice = sellingPriceArray[key];
+                    var markupAmount = markupAmountArray[key];
+
+                    if (supplierCurrency && bookingCurrency) {
+
+                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+                    } else {
+
+                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+                    }
+
+                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    key++;
+                }
+            }
+
+            function getQuoteTotalValues() {
+
+                var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+                var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+                var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+                var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
+
+                $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+                $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+                $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+                $(".total-markup-percent").val(check(markupPercentage));
+                $(".total-profit-percentage").val(check(profitPercentage));
+
+                getCommissionRate();
+                getBookingAmountPerPerson();
+
+                // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+                // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+                // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+                // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
+
+                // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
+                // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+                // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
+                // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
+
+                // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+                // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
+                // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
+                // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
+                // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
+
+            }
+
+            function getQuoteDetailsValues(key, changeFeild) {
+
+                var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
+                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+                var rateType = $("input[name=rate_type]:checked").val();
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
+                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
+                var calculatedSellingPrice = 0;
+                var calculatedMarkupPercentage = 0;
+                var calculatedMarkupAmount = 0;
+                var calculatedProfitPercentage = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var calculatedEstimatedCostInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+
+                if (changeFeild == 'estimated_cost') {
+
+                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
+                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+                    calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+
+                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                if (changeFeild == 'markup_amount') {
+
+                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
+                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                if (changeFeild == 'markup_percentage') {
+
+                    calculatedMarkupAmount = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
+                    calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+                    $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                getQuoteTotalValues();
+                getSellingPrice();
+            }
+
+            function getQuoteRateTypeValues() {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+                var quoteSize = parseInt($('.quote').length);
+                var calculatedEstimatedCostInBookingCurrency = 0
+                var calculatedSellingPriceInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var key = 0;
+
+                while (key < quoteSize) {
+
+                    var estimatedCost = estimatedCostArray[key];
+                    var supplierCurrency = supplierCurrencyArray[key];
+                    var sellingPrice = sellingPriceArray[key];
+                    var markupAmount = markupAmountArray[key];
+
+                    if (supplierCurrency && bookingCurrency) {
+
+                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+                    } else {
+
+                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+                    }
+
+                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    key++;
+                }
+
+                getQuoteTotalValues();
+                getSellingPrice();
+            }
+
+            function getQuoteSupplierCurrencyValues(supplierCurrency, key) {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
+                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+                var calculatedEstimatedCostInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+
+                calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+
+                $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | End Quote Management
+            |--------------------------------------------------------------------------
+            */
+
+            /*
+            |--------------------------------------------------------------------------
+            | Booking Management Calculation Functions
+            |--------------------------------------------------------------------------
+            */
+
+            function getBookingTotalValues() {
+
+                var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+                var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+                var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+                var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
+
+                $(".total-net-price").val(check(actualCostInBookingCurrency));
+                $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+                $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+                $(".total-markup-percent").val(check(markupPercentage));
+                $(".total-profit-percentage").val(check(profitPercentage));
+
+                getCommissionRate();
+                getBookingAmountPerPerson();
+            }
+
+            function getBookingRateTypeValues() {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+                var quoteSize = parseInt($('.quote').length);
+                var calculatedActualCostInBookingCurrency = 0
+                var calculatedSellingPriceInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var key = 0;
+
+                while (key < quoteSize) {
+
+                    var actualCost = actualCostArray[key];
+                    var supplierCurrency = supplierCurrencyArray[key];
+                    var sellingPrice = sellingPriceArray[key];
+                    var markupAmount = markupAmountArray[key];
+
+                    // console.log( supplierCurrency);
+
+                    if (supplierCurrency && bookingCurrency) {
+
+                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+                    } else {
+
+                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+                    }
+
+                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    key++;
+                }
+
+                getBookingTotalValues();
+                getSellingPrice();
+            }
+
+            function getBookingSupplierCurrencyValues(supplierCurrency, key) {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+                var calculatedActualCostInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+
+                $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            }
+
+            function getBookingDetailValues(key) {
+
+                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+                var rateType = $('input[name="rate_type"]:checked').val();
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+
+                var calculatedMarkupAmount = 0;
+                var calculatedMarkupPercentage = 0;
+                var calculatedProfitPercentage = 0;
+                var calculatedActualCostInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+
+                calculatedMarkupAmount = parseFloat(sellingPrice) - parseFloat(actualCost);
+                calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
+                calculatedProfitPercentage = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+
+                $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+                $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+                $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+                $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+
+                getBookingTotalValues();
+                getSellingPrice();
+            }
+
+            function getQuoteDetailValuesForBooking(key, changeFeild) {
+
+                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+                var rateType = $('input[name="rate_type"]:checked').val();
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
+                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
+                var calculatedSellingPrice = 0;
+                var calculatedMarkupPercentage = 0;
+                var calculatedMarkupAmount = 0;
+                var calculatedProfitPercentage = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var calculatedActualCostInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+
+                if (changeFeild == 'actual_cost') {
+
+                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+                    calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+
+                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                if (changeFeild == 'markup_amount') {
+
+                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                if (changeFeild == 'markup_percentage') {
+
+                    calculatedMarkupAmount = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
+                    calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
+                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+                    calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+                    $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                }
+
+                getBookingTotalValues();
+                getSellingPrice();
+            }
+
+            function getBookingBookingCurrencyValues() {
+
+                var rateType = $("input[name=rate_type]:checked").val();
+                var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+                var quoteSize = parseInt($(".quote").length);
+                var calculatedActualCostInBookingCurrency = 0;
+                var calculatedSellingPriceInBookingCurrency = 0;
+                var calculatedMarkupAmountInBookingCurrency = 0;
+                var key = 0;
+
+                while (key < quoteSize) {
+
+                    var actualCost = actualCostArray[key];
+                    var supplierCurrency = supplierCurrencyArray[key];
+                    var sellingPrice = sellingPriceArray[key];
+                    var markupAmount = markupAmountArray[key];
+
+                    if (supplierCurrency && bookingCurrency) {
+
+                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+                    } else {
+
+                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+                    }
+
+                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+                    key++;
+                }
+            }
+
+            $(document).on('change', '.booking-supplier-currency-id', function() {
+
+                var code = $(this).find(":selected").data("code");
+                var quote = $(this).closest(".quote");
+                var quoteKey = quote.data("key");
+                quote.find("[class*=supplier-currency-code]").html(code);
+                getBookingSupplierCurrencyValues(code, quoteKey);
+                getBookingTotalValues();
+                getSellingPrice();
+            });
+
+            $(document).on('change', '.payment-method', function() {
+
+                var payment_method = $(this).val();
+                var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
+                var current_payment_methods = $(this);
+
+                var quoteKey = $(this).closest('.quote').data('key');
+                var financeKey = $(this).closest('.finance-clonning').data('financekey');
+
+                var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
+                var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+                var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+
+                var wa = 0;
+                var outstandingAmountLeft = estimatedCost - totalDepositAmount;
+                var currentDepositAmount = $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
+
+
+                if (supplier_id != null && payment_method == 3) {
+
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                        type: 'get',
+                        success: function(data) {
+
+                            if (data.response == true) {
+                                wa = parseFloat(data.message);
+
+                                if (currentDepositAmount > wa) {
+                                    alert("Please Enter Correct Wallet Amount");
+
+
+                                    $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                                } else {
+                                    $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+                                }
+
                             }
-                        }
-                    }
-                },
-                error: function (reject) {}
+                        },
+                        error: function(reject) {
+
+                            if (reject.status === 422) {
+                                var errors = $.parseJSON(reject.responseText);
+                                alert(errors.message);
+                                $(current_payment_methods).val('').trigger('change');
+                            }
+                        },
+                    });
+
+                } else {
+                    $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+                }
             });
-        }else{
 
-            if(outstandingAmountLeft >= 0 && payment_method != ''){
+            $(document).on('change', '.deposit-amount', function() {
 
-                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
-    
-            }else if (outstandingAmountLeft < 0 && payment_method != 3){
-                alert("Please Enter Correct Deposit Amount");
-                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                var quoteKey = $(this).closest('.quote').data('key');
+                var financeKey = $(this).closest('.finance-clonning').data('financekey');
+                var closestFinance = $(this).closest('.finance');
+                var depositAmount = parseFloat($(this).val()).toFixed(2);
+                var estimated_cost = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+                var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
+                var supplier_id = $(`#quote_${quoteKey}_supplier_id`).val();
+                var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+                var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+                var walletAmount = 0;
+
+                if (payment_method && payment_method == 3) {
+
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                        type: 'get',
+                        success: function(data) {
+
+                            if (data.response == true) {
+                                walletAmount = parseFloat(data.message);
+
+                                if (depositAmount > walletAmount) {
+                                    alert("Please Enter Correct Wallet Amount");
+                                    $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                                } else {
+
+                                    if (outstandingAmountLeft < 0) {
+                                        alert("Please Enter Correct Amount");
+                                        $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                                    } else {
+
+                                        $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                                    }
+                                }
+                            }
+                        },
+                        error: function(reject) {}
+                    });
+                } else {
+
+                    if (outstandingAmountLeft >= 0 && payment_method != '') {
+
+                        $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+
+                    } else if (outstandingAmountLeft < 0 && payment_method != 3) {
+                        alert("Please Enter Correct Deposit Amount");
+                        $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                    }
+
+                }
+
+            });
+
+            function getActualCost(quote) {
+
+                var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+                var amountArray = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
+                var amountTotalArray = amountArray.filter(function(value) { return !Number.isNaN(value); });
+                var totalAmount = amountTotalArray.reduce((a, b) => (a + b), 0);
+                var actualCost = totalDepositAmount - totalAmount;
+
+                return actualCost;
             }
 
-        }
+            function getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey) {
 
-    });
+                var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
+                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+                var rateType = $("input[name=rate_type]:checked").val();
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
 
-    function getActualCost(quote){
-        
-        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var amountArray             = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
-        var amountTotalArray        = amountArray.filter(function (value) { return !Number.isNaN(value); });
-        var totalAmount             = amountTotalArray.reduce((a, b) => (a + b), 0);
-        var actualCost              = totalDepositAmount - totalAmount;
+                var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                var calculatedSellingPriceInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
 
-        return actualCost;
-    }
-
-    function getSellingPricenAndActualCostInBookingCurrency(actualCost,quoteKey){
-
-        var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
-        var bookingCurrency  = $(".booking-currency-id").find(":selected").data("code");
-        var rateType         = $("input[name=rate_type]:checked").val();
-        var rate             = getRate(supplierCurrency,bookingCurrency,rateType);
-
-        var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-        var calculatedSellingPriceInBookingCurrency  = parseFloat(actualCost) * parseFloat(rate);
-
-        $(`#quote_${quoteKey}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-        $(`#quote_${quoteKey}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-    }
-
-    $(document).on('change', '.refund_amount', function(){
-
-        var quote       = $(this).closest('.quote');
-        var quoteKey    = $(this).closest('.quote').data('key');
-        var actualCost  = parseFloat(getActualCost(quote));
-
-
-        if(actualCost < 0){
-            alert("Please Enter Correct Amount");
-            $(this).val('0.00');
-        }else{
-
-            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
-            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
-            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
-            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
-            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
-
-            getSellingPricenAndActualCostInBookingCurrency(actualCost,quoteKey)
-
-            getBookingTotalValues();
-            getSellingPrice();
-        }
-
-    });
-
-    $(document).on('change', '.credit-note-amount', function(){
-
-        var quote       = $(this).closest('.quote');
-        var quoteKey    = $(this).closest('.quote').data('key');
-        var actualCost  = parseFloat(getActualCost(quote));
-    
-
-        if(actualCost < 0){
-            alert("Please Enter Correct Paid Amount");
-            $(this).val('0.00');
-        }else{
-      
-            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
-            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
-            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
-            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
-            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
-
-            getSellingPricenAndActualCostInBookingCurrency(actualCost,quoteKey)
-
-            getBookingTotalValues();
-            getSellingPrice();
-        }
-
-    });
-
-    $(document).on('click', '.refund-to-bank', function(){
-
-        if ($('.select2single').data('select2')) {
-            $('.select2single').select2('destroy');
-        }
-
-        var quote                      = $(this).closest('.quote');
-        var quoteKey                   = quote.data('key');
-        var refundPaymentRowLength     = quote.find(".refund-payment-row:not(:hidden)").length;
-
-        if(parseInt(refundPaymentRowLength) == 0){
-
-            if (confirm("Are you sure you want Refund Payment? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
-                quote.find('.refund-payment-section').attr("hidden",false);
+                $(`#quote_${quoteKey}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                $(`#quote_${quoteKey}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
             }
-        }
-        else{
 
-            quote.find('.refund-payment-row').first().clone().find("input").val("").each(function(){
-    
-                let n = 1;
-                let name = $(this).attr("data-name");
-    
-                this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                    return `][${refundPaymentRowLength}]`;
-                });
-    
-                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? refundPaymentRowLength : v , function(){
-                    return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
-                });
-    
-            }).end()
-            .find('.refund-payment-label').each(function () {
-    
-                this.id = `refund_payment_label_${refundPaymentRowLength}`;
-                $(this).text(`Refund Payment #${refundPaymentRowLength+1}`);
-    
-            }).end()
-            .find("select").val("").each(function(){
-                
-                let n = 1;
-                let name = $(this).attr("data-name");
-    
-                this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                    return `][${refundPaymentRowLength}]`;
-                });
-            
-                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? refundPaymentRowLength : v , function(){
-                    return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
-                });
-    
-            }).end()
-            .find('.select2single').select2({
-                width: '100%',
-                theme: "bootstrap",
-            }).end()
-            .show()
-            .insertAfter(quote.find('.refund-payment-row:last'));
+            $(document).on('change', '.refund_amount', function() {
 
-            quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
-            quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
-            quote.find('.refund-payment-row:last .refund_amount').val('');
-            quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
-        }
-        
-        reinitializedDynamicFeilds();
+                var quote = $(this).closest('.quote');
+                var quoteKey = $(this).closest('.quote').data('key');
+                var actualCost = parseFloat(getActualCost(quote));
 
 
-        // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
-        // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
+                if (actualCost < 0) {
+                    alert("Please Enter Correct Amount");
+                    $(this).val('0.00');
+                } else {
 
-        // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
-        
-        // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+                    $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+                    $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+                    $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+                    $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+                    $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+                    $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
 
-        // $(this).closest('.quote').find('.refund_amount').val('0.00');
+                    getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
 
-        // var booking_detail_id = $(this).data('booking_detail_id');
+                    getBookingTotalValues();
+                    getSellingPrice();
+                }
 
-        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        // $('#total_deposit_amount').val(totalDepositAmount);
+            });
 
-        // jQuery('#refund_to_bank_modal').modal('show');
-        // $('#booking_detail_id').val(booking_detail_id);
+            $(document).on('change', '.credit-note-amount', function() {
 
-    });
+                var quote = $(this).closest('.quote');
+                var quoteKey = $(this).closest('.quote').data('key');
+                var actualCost = parseFloat(getActualCost(quote));
 
-    $(document).on('click', '.credit-note', function(){
 
-        if ($('.select2single').data('select2')) {
-            $('.select2single').select2('destroy');
-        }
+                if (actualCost < 0) {
+                    alert("Please Enter Correct Paid Amount");
+                    $(this).val('0.00');
+                } else {
 
-        var quote                      = $(this).closest('.quote');
-        var quoteKey                   = quote.data('key');
-        var creditNoteRowLength        = quote.find(".credit-note-row:not(:hidden)").length;
+                    $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+                    $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+                    $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+                    $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+                    $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+                    $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
 
-        // console.log(creditNoteRowLength);
+                    getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
 
-        if(parseInt(creditNoteRowLength) == 0){
-            if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
-                quote.find('.credit-note-section').attr("hidden",false);
-            }
-            
-        }
-        else{
+                    getBookingTotalValues();
+                    getSellingPrice();
+                }
 
-            quote.find('.credit-note-row').first().clone().find("input").val("").each(function(){
-    
-                let n = 1;
-                let name = $(this).attr("data-name");
-    
-                this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                    return `][${creditNoteRowLength}]`;
-                });
-    
-                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? creditNoteRowLength : v , function(){
-                    return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
-                });
-    
-            }).end()
-            .find('.credit_note_label').each(function () {
-    
-                this.id = `credit_note_label_${creditNoteRowLength}`;
-                $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
-    
-            }).end()
-            .find("select").val("").each(function(){
-                
-                let n = 1;
-                let name = $(this).attr("data-name");
-    
-                this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                    return `][${creditNoteRowLength}]`;
-                });
-            
-                this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? creditNoteRowLength : v , function(){
-                    return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
-                });
-    
-            }).end()
-            .find('.select2single').select2({
-                width: '100%',
-                theme: "bootstrap",
-            }).end()
-            .show()
-            .insertAfter(quote.find(".credit-note-row:last"));
+            });
 
-            // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
-            // quote.find('.refund-payment-row:last .refund_amount').val('');
-            quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
-        }
-        
-        reinitializedDynamicFeilds();
-    
-    });
+            $(document).on('click', '.refund-to-bank', function() {
 
-    $(document).on('click', '.refund-payment-hidden-btn', function(){
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
 
-        var quote                      = $(this).closest('.quote');
-        var quoteKey                   = quote.data('key');
-        var refundPaymentRowLength     = quote.find(".refund-payment-row:not(:hidden)").length;
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
 
-        if(parseInt(refundPaymentRowLength) == 1){
-            quote.find('.refund-payment-section').attr("hidden",true);
-            quote.find('.refund-payment-section .refund_amount').val("");
-        }
-        else{
-            $(this).closest('.refund-payment-row').remove();
-        }
+                if (parseInt(refundPaymentRowLength) == 0) {
 
-        var actualCost = parseFloat(getActualCost(quote));
-        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+                    if (confirm("Are you sure you want Refund Payment? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                        quote.find('.refund-payment-section').attr("hidden", false);
+                    }
+                } else {
 
-        getSellingPricenAndActualCostInBookingCurrency(actualCost,quoteKey)
-        getBookingTotalValues();
-        getSellingPrice();
-    });
+                    quote.find('.refund-payment-row').first().clone().find("input").val("").each(function() {
 
-    $(document).on('click', '.credit-note-hidden-btn', function(){
+                            let n = 1;
+                            let name = $(this).attr("data-name");
 
-        var quote                      = $(this).closest('.quote');
-        var quoteKey                   = quote.data('key');
-        var creditNoteRowLength        = quote.find(".credit-note-row:not(:hidden)").length;
-
-        if(parseInt(creditNoteRowLength) == 1){
-            quote.find('.credit-note-section').attr("hidden",true);
-            quote.find('.credit-note-section .credit-note-amount').val("");
-        } 
-        else{
-            $(this).closest('.credit-note-row').remove();
-        }
-
-        var actualCost = parseFloat(getActualCost(quote));
-        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-
-        getSellingPricenAndActualCostInBookingCurrency(actualCost,quoteKey)
-        getBookingTotalValues();
-        getSellingPrice();
-
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | End Booking Management
-    |--------------------------------------------------------------------------
-    */
-
-    $("#generate-pdf").submit(function(event) {
-        event.preventDefault();
-        var $form = $(this),
-        url = $form.attr('action');
-        var editor = $('#editor').html();
-        var formData = $(this).serializeArray();
-        formData.push({name:'data', value: editor});
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            success: function (data) {
-                // console.log(data, 'data');
-            },
-            error: function (reject) {
-    
-                if( reject.status === 422 ) {
-    
-                    var errors = $.parseJSON(reject.responseText);
-    
-                    setTimeout(function() {
-                        $("#overlay").removeClass('overlay').html('');
-    
-                        if(errors.hasOwnProperty("overrride_errors")){
-                            alert(errors.overrride_errors);
-                            window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        }
-                        else{
-    
-                            jQuery.each(errors.errors, function( index, value ) {
-    
-                                index = index.replace(/\./g,'_');
-                                $('#'+index).addClass('is-invalid');
-                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
+                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                                return `][${refundPaymentRowLength}]`;
                             });
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                                return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                            });
+
+                        }).end()
+                        .find('.refund-payment-label').each(function() {
+
+                            this.id = `refund_payment_label_${refundPaymentRowLength}`;
+                            $(this).text(`Refund Payment #${refundPaymentRowLength+1}`);
+
+                        }).end()
+                        .find("select").val("").each(function() {
+
+                            let n = 1;
+                            let name = $(this).attr("data-name");
+
+                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                                return `][${refundPaymentRowLength}]`;
+                            });
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                                return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                            });
+
+                        }).end()
+                        .find('.select2single').select2({
+                            width: '100%',
+                            theme: "bootstrap",
+                        }).end()
+                        .show()
+                        .insertAfter(quote.find('.refund-payment-row:last'));
+
+                    quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
+                    quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+                    quote.find('.refund-payment-row:last .refund_amount').val('');
+                    quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
+                }
+
+                reinitializedDynamicFeilds();
+
+
+                // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
+                // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
+
+                // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
+
+                // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+                // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+                // $(this).closest('.quote').find('.refund_amount').val('0.00');
+
+                // var booking_detail_id = $(this).data('booking_detail_id');
+
+                // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+                // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+                // $('#total_deposit_amount').val(totalDepositAmount);
+
+                // jQuery('#refund_to_bank_modal').modal('show');
+                // $('#booking_detail_id').val(booking_detail_id);
+
+            });
+
+            $(document).on('click', '.credit-note', function() {
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+                // console.log(creditNoteRowLength);
+
+                if (parseInt(creditNoteRowLength) == 0) {
+                    if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                        quote.find('.credit-note-section').attr("hidden", false);
+                    }
+
+                } else {
+
+                    quote.find('.credit-note-row').first().clone().find("input").val("").each(function() {
+
+                            let n = 1;
+                            let name = $(this).attr("data-name");
+
+                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                                return `][${creditNoteRowLength}]`;
+                            });
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                                return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                            });
+
+                        }).end()
+                        .find('.credit_note_label').each(function() {
+
+                            this.id = `credit_note_label_${creditNoteRowLength}`;
+                            $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
+
+                        }).end()
+                        .find("select").val("").each(function() {
+
+                            let n = 1;
+                            let name = $(this).attr("data-name");
+
+                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                                return `][${creditNoteRowLength}]`;
+                            });
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                                return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                            });
+
+                        }).end()
+                        .find('.select2single').select2({
+                            width: '100%',
+                            theme: "bootstrap",
+                        }).end()
+                        .show()
+                        .insertAfter(quote.find(".credit-note-row:last"));
+
+                    // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+                    // quote.find('.refund-payment-row:last .refund_amount').val('');
+                    quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
+                }
+
+                reinitializedDynamicFeilds();
+
+            });
+
+            $(document).on('click', '.refund-payment-hidden-btn', function() {
+
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+                if (parseInt(refundPaymentRowLength) == 1) {
+                    quote.find('.refund-payment-section').attr("hidden", true);
+                    quote.find('.refund-payment-section .refund_amount').val("");
+                } else {
+                    $(this).closest('.refund-payment-row').remove();
+                }
+
+                var actualCost = parseFloat(getActualCost(quote));
+                $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+                getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+                getBookingTotalValues();
+                getSellingPrice();
+            });
+
+            $(document).on('click', '.credit-note-hidden-btn', function() {
+
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+                if (parseInt(creditNoteRowLength) == 1) {
+                    quote.find('.credit-note-section').attr("hidden", true);
+                    quote.find('.credit-note-section .credit-note-amount').val("");
+                } else {
+                    $(this).closest('.credit-note-row').remove();
+                }
+
+                var actualCost = parseFloat(getActualCost(quote));
+                $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+                getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+                getBookingTotalValues();
+                getSellingPrice();
+
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | End Booking Management
+            |--------------------------------------------------------------------------
+            */
+
+            $("#generate-pdf").submit(function(event) {
+                event.preventDefault();
+                var $form = $(this),
+                    url = $form.attr('action');
+                var editor = $('#editor').html();
+                var formData = $(this).serializeArray();
+                formData.push({ name: 'data', value: editor });
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    success: function(data) {
+                        // console.log(data, 'data');
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+                                $("#overlay").removeClass('overlay').html('');
+
+                                if (errors.hasOwnProperty("overrride_errors")) {
+                                    alert(errors.overrride_errors);
+                                    window.location.href = REDIRECT_BASEURL + "quotes/index";
+                                } else {
+
+                                    jQuery.each(errors.errors, function(index, value) {
+
+                                        index = index.replace(/\./g, '_');
+                                        $('#' + index).addClass('is-invalid');
+                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                    });
+                                }
+
+                            }, 800);
                         }
-    
-                    }, 800);
-                }
-            },
-        });
-    });
+                    },
+                });
+            });
 
 
-    $('#season_id').on('change', function(){
-        $('.datepicker').datepicker("setDate",'');
-        datepickerReset();
-    });
-
-    $(document).on('change', '.datepicker', function () {
-        // var datePicker_id     = $(this).attr('id');
-        var name              = $(this).data('name');
-        var key               = $(this).closest('.quote').data('key');
-        var DateOFService     = $('#quote_'+key+'_date_of_service').val();
-        var BookingDate       = $('#quote_'+key+'_booking_date').val();
-        var BookingDueDate    = $('#quote_'+key+'_booking_due_date').val();
-        var EndDateOFService  = $('#quote_'+key+'_end_date_of_service').val();
-        
-        // console.log(DateOFService + ' #quote_'+key+'_date_of_service ');
-
-        //*******Seasons start and*********//
-        var $season           = $("#season_id");
-        var season_start_date = new Date($season.find(':selected').data('start'));
-        var season_end_date   = new Date($season.find(':selected').data('end'));
-        // console.log('season start date', season_start_date);
-        // console.log('season end date', season_end_date);
-        // console.log(name+ ' case name');
-
-        if(convertDate(DateOFService) > convertDate(EndDateOFService)){
-            $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-        }
-
-        
-        switch (name) {
-
-            case 'end_date_of_service':
-                EndDateOFService  = convertDate($(this).val());
-
-                
-
-                if(convertDate(BookingDate) >= EndDateOFService){
-                    $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                    BookingDate = '';
-                }
-                
-                if(convertDate(BookingDueDate) >= EndDateOFService){
-                    $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-                    BookingDueDate = '';
-                }
-
-
-                // BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
-                // BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
-                
-                // if(DateOFService < BookingDueDate){
-                //     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-                //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                // }
-                if(convertDate(DateOFService) > EndDateOFService){
-                    $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
-                    // $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: EndDateOFService});
-
-                }
-                    var BookingDate = (BookingDate != '')? convertDate(BookingDate) : ((BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date);
-                    // console.log(BookingDate+ BookingDueDate);
-                    $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: EndDateOFService});
-                //     $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
-                //     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
-                break;
-
-            case 'date_of_service':
-                // console.log('run date of service function');
-              
-
-
-                DateOFService  = ($(this).val() != '')? convertDate($(this).val()) : season_end_date;
-                BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
-                BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
-                
-                if(DateOFService > convertDate(EndDateOFService)){
-                    $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-                    EndDateOFService = '';
-                }
-                
-                if(DateOFService < BookingDueDate){
-                    $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-                    $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
-                }else{
-                    $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
-                }
-                
-                if(DateOFService < BookingDate){
-                    $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                    $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService});
-                }else{
-                    $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
-                }
-                
-                
-                
-                $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
-                $('#quote_'+key+'_end_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: DateOFService, endDate: season_end_date});
-                break;
-            case 'booking_date':
-                BookingDate = convertDate($(this).val());
-
-                if(BookingDate <= convertDate(BookingDueDate)){
-                    $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-                    BookingDueDate = '';
-                }
-
-                if(BookingDate > convertDate(DateOFService)){
-                    $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
-                    $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-                    DateOFService = '';
-                }
-
-                $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date});
-                var endDos_start = (DateOFService != '')? convertDate(DateOFService) : ((BookingDate != '')? BookingDate: season_start_date);
-                $('#quote_'+key+'_end_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: endDos_start, endDate: season_end_date});
-                var setDueDate = (BookingDate != '')? BookingDate: (DateOFService != '')? convertDate(DateOFService) : season_end_date;
-                // console.log(setDueDate);
-                $('#quote_'+key+'_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate});
-
-                break;
-                case 'booking_due_date':
-                    BookingDueDate = convertDate($(this).val());
-                    if(BookingDueDate > convertDate(BookingDate)){
-                        $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                        BookingDate = '';
-                        // console.log('run');
-                    }
-                    
-                    if(BookingDueDate > convertDate(DateOFService)){
-                        $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
-                        DateOFService = '';
-                    }
-
-                    if(BookingDueDate > convertDate(EndDateOFService)){
-                        $('#quote_'+key+'_end_date_of_service').datepicker("setDate", '');
-                        EndDateOFService = '';
-                    }
- 
-
-                    // if(convertDate(BookingDueDate) > convertDate(DateOFService)){
-                    //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                    //     $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
-                    // }
-                    // if(convertDate(BookingDueDate) > convertDate(BookingDate)){
-                    //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-                    // }
-                    
-                    var Booking_Date = (BookingDate != '')? convertDate(BookingDate): BookingDueDate;
-                    // console.log(Booking_Date);
-                    DateOFService = (DateOFService != '')? convertDate(DateOFService): season_end_date;
-                    // console.log('Date of service'+ DateOFService);
-
-                    $('#quote_'+key+'_booking_date').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
-                    $('#quote_'+key+'_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: Booking_Date, endDate: DateOFService});
-
-                break;
-
-            default:
+            $('#season_id').on('change', function() {
+                $('.datepicker').datepicker("setDate", '');
                 datepickerReset();
-                break;
-        }
-    });
+            });
 
-    $(document).on('change', '.getBrandtoHoliday',function(){
-            let brand_id = $(this).val();
-            var options = '';
-            var url = BASEURL+'brand/to/holidays'
-        $.ajax({
-            type: 'get',
-            url: url,
-            data: { 'brand_id': brand_id },
-            success: function(response) {
-                options += '<option value="">Select Type Of Holiday</option>';
-                $.each(response,function(key,value){
-                    options += '<option data-value="'+value.name+'" value="'+value.id+'">'+value.name+'</option>';
+            $(document).on('change', '.datepicker', function() {
+                // var datePicker_id     = $(this).attr('id');
+                var name = $(this).data('name');
+                var key = $(this).closest('.quote').data('key');
+                var DateOFService = $('#quote_' + key + '_date_of_service').val();
+                var BookingDate = $('#quote_' + key + '_booking_date').val();
+                var BookingDueDate = $('#quote_' + key + '_booking_due_date').val();
+                var EndDateOFService = $('#quote_' + key + '_end_date_of_service').val();
+
+                // console.log(DateOFService + ' #quote_'+key+'_date_of_service ');
+
+                //*******Seasons start and*********//
+                var $season = $("#season_id");
+                var season_start_date = new Date($season.find(':selected').data('start'));
+                var season_end_date = new Date($season.find(':selected').data('end'));
+                // console.log('season start date', season_start_date);
+                // console.log('season end date', season_end_date);
+                // console.log(name+ ' case name');
+
+                if (convertDate(DateOFService) > convertDate(EndDateOFService)) {
+                    $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
+                }
+
+
+                switch (name) {
+
+                    case 'end_date_of_service':
+                        EndDateOFService = convertDate($(this).val());
+
+
+
+                        if (convertDate(BookingDate) >= EndDateOFService) {
+                            $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+                            BookingDate = '';
+                        }
+
+                        if (convertDate(BookingDueDate) >= EndDateOFService) {
+                            $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
+                            BookingDueDate = '';
+                        }
+
+
+                        // BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
+                        // BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
+
+                        // if(DateOFService < BookingDueDate){
+                        //     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
+                        //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                        // }
+                        if (convertDate(DateOFService) > EndDateOFService) {
+                            $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
+                            // $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: EndDateOFService});
+
+                        }
+                        var BookingDate = (BookingDate != '') ? convertDate(BookingDate) : ((BookingDueDate != '') ? convertDate(BookingDueDate) : season_start_date);
+                        // console.log(BookingDate+ BookingDueDate);
+                        $('#quote_' + key + '_date_of_service').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: EndDateOFService });
+                        //     $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
+                        //     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
+                        break;
+
+                    case 'date_of_service':
+                        // console.log('run date of service function');
+
+
+
+                        DateOFService = ($(this).val() != '') ? convertDate($(this).val()) : season_end_date;
+                        BookingDueDate = (BookingDueDate != '') ? convertDate(BookingDueDate) : season_start_date;
+                        BookingDate = (BookingDate != '') ? convertDate(BookingDate) : DateOFService;
+
+                        if (DateOFService > convertDate(EndDateOFService)) {
+                            $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
+                            EndDateOFService = '';
+                        }
+
+                        if (DateOFService < BookingDueDate) {
+                            $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
+                            $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService });
+                        } else {
+                            $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate });
+                        }
+
+                        if (DateOFService < BookingDate) {
+                            $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+                            $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService });
+                        } else {
+                            $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService });
+                        }
+
+
+
+                        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date });
+                        $('#quote_' + key + '_end_date_of_service').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: DateOFService, endDate: season_end_date });
+                        break;
+                    case 'booking_date':
+                        BookingDate = convertDate($(this).val());
+
+                        if (BookingDate <= convertDate(BookingDueDate)) {
+                            $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
+                            BookingDueDate = '';
+                        }
+
+                        if (BookingDate > convertDate(DateOFService)) {
+                            $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
+                            $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
+                            DateOFService = '';
+                        }
+
+                        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date });
+                        var endDos_start = (DateOFService != '') ? convertDate(DateOFService) : ((BookingDate != '') ? BookingDate : season_start_date);
+                        $('#quote_' + key + '_end_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: endDos_start, endDate: season_end_date });
+                        var setDueDate = (BookingDate != '') ? BookingDate : (DateOFService != '') ? convertDate(DateOFService) : season_end_date;
+                        // console.log(setDueDate);
+                        $('#quote_' + key + '_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate });
+
+                        break;
+                    case 'booking_due_date':
+                        BookingDueDate = convertDate($(this).val());
+                        if (BookingDueDate > convertDate(BookingDate)) {
+                            $('#quote_' + key + '_booking_date').datepicker("setDate", '');
+                            BookingDate = '';
+                            // console.log('run');
+                        }
+
+                        if (BookingDueDate > convertDate(DateOFService)) {
+                            $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
+                            DateOFService = '';
+                        }
+
+                        if (BookingDueDate > convertDate(EndDateOFService)) {
+                            $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
+                            EndDateOFService = '';
+                        }
+
+
+                        // if(convertDate(BookingDueDate) > convertDate(DateOFService)){
+                        //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                        //     $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
+                        // }
+                        // if(convertDate(BookingDueDate) > convertDate(BookingDate)){
+                        //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
+                        // }
+
+                        var Booking_Date = (BookingDate != '') ? convertDate(BookingDate) : BookingDueDate;
+                        // console.log(Booking_Date);
+                        DateOFService = (DateOFService != '') ? convertDate(DateOFService) : season_end_date;
+                        // console.log('Date of service'+ DateOFService);
+
+                        $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService });
+                        $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: Booking_Date, endDate: DateOFService });
+
+                        break;
+
+                    default:
+                        datepickerReset();
+                        break;
+                }
+            });
+
+            $(document).on('change', '.getBrandtoHoliday', function() {
+                let brand_id = $(this).val();
+                var options = '';
+                var url = BASEURL + 'brand/to/holidays'
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: { 'brand_id': brand_id },
+                    success: function(response) {
+                        options += '<option value="">Select Type Of Holiday</option>';
+                        $.each(response, function(key, value) {
+                            options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+                        });
+                        $('.appendHolidayType').html(options);
+                    }
                 });
-                $('.appendHolidayType').html(options);
-            }
-        });
-    });
-
-    $(document).on('change', '.select-agency', function() {
-        var agency_     = $('.agencyField');
-        var passenger_  = $('.PassengerField');
-        if(($(this).val() == 1)){
-            $('#pax_no').val(1).change();
-            agency_.removeClass('d-none');
-            passenger_.addClass('d-none');
-            agency_.find('input, select').removeAttr('disabled');
-            passenger_.find('input, select').attr('disabled','disabled');
-            // $('#agency_contact').addClass('phone phone0');
-            // $('#lead_passenger_contact').removeClass('phone');
-            // $('#lead_passenger_contact').removeClass('phone0');
-            var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
             });
-            iti.destroy();
-            // intTelinput('gc');
-        }else{
-            $('#pax_no').val(1).change();
-            agency_.addClass('d-none');
-            passenger_.removeClass('d-none');
-            passenger_.find('input, select').removeAttr('disabled');
-            var iti = intlTelInput(document.querySelector('#agency_contact'), {
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+
+            $(document).on('change', '.select-agency', function() {
+                var agency_ = $('.agencyField');
+                var passenger_ = $('.PassengerField');
+                if (($(this).val() == 1)) {
+                    $('#pax_no').val(1).change();
+                    agency_.removeClass('d-none');
+                    passenger_.addClass('d-none');
+                    agency_.find('input, select').removeAttr('disabled');
+                    passenger_.find('input, select').attr('disabled', 'disabled');
+                    // $('#agency_contact').addClass('phone phone0');
+                    // $('#lead_passenger_contact').removeClass('phone');
+                    // $('#lead_passenger_contact').removeClass('phone0');
+                    var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+                    });
+                    iti.destroy();
+                    // intTelinput('gc');
+                } else {
+                    $('#pax_no').val(1).change();
+                    agency_.addClass('d-none');
+                    passenger_.removeClass('d-none');
+                    passenger_.find('input, select').removeAttr('disabled');
+                    var iti = intlTelInput(document.querySelector('#agency_contact'), {
+                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+                    });
+                    iti.destroy();
+                    // $('#lead_passenger_contact').addClass('phone phone0');
+                    // $('#agency_contact').removeClass('phone');
+                    // $('#agency_contact').removeClass('phone0');
+                    agency_.find('input, select').attr('disabled', 'disabled');
+                    // intTelinput(0);
+                }
             });
-            iti.destroy();
-            // $('#lead_passenger_contact').addClass('phone phone0');
-            // $('#agency_contact').removeClass('phone');
-            // $('#agency_contact').removeClass('phone0');
-            agency_.find('input, select').attr('disabled','disabled');
-            // intTelinput(0);
-        }
-    });
 
-    $(document).on('change', '.category-id',function(){
+            $(document).on('change', '.category-id', function() {
 
-        var selector    = $(this);
-        var quote                = $(this).closest('.quote');
-        var quoteKey             = quote.data('key');
-        var category_id = $(this).val();
-        var options     = '';
+                var selector = $(this);
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var category_id = $(this).val();
+                var options = '';
 
-        $.ajax({
-            type: 'get',
-            url: `${BASEURL}category/to/supplier`,
-            data: { 'category_id': category_id },
-            success: function(response) {
+                $.ajax({
+                    type: 'get',
+                    url: `${BASEURL}category/to/supplier`,
+                    data: { 'category_id': category_id },
+                    success: function(response) {
 
-                options += "<option value=''>Select Supplier</option>";
+                        options += "<option value=''>Select Supplier</option>";
 
-                $.each(response,function(key,value){
+                        $.each(response, function(key, value) {
 
-                    options += `<option value='${value.id}'>${value.name}</option>`;
+                            options += `<option value='${value.id}'>${value.name}</option>`;
+                        });
+
+                        selector.closest('.row').find('.supplier-id').html(options);
+                        selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+                    }
+                })
+
+
+                jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
+            });
+
+            // $(document).on('change', '.supplier-id',function(){
+            //     var $selector = $(this);
+            //     var supplier_id = $(this).val();
+            //     var options = '';
+            //     $.ajax({
+            //         type: 'get',
+            //         url: BASEURL+'supplier/to/product/currency',
+            //         data: { 'id': supplier_id },
+            //         success: function(response) {
+            //             options += '<option value="">Select Product</option>';
+            //             $.each(response.product,function(key,value){
+            //                 options += '<option value="'+value.id+'">'+value.name+'</option>';
+            //             });
+
+            //             $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
+            //             $selector.closest('.row').find('.product-id').html(options);
+            //         }
+            //     })
+            // });
+
+            $(document).on('change', '.role', function() {
+
+                var role = $(this).find('option:selected').data('role');
+                var supervisor = $('#supervisor_feild');
+
+                if (role == 'Sales Agent' || role == 2) {
+
+                    $(supervisor).removeClass("d-none");
+                    $('#supervisor_id').attr("required", true).removeAttr('disabled');
+
+                } else {
+
+                    $(supervisor).addClass("d-none");
+                    $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
+                }
+
+            });
+
+            /**
+             * -------------------------------------------------------------------------------------
+             *                                Season Manangement
+             * -------------------------------------------------------------------------------------
+             */
+
+            $('#seasons').keyup(function() {
+                var val = $(this).val();
+                if (val.length == 4) {
+                    $(this).val(val + '-');
+                }
+            });
+
+
+            /**
+             * -------------------------------------------------------------------------------------
+             *                                Quote Manangement
+             * -------------------------------------------------------------------------------------
+             */
+
+
+            $(document).on('click', '.removeChild', function() {
+                var id = $(this).data('show');
+                $(id).removeAttr("style");
+                $($(this).data('append')).empty();
+                $(this).attr("style", "display:none");
+            });
+
+            $(document).on('click', '.addChild', function() {
+                $('.append').empty();
+                var id = $(this).data('id');
+                var refNumber = $(this).data('ref');
+                var appendId = $(this).data('append');
+                var url = '{{ route("get.child.reference", ":id") }}';
+                url = url.replace(':id', refNumber);
+                var removeBtnId = $(this).data('remove');
+                var showBtnId = $(this).data('show');
+                $('.addChild').removeAttr("style");
+                $('.removeChild').attr("style", "display:none");
+
+                $(this).attr("style", "display:none")
+                    // $(appendId).empty();
+
+                $.ajax({
+                    url: BASEURL + 'quotes/child/reference',
+                    data: { id: id, ref_no: refNumber },
+                    type: 'get',
+                    success: function(response) {
+                        $(appendId).append(response);
+                        $(removeBtnId).removeAttr("style");
+                    }
+                });
+            });
+
+
+            $(document).on('click', '.parent-row', function(e) {
+                var parentID = $(this).data('id');
+                $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
+                $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
+            });
+
+            $(document).on('click', '#add_more', function(e) {
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                $(".quote").eq(0).clone()
+                    .find("input").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return '[' + ($('.quote').length) + ']';
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end()
+                    .find("textarea").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return '[' + (parseInt($('.quote').length)) + ']';
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end()
+                    .find("select").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end().show().insertAfter(".quote:last");
+
+
+                $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+                $('.product-id:last').html(`<option selected value="">Select Product</option>`);
+                $(".quote:last").attr('data-key', $('.quote').length - 1);
+                $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+                $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+                $('.quote:last input, .quote:last select').removeClass('is-invalid');
+                $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+
+                var qleng = $('.quote').length - 1;
+                $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
+                $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
+                $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
+                $('#quote_' + qleng + '_holder').empty();
+                callLaravelFileManger();
+                datepickerReset(1);
+                calltextEditorSummerNote('#quote_' + qleng + '_service_details');
+                reinitializedDynamicFeilds();
+            });
+
+            $(document).on('click', '#add_more_booking', function(e) {
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                // var count = $('.quote').length;
+
+                // $.ajax({
+                //     headers: {'X-CSRF-TOKEN': CSRFTOKEN},
+                //     url: REDIRECT_BASEURL+'bookings/booking-detail-clone/'+count,
+                //     type: 'get',
+                //     dataType: "json",
+                //     success: function (data) {
+
+                //         console.log(data);
+
+
+                //         // $('#package'+getKeyPackage).append(data);
+                //         // $('#package'+getKeyPackage).find('.addmorebuttonrow:first').remove();
+                //         // var quoteCount = $('#package'+getKeyPackage).children('.quote').length;
+                //         // $('#packageinput'+getKeyPackage).val(quoteCount);
+                //         // reinitializedDynamicFeilds();
+                //         // datepickerReset(1);
+                //     },
+                //     error: function (reject) {
+                //         alert(reject);
+
+                //     },
+                // });
+
+
+                var quote = $(".quote").eq(0).clone()
+                    .find("input").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return '[' + ($('.quote').length) + ']';
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end()
+                    .find("textarea").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return '[' + (parseInt($('.quote').length)) + ']';
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end()
+                    .find("select").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                        });
+                    }).end().show().insertAfter(".quote:last");
+
+                quote.find('.finance .row:not(:first):not(:last)').remove();
+                quote.find('.actual-cost').attr("data-status", "");
+                quote.find('.markup-amount').attr("readonly", false);
+                quote.find('.markup-percentage').attr("readonly", false);
+                quote.find('.cal_selling_price').attr('checked', 'checked');
+                quote.find('.deposit-amount').val('0.00');
+
+
+                $('.quote:last .finance').find("input").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+                        return '[' + ($('.quote').length - 1) + ']';
+                    });
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                        return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
+                    });
+
+                }).end()
+
+                .find("select").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+                        return '[' + ($('.quote').length - 1) + ']';
+                    });
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                        return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
+                    });
                 });
 
-                selector.closest('.row').find('.supplier-id').html(options);
-                selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
-            }
-        })
+                $('.mediaModal').find('a').attr('id', '')
+                $('.refund-payment-hidden-section:last').attr("hidden", true);
+                $('.refund-by-credit-note-section:last').attr("hidden", true);
+                $('.finance-clonning:last').removeClass("cancelled-payment-styling");
 
+                $('.btn-group:last').removeClass("d-none");
+                $('.clone_booking_finance:last').removeClass("d-none");
+                $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
+                $('.payment-method:last').attr("disabled", false);
+                $('.outstanding-amount:last').attr("readonly", true);
+                $('.cancel-payemnt-btn:last').attr("hidden", true);
+                $('.refund-by-credit-note-section:last').remove();
+                $('.refund-by-bank-section:last').remove();
 
-        jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled','disabled');
-    });
- 
-    // $(document).on('change', '.supplier-id',function(){
-    //     var $selector = $(this);
-    //     var supplier_id = $(this).val();
-    //     var options = '';
-    //     $.ajax({
-    //         type: 'get',
-    //         url: BASEURL+'supplier/to/product/currency',
-    //         data: { 'id': supplier_id },
-    //         success: function(response) {
-    //             options += '<option value="">Select Product</option>';
-    //             $.each(response.product,function(key,value){
-    //                 options += '<option value="'+value.id+'">'+value.name+'</option>';
-    //             });
-
-    //             $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
-    //             $selector.closest('.row').find('.product-id').html(options);
-    //         }
-    //     })
-    // });
-
-    $(document).on('change', '.role', function() {
-
-        var role = $(this).find('option:selected').data('role');
-        var supervisor = $('#supervisor_feild');
-
-        if (role == 'Sales Agent' || role == 2) {
-
-            $(supervisor).removeClass("d-none");
-            $('#supervisor_id').attr("required", true).removeAttr('disabled');
-
-        } else {
-
-            $(supervisor).addClass("d-none");
-            $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
-        }
-
-    });
-
-/**
- * -------------------------------------------------------------------------------------
- *                                Season Manangement
- * -------------------------------------------------------------------------------------
-*/
-
-    $('#seasons').keyup( function () {
-        var val = $(this).val();
-        if(val.length == 4){
-            $(this).val(val+'-');
-        }
-    });
-
-
-/**
- * -------------------------------------------------------------------------------------
- *                                Quote Manangement
- * -------------------------------------------------------------------------------------
-*/
-
-
-    $(document).on('click', '.removeChild', function () {
-        var id = $(this).data('show');
-        $(id).removeAttr("style");
-        $($(this).data('append')).empty();
-        $(this).attr("style", "display:none");
-    });
-
-    $(document).on('click', '.addChild', function () {
-        $('.append').empty();
-        var id = $(this).data('id');
-        var refNumber = $(this).data('ref');
-        var appendId  = $(this).data('append');
-        var url = '{{ route("get.child.reference", ":id") }}';
-        url = url.replace(':id', refNumber);
-        var removeBtnId =$(this).data('remove');
-        var showBtnId = $(this).data('show');
-        $('.addChild').removeAttr("style");
-        $('.removeChild').attr("style", "display:none");
-
-        $(this).attr("style", "display:none")
-        // $(appendId).empty();
-
-        $.ajax({
-            url:  BASEURL+'quotes/child/reference',
-            data: {id: id, ref_no: refNumber},
-            type: 'get',
-            success: function(response) {
-            $(appendId).append(response);
-            $(removeBtnId).removeAttr("style");
-            }
-        });
-    });
-
-
-    $(document).on('click', '.parent-row', function (e) {
-        var parentID = $(this).data('id');
-        $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
-        $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
-    });
-
-    $(document).on('click', '#add_more', function(e) {
-
-        if($('.select2single').data('select2')){
-            $('.select2single').select2('destroy');
-        }
-
-        $(".quote").eq(0).clone()
-            .find("input").val("") .each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + ($('.quote').length) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("textarea").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){
-                    return '[' + (parseInt($('.quote').length)) + ']';
-                });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                });
-            }).end()
-            .find("select").val("").each(function(){
-                this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
-                this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                });
-            }).end().show().insertAfter(".quote:last");
-
-
-            $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-            $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-            $(".quote:last").attr('data-key', $('.quote').length - 1);
-            $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-            $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-            $('.quote:last input, .quote:last select').removeClass('is-invalid');
-            $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-            
-            var qleng = $('.quote').length - 1;
-            $('.fileManger:last').attr('data-input', 'quote_'+qleng+'_image' );
-            $('.fileManger:last').attr('data-preview', 'quote_'+qleng+'_holder' );
-            $('.previewId:last').attr('id',  'quote_'+qleng+'_holder');
-            $('#quote_'+qleng+'_holder').empty();
-            callLaravelFileManger();
-            datepickerReset(1);
-            calltextEditorSummerNote('#quote_'+qleng+'_service_details');
-            reinitializedDynamicFeilds();
-    });
-
-    $(document).on('click', '#add_more_booking', function(e) {
-
-        if($('.select2single').data('select2')){
-            $('.select2single').select2('destroy');
-        }
-
-        // var count = $('.quote').length;
-
-        // $.ajax({
-        //     headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-        //     url: REDIRECT_BASEURL+'bookings/booking-detail-clone/'+count,
-        //     type: 'get',
-        //     dataType: "json",
-        //     success: function (data) {
-
-        //         console.log(data);
-
-
-        //         // $('#package'+getKeyPackage).append(data);
-        //         // $('#package'+getKeyPackage).find('.addmorebuttonrow:first').remove();
-        //         // var quoteCount = $('#package'+getKeyPackage).children('.quote').length;
-        //         // $('#packageinput'+getKeyPackage).val(quoteCount);
-        //         // reinitializedDynamicFeilds();
-        //         // datepickerReset(1);
-        //     },
-        //     error: function (reject) {
-        //         alert(reject);
-        
-        //     },
-        // });
-
-
-        var quote = $(".quote").eq(0).clone()
-        .find("input").val("").each(function(){
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return '[' + ($('.quote').length) + ']';
-            });
-            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-            });
-        }).end()
-        .find("textarea").val("").each(function(){
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return '[' + (parseInt($('.quote').length)) + ']';
-            });
-            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-            });
-        }).end()
-        .find("select").val("").each(function(){
-            this.name = this.name.replace(/\[(\d+)\]/, function(){ return '[' + ($('.quote').length) + ']'; });
-            this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-            });
-        }).end().show().insertAfter(".quote:last");
-
-        quote.find('.finance .row:not(:first):not(:last)').remove();
-        quote.find('.actual-cost').attr("data-status", "");
-        quote.find('.markup-amount').attr("readonly", false);
-        quote.find('.markup-percentage').attr("readonly", false);
-        quote.find('.cal_selling_price').attr('checked','checked');
-        quote.find('.deposit-amount').val('0.00');
-   
-
-        $('.quote:last .finance').find("input").val("") .each(function(){
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return '[' + ($('.quote').length - 1 ) + ']';
+                $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+                $('.product-id:last').html(`<option selected value="">Select Product</option>`);
+                $(".quote:last").attr('data-key', $('.quote').length - 1);
+                $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+                $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+                $('.quote:last input, .quote:last select').removeClass('is-invalid');
+                $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+                datepickerReset(1);
+                reinitializedDynamicFeilds();
             });
 
-            let n = 1;
-            let name = $(this).attr("data-name");
-
-            this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? 0 : v , function(){
-                return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
-            });
-            
-        }).end()
-
-        .find("select").val("").each(function(){
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return '[' + ($('.quote').length - 1 ) + ']';
+            $(document).on('click', '.close', function() {
+                $(this).closest(".quote").remove();
+                getQuoteTotalValues();
+                getSellingPrice();
             });
 
-            let n = 1;
-            let name = $(this).attr("data-name");
+            $(document).on('change', '.supplier-currency-id', function() {
 
-            this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? 0 : v , function(){
-                return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
+                var code = $(this).find(':selected').data('code');
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var bookingCurrency = $('#currency_id').val();
+
+                quote.find("[class*=supplier-currency-code]").html(code);
+
+                if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
+                    alert("Please Select Booking Currency first");
+                    return;
+                }
+
+                getQuoteSupplierCurrencyValues(code, quoteKey);
+                getQuoteTotalValues();
+                getSellingPrice();
             });
-        });
 
-        $('.mediaModal').find('a').attr('id', '')
-        $('.refund-payment-hidden-section:last').attr("hidden",true);
-        $('.refund-by-credit-note-section:last').attr("hidden",true);
-        $('.finance-clonning:last').removeClass("cancelled-payment-styling");
+            $(document).on('change', '.booking-currency-id', function() {
+                $('.booking-currency-code').html($(this).find(':selected').data('code'));
+                var status = $(this).attr("data-status");
 
-        $('.btn-group:last').removeClass("d-none");
-        $('.clone_booking_finance:last').removeClass("d-none");
-        $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false); 
-        $('.payment-method:last').attr("disabled", false); 
-        $('.outstanding-amount:last').attr("readonly", true); 
-        $('.cancel-payemnt-btn:last').attr("hidden", true); 
-        $('.refund-by-credit-note-section:last').remove();
-        $('.refund-by-bank-section:last').remove();
+                if (status && status == 'booking') {
 
-        $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-        $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-        $(".quote:last").attr('data-key', $('.quote').length - 1);
-        $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-        $('.quote:last input, .quote:last select').removeClass('is-invalid');
-        $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-        datepickerReset(1);
-        reinitializedDynamicFeilds();
-    });
+                    getBookingTotalValues();
+                    getBookingBookingCurrencyValues();
 
-    $(document).on('click', '.close',function(){
-        $(this).closest(".quote").remove();
-        getQuoteTotalValues();
-        getSellingPrice();
-    });
+                } else {
 
-    $(document).on('change', '.supplier-currency-id',function () {
+                    getQuoteBookingCurrencyValues();
+                    getQuoteTotalValues();
+                }
 
-        var code            = $(this).find(':selected').data('code');
-        var quote           = $(this).closest('.quote');
-        var quoteKey        = quote.data('key');
-        var bookingCurrency = $('#currency_id').val();
+                getSellingPrice();
+            });
 
-        quote.find("[class*=supplier-currency-code]").html(code);
+            $(document).on("keyup change", '.change-calculation', function(event) {
+                var key = $(this).closest('.quote').data('key');
+                var changeFeild = $(this).attr("data-name");
+                getQuoteDetailsValues(key, changeFeild);
+            });
 
-        if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
-            alert("Please Select Booking Currency first");
-            return;
-        }
-        
-        getQuoteSupplierCurrencyValues(code,quoteKey);
-        getQuoteTotalValues();
-        getSellingPrice();
-    });
+            $(document).on("keyup change", '.change', function(event) {
 
-    $(document).on('change', '.booking-currency-id',function () {
-        $('.booking-currency-code').html($(this).find(':selected').data('code'));
-        var status = $(this).attr("data-status");
+                var key = $(this).closest('.quote').data('key');
+                var changeFeild = $(this).attr("data-name");
+                var cal_selling_price = $('.cal_selling_price').is(':checked');
+                var status = $(this).attr("data-status");
 
-        if(status && status=='booking'){
-         
-            getBookingTotalValues();
-            getBookingBookingCurrencyValues();
+                if (status && status == 'booking' && cal_selling_price == false) {
+                    getBookingDetailValues(key);
 
-        }else{
-       
-            getQuoteBookingCurrencyValues();
-            getQuoteTotalValues();
-        }
-        
-        getSellingPrice();
-    });
+                } else {
+                    getQuoteDetailValuesForBooking(key, changeFeild);
+                }
 
-    $(document).on("keyup change", '.change-calculation', function (event) {
-        var key                = $(this).closest('.quote').data('key');
-        var changeFeild        = $(this).attr("data-name");
-        getQuoteDetailsValues(key,changeFeild);
-    });
+            });
 
-    $(document).on("keyup change", '.change', function (event) {
+            $(document).on('change', '.cal_selling_price', function() {
 
-        var key                = $(this).closest('.quote').data('key');
-        var changeFeild        = $(this).attr("data-name");
-        var cal_selling_price  = $('.cal_selling_price').is(':checked');
-        var status             = $(this).attr("data-status");
+                var key = $(this).closest('.quote').data('key');
+                var changeFeild = 'estimated_cost';
 
-        if(status && status=='booking' && cal_selling_price == false){
-            getBookingDetailValues(key);
+                if ($(this).is(':checked')) {
+                    $(`#quote_${key}_markup_amount`).attr("readonly", false);
+                    $(`#quote_${key}_markup_percentage`).attr("readonly", false);
+                    $(`#quote_${key}_actual_cost`).attr("data-status", "");
 
-        }else{
-            getQuoteDetailValuesForBooking(key,changeFeild);
-        }
+                } else {
+                    $(`#quote_${key}_markup_amount`).attr("readonly", true);
+                    $(`#quote_${key}_markup_percentage`).attr("readonly", true);
+                    $(`#quote_${key}_actual_cost`).attr("data-status", "booking");;
+                }
+            });
 
-    });
+            $(document).on('change', '.selling-price-other-currency', function() {
+                $('.selling-price-other-currency-code').text($(this).val());
+                getSellingPrice();
+            });
 
-    $(document).on('change', '.cal_selling_price',function(){
+            $(document).on('click', '.view-payment_detail', function() {
 
-        var key         = $(this).closest('.quote').data('key');
-        var changeFeild = 'estimated_cost';
+                var details = $(this).data('details');
+                var tbody = '';
+                var client_type = details.client_type == 1 ? 'Client' : 'Agency';
+                var payment_method = '';
+                if (details.payment_type_id == 1) {
+                    payment_method = 'Bank';
+                } else if (details.payment_type_id == 2) {
+                    payment_method = 'Paysafe';
+                } else {
+                    payment_method = '';
+                }
 
-        if($(this).is(':checked'))
-        {
-            $(`#quote_${key}_markup_amount`).attr("readonly", false); 
-            $(`#quote_${key}_markup_percentage`).attr("readonly", false); 
-            $(`#quote_${key}_actual_cost`).attr("data-status","");
-           
-        }else
-        {
-            $(`#quote_${key}_markup_amount`).attr("readonly", true); 
-            $(`#quote_${key}_markup_percentage`).attr("readonly", true); 
-            $(`#quote_${key}_actual_cost`).attr("data-status","booking");
-            ;
-        }
-    });
-
-    $(document).on('change', '.selling-price-other-currency',function(){
-        $('.selling-price-other-currency-code').text($(this).val());
-        getSellingPrice();
-    });
-    
-    $(document).on('click', '.view-payment_detail',function(){
-
-        var details = $(this).data('details');
-        var tbody = '';
-        var client_type = details.client_type == 1 ? 'Client' : 'Agency';
-        var payment_method = '';
-        if(details.payment_type_id == 1){
-            payment_method = 'Bank';
-        }
-        else if(details.payment_type_id == 2){
-            payment_method = 'Paysafe';
-        }else{
-            payment_method = '';
-        }
-  
-        tbody +=`<tr>
+                tbody += `<tr>
                     <th>Ref #</th>
                     <td>${isEmpty(details.zoho_booking_reference)}</td>
                 </tr>
@@ -1893,1213 +1884,1200 @@ $(document).ready(function($) {
                     <td>${isEmpty(details.amount_payable)}</td>
                 </tr>`;
 
-        jQuery('#payment_details_modal').modal('show');
-        jQuery('#payment_details_modal_body').html(tbody);
-    });
-
-    $(document).on('click', '.cancel-booking',function(e){
-
-        e.preventDefault();
-
-                
-        if (confirm("Are you sure you want to Cancel Booking?") == true) {
-
-            var booking_id = $(this).attr('data-bookingid');
-            jQuery('#cancel_booking').modal('show');
-
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                url: `${REDIRECT_BASEURL}bookings/get-booking-net-price/${booking_id}`,
-                type: 'get',
-                success: function (data) {
-
-                    // console.log(data);
-
-                    if(data !== null && data !== ''  && data!==undefined) {
-
-                        jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
-                        jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
-                        jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text(`Cancellation Charges should not be greater ${data.booking_net_price} ${data.booking_currency_code}`);
-                        jQuery('#cancel_booking').modal('show').find('#booking_id').val(booking_id);
-                        jQuery('#cancel_booking').modal('show').find('#booking_currency_code').text(data.booking_currency_code);
-                    }
-
-                },
-                error: function (reject) {}
+                jQuery('#payment_details_modal').modal('show');
+                jQuery('#payment_details_modal_body').html(tbody);
             });
 
-        }
-    });
+            $(document).on('click', '.cancel-booking', function(e) {
 
-    $("#cancel_booking_submit").submit(function(event) {
-
-        event.preventDefault();
-     
-        var url = $(this).attr('action');
-        var formData  = $(this).serialize();
-   
-        $.ajax({
-            type: 'POST',
-            url : url,
-            data: formData,
-            beforeSend: function() {
-                $('input').removeClass('is-invalid');
-                $('.text-danger').html('');
-                $("#submit_cancel_booking").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function (data) {
-                $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
-
-                jQuery('#cancel_booking').modal('hide');
-
-                setTimeout(function() {
-
-                    if(data.success_message){
-                        alert(data.success_message);
-                        location.reload();
-                    }
-
-                }, 800);
-            },
-            error: function (reject) {
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
-                        $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
-                        
-                        jQuery.each(errors.errors, function( index, value ) {
-                            index = index.replace(/\./g,'_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 800);
-
-                }
-            },
-        });
-
-    });
+                e.preventDefault();
 
 
+                if (confirm("Are you sure you want to Cancel Booking?") == true) {
 
+                    var booking_id = $(this).attr('data-bookingid');
+                    jQuery('#cancel_booking').modal('show');
 
-    $(".readonly").keypress(function (evt) {
-        evt.preventDefault();
-    });
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: `${REDIRECT_BASEURL}bookings/get-booking-net-price/${booking_id}`,
+                        type: 'get',
+                        success: function(data) {
 
-    $(".versions :input").prop("disabled", true);
-    $('#bookingVersion :input').prop('disabled', true);
-    $('#reCall').prop("disabled", false);
+                            // console.log(data);
 
-    $('#reCall').on('click', function () {
-        if($(this).data('recall') == true){
-            if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-                $(".versions :input").removeAttr("disabled");
-                $(this).data('recall', 'false');
-                $(this).text('Back Into Version');
-                var add_HTML = `<div class="col-12 text-right">
-                                    <button type="button" id="add_more" class="btn btn-outline-dark  pull-right ">+ Add more </button>
-                                </div>`;
-                $('#addMoreButton').append(add_HTML);
-                var btn_Submit= ` <button type="submit" class="btn btn-success float-right">Submit</button>`;
-                $('#btnSubmitversion').append(btn_Submit);
-            }
-        }else {
-            $("#versions :input").prop("disabled", true);
-            $('#reCall').prop("disabled", false);
-            $(this).text('Recall Version');
-            $('#addMoreButton').append();
-            $('#btnSubmitversion').append();
-        }
-    });
+                            if (data !== null && data !== '' && data !== undefined) {
 
-
-    $("#quoteCreate").submit(function(event) {
-        event.preventDefault();
-        var $form = $(this),
-        url = $form.attr('action');
-
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert('Quote created Successfully');
-                    window.location.href = REDIRECT_BASEURL + "quotes/index";
-                }, 800);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        
-                        var flag=true;
-
-                        $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function( index, value ) {
-
-                            index = index.replace(/\./g,'_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                            if(flag) {
-                
-                                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                flag = false;
+                                jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
+                                jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
+                                jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text(`Cancellation Charges should not be greater ${data.booking_net_price} ${data.booking_currency_code}`);
+                                jQuery('#cancel_booking').modal('show').find('#booking_id').val(booking_id);
+                                jQuery('#cancel_booking').modal('show').find('#booking_currency_code').text(data.booking_currency_code);
                             }
 
-                        });
-                    }, 800);
+                        },
+                        error: function(reject) {}
+                    });
+
                 }
-            },
-        });
-    });
+            });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Template Management
-    |--------------------------------------------------------------------------
-    */
+            $("#cancel_booking_submit").submit(function(event) {
 
-    $(document).on('click', '#save_template', function(){
-        jQuery('#modal-default').modal('show').find('input').val('');
-    });
+                event.preventDefault();
 
-    $(document).on('click', '#submit_template', function(){
+                var url = $(this).attr('action');
+                var formData = $(this).serialize();
 
-        disabledFeild(".create-template [name=_method]");
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    beforeSend: function() {
+                        $('input').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#submit_cancel_booking").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+                        $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
 
-        let templateName = $('#template_name').val();
-        var formData     = $('.create-template').serialize() + '&template_name=' + templateName;
-        var url          = `${REDIRECT_BASEURL}template/store`;
+                        jQuery('#cancel_booking').modal('hide');
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  formData,
-            beforeSend: function() {
+                        setTimeout(function() {
 
-                $('input').removeClass('is-invalid');
+                            if (data.success_message) {
+                                alert(data.success_message);
+                                location.reload();
+                            }
+
+                        }, 800);
+                    },
+                    error: function(reject) {
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                jQuery.each(errors.errors, function(index, value) {
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 800);
+
+                        }
+                    },
+                });
+
+            });
+
+
+
+
+            $(".readonly").keypress(function(evt) {
+                evt.preventDefault();
+            });
+
+            $(".versions :input").prop("disabled", true);
+            $('#bookingVersion :input').prop('disabled', true);
+            $('#reCall, .disablebutton').prop("disabled", false);
+
+            $('#reCall').on('click', function() {
+                if ($(this).data('recall') == true) {
+                    if (confirm("Are you sure you want to Recall this Quotation?") == true) {
+                        $(".versions :input").removeAttr("disabled");
+                        $(this).data('recall', 'false');
+                        $(this).text('Back Into Version');
+                        var add_HTML = `<div class="col-12 text-right">
+                        <button type="button" id="add_more" class="btn mr-3 btn-outline-dark  pull-right ">+ Add more </button>
+                        <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  float-right pull-right">x Remove Stored Text</button>
+
+                                    </div>`;
+                        $('#addMoreButton').append(add_HTML);
+                      
+                      var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
+                        $('#btnSubmitversion').append(btn_Submit);
+                    }
+                } else {
+                    $("#versions :input").prop("disabled", true);
+                    $('#reCall').prop("disabled", false);
+                    $(this).text('Recall Version');
+                    $('#addMoreButton').append();
+                    $('#btnSubmitversion').append();
+                }
+            });
+
+
+            $("#quoteCreate").submit(function(event) {
+                event.preventDefault();
+                var $form = $(this),
+                    url = $form.attr('action');
+
+                $('input, select').removeClass('is-invalid');
                 $('.text-danger').html('');
-                $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function (data) {
 
-                $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
-                jQuery('#modal-default').modal('hide');
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
+                        $("#overlay").removeClass('overlay').html('');
+                        setTimeout(function() {
+                            alert('Quote created Successfully');
+                            window.location.href = REDIRECT_BASEURL + "quotes/index";
+                        }, 800);
+                    },
+                    error: function(reject) {
 
-                setTimeout(function() {
-                    alert('Template Created Successfully');
-                }, 800);
-            },
-            error: function (reject) {
-                if( reject.status === 422 ) {
+                        if (reject.status === 422) {
 
-                    var errors = $.parseJSON(reject.responseText);
+                            var errors = $.parseJSON(reject.responseText);
 
-                    setTimeout(function() {
+                            setTimeout(function() {
+
+                                var flag = true;
+
+                                $("#overlay").removeClass('overlay').html('');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                    if (flag) {
+
+                                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                        flag = false;
+                                    }
+
+                                });
+                            }, 800);
+                        }
+                    },
+                });
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | Template Management
+            |--------------------------------------------------------------------------
+            */
+
+            $(document).on('click', '#save_template', function() {
+                jQuery('#modal-default').modal('show').find('input').val('');
+            });
+
+            $(document).on('click', '#submit_template', function() {
+
+                disabledFeild(".create-template [name=_method]");
+
+                let templateName = $('#template_name').val();
+                var formData = $('.create-template').serialize() + '&template_name=' + templateName;
+                var url = `${REDIRECT_BASEURL}template/store`;
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    beforeSend: function() {
+
+                        $('input').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
 
                         $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+                        jQuery('#modal-default').modal('hide');
 
-                        jQuery.each(errors.errors, function( index, value ) {
-                            index = index.replace(/\./g,'_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-                    }, 800);
+                        setTimeout(function() {
+                            alert('Template Created Successfully');
+                        }, 800);
+                    },
+                    error: function(reject) {
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                jQuery.each(errors.errors, function(index, value) {
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+                            }, 800);
+                        }
+                    },
+                });
+
+            });
+
+            $('#tempalte_id').on('change', function() {
+
+                var templateID = $(this).val();
+
+                $.ajax({
+                    url: `${BASEURL}template/${templateID}/partial`,
+                    type: 'get',
+                    dataType: "json",
+                    success: function(data) {
+
+                        if (data) {
+                            if (confirm("Are you sure! you want to override Quote Details?")) {
+
+                                $('#parent').html(data.template_view);
+
+                                $(".select2single").select2({
+                                    width: "100%",
+                                    theme: "bootstrap",
+                                    templateResult: formatState,
+                                    templateSelection: formatState,
+                                });
+
+                                $(".booking-currency-id").val(data.template.currency_id).change();
+                            }
+                        }
+
+                    },
+                    error: function(reject) {
+                        alert(reject);
+                        searchRef.text('Search').prop('disabled', false);
+                    },
+                });
+
+            });
+
+            $("#create_template").submit(function(event) {
+
+                event.preventDefault();
+                var url = $(this).attr('action');
+
+                /* Send the data using post */
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
+
+                        $("#overlay").removeClass('overlay').html('');
+
+                        setTimeout(function() {
+                            alert('Template Created Successfully');
+                            window.location.href = `${REDIRECT_BASEURL}template/index`;
+                        }, 800);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#overlay").removeClass('overlay').html('');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 800);
+
+                        }
+                    },
+                });
+            });
+
+            $("#update_template").submit(function(event) {
+
+                event.preventDefault();
+
+                var url = $(this).attr('action');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
+
+                        $("#overlay").removeClass('overlay').html('');
+                        setTimeout(function() {
+                            alert('Template Updated Successfully');
+                            window.location.href = `${REDIRECT_BASEURL}template/index`;
+                        }, 800);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+                                $("#overlay").removeClass('overlay').html('');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 800);
+
+                        }
+                    },
+                });
+            });
+
+            /*
+            |--------------------------------------------------------------------------
+            | End Template Management
+            |--------------------------------------------------------------------------
+            */
+
+
+            $(document).on('click', '.addmodalforquote', function() {
+
+                var quote = jQuery(this).closest('.quote');
+                var key = quote.data('key');
+                quote.find(`.calladdmediaModal`).modal('show');
+                quote.find(`.calladdmediaModal :input`).removeAttr('disabled');
+                // jQuery('#accomadation_modal').modal('show').find('input').val('');
+            });
+
+            $(document).on('click', '.add-category-detail', function() {
+
+                var quote = jQuery(this).closest('.quote');
+                var key = quote.data('key');
+                var type = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+
+                if (typeof type === 'undefined') {
+                    alert("Please Select Category first");
                 }
-            },
-        });
+                quote.find(`.${type}_modal`).modal('show');
+                quote.find(`.${type}_modal :input`).removeAttr('disabled');
+                // jQuery('#accomadation_modal').modal('show').find('input').val('');
+            });
 
-    });
-
-    $('#tempalte_id').on('change', function () {
-
-        var templateID   = $(this).val();
-
-        $.ajax({
-            url: `${BASEURL}template/${templateID}/partial`,
-            type: 'get',
-            dataType: "json",
-            success: function (data) {
-
-                if(data){
-                    if (confirm("Are you sure! you want to override Quote Details?")) {
-
-                        $('#parent').html(data.template_view);
-
-                        $(".select2single").select2({
-                            width: "100%",
-                            theme: "bootstrap",
-                            templateResult: formatState,
-                            templateSelection: formatState,
-                        });
-    
-                        $(".booking-currency-id").val(data.template.currency_id).change();
-                    }
-                }
-
-            },
-            error: function (reject) {
-                alert(reject);
-                searchRef.text('Search').prop('disabled', false);
-            },
-        });
-
-    });
-
-    $("#create_template").submit(function(event) {
-
-        event.preventDefault();
-        var url = $(this).attr('action');
-  
-        /* Send the data using post */
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-
+            $(".update-quote").submit(function(event) {
+                event.preventDefault();
+                var $form = $(this),
+                    url = $form.attr('action');
+                var formdata = $(this).serialize();
                 $('input, select').removeClass('is-invalid');
                 $('.text-danger').html('');
+                // $('#lead_passenger_contact').intlTelInput("getNumber");/
+                // console.log($("input[name='full_number']").val()+ 'asdsa');
 
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
+                // $('#lead_passenger_contact').intlTelInput("getNumber")
 
-                $("#overlay").removeClass('overlay').html('');
+                var formData = new FormData(this);
+                formData.append('full_number', $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val());
 
-                setTimeout(function() {
-                    alert('Template Created Successfully');
-                    window.location.href = `${REDIRECT_BASEURL}template/index`;
-                }, 800);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
+                /* Send the data using post */
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function( index, value ) {
-
-                            index = index.replace(/\./g,'_');
-
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 800);
-
-                }
-            },
-        });
-    });
-
-    $("#update_template").submit(function(event) {
-
-        event.preventDefault();
- 
-        var url = $(this).attr('action');
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-
-                $('input, select').removeClass('is-invalid');
-                $('.text-danger').html('');
-
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
-
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert('Template Updated Successfully');
-                    window.location.href = `${REDIRECT_BASEURL}template/index`;
-                }, 800);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function( index, value ) {
-
-                            index = index.replace(/\./g,'_');
-
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 800);
-
-                }
-            },
-        });
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | End Template Management
-    |--------------------------------------------------------------------------
-    */
-
-    
-    $(document).on('click', '.addmodalforquote', function(){
-        
-        var quote       = jQuery(this).closest('.quote');
-        var key         = quote.data('key');
-        quote.find(`.calladdmediaModal`).modal('show');
-        quote.find(`.calladdmediaModal :input`).removeAttr('disabled');
-        // jQuery('#accomadation_modal').modal('show').find('input').val('');
-    });
-    
-    $(document).on('click', '.add-category-detail', function(){
-    
-        var quote       = jQuery(this).closest('.quote');
-        var key         = quote.data('key');
-        var type        = $(`#quote_${key}_category_id`).find(':selected').data('slug');
-
-        if (typeof type === 'undefined') {
-            alert("Please Select Category first");
-        }
-        quote.find(`.${type}_modal`).modal('show');
-        quote.find(`.${type}_modal :input`).removeAttr('disabled');
-        // jQuery('#accomadation_modal').modal('show').find('input').val('');
-    });
-
-    $(".update-quote").submit(function(event) {
-        event.preventDefault();
-        var $form = $(this),
-        url = $form.attr('action');
-        var formdata = $(this).serialize();
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        // $('#lead_passenger_contact').intlTelInput("getNumber");/
-        // console.log($("input[name='full_number']").val()+ 'asdsa');
-
-        // $('#lead_passenger_contact').intlTelInput("getNumber")
-              
-        var formData = new FormData(this);
-        formData.append('full_number', $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val());
-        
-        /* Send the data using post */
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  formData,
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert('Quote updated Successfully');
-                    window.location.href = REDIRECT_BASEURL + "quotes/index";
-                }, 800);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        $("#overlay").removeClass('overlay').html('');
-
-                        if(errors.hasOwnProperty("overrride_errors")){
-                            alert(errors.overrride_errors);
+                        setTimeout(function() {
+                            alert('Quote updated Successfully');
                             window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        }
-                        else{
+                        }, 800);
+                    },
+                    error: function(reject) {
 
-                            jQuery.each(errors.errors, function( index, value ) {
+                        if (reject.status === 422) {
 
-                                index = index.replace(/\./g,'_');
-                                $('#'+index).addClass('is-invalid');
-                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                            });
-                        }
+                            var errors = $.parseJSON(reject.responseText);
 
-                    }, 800);
-                }
-            },
-        });
-    });
+                            setTimeout(function() {
+                                $("#overlay").removeClass('overlay').html('');
 
-    $("#update-override").submit(function(event) {
-        event.preventDefault();
+                                if (errors.hasOwnProperty("overrride_errors")) {
+                                    alert(errors.overrride_errors);
+                                    window.location.href = REDIRECT_BASEURL + "quotes/index";
+                                } else {
 
-        var $form = $(this),
-        url = $form.attr('action');
-    
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-                $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function (data) {
+                                    jQuery.each(errors.errors, function(index, value) {
 
-
-                if(data.success_message){
-
-                    $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
-                    jQuery('#override_modal').modal('hide');
-                }
-
-
-                // $("#overlay").removeClass('overlay').html('');
-                // setTimeout(function() {
-                //     alert('Quote updated Successfully');
-                //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-                // }, 800);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-
-                    setTimeout(function() {
-                        $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function( index, value ) {
-
-                            index = index.replace(/\./g,'_');
-                            $('#'+index).addClass('is-invalid');
-                            $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 800);
-
-                }
-            },
-        });
-    });
-
-    $('.search-reference').on('click', function () {
-        var searchRef = $(this);
-
-        var reference_no = $('.reference-name').val();
-        if(reference_no == ''){
-            alert('Reference number is not found');
-            searchRef.text('Search').prop('disabled', false);
-        }else{
-            $('#ref_no').closest('.form-group').find('.text-danger').html('');
-            //check refrence is already exist in system
-            $.ajax({
-                headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                url: BASEURL+'find/reference/'+reference_no+'/exist',
-                type: 'get',
-                dataType: "json",
-                success: function (data) {
-                    var r = true
-                    if(data.response == true){
-                        r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
-                    }
-                
-                    if(r == true){
-                        $.ajax({
-                            headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-                            url: BASEURL+'find/reference',
-                            data : {ref_no: reference_no},
-                            type: 'POST',
-                            dataType: "json",
-                            beforeSend: function() {
-
-                                $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
-                                searchRef.prop('disabled', true);
-                            },
-                            success: function (data) {
-                                // console.log(data);
-                                var tbody = '';
-                                if(data.response)
-                                {
-                                    
-                                    if(data.response.tas_ref){
-                                        $("#tas_ref").val(data.response.tas_ref);
-                                    }
-                        
-                                    if(data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name') )
-                                    {
-                                        $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
-                                    }
-
-                                    if(data.response.brand && data.response.brand.hasOwnProperty('brand_id'))
-                                    {
-                                        $('#brand_id').val(data.response.brand.brand_id).change();
-                                    }
-
-                                    if(data.response.brand && data.response.brand.hasOwnProperty('name'))
-                                    {
-                                        setTimeout(function(){
-                                            $("#holiday_type_id option:contains("+data.response.brand.name+")").attr('selected', 'selected').change();
-                                            // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                                        }, 500);
-                                    }
-
-                                    if(data.response.sale_person)
-                                    {
-                                        $('#sale_person_id').val(data.response.sale_person).trigger('change');
-                                    }
-
-                                    if(data.response.pax)
-                                    {
-                                        $('#pax_no').val(data.response.pax).trigger('change');
-                                    }
-
-                                    if(data.response.currency)
-                                    {
-                                        $("#currency_id").find('option').each(function(){
-                                            if( $(this).data('code') == data.response.currency ) {
-                                                $(this).attr("selected","selected").change();
-                                            }
-                                        });
-                                    }
-                            
-                                    if(data.response.passengers &&  data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences') )
-                                    {
-                                        $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                                    }
-
-                                    if(data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences') )
-                                    {
-                                        $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                                    }
-                                
-                                    // Passengers Details
-                                    if(data.response.passengers.passengers.length > 0){
-                                        data.response.passengers.passengers.forEach(($_value, $key) => {
-                                            var $_count = $key + 1;
-                                            $('input[name="pax['+$_count+'][full_name]"]').val($_value.passenger_name);
-                                            $('input[name="pax['+$_count+'][email_address]"]').val($_value.passenger_email);
-                                            $('input[name="pax['+$_count+'][contact_number]"]').val($_value.passenger_contact);
-                                            $('input[name="pax['+$_count+'][date_of_birth]"]').val($_value.passenger_dbo);
-                                            $('input[name="pax['+$_count+'][bedding_preference]"]').val($_value.bedding_prefrences);
-                                            $('input[name="pax['+$_count+'][dinning_preference]"]').val($_value.dinning_prefrences);
-                                        });
-                                    }
-
-                                }else{
-                                    alert(data.error);
+                                        index = index.replace(/\./g, '_');
+                                        $('#' + index).addClass('is-invalid');
+                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                    });
                                 }
 
-                                searchRef.prop('disabled', false);
-                                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-    
-                            },
-                            error: function (reject) {
+                            }, 800);
+                        }
+                    },
+                });
+            });
 
-                                searchRef.prop('disabled', false);
-                                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                                $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+            $("#update-override").submit(function(event) {
+                event.preventDefault();
 
-                            },
-                        });
-                    }
-                },
-                error: function (reject) {
+                var $form = $(this),
+                    url = $form.attr('action');
 
-                    alert(reject);
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+
+
+                        if (data.success_message) {
+
+                            $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+                            jQuery('#override_modal').modal('hide');
+                        }
+
+
+                        // $("#overlay").removeClass('overlay').html('');
+                        // setTimeout(function() {
+                        //     alert('Quote updated Successfully');
+                        //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+                        // }, 800);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+
+                            setTimeout(function() {
+                                $("#overlay").removeClass('overlay').html('');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+                                    $('#' + index).addClass('is-invalid');
+                                    $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 800);
+
+                        }
+                    },
+                });
+            });
+
+            $('.search-reference').on('click', function() {
+                var searchRef = $(this);
+
+                var reference_no = $('.reference-name').val();
+                if (reference_no == '') {
+                    alert('Reference number is not found');
                     searchRef.text('Search').prop('disabled', false);
+                } else {
+                    $('#ref_no').closest('.form-group').find('.text-danger').html('');
+                    //check refrence is already exist in system
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: BASEURL + 'find/reference/' + reference_no + '/exist',
+                        type: 'get',
+                        dataType: "json",
+                        success: function(data) {
+                            var r = true
+                            if (data.response == true) {
+                                r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
+                            }
 
-                    searchRef.prop('disabled', false);
-                    $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                            if (r == true) {
+                                $.ajax({
+                                    headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                                    url: BASEURL + 'find/reference',
+                                    data: { ref_no: reference_no },
+                                    type: 'POST',
+                                    dataType: "json",
+                                    beforeSend: function() {
 
-                },
+                                        $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+                                        searchRef.prop('disabled', true);
+                                    },
+                                    success: function(data) {
+                                        // console.log(data);
+                                        var tbody = '';
+                                        if (data.response) {
+
+                                            if (data.response.tas_ref) {
+                                                $("#tas_ref").val(data.response.tas_ref);
+                                            }
+
+                                            if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+                                                $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
+                                            }
+
+                                            if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
+                                                $('#brand_id').val(data.response.brand.brand_id).change();
+                                            }
+
+                                            if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
+                                                setTimeout(function() {
+                                                    $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change();
+                                                    // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                                                }, 500);
+                                            }
+
+                                            if (data.response.sale_person) {
+                                                $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                                            }
+
+                                            if (data.response.pax) {
+                                                $('#pax_no').val(data.response.pax).trigger('change');
+                                            }
+
+                                            if (data.response.currency) {
+                                                $("#currency_id").find('option').each(function() {
+                                                    if ($(this).data('code') == data.response.currency) {
+                                                        $(this).attr("selected", "selected").change();
+                                                    }
+                                                });
+                                            }
+
+                                            if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
+                                                $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                                            }
+
+                                            if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
+                                                $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+                                            }
+
+                                            // Passengers Details
+                                            if (data.response.passengers.passengers.length > 0) {
+                                                data.response.passengers.passengers.forEach(($_value, $key) => {
+                                                    var $_count = $key + 1;
+                                                    $('input[name="pax[' + $_count + '][full_name]"]').val($_value.passenger_name);
+                                                    $('input[name="pax[' + $_count + '][email_address]"]').val($_value.passenger_email);
+                                                    $('input[name="pax[' + $_count + '][contact_number]"]').val($_value.passenger_contact);
+                                                    $('input[name="pax[' + $_count + '][date_of_birth]"]').val($_value.passenger_dbo);
+                                                    $('input[name="pax[' + $_count + '][bedding_preference]"]').val($_value.bedding_prefrences);
+                                                    $('input[name="pax[' + $_count + '][dinning_preference]"]').val($_value.dinning_prefrences);
+                                                });
+                                            }
+
+                                        } else {
+                                            alert(data.error);
+                                        }
+
+                                        searchRef.prop('disabled', false);
+                                        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                    },
+                                    error: function(reject) {
+
+                                        searchRef.prop('disabled', false);
+                                        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+                                        $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+
+                                    },
+                                });
+                            }
+                        },
+                        error: function(reject) {
+
+                            alert(reject);
+                            searchRef.text('Search').prop('disabled', false);
+
+                            searchRef.prop('disabled', false);
+                            $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        },
+                    });
+                    //ajax for references
+                }
             });
-            //ajax for references
-    }
-    });
 
-    $(document).on('click','.clone_booking_finance', function(){
+            $(document).on('click', '.clone_booking_finance', function() {
 
-        if ($('.select2single').data('select2')) {
-            $('.select2single').select2('destroy');
-        }
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
 
-        var quote                = $(this).closest('.quote');
-        var quoteKey             = quote.data('key');
-        var financeCloningLength = quote.find(".finance-clonning").length;
+                var quote = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+                var financeCloningLength = quote.find(".finance-clonning").length;
 
-        quote.find('.finance-clonning').first().clone().find("input").val("").each(function(){
+                quote.find('.finance-clonning').first().clone().find("input").val("").each(function() {
 
-            let n = 1;
-            let name = $(this).attr("data-name");
+                        let n = 1;
+                        let name = $(this).attr("data-name");
 
-            this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                return `][${financeCloningLength}]`;
+                        this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                            return `][${financeCloningLength}]`;
+                        });
+
+                        this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? financeCloningLength : v, function() {
+                            return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
+                        });
+
+                    }).end().find('.depositeLabel').each(function() {
+
+                        this.id = 'deposite_heading' + financeCloningLength;
+                        $(this).text(`Payment #${financeCloningLength+1}`);
+
+                    }).end()
+                    .find("select").val("").each(function() {
+
+                        let n = 1;
+                        let name = $(this).attr("data-name");
+
+                        this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                            return `][${financeCloningLength}]`;
+                        });
+
+                        this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? financeCloningLength : v, function() {
+                            return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
+                        });
+
+                    }).end().find('.select2single').select2({
+                        width: '100%',
+                        theme: "bootstrap",
+                    }).end()
+                    .show()
+                    .insertAfter(quote.find('.finance-clonning:last'));
+
+                // set feild after clone
+                quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+                quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+                quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+                quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
+
+                reinitializedDynamicFeilds();
             });
 
-            this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? financeCloningLength : v , function(){
-                return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
+            $(document).on('click', '.add-more-cancellation-payments', function() {
+
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                var cancellationPayments = $('.cancellation-payments');
+                var cancellationRefundPaymentRow = $(".cancellation-refund-payment-row").length;
+
+                cancellationPayments.find('.cancellation-refund-payment-row').first().clone().find("input").val("").each(function() {
+
+                        let name = $(this).attr("data-name");
+
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return `[${cancellationRefundPaymentRow}]`
+                        });
+
+                        this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function() {
+                            return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
+                        });
+
+                    }).end().find('.cancellation-refund-payment-label').each(function() {
+
+                        this.id = `cancellation_refund_payment_label_${cancellationRefundPaymentRow}`;
+                        $(this).text(`Refund Amount #${cancellationRefundPaymentRow+1}`);
+
+                    }).end()
+                    .find("select").val("").each(function() {
+
+                        let name = $(this).attr("data-name");
+
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            return `[${cancellationRefundPaymentRow}]`
+                        });
+
+                        this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function() {
+                            return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
+                        });
+
+                    }).end().find('.select2single').select2({
+                        width: '100%',
+                        theme: "bootstrap",
+                    }).end()
+                    .show()
+                    .insertAfter($('.cancellation-refund-payment-row:last'));
+
+                // set feild after clone
+                // quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+                // quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+                // quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+                // quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
+                cancellationPayments.find('.cancellation-refund-payment-row:last .cancellation-refund-payment-row-remove-btn').removeClass('d-none');
+
+                reinitializedDynamicFeilds();
             });
 
-        }).end().find('.depositeLabel').each(function () {
+            $(document).on('change', '.cancellation-refund-amount', function() {
 
-            this.id = 'deposite_heading'+ financeCloningLength;
-            $(this).text(`Payment #${financeCloningLength+1}`);
+                var cancellationRefundAmount = $(this).val();
+                var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();
 
-        }).end()
-        .find("select").val("").each(function(){
-            
-            let n = 1;
-            let name = $(this).attr("data-name");
+                console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
+                console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
 
-            this.name = this.name.replace(/]\[(\d+)]/g, function(){
-                return `][${financeCloningLength}]`;
-            });
-        
-            this.id = this.id.replace(/[0-9]+/g,v => n++ == 2 ? financeCloningLength : v , function(){
-                return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
-            });
 
-        }).end().find('.select2single').select2({
-            width: '100%',
-            theme: "bootstrap",
-        }).end()
-        .show()
-        .insertAfter(quote.find('.finance-clonning:last'));
+                var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map((i, e) => parseFloat(e.value)).get();
+                var totalCancellationRefundAmount = totalCancellationRefundAmountArray.reduce((a, b) => (a + b), 0);
 
-        // set feild after clone
-        quote.find('.finance-clonning:last .checkbox').prop('checked', false);
-        quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
-        quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
-        quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
-    
-        reinitializedDynamicFeilds();
-    });
+                if (totalCancellationRefundAmount > cancellationRefundTotalAmount) {
+                    alert("Please Enter Correct Refund Amount.");
+                    $(this).val("0.00");
+                }
 
-    $(document).on('click','.add-more-cancellation-payments', function(){
-        
-  
-        if($('.select2single').data('select2')){
-            $('.select2single').select2('destroy');
-        }
-
-        var cancellationPayments         = $('.cancellation-payments');
-        var cancellationRefundPaymentRow = $(".cancellation-refund-payment-row").length;
-
-        cancellationPayments.find('.cancellation-refund-payment-row').first().clone().find("input").val("").each(function(){
-
-            let name = $(this).attr("data-name");
-
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return `[${cancellationRefundPaymentRow}]`
             });
 
-            this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function(){
-                return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
-            });
+            $("#update-booking").submit(function(event) {
+                event.preventDefault();
 
-        }).end().find('.cancellation-refund-payment-label').each(function () {
+                $('#update-booking :input').prop('disabled', false);
 
-            this.id = `cancellation_refund_payment_label_${cancellationRefundPaymentRow}`;
-            $(this).text(`Refund Amount #${cancellationRefundPaymentRow+1}`);
+                var $form = $(this),
+                    url = $form.attr('action');
+                var formdata = $(this).serialize();
 
-        }).end()
-        .find("select").val("").each(function(){
-            
-            let name = $(this).attr("data-name");
+                $('input, select').removeClass('is-invalid');
+                $('.text-danger').html('');
 
-            this.name = this.name.replace(/\[(\d+)\]/, function(){
-                return `[${cancellationRefundPaymentRow}]`
-            });
-
-            this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function(){
-                return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
-            });
-
-        }).end().find('.select2single').select2({
-            width: '100%',
-            theme: "bootstrap",
-        }).end()
-        .show()
-        .insertAfter($('.cancellation-refund-payment-row:last'));
-
-        // set feild after clone
-        // quote.find('.finance-clonning:last .checkbox').prop('checked', false);
-        // quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
-        // quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
-        // quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
-        cancellationPayments.find('.cancellation-refund-payment-row:last .cancellation-refund-payment-row-remove-btn').removeClass('d-none');
-    
-        reinitializedDynamicFeilds();
-    });
-
-    $(document).on('change','.cancellation-refund-amount', function(){
-
-        var cancellationRefundAmount      = $(this).val();
-        var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();
-
-        console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
-        console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
-
-
-        var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalCancellationRefundAmount      = totalCancellationRefundAmountArray.reduce((a, b) => (a + b), 0);
-        
-        if(totalCancellationRefundAmount > cancellationRefundTotalAmount){
-            alert("Please Enter Correct Refund Amount.");
-            $(this).val("0.00");
-        }
-
-    });
-
-    $("#update-booking").submit(function(event) {
-        event.preventDefault();
-
-        $('#update-booking :input').prop('disabled', false);
-
-        var $form = $(this),
-        url = $form.attr('action');
-        var formdata = $(this).serialize();
-
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-
-        /* Send the data using post */
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
-                
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert(data.success_message);
-                    window.location.href = REDIRECT_BASEURL + "bookings/index";
-                    // location.reload();
-                    
-                }, 1000);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
+                /* Send the data using post */
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
 
                         $("#overlay").removeClass('overlay').html('');
-
-                        if(errors.hasOwnProperty("overrride_errors")){
-                            alert(errors.overrride_errors);
+                        setTimeout(function() {
+                            alert(data.success_message);
                             window.location.href = REDIRECT_BASEURL + "bookings/index";
-                        }
-                        else{
+                            // location.reload();
 
-                            var flag=true;
+                        }, 1000);
+                    },
+                    error: function(reject) {
 
-                            jQuery.each(errors.errors, function( index, value ) {
+                        if (reject.status === 422) {
 
-                                index = index.replace(/\./g,'_');
-                                $(`#${index}`).addClass('is-invalid');
-                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                            var errors = $.parseJSON(reject.responseText);
 
-                                if(flag) {
-                
-                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                    flag = false;
+                            setTimeout(function() {
+
+                                $("#overlay").removeClass('overlay').html('');
+
+                                if (errors.hasOwnProperty("overrride_errors")) {
+                                    alert(errors.overrride_errors);
+                                    window.location.href = REDIRECT_BASEURL + "bookings/index";
+                                } else {
+
+                                    var flag = true;
+
+                                    jQuery.each(errors.errors, function(index, value) {
+
+                                        index = index.replace(/\./g, '_');
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                        if (flag) {
+
+                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                            flag = false;
+                                        }
+                                    });
                                 }
-                            });
+
+                            }, 800);
+
+                            // setTimeout(function() {
+
+                            //     var flag=true;
+
+                            //     $("#overlay").removeClass('overlay').html('');
+
+                            //     jQuery.each(errors.errors, function( index, value ) {
+
+                            //         index = index.replace(/\./g,'_');
+                            //         $(`#${index}`).addClass('is-invalid');
+                            //         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                            //         if(flag) {
+
+                            //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                            //             flag = false;
+                            //         }
+
+                            //     });
+                            // }, 800);
+
+
                         }
+                    },
+                });
+            });
 
-                    }, 800);
+            $("#update-payment").submit(function(event) {
+                event.preventDefault();
 
-                    // setTimeout(function() {
-                        
-                    //     var flag=true;
+                $('#update-payment :input').prop('disabled', false);
 
-                    //     $("#overlay").removeClass('overlay').html('');
+                var $form = $(this),
+                    url = $form.attr('action');
+                var formdata = $(this).serialize();
 
-                    //     jQuery.each(errors.errors, function( index, value ) {
+                $('input, select').removeClass('is-invalid');
+                $('.text-danger').html('');
 
-                    //         index = index.replace(/\./g,'_');
-                    //         $(`#${index}`).addClass('is-invalid');
-                    //         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                    //         if(flag) {
-                
-                    //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                    //             flag = false;
-                    //         }
-
-                    //     });
-                    // }, 800);
-
-
-                }
-            },
-        });
-    });
-
-    $("#update-payment").submit(function(event) {
-        event.preventDefault();
-
-        $('#update-payment :input').prop('disabled', false);
-
-        var $form = $(this),
-        url = $form.attr('action');
-        var formdata = $(this).serialize();
-
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-
-        /* Send the data using post */
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data:  new FormData(this),
-            contentType: false,
-            cache: false,
-            processData:false,
-            beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function (data) {
-                
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert(data.success_message);
-                    window.location.href = REDIRECT_BASEURL + "bookings/index";
-                    
-                }, 1000);
-            },
-            error: function (reject) {
-
-                if( reject.status === 422 ) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
+                /* Send the data using post */
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $("#overlay").addClass('overlay');
+                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    },
+                    success: function(data) {
 
                         $("#overlay").removeClass('overlay').html('');
-
-                        if(errors.hasOwnProperty("overrride_errors")){
-                            alert(errors.overrride_errors);
+                        setTimeout(function() {
+                            alert(data.success_message);
                             window.location.href = REDIRECT_BASEURL + "bookings/index";
+
+                        }, 1000);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#overlay").removeClass('overlay').html('');
+
+                                if (errors.hasOwnProperty("overrride_errors")) {
+                                    alert(errors.overrride_errors);
+                                    window.location.href = REDIRECT_BASEURL + "bookings/index";
+                                } else {
+
+                                    jQuery.each(errors.errors, function(index, value) {
+
+                                        index = index.replace(/\./g, '_');
+                                        $('#' + index).addClass('is-invalid');
+                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                    });
+                                }
+
+                            }, 800);
+
                         }
-                        else{
+                    },
+                });
+            });
 
-                            jQuery.each(errors.errors, function( index, value ) {
+            $(document).on('change', '.deposit-due-date', function() {
+                var close = $(this).closest('.finance-clonning');
+                close.find('.plus').removeAttr('disabled');
+            });
 
-                                index = index.replace(/\./g,'_');
-                                $('#'+index).addClass('is-invalid');
-                                $('#'+index).closest('.form-group').find('.text-danger').html(value);
-                            });
-                        }
+            $('.parent').on('click', function(e) {
+                if ($(this).is(':checked', true)) {
+                    $(".child").prop('checked', true);
 
-                    }, 800);
+                } else {
 
+                    $(".child").prop('checked', false);
                 }
-            },
-        });
-    });
+            });
 
-    $(document).on('change', '.deposit-due-date', function(){
-        var close = $(this).closest('.finance-clonning');
-        close.find('.plus').removeAttr('disabled');
-    });
+            $('#delete_all').on('click', function(e) {
+                e.preventDefault();
+                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
 
-    $('.parent').on('click', function(e) {
-        if($(this).is(':checked',true))  
-        {
-        $(".child").prop('checked', true);  
-
-        } else {  
-
-        $(".child").prop('checked',false);  
-        }  
-    });
-    
-    $('#delete_all').on('click', function(e) {
-        e.preventDefault();
-        var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-
-        if(checkedValues.length > 0){
-            jQuery('#multiple_delete_modal').modal('show');
-        }else{
-            alert("Please Check any Record First");
-        }
-    
-    });
-
-    $('#multiple_delete').on('click', function(e) {
-        e.preventDefault();
-    
-        var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-        var tableName      =  $('.table-name').val();
-        $.ajax({
-            url: REDIRECT_BASEURL+'multiple-delete/'+checkedValues,
-            type: 'Delete',  
-            dataType: "JSON",
-            data: { "checkedValues": checkedValues, "tableName": tableName },
-            beforeSend: function() {
-                $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function (response)
-            {
-
-                if(response.status == true){
-
-
-                    $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-                    jQuery('#multiple_delete_modal').modal('hide');
-                    
-                    setTimeout(function() {
-                        
-                        alert(response.message);
-                        location.reload();
-
-                    }, 600);
-            
+                if (checkedValues.length > 0) {
+                    jQuery('#multiple_delete_modal').modal('show');
+                } else {
+                    alert("Please Check any Record First");
                 }
-            },
-            error: function(xhr) {
-            console.log(xhr.responseText);  
-            }
-        });
-    
-    });
 
-    $('.multiple-action').on('change', function(e) {
+            });
 
-        var action = $(this).val();
-        var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-        if(checkedValues.length > 0){
-            jQuery('#multiple_delete_modal').modal('show');
-            $('.action_name').val(action);
-            $('#multiple_delete').addClass('btn btn-danger');
-            $("#multiple_delete").html(action);
-            $('#multiple_delete').removeClass();
-            $('#multiple_delete').addClass('btn btn-primary');
-            if(action == 'Delete'){
-                $('#multiple_delete').addClass('btn btn-danger');
-            }
-        }else{
-            alert("Please Check any Record First");
-            $('.multiple-action').val("");
-        }
+            $('#multiple_delete').on('click', function(e) {
+                e.preventDefault();
 
-        // if(action && checkedValues.length > 0){
+                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+                var tableName = $('.table-name').val();
+                $.ajax({
+                    url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
+                    type: 'Delete',
+                    dataType: "JSON",
+                    data: { "checkedValues": checkedValues, "tableName": tableName },
+                    beforeSend: function() {
+                        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(response) {
 
-        //     $.ajax({
-        //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-        //         type: 'delete',  
-        //         dataType: "JSON",
-        //         data: { "checkedValues": checkedValues, "action": action },
-        //         beforeSend: function() {
-        //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-        //         },
-        //         success: function (response)
-        //         {
-        
-        //             if(response.status == true){
-        
-        
-        //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-        //                 jQuery('#multiple_delete_modal').modal('hide');
-                        
-        //                 setTimeout(function() {
-                            
-        //                     alert(response.message);
-        //                     location.reload();
-        
-        //                 }, 600);
-                
-        //             }
-        //         },
-        //         error: function(xhr) {
-        //           console.log(xhr.responseText);  
-        //         }
-        //     });
+                        if (response.status == true) {
 
-    
-        // }
-    
-    });
 
-    // booking incremnet and
+                            $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+                            jQuery('#multiple_delete_modal').modal('hide');
 
-    $(document).on('click', '.increment', function() {
+                            setTimeout(function() {
 
-        var close = $(this).closest('.finance-clonning');
+                                alert(response.message);
+                                location.reload();
 
-            var valueElement = close.find('.ab_number_of_days');
-            var dueDate      = close.find('.deposit-due-date').val();
-            var nowDate      = todayDate();
-            const firstDate = new Date(dueDate);
-            const secondDate = convertDate(nowDate);
+                            }, 600);
 
-            if(firstDate == 'Invalid Date'){
-                alert('Due Date is Required');
-            }else{
-                if(!$(valueElement).is('[readonly]')) { 
-                    const oneDay = 24 * 60 * 60 * 1000;
-                    const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-                    if(firstDate < secondDate){
-                        $(this).attr('disabled', true);
-                    }else{
-                        if(valueElement.val() == ''){
-                            valueElement.val(0);
                         }
-                        var count = Math.max(parseInt(valueElement.val()??0));
-                        var diffcount = diffDays - valueElement.val();
-                        var b =1;
-                        if($(this).hasClass('plus'))
-                        {
-                            if(diffcount < 1){
-                                close.find('.plus').attr('disabled', true);
-                            }else{
-                                count = count + b;
+                    },
+                    error: function(xhr) {
+                        console.log(xhr.responseText);
+                    }
+                });
+
+            });
+
+            $('.multiple-action').on('change', function(e) {
+
+                var action = $(this).val();
+                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+                if (checkedValues.length > 0) {
+                    jQuery('#multiple_delete_modal').modal('show');
+                    $('.action_name').val(action);
+                    $('#multiple_delete').addClass('btn btn-danger');
+                    $("#multiple_delete").html(action);
+                    $('#multiple_delete').removeClass();
+                    $('#multiple_delete').addClass('btn btn-primary');
+                    if (action == 'Delete') {
+                        $('#multiple_delete').addClass('btn btn-danger');
+                    }
+                } else {
+                    alert("Please Check any Record First");
+                    $('.multiple-action').val("");
+                }
+
+                // if(action && checkedValues.length > 0){
+
+                //     $.ajax({
+                //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+                //         type: 'delete',  
+                //         dataType: "JSON",
+                //         data: { "checkedValues": checkedValues, "action": action },
+                //         beforeSend: function() {
+                //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+                //         },
+                //         success: function (response)
+                //         {
+
+                //             if(response.status == true){
+
+
+                //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+                //                 jQuery('#multiple_delete_modal').modal('hide');
+
+                //                 setTimeout(function() {
+
+                //                     alert(response.message);
+                //                     location.reload();
+
+                //                 }, 600);
+
+                //             }
+                //         },
+                //         error: function(xhr) {
+                //           console.log(xhr.responseText);  
+                //         }
+                //     });
+
+
+                // }
+
+            });
+
+            // booking incremnet and
+
+            $(document).on('click', '.increment', function() {
+
+                var close = $(this).closest('.finance-clonning');
+
+                var valueElement = close.find('.ab_number_of_days');
+                var dueDate = close.find('.deposit-due-date').val();
+                var nowDate = todayDate();
+                const firstDate = new Date(dueDate);
+                const secondDate = convertDate(nowDate);
+
+                if (firstDate == 'Invalid Date') {
+                    alert('Due Date is Required');
+                } else {
+                    if (!$(valueElement).is('[readonly]')) {
+                        const oneDay = 24 * 60 * 60 * 1000;
+                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+                        if (firstDate < secondDate) {
+                            $(this).attr('disabled', true);
+                        } else {
+                            if (valueElement.val() == '') {
+                                valueElement.val(0);
+                            }
+                            var count = Math.max(parseInt(valueElement.val() ?? 0));
+                            var diffcount = diffDays - valueElement.val();
+                            var b = 1;
+                            if ($(this).hasClass('plus')) {
+                                if (diffcount < 1) {
+                                    close.find('.plus').attr('disabled', true);
+                                } else {
+                                    count = count + b;
+                                    valueElement.val(count);
+                                }
+                            } else if (valueElement.val() > 0) // Stops the value going into negatives
+                            {
+                                close.find('.plus').attr('disabled', false);
+                                count -= b;
                                 valueElement.val(count);
                             }
                         }
-                        else if (valueElement.val() > 0) // Stops the value going into negatives
-                        {
-                            close.find('.plus').attr('disabled', false);
-                            count -=b;
-                            valueElement.val(count);
-                        }
                     }
                 }
-            }
-        return false;
-    });
-
-    // tel input  start
-    if($('.phone').length > 0){
-        for (let i = 0; i < $('.phone').length; i++) {
-            if($('.phone'+i).length != 0){
-                intTelinput(i);
-            }
-        }
-    }
-
-    if($('#agency_contact').length > 0){
-        intTelinput('gc');
-        // console.log(inTelinput);
-    }
-
-    //tel input end
-    //intl-tel-input ************** Start ******************** //
-    function intTelinput(key = null, inVal = null) {
-        // console.log(key);
-        var input    =    document.querySelector('.phone'+key);
-        var errorMsg =    document.querySelector('.error_msg'+key);
-        var validMsg =    document.querySelector('.valid_msg'+key);
-        var iti = intlTelInput(input, {
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-            separateDialCode: true,
-            formatOnDisplay:true,
-            initialCountry: "US",
-            nationalMode: true,
-            hiddenInput: "full_number",
-            autoPlaceholder: "polite",
-            placeholderNumberType: "MOBILE",
-        });
-        input.nextElementSibling.value = iti.getNumber();
-        // iti.setCountry("US");
-        // on blur: validate
-        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-        input.addEventListener('blur', function() {
-                input.nextElementSibling.value = iti.getNumber();
-                reset();
-                if (input.value.trim()) {
-                    if (iti.isValidNumber()) {
-                        $('.buttonSumbit').removeAttr('disabled');
-                        input.classList.add("is-valid");
-                        validMsg.innerHTML = 'The number is valid';
-                    } else {
-                        $('.buttonSumbit').attr('disabled', 'disabled');
-                        input.classList.add("is-invalid");
-                        validMsg.innerHTML = '';
-                        var errorCode = iti.getValidationError();
-                        errorMsg.innerHTML = errorMap[errorCode];
-                        errorMsg.classList.remove("hide");
-                    }
-                }
+                return false;
             });
 
+            // tel input  start
+            if ($('.phone').length > 0) {
+                for (let i = 0; i < $('.phone').length; i++) {
+                    if ($('.phone' + i).length != 0) {
+                        intTelinput(i);
+                    }
+                }
+            }
 
-            var reset = function() {
-                input.classList.remove("is-invalid");
-                errorMsg.innerHTML = "";
-                errorMsg.classList.add("hide");
-            };
-    }
-    //intl-tel-input ************** End ******************** //
+            if ($('#agency_contact').length > 0) {
+                intTelinput('gc');
+                // console.log(inTelinput);
+            }
 
-    /// pax append work  start//
-    $(document).on('change', '.pax-number', function () {
-            
-        $('.nationality-select2').select2('destroy');
+            //tel input end
+            //intl-tel-input ************** Start ******************** //
+            function intTelinput(key = null, inVal = null) {
+                // console.log(key);
+                var input = document.querySelector('.phone' + key);
+                var errorMsg = document.querySelector('.error_msg' + key);
+                var validMsg = document.querySelector('.valid_msg' + key);
+                var iti = intlTelInput(input, {
+                    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+                    separateDialCode: true,
+                    formatOnDisplay: true,
+                    initialCountry: "US",
+                    nationalMode: true,
+                    hiddenInput: "full_number",
+                    autoPlaceholder: "polite",
+                    placeholderNumberType: "MOBILE",
+                });
+                input.nextElementSibling.value = iti.getNumber();
+                // iti.setCountry("US");
+                // on blur: validate
+                var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+                input.addEventListener('blur', function() {
+                    input.nextElementSibling.value = iti.getNumber();
+                    reset();
+                    if (input.value.trim()) {
+                        if (iti.isValidNumber()) {
+                            $('.buttonSumbit').removeAttr('disabled');
+                            input.classList.add("is-valid");
+                            validMsg.innerHTML = 'The number is valid';
+                        } else {
+                            $('.buttonSumbit').attr('disabled', 'disabled');
+                            input.classList.add("is-invalid");
+                            validMsg.innerHTML = '';
+                            var errorCode = iti.getValidationError();
+                            errorMsg.innerHTML = errorMap[errorCode];
+                            errorMsg.classList.remove("hide");
+                        }
+                    }
+                });
 
-        var $_val = $(this).val();
-        var agencyVal = $('.select-agency:checked').val();
-    
-        var currentDate = curday('-');
-        var countries = $('#content').data('countries');
-        if(agencyVal == $_val){
-            var count = 1;
-            var $v_html = `
+
+                var reset = function() {
+                    input.classList.remove("is-invalid");
+                    errorMsg.innerHTML = "";
+                    errorMsg.classList.add("hide");
+                };
+            }
+            //intl-tel-input ************** End ******************** //
+
+            /// pax append work  start//
+            $(document).on('change', '.pax-number', function() {
+
+                        $('.nationality-select2').select2('destroy');
+
+                        var $_val = $(this).val();
+                        var agencyVal = $('.select-agency:checked').val();
+
+                        var currentDate = curday('-');
+                        var countries = $('#content').data('countries');
+                        if (agencyVal == $_val) {
+                            var count = 1;
+                            var $v_html = `
             <div class="mb-1 appendCount" id="appendCount${count}">
                 <div class="row" >
                     <div class="col-md-3 mb-2">

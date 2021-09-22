@@ -186,8 +186,7 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
         if($type != 'booking'){
-            $data['stored_text']                       = ($request->has('stored_text'))? $request->stored_text : NULL; 
-
+            $data['stored_text']                =   $request->stored_text??NULL; 
         }
         return $data;
     }
@@ -383,6 +382,8 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
+        $data['storetexts']       = StoreText::get();
+
         if($type != NULL){
             $data['type'] = $type;
         }
@@ -487,8 +488,7 @@ class QuoteController extends Controller
         $data['quote']            = $quote;
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
-        
-
+        $data['storetexts']       = StoreText::get();
         return view('quotes.show',$data);
     }
     
@@ -534,7 +534,9 @@ class QuoteController extends Controller
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id);
             $quoteDetail['quote_id'] = $clone->id;
-            
+            if(isset($qu_details['image']) && !empty($qu_details['image'])){
+                $quoteDetail['image'] = $qu_details['image'];
+            }
             QuoteDetail::create($quoteDetail);
         }
         
