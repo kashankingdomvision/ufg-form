@@ -22,6 +22,7 @@ use App\Commission;
 use App\Bank;
 use App\BookingRefundPayment;
 use App\BookingCreditNote;
+use App\BookingDetail;
 
 
 class ReportController extends Controller
@@ -503,7 +504,7 @@ class ReportController extends Controller
     public function refund_by_bank_report(Request $request) {
 
         $query = BookingRefundPayment::orderBy('id', 'ASC');
-        
+
         if (!empty(request()->all())) {
 
             if(request()->has('bank') && !empty(request()->bank)){
@@ -573,4 +574,49 @@ class ReportController extends Controller
 
         return view('reports.refund_by_credit_note', $data);
     }
+
+    public function transfer_report(Request $request) {
+
+        $query = BookingDetail::where('category_id',1);
+
+        $query->whereHas('getBooking', function($query) use($request){
+            $query->where('booking_status','confirmed' );
+        });
+
+
+        if (!empty(request()->all())) {
+
+            if(request()->has('quote_ref') && !empty(request()->quote_ref)){
+                $query->where('booking_id', $request->quote_ref);
+            }
+
+            if($request->has('dates') && !empty($request->dates)){
+
+                $dates = explode ("-", $request->dates);
+
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                $query->whereDate('date_of_service', '>=', $start_date);
+                $query->whereDate('end_date_of_service', '<=', $end_date);
+            }
+
+            if($request->has('month') && !empty($request->month)){
+                $query->whereMonth('created_at', $request->month);
+            }
+
+            if($request->has('year') && !empty($request->year)){
+                $query->whereYear('created_at', $request->year);
+            }
+
+        }
+
+        $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
+        $data['booking']         = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+        $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
+
+    
+        return view('reports.transfer_report', $data);
+    }
+
 }
