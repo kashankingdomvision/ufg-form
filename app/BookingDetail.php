@@ -113,7 +113,7 @@ class BookingDetail extends Model
     public function setDateOfServiceAttribute( $value ) {
         $this->attributes['date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
-    
+
     public function setEndDateOfServiceAttribute( $value ) {
         $this->attributes['end_date_of_service']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }

@@ -46991,11 +46991,11 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`; 
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(function () {
@@ -48615,8 +48615,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".quote:last").attr('data-key', $('.quote').length - 1);
     $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
     $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    $('.quote:last input, .quote:last select').removeClass('is-invalid'); // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+
     datepickerReset(1);
     reinitializedDynamicFeilds();
   });
@@ -48730,6 +48730,37 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             jQuery('#cancel_booking').modal('show').find('#booking_id').val(booking_id);
             jQuery('#cancel_booking').modal('show').find('#booking_currency_code').text(data.booking_currency_code);
           }
+        },
+        error: function error(reject) {}
+      });
+    }
+  });
+  $(document).on('click', '.cancel-service', function (e) {
+    e.preventDefault();
+    var booking_detail_id = $(this).attr('data-bookingDetialID');
+    var status = $(this).attr('data-status');
+    var message = '';
+
+    if (status == 'cancel_service') {
+      message = "Are you sure you want to Cancel this Service?";
+    } else if (status == 'revert_cancel_service') {
+      message = "Are you sure you want to Revert Cancelled Service?";
+    }
+
+    if (confirm(message) == true) {
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: "".concat(REDIRECT_BASEURL, "bookings/cancel-booking-service/").concat(booking_detail_id, "/").concat(status),
+        type: 'get',
+        success: function success(data) {
+          setTimeout(function () {
+            if (data.success_message) {
+              alert(data.success_message);
+              location.reload();
+            }
+          }, 800);
         },
         error: function error(reject) {}
       });

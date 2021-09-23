@@ -4869,15 +4869,6 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
  * -------------------------------------------------------------------------------------
 */
 
-.quote,
-.cancellation-payments {
-  border: solid 1px #DCDCDC;
-  padding: 20px;
-  margin: 0 auto 15px;
-  float: none;
-  border-radius: 10px;
-}
-
 .search-reference-btn {
   color: #343a40;
   border-color: #a7acb1;

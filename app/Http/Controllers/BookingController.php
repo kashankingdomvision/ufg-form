@@ -602,6 +602,26 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
     }
 
+    public function cancel_booking_service($id, $status){
+  
+        $success_message = '';
+
+        if($status == 'revert_cancel_service'){
+            
+            BookingDetail::where('id', $id)->update([ 'status' => 'active' ]);
+
+            $success_message = 'Booking Service Reverted Successfully';
+
+        }elseif ($status == 'cancel_service') {
+
+            BookingDetail::where('id', $id)->update([ 'status' => 'cancelled' ]);
+
+            $success_message = 'Booking Service Cancelled Successfully';
+        }
+
+        return \Response::json(['success_message' => $success_message ], 200);
+    }
+
     public function revert_cancel_booking($id){ 
 
         Booking::where('id',decrypt($id))->update([ 'booking_status' => 'confirmed' ]);
