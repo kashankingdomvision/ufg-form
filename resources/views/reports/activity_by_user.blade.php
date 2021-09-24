@@ -19,7 +19,7 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a>Home</a></li>
                             <li class="breadcrumb-item">Reports</li>
-                            <li class="breadcrumb-item active">User Report</li>
+                            <li class="breadcrumb-item active">Activity By User</li>
                         </ol>
                     </div>
                 </div>
