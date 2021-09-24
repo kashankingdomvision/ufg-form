@@ -436,7 +436,7 @@
                   </div>
                   <div class="parent" id="parent">
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
-                      @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
+                      @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail )
                         <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
 
                           <div class="card-header">
@@ -467,7 +467,7 @@
                               @endif
 
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Close" data-card-widget="remove"><i class="fas fa-times"></i></a>
+                              <a href="javascript:void(0)" class="remove-booking-detail-service btn btn-sm btn-outline-dark mr-2" title="Remove"><i class="fas fa-times"></i></a>
                              
                             </div>
                           </div>

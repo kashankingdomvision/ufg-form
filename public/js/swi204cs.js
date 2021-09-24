@@ -48788,6 +48788,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         error: function error(reject) {}
       });
     }
+  });
+  $(document).on('click', '.remove-booking-detail-service', function (e) {
+    e.preventDefault();
+
+    if (confirm("Are you sure you want to Remove this Service?") == true) {
+      $(this).closest(".quote").remove();
+      getBookingTotalValues();
+      getSellingPrice();
+    } // getQuoteTotalValues();
+    // getSellingPrice();
+
   }); // $(document).on('click', '.cancel-service', function(e) {
   //     e.preventDefault();
   //     var booking_detail_id = $(this).attr('data-bookingDetialID');
@@ -49430,9 +49441,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message); // window.location.href = REDIRECT_BASEURL + "bookings/index";
-          // location.reload();
-        }, 1000);
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {

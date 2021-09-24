@@ -436,10 +436,10 @@ class BookingController extends Controller
                 $bookingDetail['invoice']    = $this->fileStore($qu_details, $booking->id);
 
                 $bookingDetail['booking_id'] = $booking->id;
-                $bookingDetail['status']     = $qu_details['status'];
+                $bookingDetail['status']     = isset($qu_details['status']) && !empty($qu_details['status']) ? $qu_details['status'] : 'active';
                 $booking_Details             = BookingDetail::create($bookingDetail);
 
-                if($bookingDetail['status'] == 'cancelled'){
+                if($booking_Details->status == 'cancelled'){
                     BookingDetailCancellation::create([
                         'booking_detail_id' => $booking_Details->id,
                         'cancelled_by_id'   => $qu_details['created_by']
@@ -447,37 +447,41 @@ class BookingController extends Controller
                 }
 
 
-                foreach ($qu_details['finance'] as $finance){
+                if($request->has('finance') && count($request->finance) > 0){
+                    foreach ($qu_details['finance'] as $finance){
 
-                    $fin                      = $this->getFinanceBookingDetailsArray($finance);
-                    $fin['booking_detail_id'] = $booking_Details->id;
-                    $fin['currency_id']       = $booking_Details->supplier_currency_id;
+                        $fin                      = $this->getFinanceBookingDetailsArray($finance);
+                        $fin['booking_detail_id'] = $booking_Details->id;
+                        $fin['currency_id']       = $booking_Details->supplier_currency_id;
 
-                    if($fin['deposit_amount'] > 0){
-                        BookingDetailFinance::create($fin);
+                        if($fin['deposit_amount'] > 0){
+                            BookingDetailFinance::create($fin);
 
-                        if($fin['payment_method_id'] == 3){
-                            Wallet::create([
-                                'booking_id'        => $booking->id,
-                                'booking_detail_id' => $booking_Details->id,
-                                'supplier_id'       => $booking_Details->supplier_id,
-                                'amount'            => $fin['deposit_amount'],
-                                'type'              => 'debit'
-                            ]);
+                            if($fin['payment_method_id'] == 3){
+                                Wallet::create([
+                                    'booking_id'        => $booking->id,
+                                    'booking_detail_id' => $booking_Details->id,
+                                    'supplier_id'       => $booking_Details->supplier_id,
+                                    'amount'            => $fin['deposit_amount'],
+                                    'type'              => 'debit'
+                                ]);
+                            }
                         }
                     }
                 }
-                    
-                foreach ($qu_details['refund'] as $refund){
+                   
+                if($request->has('refund') && count($request->refund) > 0){
+                    foreach ($qu_details['refund'] as $refund){
 
-                    $refund                      = $this->getBookingRefundPaymentArray($refund);
-                    $refund['booking_detail_id'] = $booking_Details->id;
-                    $refund['currency_id']       = $booking_Details->supplier_currency_id;
- 
-                    if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+                        $refund                      = $this->getBookingRefundPaymentArray($refund);
+                        $refund['booking_detail_id'] = $booking_Details->id;
+                        $refund['currency_id']       = $booking_Details->supplier_currency_id;
+    
+                        if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
 
-                        BookingRefundPayment::create($refund);
-                        BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                            BookingRefundPayment::create($refund);
+                            BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                        }
                     }
                 }
 

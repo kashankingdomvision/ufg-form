@@ -1991,6 +1991,19 @@ $(document).ready(function($) {
                 
             });
 
+            $(document).on('click', '.remove-booking-detail-service', function(e) {
+                e.preventDefault();
+
+                if( confirm("Are you sure you want to Remove this Service?") == true){
+                    $(this).closest(".quote").remove();
+
+                    getBookingTotalValues();
+                    getSellingPrice();
+                }
+                // getQuoteTotalValues();
+                // getSellingPrice();
+            });
+
             // $(document).on('click', '.cancel-service', function(e) {
 
             //     e.preventDefault();
@@ -2783,7 +2796,7 @@ $(document).ready(function($) {
                 $('#update-booking :input').prop('disabled', false);
 
                 var $form = $(this),
-                    url = $form.attr('action');
+                url = $form.attr('action');
                 var formdata = $(this).serialize();
 
                 $('input, select').removeClass('is-invalid');
@@ -2806,10 +2819,10 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
                             alert(data.success_message);
-                            // window.location.href = REDIRECT_BASEURL + "bookings/index";
+                            window.location.href = REDIRECT_BASEURL + "bookings/index";
                             // location.reload();
 
-                        }, 1000);
+                        }, 400);
                     },
                     error: function(reject) {
 
