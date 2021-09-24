@@ -1204,7 +1204,7 @@ $(document).ready(function($) {
                                     });
                                 }
 
-                            }, 800);
+                            }, 400);
                         }
                     },
                 });
@@ -2044,7 +2044,7 @@ $(document).ready(function($) {
             //                         location.reload();
             //                     }
     
-            //                 }, 800);
+            //                 }, 400);
 
             //             },
             //             error: function(reject) {}
@@ -2081,7 +2081,7 @@ $(document).ready(function($) {
                                 location.reload();
                             }
 
-                        }, 800);
+                        }, 400);
                     },
                     error: function(reject) {
                         if (reject.status === 422) {
@@ -2098,7 +2098,7 @@ $(document).ready(function($) {
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                                 });
 
-                            }, 800);
+                            }, 400);
 
                         }
                     },
@@ -2170,7 +2170,7 @@ $(document).ready(function($) {
                         setTimeout(function() {
                             alert('Quote created Successfully');
                             window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        }, 800);
+                        }, 400);
                     },
                     error: function(reject) {
 
@@ -2197,7 +2197,7 @@ $(document).ready(function($) {
                                     }
 
                                 });
-                            }, 800);
+                            }, 400);
                         }
                     },
                 });
@@ -2238,7 +2238,7 @@ $(document).ready(function($) {
 
                         setTimeout(function() {
                             alert('Template Created Successfully');
-                        }, 800);
+                        }, 400);
                     },
                     error: function(reject) {
                         if (reject.status === 422) {
@@ -2254,7 +2254,7 @@ $(document).ready(function($) {
                                     $(`#${index}`).addClass('is-invalid');
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                                 });
-                            }, 800);
+                            }, 400);
                         }
                     },
                 });
@@ -2324,7 +2324,7 @@ $(document).ready(function($) {
                         setTimeout(function() {
                             alert('Template Created Successfully');
                             window.location.href = `${REDIRECT_BASEURL}template/index`;
-                        }, 800);
+                        }, 400);
                     },
                     error: function(reject) {
 
@@ -2344,7 +2344,7 @@ $(document).ready(function($) {
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                                 });
 
-                            }, 800);
+                            }, 400);
 
                         }
                     },
@@ -2378,7 +2378,7 @@ $(document).ready(function($) {
                         setTimeout(function() {
                             alert('Template Updated Successfully');
                             window.location.href = `${REDIRECT_BASEURL}template/index`;
-                        }, 800);
+                        }, 400);
                     },
                     error: function(reject) {
 
@@ -2397,7 +2397,7 @@ $(document).ready(function($) {
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                                 });
 
-                            }, 800);
+                            }, 400);
 
                         }
                     },
@@ -2490,7 +2490,7 @@ $(document).ready(function($) {
                                     });
                                 }
 
-                            }, 800);
+                            }, 400);
                         }
                     },
                 });
@@ -2526,7 +2526,7 @@ $(document).ready(function($) {
                         // setTimeout(function() {
                         //     alert('Quote updated Successfully');
                         //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        // }, 800);
+                        // }, 400);
                     },
                     error: function(reject) {
 
@@ -2545,7 +2545,7 @@ $(document).ready(function($) {
                                     $('#' + index).closest('.form-group').find('.text-danger').html(value);
                                 });
 
-                            }, 800);
+                            }, 400);
 
                         }
                     },
@@ -2877,7 +2877,7 @@ $(document).ready(function($) {
                                     });
                                 }
 
-                            }, 800);
+                            }, 400);
 
                             // setTimeout(function() {
 
@@ -2962,7 +2962,7 @@ $(document).ready(function($) {
                                     });
                                 }
 
-                            }, 800);
+                            }, 400);
 
                         }
                     },

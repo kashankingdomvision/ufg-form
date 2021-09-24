@@ -48110,7 +48110,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 $('#' + index).closest('.form-group').find('.text-danger').html(value);
               });
             }
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -48828,7 +48828,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //                         alert(data.success_message);
   //                         location.reload();
   //                     }
-  //                 }, 800);
+  //                 }, 400);
   //             },
   //             error: function(reject) {}
   //         });
@@ -48856,7 +48856,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             alert(data.success_message);
             location.reload();
           }
-        }, 800);
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -48868,7 +48868,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -48922,7 +48922,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         setTimeout(function () {
           alert('Quote created Successfully');
           window.location.href = REDIRECT_BASEURL + "quotes/index";
-        }, 800);
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -48942,7 +48942,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 flag = false;
               }
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -48975,7 +48975,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         jQuery('#modal-default').modal('hide');
         setTimeout(function () {
           alert('Template Created Successfully');
-        }, 800);
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -48987,7 +48987,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -49041,7 +49041,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         setTimeout(function () {
           alert('Template Created Successfully');
           window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
-        }, 800);
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -49053,7 +49053,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -49079,7 +49079,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         setTimeout(function () {
           alert('Template Updated Successfully');
           window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
-        }, 800);
+        }, 400);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -49091,7 +49091,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -49168,7 +49168,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 $('#' + index).closest('.form-group').find('.text-danger').html(value);
               });
             }
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -49195,7 +49195,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // setTimeout(function() {
         //     alert('Quote updated Successfully');
         //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-        // }, 800);
+        // }, 400);
 
       },
       error: function error(reject) {
@@ -49208,7 +49208,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $('#' + index).addClass('is-invalid');
               $('#' + index).closest('.form-group').find('.text-danger').html(value);
             });
-          }, 800);
+          }, 400);
         }
       }
     });
@@ -49486,7 +49486,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 }
               });
             }
-          }, 800); // setTimeout(function() {
+          }, 400); // setTimeout(function() {
           //     var flag=true;
           //     $("#overlay").removeClass('overlay').html('');
           //     jQuery.each(errors.errors, function( index, value ) {
@@ -49547,7 +49547,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 $('#' + index).closest('.form-group').find('.text-danger').html(value);
               });
             }
-          }, 800);
+          }, 400);
         }
       }
     });
