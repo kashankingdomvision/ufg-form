@@ -214,7 +214,7 @@ class BookingController extends Controller
             'actual_cost_bc'          => $quoteD['actual_cost_in_booking_currency'],
             'selling_price_bc'        => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
-            'added_in_sage'           => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
+            'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
             'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
         ];
     }
@@ -339,7 +339,7 @@ class BookingController extends Controller
             }
         }
 
-        // $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
+        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
         return view('bookings.edit',$data);
     }
@@ -392,10 +392,10 @@ class BookingController extends Controller
         // dd($request->all());
 
         // check update access
-        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
-        // if(!$quote_update_detail->exists()) {
-        //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
-        // }
+        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        if(!$quote_update_detail->exists()) {
+            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
+        }
         
         //- check update access
 

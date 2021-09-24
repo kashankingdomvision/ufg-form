@@ -178,26 +178,17 @@ class Helper
             $response['exist']   = 1;
             $response['user_id'] = $quote_update_detail->user_id;
 
-			QuoteUpdateDetail::create([
-                'user_id'      =>  Auth::id(),
-                'foreign_id'   =>  decrypt($id),
-                'status'       =>  $status
-            ]);
-
 			return $response;
         }
 
-        // if(is_null($quote_update_detail)){
+		QuoteUpdateDetail::create([
+			'user_id'      =>  Auth::id(),
+			'foreign_id'   =>  decrypt($id),
+			'status'       =>  $status
+		]);
 
-            QuoteUpdateDetail::create([
-                'user_id'      =>  Auth::id(),
-                'foreign_id'   =>  decrypt($id),
-                'status'       =>  $status
-            ]);
-
-			$response['exist']   = null;
-            $response['user_id'] = null;
-        // }
+		$response['exist']   = null;
+		$response['user_id'] = null;
 
 		return $response;
 	}
