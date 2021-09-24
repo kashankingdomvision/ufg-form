@@ -2132,6 +2132,9 @@ $(document).ready(function($) {
                       
                       var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
                         $('#btnSubmitversion').append(btn_Submit);
+
+                        $('.remove').addClass('remove-quote-detail-service');
+                        $('.remove').removeClass('d-none');
                     }
                 } else {
                     $("#versions :input").prop("disabled", true);
@@ -2463,7 +2466,7 @@ $(document).ready(function($) {
                         setTimeout(function() {
                             alert('Quote updated Successfully');
                             window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        }, 800);
+                        }, 200);
                     },
                     error: function(reject) {
 
