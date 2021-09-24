@@ -614,6 +614,10 @@ class ReportController extends Controller
                 $query->whereYear('created_at', $request->year);
             }
 
+            if($request->has('status') && !empty($request->status)){
+                $query->where('status', $request->status);
+            }
+
         }
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();

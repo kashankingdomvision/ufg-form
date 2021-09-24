@@ -124,6 +124,18 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
+                                                <div class="col">
+                                                    <div class="form-group">
+                                                        <label>Status</label>
+                                                        <select class="form-control select2single" name="status">
+                                                            <option value="">Select Status</option>
+                                                            <option value="active">Booked</option>
+                                                            <option value="cancelled">Cancelled</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
                                             </div>
                             
                                         </div>
@@ -171,6 +183,7 @@
                                                 <th>Pax No.</th>
                                                 <th>Category </th>
                                                 <th>Product</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -192,6 +205,13 @@
                                                     <td>{{ $booking_detail->getBooking->pax_no }}</td>
                                                     <td>{{ $booking_detail->getCategory->name }}</td>
                                                     <td>{{ $booking_detail->product_id }}</td>
+                                                    <td>
+                                                        @if($booking_detail->status == 'active')
+                                                            <h5><span class="badge badge-success">Booked</span></h5>
+                                                        @elseif($booking_detail->status == 'cancelled')
+                                                            <h5><span class="badge badge-danger">Cancelled</span></h5>
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                                 
                                                 @endforeach
