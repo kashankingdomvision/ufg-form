@@ -436,7 +436,7 @@
                   </div>
                   <div class="parent" id="parent">
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
-                      @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail )
+                      @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
                         <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
 
                           <div class="card-header">
@@ -452,12 +452,15 @@
 
                             <div class="card-tools">
 
+                              <input type="hidden" name="quote[{{ $key }}][created_by]" id="quote_{{ $key }}_created_by" value="{{ isset($booking_detail->getBookingCancellation->cancelled_by_id) && !empty($booking_detail->getBookingCancellation->cancelled_by_id) ? $booking_detail->getBookingCancellation->cancelled_by_id : Auth::id() }}" >
+                              <input type="hidden" name="quote[{{ $key }}][status]" id="quote_{{ $key }}_status" value="{{ isset($booking_detail->status) && !empty($booking_detail->status) ? $booking_detail->status : '' }}" >
+                              
                               @if($booking_detail->status == 'active')
-                                <a href="javascript:void(0)" class="cancel-service btn btn-outline-danger btn-sm mr-3" data-bookingDetialID="{{ $booking_detail->id }}" data-status="cancel_service" data-title="Cancel Service" data-target="#Cancel_Service">
+                                <a href="javascript:void(0)" class="booking-detail-cancellation btn btn-outline-danger btn-sm mr-3" data-bookingDetialID="{{ encrypt($booking_detail->id) }}"  data-title="Booking Detail Cancel" data-target="#Booking_Detail_Cancel">
                                   Cancel Service
                                 </a>
                               @elseif($booking_detail->status == 'cancelled')
-                                <a href="javascript:void(0)" class="cancel-service btn btn-outline-success btn-sm mr-3" data-bookingDetialID="{{ $booking_detail->id }}" data-status="revert_cancel_service" data-title="Revert Cancel Service" data-target="#Cancel_Service">
+                                <a href="javascript:void(0)" class="revert-booking-detail-cancellation btn btn-outline-success btn-sm mr-3" data-bookingDetialID="{{ encrypt($booking_detail->id) }}" data-title="Revert Cancel Service" data-target="#Cancel_Service">
                                   <span class="fa fa-undo-alt"></span>&nbsp;&nbsp;
                                   Revert Cancel Service
                                 </a>
@@ -1750,7 +1753,7 @@
         </div>
       </div>
     </section>
-    @if($exist && $user_id)
+    @if(isset($exist) && isset($user_id))
       @if($exist == 1 && $user_id != Auth::id())
         @include('partials.override_modal',[ 'status' => 'bookings' , 'id' => $booking->id ])
       @endif

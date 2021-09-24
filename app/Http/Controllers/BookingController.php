@@ -31,6 +31,7 @@ use App\BookingLog;
 use App\BookingPaxDetail;
 use App\BookingCancellation;
 use App\BookingCancellationRefundPayment;
+use App\BookingDetailCancellation;
 use App\Currency;
 use App\Commission;
 use App\Country;
@@ -338,7 +339,7 @@ class BookingController extends Controller
             }
         }
 
-        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
+        // $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
         return view('bookings.edit',$data);
     }
@@ -381,6 +382,7 @@ class BookingController extends Controller
         $data['status'] = $status;
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
+
         return view('bookings.show',$data);
     }
 
@@ -390,10 +392,10 @@ class BookingController extends Controller
         // dd($request->all());
 
         // check update access
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
-        if(!$quote_update_detail->exists()) {
-            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
-        }
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        // if(!$quote_update_detail->exists()) {
+        //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
+        // }
         
         //- check update access
 
@@ -432,8 +434,17 @@ class BookingController extends Controller
 
                 $bookingDetail               = $this->getBookingDetailsArray($qu_details);
                 $bookingDetail['invoice']    = $this->fileStore($qu_details, $booking->id);
+
                 $bookingDetail['booking_id'] = $booking->id;
+                $bookingDetail['status']     = $qu_details['status'];
                 $booking_Details             = BookingDetail::create($bookingDetail);
+
+                if($bookingDetail['status'] == 'cancelled'){
+                    BookingDetailCancellation::create([
+                        'booking_detail_id' => $booking_Details->id,
+                        'cancelled_by_id'   => $qu_details['created_by']
+                    ]);
+                }
 
 
                 foreach ($qu_details['finance'] as $finance){
@@ -602,24 +613,26 @@ class BookingController extends Controller
         return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
     }
 
-    public function cancel_booking_service($id, $status){
-  
-        $success_message = '';
+    public function booking_detail_cancellation(Request $request){
 
-        if($status == 'revert_cancel_service'){
-            
-            BookingDetail::where('id', $id)->update([ 'status' => 'active' ]);
+        $booking_detail_id       = decrypt($request->booking_detail_id);
+        $booking_cancelled_by_id = $request->booking_cancelled_by_id;
 
-            $success_message = 'Booking Service Reverted Successfully';
+        BookingDetail::where('id', $booking_detail_id)->update([ 'status' => 'cancelled' ]);
+        BookingDetailCancellation::create([
+            'booking_detail_id' => $booking_detail_id,
+            'cancelled_by_id'   => $booking_cancelled_by_id
+        ]);
 
-        }elseif ($status == 'cancel_service') {
+        return \Response::json(['success_message' => 'Booking Service Cancelled Successfully' ], 200);
+    }
 
-            BookingDetail::where('id', $id)->update([ 'status' => 'cancelled' ]);
+    public function revert_booking_detail_cancellation($id){
 
-            $success_message = 'Booking Service Cancelled Successfully';
-        }
+        BookingDetail::where('id', decrypt($id))->update([ 'status' => 'active' ]);
+        BookingDetailCancellation::where('booking_detail_id',decrypt($id))->delete();
 
-        return \Response::json(['success_message' => $success_message ], 200);
+        return \Response::json(['success_message' => 'Booking Service Reverted Successfully' ], 200);
     }
 
     public function revert_cancel_booking($id){ 

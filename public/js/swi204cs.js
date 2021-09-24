@@ -48735,37 +48735,80 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       });
     }
   });
-  $(document).on('click', '.cancel-service', function (e) {
+  $(document).on('click', '.booking-detail-cancellation', function (e) {
     e.preventDefault();
     var booking_detail_id = $(this).attr('data-bookingDetialID');
-    var status = $(this).attr('data-status');
-    var message = '';
+    var quote = jQuery(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var created_by = $("#quote_".concat(quoteKey, "_created_by")).val();
+    var data = {
+      booking_detail_id: booking_detail_id,
+      booking_cancelled_by_id: created_by
+    };
 
-    if (status == 'cancel_service') {
-      message = "Are you sure you want to Cancel this Service?";
-    } else if (status == 'revert_cancel_service') {
-      message = "Are you sure you want to Revert Cancelled Service?";
-    }
-
-    if (confirm(message) == true) {
+    if (confirm("Are you sure you want to Cancel this Service?") == true) {
       $.ajax({
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: "".concat(REDIRECT_BASEURL, "bookings/cancel-booking-service/").concat(booking_detail_id, "/").concat(status),
-        type: 'get',
+        url: "".concat(REDIRECT_BASEURL, "bookings/booking-detail-cancellation"),
+        type: 'POST',
+        data: data,
         success: function success(data) {
           setTimeout(function () {
             if (data.success_message) {
               alert(data.success_message);
               location.reload();
             }
-          }, 800);
+          }, 100);
         },
         error: function error(reject) {}
       });
     }
   });
+  $(document).on('click', '.revert-booking-detail-cancellation', function (e) {
+    e.preventDefault();
+    var booking_detail_id = $(this).attr('data-bookingDetialID');
+
+    if (confirm("Are you sure you want to Revert Cancelled Service?") == true) {
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': CSRFTOKEN
+        },
+        url: "".concat(REDIRECT_BASEURL, "bookings/revert-booking-detail-cancellation/").concat(booking_detail_id),
+        type: 'GET',
+        success: function success(data) {
+          setTimeout(function () {
+            if (data.success_message) {
+              alert(data.success_message);
+              location.reload();
+            }
+          }, 100);
+        },
+        error: function error(reject) {}
+      });
+    }
+  }); // $(document).on('click', '.cancel-service', function(e) {
+  //     e.preventDefault();
+  //     var booking_detail_id = $(this).attr('data-bookingDetialID');
+  //     if( confirm("Are you sure you want to Cancel this Service?") == true){
+  //         $.ajax({
+  //             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+  //             url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
+  //             type: 'get',
+  //             success: function(data) {
+  //                 setTimeout(function() {
+  //                     if (data.success_message) {
+  //                         alert(data.success_message);
+  //                         location.reload();
+  //                     }
+  //                 }, 800);
+  //             },
+  //             error: function(reject) {}
+  //         });
+  //     }
+  // });
+
   $("#cancel_booking_submit").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
@@ -49387,8 +49430,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
+          alert(data.success_message); // window.location.href = REDIRECT_BASEURL + "bookings/index";
+          // location.reload();
         }, 1000);
       },
       error: function error(reject) {

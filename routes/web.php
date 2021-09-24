@@ -65,7 +65,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::post('cancel-booking', array('as' => 'cancel.booking', 'uses' => 'BookingController@cancel_booking'));
 
-        Route::get('cancel-booking-service/{id}/{status}', array('as' => 'cancel.booking.service', 'uses' => 'BookingController@cancel_booking_service'));
+        Route::post('booking-detail-cancellation', array('as' => 'booking.detail.cancellation', 'uses' => 'BookingController@booking_detail_cancellation'));
+        Route::get('revert-booking-detail-cancellation/{id}', array('as' => 'revert.booking.detail.cancellation', 'uses' => 'BookingController@revert_booking_detail_cancellation'));
 
         Route::get('revert-cancel-booking/{id}', array('as' => 'revert.cancel.booking', 'uses' => 'BookingController@revert_cancel_booking'));
     });

@@ -1922,27 +1922,27 @@ $(document).ready(function($) {
                 }
             });
 
-            $(document).on('click', '.cancel-service', function(e) {
-
+            $(document).on('click', '.booking-detail-cancellation', function(e) {
                 e.preventDefault();
 
-                var booking_detail_id = $(this).attr('data-bookingDetialID');
-                var status            = $(this).attr('data-status');
-                var message           = '';
+                var booking_detail_id       = $(this).attr('data-bookingDetialID');
 
-                if(status == 'cancel_service'){
-                    message = "Are you sure you want to Cancel this Service?";
-                }
-                else if(status == 'revert_cancel_service'){
-                    message = "Are you sure you want to Revert Cancelled Service?";
-                }
+                var quote      = jQuery(this).closest('.quote');
+                var quoteKey   = quote.data('key');
+                var created_by = $(`#quote_${quoteKey}_created_by`).val();
 
-                if( confirm(message) == true){
+                var data = {
+                    booking_detail_id       : booking_detail_id,
+                    booking_cancelled_by_id : created_by
+                };
+
+                if( confirm("Are you sure you want to Cancel this Service?") == true){
 
                     $.ajax({
                         headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                        url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
-                        type: 'get',
+                        url: `${REDIRECT_BASEURL}bookings/booking-detail-cancellation`,
+                        type: 'POST',
+                        data: data,
                         success: function(data) {
 
                             setTimeout(function() {
@@ -1952,14 +1952,74 @@ $(document).ready(function($) {
                                     location.reload();
                                 }
     
-                            }, 800);
+                            }, 100);
 
                         },
                         error: function(reject) {}
                     });
-                }
 
+                }
             });
+
+            $(document).on('click', '.revert-booking-detail-cancellation', function(e) {
+                e.preventDefault();
+
+                var booking_detail_id       = $(this).attr('data-bookingDetialID');
+
+                if( confirm("Are you sure you want to Revert Cancelled Service?") == true){
+
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: `${REDIRECT_BASEURL}bookings/revert-booking-detail-cancellation/${booking_detail_id}`,
+                        type: 'GET',
+                        success: function(data) {
+
+                            setTimeout(function() {
+
+                                if (data.success_message) {
+                                    alert(data.success_message);
+                                    location.reload();
+                                }
+    
+                            }, 100);
+
+                        },
+                        error: function(reject) {}
+                    });
+
+                }
+                
+            });
+
+            // $(document).on('click', '.cancel-service', function(e) {
+
+            //     e.preventDefault();
+
+            //     var booking_detail_id = $(this).attr('data-bookingDetialID');
+
+            //     if( confirm("Are you sure you want to Cancel this Service?") == true){
+
+            //         $.ajax({
+            //             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+            //             url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
+            //             type: 'get',
+            //             success: function(data) {
+
+            //                 setTimeout(function() {
+
+            //                     if (data.success_message) {
+            //                         alert(data.success_message);
+            //                         location.reload();
+            //                     }
+    
+            //                 }, 800);
+
+            //             },
+            //             error: function(reject) {}
+            //         });
+            //     }
+
+            // });
 
             $("#cancel_booking_submit").submit(function(event) {
 
@@ -2746,7 +2806,7 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
                             alert(data.success_message);
-                            window.location.href = REDIRECT_BASEURL + "bookings/index";
+                            // window.location.href = REDIRECT_BASEURL + "bookings/index";
                             // location.reload();
 
                         }, 1000);

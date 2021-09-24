@@ -37,7 +37,8 @@ class BookingDetail extends Model
         'markup_amount_bc',
         'added_in_sage', 
         'invoice',
-        'outstanding_amount_left'
+        'outstanding_amount_left',
+        'status'
     ];
 
     public function getCategory()
@@ -67,6 +68,11 @@ class BookingDetail extends Model
     public function getBookingFinance()
     {
         return $this->hasMany(BookingDetailFinance::class, 'booking_detail_id', 'id');   
+    }
+
+    public function getBookingCancellation()
+    {
+        return $this->hasOne(BookingDetailCancellation::class, 'booking_detail_id', 'id');   
     }
 
     public function getBookingRefundPayment()

@@ -178,6 +178,12 @@ class Helper
             $response['exist']   = 1;
             $response['user_id'] = $quote_update_detail->user_id;
 
+			QuoteUpdateDetail::create([
+                'user_id'      =>  Auth::id(),
+                'foreign_id'   =>  decrypt($id),
+                'status'       =>  $status
+            ]);
+
 			return $response;
         }
 
