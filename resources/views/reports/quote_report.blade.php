@@ -307,6 +307,7 @@
                                             <td colspan="12"></td>
                                             <th>Total Profit Percentage</th>
                                             <td>{{ $total_profit_percentage.' %'}}</td>
+                                            <td></td>
                                         </tr>
                                     @else
                                         <tr align="center"><td colspan="100%">No record found.</td></tr>

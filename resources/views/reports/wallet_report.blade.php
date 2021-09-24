@@ -132,9 +132,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Wallet List</h3>
-                                <a href="">
+                                {{-- <a href="">
                                     <button class="btn btn-dark btn-sm float-right">Export in Excel</button>
-                                </a>
+                                </a> --}}
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
