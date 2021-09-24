@@ -447,7 +447,7 @@ class BookingController extends Controller
                 }
 
 
-                if($request->has('finance') && count($request->finance) > 0){
+                if(isset($qu_details['finance']) && !empty($qu_details['finance'])){
                     foreach ($qu_details['finance'] as $finance){
 
                         $fin                      = $this->getFinanceBookingDetailsArray($finance);
@@ -470,7 +470,7 @@ class BookingController extends Controller
                     }
                 }
                    
-                if($request->has('refund') && count($request->refund) > 0){
+                if(isset($qu_details['refund']) && !empty($qu_details['refund'])){
                     foreach ($qu_details['refund'] as $refund){
 
                         $refund                      = $this->getBookingRefundPaymentArray($refund);
