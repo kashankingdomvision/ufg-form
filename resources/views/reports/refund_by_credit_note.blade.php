@@ -157,7 +157,7 @@
                                                     </td>
                                                     <td>{{ isset($booking_credit_note->getSupplier->name) && !empty($booking_credit_note->getSupplier->name) ? $booking_credit_note->getSupplier->name : '' }}</td>
                                                     <td>{{ $booking_credit_note->getCurrency->code.' '.$booking_credit_note->credit_note_amount }}</td>
-                                                    <td>{{ $booking_credit_note->credit_note_recieved_date }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($booking_credit_note->credit_note_recieved_date)->format('d/m/Y') }}</td>
                                                     <td>{{ isset($booking_credit_note->getUser->name) && !empty($booking_credit_note->getUser->name) ? $booking_credit_note->getUser->name : '' }}</td>
                                                 </tr>
                                                 
