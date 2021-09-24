@@ -1717,6 +1717,8 @@ $(document).ready(function($) {
                 $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
                 $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
                 $('.quote:last input, .quote:last select').removeClass('is-invalid');
+                $('.quote:last .card-title-style').html('');
+                $('.quote:last .booking-detail-cancellation').remove();
                 // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
                 datepickerReset(1);
                 reinitializedDynamicFeilds();
