@@ -379,13 +379,16 @@
                   </div>
                   <div class="parent" id="parent">
                     @foreach ($quote['quote'] as $key => $q_detail )
-                        <div class="quote" data-key="{{ $key }}">
-                            @if($loop->iteration > 1)
-                              <div class="row">
-                                <div class="col-sm-12"><button type="button" class="btn pull-right close"> x </button></div>
-                              </div>
-                            @endif
+                        <div class="quote card card-default" data-key="{{ $key }}">
+                        
+                          <div class="card-header">
+                            <div class="card-tools">
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove remove-quote-detail-service" title="Remove"><i class="fas fa-times"></i></a>
+                            </div>
+                          </div>
 
+                          <div class="card-body">
                             <div class="row">
                               <div class="col-md-12">
                                 <div class="form-group ">
@@ -398,10 +401,10 @@
                             </div>
                             
                             <div class="row"> {{-- ?>>>rowStart --}}
-                                <div class="col-sm-2">
+                              <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Start Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" value="{{ $q_detail['date_of_service'] }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  <label>Start Date of Service <span style="color:red">*</span></label>
+                                  <input type="text" value="{{ $q_detail['date_of_service'] }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
                                 </div>
                               </div>
                                       
@@ -413,7 +416,7 @@
                                   </div>
                                 </div>
 
-                               
+                                
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Time of Service</label>
@@ -685,6 +688,8 @@
                                 </div>
                                 </div>
                             </div>{{-- ?>>>rown end --}}
+                          </div>
+
                         </div>
                     @endforeach
                   </div>

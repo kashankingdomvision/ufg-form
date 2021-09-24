@@ -48512,7 +48512,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
     $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
     $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
+    $('.quote:last .card-header .card-tools .remove').removeClass('d-none'); // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+
     var qleng = $('.quote').length - 1;
     $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
     $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
@@ -48797,6 +48799,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (confirm("Are you sure you want to Remove this Service?") == true) {
       $(this).closest(".quote").remove();
       getBookingTotalValues();
+      getSellingPrice();
+    } // getQuoteTotalValues();
+    // getSellingPrice();
+
+  });
+  $(document).on('click', '.remove-quote-detail-service', function (e) {
+    e.preventDefault();
+
+    if (confirm("Are you sure you want to Remove this Service?") == true) {
+      $(this).closest(".quote").remove();
+      getQuoteTotalValues();
       getSellingPrice();
     } // getQuoteTotalValues();
     // getSellingPrice();

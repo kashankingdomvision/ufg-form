@@ -332,7 +332,18 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
-                      <div class="quote" data-key="0">
+
+                    <div class="quote card card-default" data-key="0">
+
+                      <div class="card-header">
+                        <div class="card-tools">
+                          <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                          <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
+                        </div>
+                      </div>
+
+                      <div class="card-body">
+
                         <div class="row">
                           <div class="col-md-12">
                             <div class="form-group ">
@@ -342,7 +353,8 @@
                             </div>
                             <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                           </div>
-                        </div>    
+                        </div>  
+
                         <div class="row">
                             
                           <div class="col-sm-2">
@@ -397,18 +409,6 @@
                               <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
                             </div>
                           </div>
-
-                          {{-- <div class="col-sm-2">
-                            <div class="form-group">
-                              <label>Product</label>
-                              <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
-                                <option selected value="">Select Product</option>
-                              </select>
-                              @error('product_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
-                            </div>
-                          </div> --}}
 
                           <div class="col-sm-2">
                             <div class="form-group">
@@ -626,24 +626,20 @@
                             </div>
                           @endif
 
-                          
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Comments</label>
                               <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                             </div>
                           </div>
-                          <!-- <div class="col-sm-6">
-                            <div class="form-group">
-                              <label>Service Details</label>
-                              <textarea name="quote[0][service_details]" data-name="service_details" id="quote_0_service_details" class="form-control service-details summernote " rows="2" placeholder="Enter Service Details"></textarea>
-                            </div>
-                          </div> -->
+
                         </div>
                       </div>
-                        <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
-                        
+
+
+                    </div>
                     
+                    <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                   </div>
                
                   <div class="row">
