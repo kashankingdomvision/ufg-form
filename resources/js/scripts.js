@@ -11,10 +11,10 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`; 
+var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`; 
 
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
@@ -2476,6 +2476,7 @@ $(document).ready(function($) {
 
                             setTimeout(function() {
                                 $("#overlay").removeClass('overlay').html('');
+                                var flag = true;
 
                                 if (errors.hasOwnProperty("overrride_errors")) {
                                     alert(errors.overrride_errors);
@@ -2485,8 +2486,14 @@ $(document).ready(function($) {
                                     jQuery.each(errors.errors, function(index, value) {
 
                                         index = index.replace(/\./g, '_');
-                                        $('#' + index).addClass('is-invalid');
-                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                        if (flag) {
+
+                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                            flag = false;
+                                        }
                                     });
                                 }
 
