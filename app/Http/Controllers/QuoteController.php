@@ -126,17 +126,25 @@ class QuoteController extends Controller
                 ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
             });
         }
+
+        $quote->when($request->dates, function ($query) use ($request) {
+
+            $dates = Helper::dates($request->dates);
+
+            $query->whereDate('created_at', '>=', $dates->start_date);
+            $query->whereDate('created_at', '<=', $dates->end_date);
+        });
         
-        if($request->has('created_date')){
-            $quote->where(function($query) use($request){
-                if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-                    $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-                }
-                if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-                    $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-                }
-            });
-        }
+        // if($request->has('created_date')){
+        //     $quote->where(function($query) use($request){
+        //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
+        //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
+        //         }
+        //         if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
+        //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
+        //         }
+        //     });
+        // }
         return $quote;
     }
     
