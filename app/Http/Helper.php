@@ -72,6 +72,17 @@ class Helper
         return \Helper::cf_remote_request($url, $args);
 	}
 
+	public static function dates($dates)
+	{
+		$dates = explode ("-", $dates);
+
+		$start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+		$end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+		$dates      = [ 'start_date' => $start_date,'end_date' => $end_date];
+
+		return (object) $dates;
+	}
+
     public static function cf_remote_request($url, $_args = array()) {
 		// prepare array
 		$array = array(
