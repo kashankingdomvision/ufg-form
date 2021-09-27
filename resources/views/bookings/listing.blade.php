@@ -26,17 +26,17 @@
     
     <x-page-filters :route="route('bookings.index')">
         <div class="row">
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Client Type</label>
                     <select class="form-control select2single" name="client_type">
                         <option value="" selected>Select Client Type</option>
-                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
-                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
+                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client') ? 'selected' : null) }} value="client" >Client</option>
+                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency') ? 'selected' : null) }} value="agency" >Agency</option>
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Agent / Staff</label>
                     <select class="form-control select2single" name="staff">
@@ -47,7 +47,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Booking Season</label>
                     <select class="form-control select2single" name="booking_season">
@@ -55,6 +55,16 @@
                         @foreach ($booking_seasons as $seasons)
                             <option value="{{ $seasons->name }}" {{ (old('booking_season') == $seasons->name)? 'selected': ((request()->get('booking_season') == $seasons->name)? 'selected' : null) }}>{{ $seasons->name }}</option>
                         @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Booking Status</label>
+                    <select class="form-control select2single" name="status">
+                        <option value="" selected>Select Status</option>
+                        <option {{ (old('search') == 'confirmed')? 'selected': ((request()->get('status') == 'confirmed')? 'selected' : null) }} value="confirmed" >Confirmed</option>
+                        <option {{ (old('search') == 'cancelled')? 'selected': ((request()->get('status') == 'cancelled')? 'selected' : null) }} value="cancelled" >Cancelled</option>
                     </select>
                 </div>
             </div>

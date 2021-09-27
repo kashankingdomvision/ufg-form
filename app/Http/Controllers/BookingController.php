@@ -129,6 +129,11 @@ class BookingController extends Controller
                 $query->whereDate('created_at', '>=', $dates->start_date);
                 $query->whereDate('created_at', '<=', $dates->end_date);
             });
+
+            $booking->when($request->status, function ($query) use ($request) {
+                $query->where('booking_status', $request->status);
+            });
+      
         }
 
 
