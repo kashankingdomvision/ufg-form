@@ -12,8 +12,6 @@ class BankTableSeeder extends Seeder
      */
     public function run()
     {
-        // $banks = ['Capital Bank','Chase Bank'];
-
         $banks = [
             [   
                 'name' => 'Capital Bank',
