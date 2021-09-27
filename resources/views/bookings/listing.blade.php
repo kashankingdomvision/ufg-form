@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Booking Currency</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
@@ -70,7 +70,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group"> 
                     <label>Brand</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
@@ -80,35 +80,23 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col">
-                <label><u> Created Date</u></label>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>From</label>
-                            <input type="text" value="{{ (request()->get('created_date'))?request()->get('created_date')['from']: null }}" name="created_date[from]" class="form-control datepicker" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>To</label>
-                            <input type="text" value="{{ (request()->get('created_date'))? request()->get('created_date')['to']: null }}" name="created_date[to]" class="form-control datepicker" autocomplete="off">
-                        </div>
-                    </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <input type="text" name="dates" value="{{ request()->get('dates') }}" autocomplete="off" class="form-control date-range-picker">
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Search</label>
                     <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
                 </div>
             </div>
+
         </div>
+       
     </x-page-filters>
     
     <section class="content">
