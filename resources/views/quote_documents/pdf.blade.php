@@ -159,7 +159,15 @@
                         <tr>
                             <td height="10px;" style="height: 10px;   ">&nbsp;</td>
                         </tr>
-                        
+                        <tr>
+                            <td class="css-none">
+                                {!! ($quote_del->getStoredText)? $quote_del->getStoredText->stored_text : '' !!}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td height="10px;" style="height: 10px;   ">&nbsp;</td>
+                        </tr>
+
                     </table>
                 </div>
                     @endforeach
@@ -189,19 +197,6 @@
                         <td class="pb-1 pl-7">&nbsp;</td>
                     </tr>
                 </table>
-            </section>
-
-
-            <section class="booking-condition">
-                @if($storetexts != NULL)
-                    @foreach ($storetexts as $text)
-                        <h2 class="text-center">{{$text->page_title}}</h2>
-                        <hr />
-                        <div class="cont-reapeat">
-                            {!! $text->description !!}
-                        </div>
-                    @endforeach
-                @endif
             </section>
         </main>
     </body>

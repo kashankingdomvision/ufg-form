@@ -167,3 +167,15 @@
         </main>
     </body>
 </html>
+
+            <!-- <section class="booking-condition">
+                @if($storetexts != NULL)
+                    @foreach ($storetexts as $text)
+                        <h2 class="text-center">{{$text->page_title}}</h2>
+                        <hr />
+                        <div class="cont-reapeat">
+                            {!! $text->description !!}
+                        </div>
+                    @endforeach
+                @endif
+            </section>

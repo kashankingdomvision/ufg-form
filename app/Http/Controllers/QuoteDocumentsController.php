@@ -46,7 +46,7 @@ class QuoteDocumentsController extends Controller
         $data['enddate']        =  date('l, d M Y', strtotime($endDate));
         $data['quote_id']       =  $quote->id;
         $data['booking_amount_person']       =  $quote->amount_per_person;
-        $data['selling_amount']              =  $quote->selling_price_ocr;
+        $data['selling_amount']              =  $quote->selling_price;
         return view('quote_documents.index', $data);
     }
 
@@ -72,7 +72,7 @@ class QuoteDocumentsController extends Controller
         $data['quote_id']       =  $quote->id;
         $data['selling_price']       =  $quote->id;
         $data['booking_amount_person']       =  $quote->amount_per_person;
-        $data['selling_amount']              =  $quote->selling_price_ocr;
+        $data['selling_amount']              =  $quote->selling_price;
         $pdf  = PDF::loadView('quote_documents.pdf', $data);
         return $pdf->stream();
         // return view('quote_documents.pdf', $data);

@@ -496,7 +496,7 @@
                                     @include('partials.addmediaModal')
                                   </div>
                                 </div>
-                                <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                                <button data-show="calladdmediaModal" type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                               </div>
                             </div>
 

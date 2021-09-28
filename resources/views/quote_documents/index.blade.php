@@ -102,6 +102,9 @@
                                       <div>
                                           {!! $quote_del->service_details !!}
                                       </div>
+                                      <div>
+                                        {!! ($quote_del->getStoredText)? $quote_del->getStoredText->stored_text : '' !!}
+                                      </div>
                                   </div>
                                 </section>         
                               @endforeach
@@ -130,7 +133,7 @@
                                       </tr>
                                   </table>
                               </section>
-                              @if(isset($storetexts) && count($storetexts) > 0)
+                              <!-- @if(isset($storetexts) && count($storetexts) > 0)
                                 @foreach ($storetexts as $text)
                                 <section>
                                   <h4 class="text-center pt-4"><strong>{{$text->page_title}}</strong></h4>
@@ -138,7 +141,7 @@
                                   <div class="">{!! $text->description !!}</div>
                                 </section>
                                 @endforeach
-                              @endif
+                              @endif -->
                           </section>     
                         </div>
                         <div class="col-md-4">
