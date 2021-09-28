@@ -351,7 +351,7 @@
                                 @include('partials.addmediaModal')
                               </div>
                             </div>
-                            <button type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                            <button type="button" data-show="calladdmediaModal" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                           </div>
                         </div>  
 
@@ -631,7 +631,17 @@
                               <label>Comments</label>
                               <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                             </div>
-                          </div>
+                          </div> 
+                          
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label>Add Stored Text</label>
+                              <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
+                              <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                @include('partials.stored_text_modal')
+                              </div>
+                            </div>
+                          </div> <!--col-md-2-->
 
                         </div>
                       </div>
@@ -644,14 +654,14 @@
                
                   <div class="row">
                     <div class="col-12 text-right">
-                      <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  pull-right">+ Add Stored Text</button>
+                      <!-- <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  pull-right">+ Add Stored Text</button> -->
                       <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                     </div>
                   </div>
 
 
-                  <div class="row" id="storedText" style="display:none;">
+                  <!-- <div class="row" id="storedText" style="display:none;">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label " class="col-sm-3 col-form-label">Stored Text</label>
@@ -662,7 +672,7 @@
                         </select>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="form-group row mt-1">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>

@@ -36,7 +36,7 @@ use App\Template;
 use App\User;
 use App\StoreText;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
-
+use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
 
 class QuoteController extends Controller
@@ -270,7 +270,15 @@ class QuoteController extends Controller
                     $quoteDetail['image'] = $qu_details['image'];
                 }
 
-                QuoteDetail::create($quoteDetail);
+                $qd = QuoteDetail::create($quoteDetail);
+                if(isset($qu_details['stored_text'])){
+                    QuoteDetailStoredText::create([
+                        'quote_detail_id' => $qd->id,
+                        'stored_text' => $qu_details['stored_text']['text'],
+                        'action_date' => $qu_details['stored_text']['date']
+                    ]);
+                }
+
             }
         }
        //pax data 
@@ -346,7 +354,14 @@ class QuoteController extends Controller
                 if(isset($qu_details['image']) && !empty($qu_details['image'])){
                     $quoteDetail['image'] = $qu_details['image'];
                 }
-                QuoteDetail::create($quoteDetail);
+                $qd = QuoteDetail::create($quoteDetail);
+                if(isset($qu_details['stored_text'])){
+                    QuoteDetailStoredText::create([
+                        'quote_detail_id'   => $qd->id,
+                        'stored_text'       => $qu_details['stored_text']['text'],
+                        'action_date'       => $qu_details['stored_text']['date']
+                    ]);
+                }
             }
         }
         
