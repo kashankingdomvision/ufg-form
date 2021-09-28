@@ -7,6 +7,7 @@ use App\Http\Requests\TemplateRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
+use App\Http\Helper;
 use App\BookingType;
 use App\BookingMethod;
 use App\Category;
@@ -84,12 +85,13 @@ class TemplateController extends Controller
         });
       }
       
-      if($request->has('date') && !empty($request->date['from']) || !empty($request->date['to'])){
-        $template = $template->where(function($query) use($request){
-            $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->date['from'])->format('Y-m-d'))
-            ->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->date['to'])->format('Y-m-d'));
-        });
-      }
+      $template->when($request->dates, function ($query) use ($request) {
+
+        $dates = Helper::dates($request->dates);
+
+        $query->whereDate('created_at', '>=', $dates->start_date);
+        $query->whereDate('created_at', '<=', $dates->end_date);
+      });
     }
     
     $data['templates'] = $template->paginate($this->pagination);
