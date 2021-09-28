@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
+use App\Http\Helper;
 use App\Booking;
 use App\Brand;
 use App\Category;
@@ -35,47 +36,39 @@ class ReportController extends Controller
 
         $user = User::orderBy('id', 'ASC');
 
-        if (!empty($request->all())) {
+        $user->when($request->role, function ($query) use ($request) {
+            return $query->whereHas('getRole', function ($query) use($request) {
+                $query->where('id', $request->role);
+            });
+        });
 
+        $user->when($request->currency, function ($query) use ($request) {
+            return $query->whereHas('getCurrency', function ($query) use($request) {
+                $query->where('id', $request->currency);
+            });
+        });
+        
+        $user->when($request->brand, function ($query) use ($request) {
+            return $query->whereHas('getBrand', function ($query) use($request) {
+                $query->where('id', $request->brand);
+            });
+        });
 
-            if ($request->has('role') && !empty($request->role)) {
-                $user = $user->whereHas('getRole', function ($q) use($request) {
-                    $q->where('id', $request->role);
-                });
-            }
+        $user->when($request->month, function ($query) use ($request) {
+            return $query->whereMonth('created_at', $request->month);
+        });
 
-            if ($request->has('currency') && !empty($request->currency)) {
-                $user = $user->whereHas('getCurrency', function ($q) use($request) {
-                    $q->where('id', $request->currency);
-                });
-            }
+        $user->when($request->year, function ($query) use ($request) {
+            return $query->whereYear('created_at', $request->year);
+        });
 
-            if ($request->has('brand') && !empty($request->brand)) {
-                $user = $user->whereHas('getBrand', function ($q) use($request) {
-                    $q->where('id', $request->brand);
-                });
-            }
+        $user->when($request->dates, function ($query) use ($request) {
 
-            if($request->has('dates') && !empty($request->dates)){
+            $dates = Helper::dates($request->dates);
 
-                $dates = explode ("-", $request->dates);
-
-                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
-                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
-
-                $user->whereDate('created_at', '>=', $start_date);
-                $user->whereDate('created_at', '<=', $end_date);
-            }
-
-            if($request->has('month') && !empty($request->month)){
-                $user = $user->whereMonth('created_at', $request->month);
-            }
-
-            if($request->has('year') && !empty($request->year)){
-                $user = $user->whereYear('created_at', $request->year);
-            }
-
-        }
+            $query->whereDate('created_at', '>=', $dates->start_date);
+            $query->whereDate('created_at', '<=', $dates->end_date);
+        });
 
         $data['users'] = $user->get();
 

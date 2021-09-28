@@ -84,7 +84,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if(isset($customers) && !empty($customers))
+                                            @if($customers && $customers->count())
                                                 @foreach ($customers as $key => $value)
                                                 <tr>
                                                     <td>{{ $value['name'] }} </td>

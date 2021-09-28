@@ -32,7 +32,7 @@
         
         <x-page-filters :route="route('templates.index')">
             <div class="row">
-                <div class="col">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label>Season</label>
                         <select class="form-control select2single" name="season">
@@ -43,7 +43,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label>Created By</label>
                         <select class="form-control select2single" name="created_by">
@@ -54,26 +54,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="col">
-                    <label><u> Created Date</u></label>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>From</label>
-                                <input type="text" value="{{ (request()->get('date'))?request()->get('date')['from']: null }}" name="date[from]" class="form-control datepicker" autocomplete="off" >
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <label>To</label>
-                                <input type="text" value="{{ (request()->get('date'))? request()->get('date')['to']: null }}" name="date[to]" class="form-control datepicker" autocomplete="off" >
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Date Range</label>
+                        <input type="text" name="dates" value="{{ request()->get('dates') }}" autocomplete="off" class="form-control date-range-picker">
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-3">
                     <div class="form-group">
                         <label>Search</label>
                         <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Template Name and season">

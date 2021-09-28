@@ -123,17 +123,20 @@ class BookingController extends Controller
                 });
             }      
             
-            if($request->has('created_date')){
-                $booking->where(function($query) use($request){
-                    if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-                        $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-                    }
-                    if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-                        $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-                    }
-                });
-            }
+            $booking->when($request->dates, function ($query) use ($request) {
+                $dates = Helper::dates($request->dates);
+
+                $query->whereDate('created_at', '>=', $dates->start_date);
+                $query->whereDate('created_at', '<=', $dates->end_date);
+            });
+
+            $booking->when($request->status, function ($query) use ($request) {
+                $query->where('booking_status', $request->status);
+            });
+      
         }
+
+
         
         $data['bookings']            = $booking->paginate($this->pagination);
         $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();

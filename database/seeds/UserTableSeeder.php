@@ -25,6 +25,8 @@ class UserTableSeeder extends Seeder
                 'email'             =>  'kashan.kingdomvision@gmail.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
 
             [
@@ -37,6 +39,8 @@ class UserTableSeeder extends Seeder
                 'email'             =>  'tabseer@gmail.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
 
             [
@@ -49,6 +53,8 @@ class UserTableSeeder extends Seeder
                 'email'             =>  'm.tabraizbukhari@gmail.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
             
             [
@@ -61,6 +67,8 @@ class UserTableSeeder extends Seeder
                 'email'             =>  'louisfonis@gmail.com',
                 'email_verified_at' =>  now(),
                 'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
         ];
 

@@ -26,17 +26,17 @@
     
     <x-page-filters :route="route('bookings.index')">
         <div class="row">
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Client Type</label>
                     <select class="form-control select2single" name="client_type">
                         <option value="" selected>Select Client Type</option>
-                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client')? 'selected' : null) }} value="client" >Client</option>
-                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency')? 'selected' : null) }} value="agency" >Agency</option>
+                        <option {{ (old('client_type') == 'client')? 'selected': ((request()->get('client_type') == 'client') ? 'selected' : null) }} value="client" >Client</option>
+                        <option {{ (old('client_type') == 'agency')? 'selected': ((request()->get('client_type') == 'agency') ? 'selected' : null) }} value="agency" >Agency</option>
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Agent / Staff</label>
                     <select class="form-control select2single" name="staff">
@@ -47,7 +47,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Booking Season</label>
                     <select class="form-control select2single" name="booking_season">
@@ -58,9 +58,19 @@
                     </select>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Booking Status</label>
+                    <select class="form-control select2single" name="status">
+                        <option value="" selected>Select Status</option>
+                        <option {{ (old('search') == 'confirmed')? 'selected': ((request()->get('status') == 'confirmed')? 'selected' : null) }} value="confirmed" >Confirmed</option>
+                        <option {{ (old('search') == 'cancelled')? 'selected': ((request()->get('status') == 'cancelled')? 'selected' : null) }} value="cancelled" >Cancelled</option>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Booking Currency</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
@@ -70,7 +80,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-md-3">
                 <div class="form-group"> 
                     <label>Brand</label>
                     <select class="form-control select2-multiple "  data-placeholder="Select Brands" multiple name="brand[]">
@@ -80,35 +90,23 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <hr />
-        <div class="row">
-            <div class="col">
-                <label><u> Created Date</u></label>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label>From</label>
-                            <input type="text" value="{{ (request()->get('created_date'))?request()->get('created_date')['from']: null }}" name="created_date[from]" class="form-control datepicker" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label>To</label>
-                            <input type="text" value="{{ (request()->get('created_date'))? request()->get('created_date')['to']: null }}" name="created_date[to]" class="form-control datepicker" autocomplete="off">
-                        </div>
-                    </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Date Range</label>
+                    <input type="text" name="dates" value="{{ request()->get('dates') }}" autocomplete="off" class="form-control date-range-picker">
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+
+            <div class="col-md-3">
                 <div class="form-group">
                     <label>Search</label>
                     <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search by Client Name, Zoho Ref, Quote Ref, Email Address">
                 </div>
             </div>
+
         </div>
+       
     </x-page-filters>
     
     <section class="content">
