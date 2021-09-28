@@ -11,10 +11,10 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
+var BASEURL = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
  
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
@@ -133,11 +133,11 @@ $(document).ready(function($) {
                 var season_end_date = new Date($season.find(':selected').data('end'));
                 if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
                     if (key != null) {
-
                         $('.bookingDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
                     } else {
                         // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
@@ -1606,6 +1606,7 @@ $(document).ready(function($) {
                 callLaravelFileManger();
                 datepickerReset(1);
                 calltextEditorSummerNote('#quote_' + qleng + '_service_details');
+                calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
                 reinitializedDynamicFeilds();
             });
 
@@ -2169,7 +2170,7 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
                             alert('Quote created Successfully');
-                            window.location.href = REDIRECT_BASEURL + "quotes/index";
+                            // window.location.href = REDIRECT_BASEURL + "quotes/index";
                         }, 400);
                     },
                     error: function(reject) {
@@ -2411,14 +2412,7 @@ $(document).ready(function($) {
             */
 
 
-            $(document).on('click', '.addmodalforquote', function() {
-
-                var quote = jQuery(this).closest('.quote');
-                var key = quote.data('key');
-                quote.find(`.calladdmediaModal`).modal('show');
-                quote.find(`.calladdmediaModal :input`).removeAttr('disabled');
-                // jQuery('#accomadation_modal').modal('show').find('input').val('');
-            });
+       
 
             $(document).on('click', '.add-category-detail', function() {
 
@@ -3547,24 +3541,60 @@ $(document).on('click', '.QuotemediaModalClose', function () {
     jQuery('.modal').modal('hide');
 });
 
-$(document).on('click', '#add_storeText', function () {
-    var x = document.getElementById("storedText");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-        $('#selectstoretext').removeAttr('disabled');
-        console.log('show');
-        $(this).text('x Remove Stored Text')
-    } else {
-        console.log('hide');
+// $(document).on('click', '#add_storeText', function () {
+//     var x = document.getElementById("storedText");
+//     if (x.style.display === "none") {
+//         x.style.display = "block";
+//         $('#selectstoretext').removeAttr('disabled');
+//         console.log('show');
+//         $(this).text('x Remove Stored Text')
+//     } else {
+//         console.log('hide');
         
-        x.style.display = "none";
-        $(this).text('+ Add Stored Text')
-        $('#selectstoretext').attr('disabled', true);
+//         x.style.display = "none";
+//         $(this).text('+ Add Stored Text')
+//         $('#selectstoretext').attr('disabled', true);
 
-    }
-})
+//     }
+// })
 
 
 //////////// quote media modal close
+
+////////////////////// Stored Text
+
+$(document).on('change', '.selectStoredText', function() {
+
+    var slug = $(this).val();
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
+    $.ajax({
+        url: `${BASEURL}stored/${slug}/text`,
+        type: 'get',
+        dataType: "json",
+        success: function(data) {
+            console.log(key);
+            var id ='#quote_'+key+'_stored_text';
+            setTextEditorValue(id, data);
+        },
+        error: function(reject) {
+            alert(reject);
+        },
+    });
+
+});
+
+$(document).on('click', '.addmodalforquote', function() {
+
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
+    var target = '.'+$(this).data('show');
+    console.log(target);
+    quote.find(target).modal('show');
+    quote.find(target+':input').removeAttr('disabled');
+    // jQuery('#accomadation_modal').modal('show').find('input').val('');
+});
+
+/////////////////// Stored Text End
 
 });

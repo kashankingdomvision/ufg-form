@@ -19,6 +19,7 @@ use App\Season;
 use App\Supplier;
 use App\Template;
 use App\User;
+use App\StoreText;
 
 class ResponseController extends Controller
 {
@@ -315,5 +316,11 @@ class ResponseController extends Controller
         $respons['message'] = 'Records Status Updated Successfully !!';
         $respons['status']  = true;
         return response()->json($respons);
+    }
+
+    public function getStoredText($slug)
+    {
+        $store = StoreText::where('slug', $slug)->firstOrFail()->description;
+        return response()->json($store);
     }
 }

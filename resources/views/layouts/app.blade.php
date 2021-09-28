@@ -65,6 +65,12 @@
                     }
                 }, 'code', val);
             }
+
+        function setTextEditorValue(id, Text) {
+            // $(id).summernote('destroy');
+            // $('.note-editor:last').remove();
+            $(id).summernote('code', Text);
+        }
     </script>
 @endauth
 
