@@ -21,11 +21,14 @@
 
         // set or change the preview image src
         items.forEach(function (item) {
-          console.log(item.thumb_url);
           target_preview.append(
-            $('<img>').css('height', '5rem').attr('src', item.thumb_url)
+            $('<img>').css('height', '5rem').attr('src', item.thumb_url),
+            //  remove image work
+            // $(`<button type="button" class="btn btn-sm remove-img">X</button>`).after('<img>')
           );
         });
+        //  remove image work
+        // console.log("working right here");
 
         // trigger change event
         target_preview.trigger('change');

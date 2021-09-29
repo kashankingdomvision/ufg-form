@@ -82,6 +82,11 @@
         $('.fileManger').filemanager('image', {prefix: route_prefix});
     }
 
+    // remove image work
+    // $(document).on('dblclick', '.square', function(e) {
+    //     console.log("sdsd");
+    // });
+
     callLaravelFileManger();
 </script>
 
