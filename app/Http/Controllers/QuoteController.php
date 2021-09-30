@@ -22,6 +22,7 @@ use App\Category;
 use App\Commission;
 use App\Country;
 use App\CurrencyConversion;
+use App\Group;
 use App\HolidayType;
 use App\Product;
 use App\QuoteUpdateDetail;
@@ -162,6 +163,7 @@ class QuoteController extends Controller
             'quote_title'                       =>  $request->quote_title,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
+            'group_id'                          =>  $request->group_id,
             'user_id'                           =>  Auth::id(),
             'season_id'                         =>  $request->season_id,
             'brand_id'                          =>  $request->brand_id,
@@ -258,6 +260,8 @@ class QuoteController extends Controller
         $data['quote_id']         = Helper::getQuoteID();
         $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('id','ASC')->get();
+
         return view('quotes.create', $data);
     }
     
@@ -324,6 +328,7 @@ class QuoteController extends Controller
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('id','ASC')->get();
 
         return view('quotes.edit',$data);
     }
@@ -414,6 +419,7 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('id','ASC')->get();
 
         if($type != NULL){
             $data['type'] = $type;
@@ -520,6 +526,8 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('id','ASC')->get();
+        
         return view('quotes.show',$data);
     }
     

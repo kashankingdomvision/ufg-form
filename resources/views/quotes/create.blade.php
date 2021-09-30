@@ -140,7 +140,20 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Group <span style="color:red">*</span></label>
+                        <select name="group_id" id="group_id" class="form-control select2single group-id">
+                          <option selected value="" >Select Group </option>
+                          @foreach ($groups as $group)
+                            <option {{ (Auth::user()->group_id == $group->id)? 'selected': '' }} value="{{ $group->id }}">{{ $group->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>

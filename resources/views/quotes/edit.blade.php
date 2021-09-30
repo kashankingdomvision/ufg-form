@@ -205,6 +205,19 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>Group  <span style="color:red">*</span></label>
+                        <select name="group_id" id="group_id" class="form-control select2single group_id">
+                          <option value="">Select Group </option>
+                          @foreach ($groups as $group)
+                            <option value="{{ $group->id }}" {{  $group->id == $quote->group_id ? 'selected' : '' }}>{{ $group->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
                         <select name="brand_id" id="brand_id" class="form-control  select2single getBrandtoHoliday  brand-id @error('brand_id') is-invalid @enderror">
                           <option value="">Select Brand</option>
