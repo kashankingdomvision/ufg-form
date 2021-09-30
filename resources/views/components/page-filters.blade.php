@@ -3,7 +3,9 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card card-default {{ (request()->has('search'))? '' : 'collapsed-card' }}">
+
+      
+                    <div class="card card-default {{ (count(request()->all()) > 0) ? '' : 'collapsed-card' }}">
                             <button type="button" class="btn btn-tool m-0 text-dark " data-card-widget="collapse">
                                 <div class="card-header">
                                 <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>

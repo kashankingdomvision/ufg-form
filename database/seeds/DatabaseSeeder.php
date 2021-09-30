@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             CommissionTableSeeder::class,
             ReferenceCredentialTableSeeder::class,
             BankTableSeeder::class,
+            GroupTableSeeder::class,
+            CommissionGroupTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }

@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Commission;
+use App\Group;
 
-class CommissionTableSeeder extends Seeder
+class GroupTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,21 +12,19 @@ class CommissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $commision_types  = [
+        $group_types  = [
             [
-                'name'       => 'Cruise',
-                // 'percentage' =>  1,
+                'name'       => 'Red',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
             [ 
-                'name'       => 'Tailormade',
-                // 'percentage' =>  1.5,
+                'name'       => 'Green',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
         ];
 
-        Commission::insert($commision_types);
+        Group::insert($group_types);
     }
 }

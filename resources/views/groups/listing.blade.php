@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('title','View Commissions')
+@section('title','View Groups')
 
 @section('content')
 <div class="content-wrapper">
@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Commission <x-add-new-button :route="route('commissions.commission.create')" /> </h4>
+            <h4>View Commission <x-add-new-button :route="route('commissions.group.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('commissions.commission.index')">
+  <x-page-filters :route="route('commissions.group.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -63,7 +63,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Commission List
+                Group List
               </h3>
             </div>
 
@@ -78,25 +78,23 @@
                         </div>
                       </th>
                       <th>Name</th>
-                      {{-- <th>Percentage</th> --}}
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  @if($commissions && $commissions->count())
-                    @foreach ($commissions as $commission)
+                  @if($groups && $groups->count())
+                    @foreach ($groups as $group)
                       <tr>
                         <td>
                           <div class="icheck-primary">
-                            <input type="checkbox" class="child" value="{{$commission->id}}" >
+                            <input type="checkbox" class="child" value="{{$group->id}}" >
                           </div>
                         </td>
-           
-                        <td>{{ $commission->name }}</td>
-                        {{-- <td>{{ $commission->percentage }} %</td> --}}
+                        <td>{{ $group->name }}</td>
+                   
                         <td>
-                          <form method="post" action="{{ route('commissions.commission.destroy', encrypt($commission->id)) }}">
-                            <a href="{{ route('commissions.commission.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('commissions.group.destroy', encrypt($group->id)) }}">
+                            <a href="{{ route('commissions.group.edit', encrypt($group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
@@ -115,11 +113,11 @@
               </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'commissions'])
+            @include('includes.multiple_delete',['table_name' => 'groups'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
-                {{ $commissions->links() }}
+                {{ $groups->links() }}
               </ul>
             </div>
             

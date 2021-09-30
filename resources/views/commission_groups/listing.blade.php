@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('title','View Commissions')
+@section('title','View Commission Group')
 
 @section('content')
 <div class="content-wrapper">
@@ -13,14 +13,14 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Commission <x-add-new-button :route="route('commissions.commission.create')" /> </h4>
+            <h4>View Commission <x-add-new-button :route="route('commissions.commission-group.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Setting</a></li>
-            <li class="breadcrumb-item active">Commission</li>
+            <li class="breadcrumb-item"><a>Commission Managment</a></li>
+            <li class="breadcrumb-item active">Commission Group</li>
           </ol>
         </div>
       </div>
@@ -33,14 +33,32 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('commissions.commission.index')">
+  <x-page-filters :route="route('commissions.commission-group.index')">
     <div class="row">
-      <div class="col-md-12">
-          <div class="form-group">
-              <label>Search</label>
-              <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
-          </div>
+      <div class="col">
+        <div class="form-group">
+            <label>Commission <span style="color:red">*</span></label>
+            <select class="form-control select2single" name="commission_id">
+                <option value="" selected>Select Commission</option>
+                @foreach ($commissions as $commission)
+                  <option value="{{ $commission->id }}" {{ (old('commission_id') == $commission->id )? 'selected': ((request()->get('commission_id') == $commission->id) ? 'selected' : null) }} > {{ $commission->name }}</option>
+                @endforeach
+            </select>
+        </div>
       </div>
+
+      <div class="col">
+        <div class="form-group">
+            <label>Group <span style="color:red">*</span></label>
+            <select class="form-control select2single" name="group_id">
+              <option value="" selected>Select Group</option>
+              @foreach ($groups as $group)
+                <option value="{{ $group->id }}" {{ (old('group_id') == $group->id )? 'selected': ((request()->get('group_id') == $group->id) ? 'selected' : null) }} > {{ $group->name }}</option>
+              @endforeach
+            </select>
+        </div>
+      </div>
+
     </div>
   </x-page-filters>
 
@@ -63,7 +81,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Commission List
+                Commission Groups List
               </h3>
             </div>
 
@@ -77,26 +95,29 @@
                           <input type="checkbox" class="parent">
                         </div>
                       </th>
-                      <th>Name</th>
-                      {{-- <th>Percentage</th> --}}
+                      <th>Commission Name</th>
+                      <th>Group Name</th>
+                      <th>Percentage</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  @if($commissions && $commissions->count())
-                    @foreach ($commissions as $commission)
+                  @if($commission_groups && $commission_groups->count())
+                    @foreach ($commission_groups as $commission_group)
                       <tr>
                         <td>
                           <div class="icheck-primary">
-                            <input type="checkbox" class="child" value="{{$commission->id}}" >
+                            <input type="checkbox" class="child" value="{{$commission_group->id}}" >
                           </div>
                         </td>
-           
-                        <td>{{ $commission->name }}</td>
-                        {{-- <td>{{ $commission->percentage }} %</td> --}}
+
+                        <td>{{ isset($commission_group->getCommission->name) && !empty($commission_group->getCommission->name) ? $commission_group->getCommission->name : '' }}</td>
+                        <td>{{ isset($commission_group->getGroup->name) && !empty($commission_group->getGroup->name) ? $commission_group->getGroup->name : '' }}</td>
+                        <td>{{ $commission_group->percentage }}</td>
+                       
                         <td>
-                          <form method="post" action="{{ route('commissions.commission.destroy', encrypt($commission->id)) }}">
-                            <a href="{{ route('commissions.commission.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('commissions.commission-group.destroy', encrypt($commission_group->id)) }}">
+                            <a href="{{ route('commissions.commission-group.edit', encrypt($commission_group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
@@ -104,6 +125,7 @@
                             </button>
                           </form>
                         </td>
+
                       </tr>
                     @endforeach
                   @else
@@ -115,11 +137,11 @@
               </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'commissions'])
+            @include('includes.multiple_delete',['table_name' => 'commission_groups'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
-                {{ $commissions->links() }}
+                {{ $commission_groups->links() }}
               </ul>
             </div>
             

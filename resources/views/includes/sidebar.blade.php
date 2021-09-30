@@ -192,6 +192,46 @@
                     </li>
                 @endif
 
+                <li class="nav-item {{ $route == 'commissions.commission.index' || $route == 'commissions.commission.create' || $route == 'commissions.commission.edit' || $route == 'commissions.group.index' || $route == 'commissions.group.create' || $route == 'commissions.group.edit' || $route == 'commissions.commission-group.index' || $route == 'commissions.commission-group.create' || $route == 'commissions.commission-group.edit' ? 'menu-open': '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-percentage"></i>
+                        <p>
+                            Commision Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('commissions.commission.index') }}" class="nav-link {{ $route == 'commissions.commission.index' || $route == 'commissions.commission.create' || $route == 'commissions.commission.edit' ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-percentage"></i>
+                                <p>
+                                    Commissions
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('commissions.group.index') }}" class="nav-link {{ $route == 'commissions.group.index' || $route == 'commissions.group.create' || $route == 'commissions.group.edit' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Group
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('commissions.commission-group.index') }}" class="nav-link {{ $route == 'commissions.commission-group.index' || $route == 'commissions.commission-group.create' || $route == 'commissions.commission-group.edit'  ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Commission Groups
+                                </p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
 
                 <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' || $route == 'wallets.index' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
@@ -240,7 +280,7 @@
 
 
 
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -250,44 +290,10 @@
                     </a>
                     <ul class="nav nav-treeview">
 
-                        {{-- <li class="nav-item {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'menu-open': '' }}">
-                            <a href="#" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'setting-child-active' : '' }}">
-                                <i class="fa fa-percentage nav-icon"></i>
-                                <p>
-                                    Commissions
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('setting.commissions.create') }}" class="nav-link {{ $route == 'setting.commissions.create' ? 'active' : '' }}">
-                                        <i class="fa fa-plus nav-icon"></i>
-                                        <p>Add Commision</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{ route('setting.commissions.index') }}" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.edit' ? 'active' : '' }}">
-                                        <i class="fa fa-eye nav-icon"></i>
-                                        <p>View Commision</p>
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </li> --}}
-
                         <li class="nav-item">
                             <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-cloud nav-icon"></i>
                                 <p>Seasons</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('setting.commissions.index') }}" class="nav-link {{ $route == 'setting.commissions.index' || $route == 'setting.commissions.create' || $route == 'setting.commissions.edit' ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-percentage"></i>
-                                <p>
-                                    Commissions
-                                </p>
                             </a>
                         </li>
 
