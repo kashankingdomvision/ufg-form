@@ -3242,6 +3242,16 @@ $(document).ready(function($) {
                             ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
                         </select>
                     </div>
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                        <label>Resident In</label>
+                        <select name="pax[${count}][resident_in]" class="form-control nationality-select2 resident-id">
+                            <option selected value="" >Select Resident</option>
+                            ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                        </div>
+                    </div>
                     <div class="col-md-3 mb-2">
                         <label>Bedding Preference <span class="text-danger">*</span></label> 
                         <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
@@ -3293,6 +3303,9 @@ $(document).ready(function($) {
                 const $_html = `
                         <div class="mb-1 appendCount" id="appendCount${count}">
                             <div class="row" >
+                            <div class="col-md-12">
+                                <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                            </div>
                                 <div class="col-md-3 mb-2">
                                     <label class="mainLabel">Passenger #${c} Full Name</label> 
                                     <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER FULL NAME" >
@@ -3322,6 +3335,17 @@ $(document).ready(function($) {
                                         ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
                                     </select>
                                 </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                    <label>Resident In</label>
+                                    <select name="pax[${count}][resident_in]" class="form-control nationality-select2 resident-id">
+                                        <option selected value="" >Select Resident</option>
+                                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
+                                    </div>
+                                </div>
                                 <div class="col-md-3 mb-2">
                                     <label>Bedding Preference</label> 
                                     <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
@@ -3346,9 +3370,7 @@ $(document).ready(function($) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-1 mb-2">
-                                    <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                </div>
+                               
                             </div>
                         </div>`;
                         $('#appendPaxName').append($_html);

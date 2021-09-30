@@ -430,6 +430,15 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                        <div class="col-sm-3">
+                                          <label>Resident In {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                          <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                                  <option selected value="" >Select Resident In</option>
+                                              @foreach ($countries as $country)
+                                                  <option value="{{ $country->id }}" {{ ($pax->resident_in == $country->id)? 'selected':null }}> {{ $country->name }} </option>
+                                              @endforeach
+                                          </select>
+                                        </div>
                                       <div class="col-md-3 mb-2">
                                           <label>Bedding Preference</label>
                                           <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >

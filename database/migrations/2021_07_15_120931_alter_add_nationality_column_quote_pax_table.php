@@ -15,7 +15,9 @@ class AlterAddNationalityColumnQuotePaxTable extends Migration
     {
         Schema::table('quote_pax_details', function (Blueprint $table) {
             $table->unsignedBigInteger('nationality_id')->after('quote_id')->nullable();
+            $table->unsignedBigInteger('resident_in')->after('nationality_id')->nullable();
             $table->foreign('nationality_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('resident_in')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
