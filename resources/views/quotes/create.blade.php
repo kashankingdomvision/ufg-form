@@ -89,11 +89,11 @@
                         <label>Currency Rate Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="live" class="rate-type" checked>
+                            <input type="radio" name="rate_type" value="live" class="rate-type"  {{ (Auth::user()->rate_type == 'live')? 'checked': '' }}>
                             <span>&nbsp;Live Rate</span>
                           </label>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="manual" class="rate-type">
+                            <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
                             <span>&nbsp;Manual Rate</span>
                           </label>
                         </div>
@@ -105,11 +105,11 @@
                         <label>Markup Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="itemised" class="rate-type">
+                            <input type="radio" name="markup_type" value="itemised" class="markuptype-type" {{ (Auth::user()->markup_type == 'itemised')? 'checked': '' }} >
                             <span>&nbsp;Itemised Markup </span>
                           </label>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="whole" class="rate-type">
+                            <input type="radio" name="markup_type" value="whole" class="markuptype-type" {{ (Auth::user()->markup_type == 'whole')? 'checked': '' }} >
                             <span>&nbsp;Whole Markup</span>
                           </label>
                         </div>
@@ -135,7 +135,7 @@
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option value="{{ $commission_type->id }}">{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
+                            <option {{ (Auth::user()->comission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
