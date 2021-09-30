@@ -49,6 +49,23 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} >
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
                   
                   <div class="row mb-2">
@@ -76,21 +93,6 @@
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                         <input type="text" name="tas_ref" class="form-control" value="{{ isset($quote['tas_ref']) & !empty($quote['tas_ref']) ? $quote['tas_ref'] : '' }}"  placeholder="TAS Reference Number" >
                         <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} >
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
                       </div>
                     </div>
 
