@@ -116,6 +116,20 @@
                     </div>
 
                     <div class="form-group">
+                      <label>Group </label>
+                      <select name="group_id" id="group_id" value="{{ old('group_id') }}" class="form-control select2single group-id  @error('group_id') is-invalid @enderror" >
+                        <option value="">Select Group</option>
+                        @foreach ($groups as $group)
+                          <option value="{{ $group->id }}" {{ old('group_id') == $group->id ? 'selected' : '' }}> {{ $group->name }}</option>
+                        @endforeach
+                      </select>
+
+                      @error('group_id')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div> 
+
+                    <div class="form-group">
                       <label>Default Currency</label>
                       <select name="currency" class="form-control select2single  @error('currency') is-invalid @enderror">
                         <option selected value="">Select Currency</option>

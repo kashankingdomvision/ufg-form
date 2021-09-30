@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Brand;
 use App\Currency;
 use App\Role;
+use App\Group;
 use App\User;
 use App\Commission;
 
@@ -65,10 +66,13 @@ class UserController extends Controller
             $query->where('slug', 'supervisor');
         })->orderBy('name', 'ASC')->get();
 
-        $data['roles']      = Role::orderBy('name', 'ASC')->get();
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
-        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+        $data['roles']       = Role::orderBy('name', 'ASC')->get();
+        $data['currencies']  = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['brands']      = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']  = Commission::orderBy('id', 'ASC')->get();
+        $data['groups']      = Group::orderBy('id', 'ASC')->get();
+
+
         return view('users.create', $data);
     }
 
@@ -86,6 +90,7 @@ class UserController extends Controller
             'brand_id'          => $request->brand,
             'holiday_type_id'   => $request->holiday_type,
             'comission_id'      => $request->commission,
+            'group_id'          => $request->group_id,
             'rate_type'         => $request->rate_type,
             'markup_type'       => $request->markup_type,
         ];
@@ -96,19 +101,17 @@ class UserController extends Controller
     }
     public function edit($id, $status = null)
     {
-        $data['user'] = User::findOrFail(decrypt($id));
-
+        $data['user']        = User::findOrFail(decrypt($id));
+        $data['roles']       = Role::orderBy('name', 'ASC')->get();
+        $data['currencies']  = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['brands']      = Brand::orderBy('id', 'ASC')->get();
+        $data['commisions']  = Commission::orderBy('id', 'ASC')->get();
+        $data['groups']      = Group::orderBy('id', 'ASC')->get();
         $data['supervisors'] = User::whereHas('getRole', function ($query) {
             $query->where('slug', 'supervisor');
         })->orderBy('name', 'ASC')->get();
 
-        $data['roles'] = Role::orderBy('name', 'ASC')->get();
-
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
-
-        $data['brands'] = Brand::orderBy('id', 'ASC')->get();
-        $data['status'] = $status;
-        $data['commisions']  = Commission::orderBy('id', 'ASC')->get();
+        $data['status']     = $status;
         
         return view('users.edit', $data);
 
@@ -122,15 +125,16 @@ class UserController extends Controller
         'email'     => 'required|email|unique:users,id,'.$user->id]);
 
         $data = [
-            'name'           => $request->name,
-            'email'          => $request->email,
-            'supervisor_id'  => $request->supervisor_id,
-            'currency_id'    => $request->currency,
-            'brand_id'       => $request->brand,
+            'name'            => $request->name,
+            'email'           => $request->email,
+            'supervisor_id'   => $request->supervisor_id,
+            'currency_id'     => $request->currency,
+            'brand_id'        => $request->brand,
             'holiday_type_id' => $request->holiday_type,
-            'comission_id'      => $request->commission,
-            'rate_type'         => $request->rate_type,
-            'markup_type'       => $request->markup_type,
+            'comission_id'    => $request->commission,
+            'group_id'        => $request->group_id,
+            'rate_type'       => $request->rate_type,
+            'markup_type'     => $request->markup_type,
         ];
         if($request->has('role') && $request->role){
             $data['role_id']  = $request->role;
