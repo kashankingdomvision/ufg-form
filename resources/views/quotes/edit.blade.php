@@ -416,6 +416,9 @@
                             @php $count = $paxKey + 1; @endphp
                                 <div class="mb-2 appendCount" id="appendCount{{ $count }}">
                                     <div class="row" >
+                                      <div class="col-md-12 ">
+                                          <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                        </div>
                                         <div class="col-md-3 mb-2">
                                             <label class="mainLabel" >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }} Full Name {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
                                             <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="Passsenger Name" >
@@ -446,6 +449,16 @@
                                                   <option selected value="" >Select Nationality</option>
                                               @foreach ($countries as $country)
                                                   <option value="{{ $country->id }}" {{ ($pax->nationality_id == $country->id)? 'selected':null }}> {{ $country->name }} </option>
+                                              @endforeach
+                                          </select>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                          <label>Resident In {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                          <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                                  <option selected value="" >Select Resident In</option>
+                                              @foreach ($countries as $country)
+                                                  <option value="{{ $country->id }}" {{ ($pax->resident_in == $country->id)? 'selected':null }}> {{ $country->name }} </option>
                                               @endforeach
                                           </select>
                                         </div>
@@ -482,9 +495,7 @@
                                           </div>
                                         </div>
 
-                                        <div class="col-md-1 mb-2">
-                                          <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                                        </div>
+                                       
                                     </div>
                                 </div>
                                 @endforeach

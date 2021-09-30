@@ -295,6 +295,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
                     'nationality_id'        => $pax_data['nationality_id'],
+                    'resident_in'           => $pax_data['resident_in'],
                     'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }
@@ -380,6 +381,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
                     'nationality_id'        => $pax_data['nationality_id'],
+                    'resident_in'           => $pax_data['resident_in'],
                     'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
                 ]);
             }

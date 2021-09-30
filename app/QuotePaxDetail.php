@@ -16,6 +16,7 @@ class QuotePaxDetail extends Model
         'bedding_preference',
         'dinning_preference',
         'covid_vaccinated',
+        'resident_in',
     ];
 
     public function getPassengerNationality()

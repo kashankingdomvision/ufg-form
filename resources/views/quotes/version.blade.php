@@ -346,14 +346,10 @@
                                             <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax['email'] }}" class="form-control" placeholder="EMAIL ADDRESS" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
-                                        <div class="col-sm-3">
-                                          <label>Nationality  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                          <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
-                                                  <option selected value="" >Select Nationality</option>
-                                              @foreach ($countries as $country)
-                                                  <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected':( ($pax['nationality_id'] == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
-                                              @endforeach
-                                          </select>
+                                        <div class="col-md-3 mb-2">
+                                            <label>Date Of Birth  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
+                                            <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax['date_of_birth'] }}" class="form-control" placeholder="CONTACT NUMBER" >
+                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Contact Number  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
@@ -363,10 +359,24 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 mb-2">
-                                            <label>Date Of Birth  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
-                                            <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax['date_of_birth'] }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                            <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                        
+                                        <div class="col-sm-3">
+                                          <label>Nationality  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                          <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
+                                                  <option selected value="" >Select Nationality</option>
+                                              @foreach ($countries as $country)
+                                                  <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected':( ($pax['nationality_id'] == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
+                                              @endforeach
+                                          </select>
+                                        </div>
+                                        <div class="col-sm-3">
+                                          <label>Resident In {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                          <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                                  <option selected value="" >Select Resident In</option>
+                                              @foreach ($countries as $country)
+                                                  <option value="{{ $country->id }}" {{ ($pax['resident_in'] == $country->id)? 'selected':null }}> {{ $country->name }} </option>
+                                              @endforeach
+                                          </select>
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label>Bedding Preference  {!! ($loop->first && $quote['agency'] == 1)? '<span class="text-danger">*</span>': '' !!}</label> 
