@@ -180,6 +180,7 @@ class QuoteController extends Controller
             'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
             'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->lead_passenger_contact)? $request->full_number : NULL),
             'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
+            'lead_passenger_resident'           =>  $request->lead_passenger_resident??NULL,
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,

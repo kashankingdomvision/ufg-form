@@ -324,7 +324,7 @@
                         <div class="row PassengerField {{ ($quote->agency == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Nationality <span style="color:red">*</span></label>
+                              <label>Nationality (Passport) <span style="color:red">*</span></label>
                               <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                                 <option selected value="" >Select Nationality</option>
                                 @foreach ($countries as $country)
@@ -334,6 +334,20 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Resident In</label>
+                              <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
+                                <option selected value="" >Select Resident</option>
+                                @foreach ($countries as $country)
+                                  <option value="{{ $country->id }}" {{ ($quote->lead_passenger_resident == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
                           <div class="col-sm-3">
                             <div class="form-group">
                               <label>Bedding Preferences <span style="color:red">*</span></label>

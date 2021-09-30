@@ -246,7 +246,7 @@
                       
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Date Of Birth <span style="color:red">*</span></label> 
+                            <label>Date Of Birth</label> 
                             <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
                             <span class="text-danger" role="alert"></span>
                           </div>
@@ -255,26 +255,40 @@
                       <div class="row PassengerField">
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Nationality <span style="color:red">*</span></label>
+                            <label>Nationality (Passport)</label>
                             <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                               <option selected value="" >Select Nationality</option>
                               @foreach ($countries as $country)
-                                <option value="{{ $country->id }}" {{ (old('nationality_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                <option value="{{ $country->id }}" {{ (old('lead_passsenger_nationailty_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
                               @endforeach
                             </select>
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
+
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Bedding Preferences <span style="color:red">*</span></label>
+                            <label>Resident In</label>
+                            <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
+                              <option selected value="" >Select Resident</option>
+                              @foreach ($countries as $country)
+                                <option value="{{ $country->id }}" {{ (old('lead_passsenger_resident') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                              @endforeach
+                            </select>
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label>Bedding Preferences</label>
                             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>  
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Dinning Preferences <span style="color:red">*</span></label>
+                            <label>Dinning Preferences</label>
                             <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                             <span class="text-danger" role="alert"></span>
                           </div>
