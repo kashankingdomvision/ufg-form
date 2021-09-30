@@ -180,6 +180,7 @@ class QuoteController extends Controller
             'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
             'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->lead_passenger_contact)? $request->full_number : NULL),
             'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
+            'lead_passenger_resident'           =>  $request->lead_passenger_resident??NULL,
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
@@ -195,6 +196,7 @@ class QuoteController extends Controller
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
+            'markup_type'                       =>  $request->markup_type??NULL,
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
         if($type != 'booking'){

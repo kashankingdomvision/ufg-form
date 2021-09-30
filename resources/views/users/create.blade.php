@@ -4,7 +4,15 @@
 
 @section('content')
     <div class="content-wrapper">
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
       <section class="content-header">
         <div class="container-fluid">
           <div class="row">
@@ -62,6 +70,7 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
+
                     @if(Auth::user()->hasAdmin())
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
@@ -93,6 +102,20 @@
                     </div> 
 
                     <div class="form-group">
+                      <label>Default Commision</label>
+                      <select name="commission" class="form-control select2single">
+                        <option value="">Select Commission</option>
+                        @foreach($commisions as $commision)
+                          <option value="{{ $commision->id }}">{{ $commision->name }}</option>
+                        @endforeach
+                      </select>
+
+                      @error('commission')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
+
+                    <div class="form-group">
                       <label>Default Currency</label>
                       <select name="currency" class="form-control select2single  @error('currency') is-invalid @enderror">
                         <option selected value="">Select Currency</option>
@@ -104,6 +127,34 @@
                       @error('currency')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
+                    </div>
+
+                    <div class="form-group">
+                      <label>Default Currency Rate Type</label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" value="live" class="rate-type" checked>
+                          <span>&nbsp;Live Rate</span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" value="manual" class="rate-type">
+                          <span>&nbsp;Manual Rate</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Markup Type</label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="itemised" class="rate-type">
+                          <span>&nbsp;Itemised Markup </span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="whole" class="rate-type">
+                          <span>&nbsp;Whole Markup</span>
+                        </label>
+                      </div>
                     </div>
 
                     <div class="form-group">
@@ -130,12 +181,11 @@
                           @endforeach
                         @endif      
                       </select>
-
                       @error('holiday_type')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
-
+                    
                   </div>
 
                   <div class="card-footer">

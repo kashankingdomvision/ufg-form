@@ -16,6 +16,9 @@
         </div>
           <div class="previewId m-3 d-flex align-items-start " id="quote_{{ $val_ }}_holder" >
             <img src="{{ (isset($q_detail['image']) && $q_detail['image'] != null)? $q_detail['image'] : NULL }}" class="img-fluid" />
+            @if(isset($q_detail['image']) && $q_detail['image'] != null)
+            <button type="button" class="btn btn-sm remove-img">X</button>
+            @endif
           </div>  
           <div class="input-group mt-2">
             <div class="form-group">

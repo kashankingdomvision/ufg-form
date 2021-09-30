@@ -38,6 +38,7 @@ class CreateQuotesTable extends Migration
             $table->string('lead_passenger_dbo')->nullable();
             $table->enum('lead_passenger_covid_vaccinated',[0, 1])->default(0);
             $table->unsignedBigInteger('lead_passsenger_nationailty_id')->nullable();
+            $table->unsignedBigInteger('lead_passenger_resident')->nullable();
             $table->string('lead_passenger_dinning_preference')->nullable();
             $table->string('lead_passenger_bedding_preference')->nullable();
             $table->bigInteger('pax_no')->default(0);
@@ -51,6 +52,7 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('booking_status',['quote','booked','cancelled'])->default('quote');
             $table->enum('is_archive',[1,0])->default(0);
             $table->dateTime('booking_date')->nullable();

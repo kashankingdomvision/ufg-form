@@ -96,6 +96,22 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
+                        <label>Markup Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'itemised')? 'checked': NULL }} value="itemised" class="rate-type">
+                            <span>&nbsp;Itemised Markup </span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'whole')? 'checked': NULL }} value="whole" class="rate-type">
+                            <span>&nbsp;Whole Markup</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
                         <select name="sale_person_id" id="sale_person_id" class="form-control  select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
@@ -245,7 +261,7 @@
                         <div class="row PassengerField {{ ($quote['agency'] == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Nationality <span style="color:red">*</span></label>
+                              <label>Nationality (Passport)<span style="color:red">*</span></label>
                               <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                                 <option selected value="" >Select Nationality</option>
                                 @foreach ($countries as $country)
@@ -255,6 +271,19 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Resident In</label>
+                              <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
+                                <option selected value="" >Select Resident</option>
+                                @foreach ($countries as $country)
+                                  <option value="{{ $country->id }}" {{ ($quote['lead_passenger_resident'] == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
                           <div class="col-sm-3">
                             <div class="form-group">
                               <label>Dinning Preferences <span style="color:red">*</span></label>
