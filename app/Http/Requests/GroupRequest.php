@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommissionRequest extends FormRequest
+class GroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,6 @@ class CommissionRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            // 'percentage' => 'required'
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,8 +20,7 @@ class CommissionController extends Controller
         $commission = Commission::orderBy('id', 'ASC');
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
-                $commission->where('name', 'like', '%'.$request->search.'%')
-                ->orWhere('percentage', 'like', '%'.$request->search.'%');
+                $commission->where('name', 'like', '%'.$request->search.'%');
             }
         }
         $data['commissions'] = $commission->paginate($this->pagination);
@@ -47,7 +46,7 @@ class CommissionController extends Controller
     public function store(CommissionRequest $request)
     {
         Commission::create($request->all());
-        return redirect()->route('setting.commissions.index')->with('success_message', 'Commission created successfully'); 
+        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission created successfully'); 
     }
 
 
@@ -73,7 +72,7 @@ class CommissionController extends Controller
     public function update(CommissionRequest $request, $id)
     {
         Commission::findOrFail(decrypt($id))->update($request->all());
-        return redirect()->route('setting.commissions.index')->with('success_message', 'Commission updated successfully'); 
+        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission updated successfully'); 
     }
 
     /**
@@ -85,6 +84,6 @@ class CommissionController extends Controller
     public function destroy($id)
     {
         Commission::destroy(decrypt($id));
-        return redirect()->route('setting.commissions.index')->with('success_message', 'Commission deleted successfully'); 
+        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission deleted successfully'); 
     }
 }

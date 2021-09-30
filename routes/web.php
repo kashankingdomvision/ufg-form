@@ -156,6 +156,32 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*
     |--------------------------------------------------------------------------
+    | Commission Manangement
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group(['prefix' => 'commissions', 'as' => 'commissions.'], function () {
+
+        /* Commsisions */
+        Route::resource('commission', 'CommissionController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
+        /* Groups */
+        Route::resource('group', 'GroupController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
+        /* Commission Group */
+        Route::resource('commission-group', 'CommissionGroupController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+    
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Users Manangement
     |--------------------------------------------------------------------------
     */
@@ -286,11 +312,7 @@ Route::group(['middleware' => ['auth']], function(){
 			'index', 'edit', 'update'
 		]]);
 
-        /* Commsisions */
-        Route::resource('commissions', 'SettingControllers\CommissionController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
-
+ 
 	});
 
 

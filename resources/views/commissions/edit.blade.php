@@ -33,7 +33,7 @@
                 <h3 class="card-title text-center">Commissions Form</h3>
               </div>
 
-              <form action="{{ route('setting.commissions.update', encrypt($commission->id)) }}" method="POST">
+              <form action="{{ route('commissions.commission.update', encrypt($commission->id)) }}" method="POST">
                 @csrf @method('put')
 
                 <div class="card-body">
@@ -46,19 +46,20 @@
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                   </div>
-                  <div class="form-group">
+
+                  {{-- <div class="form-group">
                     <label>Percentage % <span style="color:red">*</span></label>
                     <input type="number" name="percentage" value="{{ $commission->percentage }}" class="form-control @error('percentage') is-invalid @enderror" placeholder="Commission Percentage %" required>
 
                     @error('percentage')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                  </div>
+                  </div> --}}
 
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                  <a href="{{ route('setting.commissions.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                  <a href="{{ route('commissions.commission.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                   
                 </div>
 

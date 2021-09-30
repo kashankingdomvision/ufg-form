@@ -43,7 +43,7 @@
               <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
                   
-                  <div class="row">
+                  <div class="row mb-2">
                     <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
@@ -51,9 +51,22 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                  </div>
-                  <div class="row mb-2">
-                  
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" value="live" class="rate-type"  {{ (Auth::user()->rate_type == 'live')? 'checked': '' }}>
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
 
                     <div class="col-sm-6"> 
                       <label>Zoho Reference <span style="color:red">*</span></label>
@@ -84,21 +97,7 @@
                       </div>
                     </div>
                     
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="live" class="rate-type"  {{ (Auth::user()->rate_type == 'live')? 'checked': '' }}>
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
+
 
                     <div class="col-sm-6">
                       <div class="form-group">
