@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('rate_type', ['live' , 'manual']);
+            $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->rememberToken();
             $table->integer('is_login')->unsigned()->default(0);
             $table->timestamps();

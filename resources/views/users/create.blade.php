@@ -144,6 +144,20 @@
                     </div>
 
                     <div class="form-group">
+                      <label>Markup Type</label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="itemised" class="rate-type">
+                          <span>&nbsp;Itemised Markup </span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="whole" class="rate-type">
+                          <span>&nbsp;Whole Markup</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label>Default Brands</label>
                       <select name="brand" class="form-control select2single getBrandtoHoliday @error('brand') is-invalid @enderror">
                         <option value="">Select Brands</option>

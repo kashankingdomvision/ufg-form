@@ -87,6 +87,7 @@ class UserController extends Controller
             'holiday_type_id'   => $request->holiday_type,
             'comission_id'      => $request->commission,
             'rate_type'         => $request->rate_type,
+            'markup_type'       => $request->markup_type,
         ];
 
         User::create($data);
@@ -129,6 +130,7 @@ class UserController extends Controller
             'holiday_type_id' => $request->holiday_type,
             'comission_id'      => $request->commission,
             'rate_type'         => $request->rate_type,
+            'markup_type'       => $request->markup_type,
         ];
         if($request->has('role') && $request->role){
             $data['role_id']  = $request->role;

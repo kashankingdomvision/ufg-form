@@ -140,6 +140,20 @@
                     </div>
 
                     <div class="form-group">
+                      <label>Markup Type</label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="itemised" {{($user->markup_type == 'itemised')? 'checked': ''}} class="rate-type">
+                          <span>&nbsp;Itemised Markup </span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" value="whole" {{($user->markup_type == 'whole')? 'checked': ''}} class="rate-type">
+                          <span>&nbsp;Whole Markup</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label>Default Brands</label>
                       <select class="form-control select2single getBrandtoHoliday @error('brand') is-invalid @enderror" name="brand">
                         <option value="">Select Brands</option>
