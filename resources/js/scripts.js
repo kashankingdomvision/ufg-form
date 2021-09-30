@@ -3542,14 +3542,16 @@ $(document).on('click', '.QuotemediaModalClose', function () {
 });
 
 // remove image work
-// $(document).on('click', '.remove-img', function () {
+$(document).on('click', '.remove-img', function () {
 
-//     console.log('sadas');
-//     // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
-//     $(this).closest('.input-group').find('.image').val("");
-//     // $(this).parent().html(`<img src="" class="img-fluid">`);
-//     // console.log($(this).closest('.modal-body').find('.image').html());
-// });
+    console.log('sadas');
+    // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).parent().html(`<img src="" class="img-fluid">`);
+
+
+    // console.log($(this).closest('.modal-body').find('.image').html());
+});
 
 // $(document).on('click', '#add_storeText', function () {
 //     var x = document.getElementById("storedText");

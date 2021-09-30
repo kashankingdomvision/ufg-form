@@ -46946,9 +46946,8 @@ module.exports = function(module) {
         target_preview.html(''); // set or change the preview image src
 
         items.forEach(function (item) {
-          target_preview.append($('<img>').css('height', '5rem').attr('src', item.thumb_url) //  remove image work
-          // $(`<button type="button" class="btn btn-sm remove-img">X</button>`).after('<img>')
-          );
+          target_preview.append($('<img>').css('height', '6rem').attr('src', item.thumb_url), //  remove image work
+          $("<button type=\"button\" class=\"btn btn-sm remove-img\">X</button>").after('<img>'));
         }); //  remove image work
         // console.log("working right here");
         // trigger change event
@@ -50012,14 +50011,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(this).closest('.modal-body').children('.previewId').find('img').remove();
     jQuery('.modal').modal('hide');
   }); // remove image work
-  // $(document).on('click', '.remove-img', function () {
-  //     console.log('sadas');
-  //     // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
-  //     $(this).closest('.input-group').find('.image').val("");
-  //     // $(this).parent().html(`<img src="" class="img-fluid">`);
-  //     // console.log($(this).closest('.modal-body').find('.image').html());
-  // });
-  // $(document).on('click', '#add_storeText', function () {
+
+  $(document).on('click', '.remove-img', function () {
+    console.log('sadas'); // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
+
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).parent().html("<img src=\"\" class=\"img-fluid\">"); // console.log($(this).closest('.modal-body').find('.image').html());
+  }); // $(document).on('click', '#add_storeText', function () {
   //     var x = document.getElementById("storedText");
   //     if (x.style.display === "none") {
   //         x.style.display = "block";
