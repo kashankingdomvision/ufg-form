@@ -4,7 +4,15 @@
 
 @section('content')
     <div class="content-wrapper">
-
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
       <section class="content-header">
         <div class="container-fluid">
           <div class="row">
@@ -90,6 +98,20 @@
                     </div> 
 
                     <div class="form-group">
+                      <label>Default Commision</label>
+                      <select name="commission" class="form-control select2single">
+                        <option value="">Select Commission </option>
+                        @foreach($commisions as $commision)
+                          <option {{ (old('commission') == $commision->id) || ($user->comission_id == $commision->id) ? 'selected' : null }} value="{{ $commision->id }}">{{ $commision->name }}</option>
+                        @endforeach
+                      </select>
+
+                      @error('commission')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
+
+                    <div class="form-group">
                       <label>Default Currency</label>
                       <select class="form-control select2single @error('currency') is-invalid @enderror" name="currency">
                         <option selected value="">Select Currency</option>
@@ -101,6 +123,20 @@
                       @error('currency')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
+                    </div>
+
+                    <div class="form-group">
+                      <label>Default Currency Rate Type</label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" value="live" class="rate-type" {{($user->rate_type == 'live')? 'checked': ''}} >
+                          <span>&nbsp;Live Rate</span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" value="manual" class="rate-type" {{($user->rate_type == 'manual')? 'checked': ''}}>
+                          <span>&nbsp;Manual Rate</span>
+                        </label>
+                      </div>
                     </div>
 
                     <div class="form-group">

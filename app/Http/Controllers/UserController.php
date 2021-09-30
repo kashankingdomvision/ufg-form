@@ -9,6 +9,7 @@ use App\Brand;
 use App\Currency;
 use App\Role;
 use App\User;
+use App\Commission;
 
 class UserController extends Controller
 {
@@ -67,7 +68,7 @@ class UserController extends Controller
         $data['roles']      = Role::orderBy('name', 'ASC')->get();
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
         $data['brands']     = Brand::orderBy('id', 'ASC')->get();
-
+        $data['commisions']  = Commission::orderBy('id', 'ASC')->get();
         return view('users.create', $data);
     }
 
@@ -76,14 +77,16 @@ class UserController extends Controller
         $request->validate(['password' => 'required|min:8', 'email' => 'unique:users']);
 
         $data = [
-            'name'           => $request->name,
-            'email'          => $request->email,
-            'role_id'        => $request->role,
-            'password'       => Hash::make($request->password),
-            'supervisor_id'  => $request->supervisor_id,
-            'currency_id'    => $request->currency,
-            'brand_id'       => $request->brand,
-            'holiday_type_id' => $request->holiday_type,
+            'name'              => $request->name,
+            'email'             => $request->email,
+            'role_id'           => $request->role,
+            'password'          => Hash::make($request->password),
+            'supervisor_id'     => $request->supervisor_id,
+            'currency_id'       => $request->currency,
+            'brand_id'          => $request->brand,
+            'holiday_type_id'   => $request->holiday_type,
+            'comission_id'      => $request->commission,
+            'rate_type'         => $request->rate_type,
         ];
 
         User::create($data);
@@ -104,6 +107,7 @@ class UserController extends Controller
 
         $data['brands'] = Brand::orderBy('id', 'ASC')->get();
         $data['status'] = $status;
+        $data['commisions']  = Commission::orderBy('id', 'ASC')->get();
         
         return view('users.edit', $data);
 
@@ -123,6 +127,8 @@ class UserController extends Controller
             'currency_id'    => $request->currency,
             'brand_id'       => $request->brand,
             'holiday_type_id' => $request->holiday_type,
+            'comission_id'      => $request->commission,
+            'rate_type'         => $request->rate_type,
         ];
         if($request->has('role') && $request->role){
             $data['role_id']  = $request->role;
