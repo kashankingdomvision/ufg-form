@@ -134,7 +134,7 @@
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option {{ (Auth::user()->comission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} ({{ $commission_type->percentage.' %' }})</option>
+                            <option {{ (Auth::user()->comission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
