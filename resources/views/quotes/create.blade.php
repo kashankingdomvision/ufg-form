@@ -452,7 +452,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                             <div class="form-group">
                               <label>Supervisor</label>
                               <select name="quote[0][supervisor_id]" data-name="supervisor_id" id="quote_0_supervisor_id" class="form-control select2single supervisor-id @error('supervisor_id') is-invalid @enderror">
@@ -466,9 +466,9 @@
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                               @enderror
                             </div>
-                          </div>
+                          </div> --}}
 
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                             <div class="form-group">
                               <label>Booking Date</label>
                               <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_date]" data-name="booking_date" id="quote_0_booking_date"  class="form-control booking-date datepicker  bookingDate" autocomplete="off" >
@@ -481,16 +481,16 @@
                               <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" autocomplete="off">
                               <span class="text-danger" role="alert"></span>
                             </div>
-                          </div>
+                          </div> --}}
 
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                             <div class="form-group">
                               <label>Booking Reference</label>
                               <input type="text" name="quote[0][booking_reference]" data-name="booking_refrence" id="quote_0_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
                             </div>
-                          </div>
+                          </div> --}}
 
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                             <div class="form-group">
                               <label>Booking Method</label>
                               <select name="quote[0][booking_method_id]" data-name="booking_method_id" id="quote_0_booking_method_id" class="form-control select2single booking-method-id @error('booking_method_id') is-invalid @enderror">
@@ -504,9 +504,9 @@
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                               @enderror
                             </div>
-                          </div>
+                          </div> --}}
 
-                          <div class="col-sm-2">
+                          {{-- <div class="col-sm-2">
                             <div class="form-group">
                               <label>Booked By</label>
                               <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control select2single booked-by-id @error('booked_by_id') is-invalid @enderror">
@@ -519,7 +519,7 @@
                                 <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                               @enderror
                             </div>
-                          </div>
+                          </div> --}}
 
                           <div class="col-sm-2">
                             <div class="form-group">
@@ -653,7 +653,7 @@
                             </div>
                           </div>
 
-                          @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                          {{-- @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                             <div class="col-sm-2 d-flex justify-content-center">
                               <div class="form-group">
                                 <label>Added in Sage </label>
@@ -666,7 +666,7 @@
                                 </div>
                               </div>
                             </div>
-                          @endif
+                          @endif --}}
 
                           <div class="col-sm-2">
                             <div class="form-group">

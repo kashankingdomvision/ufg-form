@@ -575,7 +575,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supervisor</label>
                                   <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control  select2single  supervisor-id @error('supervisor_id') is-invalid @enderror">
@@ -589,31 +589,31 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Date</label>
                                   <input type="text" value="{{ $q_detail->booking_date }}" name="quote[{{ $key }}][booking_date]" autocomplete="off" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" placeholder="Booking Date">
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Due Date <span style="color:red">*</span></label>
                                   <input type="text" value="{{ $q_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" autocomplete="off" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date" autocomplete="off">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Reference</label>
                                   <input type="text" value="{{ $q_detail->booking_reference }}" name="quote[{{ $key }}][booking_reference]" data-name="booking_refrence" id="quote_{{ $key }}_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Method</label>
                                   <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control select2single booking-method-id @error('booking_method_id') is-invalid @enderror">
@@ -627,9 +627,9 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booked By</label>
                                   
@@ -644,7 +644,7 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
                               <div class="col-sm-2">
                                 <div class="form-group">
@@ -778,7 +778,7 @@
                                 </div>
                               </div>
 
-                              @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                              {{-- @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                               <div class="col-sm-2 d-flex justify-content-center">
                                 <div class="form-group">
                                     <label>Added in Sage</label>
@@ -792,7 +792,7 @@
                                     </div>
                                 </div>
                               </div>
-                              @endif
+                              @endif --}}
         
                               <div class="col-sm-2">
                                 <div class="form-group">

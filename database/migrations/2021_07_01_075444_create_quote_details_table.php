@@ -22,12 +22,12 @@ class CreateQuoteDetailsTable extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->string('product_id')->nullable();
-            $table->unsignedBigInteger('supervisor_id')->nullable();
-            $table->date('booking_date')->nullable();
-            $table->date('booking_due_date')->nullable();
-            $table->string('booking_reference')->nullable();
-            $table->unsignedBigInteger('booking_method_id')->nullable();
-            $table->unsignedBigInteger('booked_by_id')->nullable();
+            // $table->unsignedBigInteger('supervisor_id')->nullable();
+            // $table->date('booking_date')->nullable();
+            // $table->date('booking_due_date')->nullable();
+            // $table->string('booking_reference')->nullable();
+            // $table->unsignedBigInteger('booking_method_id')->nullable();
+            // $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
             $table->double('estimated_cost')->nullable();
@@ -38,7 +38,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->double('estimated_cost_bc')->nullable();
             $table->double('markup_amount_bc')->nullable();
             $table->double('selling_price_bc')->nullable();
-            $table->enum('added_in_sage', [0, 1])->default(0);
+            // $table->enum('added_in_sage', [0, 1])->default(0);
             $table->text('service_details')->nullable();
             $table->text('comments')->nullable();
             $table->string('image')->nullable();
