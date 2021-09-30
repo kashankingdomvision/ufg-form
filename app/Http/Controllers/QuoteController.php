@@ -196,6 +196,7 @@ class QuoteController extends Controller
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
+            'markup_type'                       =>  $request->markup_type??NULL,
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
         if($type != 'booking'){

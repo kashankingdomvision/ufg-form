@@ -52,6 +52,7 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('booking_status',['quote','booked','cancelled'])->default('quote');
             $table->enum('is_archive',[1,0])->default(0);
             $table->dateTime('booking_date')->nullable();

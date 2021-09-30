@@ -59,6 +59,7 @@ class QuoteRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency' => 'required',
             'quote.*.markup_amount_in_booking_currency' => 'required',
             'quote_title'                               => 'required',
+            'markup_type'                               => 'required',
         ];
     }
 

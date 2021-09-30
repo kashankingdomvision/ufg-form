@@ -55,6 +55,7 @@ class Quote extends Model
         'revelant_quote',
         'transfer',
         'stored_text',
+        'markup_type',
     ];
     
     public function getUser()

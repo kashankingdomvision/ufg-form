@@ -161,6 +161,21 @@
                       </div>
                     </div>
                     
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Markup Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'itemised')? 'checked': NULL }} value="itemised" class="rate-type">
+                            <span>&nbsp;Itemised Markup </span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'whole')? 'checked': NULL }} value="whole" class="rate-type">
+                            <span>&nbsp;Whole Markup</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                     
                     <div class="col-sm-6">
                       <div class="form-group">
