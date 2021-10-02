@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             BrandAndHolidayTableSeeder::class,
             CurrencyTableSeeder::class,
             RoleTableSeeder::class, 
+            CommissionTableSeeder::class,
+            GroupTableSeeder::class,
             UserTableSeeder::class,
             CategoryTableSeeder::class,
             BookingMethodSeeder::class,
@@ -26,10 +28,8 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
             SupplierTableSeeder::class,
-            CommissionTableSeeder::class,
             ReferenceCredentialTableSeeder::class,
             BankTableSeeder::class,
-            GroupTableSeeder::class,
             CommissionGroupTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
