@@ -102,7 +102,7 @@
                       <select name="commission" class="form-control select2single">
                         <option value="">Select Commission </option>
                         @foreach($commisions as $commision)
-                          <option {{ (old('commission') == $commision->id) || ($user->comission_id == $commision->id) ? 'selected' : null }} value="{{ $commision->id }}">{{ $commision->name }}</option>
+                          <option {{ (old('commission') == $commision->id) || ($user->commission_id == $commision->id) ? 'selected' : null }} value="{{ $commision->id }}">{{ $commision->name }}</option>
                         @endforeach
                       </select>
 

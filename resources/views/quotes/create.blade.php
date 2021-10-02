@@ -104,11 +104,11 @@
                         <label>Markup Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="itemised" class="markuptype-type" {{ (Auth::user()->markup_type == 'itemised')? 'checked': '' }} >
+                            <input type="radio" name="markup_type" value="itemised" class="markup-type" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
                             <span>&nbsp;Itemised Markup </span>
                           </label>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="whole" class="markuptype-type" {{ (Auth::user()->markup_type == 'whole')? 'checked': '' }} >
+                            <input type="radio" name="markup_type" value="whole" class="markup-type" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
                             <span>&nbsp;Whole Markup</span>
                           </label>
                         </div>
@@ -134,7 +134,7 @@
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
-                            <option {{ (Auth::user()->comission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
+                            <option {{ (Auth::user()->commission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>
@@ -562,7 +562,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-2 whole-markup-feilds">
                             <div class="form-group">
                               <label>Markup Amount <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -574,7 +574,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-2 whole-markup-feilds">
                             <div class="form-group">
                               <label>Markup % <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -586,7 +586,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-2 whole-markup-feilds">
                             <div class="form-group">
                               <label>Selling Price <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -600,7 +600,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-2 whole-markup-feilds">
                             <div class="form-group">
                               <label>Profit % <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -629,7 +629,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-3">
+                          <div class="col-sm-3 whole-markup-feilds">
                             <div class="form-group">
                               <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -641,7 +641,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-3">
+                          <div class="col-sm-3 whole-markup-feilds">
                             <div class="form-group">
                               <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -740,7 +740,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
+                          <input type="number" step="any" class="form-control total-markup-amount total-markup-change hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -751,7 +751,7 @@
                           {{-- <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div> --}}
-                          <input type="number" step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                          <input type="number" step="any" class="form-control total-markup-percent total-markup-change hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>

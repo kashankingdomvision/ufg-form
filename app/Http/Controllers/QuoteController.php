@@ -39,6 +39,7 @@ use App\StoreText;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
+use App\CommissionGroup;
 
 class QuoteController extends Controller
 {
@@ -154,7 +155,7 @@ class QuoteController extends Controller
     }
 
     public function get_commission(){
-        return Commission::all();
+        return CommissionGroup::all();
     }
     
     public function quoteArray($request, $type = null)
@@ -213,16 +214,16 @@ class QuoteController extends Controller
             'category_id'           => $quoteD['category_id'],
             'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-            'booking_method_id'     => $quoteD['booking_method_id'],
-            'booked_by_id'          => $quoteD['booked_by_id'],
-            'supervisor_id'         => $quoteD['supervisor_id'],
+            // 'booking_method_id'     => $quoteD['booking_method_id'],
+            // 'booked_by_id'          => $quoteD['booked_by_id'],
+            // 'supervisor_id'         => $quoteD['supervisor_id'],
             'date_of_service'       => $quoteD['date_of_service'],
             'end_date_of_service'   => $quoteD['end_date_of_service'],
             'time_of_service'       => $quoteD['time_of_service'],
-            'booking_date'          => $quoteD['booking_date'],
-            'booking_due_date'      => $quoteD['booking_due_date'],
+            // 'booking_date'          => $quoteD['booking_date'],
+            // 'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
-            'booking_reference'     => $quoteD['booking_reference'],
+            // 'booking_reference'     => $quoteD['booking_reference'],
             'booking_type_id'       => (isset($quoteD['booking_type_id']))? $quoteD['booking_type_id'] : $quoteD['booking_type'],
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
@@ -234,7 +235,7 @@ class QuoteController extends Controller
             'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
             'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
             'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
-            'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
+            // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
         ];
     }
 

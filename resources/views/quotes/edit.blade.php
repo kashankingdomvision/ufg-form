@@ -166,11 +166,11 @@
                         <label>Markup Type <span style="color:red">*</span></label>
                         <div>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'itemised')? 'checked': NULL }} value="itemised" class="rate-type">
+                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'itemised') ? 'checked': NULL }} value="itemised" class="markup-type">
                             <span>&nbsp;Itemised Markup </span>
                           </label>
                           <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'whole')? 'checked': NULL }} value="whole" class="rate-type">
+                            <input type="radio" name="markup_type" {{ ($quote->markup_type == 'whole') ? 'checked': NULL }} value="whole" class="markup-type">
                             <span>&nbsp;Whole Markup</span>
                           </label>
                         </div>
@@ -206,7 +206,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Group  <span style="color:red">*</span></label>
-                        <select name="group_id" id="group_id" class="form-control select2single group_id">
+                        <select name="group_id" id="group_id" class="form-control select2single group-id">
                           <option value="">Select Group </option>
                           @foreach ($groups as $group)
                             <option value="{{ $group->id }}" {{  $group->id == $quote->group_id ? 'selected' : '' }}>{{ $group->name }} </option>
@@ -730,7 +730,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup Amount <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -742,7 +742,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -754,7 +754,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Selling Price <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -766,7 +766,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Profit % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -793,7 +793,7 @@
                                 </div>
                               </div>
                               
-                              <div class="col-sm-3">
+                              <div class="col-sm-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -805,7 +805,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3">
+                              <div class="col-sm-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -901,7 +901,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" value="{{ \Helper::number_format($quote->markup_amount) }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote->markup_amount) }}"  step="any" class="form-control total-markup-amount total-markup-change hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount"  value="0.00" {{ $quote->markup_type == 'itemised' ? readonly : '' }}>
                         </div>
                       </div>
                     </div>
@@ -912,7 +912,7 @@
                           {{-- <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div> --}}
-                          <input type="number" value="{{ \Helper::number_format($quote->markup_percentage) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                          <input type="number" value="{{ \Helper::number_format($quote->markup_percentage) }}"  step="any" class="form-control total-markup-percent total-markup-change  hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" {{ $quote->markup_type == 'itemised' ? readonly : '' }}>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -998,7 +998,7 @@
                     </div>
                  
                     <div class="col-sm-2">
-                      <div class="form-group mt-2">
+                      <div class="form-group">
                         <label></label>
                         <div class="input-group">
                           <div class="input-group-prepend">
