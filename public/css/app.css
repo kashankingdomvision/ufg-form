@@ -4717,6 +4717,20 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   margin: 12px !important;
 }
 
+.p-2 {
+  padding: 2rem !important;
+}
+
+.w-11 {
+  width: 11rem !important;
+}
+
+.service-category-btn-color {
+  background-color: #2952A3;
+  color: white;
+  border-color: #2952A3;
+}
+
 .cancelled-payment-styling {
   background-repeat: no-repeat;
   background-attachment: fixed;

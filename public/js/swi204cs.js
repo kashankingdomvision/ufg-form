@@ -48312,11 +48312,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $(document).on('change', '.category-id', function () {
-    var selector = $(this);
+    // var selector      = $(this);
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var category_id = $(this).val();
+    var category_name = $(this).find(':selected').attr('data-name');
     var options = '';
+    quote.find('.quote-title').html(category_name);
     $.ajax({
       type: 'get',
       url: "".concat(BASEURL, "category/to/supplier"),
@@ -48328,8 +48330,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $.each(response, function (key, value) {
           options += "<option value='".concat(value.id, "'>").concat(value.name, "</option>");
         });
-        selector.closest('.row').find('.supplier-id').html(options);
-        selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // selector.closest('.row').find('.supplier-id').html(options);
+        // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });
     jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input").attr('disabled', 'disabled');
@@ -48420,53 +48422,117 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
     $(this).html($(this).html() == "<span class=\"fa fa-minus\"></span>" ? "<span class=\"fa fa-plus\"></span>" : "<span class=\"fa fa-minus\"></span>");
   });
-  $(document).on('click', '#add_more', function (e) {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
+  $(document).on('click', '.service-category-btn', function (e) {
+    e.preventDefault();
+    var category_id = $(this).attr('data-id');
+    var category_name = $(this).attr('data-name');
+    jQuery('#new_service_modal').modal('hide');
+    $('.parent-spinner').addClass('spinner-border');
+
+    if (category_id) {
+      setTimeout(function () {
+        if ($('.select2single').data('select2')) {
+          $('.select2single').select2('destroy');
+        }
+
+        $(".quote").eq(0).clone().find("input").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + $('.quote').length + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().find("textarea").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + parseInt($('.quote').length) + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().find("select").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + $('.quote').length + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().show().insertAfter(".quote:last");
+        $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+        $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
+        $(".quote:last").attr('data-key', $('.quote').length - 1);
+        $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+        $('.quote:last input, .quote:last select').removeClass('is-invalid');
+        $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
+        $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
+        $('.quote:last .refundable-percentage-feild').addClass('d-none'); // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+
+        $('.quote:last .category-id').val(category_id).change();
+        $('.quote:last .quote-title').html(category_name);
+        var qleng = $('.quote').length - 1;
+        $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
+        $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
+        $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
+        $('#quote_' + qleng + '_holder').empty();
+        callLaravelFileManger();
+        datepickerReset(1);
+        calltextEditorSummerNote('#quote_' + qleng + '_service_details');
+        calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
+        reinitializedDynamicFeilds();
+        $('html, body').animate({
+          scrollTop: $('.quote:last').offset().top
+        }, 1000);
+        $('.parent-spinner').removeClass('spinner-border');
+      }, 180);
     }
-
-    $(".quote").eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("textarea").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + parseInt($('.quote').length) + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".quote:last");
-    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
-    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
-    $(".quote:last").attr('data-key', $('.quote').length - 1);
-    $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
-    $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
-    $('.quote:last .refundable-percentage-feild').addClass('d-none'); // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-
-    var qleng = $('.quote').length - 1;
-    $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
-    $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
-    $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
-    $('#quote_' + qleng + '_holder').empty();
-    callLaravelFileManger();
-    datepickerReset(1);
-    calltextEditorSummerNote('#quote_' + qleng + '_service_details');
-    calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
-    reinitializedDynamicFeilds();
+  });
+  $(document).on('click', '#add_more', function (e) {
+    jQuery('#new_service_modal').modal('show'); // if ($('.select2single').data('select2')) {
+    //     $('.select2single').select2('destroy');
+    // }
+    // $(".quote").eq(0).clone()
+    //     .find("input").val("").each(function() {
+    //         this.name = this.name.replace(/\[(\d+)\]/, function() {
+    //             return '[' + ($('.quote').length) + ']';
+    //         });
+    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+    //         });
+    //     }).end()
+    //     .find("textarea").val("").each(function() {
+    //         this.name = this.name.replace(/\[(\d+)\]/, function() {
+    //             return '[' + (parseInt($('.quote').length)) + ']';
+    //         });
+    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+    //         });
+    //     }).end()
+    //     .find("select").val("").each(function() {
+    //         this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+    //         });
+    //     }).end().show().insertAfter(".quote:last");
+    // $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+    // $('.product-id:last').html(`<option selected value="">Select Product</option>`);
+    // $(".quote:last").attr('data-key', $('.quote').length - 1);
+    // $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+    // $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+    // $('.quote:last input, .quote:last select').removeClass('is-invalid');
+    // $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
+    // $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
+    // $('.quote:last .refundable-percentage-feild').addClass('d-none');
+    // // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    // var qleng = $('.quote').length - 1;
+    // $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
+    // $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
+    // $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
+    // $('#quote_' + qleng + '_holder').empty();
+    // callLaravelFileManger();
+    // datepickerReset(1);
+    // calltextEditorSummerNote('#quote_' + qleng + '_service_details');
+    // calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
+    // reinitializedDynamicFeilds();
   });
   $(document).on('click', '#add_more_booking', function (e) {
     if ($('.select2single').data('select2')) {
@@ -48566,12 +48632,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     datepickerReset(1);
     reinitializedDynamicFeilds();
-  });
-  $(document).on('click', '.close', function () {
-    $(this).closest(".quote").remove();
-    getQuoteTotalValues();
-    getSellingPrice();
-  });
+  }); // $(document).on('click', '.close', function() {
+  //     $(this).closest(".quote").remove();
+  //     getQuoteTotalValues();
+  //     getSellingPrice();
+  // });
+
   $(document).on('change', '.supplier-currency-id', function () {
     var code = $(this).find(':selected').data('code');
     var quote = $(this).closest('.quote');

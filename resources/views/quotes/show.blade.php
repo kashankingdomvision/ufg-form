@@ -494,6 +494,7 @@
                         <div class="quote card card-default" data-key="{{$key}}">
 
                           <div class="card-header">
+                            <h3 class="card-title card-title-style quote-title">{{ isset($q_detail->getCategory->name) && !empty($q_detail->getCategory->name) ? $q_detail->getCategory->name : '' }}</h3>
                             <div class="card-tools">
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                             </div>
@@ -540,7 +541,7 @@
                                   <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
-                                      <option value="{{ $category->id }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                      <option value="{{ $category->id }}" data-name="{{ $category->name }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                   </select>
 

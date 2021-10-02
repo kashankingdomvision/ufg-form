@@ -374,10 +374,11 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
-
+            
                     <div class="quote card card-default" data-key="0">
 
                       <div class="card-header">
+                        <h3 class="card-title card-title-style quote-title"></h3>
                         <div class="card-tools">
                           <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                           <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
@@ -428,7 +429,7 @@
                               <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
                                 <option selected value="">Select Category</option>
                                 @foreach ($categories as $category)
-                                  <option value="{{ $category->id }}" > {{ $category->name }} </option>
+                                  <option value="{{ $category->id }}" data-name="{{ $category->name }}"> {{ $category->name }} </option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>
@@ -698,7 +699,8 @@
 
 
                     </div>
-                    
+
+                    <div class="parent-spinner text-gray spinner-border-sm "></div>
                     <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                   </div>
                
@@ -886,7 +888,7 @@
                 </div>
               </form>
               
-              <div id="overlay" class=""></div>
+              
             </div>
           </div>
           
@@ -896,6 +898,7 @@
     </section>
 
     @include('partials.template_modal')
+    @include('partials.new_service_modal',['categories' => $categories])
   </div>
 
 @endsection
