@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->unsignedBigInteger('brand_id')->nullable();
             $table->unsignedBigInteger('holiday_type_id')->nullable();
-            $table->unsignedBigInteger('comission_id')->nullable();
+            $table->unsignedBigInteger('commission_id')->nullable();
             $table->unsignedBigInteger('group_id')->nullable();
             $table->string('name');
             $table->string('email')->unique();
