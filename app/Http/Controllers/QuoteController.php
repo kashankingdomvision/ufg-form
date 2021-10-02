@@ -224,7 +224,8 @@ class QuoteController extends Controller
             // 'booking_due_date'      => $quoteD['booking_due_date'],
             'service_details'       => $quoteD['service_details'],
             // 'booking_reference'     => $quoteD['booking_reference'],
-            'booking_type_id'       => (isset($quoteD['booking_type_id']))? $quoteD['booking_type_id'] : $quoteD['booking_type'],
+            'booking_type_id'       => $quoteD['booking_type_id']??$quoteD['booking_type_id'],
+            'refundable_percentage' => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
             'estimated_cost'        => $quoteD['estimated_cost'],
@@ -305,7 +306,8 @@ class QuoteController extends Controller
                 ]);
             }
         }
-       return redirect()->route('quotes.index')->with('success_message', 'Quote created successfully');
+
+        return \Response::json(['status' => 200, 'success_message' => 'Quote created successfully'], 200);
     }
     
     public function edit($id)
@@ -395,7 +397,7 @@ class QuoteController extends Controller
 
        $quote_update_detail->delete();
 
-       return redirect()->route('quotes.index')->with('success_message', 'Quote update successfully');        
+       return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
     }
 
     public function quoteVersion($id, $type = null)

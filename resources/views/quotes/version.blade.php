@@ -267,7 +267,7 @@
                         
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label>Date Of Birth <span style="color:red">*</span></label> 
+                              <label>Date Of Birth </label> 
                               <input type="date" value="{{ $quote['lead_passenger_dbo'] }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -276,7 +276,7 @@
                         <div class="row PassengerField {{ ($quote['agency'] == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Nationality (Passport)<span style="color:red">*</span></label>
+                              <label>Nationality (Passport) </label>
                               <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                                 <option selected value="" >Select Nationality</option>
                                 @foreach ($countries as $country)
@@ -301,7 +301,7 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Dinning Preferences <span style="color:red">*</span></label>
+                              <label>Dinning Preferences </label>
                               <input type="text" value="{{ $quote['lead_passenger_dinning_preference'] }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -309,7 +309,7 @@
                           
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Bedding Preferences <span style="color:red">*</span></label>
+                              <label>Bedding Preferences</label>
                               <input type="text" value="{{ $quote['lead_passenger_bedding_preference'] }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -598,19 +598,30 @@
                                 </div>
                                 </div> --}}
                                 <div class="col-sm-2">
-                                <div class="form-group">
+                                  <div class="form-group">
                                     <label>Booking Types</label>
-                                    <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2single booking-type-id @error('booking_type_id') is-invalid @enderror">
-                                    <option value="">Select Booking Type</option>
-                                    @foreach ($booking_types as $booking_type)
-                                        <option value="{{ $booking_type->id }}" {{ $q_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
-                                    @endforeach
+                                    <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type_id" id="quote_{{ $key }}_booking_type_id" class="form-control select2single booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                      <option value="">Select Booking Type</option>
+                                      @foreach ($booking_types as $booking_type)
+                                        <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ $q_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
+                                      @endforeach
                                     </select>
+
                                     @error('booking_type_id')
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
+                                  </div>
                                 </div>
+
+                                <div class="col-sm-2 refundable-percentage-feild {{ isset($q_detail['booking_type_id']) && !empty($q_detail['booking_type_id']) && $q_detail['booking_type_id'] == 2 ? '' : 'd-none'  }}">
+                                  <div class="form-group">
+                                    <label>Refundable % <span style="color:red">*</span></label>
+                                    <input type="number" name="quote[{{ $key }}][refundable_percentage]" value="{{ $q_detail['refundable_percentage'] }}" data-name="refundable_percentage" id="quote_{{ $key }}_refundable_percentage" class="form-control refundable-percentage" placeholder="Refundable %">
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
                                 </div>
+
+
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supplier Currency <span style="color:red">*</span></label>

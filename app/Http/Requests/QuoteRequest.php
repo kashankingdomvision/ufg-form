@@ -52,6 +52,8 @@ class QuoteRequest extends FormRequest
             'quote.*.end_date_of_service'               => 'required',
             'quote.*.category_id'                       => 'required',
             'quote.*.supplier_id'                       => 'required',
+            'quote.*.booking_type_id'                   => 'nullable',
+            'quote.*.refundable_percentage'             => 'required_if:quote.*.booking_type_id,2',
             // 'quote.*.booking_due_date'                  => 'required',
             'quote.*.supplier_currency_id'              => 'required',
             'quote.*.estimated_cost'                    => 'required',
@@ -59,7 +61,7 @@ class QuoteRequest extends FormRequest
             'quote.*.markup_percentage'                 => 'required_if:markup_type,itemised',
             'quote.*.selling_price_in_booking_currency' => 'required_if:markup_type,itemised',
             'quote.*.markup_amount_in_booking_currency' => 'required_if:markup_type,itemised',
-            'quote_title'                               => 'required_if:markup_type,itemised',
+            'quote_title'                               => 'required',
             'markup_type'                               => 'required',
         ];
     }
@@ -83,6 +85,7 @@ class QuoteRequest extends FormRequest
             'quote.*.end_date_of_service.required'          => 'The End Date of Service field is required.',
             'quote.*.category_id.required'                  => 'The Category field is required.',
             'quote.*.supplier_id.required'                  => 'The Supplier field is required.',
+            'quote.*.refundable_percentage.required_if'     => 'The Refundable % field is required.',
         ];
     }
     
@@ -125,6 +128,7 @@ class QuoteRequest extends FormRequest
             'quote.*.markup_percentage'                 => 'Markup %',
             'quote.*.selling_price_in_booking_currency' => 'Estimated Cost in Booking Currency',
             'quote.*.markup_amount_in_booking_currency' => 'Selling Price in Booking Currency',
+            'quote.*.refundable_percentage'             => 'Refundable %',
         ];
     }
 }

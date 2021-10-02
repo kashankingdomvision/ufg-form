@@ -1628,6 +1628,7 @@ $(document).ready(function($) {
                 $('.quote:last input, .quote:last select').removeClass('is-invalid');
                 $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
                 $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
+                $('.quote:last .refundable-percentage-feild').addClass('d-none');
 
                 // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
 
@@ -1784,6 +1785,22 @@ $(document).ready(function($) {
                 getQuoteSupplierCurrencyValues(code, quoteKey);
                 getQuoteTotalValues();
                 getSellingPrice();
+            });
+
+            $(document).on('change', '.booking-type-id', function() {
+
+                var quote        = $(this).closest('.quote');
+                var booking_type = $(this).val();
+                var booking_slug = $(this).find(':selected').data('slug');
+
+                if(booking_type == 2 || booking_slug == 'partially-refundable'){
+                 
+                    quote.find('.refundable-percentage-feild').removeClass('d-none');
+                }else{
+                 
+                    quote.find('.refundable-percentage-feild').addClass('d-none');
+                }
+
             });
 
             $(document).on('change', '.booking-currency-id', function() {
@@ -2204,9 +2221,12 @@ $(document).ready(function($) {
                     success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
-                            alert('Quote created Successfully');
-                            // window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        }, 400);
+                            
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = REDIRECT_BASEURL + "quotes/index";
+                            }
+                        }, 200);
                     },
                     error: function(reject) {
 
@@ -2493,8 +2513,12 @@ $(document).ready(function($) {
                     success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
-                            alert('Quote updated Successfully');
-                            window.location.href = REDIRECT_BASEURL + "quotes/index";
+
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = REDIRECT_BASEURL + "quotes/index";
+                            }
+                            
                         }, 200);
                     },
                     error: function(reject) {

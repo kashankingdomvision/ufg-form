@@ -15,16 +15,24 @@ class BookingTypeSeeder extends Seeder
     {
         $booking_types = [
             [   
-                'name' => 'Refundable',
+                'name'       =>  'Refundable',
+                'slug'       =>  Str::slug('Refundable'),
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
 
             [
-                'name' => 'Non-Refundable',
+                'name'       =>  'Partially Refundable',
+                'slug'       =>  Str::slug('Partially Refundable'),
                 'created_at' =>  now(),
                 'updated_at' =>  now()
+            ],
 
+            [
+                'name'       =>  'Non-Refundable',
+                'slug'       =>  Str::slug('Non-Refundable'),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
             ],
         ];
 
