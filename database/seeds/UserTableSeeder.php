@@ -19,8 +19,8 @@ class UserTableSeeder extends Seeder
                 'role_id'           =>  1,
                 'supervisor_id'     =>  NULL,
                 'currency_id'       =>  1,
-                // 'commission_id'     =>  1,
-                // 'group_id'          =>  1,
+                'comission_id'      =>  NULL,
+                'group_id'          =>  NULL,
                 'brand_id'          =>  1,
                 'holiday_type_id'   =>  1,
                 'name'              =>  'Kashan',
@@ -31,37 +31,37 @@ class UserTableSeeder extends Seeder
                 'updated_at' =>  now()
             ],
 
-            // [
-            //     'role_id'           =>  5,
-            //     'supervisor_id'     =>  NULL,
-            //     'currency_id'       =>  2,
-            //     'commission_id'     =>  NULL,
-            //     'group_id'          =>  NULL,
-            //     'brand_id'          =>  1,
-            //     'holiday_type_id'   =>  1,
-            //     'name'              =>  'Tabseer',
-            //     'email'             =>  'tabseer@gmail.com',
-            //     'email_verified_at' =>  now(),
-            //     'password'          =>  Hash::make(12345678),
-            //     'created_at' =>  now(),
-            //     'updated_at' =>  now()
-            // ]
+            [
+                'role_id'           =>  5,
+                'supervisor_id'     =>  NULL,
+                'currency_id'       =>  2,
+                'comission_id'     =>  NULL,
+                'group_id'          =>  NULL,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'Tabseer',
+                'email'             =>  'tabseer@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
+            ],
 
-            // [
-            //     'role_id'           =>  2,
-            //     'supervisor_id'     =>  2,
-            //     'currency_id'       =>  3,
-            //     // 'commission_id'     =>  NULL,
-            //     // 'group_id'          =>  NULL,
-            //     'brand_id'          =>  1,
-            //     'holiday_type_id'   =>  1,
-            //     'name'              =>  'Muhammad Tabraiz',
-            //     'email'             =>  'm.tabraizbukhari@gmail.com',
-            //     'email_verified_at' =>  now(),
-            //     'password'          =>  Hash::make(12345678),
-            //     'created_at' =>  now(),
-            //     'updated_at' =>  now()
-            // ],
+            [
+                'role_id'           =>  2,
+                'supervisor_id'     =>  2,
+                'currency_id'       =>  3,
+                'comission_id'     =>  NULL,
+                'group_id'          =>  NULL,
+                'brand_id'          =>  1,
+                'holiday_type_id'   =>  1,
+                'name'              =>  'Muhammad Tabraiz',
+                'email'             =>  'm.tabraizbukhari@gmail.com',
+                'email_verified_at' =>  now(),
+                'password'          =>  Hash::make(12345678),
+                'created_at' =>  now(),
+                'updated_at' =>  now()
+            ],
             
             // [
             //     'role_id'           =>  6,
