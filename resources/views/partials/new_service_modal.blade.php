@@ -7,7 +7,7 @@
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body p-2">
+            <div class="modal-body p-2r">
                 <div class="row">
                     @foreach ($categories as $category)
                     <div class="col-md-4">
