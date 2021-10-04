@@ -164,7 +164,7 @@ class QuoteController extends Controller
             'quote_title'                       =>  $request->quote_title,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id,
-            'group_id'                          =>  $request->group_id,
+            'commission_group_id'               =>  $request->commission_group_id,
             'user_id'                           =>  Auth::id(),
             'season_id'                         =>  $request->season_id,
             'brand_id'                          =>  $request->brand_id,
@@ -262,7 +262,6 @@ class QuoteController extends Controller
         $data['quote_id']         = Helper::getQuoteID();
         $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('id','ASC')->get();
 
         return view('quotes.create', $data);
     }

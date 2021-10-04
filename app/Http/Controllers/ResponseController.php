@@ -20,6 +20,7 @@ use App\Supplier;
 use App\Template;
 use App\User;
 use App\StoreText;
+use App\CommissionGroup;
 
 class ResponseController extends Controller
 {
@@ -27,6 +28,12 @@ class ResponseController extends Controller
     {    
         $holiday_types = HolidayType::where('brand_id',$request->brand_id)->get();
         return response()->json($holiday_types);
+    }
+
+    public function getCommissionGroups(Request $request)
+    {    
+        $commission_groups = CommissionGroup::where('commission_id',$request->commission_id)->get();
+        return response()->json($commission_groups);
     }
     
     public function getCategoryToSupplier(Request $request)

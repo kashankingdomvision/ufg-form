@@ -205,11 +205,11 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Group  <span style="color:red">*</span></label>
-                        <select name="group_id" id="group_id" class="form-control select2single group-id">
-                          <option value="">Select Group </option>
-                          @foreach ($groups as $group)
-                            <option value="{{ $group->id }}" {{  $group->id == $quote->group_id ? 'selected' : '' }}>{{ $group->name }} </option>
+                        <label>Commission Group <span style="color:red">*</span></label>
+                        <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id">
+                          <option value="">Select Commission Group</option>
+                          @foreach ($quote->getCommission->getCommissionGroups as $commission_group)
+                            <option value="{{ $commission_group->id }}" {{  (old('commission_group_id') == $commission_group->id)? "selected" : ($quote->commission_group_id == $commission_group->id ? 'selected' : '') }} >{{ $commission_group->name }}</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>

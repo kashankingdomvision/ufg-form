@@ -4,9 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-
-class CommissionGroupRequest extends FormRequest
+class UpdateCommissionGroupRequest extends FormRequest
 {
+
+
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,17 +26,16 @@ class CommissionGroupRequest extends FormRequest
      */
     public function rules()
     {
-       
         return [
             'commission_id' => 'required',
             'percentage'    => 'required',
-            'name'    => [
+            'name'          => [
                 'required',
                 Rule::unique('commission_groups','name')
                 ->where('commission_id',$this->request->get('commission_id'))
+                ->ignore($this->request->get('id'))
             ]
         ];
-
     }
 
     public function attributes()

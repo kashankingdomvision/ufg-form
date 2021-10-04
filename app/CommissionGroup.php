@@ -8,7 +8,7 @@ class CommissionGroup extends Model
 {
     protected $fillable = [
         'commission_id', 
-        'group_id',       
+        'name',       
         'percentage',     
     ];
         

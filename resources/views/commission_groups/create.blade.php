@@ -53,18 +53,13 @@
                     </div> 
 
                     <div class="form-group">
-                      <label>Group <span style="color:red">*</span></label>
-                      <select name="group_id" id="group_id" value="{{ old('group_id') }}" class="form-control select2single group-id  @error('group_id') is-invalid @enderror" >
-                        <option value="">Select Group</option>
-                        @foreach ($groups as $group)
-                          <option value="{{ $group->id }}" {{ old('group_id') == $group->id ? 'selected' : '' }}> {{ $group->name }}</option>
-                        @endforeach
-                      </select>
-
-                      @error('group_id')
+                      <label>Group Name <span style="color:red">*</span></label>
+                      <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Group Name" >
+                      
+                      @error('name')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
-                    </div> 
+                    </div>
 
                     <div class="form-group">
                       <label>Percentage % <span style="color:red">*</span></label>

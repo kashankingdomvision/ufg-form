@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionGroupRequest;
+use App\Http\Requests\UpdateCommissionGroupRequest;
 
 use App\CommissionGroup;
 use App\Commission;
@@ -27,15 +28,15 @@ class CommissionGroupController extends Controller
                 $commission_group->where('commission_id', $request->commission_id );
             }
 
-            if($request->has('group_id') && !empty($request->group_id)){
-                $commission_group->where('group_id', $request->group_id );
+            if($request->has('search') && !empty($request->search)){
+                $commission_group->where('name', 'like', '%'.$request->search.'%' );
             }
 
         }
 
         $data['commission_groups'] = $commission_group->paginate($this->pagination);
         $data['commissions']      = Commission::orderBy('id', 'ASC')->get();
-        $data['groups']           = Group::orderBy('id', 'ASC')->get();
+        $data['groups']           = CommissionGroup::orderBy('id', 'ASC')->get();
 
         return view('commission_groups.listing', $data);
     }
@@ -63,11 +64,11 @@ class CommissionGroupController extends Controller
     {
         CommissionGroup::create([
             'commission_id' => $request->commission_id,
-            'group_id'      => $request->group_id,
+            'name'          => $request->name,
             'percentage'    => $request->percentage
         ]);
 
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group created successfully');
+        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Created Successfully');
     }
 
     /**
@@ -103,13 +104,15 @@ class CommissionGroupController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCommissionGroupRequest $request, $id)
     {
         CommissionGroup::find(decrypt($id))->update([
-            'percentage' => $request->percentage
+            'commission_id' => $request->commission_id,
+            'name'          => $request->name,
+            'percentage'    => $request->percentage
         ]);
 
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group updated successfully');
+        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Updated Successfully');
     }
 
     /**
@@ -121,6 +124,6 @@ class CommissionGroupController extends Controller
     public function destroy($id)
     {
         CommissionGroup::destroy(decrypt($id));
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group deleted successfully'); 
+        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Deleted Successfully'); 
     }
 }

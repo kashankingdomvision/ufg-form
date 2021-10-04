@@ -59,6 +59,10 @@ class User extends Authenticatable
         return $this->hasOne(Brand::class, 'id', 'brand_id');
     }
 
+    function getCommission() {
+        return $this->hasOne(Commission::class, 'id', 'commission_id');
+    }
+
     function getTotalQuote() {
         return $this->hasMany(Quote::class, 'user_id', 'id');
     }

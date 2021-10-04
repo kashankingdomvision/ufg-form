@@ -17,10 +17,9 @@ class CreateCommissionGroupsTable extends Migration
             $table->id();
 
             $table->unsignedBigInteger('commission_id')->nullable();
-            $table->unsignedBigInteger('group_id')->nullable();
+            $table->string('name')->nullable();
             $table->double('percentage');
             $table->foreign('commission_id')->references('id')->on('commissions')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('group_id')->references('id')->on('groups')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

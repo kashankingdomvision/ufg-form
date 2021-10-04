@@ -35,12 +35,13 @@
 
               <form action="{{ route('commissions.commission-group.update', encrypt($commission_group->id)) }}" method="POST">
                 @csrf @method('put')
-
+                <input type="hidden" name="id" value="{{$commission_group->id}}">
+                
                 <div class="card-body">
-
-                    <div class="form-group">
+                  
+                  <div class="form-group">
                         <label>Commission <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" value="{{ old('commission_id') }}" class="form-control select2single commission-id  @error('commission_id') is-invalid @enderror" disabled>
+                        <select name="commission_id" id="commission_id" value="{{ old('commission_id') }}" class="form-control select2single commission-id  @error('commission_id') is-invalid @enderror" >
                             <option value="">Select Commission</option>
                             @foreach ($commissions as $commission)
                                 <option value="{{ $commission->id }}" {{ old('commission_id') == $commission->id || $commission_group->commission_id == $commission->id ? 'selected' : '' }}> {{ $commission->name }}</option>
@@ -53,17 +54,12 @@
                     </div> 
 
                     <div class="form-group">
-                        <label>Group <span style="color:red">*</span></label>
-                        <select name="group_id" id="group_id" value="{{ old('group_id') }}" class="form-control select2single group-id  @error('group_id') is-invalid @enderror" disabled>
-                          <option value="">Select Group</option>
-                          @foreach ($groups as $group)
-                            <option value="{{ $group->id }}" {{ (old('group_id') == $group->id )? 'selected': ((request()->get('group_id') == $group->id) ? 'selected' : null) }} > {{ $group->name }}</option>
-                          @endforeach
-                        </select>
-  
-                        @error('group_id')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                      <label>Group Name <span style="color:red">*</span></label>
+                      <input type="text" name="name" value="{{ $commission_group->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Group Name" >
+                      
+                      @error('name')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
                     </div>
 
                     <div class="form-group">

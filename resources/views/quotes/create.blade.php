@@ -131,7 +131,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
+                        <select name="commission_id" id="commission_id" class="form-control select2single  commission-id">
                           <option selected value="" >Select Commission Type </option>
                           @foreach ($commission_types as $commission_type)
                             <option {{ (Auth::user()->commission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
@@ -143,12 +143,15 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Group <span style="color:red">*</span></label>
-                        <select name="group_id" id="group_id" class="form-control select2single group-id">
-                          <option selected value="" >Select Group </option>
-                          @foreach ($groups as $group)
-                            <option {{ (Auth::user()->group_id == $group->id)? 'selected': '' }} value="{{ $group->id }}">{{ $group->name }} </option>
-                          @endforeach
+                        <label>Commission Group <span style="color:red">*</span></label>
+                          <select name="commission_group_id" id="commission_group_id" class="form-control select2single  commission-group-id">
+                            <option value="">Select Commission Group</option>
+                            @if(Auth::user()->getCommission->getCommissionGroups && Auth::user()->getCommission->getCommissionGroups->count())
+                              @foreach (Auth::user()->getCommission->getCommissionGroups as $commission_group)
+                                <option data-name="{{ $commission_group->name }}" value="{{ $commission_group->id }}" {{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) && $commission_group->id == Auth::user()->commission_group_id ? 'selected' : '' }}> {{ $commission_group->name }} </option>
+                              @endforeach
+                            @endif
+                          </select>
                         </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
@@ -887,8 +890,7 @@
                   <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
                 </div>
               </form>
-              
-              
+              <div id="overlay" class=""></div>
             </div>
           </div>
           

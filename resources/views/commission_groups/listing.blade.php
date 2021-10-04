@@ -49,13 +49,8 @@
 
       <div class="col">
         <div class="form-group">
-            <label>Group <span style="color:red">*</span></label>
-            <select class="form-control select2single" name="group_id">
-              <option value="" selected>Select Group</option>
-              @foreach ($groups as $group)
-                <option value="{{ $group->id }}" {{ (old('group_id') == $group->id )? 'selected': ((request()->get('group_id') == $group->id) ? 'selected' : null) }} > {{ $group->name }}</option>
-              @endforeach
-            </select>
+            <label>Search <span style="color:red">*</span></label>
+            <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search By Group Name">
         </div>
       </div>
 
@@ -112,7 +107,7 @@
                         </td>
 
                         <td>{{ isset($commission_group->getCommission->name) && !empty($commission_group->getCommission->name) ? $commission_group->getCommission->name : '' }}</td>
-                        <td>{{ isset($commission_group->getGroup->name) && !empty($commission_group->getGroup->name) ? $commission_group->getGroup->name : '' }}</td>
+                        <td>{{ isset($commission_group->name) && !empty($commission_group->name) ? $commission_group->name : '' }}</td>
                         <td>{{ $commission_group->percentage }}</td>
                        
                         <td>

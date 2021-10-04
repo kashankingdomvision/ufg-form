@@ -47196,25 +47196,25 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return object.shift()[rateType];
   }
 
-  function getCommissionPercent(commissionID, groupID) {
+  function getCommissionPercent(commissionID, commissionGroupID) {
     var object = commissionRate.filter(function (elem) {
-      return elem.commission_id == commissionID && elem.group_id == groupID;
+      return elem.commission_id == commissionID && elem.id == commissionGroupID;
     });
     console.log("commission_id: " + commissionID);
-    console.log("group_id: " + groupID);
+    console.log("commissionGroupID: " + commissionGroupID);
     return object.shift().percentage;
   }
 
   function getCommissionRate() {
     var totalNetPrice = $('.total-net-price').val();
     var commissionID = $('.commission-id').val();
-    var groupID = $('.group-id').val();
+    var commissionGroupID = $('.commission-group-id').val();
     var calculatedCommisionAmount = 0;
     console.log(commissionID);
-    console.log(groupID);
+    console.log(commissionGroupID);
 
-    if (commissionID && groupID) {
-      var commissionPercentage = getCommissionPercent(commissionID, groupID);
+    if (commissionID && commissionGroupID) {
+      var commissionPercentage = getCommissionPercent(commissionID, commissionGroupID);
       calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
     } else {
       calculatedCommisionAmount = 0.00;
@@ -47255,7 +47255,26 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       getQuoteRateTypeValues();
     }
   });
-  $(document).on('change', '.commission-id, .group-id', function () {
+  $(document).on('change', '.commission-id', function () {
+    var commission_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'get-commission-groups';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'commission_id': commission_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Commission Group</option>';
+        $.each(response, function (key, value) {
+          options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+        });
+        $('.commission-group-id').html(options);
+      }
+    });
+  });
+  $(document).on('change', '.commission-group-id', function () {
     getCommissionRate();
   });
   /*

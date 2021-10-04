@@ -10,4 +10,8 @@ class Commission extends Model
         'name'
         //'percentage'
     ];
+
+    function getCommissionGroups(){
+        return $this->hasMany(CommissionGroup::class, 'commission_id', 'id');
+    }
 }
