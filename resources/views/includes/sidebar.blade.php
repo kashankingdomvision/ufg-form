@@ -211,14 +211,14 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('commissions.group.index') }}" class="nav-link {{ $route == 'commissions.group.index' || $route == 'commissions.group.create' || $route == 'commissions.group.edit' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Group
                                 </p>
                             </a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                             <a href="{{ route('commissions.commission-group.index') }}" class="nav-link {{ $route == 'commissions.commission-group.index' || $route == 'commissions.commission-group.create' || $route == 'commissions.commission-group.edit'  ? 'active' : '' }}">
