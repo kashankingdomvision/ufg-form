@@ -11,18 +11,18 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
- 
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
-// 
-            $(function() { 
- 
+//
+            $(function() {
+
                 $('.date-range-picker').daterangepicker({
                     autoUpdateInput: false,
                     locale: {
@@ -201,7 +201,7 @@ $(document).ready(function($) {
                     return elem.from == supplierCurrency && elem.to == bookingCurrency
                 });
 
-              
+
 
                 return (object.shift()[rateType]);
             }
@@ -365,18 +365,18 @@ $(document).ready(function($) {
                 var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
                 $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-            
+
                 if(markupType == 'itemised'){
 
                     var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
                     var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-    
+
                     var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
                     var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-    
+
                     var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
                     var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
-    
+
                     var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
                     var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
 
@@ -418,7 +418,7 @@ $(document).ready(function($) {
                 // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
 
             }
- 
+
             function getQuoteDetailsValues(key, changeFeild) {
 
                 var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
@@ -442,9 +442,9 @@ $(document).ready(function($) {
                     // calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
                     calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
                     $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-                    
+
                     if(markupType == 'itemised'){
-                        
+
                         calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
                         calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
                         calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
@@ -452,7 +452,7 @@ $(document).ready(function($) {
                         $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
                         $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
                         $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                        
+
                     }
 
                 }
@@ -1489,7 +1489,7 @@ $(document).ready(function($) {
                 var category_id   = $(this).val();
                 var category_name = $(this).find(':selected').attr('data-name');
                 var options       = '';
-                
+
                 quote.find('.quote-title').html(category_name);
 
                 $.ajax({
@@ -1625,12 +1625,12 @@ $(document).ready(function($) {
 
                 jQuery('#new_service_modal').modal('hide');
                 $('.parent-spinner').addClass('spinner-border');
-                
+
                 if(category_id){
 
-                    setTimeout(function() { 
+                    setTimeout(function() {
 
-                            
+
                         if ($('.select2single').data('select2')) {
                             $('.select2single').select2('destroy');
                         }
@@ -1684,7 +1684,7 @@ $(document).ready(function($) {
                         calltextEditorSummerNote('#quote_' + qleng + '_service_details');
                         calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
                         reinitializedDynamicFeilds();
-                   
+
                         $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
 
                         $('.parent-spinner').removeClass('spinner-border');
@@ -1693,7 +1693,7 @@ $(document).ready(function($) {
 
                 }
 
-                
+
             });
 
             $(document).on('click', '#add_more', function(e) {
@@ -1902,10 +1902,10 @@ $(document).ready(function($) {
                 var booking_slug = $(this).find(':selected').data('slug');
 
                 if(booking_type == 2 || booking_slug == 'partially-refundable'){
-                 
+
                     quote.find('.refundable-percentage-feild').removeClass('d-none');
                 }else{
-                 
+
                     quote.find('.refundable-percentage-feild').addClass('d-none');
                 }
 
@@ -2115,7 +2115,7 @@ $(document).ready(function($) {
                                     alert(data.success_message);
                                     location.reload();
                                 }
-    
+
                             }, 100);
 
                         },
@@ -2144,7 +2144,7 @@ $(document).ready(function($) {
                                     alert(data.success_message);
                                     location.reload();
                                 }
-    
+
                             }, 100);
 
                         },
@@ -2152,7 +2152,7 @@ $(document).ready(function($) {
                     });
 
                 }
-                
+
             });
 
             $(document).on('click', '.remove-booking-detail-service', function(e) {
@@ -2202,7 +2202,7 @@ $(document).ready(function($) {
             //                         alert(data.success_message);
             //                         location.reload();
             //                     }
-    
+
             //                 }, 400);
 
             //             },
@@ -2288,7 +2288,7 @@ $(document).ready(function($) {
 
                                     </div>`;
                         $('#addMoreButton').append(add_HTML);
-                      
+
                       var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
                         $('#btnSubmitversion').append(btn_Submit);
 
@@ -2329,7 +2329,7 @@ $(document).ready(function($) {
                     success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
-                            
+
                             if(data && data.status == 200){
                                 alert(data.success_message);
                                 window.location.href = REDIRECT_BASEURL + "quotes/index";
@@ -2575,7 +2575,7 @@ $(document).ready(function($) {
             */
 
 
-       
+
 
             $(document).on('click', '.add-category-detail', function() {
 
@@ -2626,7 +2626,7 @@ $(document).ready(function($) {
                                 alert(data.success_message);
                                 window.location.href = REDIRECT_BASEURL + "quotes/index";
                             }
-                            
+
                         }, 200);
                     },
                     error: function(reject) {
@@ -3157,14 +3157,14 @@ $(document).ready(function($) {
 
             }
 
-            
+
             $(document).on('change', '.markup-type', function() {
                 getMarkupTypeFeildAttribute();
             });
 
-                      
+
             $(document).on('change', '.total-markup-change', function() {
-           
+
                 var changeFeild = $(this).attr("data-name");
                 getQuoteTotalValuesOnMarkupChange(changeFeild);
 
@@ -3183,7 +3183,7 @@ $(document).ready(function($) {
                 totalNetPrice               = parseFloat($('.total-net-price').val());
                 totalMarkupAmount           = parseFloat($('.total-markup-amount').val());
                 markupPercentage            = parseFloat($('.total-markup-percent').val());
-             
+
                 if(changeFeild == 'total_markup_amount'){
 
                     calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
@@ -3197,7 +3197,7 @@ $(document).ready(function($) {
 
                     calculatedTotalMarkupAmount = (parseFloat(totalNetPrice) / 100) * parseFloat(markupPercentage);
                     totalSellingPrice           = totalNetPrice + calculatedTotalMarkupAmount;
-                    
+
                     $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
                     $('.total-selling-price').val(check(totalSellingPrice));
                 }
@@ -3298,7 +3298,7 @@ $(document).ready(function($) {
 
                 //     $.ajax({
                 //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-                //         type: 'delete',  
+                //         type: 'delete',
                 //         dataType: "JSON",
                 //         data: { "checkedValues": checkedValues, "action": action },
                 //         beforeSend: function() {
@@ -3323,7 +3323,7 @@ $(document).ready(function($) {
                 //             }
                 //         },
                 //         error: function(xhr) {
-                //           console.log(xhr.responseText);  
+                //           console.log(xhr.responseText);
                 //         }
                 //     });
 
@@ -3457,21 +3457,21 @@ $(document).ready(function($) {
             <div class="mb-1 appendCount" id="appendCount${count}">
                 <div class="row" >
                     <div class="col-md-3 mb-2">
-                        <label>Passenger #${count} Full Name </label> 
+                        <label>Passenger #${count} Full Name </label>
                         <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="Passsenger Name" >
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Email Address </label> 
+                        <label>Email Address </label>
                         <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="Email Address" >
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Contact Number </label> 
+                        <label>Contact Number </label>
                         <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
                         <span class="text-danger error_msg${count}" role="alert"></span>
                         <span class="text-success valid_msg${count}" role="alert"></span>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Date Of Birth </label> 
+                        <label>Date Of Birth </label>
                         <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                     </div>
                 </div>
@@ -3494,12 +3494,12 @@ $(document).ready(function($) {
                         </div>
                     </div>
                     <div class="col-md-3 mb-2">
-                        <label>Bedding Preference </label> 
+                        <label>Bedding Preference </label>
                         <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
                     </div>
-                    
+
                     <div class="col-md-3 mb-2">
-                        <label>Dinning Preference </label> 
+                        <label>Dinning Preference </label>
                         <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
                     </div>
 
@@ -3516,7 +3516,7 @@ $(document).ready(function($) {
                             </div>
                         </div>
                     </div>
-                
+
                 </div>
             </div>`;
 
@@ -3525,19 +3525,19 @@ $(document).ready(function($) {
             $('#appendPaxName').html($v_html);
             intTelinput(1);
             $('#pax_no option').first().attr('disabled', 'disabled');
-            
+
         }
         if($_val > $('.appendCount').length){
             var countable = ($_val - $('.appendCount').length) - 1;
             if(agencyVal == 1){
                 var countable = ($_val - $('.appendCount').length);
             }
-            
-                    
+
+
             for (i = 1; i <= countable; ++i) {
                 var count = $('.appendCount').length + 1;
                 var c = count + 1;
-                
+
                 if(agencyVal == 1){
                     c = count;
                 }
@@ -3548,23 +3548,23 @@ $(document).ready(function($) {
                                 <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
                             </div>
                                 <div class="col-md-3 mb-2">
-                                    <label class="mainLabel">Passenger #${c} Full Name</label> 
+                                    <label class="mainLabel">Passenger #${c} Full Name</label>
                                     <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER FULL NAME" >
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Email Address</label> 
+                                    <label>Email Address</label>
                                     <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
                                 </div>
-                                
-                            
+
+
                                 <div class="col-md-3 mb-2">
-                                    <label>Contact Number</label> 
+                                    <label>Contact Number</label>
                                     <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
                                     <span class="text-danger error_msg${count}" role="alert"></span>
                                     <span class="text-success valid_msg${count}" role="alert"></span>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Date Of Birth</label> 
+                                    <label>Date Of Birth</label>
                                     <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
                                 </div>
                             </div>
@@ -3588,12 +3588,12 @@ $(document).ready(function($) {
                                     </div>
                                 </div>
                                 <div class="col-md-3 mb-2">
-                                    <label>Bedding Preference</label> 
+                                    <label>Bedding Preference</label>
                                     <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
                                 </div>
-                                
+
                                 <div class="col-md-3 mb-2">
-                                    <label>Dinning Preference</label> 
+                                    <label>Dinning Preference</label>
                                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                                 </div>
 
@@ -3611,7 +3611,7 @@ $(document).ready(function($) {
                                     </div>
                                 </div>
 
-                               
+
                             </div>
                         </div>`;
                         $('#appendPaxName').append($_html);
@@ -3648,10 +3648,10 @@ $(document).ready(function($) {
         var pax_value = $('#pax_no').val();
         var updateCount = parseInt(pax_value) - 1;
         $('#pax_no').val(updateCount).change();
-        
+
         var ids = [];
         $('.appendCount').each(function(){
-            ids.push($(this).attr('id')); 
+            ids.push($(this).attr('id'));
         });
         let _val  = 2
         let idLength = ids.length + _val;
@@ -3677,7 +3677,7 @@ $(document).ready(function($) {
 
     $(".bulk-action").submit(function(e) {
 
-        e.preventDefault(); 
+        e.preventDefault();
 
         var url            = $(this).attr('action');
         var checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
@@ -3716,7 +3716,7 @@ $(document).ready(function($) {
                     $.ajax({
                         type: "PUT",
                         url: url,
-                        data: $.param(formData), 
+                        data: $.param(formData),
                         success: function(data)
                         {
                             setTimeout(function() {
@@ -3736,7 +3736,7 @@ $(document).ready(function($) {
 
     /// Update Currency Status
     $("#currencyStatus").submit(function(e) {
-        e.preventDefault(); 
+        e.preventDefault();
         // console.log('run');
         var url = $(this).attr('action');
         var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
@@ -3762,7 +3762,7 @@ $(document).ready(function($) {
                     $.ajax({
                         type: "POST",
                         url: url,
-                        data: $.param(formData), 
+                        data: $.param(formData),
                         success: function(data)
                         {
                             setTimeout(function() {
@@ -3791,12 +3791,12 @@ $(document).ready(function($) {
                     });
                     this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                    }); 
+                    });
                 }).end().show().insertAfter(".relevant-quote:last");
     });
     ///////////////// RELEVANT QUOTE FIELD
-    
-    
+
+
 //////////// quote media modal close
 $(document).on('click', '.QuotemediaModalClose', function () {
     $(this).closest('.modal-body').children('.input-group').find('input').val("");
@@ -3825,7 +3825,7 @@ $(document).on('click', '.remove-img', function () {
 //         $(this).text('x Remove Stored Text')
 //     } else {
 //         console.log('hide');
-        
+
 //         x.style.display = "none";
 //         $(this).text('+ Add Stored Text')
 //         $('#selectstoretext').attr('disabled', true);
@@ -3873,3 +3873,67 @@ $(document).on('click', '.addmodalforquote', function() {
 /////////////////// Stored Text End
 
 });
+
+// CreateGroupQuote //
+    var checkedQuoteValues = null;
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+
+    //Create group quote
+    $('.createGroupQuote').on('click', function (e) {
+        checkedQuoteValues = $('.child:checked').map((i, e) => e.value ).get();
+        if(checkedQuoteValues.length > 1){
+            jQuery('#group-quote-modal').modal('show');
+        }else{
+            alert('Please check atleat two records.');
+        }
+    });
+
+    $(".create-group-quote").submit(function(e) {
+        e.preventDefault();
+
+        var url            = $(this).attr('action');
+        var formData       = $(this).serializeArray();
+
+        formData.push({name:'quote_ids', value: checkedQuoteValues});
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $.param(formData),
+            success: function(data)
+            {
+                // console.log(data);
+                // return false;
+                if(data.status) {
+                    jQuery('#group-quote-modal').modal('hide');
+                    Toast.fire({
+                        icon: 'success',
+                        title: data.msg
+                    });
+                    setTimeout(function(){
+                        window.location.href = data.redirect;
+                    }, 2800);
+
+                } else {
+                    new Swal(data.type, data.msg, data.icon);
+                }
+            }
+        });
+    });
+
+    $(document).ready(function() {
+       setTimeout(function() {
+           jQuery('.alert-success').fadeOut(1500);
+           jQuery('.alert-danger').fadeOut(1500);
+        }, 3000)
+    })

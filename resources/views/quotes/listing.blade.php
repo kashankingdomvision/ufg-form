@@ -132,6 +132,8 @@
                                 <button type="submit" name="cancel" class="dropdown-item btn-link btnbulkClick">Cancel</button>
                                 <button type="submit" name="quote" class="dropdown-item btn-link btnbulkClick">Revert Cancel</button>
                                 <button type="submit"  name="{{ (isset($status) && $status == 'archive')? 'unarchive': 'archive' }}" class="dropdown-item btn-link btnbulkClick">{{ (isset($status) && $status == 'archive')? 'Unarchive': 'Archive' }}</button>
+                                <div class="border-top my-2"></div>
+                                <a href="javascript:void(0)" name="group_quote" class="dropdown-item btn-link createGroupQuote">Create Group Quote</a>
                             </div>
                         </div>
                     </form>
@@ -139,6 +141,34 @@
               </div>
             </div>
         </section>
+
+        {{-- GROUP QUOTE MODAL --}}
+        <div class="modal fade" id="group-quote-modal" tabindex="-1" role="dialog" aria-labelledby="group-quote-modal-lable" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Create new group quote</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="POST" action="{{ route('group-quote.store') }}" class="create-group-quote">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="group-quote-name">Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Enter group name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+        </div>
+        {{-- END GROUP QUOTE MODAL --}}
 
         <section class="content">
             <div class="container-fluid">

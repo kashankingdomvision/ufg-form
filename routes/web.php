@@ -178,6 +178,15 @@ Route::group(['middleware' => ['auth']], function(){
         ]]);
     
     });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Group Quote Manangement
+    |--------------------------------------------------------------------------
+    */
+    Route::resource('group-quote', 'GroupController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
 
 
     /*

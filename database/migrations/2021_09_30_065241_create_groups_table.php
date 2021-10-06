@@ -16,6 +16,13 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->double('total_net_price')->default(0);
+            $table->double('total_markup_amount')->default(0);
+            $table->double('total_markup_percentage')->default(0);
+            $table->double('total_selling_price')->default(0);
+            $table->double('total_profit_percentage')->default(0);
+            $table->double('total_commission_amount')->default(0);
+            $table->string('currency_id')->nullable();
             $table->timestamps();
         });
     }
