@@ -26,7 +26,7 @@ class GroupController extends Controller
      */
     public function index(Request $request)
     {
-        $group = Group::orderBy('id', 'Desc');
+        $group = Group::with('quotes')->orderBy('id', 'Desc');
 
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
@@ -35,7 +35,6 @@ class GroupController extends Controller
         }
 
         $data['groups'] = $group->paginate($this->pagination);
-
         return view('groups.listing', $data);
     }
 

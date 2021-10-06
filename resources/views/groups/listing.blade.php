@@ -1,6 +1,3 @@
-
-
-
 @extends('layouts.app')
 
 @section('title','View Group Quotes')
@@ -77,6 +74,7 @@
                           <input type="checkbox" class="parent">
                         </div>
                       </th>
+                      <th></th>
                       <th>Name</th>
                       <th>Total net price</th>
                       <th>Total markup amount</th>
@@ -86,6 +84,7 @@
                       <th>Total commission amount</th>
                       <th>Currency</th>
                       <th>Action</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -97,6 +96,11 @@
                             <input type="checkbox" class="child" value="{{$group->id}}" >
                           </div>
                         </td>
+                        <td>
+                            <a id="collapse-anchor-{{$group->id}}" data-toggle="collapse" href="#collapse{{$group->id}}">
+                                <span class="text-secondary fa fa-eye"></span>
+                            </a>
+                        </td>
                         <td>{{ $group->name }}</td>
                         <td>{{ $group->total_net_price }}</td>
                         <td>{{ $group->total_markup_amount }}</td>
@@ -105,17 +109,48 @@
                         <td>{{ $group->total_profit_percentage }}</td>
                         <td>{{ $group->total_commission_amount }}</td>
                         <td>{{ $group->getBookingCurrency->name }}</td>
-                        <td>
+                        <td colspan="2">
                           <form method="post" action="{{ route('group-quote.destroy', encrypt($group->id)) }}">
-                            <a href="{{ route('group-quote.edit', encrypt($group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <a href="{{ route('group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
-                            <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
+                            <button class="btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                               <span class="fa fa-trash"></span>
                             </button>
                           </form>
                         </td>
                       </tr>
+                      <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
+                          <th></th>
+                          <th></th>
+                          <th>Quote Ref#</th>
+                          <th>Net price</th>
+                          <th>Markup amount</th>
+                          <th>Markup percentage</th>
+                          <th>Selling price</th>
+                          <th>Profit percentage</th>
+                          <th>Commission amount</th>
+                          <th colspan="2">Currency</th>
+                      </tr>
+                    @foreach($group->quotes as $q)
+                    <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
+                        <td colspan="2"></td>
+                        @if($q->booking_status != 'booked')
+                            <td> <a href="{{ route('quotes.final', encrypt($q->id)) }}">{{ $q->quote_ref }}</a> </td>
+                        @endif
+
+                        @if($q->booking_status == 'booked')
+                            <td> <a href="{{ route('bookings.show', encrypt($q->getBooking->id)) }}">{{ $q->quote_ref }}</a> </td>
+                        @endif
+                        <td>{{ $q->net_price }}</td>
+                        <td>{{ $q->markup_amount }}</td>
+                        <td>{{ $q->markup_percentage }}</td>
+                        <td>{{ $q->selling_price }}</td>
+                        <td>{{ $q->profit_percentage }}</td>
+                        <td>{{ $q->commission_amount }}</td>
+                        <td colspan="2">{{ $q->getBookingCurrency->name }}</td>
+                    </tr>
+                    @endforeach
                     @endforeach
                   @else
                     <tr align="center"><td colspan="100%">No record found.</td></tr>
