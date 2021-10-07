@@ -47286,6 +47286,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
+  /* Hide Potentail Commission for another Behalf User */
+
+  $(document).on('change', '.sales-person-id', function () {
+    var salesPersonID = $(this).val();
+    var userID = $('.user-id').val();
+
+    if (salesPersonID != userID) {
+      $('#potential_commission_feild').addClass('d-none');
+    }
+
+    if (salesPersonID == userID) {
+      $('#potential_commission_feild').removeClass('d-none');
+    }
+  });
   /* Focus In/Out Function on Calculation Values */
 
   $(document).on('focus', '.remove-zero-values', function () {

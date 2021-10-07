@@ -44,6 +44,13 @@
                   <!-- For Commission Calculation -->
                   <div class="row d-none">
                     <div class="col-sm-6"> 
+                      <label>User ID <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" value="{{ isset(Auth::user()->id) && !empty(Auth::user()->id) ? Auth::user()->id : '' }}" name="user_id" id="user_id" class="form-control user-id">
+                      </div>
+                    </div>
+                    
+                    <div class="col-sm-6"> 
                       <label>Commission <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" value="{{ isset($quote['commission_id']) && !empty($quote['commission_id']) ? $quote['commission_id'] : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
@@ -863,7 +870,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="form-group row">
+
+                  <div class="form-group row {{ ($quote['user_id'] != $quote['sale_person_id']) ? 'd-none' : '' }}" id="potential_commission_feild">
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Potential Commission</label>
                     <div class="col-sm-2">
                       <div class="form-group">

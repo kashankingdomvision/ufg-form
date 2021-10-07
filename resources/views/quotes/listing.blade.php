@@ -197,7 +197,7 @@
                                                         @endif
                                                     </td>
                                                     <td >{!! $quote->has_user_edit !!}</td>
-                                                    <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
+                                                    <td>{{ ($quote->user_id == 'sale_person_id') ? '-' : $quote->getUser->name }}</td>
                                                     <td width="8">{{ $quote->getSalePerson->name }}</td>
                                                     <td>{{ $quote->ref_no }}</td>
 
