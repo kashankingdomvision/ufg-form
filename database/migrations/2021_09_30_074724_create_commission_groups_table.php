@@ -15,11 +15,7 @@ class CreateCommissionGroupsTable extends Migration
     {
         Schema::create('commission_groups', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('commission_id')->nullable();
             $table->string('name')->nullable();
-            $table->double('percentage');
-            $table->foreign('commission_id')->references('id')->on('commissions')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

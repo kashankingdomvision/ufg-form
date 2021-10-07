@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="content-wrapper">
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -12,7 +12,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
       <section class="content-header">
         <div class="container-fluid">
           <div class="row">
@@ -46,7 +46,7 @@
 
                     <div class="form-group">
                       <label>Name <span style="color:red">*</span></label>
-                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" required>
+                      <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror" placeholder="Name" >
 
                       @error('name')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -55,7 +55,7 @@
 
                     <div class="form-group">
                       <label>Email <span style="color:red">*</span></label>
-                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" required>
+                      <input type="email" name="email" value="" class="form-control @error('email') is-invalid @enderror" placeholder="emample@mail.com" >
 
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -64,7 +64,7 @@
 
                     <div class="form-group">
                       <label>Password <span style="color:red">*</span></label>
-                      <input type="password" name="password" value="" class="form-control @error('password')  @enderror" placeholder="Password" required>
+                      <input type="password" name="password" value="" class="form-control @error('password')  @enderror" placeholder="Password" >
 
                       @error('password')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -74,7 +74,7 @@
                     @if(Auth::user()->hasAdmin())
                     <div class="form-group">
                       <label>User Type <span style="color:red">*</span></label>
-                      <select name="role" class="form-control select2single role  @error('role') is-invalid @enderror" required>
+                      <select name="role" class="form-control select2single role  @error('role') is-invalid @enderror" >
                         <option value="">Select User Type</option>
                         @foreach ($roles as $role)
                           <option value="{{ $role->id }}" data-role="{{ $role->name }}"> {{ $role->name }}</option>
@@ -102,32 +102,32 @@
                     </div> 
 
                     <div class="form-group">
-                      <label>Default Commision</label>
-                      <select name="commission" class="form-control select2single">
+                      <label>Default Commision <span style="color:red">*</span></label>
+                      <select name="commission_id" class="form-control select2single @error('commission_id') is-invalid @enderror">
                         <option value="">Select Commission</option>
                         @foreach($commisions as $commision)
                           <option value="{{ $commision->id }}">{{ $commision->name }}</option>
                         @endforeach
                       </select>
 
-                      @error('commission')
+                      @error('commission_id')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
 
                     <div class="form-group">
-                      <label>Group </label>
-                      <select name="group_id" id="group_id" value="{{ old('group_id') }}" class="form-control select2single group-id  @error('group_id') is-invalid @enderror" >
-                        <option value="">Select Group</option>
-                        @foreach ($groups as $group)
-                          <option value="{{ $group->id }}" {{ old('group_id') == $group->id ? 'selected' : '' }}> {{ $group->name }}</option>
+                      <label>Default Commission Group <span style="color:red">*</span></label>
+                      <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id @error('commission_group_id') is-invalid @enderror">
+                        <option value="">Select Commission Group</option>
+                        @foreach ($commission_groups as $commission_group)
+                          <option value="{{ $commission_group->id }}" {{ old('commission_group_id') == $commission_group->id ? 'selected' : null }}>{{ $commission_group->name }}</option>
                         @endforeach
                       </select>
-
-                      @error('group_id')
+  
+                      @error('commission_group_id')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
-                    </div> 
+                    </div>
 
                     <div class="form-group">
                       <label>Default Currency</label>

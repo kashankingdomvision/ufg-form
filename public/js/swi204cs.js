@@ -46993,11 +46993,11 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
+
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // 
@@ -47196,30 +47196,43 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return object.shift()[rateType];
   }
 
-  function getCommissionPercent(commissionID, commissionGroupID) {
+  function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID) {
+    var commissionPercentage = 0.00;
     var object = commissionRate.filter(function (elem) {
-      return elem.commission_id == commissionID && elem.id == commissionGroupID;
+      return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
     });
-    console.log("commission_id: " + commissionID);
-    console.log("commissionGroupID: " + commissionGroupID);
-    return object.shift().percentage;
+
+    if (object.length > 0) {
+      commissionPercentage = object.shift().percentage;
+    }
+
+    return commissionPercentage;
   }
 
   function getCommissionRate() {
+    var calculatedCommisionAmount = 0;
     var totalNetPrice = $('.total-net-price').val();
     var commissionID = $('.commission-id').val();
     var commissionGroupID = $('.commission-group-id').val();
-    var calculatedCommisionAmount = 0;
-    console.log(commissionID);
-    console.log(commissionGroupID);
+    var brandID = $('.brand-id').val();
+    var holidayTypeID = $('.holiday-type-id').val();
+    var currencyID = $('.booking-currency-id').val();
+    var seasonID = $('.season-id').val(); // console.log(totalNetPrice);
+    // console.log(commissionID);
+    // console.log(commissionGroupID);
+    // console.log(brandID);
+    // console.log(holidayTypeID);
+    // console.log(seasonID);
+    // console.log(currencyID);
 
-    if (commissionID && commissionGroupID) {
-      var commissionPercentage = getCommissionPercent(commissionID, commissionGroupID);
+    if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID) {
+      var commissionPercentage = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
       calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
     } else {
       calculatedCommisionAmount = 0.00;
     }
 
+    console.log("calculatedCommisionAmount: " + calculatedCommisionAmount);
     $('.commission-amount').val(check(calculatedCommisionAmount));
   }
 
@@ -47269,14 +47282,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         options += '<option value="">Select Commission Group</option>';
         $.each(response, function (key, value) {
           options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
-        });
-        $('.commission-group-id').html(options);
+        }); // $('.commission-group-id').html(options);
       }
     });
   });
-  $(document).on('change', '.commission-group-id', function () {
-    getCommissionRate();
+  /* Focus In/Out Function on Calculation Values */
+
+  $(document).on('focus', '.remove-zero-values', function () {
+    var value = parseFloat($(this).val()).toFixed(2);
+
+    if (value == 0.00) {
+      $(this).val('');
+    }
   });
+  $(document).on('focusout', '.remove-zero-values', function () {
+    var value = $(this).val();
+
+    if (value == '') {
+      $(this).val(parseFloat(0).toFixed(2));
+    }
+  });
+  /* End Focus In/Out Function on Calculation Values */
+
   /*
   |--------------------------------------------------------------------------
   | Quote Management Calculation Functions
@@ -47571,8 +47598,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
     $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
     $(".total-markup-percent").val(check(markupPercentage));
-    $(".total-profit-percentage").val(check(profitPercentage));
-    getCommissionRate();
+    $(".total-profit-percentage").val(check(profitPercentage)); // getCommissionRate();
+
     getBookingAmountPerPerson();
   }
 
@@ -48152,10 +48179,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }
     });
-  });
-  $('#season_id').on('change', function () {
-    $('.datepicker').datepicker("setDate", '');
-    datepickerReset();
   }); // $(document).on('change', '.datepicker', function() {
   //     // var datePicker_id     = $(this).attr('id');
   //     var name = $(this).data('name');
@@ -48292,11 +48315,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(response) {
         options += '<option value="">Select Type Of Holiday</option>';
         $.each(response, function (key, value) {
-          options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
         });
         $('.appendHolidayType').html(options);
       }
     });
+    getCommissionRate();
+  });
+  $(document).on('change', '.holiday-type-id', function () {
+    getCommissionRate();
+  });
+  $('.season-id').on('change', function () {
+    getCommissionRate(); // $('.datepicker').datepicker("setDate", '');
+    // datepickerReset();
   });
   $(document).on('change', '.select-agency', function () {
     var agency_ = $('.agencyField');
@@ -48696,6 +48727,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       getQuoteTotalValues();
     }
 
+    getCommissionRate();
     getSellingPrice();
   });
   $(document).on("keyup change", '.change-calculation', function (event) {
@@ -49648,8 +49680,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     calculatedProfitPercentage = (parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice) * 100;
-    $('.total-profit-percentage').val(check(calculatedProfitPercentage));
-    getCommissionRate();
+    $('.total-profit-percentage').val(check(calculatedProfitPercentage)); // getCommissionRate();
+
     getBookingAmountPerPerson();
   }
 

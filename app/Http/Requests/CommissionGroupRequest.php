@@ -26,23 +26,25 @@ class CommissionGroupRequest extends FormRequest
     {
        
         return [
-            'commission_id' => 'required',
-            'percentage'    => 'required',
-            'name'    => [
-                'required',
-                Rule::unique('commission_groups','name')
-                ->where('commission_id',$this->request->get('commission_id'))
-            ]
+            'name'    => 'required|unique:commission_groups,name',
         ];
+
+        // return [
+        //     'commission_id' => 'required',
+        //     'percentage'    => 'required',
+        //     'name'    => [
+        //         'required',
+        //         Rule::unique('commission_groups','name')
+        //         ->where('commission_id',$this->request->get('commission_id'))
+        //     ]
+        // ];
 
     }
 
     public function attributes()
     {
         return [
-            'commission_id' => 'Commission',
             'name'          => 'Group Name',
-            'percentage'    => 'Percentage',
         ];
     }
 

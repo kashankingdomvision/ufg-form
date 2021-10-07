@@ -17,7 +17,7 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('commission_id');
+            // $table->unsignedBigInteger('commission_id');
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('currency_id');

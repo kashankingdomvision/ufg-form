@@ -167,13 +167,13 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
-        /* Groups */
-        Route::resource('group', 'GroupController',['only' => [
+        /* Commission Group */
+        Route::resource('commission-group', 'CommissionGroupController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
-        /* Commission Group */
-        Route::resource('commission-group', 'CommissionGroupController',['only' => [
+        /*  Commission Criteria */
+        Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
     

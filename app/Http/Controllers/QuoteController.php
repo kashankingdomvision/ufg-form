@@ -40,6 +40,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
 use App\CommissionGroup;
+use App\CommissionCriteria;
 
 class QuoteController extends Controller
 {
@@ -155,7 +156,7 @@ class QuoteController extends Controller
     }
 
     public function get_commission(){
-        return CommissionGroup::all();
+        return CommissionCriteria::leftJoin('commission_criteria_seasons', 'commission_criterias.id', '=', 'commission_criteria_seasons.commission_criteria_id')->get(['commission_criterias.commission_id','commission_criterias.percentage','commission_criterias.commission_group_id','commission_criterias.brand_id','commission_criterias.holiday_type_id','commission_criterias.currency_id','commission_criteria_seasons.season_id']);
     }
     
     public function quoteArray($request, $type = null)
@@ -163,8 +164,8 @@ class QuoteController extends Controller
         $data = [
             'quote_title'                       =>  $request->quote_title,
             'tas_ref'                           =>  $request->tas_ref??NULL,
-            'commission_id'                     =>  $request->commission_id,
-            'commission_group_id'               =>  $request->commission_group_id,
+            'commission_id'                     =>  $request->commission_id??NULL,
+            'commission_group_id'               =>  $request->commission_group_id??NULL,
             'user_id'                           =>  Auth::id(),
             'season_id'                         =>  $request->season_id,
             'brand_id'                          =>  $request->brand_id,

@@ -11,10 +11,10 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
  
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
@@ -206,36 +206,49 @@ $(document).ready(function($) {
                 return (object.shift()[rateType]);
             }
 
-            function getCommissionPercent(commissionID, commissionGroupID){
+            function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID){
 
+                var commissionPercentage = 0.00;
                 var object = commissionRate.filter(function(elem) {
-                    return elem.commission_id == commissionID && elem.id == commissionGroupID
+                    return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID
                 });
 
-                console.log("commission_id: " + commissionID);
-                console.log("commissionGroupID: " + commissionGroupID);
+                if(object.length > 0){
+                    commissionPercentage = object.shift().percentage;
+                }
 
-                return (object.shift().percentage);
+                return commissionPercentage;
             }
 
             function getCommissionRate(){
 
+                var calculatedCommisionAmount = 0;
                 var totalNetPrice             = $('.total-net-price').val();
                 var commissionID              = $('.commission-id').val();
-                var commissionGroupID          = $('.commission-group-id').val();
-                var calculatedCommisionAmount = 0;
+                var commissionGroupID         = $('.commission-group-id').val();
+                var brandID                   = $('.brand-id').val();
+                var holidayTypeID             = $('.holiday-type-id').val();
+                var currencyID                = $('.booking-currency-id').val();
+                var seasonID                  = $('.season-id').val();
 
-                console.log(commissionID);
-                console.log(commissionGroupID);
+                // console.log(totalNetPrice);
+                // console.log(commissionID);
+                // console.log(commissionGroupID);
+                // console.log(brandID);
+                // console.log(holidayTypeID);
+                // console.log(seasonID);
+                // console.log(currencyID);
 
-                if (commissionID && commissionGroupID){
-
-                    var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID);
+                if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
+                    
+                    var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
                     calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
 
                 } else {
                     calculatedCommisionAmount = 0.00;
                 }
+
+                console.log("calculatedCommisionAmount: " + calculatedCommisionAmount);
 
                 $('.commission-amount').val(check(calculatedCommisionAmount));
             }
@@ -293,14 +306,27 @@ $(document).ready(function($) {
                         $.each(response, function(key, value) {
                             options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
                         });
-                        $('.commission-group-id').html(options);
+
+                        // $('.commission-group-id').html(options);
                     }
                 });
             });
 
-            $(document).on('change', '.commission-group-id', function() {
-                getCommissionRate();
+            /* Focus In/Out Function on Calculation Values */
+            $(document).on('focus', '.remove-zero-values', function() {
+                var value = parseFloat($(this).val()).toFixed(2);
+                if(value == 0.00){
+                    $(this).val('');
+                }
             });
+
+            $(document).on('focusout', '.remove-zero-values', function() {
+                var value = $(this).val();
+                if(value == ''){
+                    $(this).val((parseFloat(0).toFixed(2)));
+                }
+            });
+            /* End Focus In/Out Function on Calculation Values */
 
             /*
             |--------------------------------------------------------------------------
@@ -591,7 +617,7 @@ $(document).ready(function($) {
                 $(".total-markup-percent").val(check(markupPercentage));
                 $(".total-profit-percentage").val(check(profitPercentage));
 
-                getCommissionRate();
+                // getCommissionRate();
                 getBookingAmountPerPerson();
             }
 
@@ -1263,10 +1289,7 @@ $(document).ready(function($) {
             });
 
 
-            $('#season_id').on('change', function() {
-                $('.datepicker').datepicker("setDate", '');
-                datepickerReset();
-            });
+
 
             // $(document).on('change', '.datepicker', function() {
             //     // var datePicker_id     = $(this).attr('id');
@@ -1438,14 +1461,24 @@ $(document).ready(function($) {
                     success: function(response) {
                         options += '<option value="">Select Type Of Holiday</option>';
                         $.each(response, function(key, value) {
-                            options += '<option data-value="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+                            options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
                         });
                         $('.appendHolidayType').html(options);
                     }
                 });
+
+                getCommissionRate();
             });
 
+            $(document).on('change', '.holiday-type-id', function() {
+                getCommissionRate();
+            });
 
+            $('.season-id').on('change', function() {
+                getCommissionRate();
+                // $('.datepicker').datepicker("setDate", '');
+                // datepickerReset();
+            });
 
             $(document).on('change', '.select-agency', function() {
                 var agency_ = $('.agencyField');
@@ -1925,7 +1958,7 @@ $(document).ready(function($) {
                     getQuoteBookingCurrencyValues();
                     getQuoteTotalValues();
                 }
-
+                getCommissionRate();
                 getSellingPrice();
             });
 
@@ -3205,7 +3238,7 @@ $(document).ready(function($) {
                 calculatedProfitPercentage = ((parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice)) * 100;
                 $('.total-profit-percentage').val(check(calculatedProfitPercentage));
 
-                getCommissionRate();
+                // getCommissionRate();
                 getBookingAmountPerPerson();
             }
 

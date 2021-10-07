@@ -27,23 +27,25 @@ class UpdateCommissionGroupRequest extends FormRequest
     public function rules()
     {
         return [
-            'commission_id' => 'required',
-            'percentage'    => 'required',
-            'name'          => [
-                'required',
-                Rule::unique('commission_groups','name')
-                ->where('commission_id',$this->request->get('commission_id'))
-                ->ignore($this->request->get('id'))
-            ]
+            'name'    => 'required|unique:commission_groups,name,'.$this->request->get('id')
         ];
+
+        // return [
+        //     'commission_id' => 'required',
+        //     'percentage'    => 'required',
+        //     'name'          => [
+        //         'required',
+        //         Rule::unique('commission_groups','name')
+        //         ->where('commission_id',$this->request->get('commission_id'))
+        //         ->ignore($this->request->get('id'))
+        //     ]
+        // ];
     }
 
     public function attributes()
     {
         return [
-            'commission_id' => 'Commission',
             'name'          => 'Group Name',
-            'percentage'    => 'Percentage',
         ];
     }
 

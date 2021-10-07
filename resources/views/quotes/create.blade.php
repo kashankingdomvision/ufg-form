@@ -42,7 +42,54 @@
             
               <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
-                  
+
+                  <!-- For Commission Calculation -->
+                  <div class="row d-none">
+                    <div class="col-sm-6"> 
+                      <label>Commission <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" value="{{ isset(Auth::user()->commission_id) && !empty(Auth::user()->commission_id) ? Auth::user()->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6"> 
+                      <label>Commission Group <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" value="{{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) ? Auth::user()->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
+                      </div>
+                    </div>
+                  </div>
+                  <!-- For Commission Calculation -->
+
+                    {{-- <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Type <span style="color:red">*</span></label>
+                        <select name="commission_id" id="commission_id" class="form-control select2single  commission-id">
+                          <option selected value="" >Select Commission Type </option>
+                          @foreach ($commission_types as $commission_type)
+                            <option {{ (Auth::user()->commission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
+                          @endforeach
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div> --}}
+
+                    {{-- <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Commission Group <span style="color:red">*</span></label>
+                          <select name="commission_group_id" id="commission_group_id" class="form-control select2single  commission-group-id">
+                            <option value="">Select Commission Group</option>
+                            @if(Auth::user()->getCommission->getCommissionGroups && Auth::user()->getCommission->getCommissionGroups->count())
+                              @foreach (Auth::user()->getCommission->getCommissionGroups as $commission_group)
+                                <option data-name="{{ $commission_group->name }}" value="{{ $commission_group->id }}" {{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) && $commission_group->id == Auth::user()->commission_group_id ? 'selected' : '' }}> {{ $commission_group->name }} </option>
+                              @endforeach
+                            @endif
+                          </select>
+                        </select>
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div> --}}
+
                   <div class="row mb-2">
                     <div class="col-sm-6"> 
                       <label>Quote Title <span style="color:red">*</span></label>
@@ -127,35 +174,6 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Commission Type <span style="color:red">*</span></label>
-                        <select name="commission_id" id="commission_id" class="form-control select2single  commission-id">
-                          <option selected value="" >Select Commission Type </option>
-                          @foreach ($commission_types as $commission_type)
-                            <option {{ (Auth::user()->commission_id == $commission_type->id)? 'selected': '' }} value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Commission Group <span style="color:red">*</span></label>
-                          <select name="commission_group_id" id="commission_group_id" class="form-control select2single  commission-group-id">
-                            <option value="">Select Commission Group</option>
-                            @if(Auth::user()->getCommission->getCommissionGroups && Auth::user()->getCommission->getCommissionGroups->count())
-                              @foreach (Auth::user()->getCommission->getCommissionGroups as $commission_group)
-                                <option data-name="{{ $commission_group->name }}" value="{{ $commission_group->id }}" {{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) && $commission_group->id == Auth::user()->commission_group_id ? 'selected' : '' }}> {{ $commission_group->name }} </option>
-                              @endforeach
-                            @endif
-                          </select>
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
 
                     <div class="col-sm-6">
                       <div class="form-group">
@@ -173,7 +191,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Type Of Holiday <span style="color:red">*</span></label>
-                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2single appendHolidayType  holiday-type-id ">
+                        <select name="holiday_type_id" id="holiday_type_id" class="form-control select2single appendHolidayType holiday-type-id">
                           <option value="">Select Type Of Holiday</option>
                           @if(Auth::user()->getBrand->getHolidayTypes && Auth::user()->getBrand->getHolidayTypes->count())
                             @foreach (Auth::user()->getBrand->getHolidayTypes as $holiday_type)
@@ -188,7 +206,7 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Booking Season <span style="color:red">*</span></label>
-                        <select name="season_id" id="season_id" class="form-control select2single scurrency-id">
+                        <select name="season_id" id="season_id" class="form-control select2single season-id">
                           <option value="">Select Booking Season</option>
                           @foreach ($seasons as $season)
                             <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
@@ -569,7 +587,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation" min="0" value="0.00">
+                                <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0" value="0.00">
                               </div>
                             </div>
                           </div>
@@ -581,7 +599,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code"></span>
                                 </div>
-                                <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change-calculation" value="0.00" min="0" step="any">
+                                <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" value="0.00" min="0" step="any">
                               </div>
                             </div>
                           </div>
@@ -590,7 +608,7 @@
                             <div class="form-group">
                               <label>Markup % <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change-calculation" min="0" value="0.00">
+                                <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change-calculation remove-zero-values" min="0" value="0.00">
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
                                 </div>
@@ -753,7 +771,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" step="any" class="form-control total-markup-amount total-markup-change hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" readonly>
+                          <input type="number" step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -764,7 +782,7 @@
                           {{-- <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div> --}}
-                          <input type="number" step="any" class="form-control total-markup-percent total-markup-change hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" readonly>
+                          <input type="number" step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>

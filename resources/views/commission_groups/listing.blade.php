@@ -37,18 +37,6 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-            <label>Commission <span style="color:red">*</span></label>
-            <select class="form-control select2single" name="commission_id">
-                <option value="" selected>Select Commission</option>
-                @foreach ($commissions as $commission)
-                  <option value="{{ $commission->id }}" {{ (old('commission_id') == $commission->id )? 'selected': ((request()->get('commission_id') == $commission->id) ? 'selected' : null) }} > {{ $commission->name }}</option>
-                @endforeach
-            </select>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="form-group">
             <label>Search <span style="color:red">*</span></label>
             <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="Search By Group Name">
         </div>
@@ -90,9 +78,7 @@
                           <input type="checkbox" class="parent">
                         </div>
                       </th>
-                      <th>Commission Name</th>
                       <th>Group Name</th>
-                      <th>Percentage</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -105,11 +91,7 @@
                             <input type="checkbox" class="child" value="{{$commission_group->id}}" >
                           </div>
                         </td>
-
-                        <td>{{ isset($commission_group->getCommission->name) && !empty($commission_group->getCommission->name) ? $commission_group->getCommission->name : '' }}</td>
                         <td>{{ isset($commission_group->name) && !empty($commission_group->name) ? $commission_group->name : '' }}</td>
-                        <td>{{ $commission_group->percentage }}</td>
-                       
                         <td>
                           <form method="post" action="{{ route('commissions.commission-group.destroy', encrypt($commission_group->id)) }}">
                             <a href="{{ route('commissions.commission-group.edit', encrypt($commission_group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>

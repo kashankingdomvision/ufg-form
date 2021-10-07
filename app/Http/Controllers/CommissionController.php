@@ -4,8 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Commission;
 use App\Http\Requests\CommissionRequest;
+
+use App\Commission;
+use App\Brand;
+use App\HolidayType;
+use App\Currency;
+use App\CommissionGroup;
+use App\Season;
+use App\CommissionSeason;
 
 class CommissionController extends Controller
 {
@@ -34,7 +41,12 @@ class CommissionController extends Controller
      */
     public function create()
     {
-        return view('commissions.create');
+        $data['brands']             = Brand::orderBy('id','ASC')->get();
+        $data['commission_groups']  = CommissionGroup::orderBy('id','ASC')->get();
+        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['booking_seasons']    = Season::all();
+
+        return view('commissions.create', $data);
     }
 
     /**
@@ -45,7 +57,9 @@ class CommissionController extends Controller
      */
     public function store(CommissionRequest $request)
     {
-        Commission::create($request->all());
+        $commission = Commission::create([ 'name' => $request->name]);
+        $commission->seasons()->sync($request->season_id);
+
         return redirect()->route('commissions.commission.index')->with('success_message', 'Commission created successfully'); 
     }
 

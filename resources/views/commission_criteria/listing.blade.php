@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('title','View Commissions')
+@section('title','View Commission Criteria')
 
 @section('content')
 <div class="content-wrapper">
@@ -13,14 +13,14 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Commission <x-add-new-button :route="route('commissions.commission.create')" /> </h4>
+            <h4>View Commission Criteria <x-add-new-button :route="route('commissions.commission-criteria.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
             <li class="breadcrumb-item"><a>Commission Managment</a></li>
-            <li class="breadcrumb-item active">Commission</li>
+            <li class="breadcrumb-item active">Commission Criteria</li>
           </ol>
         </div>
       </div>
@@ -48,7 +48,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <a href="" id="delete_all" class="btn btn-danger  btn-sm ">
+          <a href="" id="delete_all" class="btn btn-danger btn-sm ">
             <span class="fa fa-trash"></span> &nbsp;
             <span>Delete Selected Record</span>
           </a>
@@ -63,7 +63,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Commission List
+                Commission Criteria List
               </h3>
             </div>
 
@@ -77,33 +77,48 @@
                           <input type="checkbox" class="parent">
                         </div>
                       </th>
-                      <th>Name</th>
-                      {{-- <th>Percentage</th> --}}
+                      <th>Commission</th>
+                      <th>Commission Group</th>
+                      <th>Percentage</th>
+                      <th>Booking Currency</th>
+                      <th>Brand</th>
+                      <th>Holiday Type</th>
+                      <th>Seasons</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  @if($commissions && $commissions->count())
-                    @foreach ($commissions as $commission)
+                  @if($commission_criterias && $commission_criterias->count())
+                    @foreach ($commission_criterias as $commission_criteria)
                       <tr>
                         <td>
                           <div class="icheck-primary">
-                            <input type="checkbox" class="child" value="{{$commission->id}}" >
+                            <input type="checkbox" class="child" value="{{$commission_criteria->id}}" >
                           </div>
                         </td>
-           
-                        <td>{{ $commission->name }}</td>
-                        {{-- <td>{{ $commission->percentage }} %</td> --}}
+                        <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommission->name) ? $commission_criteria->getCommission->name : '' }}</td>
+                        <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommissionGroup->name) ? $commission_criteria->getCommissionGroup->name : '' }}</td>
+                        <td>{{ $commission_criteria->percentage }} %</td>
+                        <td>{{ isset($commission_criteria->getCurrency->name) && !empty($commission_criteria->getCurrency->name) ? $commission_criteria->getCurrency->code.' - '.$commission_criteria->getCurrency->name : '' }}</td>
+                        <td>{{ isset($commission_criteria->getBrand->name)    && !empty($commission_criteria->getBrand->name) ? $commission_criteria->getBrand->name : '' }}</td>
+                        <td>{{ isset($commission_criteria->getHolidayType->name) && !empty($commission_criteria->getHolidayType->name) ? $commission_criteria->getHolidayType->name : '' }}</td>
                         <td>
-                          <form method="post" action="{{ route('commissions.commission.destroy', encrypt($commission->id)) }}">
-                            <a href="{{ route('commissions.commission.edit', encrypt($commission->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          @foreach ($commission_criteria->seasons as $season)
+                            <span class="badge badge-info">{{ $season->name }}</span>
+                          @endforeach
+                        </td>
+
+                        <td>
+                          <form method="post" action="{{ route('commissions.commission-criteria.destroy', encrypt($commission_criteria->id)) }}">
+                            <a href="{{ route('commissions.commission-criteria.edit', encrypt($commission_criteria->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                               <span class="fa fa-trash"></span>
                             </button>
                           </form>
-                        </td>
+                        </td> 
+
                       </tr>
                     @endforeach
                   @else
@@ -115,11 +130,11 @@
               </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'commissions'])
+            @include('includes.multiple_delete',['table_name' => 'commission_criterias'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
-                {{ $commissions->links() }}
+                {{ $commission_criterias->links() }}
               </ul>
             </div>
             

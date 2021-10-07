@@ -15,30 +15,12 @@ class CommissionGroupTableSeeder extends Seeder
     {
         $commission_groups  = [
             [
-                'commission_id'  => '1',
                 'name'           => 'Red',
-                'percentage'     => '1',
                 'created_at'     =>  now(),
                 'updated_at'     =>  now()
             ],
             [
-                'commission_id'  => '1',
                 'name'           => 'Green',
-                'percentage'     => '2',
-                'created_at'     =>  now(),
-                'updated_at'     =>  now()
-            ],
-            [
-                'commission_id'  => '2',
-                'name'           => 'Red',
-                'percentage'     => '1',
-                'created_at'     =>  now(),
-                'updated_at'     =>  now()
-            ],
-            [
-                'commission_id'  => '2',
-                'name'           => 'Green',
-                'percentage'     => '2',
                 'created_at'     =>  now(),
                 'updated_at'     =>  now()
             ]
