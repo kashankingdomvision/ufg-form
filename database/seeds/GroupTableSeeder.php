@@ -14,12 +14,12 @@ class GroupTableSeeder extends Seeder
     {
         $group_types  = [
             [
-                'name'       => 'Red',
+                'name'       => 'ABC',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],
             [ 
-                'name'       => 'Green',
+                'name'       => 'XYZ',
                 'created_at' =>  now(),
                 'updated_at' =>  now()
             ],

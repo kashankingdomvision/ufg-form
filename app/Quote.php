@@ -64,8 +64,6 @@ class Quote extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
     
- 
-
     public function getQuotelogs()
     {
         return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
@@ -203,5 +201,13 @@ class Quote extends Model
     
     public function setStoredTextAttribute( $value ) {
         $this->attributes['stored_text']    = json_encode($value);
+    }
+
+    /**
+     * The groups that belong to the shop.
+     */
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group');
     }
 }

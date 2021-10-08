@@ -47000,7 +47000,7 @@ var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); /
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  // 
+  //
   $(function () {
     $('.date-range-picker').daterangepicker({
       autoUpdateInput: false,
@@ -49780,7 +49780,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } // if(action && checkedValues.length > 0){
     //     $.ajax({
     //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-    //         type: 'delete',  
+    //         type: 'delete',
     //         dataType: "JSON",
     //         data: { "checkedValues": checkedValues, "action": action },
     //         beforeSend: function() {
@@ -49798,7 +49798,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     //             }
     //         },
     //         error: function(xhr) {
-    //           console.log(xhr.responseText);  
+    //           console.log(xhr.responseText);
     //         }
     //     });
     // }
@@ -49926,11 +49926,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (agencyVal == $_val) {
       var count = 1;
-      var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name </label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address </label> \n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number </label> \n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth </label> \n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality </label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
+      var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address </label>\n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number </label>\n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth </label>\n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality </label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
       }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                        <label>Resident In</label>\n                        <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                            <option selected value=\"\" >Select Resident</option>\n                            ").concat(countries.map(function (co) {
         return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n                        </select>\n                        <span class=\"text-danger\" role=\"alert\"></span>\n                        </div>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference </label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n                    \n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dinning Preference </label> \n                        <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                    </div>\n\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                            <label>Covid Vaccinated </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n                \n                </div>\n            </div>"); // console.log($v_html);
+      }).join(""), "\n                        </select>\n                        <span class=\"text-danger\" role=\"alert\"></span>\n                        </div>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dinning Preference </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"Dinning Preferences\" >\n                    </div>\n\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                            <label>Covid Vaccinated </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n\n                </div>\n            </div>"); // console.log($v_html);
 
       $('#appendPaxName').html($v_html);
       intTelinput(1);
@@ -49952,11 +49952,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           c = count;
         }
 
-        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                            <div class=\"col-md-12\">\n                                <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                            </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label> \n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n                                \n                            \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label> \n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label> \n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
+        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\" >\n                            <div class=\"col-md-12\">\n                                <button type=\"button\" class=\" remove-pax-column mt-2 btn btn-dark float-right\"><i class=\"fa fa-minus\" aria-hidden=\"true\"></i></button>\n                            </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"PASSENGER FULL NAME\" >\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Email Address</label>\n                                    <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"EMAIL ADDRESS\" >\n                                </div>\n\n\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Contact Number</label>\n                                    <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                                    <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                    <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Date Of Birth</label>\n                                    <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-sm-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
           return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
         }).join(""), "\n                                    </select>\n                                </div>\n\n                                <div class=\"col-sm-3\">\n                                    <div class=\"form-group\">\n                                    <label>Resident In</label>\n                                    <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                                        <option selected value=\"\" >Select Resident</option>\n                                        ").concat(countries.map(function (co) {
           return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                    </select>\n                                    <span class=\"text-danger\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n                                \n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label> \n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n\n                                <div class=\"col-sm-2\">\n                                    <div class=\"form-group\">\n                                        <label>Covid Vaccinated </label>\n                                        <div>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                            </label>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                            </label>\n                                        </div>\n                                    </div>\n                                </div>\n\n                               \n                            </div>\n                        </div>");
+        }).join(""), "\n                                    </select>\n                                    <span class=\"text-danger\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Bedding Preference</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"BEDDING PREFERENCES\" >\n                                </div>\n\n                                <div class=\"col-md-3 mb-2\">\n                                    <label>Dinning Preference</label>\n                                    <input type=\"text\" name=\"pax[").concat(count, "][dinning_preference]\" class=\"form-control\" placeholder=\"DINNING PREFERENCES\" >\n                                </div>\n\n                                <div class=\"col-sm-2\">\n                                    <div class=\"form-group\">\n                                        <label>Covid Vaccinated </label>\n                                        <div>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes\n                                            </label>\n                                            <label class=\"radio-inline\">\n                                                <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No\n                                            </label>\n                                        </div>\n                                    </div>\n                                </div>\n\n\n                            </div>\n                        </div>");
         $('#appendPaxName').append($_html);
         intTelinput(count);
       }
@@ -50206,6 +50206,67 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find(target).modal('show');
     quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
   }); /////////////////// Stored Text End
+}); // CreateGroupQuote //
+
+var checkedQuoteValues = null;
+var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: function didOpen(toast) {
+    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.stopTimer);
+    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.resumeTimer);
+  }
+}); //Create group quote
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', function (e) {
+  checkedQuoteValues = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.child:checked').map(function (i, e) {
+    return e.value;
+  }).get();
+
+  if (checkedQuoteValues.length > 1) {
+    jQuery('#group-quote-modal').modal('show');
+  } else {
+    alert('Please check atleat two records.');
+  }
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(function (e) {
+  e.preventDefault();
+  var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action');
+  var formData = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serializeArray();
+  formData.push({
+    name: 'quote_ids',
+    value: checkedQuoteValues
+  });
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    type: "POST",
+    url: url,
+    data: jquery__WEBPACK_IMPORTED_MODULE_0___default.a.param(formData),
+    success: function success(data) {
+      // console.log(data);
+      // return false;
+      if (data.status) {
+        jQuery('#group-quote-modal').modal('hide');
+        Toast.fire({
+          icon: 'success',
+          title: data.msg
+        });
+        setTimeout(function () {
+          window.location.href = data.redirect;
+        }, 2800);
+      } else {
+        new sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a(data.type, data.msg, data.icon);
+      }
+    }
+  });
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
+  setTimeout(function () {
+    jQuery('.alert-success').fadeOut(1500);
+    jQuery('.alert-danger').fadeOut(1500);
+  }, 3000);
 });
 
 /***/ }),
