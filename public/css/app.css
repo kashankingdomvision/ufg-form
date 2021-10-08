@@ -2621,7 +2621,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
 }
 
 .swal2-popup.swal2-toast .swal2-title {
-  margin: 0.5em 1em;
+  margin: 1em;
   padding: 0;
   font-size: 0.875rem;
   text-align: initial;
@@ -2658,7 +2658,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
 }
 
 .swal2-popup.swal2-toast .swal2-html-container {
-  margin: 0.5em 1em;
+  margin: 1em;
   padding: 0;
   font-size: 0.875rem;
   text-align: initial;
@@ -2716,14 +2716,18 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   justify-content: flex-start;
   height: auto;
   margin: 0;
-  margin-top: 0.5em;
-  padding: 0 0.5em;
+  margin-top: 0.3125em;
+  padding: 0;
 }
 
 .swal2-popup.swal2-toast .swal2-styled {
   margin: 0.25em 0.5em;
   padding: 0.4em 0.6em;
   font-size: 0.875rem;
+}
+
+.swal2-popup.swal2-toast .swal2-styled:focus {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(100, 150, 200, 0.5);
 }
 
 .swal2-popup.swal2-toast .swal2-success {
@@ -2810,14 +2814,20 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   bottom: 0;
   left: 0;
   box-sizing: border-box;
-  grid-template-areas: "top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";
-  grid-template-rows: minmax(-webkit-min-content, auto) minmax(-webkit-min-content, auto) minmax(-webkit-min-content, auto);
-  grid-template-rows: minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);
+  grid-template-areas: "top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end" "gap gap gap";
+  grid-template-rows: auto auto auto 0.625em;
   height: 100%;
-  padding: 0.625em;
+  padding: 0.625em 0.625em 0;
   overflow-x: hidden;
   transition: background-color 0.5s;
   -webkit-overflow-scrolling: touch;
+}
+
+.swal2-container::after {
+  content: "";
+  grid-column: 1/4;
+  grid-row: 4;
+  height: 0.625em;
 }
 
 .swal2-container.swal2-backdrop-show,
@@ -2967,7 +2977,7 @@ fieldset[disabled] .datepicker table tr td span.active.disabled:hover.focus {
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  width: auto;
+  width: 100%;
   margin: 1.25em auto 0;
   padding: 0;
 }
@@ -4846,8 +4856,8 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   padding-right: 2.25rem;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right calc(0.375em + 0.1875rem) center;
-  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+  background-position: right calc(.375em + .1875rem) center;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }
 
 .select2-container--classic .select2-selection--multiple {

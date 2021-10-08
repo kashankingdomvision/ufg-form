@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
             CurrencyTableSeeder::class,
             RoleTableSeeder::class, 
             CommissionGroupTableSeeder::class,
-            GroupTableSeeder::class,
             CategoryTableSeeder::class,
             BookingMethodSeeder::class,
             BookingTypeSeeder::class,

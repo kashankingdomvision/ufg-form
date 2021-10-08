@@ -109,7 +109,7 @@ class GroupController extends Controller
                 'currency_id' => $currency->currency_id
             ]);
             $new_group->quotes()->attach($quote_ids);
-            return [ 'status' => true, 'msg' => 'Group quote successfully created.', 'redirect' => route('group-quote.index')];
+            return [ 'status' => true, 'msg' => 'Group quote successfully created.', 'redirect' => route('quotes.group-quote.index')];
         } catch(\Exception $error) {
             return [ 'status' => false, 'msg' => $error->getMessage()];
         }
@@ -159,7 +159,7 @@ class GroupController extends Controller
             }
 
             if(count($request->quote_ids) < 2) {
-                return redirect()->back()->with('error_message', 'Select atleast two quotes to proceed.');
+                return redirect()->back()->with('error_message', 'Select Atleast Two Quotes to Proceed.');
             }
 
             // Sum of all the total amounts of selected quotes.
@@ -203,6 +203,6 @@ class GroupController extends Controller
     public function destroy($id)
     {
         Group::destroy(decrypt($id));
-        return redirect()->route('group-quote.index')->with('success_message', 'Group quote deleted successfully');
+        return redirect()->route('quotes.group-quote.index')->with('success_message', 'Group quote deleted successfully');
     }
 }

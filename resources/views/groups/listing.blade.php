@@ -30,7 +30,7 @@
     </div>
   </section>
 
-  <x-page-filters :route="route('commissions.group.index')">
+  <x-page-filters :route="route('quotes.group-quote.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -75,14 +75,15 @@
                         </div>
                       </th>
                       <th></th>
-                      <th>Name</th>
-                      <th>Total net price</th>
-                      <th>Total markup amount</th>
-                      <th>Total markup percentage</th>
-                      <th>Total selling price</th>
-                      <th>Total profit percentage</th>
-                      <th>Total commission amount</th>
-                      <th>Currency</th>
+
+                      <th >Group Name</th>
+                      <th >Total Net Price</th>
+                      <th >Total Markup Amount</th>
+                      <th >Total Markup %</th>
+                      <th >Total Selling Price</th>
+                      <th >Total Profit Percentage</th>
+                      <th >Total Commission Amount</th>
+                      <th style="width: 160px;">Booking Currency</th>
                       <th>Action</th>
                       <th></th>
                     </tr>
@@ -90,6 +91,9 @@
                   <tbody>
                   @if($groups && $groups->count())
                     @foreach ($groups as $group)
+                    @php
+                      $booking_currency = isset($group->getBookingCurrency->code) && !empty($group->getBookingCurrency->code) ?  $group->getBookingCurrency->code : '';
+                    @endphp
                       <tr>
                         <td>
                           <div class="icheck-primary">
@@ -102,16 +106,16 @@
                             </a>
                         </td>
                         <td>{{ $group->name }}</td>
-                        <td>{{ $group->total_net_price }}</td>
-                        <td>{{ $group->total_markup_amount }}</td>
-                        <td>{{ $group->total_markup_percentage }}</td>
-                        <td>{{ $group->total_selling_price }}</td>
-                        <td>{{ $group->total_profit_percentage }}</td>
-                        <td>{{ $group->total_commission_amount }}</td>
-                        <td>{{ $group->getBookingCurrency->name }}</td>
+                        <td>{{ \Helper::number_format($group->total_net_price).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($group->total_markup_amount).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($group->total_markup_percentage).' %' }}</td>
+                        <td>{{ \Helper::number_format($group->total_selling_price).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($group->total_profit_percentage).' %' }}</td>
+                        <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td>
+                        <td>{{ isset($group->getBookingCurrency->name) && !empty($group->getBookingCurrency->name) ? $group->getBookingCurrency->code.' - '.$group->getBookingCurrency->name : '' }}</td>
                         <td colspan="2">
-                          <form method="post" action="{{ route('group-quote.destroy', encrypt($group->id)) }}">
-                            <a href="{{ route('group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('quotes.group-quote.destroy', encrypt($group->id)) }}">
+                            <a href="{{ route('quotes.group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
@@ -123,33 +127,37 @@
                       <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
                           <th></th>
                           <th></th>
-                          <th>Quote Ref#</th>
-                          <th>Net price</th>
-                          <th>Markup amount</th>
-                          <th>Markup percentage</th>
-                          <th>Selling price</th>
-                          <th>Profit percentage</th>
-                          <th>Commission amount</th>
-                          <th colspan="2">Currency</th>
+                          <th>Quote Ref #</th>
+                          <th>Net Price</th>
+                          <th>Markup Amount</th>
+                          <th>Markup %</th>
+                          <th>Selling Price</th>
+                          <th>Profit Percentage</th>
+                          <th>Commission Amount</th>
+                          <th colspan="2">Booking Currency</th>
                       </tr>
                     @foreach($group->quotes as $q)
-                    <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
+                      @php
+                        $booking_currency = isset($q->getBookingCurrency->code) && !empty($q->getBookingCurrency->code) ?  $q->getBookingCurrency->code : '';
+                      @endphp
+
+                      <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
                         <td colspan="2"></td>
                         @if($q->booking_status != 'booked')
-                            <td> <a href="{{ route('quotes.final', encrypt($q->id)) }}">{{ $q->quote_ref }}</a> </td>
+                          <td> <a href="{{ route('quotes.final', encrypt($q->id)) }}">{{ $q->quote_ref }}</a> </td>
                         @endif
 
                         @if($q->booking_status == 'booked')
-                            <td> <a href="{{ route('bookings.show', encrypt($q->getBooking->id)) }}">{{ $q->quote_ref }}</a> </td>
+                          <td> <a href="{{ route('bookings.show', encrypt($q->getBooking->id)) }}">{{ $q->quote_ref }}</a> </td>
                         @endif
-                        <td>{{ $q->net_price }}</td>
-                        <td>{{ $q->markup_amount }}</td>
-                        <td>{{ $q->markup_percentage }}</td>
-                        <td>{{ $q->selling_price }}</td>
-                        <td>{{ $q->profit_percentage }}</td>
-                        <td>{{ $q->commission_amount }}</td>
-                        <td colspan="2">{{ $q->getBookingCurrency->name }}</td>
-                    </tr>
+                        <td>{{ \Helper::number_format($q->net_price).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($q->markup_amount).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($q->markup_percentage).' %' }}</td>
+                        <td>{{ \Helper::number_format($q->selling_price).' '.$booking_currency }}</td>
+                        <td>{{ \Helper::number_format($q->profit_percentage).' %' }}</td>
+                        <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td>
+                        <td>{{ isset($q->getBookingCurrency->name) && !empty($q->getBookingCurrency->name) ? $q->getBookingCurrency->code.' - '.$q->getBookingCurrency->name : '' }}</td>
+                      </tr>
                     @endforeach
                     @endforeach
                   @else

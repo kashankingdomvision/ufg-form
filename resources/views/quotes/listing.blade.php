@@ -147,17 +147,17 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Create new group quote</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">Create new Group Quote</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form method="POST" action="{{ route('group-quote.store') }}" class="create-group-quote">
+                <form method="POST" action="{{ route('quotes.group-quote.store') }}" class="create-group-quote">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="group-quote-name">Name</label>
-                            <input type="text" class="form-control" name="name" placeholder="Enter group name">
+                            <input type="text" class="form-control" name="name" placeholder="Enter Group Name">
                         </div>
                     </div>
                     <div class="modal-footer">

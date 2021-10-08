@@ -102,6 +102,14 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
 
+        /* Group Quote */
+        // Route::resource('group', 'GroupController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
+
+        Route::resource('group-quote', 'GroupController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
     });
 
 
@@ -172,22 +180,14 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
+
+
         /*  Commission Criteria */
         Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
     
     });
-    
-    /*
-    |--------------------------------------------------------------------------
-    | Group Quote Manangement
-    |--------------------------------------------------------------------------
-    */
-    Route::resource('group-quote', 'GroupController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
-
 
     /*
     |--------------------------------------------------------------------------
