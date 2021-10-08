@@ -157,6 +157,19 @@
                         <td>{{ \Helper::number_format($q->profit_percentage).' %' }}</td>
                         <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td>
                         <td>{{ isset($q->getBookingCurrency->name) && !empty($q->getBookingCurrency->name) ? $q->getBookingCurrency->code.' - '.$q->getBookingCurrency->name : '' }}</td>
+                        <td>
+                          @if($q->booking_status == 'quote')
+                            <a href="{{ route('quotes.final', encrypt($q->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                              <span class="fa fa-eye"></span>
+                            </a>
+                          @endif
+
+                          @if($q->booking_status == 'booked')
+                            <a href="{{ route('bookings.show',encrypt($q->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
+                              <i class="fas fa-eye"></i>
+                            </a>
+                          @endif
+                        </td>
                       </tr>
                     @endforeach
                     @endforeach
