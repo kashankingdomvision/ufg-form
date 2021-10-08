@@ -4812,6 +4812,15 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   background-color: #ff000038;
 }
 
+.table-wrap {
+  height: 600px;
+  overflow-y: auto;
+}
+
+.tr-bottom-border-color {
+  border-bottom: 1pt solid #dee2e6;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2

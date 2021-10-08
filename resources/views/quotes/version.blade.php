@@ -103,7 +103,7 @@
 
                     <div class="col-md-6">
                       <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
@@ -958,4 +958,5 @@
     </section>
   </div>
   @include('partials.new_service_modal',['categories' => $categories])
+  @include('partials.view_rates_modal')
 @endsection

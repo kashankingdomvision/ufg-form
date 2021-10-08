@@ -108,7 +108,7 @@
 
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" value="live" class="rate-type"  {{ (Auth::user()->rate_type == 'live')? 'checked': '' }}>
@@ -118,7 +118,9 @@
                             <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
                             <span>&nbsp;Manual Rate</span>
                           </label>
+                          
                         </div>
+
                       </div>
                     </div>
 
@@ -926,6 +928,7 @@
 
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories])
+    @include('partials.view_rates_modal')
   </div>
 
 @endsection

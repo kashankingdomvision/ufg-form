@@ -263,6 +263,7 @@ class QuoteController extends Controller
         $data['quote_id']         = Helper::getQuoteID();
         $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
 
         return view('quotes.create', $data);
     }
@@ -332,6 +333,7 @@ class QuoteController extends Controller
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('id','ASC')->get();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
 
         return view('quotes.edit',$data);
     }
@@ -423,6 +425,7 @@ class QuoteController extends Controller
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('id','ASC')->get();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
 
         if($type != NULL){
             $data['type'] = $type;

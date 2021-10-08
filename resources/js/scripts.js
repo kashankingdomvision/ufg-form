@@ -1303,6 +1303,9 @@ $(document).ready(function($) {
                 });
             });
 
+            $(document).on('click', '.view-rates', function() {
+                jQuery('#view_rates_modal').modal('show');
+            });
 
 
 

@@ -48193,6 +48193,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }
     });
+  });
+  $(document).on('click', '.view-rates', function () {
+    jQuery('#view_rates_modal').modal('show');
   }); // $(document).on('change', '.datepicker', function() {
   //     // var datePicker_id     = $(this).attr('id');
   //     var name = $(this).data('name');

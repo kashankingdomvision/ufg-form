@@ -193,6 +193,15 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     background-color: #ff000038;
 }
 
+.table-wrap {
+    height: 600px;
+    overflow-y: auto;
+}
+
+
+.tr-bottom-border-color{
+    border-bottom: 1pt solid #dee2e6
+}
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2
@@ -291,13 +300,13 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
  * -------------------------------------------------------------------------------------
 */
 
-.quote, .cancellation-payments{
+// .quote, .cancellation-payments{
     // border: solid 1px #DCDCDC;
     // padding: 20px;
     // margin: 0 auto 15px;
     // float: none;
     // border-radius: 10px;
-}
+// }
 
 .search-reference-btn{
     color: #343a40;
