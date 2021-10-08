@@ -81,7 +81,7 @@ class GroupController extends Controller
             }
 
             if($totalQuotesIds != $totalAcceptedQuotes) {
-                return [ 'status' => false, 'type' => 'Info', 'icon' => 'info', 'msg' => 'Quotes currencies should be same.'];
+                return [ 'status' => false, 'type' => 'Info', 'icon' => 'info', 'msg' => 'Quotes Booking Currency should be Same.'];
             }
 
             // Sum of all the total amounts of selected quotes.
@@ -109,7 +109,7 @@ class GroupController extends Controller
                 'currency_id' => $currency->currency_id
             ]);
             $new_group->quotes()->attach($quote_ids);
-            return [ 'status' => true, 'msg' => 'Group quote successfully created.', 'redirect' => route('quotes.group-quote.index')];
+            return [ 'status' => true, 'msg' => 'Group Created Successfully.', 'redirect' => route('quotes.group-quote.index')];
         } catch(\Exception $error) {
             return [ 'status' => false, 'msg' => $error->getMessage()];
         }
@@ -188,7 +188,7 @@ class GroupController extends Controller
             $update_group = Group::find(decrypt($id));
             $update_group->quotes()->sync($request->quote_ids);
 
-            return redirect()->route('group-quote.index')->with('success_message', 'Group quotes updated successfully.');
+            return redirect()->route('quotes.group-quote.index')->with('success_message', 'Group quotes updated successfully.');
         } catch(\Exception $error) {
             return redirect()->back()->with('error_message', $error->getMessage());
         }
