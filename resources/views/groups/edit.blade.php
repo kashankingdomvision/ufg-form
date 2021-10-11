@@ -57,7 +57,7 @@
                       <label for="quotes">Quotes <span style="color:red">*</span></label>
                       <select class="form-control select2-multiple @error('quote_ids') is-invalid @enderror"  data-placeholder="Select Quotes" multiple id="quotes" name="quote_ids[]">
                         @foreach ($quotes as $quote)
-                          <option value="{{ $quote->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}>{{ $quote->quote_ref }}</option>
+                          <option value="{{ $quote->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $quote->quote_ref }} {{ '('.$quote->ref_no.')' }}</option>
                         @endforeach
                       </select>
 
