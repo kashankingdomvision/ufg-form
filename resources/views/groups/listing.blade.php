@@ -10,7 +10,10 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Group Quotes</h4>
+            <h4>
+                View Group Quotes
+                <x-add-new-button :route="route('quotes.group-quote.create')"></x-add-new-button>
+            </h4>
           </div>
         </div>
         <div class="col-sm-6">
