@@ -346,7 +346,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
-
+        Route::get('filter-currency-rate/{ids?}', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filter_currency_rate'));
     });
 
 

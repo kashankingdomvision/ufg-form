@@ -11,10 +11,10 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
  
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
@@ -3218,6 +3218,27 @@ $(document).ready(function($) {
 
                 var changeFeild = $(this).attr("data-name");
                 getQuoteTotalValuesOnMarkupChange(changeFeild);
+
+            });
+
+            
+            $(document).on('change', '.view-rate-booking-currency-filter', function(){
+
+                var url                = `${BASEURL}filter-currency-rate/${selectedCurrencies}`;
+                var selectedCurrencies = $(this).val();
+
+                if (selectedCurrencies == ''){
+                    selectedCurrencies = [];
+                }
+
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: { 'selected_currencies': selectedCurrencies },
+                    success: function(response){
+                        $('#currency_conversions').html(response);
+                    }
+                });
 
             });
 

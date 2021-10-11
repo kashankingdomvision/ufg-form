@@ -11,6 +11,19 @@
 
         <div class="modal-body">
 
+          <div class="row mb-1">
+            <div class="col-md-12">
+              <div class="form-group">
+                  <label>Booking Currency</label>
+                  <select class="form-control select2-multiple view-rate-booking-currency-filter"  data-placeholder="Select Booking Currency" multiple name="booking_currency[]">
+                    @foreach ($currencies as $curren)
+                      <option value="{{ $curren->code }}" data-image="data:image/png;base64, {{$curren->flag}}" {{ (old('booking_currency') == $curren->code)? 'selected': ( (!empty(request()->get('booking_currency')))? (((in_array($curren->code, request()->get('booking_currency'))))? 'selected' : null) : '') }}> &nbsp; {{$curren->code}} - {{$curren->name}} </option>
+                    @endforeach
+                  </select>
+              </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -25,7 +38,7 @@
                           <th class="text-center" width="12">Manual Rate</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="currency_conversions">
                         @if($currency_conversions && $currency_conversions->count())
                           @foreach ($currency_conversions as $key => $value)
                             <tr class="tr-bottom-border-color">
@@ -45,12 +58,11 @@
               </div>
             </div>
           </div>
-
         </div>
 
-        <div class="modal-footer justify-content-right">
+        {{-- <div class="modal-footer justify-content-right">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
+        </div> --}}
 
       </div>
     </div>

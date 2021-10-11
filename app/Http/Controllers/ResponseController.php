@@ -314,6 +314,19 @@ class ResponseController extends Controller
 
         return response()->json($respons);
     }
+
+    public function filter_currency_rate(Request $request)
+    {
+        $query = DB::table('currency_conversions');
+
+        if(!is_null($request->selected_currencies)){
+            $query->whereIn('from', $request->selected_currencies);
+        }
+
+        $data['currency_conversions'] = $query->get();
+
+        return view('partials.filter_currency_rates', $data);
+    }
     
     public function updateCurrencyStatus(Request $request)
     {
