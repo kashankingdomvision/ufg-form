@@ -11,11 +11,11 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;  
-// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;  
- 
+// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
@@ -240,7 +240,7 @@ $(document).ready(function($) {
                 // console.log(currencyID);
 
                 if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
-                    
+
                     var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
                     calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
 
@@ -314,7 +314,7 @@ $(document).ready(function($) {
 
             /* Hide Potentail Commission for another Behalf User */
             $(document).on('change', '.sales-person-id', function() {
-                
+
                 var salesPersonID = $(this).val();
                 var userID        = $('.user-id').val();
 
@@ -3963,6 +3963,9 @@ $(document).on('click', '.addmodalforquote', function() {
     //Create group quote
     $('.createGroupQuote').on('click', function (e) {
         checkedQuoteValues = $('.child:checked').map((i, e) => e.value ).get();
+
+        /*console.log(checkedQuoteValues);
+        return false;*/
         if(checkedQuoteValues.length > 1){
             jQuery('#group-quote-modal').modal('show');
         }else{
@@ -3974,14 +3977,14 @@ $(document).on('click', '.addmodalforquote', function() {
         e.preventDefault();
 
         var url            = $(this).attr('action');
-        var formData       = $(this).serializeArray();
-
-        formData.push({name:'quote_ids', value: checkedQuoteValues});
+        /*var formData       = $(this).serializeArray();
+        formData.push({name:'quote_ids', value: checkedQuoteValues});*/
 
         $.ajax({
             type: "POST",
             url: url,
-            data: $.param(formData),
+            // data: $.param(formData),
+            data: [$(this).serialize(),$.param({quote_ids: checkedQuoteValues})].join('&'),
             success: function(data)
             {
                 // console.log(data);
@@ -4002,6 +4005,29 @@ $(document).on('click', '.addmodalforquote', function() {
             }
         });
     });
+
+$(".add-new-group-quote").submit(function (e) {
+    e.preventDefault();
+    $.ajax({
+        type: "POST",
+        url: $(this).attr('action'),
+        data: $(this).serialize(),
+        success: function (data) {
+            if (data.status) {
+                Toast.fire({
+                    icon: 'success',
+                    title: data.msg
+                });
+                setTimeout(function () {
+                    window.location.href = data.redirect;
+                }, 2800);
+
+            } else {
+                new Swal(data.type, data.msg, data.icon);
+            }
+        }
+    });
+});
 
     $(document).ready(function() {
        setTimeout(function() {

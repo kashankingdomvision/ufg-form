@@ -45,7 +45,8 @@ class GroupController extends Controller
      */
     public function create()
     {
-        return view('groups.create');
+        $data['quotes'] = Quote::orderBy('created_at', 'DESC')->get();
+        return view('groups.create', $data);
     }
 
     /**
@@ -65,7 +66,7 @@ class GroupController extends Controller
             }
 
             // Explode the ID put them in array respectively.
-            $quote_ids = explode(",", $request->quote_ids);
+            $quote_ids = $request->quote_ids;
 
             // Check if currencies are same or not.
             $currency = Quote::select('currency_id')->where('id', $quote_ids[0])->first();
