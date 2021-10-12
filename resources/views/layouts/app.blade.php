@@ -18,7 +18,7 @@
         <link href="{{ asset('css/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    
+
         <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet">
         <script src="{{ asset('js/jquery.min.js') }}"></script>
         <script src="{{ asset('js/swi204cs.js') }}" defer></script>
@@ -53,7 +53,7 @@
             });
         });
 
-        
+
         function calltextEditorSummerNote(val = null) {
             $('.summernote:last').summernote('destroy');
             $('.note-editor:last').remove();

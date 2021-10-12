@@ -57,7 +57,7 @@ class QuoteController extends Controller
         $data['title']          =  $quote->quote_title;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
-        $pdf = PDF::loadView('quote_documents.pdf', $data);  
+        $pdf = PDF::loadView('quote_documents.pdf', $data);
         return $pdf->stream();
         // return $pdf->download('medium.pdf');
     }
@@ -74,23 +74,23 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['users']            = User::get();
-        
-        return view('quotes.listing', $data);       
+
+        return view('quotes.listing', $data);
     }
-    
+
     public function searchFilters($quote, $request)
     {
         if($request->has('client_type') && !empty($request->client_type)){
             $client_type = ($request->client_type == 'client')? '0' : '1';
-            $quote->where('agency', 'like', '%'.$client_type.'%' );    
+            $quote->where('agency', 'like', '%'.$client_type.'%' );
         }
-        
+
         if($request->has('staff') && !empty($request->staff)){
             $quote->whereHas('getSalePerson', function($query) use($request){
                 $query->where('name', 'like', '%'.$request->staff.'%' );
              });
         }
-        
+
         if($request->has('status') && !empty($request->status)){
             if($request->status == 'cancelled'){
                 $quote->where('deleted_at', '!=', null);
@@ -98,35 +98,35 @@ class QuoteController extends Controller
                 $quote->where('booking_status', 'like', '%'.$request->status.'%' );
             }
         }
-        
+
         if($request->has('booking_currency') && !empty($request->booking_currency)){
             $quote->whereHas('getCurrency', function($query) use($request){
                 foreach ($request->booking_currency as $currency) {
                     $query->where('code', 'like', '%'.$currency.'%' );
                 }
             });
-        }            
-        
+        }
+
         if($request->has('booking_season') && !empty($request->booking_season)){
             $quote->whereHas('getSeason', function($query) use($request){
                $query->where('name', 'like', '%'. $request->booking_season.'%' );
             });
-        }        
-        
+        }
+
         if($request->has('brand') && !empty($request->brand)){
             $quote->whereHas('getBrand', function($query) use($request){
                 foreach ($request->brand as $brand) {
                     $query->where('name', 'like', '%'.$brand.'%' );
                 }
             });
-        }            
-        
+        }
+
         if($request->has('search') && !empty($request->search)){
             $quote->where(function($query) use($request){
                 $query->where('ref_no', 'like', '%'.$request->search.'%')
                 ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
                 ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
-                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');                    
+                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -137,7 +137,7 @@ class QuoteController extends Controller
             $query->whereDate('created_at', '>=', $dates->start_date);
             $query->whereDate('created_at', '<=', $dates->end_date);
         });
-        
+
         // if($request->has('created_date')){
         //     $quote->where(function($query) use($request){
         //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
@@ -150,7 +150,7 @@ class QuoteController extends Controller
         // }
         return $quote;
     }
-    
+
     public function get_currency_conversion(){
         return CurrencyConversion::all();
     }
@@ -158,7 +158,7 @@ class QuoteController extends Controller
     public function get_commission(){
         return CommissionCriteria::leftJoin('commission_criteria_seasons', 'commission_criterias.id', '=', 'commission_criteria_seasons.commission_criteria_id')->get(['commission_criterias.commission_id','commission_criterias.percentage','commission_criterias.commission_group_id','commission_criterias.brand_id','commission_criterias.holiday_type_id','commission_criterias.currency_id','commission_criteria_seasons.season_id']);
     }
-    
+
     public function quoteArray($request, $type = null)
     {
         $data = [
@@ -204,11 +204,11 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
         if($type != 'booking'){
-            $data['stored_text']                =   $request->stored_text??NULL; 
+            $data['stored_text']                =   $request->stored_text??NULL;
         }
         return $data;
     }
-    
+
     public function getQuoteDetailsArray($quoteD, $id)
     {
         return [
@@ -263,13 +263,14 @@ class QuoteController extends Controller
         $data['quote_id']         = Helper::getQuoteID();
         $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
 
         return view('quotes.create', $data);
     }
-    
+
     public function store(QuoteRequest $request)
-    {   
+    {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
@@ -290,7 +291,7 @@ class QuoteController extends Controller
 
             }
         }
-       //pax data 
+       //pax data
         if($request->has('pax')){
             foreach ($request->pax as $pax_data) {
                 QuotePaxDetail::create([
@@ -308,9 +309,22 @@ class QuoteController extends Controller
             }
         }
 
+        if(request()->quote_group != 0) {
+            /* update quote values with a group total values */
+            $new_quote_group = Group::find(request()->quote_group);
+            $new_quote_group->total_net_price = $new_quote_group->total_net_price + $quote->net_price;
+            $new_quote_group->total_markup_amount = $new_quote_group->total_markup_amount + $quote->markup_amount;
+            $new_quote_group->total_markup_percentage = $new_quote_group->total_markup_percentage + $quote->markup_percentage;
+            $new_quote_group->total_selling_price = $new_quote_group->total_selling_price + $quote->selling_price;
+            $new_quote_group->total_profit_percentage = $new_quote_group->total_profit_percentage + $quote->profit_percentage;
+            $new_quote_group->total_commission_amount = $new_quote_group->total_commission_amount + $quote->commission_amount;
+            $new_quote_group->save();
+            $new_quote_group->quotes()->attach($quote->id);
+        }
+
         return \Response::json(['status' => 200, 'success_message' => 'Quote created successfully'], 200);
     }
-    
+
     public function edit($id)
     {
         $quote = Quote::findOrFail(decrypt($id));
@@ -332,7 +346,7 @@ class QuoteController extends Controller
         $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('id','ASC')->get();
+        $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
 
         return view('quotes.edit',$data);
@@ -356,9 +370,9 @@ class QuoteController extends Controller
             'data'       => $array,
             'log_no'     => $quote->getQuotelogs()->count(),
         ]);
-        
+
         $quote->update($this->quoteArray($request));
-        
+
         if($request->has('quote') && count($request->quote) > 0){
             $quote->getQuoteDetails()->delete();
             foreach ($request->quote as $qu_details) {
@@ -377,8 +391,8 @@ class QuoteController extends Controller
                 }
             }
         }
-        
-        //pax data 
+
+        //pax data
         if($request->has('pax')){
            $quote->getPaxDetail()->delete();
             foreach ($request->pax as $pax_data) {
@@ -397,16 +411,52 @@ class QuoteController extends Controller
             }
        }
 
+       if(request()->quote_group != 0) {
+            $this->add_and_update_quote_group($quote);
+       } else {
+           $this->update_quote_group($quote);
+       }
        $quote_update_detail->delete();
 
        return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
     }
 
+    public function add_and_update_quote_group($quote) {
+        /*if quote is already connected with a group*/
+        $this->update_quote_group($quote);
+
+        /* update quote values with a group total values */
+        $new_quote_group = Group::find(request()->quote_group);
+        $new_quote_group->total_net_price = $new_quote_group->total_net_price + $quote->net_price;
+        $new_quote_group->total_markup_amount = $new_quote_group->total_markup_amount + $quote->markup_amount;
+        $new_quote_group->total_markup_percentage = $new_quote_group->total_markup_percentage + $quote->markup_percentage;
+        $new_quote_group->total_selling_price = $new_quote_group->total_selling_price + $quote->selling_price;
+        $new_quote_group->total_profit_percentage = $new_quote_group->total_profit_percentage + $quote->profit_percentage;
+        $new_quote_group->total_commission_amount = $new_quote_group->total_commission_amount + $quote->commission_amount;
+        $new_quote_group->save();
+        $new_quote_group->quotes()->attach($quote->id);
+    }
+
+    public function update_quote_group($quote) {
+        $update_quote_group = DB::table('group_quote')->where('quote_id', $quote->id)->get()->first();
+        if(!empty($update_quote_group)) {
+            $old_quote_group = Group::find($update_quote_group->group_id);
+            $old_quote_group->total_net_price = $old_quote_group->total_net_price - $quote->net_price;
+            $old_quote_group->total_markup_amount = $old_quote_group->total_markup_amount - $quote->markup_amount;
+            $old_quote_group->total_markup_percentage = $old_quote_group->total_markup_percentage - $quote->markup_percentage;
+            $old_quote_group->total_selling_price = $old_quote_group->total_selling_price - $quote->selling_price;
+            $old_quote_group->total_profit_percentage = $old_quote_group->total_profit_percentage - $quote->profit_percentage;
+            $old_quote_group->total_commission_amount = $old_quote_group->total_commission_amount - $quote->commission_amount;
+            $old_quote_group->save();
+            $old_quote_group->quotes()->detach($quote->id);
+        }
+    }
+
     public function quoteVersion($id, $type = null)
     {
         $log = QuoteLog::findOrFail(decrypt($id));
-        
-        $quote                      = $log->data;
+
+        $quote                    = $log->data;
         $data['quote']            = $quote;
         $data['log']              = $log;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
@@ -424,36 +474,35 @@ class QuoteController extends Controller
         $data['commission_types'] = Commission::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('id','ASC')->get();
+        $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
 
         if($type != NULL){
             $data['type'] = $type;
         }
-  
         return view('quotes.version', $data);
     }
 
     public function cancel($id)
-    { 
+    {
         Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
-        return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');        
+        return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');
     }
-        
+
     public function restore($id)
     {
         Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
-        return redirect()->back()->with('success_message', 'Quote Restore Successfully');        
+        return redirect()->back()->with('success_message', 'Quote Restore Successfully');
     }
 
     public function booking($id)
     {
         $quote = Quote::findORFail(decrypt($id));
         $getQuote = $this->quoteArray($quote, 'booking');
-        $getQuote['quote_id']       = $quote->id; 
-        $getQuote['booking_status'] = 'confirmed'; 
+        $getQuote['quote_id']       = $quote->id;
+        $getQuote['booking_status'] = 'confirmed';
         $booking = Booking::create($getQuote);
-        
+
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
 
@@ -464,7 +513,7 @@ class QuoteController extends Controller
 
             BookingDetail::create($quoteDetail);
         }
-        
+
         if($quote->getPaxDetail && $quote->pax_no > 1){
             foreach ($quote->getPaxDetail as $pax) {
                 BookingPaxDetail::create([
@@ -483,8 +532,8 @@ class QuoteController extends Controller
             'booking_status' => 'booked',
             'booking_date'   => Carbon::now()
         ]);
-        
-        return redirect()->back()->with('success_message', 'Quote Booked successfully');        
+
+        return redirect()->back()->with('success_message', 'Quote Booked successfully');
     }
 
     public function multiple_action(Request $request)
@@ -503,14 +552,14 @@ class QuoteController extends Controller
 
             return ['status' => true, 'message' => 'Records Archived Successfully !!'];
         }
-        
+
     }
-    
+
     public function getTrash()
     {
         $data['quotes'] = Quote::onlyTrashed()->paginate($this->pagiantion);
         return view('quotes.trash', $data);
-    } 
+    }
 
     /* view final quote */
     public function finalQuote($id)
@@ -533,10 +582,10 @@ class QuoteController extends Controller
         $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('id','ASC')->get();
-        
+
         return view('quotes.show',$data);
     }
-    
+
     /* update status in archive */
     public function addInArchive(Request $request, $id)
     {
@@ -544,15 +593,15 @@ class QuoteController extends Controller
         Quote::findOrFail(decrypt($id))->update(['is_archive' => $isArchive]);
         if(isset($request->status)){
             $messge = 'Quote reverted from archive successfully';
-            return redirect()->route('quotes.archive')->with('success_message', $messge);        
+            return redirect()->route('quotes.archive')->with('success_message', $messge);
         }else{
             $messge = 'Quote add in archive successfully';
-            return redirect()->route('quotes.index')->with('success_message', $messge);        
+            return redirect()->route('quotes.index')->with('success_message', $messge);
         }
-        
+
         return redirect()->back();
     }
-   
+
     /* archive listing */
     public function getArchive(Request $request)
     {
@@ -567,9 +616,9 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
 
-        return view('quotes.listing', $data);      
+        return view('quotes.listing', $data);
     }
-      
+
     /* quote clone */
     public function clone($id)
     {
@@ -584,7 +633,7 @@ class QuoteController extends Controller
             }
             QuoteDetail::create($quoteDetail);
         }
-        
+
         if($quote->getPaxDetail && $quote->pax_no >= 1){
             foreach ($quote->getPaxDetail as $pax) {
                 QuotePaxDetail::create([
@@ -600,10 +649,10 @@ class QuoteController extends Controller
                 ]);
             }
         }
-        
+
        return redirect()->back()->with('success_message', 'Quote clone successfully');
     }
-    
+
 
    // public function iteration($date)
     // {
@@ -620,13 +669,13 @@ class QuoteController extends Controller
     // public function iterationWithText($iterationObject){
 
     //     $arr = [];
-        
+
     //     $transfer_date_of_service = isset($iterationObject[0]['date_of_service']) ? $iterationObject[0]['date_of_service'] : '';
     //     $transfer_time_of_service = isset($iterationObject[0]['time_of_service']) ? $iterationObject[0]['time_of_service'] : '';
-        
+
     //     $accommodation_date_of_service = isset($iterationObject[1]['date_of_service']) ? $iterationObject[1]['date_of_service'] : '';
     //     $accommodation_time_of_service = isset($iterationObject[1]['time_of_service']) ? $iterationObject[1]['time_of_service'] : '' ;
-        
+
     //     $transfer_product_name      = $this->getProductName(isset($iterationObject[0]['product_id']) ? $iterationObject[0]['product_id'] : '');
     //     $accommodation_product_name = $this->getProductName(isset($iterationObject[1]['product_id']) ? $iterationObject[1]['product_id'] : '');
 
@@ -642,5 +691,13 @@ class QuoteController extends Controller
     //    $product = Product::find($id);
     //    return isset($product->name) ? $product->name : '';
     // }
-    
+
+     public function getGroups($currency_id){
+        try {
+            $data['groups'] = Group::where('currency_id', $currency_id)->orderBy('created_at','DESC')->get();
+            return ['status' => true, 'groups' => $data['groups']];
+        } catch (\Exception $e) {
+            return ['status' => false, 'error' => $e->getMessage()];
+        }
+     }
 }

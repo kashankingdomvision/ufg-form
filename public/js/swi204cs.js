@@ -47043,6 +47043,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     width: '100%',
     theme: "classic"
   });
+  $('.select2-single').select2({
+    width: '90%',
+    theme: "bootstrap"
+  });
   $('.selling-price-other-currency').select2({
     width: '68%',
     theme: "bootstrap",
@@ -50388,6 +50392,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
     jQuery('.alert-success').fadeOut(1500);
     jQuery('.alert-danger').fadeOut(1500);
   }, 3000);
+  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.booking-currency-id').on('change', function () {
+    var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#routeForGroups').val() + '/' + jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
+    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+      type: "GET",
+      url: url,
+      success: function success(response) {
+        if (response.status) {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').empty();
+          jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(response.groups, function (value, key) {
+            jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').append(jquery__WEBPACK_IMPORTED_MODULE_0___default()("<option></option>").attr("value", key.id).text(key.name));
+          });
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').select2();
+        }
+      }
+    });
+  });
 });
 
 /***/ }),
