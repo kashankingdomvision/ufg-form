@@ -98,7 +98,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
         Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
         // Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
-        
+
         Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
 
@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('group-quote', 'GroupController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
+        Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
     });
 
 
@@ -186,7 +187,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
-    
+
     });
 
     /*
@@ -321,7 +322,7 @@ Route::group(['middleware' => ['auth']], function(){
 			'index', 'edit', 'update'
 		]]);
 
- 
+
 	});
 
 

@@ -73,6 +73,11 @@ $(document).ready(function($) {
                 theme: "classic",
             });
 
+            $('.select2-single').select2({
+                width: '90%',
+                theme: "bootstrap",
+            });
+
             $('.selling-price-other-currency').select2({
                 width: '68%',
                 theme: "bootstrap",
@@ -4033,5 +4038,21 @@ $(".add-new-group-quote").submit(function (e) {
        setTimeout(function() {
            jQuery('.alert-success').fadeOut(1500);
            jQuery('.alert-danger').fadeOut(1500);
-        }, 3000)
-    })
+        }, 3000);
+        $('.booking-currency-id').on('change', function() {
+            let url = $('#routeForGroups').val() + '/' + $(this).val();
+            $.ajax({
+                type: "GET",
+                url: url,
+                success:function(response) {
+                    if(response.status) {
+                        $('.dynamic-group').empty();
+                        $.each(response.groups, function(value, key) {
+                            $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
+                        });
+                        $('.dynamic-group').select2();
+                    }
+                }
+            });
+        });
+    });

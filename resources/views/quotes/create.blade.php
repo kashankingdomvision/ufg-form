@@ -39,27 +39,27 @@
               <div class="card-header">
                 <h3 class="card-title text-center">Quote Form</h3>
               </div>
-            
+
               <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
                 <div class="card-body">
 
                   <!-- For Commission Calculation -->
                   <div class="row d-none">
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6">
                       <label>User ID <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" value="{{ isset(Auth::user()->id) && !empty(Auth::user()->id) ? Auth::user()->id : '' }}" name="user_id" id="user_id" class="form-control user-id">
                       </div>
                     </div>
 
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6">
                       <label>Commission <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" value="{{ isset(Auth::user()->commission_id) && !empty(Auth::user()->commission_id) ? Auth::user()->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
                       </div>
                     </div>
 
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6">
                       <label>Commission Group <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" value="{{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) ? Auth::user()->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
@@ -98,7 +98,7 @@
                     </div> --}}
 
                   <div class="row mb-2">
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6">
                       <label>Quote Title <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="quote_title" id="quote_title" class="form-control" placeholder="Enter Quote Title">
@@ -118,13 +118,13 @@
                             <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
                             <span>&nbsp;Manual Rate</span>
                           </label>
-                          
+
                         </div>
 
                       </div>
                     </div>
 
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group">
@@ -143,8 +143,8 @@
                         <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
                       </div>
                     </div>
-                    
-                    
+
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
@@ -152,7 +152,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
+
 
 
                     <div class="col-sm-6">
@@ -224,20 +224,24 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
+
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
-                          <option selected value="">Select Booking Currency </option>
-                          @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
-                          @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
+                          <label>Booking Currency <span style="color:red">*</span></label>
+                          <select name="currency_id" id="currency_id"
+                                  class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
+                              <option selected value="">Select Booking Currency</option>
+                              @foreach ($currencies as $currency)
+                                  <option value="{{ $currency->id }}" data-code="{{$currency->code}}"
+                                          data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}>
+                                      &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                              @endforeach
+                          </select>
+                          <span class="text-danger" role="alert"></span>
+                          <input type="hidden" value="{{ url('quotes/getGroups/') }}" id="routeForGroups">
                       </div>
                     </div>
-                   
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
@@ -251,9 +255,9 @@
                         </div>
                       </div>
                     </div>
-                    
+
                     <div class="col-md-12 agency-columns" >
-                    
+
                       <div class="row mt-1 agencyField d-none" >
                         <div class="col form-group">
                           <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
@@ -288,23 +292,23 @@
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Email Address <span style="color:red">*</span></label> 
+                            <label>Email Address <span style="color:red">*</span></label>
                             <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Contact Number <span style="color:red">*</span></label> 
+                            <label>Contact Number <span style="color:red">*</span></label>
                             <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0 " >
                             <span class="text-danger error_msg0" role="alert"></span>
                             <span class="text-success valid_msg0" role="alert"></span>
                           </div>
                         </div>
-                      
+
                         <div class="col-md-3">
                           <div class="form-group">
-                            <label>Date Of Birth</label> 
+                            <label>Date Of Birth</label>
                             <input type="date" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
                             <span class="text-danger" role="alert"></span>
                           </div>
@@ -343,7 +347,7 @@
                             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                             <span class="text-danger" role="alert"></span>
                           </div>
-                        </div>  
+                        </div>
                         <div class="col-sm-3">
                           <div class="form-group">
                             <label>Dinning Preferences</label>
@@ -366,8 +370,8 @@
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
-                          
-                          
+
+
                       </div>
                     </div>
 
@@ -383,16 +387,16 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    
+
                     <div id="appendPaxName" class="col-md-12 ">
-                    
+
                     </div>
                     <div class="col-md-12 col-offset-md-4">
                       <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </div>
                   </div>
-                
-                  
+
+
                   <div class="row mb-2">
                       <div class="col-md-2 offset-md-10">
                         <select name="template" id="tempalte_id" class="float-right select2single form-control template">
@@ -404,7 +408,7 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
-            
+
                     <div class="quote card card-default" data-key="0">
 
                       <div class="card-header">
@@ -426,10 +430,10 @@
                             </div>
                             <button type="button" data-show="calladdmediaModal" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                           </div>
-                        </div>  
+                        </div>
 
                         <div class="row">
-                            
+
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Start Date of Service <span style="color:red">*</span></label>
@@ -675,7 +679,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly> 
+                                <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
                               </div>
                             </div>
                           </div>
@@ -699,7 +703,7 @@
                                 <div class="input-group">
                                   <div class="input-group-prepend">
                                     <div class="icheck-primary">
-                                      <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"> 
+                                      <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">
                                     </div>
                                   </div>
                                 </div>
@@ -712,8 +716,8 @@
                               <label>Comments</label>
                               <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                             </div>
-                          </div> 
-                          
+                          </div>
+
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Add Stored Text</label>
@@ -733,7 +737,7 @@
                     <div class="parent-spinner text-gray spinner-border-sm "></div>
                     <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
                   </div>
-               
+
                   <div class="row">
                     <div class="col-12 text-right">
                       <!-- <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  pull-right">+ Add Stored Text</button> -->
@@ -771,9 +775,9 @@
                   </div>
 
                   <div class="form-group row">
-                    
+
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount</label>
-              
+
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
@@ -801,9 +805,9 @@
                   </div>
 
                   <div class="form-group row">
-                    
+
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Selling Price</label>
-              
+
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
@@ -814,7 +818,7 @@
                         </div>
                       </div>
                     </div>
-                
+
                   </div>
 
                   <div class="form-group row">
@@ -876,7 +880,7 @@
                         @enderror
                       </div>
                     </div>
-                  
+
                     <div class="col-sm-2">
                       <div class="form-group">
                         <label></label>
@@ -885,32 +889,34 @@
                             <span class="input-group-text  selling-price-other-currency-code"></span>
                           </div>
                           <input type="number" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
-                         
+
                         </div>
                       </div>
                     </div>
-                  
+
                   </div>
 
                   <div class="form-group">
                     <div class="row">
                       <div class="col-sm-3 ">
-                        <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
+                          <label for="group_quote" class="col-form-label">Add into Group</label>
                       </div>
                       <div class="col-md-9">
                         <div class="row">
                           <div class="col-sm-3 relevant-quote">
-                            <select  name="revelant_quote[]" multiple class="form-control select2-multiple">
-                              @foreach ($quote_ref as $ref)
-                                <option value="{{$ref->quote_ref}}"> {{ $ref->quote_ref }} </option>
-                              @endforeach
-                            </select>
+                              <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
+                                @foreach($groups as $group)
+                                    <option value="{{ $group->id }}">
+                                        {{ $group->name }}
+                                    </option>
+                                @endforeach
+                              </select>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  
+
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
@@ -920,7 +926,7 @@
               <div id="overlay" class=""></div>
             </div>
           </div>
-          
+
 
         </div>
       </div>
