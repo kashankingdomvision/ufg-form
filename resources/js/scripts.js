@@ -2771,6 +2771,115 @@ $(document).ready(function($) {
                 });
             });
 
+            $("#create_supplier_rate_sheet").submit(function(event) {
+                
+                event.preventDefault();
+
+                var url = $(this).attr('action');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#supplier_rate_sheet_submit").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+
+                        $("#supplier_rate_sheet_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        setTimeout(function() {
+
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
+                            }
+                        }, 200);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+                                $("#supplier_rate_sheet_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 200);
+
+                        }
+                    },
+                });
+            });
+
+            $("#edit_supplier_rate_sheet").submit(function(event) {
+                
+                event.preventDefault();
+
+                var url = $(this).attr('action');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#supplier_rate_sheet_edit").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+
+                        $("#supplier_rate_sheet_edit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        setTimeout(function() {
+
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
+                            }
+                        }, 200);
+                  
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+                                $("#supplier_rate_sheet_edit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                jQuery.each(errors.errors, function(index, value) {
+
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                            }, 200);
+
+                        }
+                    },
+                });
+            });
+
             $('.search-reference').on('click', function() {
                 var searchRef = $(this);
 

@@ -250,6 +250,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('suppliers', 'SupplierController');
 
+    /*  Supplier Rate Sheet */
+    Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
     /*  Supplier Product */
     Route::resource('products', 'ProductController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'

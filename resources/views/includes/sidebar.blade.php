@@ -239,7 +239,7 @@
                     </li>
                 @endif
 
-                <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' || $route == 'wallets.index' ? 'menu-open': '' }}">
+                <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' || $route == 'wallets.index' || $route == 'supplier-rate-sheet.create' || $route == 'supplier-rate-sheet.index' || $route == 'supplier-rate-sheet.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-user nav-icon"></i>
                         <p>
@@ -253,6 +253,13 @@
                             <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.create' || $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Supplier</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('supplier-rate-sheet.index') }}" class="nav-link {{  $route == 'supplier-rate-sheet.create' || $route == 'supplier-rate-sheet.index' || $route == 'supplier-rate-sheet.edit' ? 'active' : '' }}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>Supplier Rate Sheet</p>
                             </a>
                         </li>
 
