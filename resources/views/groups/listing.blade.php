@@ -19,7 +19,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Quote</a></li>
+            <li class="breadcrumb-item"><a>Quote Management</a></li>
             <li class="breadcrumb-item active">Group Quote</li>
           </ol>
         </div>
