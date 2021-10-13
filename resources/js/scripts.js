@@ -845,7 +845,12 @@ $(document).ready(function($) {
                 var code = $(this).find(":selected").data("code");
                 var quote = $(this).closest(".quote");
                 var quoteKey = quote.data("key");
+                var currency_name = $(this).find(':selected').attr('data-name');
+                
                 quote.find("[class*=supplier-currency-code]").html(code);
+                quote.find('.badge-supplier-currency-id').html(currency_name);
+                quote.find('.badge-supplier-currency-id').removeClass('d-none');
+
                 getBookingSupplierCurrencyValues(code, quoteKey);
                 getBookingTotalValues();
                 getSellingPrice();

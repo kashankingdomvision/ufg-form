@@ -500,14 +500,21 @@
 
                           <div class="card-header">
 
-                            <h3 class="card-title card-title-style">
-                              <span> {{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }} </span> - 
+                            <h3 class="card-title card-title-style quote-title">
                               @if($booking_detail->status == 'active')
-                                <span class="badge badge-success">Booked</span>
+                              <span class="badge badge-success">Booked</span>
                               @elseif($booking_detail->status == 'cancelled')
-                                <span class="badge badge-danger">Cancelled</span>
+                              <span class="badge badge-danger">Cancelled</span>
                               @endif
-                            </h3> 
+                              
+                              <span class="border-right mr-2 ml-1"></span>
+                              <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
+                              <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
+                              <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
+                              <span class="badge badge-info badge-supplier-id">{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : ''}}</span>
+                              <span class="badge badge-info badge-product-id">{{ isset($booking_detail->product_id) && !empty($booking_detail->product_id) ? $booking_detail->product_id : '' }}</span>
+                              <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span>
+                            </h3>
 
                             <div class="card-tools">
 
@@ -560,7 +567,7 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Time of Service</label>
-                                  <input type="time" value="{{ $booking_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control" placeholder="Time of Service" autocomplete="off">
+                                  <input type="time" value="{{ $booking_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service " placeholder="Time of Service" autocomplete="off">
                                 </div>
                               </div>
 
@@ -570,7 +577,7 @@
                                   <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control  select2single  category- select2single  category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
-                                      <option value="{{ $category->id }}" data-slug="{{$category->slug}}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                      <option value="{{ $category->id }}"  data-name="{{ $category->name }}" data-slug="{{$category->slug}}" {{ ($booking_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                   </select>
                                   <span class="text-danger" role="alert"></span>
@@ -580,11 +587,11 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supplier <span style="color:red">*</span></label>
-                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control  select2single  supplier-id @error('supplier_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id feild-supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
                                       @if(isset($booking_detail->getCategory) && $booking_detail->getCategory->getSupplier)
                                         @foreach ($booking_detail->getCategory->getSupplier as $supplier )
-                                          <option value="{{ $supplier->id }}" {{ ($booking_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
+                                          <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($booking_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                         @endforeach
                                       @endif
                                     </select>
@@ -706,7 +713,7 @@
                                     <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single booking-supplier-currency-id @error('currency_id') is-invalid @enderror">
                                       <option value="">Select Supplier Currency</option>
                                       @foreach ($currencies as $currency)
-                                        <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $booking_detail->supplier_currency_id == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                        <option value="{{ $currency->id }}" data-name="{{ $currency->code.' - '.$currency->name }}" data-code="{{ $currency->code }}" {{ $booking_detail->supplier_currency_id == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                       @endforeach
                                     </select>
                                     <span class="text-danger" role="alert"></span>
