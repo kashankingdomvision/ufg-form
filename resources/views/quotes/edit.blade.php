@@ -373,7 +373,7 @@
                         <div class="row PassengerField {{ ($quote->agency == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Nationality (Passport) <span style="color:red">*</span></label>
+                              <label>Nationality (Passport) </label>
                               <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                                 <option selected value="" >Select Nationality</option>
                                 @foreach ($countries as $country)
