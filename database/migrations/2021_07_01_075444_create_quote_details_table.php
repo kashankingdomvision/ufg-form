@@ -29,7 +29,7 @@ class CreateQuoteDetailsTable extends Migration
             // $table->unsignedBigInteger('booking_method_id')->nullable();
             // $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
-            $table->double('refundable_percentage')->nullable()->default();
+            $table->double('refundable_percentage')->nullable();
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
             $table->double('estimated_cost')->nullable();
             $table->double('markup_amount')->nullable();

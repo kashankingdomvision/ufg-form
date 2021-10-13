@@ -18,6 +18,7 @@ class BookingDetail extends Model
         'supervisor_id',
         'supplier_currency_id',
         'booking_type_id',
+        'refundable_percentage',
         'date_of_service',
         'end_date_of_service',
         'time_of_service',

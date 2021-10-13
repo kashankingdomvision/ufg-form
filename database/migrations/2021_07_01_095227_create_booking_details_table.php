@@ -24,6 +24,7 @@ class CreateBookingDetailsTable extends Migration
             // $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
+            $table->double('refundable_percentage')->nullable();
             $table->date('date_of_service')->nullable();
             $table->date('end_date_of_service')->nullable();
             $table->time('time_of_service')->nullable();

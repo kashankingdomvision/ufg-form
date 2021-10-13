@@ -749,7 +749,6 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label> Supplier Currency <span style="color: red">*</span></label>
-
                                   <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single   supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)

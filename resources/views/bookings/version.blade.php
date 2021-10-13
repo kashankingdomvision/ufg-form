@@ -587,7 +587,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Types</label>
-                                <select name="quote[{{ $key }}][booking_type]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">
                                   <option value="">Select Booking Type</option>
                                   @foreach ($booking_types as $booking_type)
                                     <option value="{{ $booking_type->id }}" {{ $booking_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
@@ -596,6 +596,14 @@
                                 @error('booking_type_id')
                                   <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                 @enderror
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2 refundable-percentage-feild {{ isset($booking_detail['booking_type_id']) && !empty($booking_detail['booking_type_id']) && $booking_detail['booking_type_id'] == 2 ? '' : 'd-none'  }}">
+                              <div class="form-group">
+                                <label>Refundable % <span style="color:red">*</span></label>
+                                <input type="number" name="quote[{{ $key }}][refundable_percentage]" value="{{ $booking_detail['refundable_percentage'] }}" data-name="refundable_percentage" id="quote_{{ $key }}_refundable_percentage" class="form-control refundable-percentage" placeholder="Refundable %">
+                                <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
