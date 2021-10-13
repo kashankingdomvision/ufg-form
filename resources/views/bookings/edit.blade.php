@@ -112,6 +112,32 @@
             <form method="POST" action="{{ route('bookings.update', encrypt($booking->id)) }}" id="update-booking" enctype="multipart/form-data"> 
               @csrf @method('put')
                 <div class="card-body">
+
+                <!-- For Commission Calculation -->
+                <div class="row d-none">
+                  <div class="col-sm-6">
+                    <label>User ID <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" value="{{ isset($booking->id) && !empty($booking->id) ? $booking->id : '' }}" name="user_id" id="user_id" class="form-control user-id">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label>Commission <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" value="{{ isset($booking->commission_id) && !empty($booking->commission_id) ? $booking->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <label>Commission Group <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" value="{{ isset($booking->commission_group_id) && !empty($booking->commission_group_id) ? $booking->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
+                    </div>
+                  </div>
+                </div>
+                <!-- For Commission Calculation -->
+
                   <div class="row mb-2">
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
@@ -153,6 +179,23 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Markup Type <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($booking->markup_type == 'itemised') ? 'checked': NULL }} value="itemised" class="booking-markup-type">
+                            <span>&nbsp;Itemised Markup </span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="markup_type" {{ ($booking->markup_type == 'whole') ? 'checked': NULL }} value="whole" class="booking-markup-type">
+                            <span>&nbsp;Whole Markup</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
@@ -165,7 +208,8 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div class="col-sm-6">
+
+                    {{-- <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
                         <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
@@ -176,7 +220,8 @@
                         </select>
                         <span class="text-danger" role="alert"></span>
                       </div>
-                    </div>
+                    </div> --}}
+
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Brand <span style="color:red">*</span></label>
@@ -292,7 +337,7 @@
                           </div>
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label>Date Of Birth <span style="color:red">*</span></label> 
+                              <label>Date Of Birth </label> 
                               <input type="date" value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -301,7 +346,7 @@
                         <div class="row  PassengerField {{ ($booking->agency == 1)? 'd-none': '' }}">
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Nationality <span style="color:red">*</span></label>
+                              <label>Nationality (Passport)</label>
                               <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                                 <option selected value="" >Select Nationality</option>
                                 @foreach ($countries as $country)
@@ -311,16 +356,30 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
+
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Bedding Preferences <span style="color:red">*</span></label>
+                              <label>Resident In</label>
+                              <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
+                                <option selected value="" >Select Resident</option>
+                                @foreach ($countries as $country)
+                                  <option value="{{ $country->id }}" {{ ($booking->lead_passenger_resident == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label>Bedding Preferences </label>
                               <input type="text" value="{{ $booking->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>  
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Dinning Preferences <span style="color:red">*</span></label>
+                              <label>Dinning Preferences </label>
                               <input type="text" value="{{ $booking->lead_passenger_dinning_preference }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
                               <span class="text-danger" role="alert"></span>
                             </div>
@@ -551,7 +610,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Supervisor</label>
                                   <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control   select2single   supervisor-id @error('supervisor_id') is-invalid @enderror">
@@ -564,31 +623,31 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Date</label>
                                   <input type="text" value="{{ $booking_detail->booking_date}}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" autocomplete="off" placeholder="Booking Date">
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Due Date <span style="color:red">*</span></label>
                                   <input type="text" value="{{ $booking_detail->booking_due_date }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Reference</label>
                                   <input type="text" value="{{ $booking_detail->booking_reference }}" name="quote[{{ $key }}][booking_reference]" data-name="booking_refrence" id="quote_{{ $key }}_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booking Method</label>
                                   <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control  select2single  booking-method-id @error('booking_method_id') is-invalid @enderror">
@@ -601,9 +660,9 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Booked By</label>
                                   <select name="quote[{{ $key }}][booked_by_id]" databooking="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control   select2single   booked-by-id @error('booked_by_id') is-invalid @enderror">
@@ -616,7 +675,7 @@
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                   @enderror
                                 </div>
-                              </div>
+                              </div> --}}
 
                               <div class="col-sm-2">
                                 <div class="form-group">
@@ -670,7 +729,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}" >
                                 <div class="form-group">
                                   <label>Markup Amount <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -682,7 +741,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -694,7 +753,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <div class="d-flex">
                                     <label>Selling Price <span style="color:red">*</span></label>
@@ -709,7 +768,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                     <label>Profit % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -736,7 +795,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3">
+                              <div class="col-sm-3 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -748,7 +807,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3">
+                              <div class="col-sm-3 booking-whole-markup-feilds {{ $booking->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -760,7 +819,7 @@
                                 </div>
                               </div>
 
-                              @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                              {{-- @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
                               <div class="col-sm-2 d-flex justify-content-center">
                                 <div class="form-group">
                                   <label>Added in Sage</label>
@@ -773,7 +832,7 @@
                                   </div>
                                 </div>
                               </div>
-                              @endif
+                              @endif --}}
 
                               <div class="col-sm-2">
                                 <div class="form-group">
@@ -1301,7 +1360,7 @@
                             <div class="input-group-prepend">
                               <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                             </div>
-                            <input type="number" value="{{ \Helper::number_format($booking->markup_amount) }}"  step="any" class="form-control total-markup-amount hide-arrows" step="any" min="0" name="total_markup_amount" value="0.00" readonly>
+                            <input type="number" value="{{ \Helper::number_format($booking->markup_amount) }}"  step="any" class="form-control total-markup-amount booking-total-markup-change hide-arrows" data-name="total_markup_amount" step="any" min="0" name="total_markup_amount" value="0.00" {{ $booking->markup_type == 'itemised' ? 'readonly' : '' }}>
                           </div>
                         </div>
                       </div>
@@ -1311,7 +1370,7 @@
                             {{-- <div class="input-group-prepend">
                               <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                             </div> --}}
-                            <input type="number" value="{{ \Helper::number_format($booking->markup_percentage) }}"  step="any" class="form-control total-markup-percent hide-arrows" min="0" name="total_markup_percent" value="0.00" readonly>
+                            <input type="number" value="{{ \Helper::number_format($booking->markup_percentage) }}"  step="any" class="form-control total-markup-percent booking-total-markup-change hide-arrows" data-name="total_markup_percent" min="0" name="total_markup_percent" value="0.00" {{ $booking->markup_type == 'itemised' ? 'readonly' : '' }}>
                             <div class="input-group-append">
                               <div class="input-group-text">%</div>
                             </div>
@@ -1401,7 +1460,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                       <div class="row">
                         <div class="col-sm-3 ">
                           <label for="inputEmail3" class="col-form-label">Relevant Quotes</label>
@@ -1418,7 +1477,7 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div> --}}
 
                     @if($booking->booking_status == 'cancelled')
                       <section class="cancellation-payments-section mt-3 mb-2">

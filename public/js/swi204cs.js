@@ -47418,11 +47418,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
       $(".total-markup-percent").val(check(markupPercentage));
       $(".total-profit-percentage").val(check(profitPercentage));
-    }
+    } // if(markupType == 'whole'){
+    //     $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
+    // }
 
-    if (markupType == 'whole') {
-      $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
-    }
 
     getCommissionRate();
     getBookingAmountPerPerson(); // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
@@ -48382,8 +48381,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
     }
   });
-  $(".expand-all-btn").removeAttr('disabled');
-  $(".collapse-all-btn").removeAttr('disabled');
   $(document).on('click', '.expand-all-btn', function (event) {
     $('#parent .quote').removeClass('collapsed-card');
     $('#parent .card-body').css("display", "block");
@@ -49012,6 +49009,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
   $('#reCall, .disablebutton').prop("disabled", false);
+  $(".collapse-all-btn").removeAttr('disabled');
+  $(".expand-all-btn").removeAttr('disabled');
   $('#reCall').on('click', function () {
     if ($(this).data('recall') == true) {
       if (confirm("Are you sure you want to Recall this Quotation?") == true) {
@@ -49788,9 +49787,32 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('change', '.markup-type', function () {
     getMarkupTypeFeildAttribute();
   });
+
+  function getBookingMarkupTypeFeildAttribute() {
+    var markupType = $("input[name=markup_type]:checked").val();
+
+    if (markupType == 'whole') {
+      $('.booking-whole-markup-feilds').addClass('d-none');
+      $('.total-markup-amount').removeAttr('readonly');
+      $('.total-markup-percent').removeAttr('readonly');
+    } else if (markupType == 'itemised') {
+      $('.booking-whole-markup-feilds').removeClass('d-none');
+      $('.total-markup-amount').prop('readonly', true);
+      $('.total-markup-percent').prop('readonly', true);
+    }
+  }
+
+  $(document).on('change', '.booking-markup-type', function () {
+    getBookingMarkupTypeFeildAttribute();
+  });
   $(document).on('change', '.total-markup-change', function () {
     var changeFeild = $(this).attr("data-name");
     getQuoteTotalValuesOnMarkupChange(changeFeild);
+  }); // for booking
+
+  $(document).on('change', '.booking-total-markup-change', function () {
+    var changeFeild = $(this).attr("data-name");
+    getBookingTotalValuesOnMarkupChange(changeFeild);
   });
   $(document).on('change', '.view-rate-booking-currency-filter', function () {
     var url = "".concat(BASEURL, "filter-currency-rate/").concat(selectedCurrencies);
@@ -49813,6 +49835,38 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function getQuoteTotalValuesOnMarkupChange(changeFeild) {
+    var totalNetPrice = 0;
+    var totalMarkupAmount = 0;
+    var markupPercentage = 0;
+    var calculatedTotalMarkupPercentage = 0;
+    var totalSellingPrice = 0;
+    var calculatedTotalMarkupAmount = 0;
+    var calculatedProfitPercentage = 0;
+    totalNetPrice = parseFloat($('.total-net-price').val());
+    totalMarkupAmount = parseFloat($('.total-markup-amount').val());
+    markupPercentage = parseFloat($('.total-markup-percent').val());
+
+    if (changeFeild == 'total_markup_amount') {
+      calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
+      totalSellingPrice = totalNetPrice + totalMarkupAmount;
+      $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
+      $('.total-selling-price').val(check(totalSellingPrice));
+    }
+
+    if (changeFeild == 'total_markup_percent') {
+      calculatedTotalMarkupAmount = parseFloat(totalNetPrice) / 100 * parseFloat(markupPercentage);
+      totalSellingPrice = totalNetPrice + calculatedTotalMarkupAmount;
+      $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
+      $('.total-selling-price').val(check(totalSellingPrice));
+    }
+
+    calculatedProfitPercentage = (parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice) * 100;
+    $('.total-profit-percentage').val(check(calculatedProfitPercentage)); // getCommissionRate();
+
+    getBookingAmountPerPerson();
+  }
+
+  function getBookingTotalValuesOnMarkupChange(changeFeild) {
     var totalNetPrice = 0;
     var totalMarkupAmount = 0;
     var markupPercentage = 0;

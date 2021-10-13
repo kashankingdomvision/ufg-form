@@ -110,21 +110,21 @@
                       <div class="col-sm-6">
                         <label>User ID <span style="color:red">*</span></label>
                         <div class="form-group">
-                          <input type="text" value="{{ isset(Auth::user()->id) && !empty(Auth::user()->id) ? Auth::user()->id : '' }}" name="user_id" id="user_id" class="form-control user-id">
+                          <input type="text" value="{{ isset($quote->id) && !empty($quote->id) ? $quote->id : '' }}" name="user_id" id="user_id" class="form-control user-id">
                         </div>
                       </div>
 
                       <div class="col-sm-6">
                         <label>Commission <span style="color:red">*</span></label>
                         <div class="form-group">
-                          <input type="text" value="{{ isset(Auth::user()->commission_id) && !empty(Auth::user()->commission_id) ? Auth::user()->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
+                          <input type="text" value="{{ isset($quote->commission_id) && !empty($quote->commission_id) ? $quote->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
                         </div>
                       </div>
 
                       <div class="col-sm-6">
                         <label>Commission Group <span style="color:red">*</span></label>
                         <div class="form-group">
-                          <input type="text" value="{{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) ? Auth::user()->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
+                          <input type="text" value="{{ isset($quote->commission_group_id) && !empty($quote->commission_group_id) ? $quote->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
                         </div>
                       </div>
                     </div>

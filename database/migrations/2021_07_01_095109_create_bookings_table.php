@@ -17,12 +17,13 @@ class CreateBookingsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('user_id');
-            // $table->unsignedBigInteger('commission_id');
+            $table->unsignedBigInteger('commission_id');
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
+            $table->unsignedBigInteger('commission_group_id');
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
@@ -37,6 +38,7 @@ class CreateBookingsTable extends Migration
             $table->string('lead_passenger_contact')->nullable();
             $table->string('lead_passenger_dbo')->nullable();
             $table->unsignedBigInteger('lead_passsenger_nationailty_id')->nullable();
+            $table->unsignedBigInteger('lead_passenger_resident')->nullable();
             $table->string('lead_passenger_dinning_preference')->nullable();
             $table->string('lead_passenger_bedding_preference')->nullable();
             $table->enum('lead_passenger_covid_vaccinated',[0, 1])->default(0);
@@ -51,6 +53,7 @@ class CreateBookingsTable extends Migration
             $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('booking_status',['confirmed','cancelled'])->default('confirmed');
             $table->timestamp('booking_date')->nullable();
             $table->text('revelant_quote')->nullable();
