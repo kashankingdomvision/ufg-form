@@ -47610,8 +47610,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
     $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
     $(".total-markup-percent").val(check(markupPercentage));
-    $(".total-profit-percentage").val(check(profitPercentage)); // getCommissionRate();
-
+    $(".total-profit-percentage").val(check(profitPercentage));
+    getCommissionRate();
     getBookingAmountPerPerson();
   }
 

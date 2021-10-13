@@ -179,7 +179,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Booking Season <span class="text-danger">*</span></label>
-                      <select name="season_id" id="season_id" class="form-control select2single">
+                      <select name="season_id" id="season_id" class="form-control select2single season-id">
                         <option value="">Select Booking Season</option>
                         @foreach ($seasons as $season)
                           <option value="{{ $season->id }}" {{ old('season_id') == $season->id  ? "selected" : ($booking['season_id'] == $season->id ? 'selected' : '') }}> {{ $season->name }} </option>

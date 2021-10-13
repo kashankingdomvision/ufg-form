@@ -253,7 +253,6 @@ $(document).ready(function($) {
                     calculatedCommisionAmount = 0.00;
                 }
 
-
                 $('.commission-amount').val(check(calculatedCommisionAmount));
             }
 
@@ -630,7 +629,7 @@ $(document).ready(function($) {
                 $(".total-markup-percent").val(check(markupPercentage));
                 $(".total-profit-percentage").val(check(profitPercentage));
 
-                // getCommissionRate();
+                getCommissionRate();
                 getBookingAmountPerPerson();
             }
 
