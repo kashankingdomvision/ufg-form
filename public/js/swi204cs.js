@@ -47236,7 +47236,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       calculatedCommisionAmount = 0.00;
     }
 
-    console.log("calculatedCommisionAmount: " + calculatedCommisionAmount);
     $('.commission-amount').val(check(calculatedCommisionAmount));
   }
 
@@ -47244,21 +47243,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
 
     if (sellingPriceOtherCurrency) {
-      var rateType = $('input[name="rate_type"]:checked').val(); // var paxNumber                     = parseFloat($(".pax-number").val());
-
+      var rateType = $('input[name="rate_type"]:checked').val();
       var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
       var totalSellingPrice = parseFloat($('.total-selling-price').val());
       var rate = getRate(bookingCurrency, sellingPriceOtherCurrency, rateType);
-      var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate); // var bookingAmountPerPerson        = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
-
-      $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate)); // $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
-
+      var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
+      $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
       $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
     }
 
     if (sellingPriceOtherCurrency == '') {
-      $('.selling-price-other-currency-rate').val('0.00'); // $('.booking-amount-per-person').val('0.00');
-
+      $('.selling-price-other-currency-rate').val('0.00');
       $('.selling-price-other-currency-code').val('');
     }
   }
