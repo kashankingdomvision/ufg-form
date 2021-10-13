@@ -458,13 +458,28 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
+
+                    <div class="row">
+                      <div class="col-md-12 text-right mb-2 p-1">
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                      </div>
+                    </div>
+
                     @foreach ($quote['quote'] as $key => $q_detail )
                         <div class="quote card card-default" data-key="{{ $key }}">
 
                           <div class="card-header">
-                            <h3 class="card-title card-title-style quote-title">{{ ($q_detail['category_id'] && $log->getQueryData($q_detail['category_id'], 'Category')->count()) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</h3>
+                            <h3 class="card-title card-title-style quote-title">
+                              <span class="badge badge-info badge-date-of-service">{{ isset($q_detail['date_of_service']) && !empty($q_detail['date_of_service']) ? $q_detail['date_of_service'] : '' }}</span>
+                              <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
+                              <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && !empty($q_detail['product_id'])) ? $q_detail['product_id'] : '' }}</span>
+                              <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
+                            </h3>
                             <div class="card-tools">
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
                             </div>
                           </div>
@@ -501,7 +516,7 @@
                                 <div class="col-sm-2">
                                 <div class="form-group">
                                     <label>Time of Service</label>
-                                    <input type="time" value="{{ $q_detail['time_of_service'] }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control" placeholder="Time of Service" autocomplete="off">
+                                    <input type="time" value="{{ $q_detail['time_of_service'] }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
                                 </div>
                                 </div>
                                 <div class="col-sm-2">
@@ -525,7 +540,7 @@
                                         <option value="">Select Supplier</option>
                                         @if(isset($q_detail['category_id']))
                                             @foreach ($log->getQueryData($q_detail['category_id'], 'Category')->first()->getSupplier as $supplier )
-                                            <option value="{{ $supplier->id }}" {{ ($q_detail['supplier_id'] == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
+                                            <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail['supplier_id'] == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                             @endforeach
                                         @endif
                                     </select>
@@ -655,7 +670,7 @@
                                   <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
                                     <option value="">Select Supplier Currency</option>
                                     @foreach ($currencies as $currency)
-                                      <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" {{ $q_detail['supplier_currency_id'] == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                      <option value="{{ $currency->id }}" data-name="{{ $currency->code.' - '.$currency->name }}" data-code="{{ $currency->code }}" {{ $q_detail['supplier_currency_id'] == $currency->id  ? "selected" : "" }}  data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                     @endforeach
                                   </select>
                                   <span class="text-danger" role="alert"></span>

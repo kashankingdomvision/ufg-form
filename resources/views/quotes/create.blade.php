@@ -408,13 +408,27 @@
                     </div>
                   </div>
                   <div class="parent" id="parent">
-
+                    <div class="row">
+                      <div class="col-md-12 text-right mb-2 p-1">
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                      </div>
+                    </div>
                     <div class="quote card card-default" data-key="0">
 
                       <div class="card-header">
                         <h3 class="card-title card-title-style quote-title"></h3>
+                        <h3 class="card-title card-title-style quote-title">
+                          <span class="badge badge-info badge-date-of-service"></span>
+                          <span class="badge badge-info badge-time-of-service"></span>
+                          <span class="badge badge-info badge-category-id"></span>
+                          <span class="badge badge-info badge-supplier-id"></span>
+                          <span class="badge badge-info badge-product-id"></span>
+                          <span class="badge badge-info badge-supplier-currency-id"></span>
+                        </h3>
+
                         <div class="card-tools">
-                          <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                          <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                           <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
                         </div>
                       </div>
@@ -453,7 +467,7 @@
                           <div class="col-sm-2">
                             <div class="form-group">
                               <label>Time of Service</label>
-                              <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control"  autocomplete="off">
+                              <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
                             </div>
                           </div>
 
@@ -586,7 +600,7 @@
                               <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
                                 <option selected value="" >Select Supplier Currency</option>
                                 @foreach ($currencies as $currency)
-                                  <option value="{{ $currency->id }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                  <option value="{{ $currency->id }}" data-name="{{ $currency->code.' - '.$currency->name }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>

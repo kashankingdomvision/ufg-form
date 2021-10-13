@@ -1537,6 +1537,50 @@ $(document).ready(function($) {
                 }
             });
 
+            $(".expand-all-btn").removeAttr('disabled');
+            $(".collapse-all-btn").removeAttr('disabled');
+
+            $(document).on('click', '.expand-all-btn', function(event) {
+                $('#parent .quote').removeClass('collapsed-card');
+                $('#parent .card-body').css("display", "block");
+                $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+                // $(this).addClass('d-none');
+                // $('.collapse-all-btn').removeClass('d-none');
+            });
+
+            $(document).on('click', '.collapse-all-btn', function(event) {
+                $('#parent .quote').addClass('collapsed-card');
+                $('#parent .card-body').css("display", "none");
+                $('#parent .collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
+                // $(this).addClass('d-none');
+                // $('.expand-all-btn').removeClass('d-none');
+            });
+
+            $(document).on('change', '.date-of-service', function() {
+                var quote = $(this).closest('.quote');
+                quote.find('.badge-date-of-service').html($(this).val());
+                quote.find('.badge-date-of-service').removeClass('d-none');
+            });
+
+            $(document).on('change', '.time-of-service', function() {
+                var quote = $(this).closest('.quote');
+                quote.find('.badge-time-of-service').html($(this).val());
+                quote.find('.badge-time-of-service').removeClass('d-none');
+            });
+
+            $(document).on('change', '.supplier-id', function() {
+                var quote = $(this).closest('.quote');
+                var supplier_name = $(this).find(':selected').attr('data-name');
+                quote.find('.badge-supplier-id').html(supplier_name);
+                quote.find('.badge-supplier-id').removeClass('d-none');
+            });
+
+            $(document).on('change', '.product-id', function() {
+                var quote = $(this).closest('.quote');
+                quote.find('.badge-product-id').html($(this).val());
+                quote.find('.badge-product-id').removeClass('d-none');
+            });
+
             $(document).on('change', '.category-id', function() {
 
                 // var selector      = $(this);
@@ -1546,7 +1590,8 @@ $(document).ready(function($) {
                 var category_name = $(this).find(':selected').attr('data-name');
                 var options       = '';
 
-                quote.find('.quote-title').html(category_name);
+                quote.find('.badge-category-id').html(category_name);
+                quote.find('.badge-category-id').removeClass('d-none');
 
                 $.ajax({
                     type: 'get',
@@ -1558,7 +1603,7 @@ $(document).ready(function($) {
 
                         $.each(response, function(key, value) {
 
-                            options += `<option value='${value.id}'>${value.name}</option>`;
+                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
 
                         $(`#quote_${quoteKey}_supplier_id`).html(options);
@@ -1727,7 +1772,9 @@ $(document).ready(function($) {
                         // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
 
                         $('.quote:last .category-id').val(category_id).change();
-                        $('.quote:last .quote-title').html(category_name);
+                        $('.quote:last .badge-category-id').html(category_name);
+                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
+                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
 
 
                         var qleng = $('.quote').length - 1;
@@ -1938,13 +1985,17 @@ $(document).ready(function($) {
                 var quote = $(this).closest('.quote');
                 var quoteKey = quote.data('key');
                 var bookingCurrency = $('#currency_id').val();
+                var currency_name = $(this).find(':selected').attr('data-name');
 
-                quote.find("[class*=supplier-currency-code]").html(code);
-
+                
                 if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
                     alert("Please Select Booking Currency first");
                     return;
                 }
+                
+                quote.find("[class*=supplier-currency-code]").html(code);
+                quote.find('.badge-supplier-currency-id').html(currency_name);
+                quote.find('.badge-supplier-currency-id').removeClass('d-none');
 
                 getQuoteSupplierCurrencyValues(code, quoteKey);
                 getQuoteTotalValues();

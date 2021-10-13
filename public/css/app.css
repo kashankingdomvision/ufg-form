@@ -4709,6 +4709,14 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   margin-right: 1rem !important;
 }
 
+.mr-half {
+  margin-right: 0.6rem !important;
+}
+
+.ml-half {
+  margin-left: 0.6rem !important;
+}
+
 .lh-2 {
   line-height: 2rem !important;
 }
