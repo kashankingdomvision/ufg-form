@@ -20,30 +20,24 @@ class SupplierRateSheetController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $query = SupplierRateSheet::orderBy('id', 'ASC');
-        // if (count($request->all()) > 0) {
-        //     if ($request->has('search') && !empty($request->search)) {
-        //         $supplier = $supplier->where(function ($query) use ($request) {
-        //             $query->where('name', 'like', '%'.$request->search.'%')
-        //             ->orWhere('email', 'like', '%'.$request->search.'%')
-        //             ->orWhere('phone', 'like', '%'.$request->search.'%');
-        //         });
-        //     }
-                             
-        //     if ($request->has('currency') && !empty($request->currency)) {
-        //         $supplier = $supplier->whereHas('getCurrency', function ($q) use($request) {
-        //             $q->where('name', 'like', '%'.$request->currency.'%');
-        //         });
-        //     }
-        //     if ($request->has('category') && !empty($request->category)) {
-        //         $supplier = $supplier->whereHas('getCategories', function ($q) use($request) {
-        //             $q->where('name', 'like', '%'.$request->category.'%');
-        //         });
-        //     }
-        // }
-   
+
+        if (count($request->all()) > 0) {
+
+            if ($request->has('supplier_id') && !empty($request->supplier_id)) {
+                $query->where('supplier_id', $request->supplier_id);
+            }
+
+            if ($request->has('season_id') && !empty($request->season_id)) {
+                $query->where('season_id', $request->season_id);
+            }
+        }
+
+        $data['suppliers']       = Supplier::orderBy('id', 'ASC')->get();
+        $data['booking_seasons'] = Season::all();
+
         $data['supplier_rate_sheets'] = $query->paginate($this->pagination);       
         
         return view('supplier_rate_sheets.listing', $data);
@@ -127,17 +121,17 @@ class SupplierRateSheetController extends Controller
      */
     public function update(UpdateSupplierRateSheetRequest $request, $id)
     {
-        $supplier_rate_sheet = SupplierRateSheet::find(decrypt($id));
-
         $supplier_rate_sheet = SupplierRateSheet::where([
             'supplier_id' => $request->supplier_id,
             'season_id'   => $request->season_id
         ])
         ->where('id', '!=' , decrypt($id));
-
+            
         if($supplier_rate_sheet->exists()){
             throw ValidationException::withMessages([ 'file' => 'The Rate Sheet has already been taken.']);
         }
+
+        $supplier_rate_sheet = SupplierRateSheet::find(decrypt($id));
 
         $data = [
             'supplier_id' => $request->supplier_id,
