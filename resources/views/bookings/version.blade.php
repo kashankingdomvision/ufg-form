@@ -86,7 +86,7 @@
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label>Currency Rate Type <span class="text-danger">*</span></label>
+                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                       <div>
                         <label class="radio-inline mr-1">
                           <input type="radio" name="rate_type" data-status="booking" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
@@ -1364,4 +1364,5 @@
       </div>
     </section>
   </div>
+  @include('partials.view_rates_modal')
 @endsection

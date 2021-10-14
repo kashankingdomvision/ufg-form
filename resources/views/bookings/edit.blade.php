@@ -166,7 +166,7 @@
                     </div>
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
+                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                         <div>
                           <label class="radio-inline mr-1">
                             <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
@@ -1837,7 +1837,8 @@
   @include('partials.payment_details_modal')
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
-
+  @include('partials.view_rates_modal')
+  
   @include('partials.cancel_booking_modal')
   {{-- @include('partials.cancel_booking_service') --}}
 

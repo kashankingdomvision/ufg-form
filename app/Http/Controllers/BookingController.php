@@ -36,6 +36,7 @@ use App\Currency;
 use App\Commission;
 use App\Country;
 use App\Category;
+use App\CurrencyConversion;
 use App\HolidayType;
 use App\PaymentMethod;
 use App\QuoteUpdateDetail;
@@ -135,8 +136,6 @@ class BookingController extends Controller
             });
       
         }
-
-
         
         $data['bookings']            = $booking->paginate($this->pagination);
         $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -343,6 +342,7 @@ class BookingController extends Controller
         $data['commission_types'] = Commission::all();
         $data['banks']            = Bank::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -581,6 +581,7 @@ class BookingController extends Controller
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['banks']            = Bank::all();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -605,6 +606,35 @@ class BookingController extends Controller
         return view('bookings.show',$data);
     }
 
+    public function viewVersion($id)
+    {
+        $booking_log                = BookingLog::findOrFail(decrypt($id));
+        $data['log']                = $booking_log;
+        $data['booking']            = $booking_log->data;
+        $data['countries']          = Country::orderBy('name', 'ASC')->get();
+        $data['categories']         = Category::all()->sortBy('name');
+        $data['seasons']            = Season::all();
+        $data['booked_by']          = User::all()->sortBy('name');
+        $data['supervisors']        = User::get();
+        $data['sale_persons']       = User::get();
+        $data['booking_methods']    = BookingMethod::all()->sortBy('id');
+        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']             = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']      = BookingType::all();
+        $data['payment_methods']    = PaymentMethod::all();
+        $data['commission_types']   = Commission::all();
+        $data['banks']              = Bank::all();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+
+        return view('bookings.version',$data);
+    }
+
+    public function destroy(Request $request, $id)
+    {
+        Booking::destroy(decrypt($id));
+        return redirect()->route('bookings.index',$request->season)->with('success_message', 'Booking deleted successfully');    
+    }
+    
     public function get_booking_net_price($id){
       
         $booking = Booking::find($id); 
@@ -690,35 +720,6 @@ class BookingController extends Controller
         return response()->json(View::make('partials.booking_detail', $data)->render());
     }
 
-    
-    public function destroy(Request $request, $id)
-    {
-        Booking::destroy(decrypt($id));
-        return redirect()->route('bookings.index',$request->season)->with('success_message', 'Booking deleted successfully');    
-    }
-    
-    public function viewVersion($id)
-    {
-        $booking_log                = BookingLog::findOrFail(decrypt($id));
-        $data['log']                = $booking_log;
-        $data['booking']            = $booking_log->data;
-        $data['countries']          = Country::orderBy('name', 'ASC')->get();
-        $data['categories']         = Category::all()->sortBy('name');
-        $data['seasons']            = Season::all();
-        $data['booked_by']          = User::all()->sortBy('name');
-        $data['supervisors']        = User::get();
-        $data['sale_persons']       = User::get();
-        $data['booking_methods']    = BookingMethod::all()->sortBy('id');
-        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']             = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']      = BookingType::all();
-        $data['payment_methods']    = PaymentMethod::all();
-        $data['commission_types']   = Commission::all();
-        $data['banks']              = Bank::all();
-
-        return view('bookings.version',$data);
-    }
-    
     public function bookingCancel($id)
     {
         $booking = Booking::findOrFail(decrypt($id))->update(['cancel_date' => Carbon::now()]);
@@ -739,17 +740,6 @@ class BookingController extends Controller
             return $path;
         }
         return;
-    }
-
-    //storage url
-
-    private function curl_data($url)
-    {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "$url");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        return $output = curl_exec($ch);
     }
 
 
