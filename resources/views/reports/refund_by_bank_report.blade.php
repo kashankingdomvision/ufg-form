@@ -177,7 +177,7 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $booking_refund_payment->getCurrency->code.' '.$booking_refund_payment->refund_amount }}</td>
-                                                    <td>{{ $booking_refund_payment->refund_date }}</td>
+                                                    <td>{{ !is_null($booking_refund_payment->refund_date) ?  Carbon\Carbon::parse($booking_refund_payment->refund_date)->format('d/m/Y') : '' }}</td>
                                                     <td>{{ isset($booking_refund_payment->getBank->name) && !empty($booking_refund_payment->getBank->name) ? $booking_refund_payment->getBank->name : '' }}</td>
                                                     <td>{{ isset($booking_refund_payment->getUser->name) && !empty($booking_refund_payment->getUser->name) ? $booking_refund_payment->getUser->name : '' }}</td>
                                                     <td>{{ ($booking_refund_payment->refund_recieved == 0 || $booking_refund_payment->refund_recieved == null) ? 'No' : 'Yes' }}</td>
