@@ -507,13 +507,17 @@
                           <div class="card-header">
 
                             <h3 class="card-title card-title-style quote-title">
-                              @if($booking_detail->status == 'active')
-                              <span class="badge badge-success">Booked</span>
-                              @elseif($booking_detail->status == 'cancelled')
-                              <span class="badge badge-danger">Cancelled</span>
-                              @endif
                               
-                              <span class="border-right mr-2 ml-1"></span>
+                              <div class="badge-service-status d-inline">
+                                @if($booking_detail->status == 'active')
+                                  <span class="badge badge-success">Booked</span>
+                                @elseif($booking_detail->status == 'cancelled')
+                                  <span class="badge badge-danger">Cancelled</span>
+                                @endif
+
+                                <span class="border-right mr-2 ml-1"></span>
+                              </div>
+                                
                               <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
@@ -565,7 +569,7 @@
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>End Date of Service <span style="color:red">*</span></label>
-                                  <input type="text" placeholder="DD/MM/YYYY" value="{{ $booking_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                  <input type="text" placeholder="DD/MM/YYYY" value="{{ $booking_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker bookingEndDateOfService" autocomplete="off">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
@@ -1354,6 +1358,7 @@
                           </div>
                         </div>
                       @endforeach
+                      <div class="parent-spinner text-gray spinner-border-sm "></div>
                     @endif
                     <div class="row">
                       <div class="col-12 text-right">
@@ -1844,7 +1849,8 @@
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
   @include('partials.view_rates_modal')
-
+  @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
+  
   @include('partials.cancel_booking_modal')
   {{-- @include('partials.cancel_booking_service') --}}
 

@@ -48524,7 +48524,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
     $(this).html($(this).html() == "<span class=\"fa fa-minus\"></span>" ? "<span class=\"fa fa-plus\"></span>" : "<span class=\"fa fa-minus\"></span>");
   });
-  $(document).on('click', '.service-category-btn', function (e) {
+  $(document).on('click', '.quotes-service-category-btn', function (e) {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
@@ -48590,152 +48590,109 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }, 180);
     }
   });
-  $(document).on('click', '#add_more', function (e) {
-    jQuery('#new_service_modal').modal('show'); // if ($('.select2single').data('select2')) {
-    //     $('.select2single').select2('destroy');
-    // }
-    // $(".quote").eq(0).clone()
-    //     .find("input").val("").each(function() {
-    //         this.name = this.name.replace(/\[(\d+)\]/, function() {
-    //             return '[' + ($('.quote').length) + ']';
-    //         });
-    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-    //         });
-    //     }).end()
-    //     .find("textarea").val("").each(function() {
-    //         this.name = this.name.replace(/\[(\d+)\]/, function() {
-    //             return '[' + (parseInt($('.quote').length)) + ']';
-    //         });
-    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-    //         });
-    //     }).end()
-    //     .find("select").val("").each(function() {
-    //         this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
-    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-    //         });
-    //     }).end().show().insertAfter(".quote:last");
-    // $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-    // $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-    // $(".quote:last").attr('data-key', $('.quote').length - 1);
-    // $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    // $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    // $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    // $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
-    // $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
-    // $('.quote:last .refundable-percentage-feild').addClass('d-none');
-    // // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-    // var qleng = $('.quote').length - 1;
-    // $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
-    // $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
-    // $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
-    // $('#quote_' + qleng + '_holder').empty();
-    // callLaravelFileManger();
-    // datepickerReset(1);
-    // calltextEditorSummerNote('#quote_' + qleng + '_service_details');
-    // calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
-    // reinitializedDynamicFeilds();
-  });
-  $(document).on('click', '#add_more_booking', function (e) {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    } // var count = $('.quote').length;
-    // $.ajax({
-    //     headers: {'X-CSRF-TOKEN': CSRFTOKEN},
-    //     url: REDIRECT_BASEURL+'bookings/booking-detail-clone/'+count,
-    //     type: 'get',
-    //     dataType: "json",
-    //     success: function (data) {
-    //         console.log(data);
-    //         // $('#package'+getKeyPackage).append(data);
-    //         // $('#package'+getKeyPackage).find('.addmorebuttonrow:first').remove();
-    //         // var quoteCount = $('#package'+getKeyPackage).children('.quote').length;
-    //         // $('#packageinput'+getKeyPackage).val(quoteCount);
-    //         // reinitializedDynamicFeilds();
-    //         // datepickerReset(1);
-    //     },
-    //     error: function (reject) {
-    //         alert(reject);
-    //     },
-    // });
+  $(document).on('click', '#add_more, #add_more_booking', function (e) {
+    jQuery('#new_service_modal').modal('show');
+  }); // $(document).on('click', '#add_more_booking', function(e) {
+  //     jQuery('#new_service_modal').modal('show');
+  // });
 
+  $(document).on('click', '.bookings-service-category-btn', function (e) {
+    e.preventDefault();
+    var category_id = $(this).attr('data-id');
+    var category_name = $(this).attr('data-name');
+    jQuery('#new_service_modal').modal('hide');
+    $('.parent-spinner').addClass('spinner-border');
 
-    var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("textarea").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + parseInt($('.quote').length) + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".quote:last");
-    quote.find('.finance .row:not(:first):not(:last)').remove();
-    quote.find('.actual-cost').attr("data-status", "");
-    quote.find('.markup-amount').attr("readonly", false);
-    quote.find('.markup-percentage').attr("readonly", false);
-    quote.find('.cal_selling_price').attr('checked', 'checked');
-    quote.find('.deposit-amount').val('0.00');
-    $('.quote:last .finance').find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + ($('.quote').length - 1) + ']';
-      });
-      var n = 1;
-      var name = $(this).attr("data-name");
-      this.id = this.id.replace(/[0-9]+/g, function (v) {
-        return n++ == 2 ? 0 : v;
-      }, function () {
-        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
-      });
-    }).end().find("select").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + ($('.quote').length - 1) + ']';
-      });
-      var n = 1;
-      var name = $(this).attr("data-name");
-      this.id = this.id.replace(/[0-9]+/g, function (v) {
-        return n++ == 2 ? 0 : v;
-      }, function () {
-        return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
-      });
-    });
-    $('.mediaModal').find('a').attr('id', '');
-    $('.refund-payment-hidden-section:last').attr("hidden", true);
-    $('.refund-by-credit-note-section:last').attr("hidden", true);
-    $('.finance-clonning:last').removeClass("cancelled-payment-styling");
-    $('.btn-group:last').removeClass("d-none");
-    $('.clone_booking_finance:last').removeClass("d-none");
-    $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
-    $('.payment-method:last').attr("disabled", false);
-    $('.outstanding-amount:last').attr("readonly", true);
-    $('.cancel-payemnt-btn:last').attr("hidden", true);
-    $('.refund-by-credit-note-section:last').remove();
-    $('.refund-by-bank-section:last').remove();
-    $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
-    $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
-    $(".quote:last").attr('data-key', $('.quote').length - 1);
-    $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-    $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-    $('.quote:last input, .quote:last select').removeClass('is-invalid');
-    $('.quote:last .card-title-style').html('');
-    $('.quote:last .booking-detail-cancellation').remove(); // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+    if (category_id) {
+      setTimeout(function () {
+        if ($('.select2single').data('select2')) {
+          $('.select2single').select2('destroy');
+        }
 
-    datepickerReset(1);
-    reinitializedDynamicFeilds();
+        var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + $('.quote').length + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().find("textarea").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + parseInt($('.quote').length) + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().find("select").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + $('.quote').length + ']';
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+          });
+        }).end().show().insertAfter(".quote:last");
+        quote.find('.finance .row:not(:first):not(:last)').remove();
+        quote.find('.actual-cost').attr("data-status", "");
+        quote.find('.markup-amount').attr("readonly", false);
+        quote.find('.markup-percentage').attr("readonly", false);
+        quote.find('.cal_selling_price').attr('checked', 'checked');
+        quote.find('.deposit-amount').val('0.00');
+        $('.quote:last .finance').find("input").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + ($('.quote').length - 1) + ']';
+          });
+          var n = 1;
+          var name = $(this).attr("data-name");
+          this.id = this.id.replace(/[0-9]+/g, function (v) {
+            return n++ == 2 ? 0 : v;
+          }, function () {
+            return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+          });
+        }).end().find("select").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            return '[' + ($('.quote').length - 1) + ']';
+          });
+          var n = 1;
+          var name = $(this).attr("data-name");
+          this.id = this.id.replace(/[0-9]+/g, function (v) {
+            return n++ == 2 ? 0 : v;
+          }, function () {
+            return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+          });
+        });
+        $('.mediaModal').find('a').attr('id', '');
+        $('.refund-payment-hidden-section:last').attr("hidden", true);
+        $('.refund-by-credit-note-section:last').attr("hidden", true);
+        $('.finance-clonning:last').removeClass("cancelled-payment-styling");
+        $('.btn-group:last').removeClass("d-none");
+        $('.clone_booking_finance:last').removeClass("d-none");
+        $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
+        $('.payment-method:last').attr("disabled", false);
+        $('.outstanding-amount:last').attr("readonly", true);
+        $('.cancel-payemnt-btn:last').attr("hidden", true);
+        $('.refund-by-credit-note-section:last').remove();
+        $('.refund-by-bank-section:last').remove();
+        $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
+        $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
+        $(".quote:last").attr('data-key', $('.quote').length - 1);
+        $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+        $('.quote:last input, .quote:last select').removeClass('is-invalid');
+        $('.quote:last .booking-detail-cancellation').remove();
+        $('.quote:last .revert-booking-detail-cancellation').remove();
+        $('.quote:last .category-id').val(category_id).change();
+        $('.quote:last .badge-category-id').html(category_name);
+        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
+        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
+        $('.quote:last .badge-service-status').html('');
+        datepickerReset(1);
+        reinitializedDynamicFeilds();
+        $('html, body').animate({
+          scrollTop: $('.quote:last').offset().top
+        }, 1000);
+        $('.parent-spinner').removeClass('spinner-border');
+      }, 180);
+    }
   }); // $(document).on('click', '.close', function() {
   //     $(this).closest(".quote").remove();
   //     getQuoteTotalValues();
