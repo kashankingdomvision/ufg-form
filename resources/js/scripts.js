@@ -1573,8 +1573,36 @@ $(document).ready(function($) {
             $(document).on('change', '.supplier-id', function() {
                 var quote = $(this).closest('.quote');
                 var supplier_name = $(this).find(':selected').attr('data-name');
+                var supplier_id   = $(this).val();
+                var season_id     = $('.season-id').val();
+
                 quote.find('.badge-supplier-id').html(supplier_name);
                 quote.find('.badge-supplier-id').removeClass('d-none');
+
+                if(season_id != "" && supplier_id != ""){
+                    $.ajax({
+                        type: 'get',
+                        url: `${BASEURL}get-supplier-rate-sheet`,
+                        data: { 
+                            'supplier_id': supplier_id,
+                            'season_id': season_id,
+                        },
+                        success: function(response) {
+    
+                            if(response != ''){
+                                quote.find('.view-supplier-rate').attr("href", response);
+                                quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+                            }else{
+                                quote.find('.view-supplier-rate').attr("href","");
+                                quote.find('.view-supplier-rate').html("");
+                            }
+    
+                        }
+                    });
+                }else{
+                    quote.find('.view-supplier-rate').attr("href","");
+                    quote.find('.view-supplier-rate').html("");
+                }
             });
 
             $(document).on('change', '.product-id', function() {
@@ -1615,7 +1643,8 @@ $(document).ready(function($) {
                     }
                 })
 
-
+                quote.find('.view-supplier-rate').attr("href","");
+                quote.find('.view-supplier-rate').html("");
                 jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
             });
 

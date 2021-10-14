@@ -353,6 +353,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate/{ids?}', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filter_currency_rate'));
+        Route::get('get-supplier-rate-sheet',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
     });
 
 

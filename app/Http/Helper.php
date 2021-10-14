@@ -11,11 +11,12 @@ use App\Currency;
 use App\Supplier;
 use App\BookingCreditNote;
 use App\QuoteUpdateDetail;
+use App\SupplierRateSheet;
 use App\User;
 use Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 class Helper
 {
     public static function number_format($number){
@@ -26,6 +27,18 @@ class Helper
 
 		$date = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $date))->format('Y-m-d')));
         return date("l M d, Y",strtotime($date));
+    }
+
+	public static function getSupplierRateSheetUrl($supplier_id, $season_id){
+
+		$url = '';
+        $supplier = SupplierRateSheet::where([ "supplier_id" => $supplier_id, "season_id" => $season_id ])->first();
+
+        if(!is_null($supplier)){
+            $url = url(Storage::url($supplier->file));
+        }
+
+        return $url;
     }
 
 	public static function date_difference($start_date, $end_date)

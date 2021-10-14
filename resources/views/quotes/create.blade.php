@@ -486,7 +486,10 @@
 
                           <div class="col-sm-2">
                             <div class="form-group">
-                              <label>Supplier <span style="color:red">*</span></label>
+                              <label>
+                                Supplier <span style="color:red">*</span>
+                                <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
+                              </label>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single @error('supplier_id') is-invalid @enderror">
                                 <option selected value="">Select Supplier</option>
                               </select>
@@ -947,7 +950,7 @@
     </section>
 
     @include('partials.template_modal')
-    @include('partials.new_service_modal',['categories' => $categories])
+    @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('partials.view_rates_modal')
   </div>
 

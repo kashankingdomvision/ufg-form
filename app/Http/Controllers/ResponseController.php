@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use App\BookingType;
 use App\BookingMethod;
@@ -21,6 +22,7 @@ use App\Template;
 use App\User;
 use App\StoreText;
 use App\CommissionGroup;
+use App\SupplierRateSheet;
 
 class ResponseController extends Controller
 {
@@ -36,6 +38,18 @@ class ResponseController extends Controller
         return response()->json($commission_groups);
     }
     
+    public function getSupplierRateSheet(Request $request)
+    {
+        $url = '';
+
+        $supplier = SupplierRateSheet::where([ "supplier_id" => $request->supplier_id, "season_id" => $request->season_id])->first();
+        if(!is_null($supplier)){
+            $url = url(Storage::url($supplier->file));
+        }
+
+        return $url;
+    }
+
     public function getCategoryToSupplier(Request $request)
     {
         $supplier = Supplier::whereHas('getCategories', function($query) use($request) {

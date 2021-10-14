@@ -582,9 +582,18 @@
                                 </div>
                               </div>
 
+                              @php
+                                $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
+                                $url          = !empty($supplier_url) ? $supplier_url : '';
+                                $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
+                              @endphp
+
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Supplier</label>
+                                    <label>
+                                      Supplier <span style="color:red">*</span>
+                                      <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
+                                    </label>
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
                                       @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier)
