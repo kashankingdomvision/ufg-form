@@ -996,6 +996,6 @@
       </div>
     </section>
   </div>
-  @include('partials.new_service_modal',['categories' => $categories])
+  @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
   @include('partials.view_rates_modal')
 @endsection
