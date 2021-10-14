@@ -1082,7 +1082,7 @@
                                             <div class="input-group-prepend">
                                               <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                             </div>
-                                            <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][0][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount"  class="form-control refund_amount amount hide-arrows" step="any">
+                                            <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount"  class="form-control refund_amount amount hide-arrows" step="any">
                                             <span class="text-danger" role="alert"></span>
                                           </div>
                                         </div>
@@ -1090,14 +1090,14 @@
                                       <div class="col-sm-2">
                                         <div class="form-group">
                                           <label>Refund Date <span style="color:red">*</span></label>
-                                          <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][0][refund_date]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_date" data-name="refund_date"  class="form-control">
+                                          <input type="date" value="{{ $payment->refund_date }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_date]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_date" data-name="refund_date"  class="form-control">
                                           <span class="text-danger" role="alert"></span>
                                         </div>
                                       </div>
                                       <div class="col-sm-2">
                                         <div class="form-group">
                                           <label>Bank <span style="color:red">*</span></label>
-                                          <select  name="quote[{{ $key }}][refund][0][bank]" id="quote_{{$key}}_refund_{{$rpkey}}_bank" data-name="bank"  class="form-control bank select2single">
+                                          <select  name="quote[{{ $key }}][refund][{{$rpkey}}][bank]" id="quote_{{$key}}_refund_{{$rpkey}}_bank" data-name="bank"  class="form-control bank select2single">
                                             <option value="">Select Bank</option>
                                             @foreach ($banks as $bank)
                                               <option value="{{ $bank->id }}" {{ ($bank->id == $payment->bank_id) ? 'selected' : '' }}> {{ $bank->name }} </option>
@@ -1109,7 +1109,7 @@
                                       <div class="col-sm-3">
                                         <div class="form-group">
                                           <label>Refund Confirmed By <span style="color:red">*</span></label>
-                                          <select  name="quote[{{ $key }}][refund][0][refund_confirmed_by]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_confirmed_by"  data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single">
+                                          <select  name="quote[{{ $key }}][refund][{{$rpkey}}][refund_confirmed_by]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_confirmed_by"  data-name="refund_confirmed_by"  class="form-control refund_confirmed_by select2single">
                                             <option value="">Select User</option>
                                             @foreach ($sale_persons as $person)
                                               <option  value="{{ $person->id }}" {{ ($person->id == $payment->refund_confirmed_by) ? 'selected' : '' }}>{{ $person->name }}</option>

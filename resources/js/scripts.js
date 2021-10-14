@@ -3199,13 +3199,7 @@ $(document).ready(function($) {
                 event.preventDefault();
 
                 $('#update-booking :input').prop('disabled', false);
-
-                var $form = $(this),
-                url = $form.attr('action');
-                var formdata = $(this).serialize();
-
-                $('input, select').removeClass('is-invalid');
-                $('.text-danger').html('');
+                var url = $(this).attr('action');
 
                 /* Send the data using post */
                 $.ajax({
@@ -3216,6 +3210,8 @@ $(document).ready(function($) {
                     cache: false,
                     processData: false,
                     beforeSend: function() {
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
                         $("#overlay").addClass('overlay');
                         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
                     },
@@ -3227,7 +3223,7 @@ $(document).ready(function($) {
                             window.location.href = REDIRECT_BASEURL + "bookings/index";
                             // location.reload();
 
-                        }, 400);
+                        }, 200);
                     },
                     error: function(reject) {
 
@@ -3260,7 +3256,7 @@ $(document).ready(function($) {
                                     });
                                 }
 
-                            }, 400);
+                            }, 200);
 
                             // setTimeout(function() {
 

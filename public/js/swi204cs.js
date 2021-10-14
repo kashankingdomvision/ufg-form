@@ -49652,11 +49652,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $("#update-booking").submit(function (event) {
     event.preventDefault();
     $('#update-booking :input').prop('disabled', false);
-    var $form = $(this),
-        url = $form.attr('action');
-    var formdata = $(this).serialize();
-    $('input, select').removeClass('is-invalid');
-    $('.text-danger').html('');
+    var url = $(this).attr('action');
     /* Send the data using post */
 
     $.ajax({
@@ -49667,6 +49663,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       cache: false,
       processData: false,
       beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
         $("#overlay").addClass('overlay');
         $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
       },
@@ -49675,7 +49673,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         setTimeout(function () {
           alert(data.success_message);
           window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
-        }, 400);
+        }, 200);
       },
       error: function error(reject) {
         if (reject.status === 422) {
@@ -49701,7 +49699,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
                 }
               });
             }
-          }, 400); // setTimeout(function() {
+          }, 200); // setTimeout(function() {
           //     var flag=true;
           //     $("#overlay").removeClass('overlay').html('');
           //     jQuery.each(errors.errors, function( index, value ) {

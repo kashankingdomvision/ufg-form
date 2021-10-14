@@ -58,10 +58,17 @@ class BookingRequest extends FormRequest
             'quote.*.markup_percentage'                       => 'required_if:markup_type,itemised',
             'quote.*.selling_price_in_booking_currency'       => 'required_if:markup_type,itemised',
             'quote.*.markup_amount_in_booking_currency'       => 'required_if:markup_type,itemised',
+           
+            /* Refund - By Bank  */
+            'quote.*.refund.*.refund_date'                    => 'required_with:quote.*.refund.*.refund_amount',
             'quote.*.refund.*.bank'                           => 'required_with:quote.*.refund.*.refund_amount',
             'quote.*.refund.*.refund_confirmed_by'            => 'required_with:quote.*.refund.*.refund_amount',
+            /* End Refund - By Bank   */
+            
+            /* Refund - By Credit Notes */
             'quote.*.credit_note.*.credit_note_recieved_date' => 'required_with:quote.*.credit_note.*.credit_note_amount',
             'quote.*.credit_note.*.credit_note_recieved_by'   => 'required_with:quote.*.credit_note.*.credit_note_amount',
+            /* End Refund - By Credit Notes */
         ];
     }
 
@@ -84,10 +91,18 @@ class BookingRequest extends FormRequest
             'quote.*.end_date_of_service'                                   => 'The End Date of Service field is required.',
             'quote.*.category_id.required'                                  => 'The Category field is required.',
             'quote.*.supplier_id.required'                                  => 'The Supplier field is required.',
-            'quote.*.refund.*.bank.required_with'                           => 'The Bank feild is required',
-            'quote.*.refund.*.refund_confirmed_by.required_with'            => 'The Refund Confirmed By feild is required',
-            'quote.*.credit_note.*.credit_note_recieved_date.required_with' => 'The Credit Note Date  field is required',
-            'quote.*.credit_note.*.credit_note_recieved_by.required_with'   => 'The Credit Note Recieved By field is required',
+            
+            /* Refund - By Bank  */
+            'quote.*.refund.*.refund_date.required_with'                    => 'The Refund Date feild is required.',
+            'quote.*.refund.*.bank.required_with'                           => 'The Bank feild is required.',
+            'quote.*.refund.*.refund_confirmed_by.required_with'            => 'The Refund Confirmed By feild is required.',
+            /* End Refund - By Bank   */
+
+            /* Refund - By Credit Notes */
+            'quote.*.credit_note.*.credit_note_recieved_date.required_with' => 'The Credit Note Date  field is required.',
+            'quote.*.credit_note.*.credit_note_recieved_by.required_with'   => 'The Credit Note Recieved By field is required.',
+            /* End Refund - By Credit Notes */
+
         ];
     }
     
@@ -125,9 +140,14 @@ class BookingRequest extends FormRequest
             'quote.*.supervisor_id'                            => 'Supervisor',
             'quote.*.credit_note.*.credit_note_recieved_date'  => 'Credit Note Date',
             'quote.*.credit_note.*.credit_note_recieved_by'    => 'Credit Note Recieved Date',
-            'quote.*.refund.*.bank'                            => 'Bank',
             'quote.*.date_of_service'                          => 'Start Date of Service',
-            'quote.*.end_date_of_service'                      => 'End Date of Service'
+            'quote.*.end_date_of_service'                      => 'End Date of Service',
+            
+            /* Refund - By Bank  */
+            'quote.*.refund.*.refund_date'                    => 'Refund Date',
+            'quote.*.refund.*.bank'                           => 'Bank',
+            'quote.*.refund.*.refund_confirmed_by'            => 'Refund Confirmed By',
+            /* End Refund - By Bank   */
         ];
     }
 }

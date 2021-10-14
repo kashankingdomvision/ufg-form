@@ -266,6 +266,18 @@ class BookingController extends Controller
         ];
     }
 
+    public function getBookingCancellationRefundPaymentsArray($quoteD)
+    {
+        return [
+            "refund_amount"         => $quoteD['refund_amount']??NULL,
+            "refund_date"           => $quoteD['refund_date']??NULL,
+            "refund_approved_date"  => $quoteD['refund_approved_date']??NULL,
+            "refund_approved_by"    => $quoteD['refund_approved_by']??NULL,
+            "refund_processed_by"   => $quoteD['refund_processed_by']??NULL,
+            "bank_id"               => $quoteD['refund_process_from']??NULL,
+        ];
+    }
+
     public function getAccommodationDetailsArray($quoteD)
     {
         return [
@@ -352,48 +364,6 @@ class BookingController extends Controller
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
         return view('bookings.edit',$data);
-    }
-
-    public function show($id,$status = null)
-    {
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['categories']       = Category::all()->sortBy('name');
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $data['booking']            = Booking::findOrFail(decrypt($id));
-        $data['commission_types'] = Commission::all();
-        $data['payment_methods']  = PaymentMethod::all();
-        $data['banks']            = Bank::all();
-        
-        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
-
-            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
-            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
-            });
-
-            if($response['status'] == 200 && isset($response['body']['old_records'])) {
-                $data['old_ufg_payment_records'] = $response['body']['old_records'];
-            }
-
-            if($response['status'] == 200 && isset($response['body']['message'])) {
-                $data['ufg_payment_records'] = $response['body']['message'];
-            }
-        }
-
-        $data['status'] = $status;
-        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
-
-
-        return view('bookings.show',$data);
     }
 
     public function update(BookingRequest $request, $id)
@@ -487,7 +457,7 @@ class BookingController extends Controller
                         $refund['booking_detail_id'] = $booking_Details->id;
                         $refund['currency_id']       = $booking_Details->supplier_currency_id;
     
-                        if(!empty($refund['refund_amount']) && !empty($refund['refund_date'])){
+                        if(!empty($refund['refund_amount']) && ($refund['refund_amount'] > 0) ){
 
                             BookingRefundPayment::create($refund);
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
@@ -577,16 +547,13 @@ class BookingController extends Controller
 
             foreach ($request->cancellation_refund as $cancellation_refund) {
 
-                BookingCancellationRefundPayment::create([
+                $cancellation_refund               = $this->getBookingCancellationRefundPaymentsArray($cancellation_refund);
+                $cancellation_refund['booking_id'] = $booking->id;
 
-                    "booking_id"            => $booking->id,
-                    "refund_amount"         => $cancellation_refund['refund_amount']??NULL,
-                    "refund_date"           => $cancellation_refund['refund_date']??NULL,
-                    "refund_approved_date"  => $cancellation_refund['refund_approved_date']??NULL,
-                    "refund_approved_by"    => $cancellation_refund['refund_approved_by']??NULL,
-                    "refund_processed_by"   => $cancellation_refund['refund_processed_by']??NULL,
-                    "bank_id"               => $cancellation_refund['refund_process_from']??NULL,
-                ]);
+                if(!empty($cancellation_refund['refund_amount']) && ($cancellation_refund['refund_amount'] > 0) ){
+                    BookingCancellationRefundPayment::create($cancellation_refund);
+                }
+  
             }
 
         }
@@ -594,6 +561,48 @@ class BookingController extends Controller
         // $quote_update_detail->delete(); 
 
         return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+    }
+
+    public function show($id,$status = null)
+    {
+        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['categories']       = Category::all()->sortBy('name');
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['booking']            = Booking::findOrFail(decrypt($id));
+        $data['commission_types'] = Commission::all();
+        $data['payment_methods']  = PaymentMethod::all();
+        $data['banks']            = Bank::all();
+        
+        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
+
+            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+            });
+
+            if($response['status'] == 200 && isset($response['body']['old_records'])) {
+                $data['old_ufg_payment_records'] = $response['body']['old_records'];
+            }
+
+            if($response['status'] == 200 && isset($response['body']['message'])) {
+                $data['ufg_payment_records'] = $response['body']['message'];
+            }
+        }
+
+        $data['status'] = $status;
+        $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
+
+
+        return view('bookings.show',$data);
     }
 
     public function get_booking_net_price($id){

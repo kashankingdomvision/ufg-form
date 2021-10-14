@@ -43,7 +43,7 @@ class BookingRefundPayment extends Model
         return $this->hasOne(Supplier::class,'id','supplier_id');
     }
     
-    public function getRefundDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
+    public function setRefundDateAttribute( $value ) {
+        $this->attributes['refund_date']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }
