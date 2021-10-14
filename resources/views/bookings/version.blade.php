@@ -432,6 +432,12 @@
                   </div>
                 </div>
                 <div class="parent" id="parent">
+                  <div class="row">
+                    <div class="col-md-12 text-right mb-2 p-1">
+                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                    </div>
+                  </div>
                   @if($booking['booking'] && count($booking['booking']))
                     @foreach ($booking['booking'] as $key  => $booking_detail )
                       <div class="quote card card-default" data-key="{{$key}}">
@@ -453,7 +459,7 @@
                           </h3>
 
                           <div class="card-tools">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                            <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                           </div>
                         </div>
 

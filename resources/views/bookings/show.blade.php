@@ -470,6 +470,12 @@
                     </div>
 
                     <div class="parent" id="parent">
+                      <div class="row">
+                        <div class="col-md-12 text-right mb-2 p-1">
+                          <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                          <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                        </div>
+                      </div>
                       @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                         @foreach ($booking->getBookingDetail as $key  => $booking_detail )
                           <div class="quote card card-default" data-key="0">
@@ -494,7 +500,7 @@
                               <div class="card-tools">
                                 <input type="hidden" name="quote[{{ $key }}][created_by]" id="quote_{{ $key }}_created_by" value="{{ isset($booking_detail->getBookingCancellation->cancelled_by_id) && !empty($booking_detail->getBookingCancellation->cancelled_by_id) ? $booking_detail->getBookingCancellation->cancelled_by_id : Auth::id() }}" >
                                 <input type="hidden" name="quote[{{ $key }}][status]" id="quote_{{ $key }}_status" value="{{ isset($booking_detail->status) && !empty($booking_detail->status) ? $booking_detail->status : '' }}" >
-                                <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                                <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               </div>
                             </div> 
                            

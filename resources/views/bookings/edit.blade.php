@@ -494,6 +494,12 @@
                               </div>
                   </div>
                   <div class="parent" id="parent">
+                    <div class="row">
+                      <div class="col-md-12 text-right mb-2 p-1">
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                      </div>
+                    </div>
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail )
                         <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
@@ -532,7 +538,7 @@
                                 </a>
                               @endif
 
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               <a href="javascript:void(0)" class="remove-booking-detail-service btn btn-sm btn-outline-dark mr-2" title="Remove"><i class="fas fa-times"></i></a>
                              
                             </div>
@@ -1838,7 +1844,7 @@
   @include('partials.refund_to_bank')
   @include('partials.credit_note')
   @include('partials.view_rates_modal')
-  
+
   @include('partials.cancel_booking_modal')
   {{-- @include('partials.cancel_booking_service') --}}
 
