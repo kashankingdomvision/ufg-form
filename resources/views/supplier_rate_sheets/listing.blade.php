@@ -121,7 +121,8 @@
                           @endif
 
                           @if (pathinfo($supplier_rate_sheet->file, PATHINFO_EXTENSION) == 'png' || pathinfo($supplier_rate_sheet->file, PATHINFO_EXTENSION) == 'jpg')
-                            <img src="{{ $supplier_rate_sheet->image_path }}" height="70" width="70" class="rounded mx-auto d-block" alt="Rate Sheet">
+                            <a href="{{ $supplier_rate_sheet->image_path }}" target="_blank" > View Rate Sheet </a>
+                            {{-- <img src="{{ $supplier_rate_sheet->image_path }}" height="70" width="70" class="rounded mx-auto d-block" alt="Rate Sheet"> --}}
                           @endif
                         </td>
 
