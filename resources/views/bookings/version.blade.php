@@ -806,6 +806,7 @@
                           @if($booking_detail['finance'] && count($booking_detail['finance']) > 0)
                             @foreach ($booking_detail['finance'] as $fkey => $finance)
                               @php $count =  $fkey + 1; @endphp
+                              <h3 class="mt-2 mb-1-half">Payments</h3>
                               <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="{{$fkey}}">
                                 <div class="col-sm-3">
                                   <div class="form-group">
@@ -893,6 +894,7 @@
                               </div>
                             @endforeach
                           @else
+                            <h3 class="mt-2 mb-1-half">Payments</h3>
                             <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                               <div class="col-sm-3">
                                 <div class="form-group">

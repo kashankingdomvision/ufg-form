@@ -999,6 +999,7 @@
                                   @endforeach
                                 @else
                                   {{-- /////for single value/ --}}
+                                  <h3 class="mt-2 mb-1-half">Payments</h3>
                                   <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                                     <div class="col-sm-3">
                                       <div class="form-group">
