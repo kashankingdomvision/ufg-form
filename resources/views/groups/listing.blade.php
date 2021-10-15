@@ -85,7 +85,7 @@
                       <th >Total Markup %</th>
                       <th >Total Selling Price</th>
                       <th >Total Profit Percentage</th>
-                      <th >Total Commission Amount</th>
+                      {{-- <th >Total Commission Amount</th> --}}
                       <th style="width: 160px;">Booking Currency</th>
                       <th >Action</th>
                       <th></th>
@@ -117,7 +117,7 @@
                         <td>{{ \Helper::number_format($group->total_markup_percentage).' %' }}</td>
                         <td>{{ \Helper::number_format($group->total_selling_price).' '.$booking_currency }}</td>
                         <td>{{ \Helper::number_format($group->total_profit_percentage).' %' }}</td>
-                        <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td>
+                        {{-- <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td> --}}
                         <td>{{ isset($group->getBookingCurrency->name) && !empty($group->getBookingCurrency->name) ? $group->getBookingCurrency->code.' - '.$group->getBookingCurrency->name : '' }}</td>
                         <td colspan="2">
                           <form method="post" action="{{ route('quotes.group-quote.destroy', encrypt($group->id)) }}">
@@ -140,7 +140,7 @@
                               <th>Markup %</th>
                               <th>Selling Price</th>
                               <th>Profit Percentage</th>
-                              <th>Commission Amount</th>
+                              {{-- <th>Commission Amount</th> --}}
                               <th style="width: 165px;">Booking Currency</th>
                               <th colspan="2"></th>
                           </tr>
@@ -165,7 +165,7 @@
                               <td>{{ \Helper::number_format($q->markup_percentage).' %' }}</td>
                               <td>{{ \Helper::number_format($q->selling_price).' '.$booking_currency }}</td>
                               <td>{{ \Helper::number_format($q->profit_percentage).' %' }}</td>
-                              <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td>
+                              {{-- <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td> --}}
                               <td>{{ isset($q->getBookingCurrency->name) && !empty($q->getBookingCurrency->name) ? $q->getBookingCurrency->code.' - '.$q->getBookingCurrency->name : '' }}</td>
                               <td colspan="2">
                                 @if($q->booking_status == 'quote')
