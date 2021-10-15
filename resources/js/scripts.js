@@ -613,26 +613,38 @@ $(document).ready(function($) {
 
             function getBookingTotalValues() {
 
+                var markupType = $("input[name=markup_type]:checked").val();
+
                 var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
                 var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
-                var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
-
-                var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
-                var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
-
                 $(".total-net-price").val(check(actualCostInBookingCurrency));
-                $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-                $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-                $(".total-markup-percent").val(check(markupPercentage));
-                $(".total-profit-percentage").val(check(profitPercentage));
+
+                if(markupType == 'itemised'){
+                    var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                    var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+                    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+                    var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+                    var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+                    var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+                    var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
+                   
+                    $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+                    $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+                    $(".total-markup-percent").val(check(markupPercentage));
+                    $(".total-profit-percentage").val(check(profitPercentage));
+                }
+
+                if(markupType == 'whole'){
+
+                    $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+                    $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+                    $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+                    $(".total-selling-price").val(check(actualCostInBookingCurrency));
+                }
 
                 getCommissionRate();
                 getBookingAmountPerPerson();
@@ -3315,11 +3327,19 @@ $(document).ready(function($) {
                                     window.location.href = REDIRECT_BASEURL + "bookings/index";
                                 } else {
 
+                                    var flag = true;
+                                    
                                     jQuery.each(errors.errors, function(index, value) {
 
                                         index = index.replace(/\./g, '_');
-                                        $('#' + index).addClass('is-invalid');
-                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                        if (flag) {
+
+                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                            flag = false;
+                                        }
                                     });
                                 }
 
@@ -3363,12 +3383,15 @@ $(document).ready(function($) {
                     $('.booking-whole-markup-feilds').addClass('d-none');
                     $('.total-markup-amount').removeAttr('readonly');
                     $('.total-markup-percent').removeAttr('readonly');
+                    getBookingTotalValues();
 
                 }else if(markupType == 'itemised'){
 
                     $('.booking-whole-markup-feilds').removeClass('d-none');
                     $('.total-markup-amount').prop('readonly', true);
-                    $('.total-markup-percent').prop('readonly', true);               
+                    $('.total-markup-percent').prop('readonly', true);  
+                    getBookingTotalValues();
+
                 }
 
 

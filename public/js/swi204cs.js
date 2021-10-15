@@ -47579,41 +47579,53 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
 
   function getBookingTotalValues() {
+    var markupType = $("input[name=markup_type]:checked").val();
     var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    var markupPercentageArray = $(".markup-percentage").map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var markupPercentage = markupPercentageArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    var profitPercentageArray = $(".profit-percentage").map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var profitPercentage = profitPercentageArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
     $(".total-net-price").val(check(actualCostInBookingCurrency));
-    $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-    $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-    $(".total-markup-percent").val(check(markupPercentage));
-    $(".total-profit-percentage").val(check(profitPercentage));
+
+    if (markupType == 'itemised') {
+      var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map(function (i, e) {
+        return parseFloat(e.value);
+      }).get();
+      var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
+        return parseFloat(e.value);
+      }).get();
+      var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      var markupPercentageArray = $(".markup-percentage").map(function (i, e) {
+        return parseFloat(e.value);
+      }).get();
+      var markupPercentage = markupPercentageArray.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      var profitPercentageArray = $(".profit-percentage").map(function (i, e) {
+        return parseFloat(e.value);
+      }).get();
+      var profitPercentage = profitPercentageArray.reduce(function (a, b) {
+        return a + b;
+      }, 0);
+      $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+      $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+      $(".total-markup-percent").val(check(markupPercentage));
+      $(".total-profit-percentage").val(check(profitPercentage));
+    }
+
+    if (markupType == 'whole') {
+      $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+      $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+      $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+      $(".total-selling-price").val(check(actualCostInBookingCurrency));
+    }
+
     getCommissionRate();
     getBookingAmountPerPerson();
     getSellingPrice();
@@ -49727,10 +49739,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               alert(errors.overrride_errors);
               window.location.href = REDIRECT_BASEURL + "bookings/index";
             } else {
+              var flag = true;
               jQuery.each(errors.errors, function (index, value) {
                 index = index.replace(/\./g, '_');
-                $('#' + index).addClass('is-invalid');
-                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                $("#".concat(index)).addClass('is-invalid');
+                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+                if (flag) {
+                  $('html, body').animate({
+                    scrollTop: $("#".concat(index)).offset().top
+                  }, 1000);
+                  flag = false;
+                }
               });
             }
           }, 400);
@@ -49766,10 +49786,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('.booking-whole-markup-feilds').addClass('d-none');
       $('.total-markup-amount').removeAttr('readonly');
       $('.total-markup-percent').removeAttr('readonly');
+      getBookingTotalValues();
     } else if (markupType == 'itemised') {
       $('.booking-whole-markup-feilds').removeClass('d-none');
       $('.total-markup-amount').prop('readonly', true);
       $('.total-markup-percent').prop('readonly', true);
+      getBookingTotalValues();
     }
   }
 
