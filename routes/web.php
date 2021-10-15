@@ -181,8 +181,6 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
-
-
         /*  Commission Criteria */
         Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'

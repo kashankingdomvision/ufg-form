@@ -140,7 +140,7 @@
                 </div>
                 <div class="card-footer">
                   <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                  <a href="{{ route('commissions.commission.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                  <a href="{{ route('commissions.commission-criteria.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                   
                 </div>
               </form>
