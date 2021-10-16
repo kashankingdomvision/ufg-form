@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\CustomerReportExport;
 use App\Exports\UserReportExport;
 use App\Exports\ActivityByUserReportExport;
+use App\Exports\SupplierReportExport;
 
 use App\Http\Helper;
 use App\Booking;
@@ -905,6 +906,57 @@ class ReportController extends Controller
 
         } catch(\Exception $e) {
             return ['resp' => false, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function supplier_report_export(Request $request)
+    {
+        try {
+            $passedParams = json_decode(request()->params, true);
+            $data['categories'] = Category::orderBy('name', 'ASC')->get();
+            $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+            $supplier = Supplier::with('getCategories','getCurrency')->orderBy('id', 'ASC');
+
+            if (!empty($passedParams)) {
+
+                if ($passedParams['category'] && !empty($passedParams['category'])) {
+                    $supplier = $supplier->whereHas('getCategories', function ($q) use ($passedParams) {
+                        $q->where('id', $passedParams['category']);
+                    });
+                }
+
+                if ($passedParams['currency'] && !empty($passedParams['currency'])) {
+                    $supplier = $supplier->whereHas('getCurrency', function ($q) use ($passedParams) {
+                        $q->where('id', $passedParams['currency']);
+                    });
+                }
+
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $supplier->whereDate('created_at', '>=', $start_date);
+                    $supplier->whereDate('created_at', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $supplier = $supplier->whereMonth('created_at', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $supplier = $supplier->whereYear('created_at', $passedParams['year']);
+                }
+            }
+            $data['suppliers'] = $supplier->get();
+            $reportName = "Supplier Report Excel";
+
+            return Excel::download(new SupplierReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return ['status' => false, 'msg' => $e->getMessage()];
         }
     }
 
