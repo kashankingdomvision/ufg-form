@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Exports\CustomerReportExport;
+use App\Exports\UserReportExport;
+use App\Exports\ActivityByUserReportExport;
+
 use App\Http\Helper;
 use App\Booking;
 use App\Brand;
@@ -620,6 +626,286 @@ class ReportController extends Controller
         $data['booking_seasons'] = Season::all();
     
         return view('reports.transfer_report', $data);
+    }
+
+    // *** REPORTS IN EXPORT *** //
+    public function customer_report_export(Request $request) {
+        try {
+            $passedParams = json_decode(request()->params, true);
+            $customers_quote = Quote::select('*', DB::raw('count(id) as total_quotes'))->where('agency', '0')->groupBy('lead_passenger_email');
+            $customers_booking = Booking::select('*', DB::raw('count(id) as total_bookings'))->where('agency', '0')->groupBy('lead_passenger_email');
+
+            if (!empty($passedParams)) {
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $customers_quote->whereDate('created_at', '>=', $start_date);
+                    $customers_quote->whereDate('created_at', '<=', $end_date);
+
+                    $customers_booking->whereDate('created_at', '>=', $start_date);
+                    $customers_booking->whereDate('created_at', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $customers_quote = $customers_quote->whereMonth('created_at', $passedParams['month']);
+                    $customers_booking = $customers_booking->whereMonth('created_at', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $customers_quote = $customers_quote->whereYear('created_at', $passedParams['year']);
+                    $customers_booking = $customers_booking->whereYear('created_at', $passedParams['year']);
+                }
+
+            }
+            $data['customers_quote'] = $customers_quote->get();
+            $data['customers_booking'] = $customers_booking->get();
+            $data['selected_type'] = $passedParams['type'];
+            $reportName = "Customer Report";
+
+            return Excel::download(new CustomerReportExport($data), "$reportName.xlsx");
+
+        } catch (\Exception $e) {
+            return ['resp' => false, 'msg' => $e->getMessage()];
+        }
+        
+    }
+
+    public function user_report_export(Request $request) {
+        try {
+            $passedParams = json_decode(request()->params, true);
+            $data['roles']      = Role::orderBy('name', 'ASC')->get();
+            $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+            $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+
+            $user = User::orderBy('id', 'ASC');
+
+            if(!empty($passedParams['role'])) {
+                $user->when($passedParams['role'], function ($query) use ($passedParams) {
+                    return $query->whereHas('getRole', function ($query) use($passedParams) {
+                        $query->where('id', $passedParams['role']);
+                    });
+                });
+            }
+
+            if(!empty($passedParams['currency'])) {
+                $user->when($passedParams['currency'], function ($query) use ($passedParams) {
+                    return $query->whereHas('getCurrency', function ($query) use($passedParams) {
+                        $query->where('id', $passedParams['currency']);
+                    });
+                });
+            }
+            
+            if(!empty($passedParams['brand'])) {
+                $user->when($passedParams['brand'], function ($query) use ($passedParams) {
+                    return $query->whereHas('getBrand', function ($query) use($passedParams) {
+                        $query->where('id', $passedParams['brand']);
+                    });
+                });
+            }
+
+            if(!empty($passedParams['month'])) {
+                $user->when($passedParams['month'], function ($query) use ($passedParams) {
+                    return $query->whereMonth('created_at', $passedParams['month']);
+                });
+            }
+
+            if(!empty($passedParams['year'])) {
+                $user->when($passedParams['year'], function ($query) use ($passedParams) {
+                    return $query->whereYear('created_at', $passedParams['year']);
+                });
+            }
+
+            if(!empty($passedParams['dates'])) {
+                $user->when($passedParams['dates'], function ($query) use ($passedParams) {
+
+                    $dates = Helper::dates($passedParams['dates']);
+
+                    $query->whereDate('created_at', '>=', $dates->start_date);
+                    $query->whereDate('created_at', '<=', $dates->end_date);
+                });
+            }
+            
+            $data['users'] = $user->get();
+            $reportName = "User Report";
+            
+            return Excel::download(new UserReportExport($data), "$reportName.xlsx");
+
+        } catch (\Exception $e) {
+            return ['resp' => false, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function activity_by_user_report_excel(Request $request){
+        try {
+            $passedParams = json_decode(request()->params, true);
+            $user = User::orderBy('id', 'ASC');
+
+            if (!empty($passedParams)) {
+
+                if($passedParams['user'] && !empty($passedParams['user'])){
+                    $user->where('id',  $passedParams['user']);
+                }
+
+                $user->withCount(['getTotalQuote' => function($query) use( $request, $passedParams ) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+                $user->withCount(['getQuote' => function($query) use( $request, $passedParams ) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+                $user->withCount(['getCancelledQuote' => function($query) use( $request, $passedParams ) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+                $user->withCount(['getTotalBooking' => function($query) use( $request, $passedParams ) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+                $user->withCount(['getConfirmedBooking' => function($query) use( $request, $passedParams) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+                $user->withCount(['getCancelledBooking' => function($query) use( $request, $passedParams ) {
+
+                    if($passedParams['month'] && !empty($passedParams['month'])){
+                        $query->whereMonth('created_at',  $passedParams['month']);
+                    }
+
+                    if($passedParams['year'] && !empty($passedParams['year'])){
+                        $query->whereYear('created_at',  $passedParams['year']);
+                    }
+
+                    if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                        $dates = explode ("-", $passedParams['dates']);
+
+                        $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                        $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                        $query->whereDate('created_at', '>=', $start_date);
+                        $query->whereDate('created_at', '<=', $end_date);
+                    }
+
+                }]);
+
+            }else{
+
+                $user->withCount('getTotalQuote');
+                $user->withCount('getQuote');
+                $user->withCount('getCancelledQuote');
+                $user->withCount('getTotalBooking');
+                $user->withCount('getConfirmedBooking');
+                $user->withCount('getCancelledBooking');
+            }
+
+            $data['users'] = $user->orderBy('id', 'ASC')->get();   
+            $reportName = "Activity By User Report Excel";
+
+            return Excel::download(new ActivityByUserReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return ['resp' => false, 'msg' => $e->getMessage()];
+        }
     }
 
 }
