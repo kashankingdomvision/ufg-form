@@ -720,8 +720,8 @@ class ReportController extends Controller
 
             return Excel::download(new CustomerReportExport($data), "$reportName.xlsx");
 
-        } catch (\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
         
     }
@@ -786,8 +786,8 @@ class ReportController extends Controller
             
             return Excel::download(new UserReportExport($data), "$reportName.xlsx");
 
-        } catch (\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -956,7 +956,7 @@ class ReportController extends Controller
             return Excel::download(new ActivityByUserReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1007,7 +1007,7 @@ class ReportController extends Controller
             return Excel::download(new SupplierReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1032,7 +1032,7 @@ class ReportController extends Controller
             return Excel::download(new QuoteReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1103,7 +1103,7 @@ class ReportController extends Controller
             return $quote;
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1162,7 +1162,7 @@ class ReportController extends Controller
             return Excel::download(new TransferReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1203,7 +1203,7 @@ class ReportController extends Controller
             return Excel::download(new PaymentMethodReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1246,7 +1246,7 @@ class ReportController extends Controller
             return Excel::download(new RefundByBankReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1279,7 +1279,6 @@ class ReportController extends Controller
                 if($passedParams['year'] && !empty($passedParams['year'])){
                     $query->whereYear('credit_note_recieved_date', $passedParams['year']);
                 }
-
             }
 
             $data['users']                   = User::all();
@@ -1289,7 +1288,7 @@ class ReportController extends Controller
             return Excel::download(new RefundByCreditNoteReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1336,7 +1335,7 @@ class ReportController extends Controller
             return Excel::download(new WalletReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1384,7 +1383,7 @@ class ReportController extends Controller
             return Excel::download(new CommissionReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 }
