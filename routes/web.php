@@ -227,6 +227,12 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
 
         Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
+
+        // reports-export-routes
+        Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
+        Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));
+        Route::post('activity-by-user-report-export', array('as' => 'activity.by.user.report.export', 'uses' => 'ReportController@activity_by_user_report_excel'));
+        Route::post('supplier-report-export', array('as' => 'supplier.report.export', 'uses' => 'ReportController@supplier_report_export'));
     });
 
 
