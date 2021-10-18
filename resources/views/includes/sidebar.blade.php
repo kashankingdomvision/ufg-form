@@ -543,7 +543,12 @@
                 </li>
                 @endif
 
-
+                <li class="nav-item">
+                    <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>Supplier Bulk Payments Report</p>
+                    </a>
+                </li>
 
                 <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' || $route == 'reports.commission.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">

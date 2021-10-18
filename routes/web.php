@@ -163,6 +163,12 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
+    /* Commsisions */
+    Route::resource('supplier-bulk-payments', 'SupplierBulkPaymentController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+
     /*
     |--------------------------------------------------------------------------
     | Commission Manangement
