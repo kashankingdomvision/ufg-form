@@ -228,6 +228,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
 
+        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
+
         // reports-export-routes
         Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
         Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));

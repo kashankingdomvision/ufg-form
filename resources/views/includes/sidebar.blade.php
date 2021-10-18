@@ -545,7 +545,7 @@
 
 
 
-                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' || $route == 'reports.commission.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
@@ -554,6 +554,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if(Auth::user()->hasAdmin())
+                            <li class="nav-item">
+                                <a href="{{ route('reports.commission.report') }}" class="nav-link {{  $route == 'reports.commission.report' ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>Commision Report</p>
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="nav-item">
                             <a href="{{ route('reports.transfer.report') }}" class="nav-link {{  $route == 'reports.transfer.report' ? 'active' : '' }}">

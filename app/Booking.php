@@ -124,6 +124,14 @@ class Booking extends Model
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
 
+    function getCommission() {
+        return $this->hasOne(Commission::class, 'id', 'commission_id');
+    }
+
+    function getCommissionGroup() {
+        return $this->hasOne(CommissionGroup::class, 'id', 'commission_group_id');
+    }
+
     function getTotalRefundAmount() {
         return $this->hasOne(BookingCancellation::class, 'booking_id', 'id');
     }
@@ -188,6 +196,11 @@ class Booking extends Model
     public function getSalePerson()
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function getLeadPassengerNationality()
