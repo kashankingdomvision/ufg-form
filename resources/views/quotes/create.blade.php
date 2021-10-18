@@ -736,8 +736,8 @@
                           </div>
 
                           <div class="col-sm-2">
+                            <label>Add Stored Text</label>
                             <div class="form-group">
-                              <label>Add Stored Text</label>
                               <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
                               <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 @include('partials.stored_text_modal')
