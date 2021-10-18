@@ -11,10 +11,10 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
 window.axios = require('axios');
 
@@ -1943,6 +1943,8 @@ $(document).ready(function($) {
                         $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
                         $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
                         $('.quote:last input, .quote:last select').removeClass('is-invalid');
+                        $('.quote:last .added-in-sage').removeAttr('checked');
+                  
                        
                         $('.quote:last .booking-detail-cancellation').remove();
                         $('.quote:last .revert-booking-detail-cancellation').remove();

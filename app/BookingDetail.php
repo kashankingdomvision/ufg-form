@@ -110,11 +110,15 @@ class BookingDetail extends Model
     }
     
     public function getBookingDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
+        if(!is_null($value)){
+            return (new Carbon($value))->format('d/m/Y');
+        }
     }
     
     public function getBookingDueDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
+        if(!is_null($value)){
+            return (new Carbon($value))->format('d/m/Y');
+        }
     }
     
     public function setDateOfServiceAttribute( $value ) {
