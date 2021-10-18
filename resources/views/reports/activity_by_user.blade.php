@@ -123,7 +123,7 @@
         </section>
 
         <section class="content p-2">
-            <div class="container-fluid d-flex justify-content-end">
+            <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12">
                     <form method="POST" action="{{ route('reports.activity.by.user.report.export') }}">

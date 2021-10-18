@@ -12,6 +12,12 @@ use App\Exports\CustomerReportExport;
 use App\Exports\UserReportExport;
 use App\Exports\ActivityByUserReportExport;
 use App\Exports\SupplierReportExport;
+use App\Exports\QuoteReportExport;
+use App\Exports\TransferReportExport;
+use App\Exports\PaymentMethodReportExport;
+use App\Exports\RefundByBankReportExport;
+use App\Exports\RefundByCreditNoteReportExport;
+use App\Exports\WalletReportExport;
 
 use App\Http\Helper;
 use App\Booking;
@@ -1004,4 +1010,332 @@ class ReportController extends Controller
         }
     }
 
+    public function quote_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, TRUE);
+
+            $data['brands']           = Brand::orderBy('id', 'ASC')->get();
+            $data['users']            = User::orderBy('name', 'ASC')->get();
+            $data['booking_seasons']  = Season::all();
+            $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+            $data['commission_types'] = Commission::all();
+
+            $quote = Quote::orderBy('created_at','DESC');
+            if (!empty($passedParams)) {
+                $quote = $this->searchFiltersForExport($quote, $request, $passedParams);
+            }
+
+            $data['quotes'] = $quote->get();
+            $reportName = 'Quote Report Excel';
+
+            return Excel::download(new QuoteReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return ['status' => false, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function searchFiltersForExport($quote, $request, $passedParams)
+    {
+        try {
+            if($passedParams['client_type'] && !empty($passedParams['client_type'])){
+                $client_type = ($passedParams['client_type'] == 'client')? '0' : '1';
+                $quote->where('agency', 'like', '%'.$client_type.'%' );
+            }
+    
+            if($passedParams['staff'] && !empty($passedParams['staff'])){
+                $quote->whereHas('getSalePerson', function($query) use($request, $passedParams){
+                    $query->where('name', 'like', '%'.$passedParams['staff'].'%' );
+                });
+            }
+    
+            if($passedParams['status'] && !empty($passedParams['status'])){
+                $quote->where('booking_status', 'like', '%'.$passedParams['status'].'%' );
+            }
+    
+            if($passedParams['booking_currency'] && !empty($passedParams['booking_currency'])){
+                $quote->whereIn('currency_id', $passedParams['booking_currency']);
+            }
+    
+            if($passedParams['booking_season'] && !empty($passedParams['booking_season'])){
+                $quote->whereHas('getSeason', function($query) use($request, $passedParams){
+                   $query->where('name', 'like', '%'. $passedParams['booking_season'] .'%' );
+                });
+            }
+    
+            if($passedParams['brand'] && !empty($passedParams['brand'])){
+                $quote->whereIn('brand_id', $passedParams['brand']);
+            }
+    
+            if($passedParams['commission_type'] && !empty($passedParams['commission_type'])){
+                $quote->where('commission_id', $passedParams['commission_type']);
+            }
+    
+            if($request->has('search') && !empty($request->search)){
+                $quote->where(function($query) use($request){
+                    $query->where('ref_no', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                    ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
+                    ->orWhere('quote_ref', 'like', '%'.$request->search.'%');
+                });
+            }
+    
+            if($passedParams['dates'] && !empty($passedParams['dates'])){
+    
+                $dates = explode ("-", $passedParams['dates']);
+    
+                $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+    
+                $quote->whereDate('created_at', '>=', $start_date);
+                $quote->whereDate('created_at', '<=', $end_date);
+            }
+    
+            if($passedParams['month'] && !empty($passedParams['month'])){
+                $quote->whereMonth('created_at', $passedParams['month']);
+            }
+    
+            if($passedParams['year'] && !empty($passedParams['year'])){
+                $quote->whereYear('created_at', $passedParams['year']);
+            }
+            
+            return $quote;
+
+        } catch(\Exception $e) {
+            return ['status' => false, 'msg' => $e->getMessage()];
+        }
+    }
+
+    public function transfer_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, TRUE);
+            
+            $query = BookingDetail::where('category_id',1);
+            $query->whereHas('getBooking', function($query) use($request){
+                $query->where('booking_status','confirmed' );
+            });
+
+            if (!empty($passedParams)) {
+
+                if($passedParams['quote_ref'] && !empty($passedParams['quote_ref'])){
+                    $query->whereIn('booking_id', $passedParams['quote_ref']);
+                }
+
+                if($passedParams['booking_season'] && !empty($passedParams['booking_season'])){
+                    $query->whereHas('getBooking', function($query) use($request, $passedParams){
+                        $query->where('season_id', $passedParams['booking_season'] );
+                    });
+                }
+
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $query->whereDate('date_of_service', '>=', $start_date);
+                    $query->whereDate('end_date_of_service', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $query->whereMonth('created_at', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $query->whereYear('created_at', $passedParams['year']);
+                }
+
+                if($passedParams['status'] && !empty($passedParams['status'])){
+                    $query->where('status', $passedParams['status']);
+                }
+            }
+
+            $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
+            $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+            $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
+            $data['brands']          = Brand::all();
+            $data['booking_seasons'] = Season::all();
+            $reportName = 'Transfer Report Excel';
+
+            return Excel::download(new TransferReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return [ 'status' => false, 'msg' => $e->getMessage() ];
+        }
+    }
+
+    public function payment_method_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, TRUE);
+            $booking_finance_details = BookingDetailFinance::orderBy('id', 'ASC');
+            
+            if (!empty($passedParams)) {
+                
+                if($passedParams['payment_method'] && !empty($passedParams['payment_method'])){
+                    $booking_finance_details = $booking_finance_details->where('payment_method_id', $passedParams['payment_method']);
+                }
+
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $booking_finance_details->whereDate('paid_date', '>=', $start_date);
+                    $booking_finance_details->whereDate('paid_date', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $booking_finance_details = $booking_finance_details->whereMonth('paid_date', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $booking_finance_details = $booking_finance_details->whereYear('paid_date', $passedParams['year']);
+                }
+            }
+            $data['payment_methods']         = PaymentMethod::all();
+            $data['booking_finance_details'] = $booking_finance_details->get();
+            $reportName = 'Payment Method Report Excel';
+
+            return Excel::download(new PaymentMethodReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return [ 'status' => false, 'msg' => $e->getMessage() ];
+        }
+    }
+
+    public function refund_by_bank_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, true);
+            $query = BookingRefundPayment::orderBy('id', 'ASC');
+
+            if (!empty($passedParams)) {
+    
+                if($passedParams['bank'] && !empty($passedParams['bank'])){
+                    $query->where('bank_id', $passedParams['bank']);
+                }
+    
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+    
+                    $dates = explode ("-", $passedParams['dates']);
+    
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+    
+                    $query->whereDate('refund_date', '>=', $start_date);
+                    $query->whereDate('refund_date', '<=', $end_date);
+                }
+    
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $query->whereMonth('refund_date', $passedParams['month']);
+                }
+    
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $query->whereYear('refund_date', $passedParams['year']);
+                }
+            }
+    
+            $data['banks']                   = Bank::all();
+            $data['users']                   = User::all();
+            $data['booking_refund_payments'] = $query->get();
+            $reportName = 'Refund By Bank Report Excel';
+
+            return Excel::download(new RefundByBankReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return [ 'status' => false, 'msg' => $e->getMessage() ];
+        }
+    }
+
+    public function refund_by_credit_note_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, true);
+            $query = BookingCreditNote::orderBy('id', 'ASC');
+
+            if (!empty($passedParams)) {
+
+                if($passedParams['credit_note_recieved_by'] && !empty($passedParams['credit_note_recieved_by'])){
+                    $query->where('user_id', $passedParams['credit_note_recieved_by']);
+                }
+
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $query->whereDate('credit_note_recieved_date', '>=', $start_date);
+                    $query->whereDate('credit_note_recieved_date', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $query->whereMonth('credit_note_recieved_date', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $query->whereYear('credit_note_recieved_date', $passedParams['year']);
+                }
+
+            }
+
+            $data['users']                   = User::all();
+            $data['booking_credit_notes']    = $query->get();
+            $reportName = 'Refund By Credit Note Report Excel';
+
+            return Excel::download(new RefundByCreditNoteReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return [ 'status' => false, 'msg' => $e->getMessage() ];
+        }
+    }
+
+    public function wallet_report_export(Request $request) {
+        try {
+            $passedParams = json_decode($request->params, true);
+            $data['suppliers'] = Supplier::orderBy('name', 'ASC')->get();
+            $wallet = Wallet::with('getSupplier','getBooking')->orderBy('id', 'ASC');
+
+            if (!empty($passedParams)) {
+
+                if ($passedParams['supplier'] && !empty($passedParams['supplier'])) {
+                    $wallet = $wallet->whereHas('getSupplier', function ($q) use ($passedParams) {
+                        $q->where('id', $passedParams['supplier']);
+                    });
+                }
+
+                if($passedParams['type'] && !empty($passedParams['type'])){
+                    $wallet = $wallet->where('type', $passedParams['type']);
+                }
+
+                if($passedParams['dates'] && !empty($passedParams['dates'])){
+
+                    $dates = explode ("-", $passedParams['dates']);
+
+                    $start_date = Carbon::createFromFormat('d/m/Y', trim($dates[0]))->format('Y-m-d');
+                    $end_date   = Carbon::createFromFormat('d/m/Y', trim($dates[1]))->format('Y-m-d');
+
+                    $wallet->whereDate('created_at', '>=', $start_date);
+                    $wallet->whereDate('created_at', '<=', $end_date);
+                }
+
+                if($passedParams['month'] && !empty($passedParams['month'])){
+                    $wallet = $wallet->whereMonth('created_at', $passedParams['month']);
+                }
+
+                if($passedParams['year'] && !empty($passedParams['year'])){
+                    $wallet = $wallet->whereYear('created_at', $passedParams['year']);
+                }
+            }
+            $data['wallets'] = $wallet->get();
+            $reportName = 'Wallet Report Excel';
+
+            return Excel::download(new WalletReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return [ 'status' => false, 'msg' => $e->getMessage() ];
+        }
+    }
 }
