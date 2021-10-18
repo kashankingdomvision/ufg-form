@@ -247,6 +247,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('refund-by-bank-report-export', array('as' => 'refund.by.bank.report.export', 'uses' => 'ReportController@refund_by_bank_report_export'));
         Route::post('refund-by-credit-note-report-export', array('as' => 'refund.by.credit_note.report.export', 'uses' => 'ReportController@refund_by_credit_note_report_export'));
         Route::post('wallet-report-export', array('as' => 'wallet.report.export', 'uses' => 'ReportController@wallet_report_export'));
+        Route::post('commission-report-export', array('as' => 'commission.report.export', 'uses' => 'ReportController@commission_report_export'));
     });
 
 

@@ -9,6 +9,7 @@ use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Exports\CustomerReportExport;
+use App\Exports\CommissionReportExport;
 use App\Exports\UserReportExport;
 use App\Exports\ActivityByUserReportExport;
 use App\Exports\SupplierReportExport;
@@ -719,8 +720,8 @@ class ReportController extends Controller
 
             return Excel::download(new CustomerReportExport($data), "$reportName.xlsx");
 
-        } catch (\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
         
     }
@@ -785,8 +786,8 @@ class ReportController extends Controller
             
             return Excel::download(new UserReportExport($data), "$reportName.xlsx");
 
-        } catch (\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -955,7 +956,7 @@ class ReportController extends Controller
             return Excel::download(new ActivityByUserReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['resp' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1006,7 +1007,7 @@ class ReportController extends Controller
             return Excel::download(new SupplierReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1031,7 +1032,7 @@ class ReportController extends Controller
             return Excel::download(new QuoteReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1102,7 +1103,7 @@ class ReportController extends Controller
             return $quote;
 
         } catch(\Exception $e) {
-            return ['status' => false, 'msg' => $e->getMessage()];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1161,7 +1162,7 @@ class ReportController extends Controller
             return Excel::download(new TransferReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1202,7 +1203,7 @@ class ReportController extends Controller
             return Excel::download(new PaymentMethodReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1245,7 +1246,7 @@ class ReportController extends Controller
             return Excel::download(new RefundByBankReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1278,7 +1279,6 @@ class ReportController extends Controller
                 if($passedParams['year'] && !empty($passedParams['year'])){
                     $query->whereYear('credit_note_recieved_date', $passedParams['year']);
                 }
-
             }
 
             $data['users']                   = User::all();
@@ -1288,7 +1288,7 @@ class ReportController extends Controller
             return Excel::download(new RefundByCreditNoteReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 
@@ -1335,7 +1335,55 @@ class ReportController extends Controller
             return Excel::download(new WalletReportExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
-            return [ 'status' => false, 'msg' => $e->getMessage() ];
+            return redirect()->back()->with('error_message', $e->getMessage());
+        }
+    }
+
+    public function commission_report_export(Request $request) {
+        try {
+            $query = Booking::where('booking_status','confirmed')->orderBy('id','ASC');
+            
+            $passedParams = json_decode($request->params, TRUE);
+            if (!empty($passedParams)){
+
+                if($passedParams['booking_currency'] && !empty($passedParams['booking_currency'])){
+                    $query->whereIn('currency_id', $passedParams['booking_currency']);
+                }
+
+                if($passedParams['sale_person_id'] && !empty($passedParams['sale_person_id'])){
+                    $query->where('sale_person_id', $passedParams['sale_person_id']);
+                }
+
+                if($passedParams['commission_id'] && !empty($passedParams['commission_id'])){
+                    $query->where('commission_id', $passedParams['commission_id']);
+                }
+
+                if($passedParams['commission_group_id'] && !empty($passedParams['commission_group_id'])){
+                    $query->where('commission_group_id', $passedParams['commission_group_id']);
+                }
+
+                if($passedParams['brand_id'] && !empty($passedParams['brand_id'])){
+                    $query->where('brand_id', $passedParams['brand_id']);
+                }
+
+                if($passedParams['season_id'] && !empty($passedParams['season_id'])){
+                    $query->where('season_id', $passedParams['season_id']);
+                }
+            }
+
+            $data['commissions']       = Commission::all();
+            $data['commission_groups'] = CommissionGroup::all();
+            $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['bookings']          = $query->get();
+            $data['users']             = User::get();
+            $data['brands']            = Brand::orderBy('id','ASC')->get();
+            $data['booking_seasons']   = Season::all();
+            $reportName = 'Commission Report Excel';
+
+            return Excel::download(new CommissionReportExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
         }
     }
 }
