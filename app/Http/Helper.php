@@ -23,6 +23,11 @@ class Helper
 		return str_replace( ',', '', number_format($number,2));
     }
 
+	public static function issetAndNotEmpty($variable){
+		$test = isset($variable) && !empty($variable) ? $variable : '';
+        return $test;
+    }
+
 	public static function document_date_format($date){
 
 		$date = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $date))->format('Y-m-d')));
