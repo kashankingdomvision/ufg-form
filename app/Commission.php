@@ -16,8 +16,4 @@ class Commission extends Model
         'season_id',
     ];
 
-    public function seasons()
-    {
-        return $this->belongsToMany(Season::class, 'commission_seasons', 'commission_id', 'season_id')->withTimestamps();
-    }
 }
