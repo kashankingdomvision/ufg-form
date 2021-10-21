@@ -3219,7 +3219,7 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
                             alert(data.success_message);
-                            window.location.href = REDIRECT_BASEURL + "bookings/index";
+                            // window.location.href = REDIRECT_BASEURL + "bookings/index";
                             // location.reload();
 
                         }, 200);
@@ -3538,6 +3538,243 @@ $(document).ready(function($) {
                     $(".child").prop('checked', false);
                 }
             });
+
+            $('.sbp-parent').on('click', function(e) {
+
+                var totalWalletAmount       = parseFloat($('.debit').val()).toFixed(2);
+                var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+                var checkedValuesTotal      = parseFloat(getCheckedValues());
+                var result = 0;
+
+                if ($(this).is(':checked', true)) {
+
+                    $(".credit").prop('checked', false);
+                    $(".debit").prop('checked', false);
+
+                    $('.credit').trigger('click');
+
+
+                    console.log(debitCheckedValuesTotal);
+                    console.log(checkedValuesTotal);
+
+                    // if(debitCheckedValuesTotal > checkedValuesTotal){
+                    //     result = debitCheckedValuesTotal - checkedValuesTotal;
+                    //     $('.amount-paid').val(checkedValuesTotal);
+                    //     $('.remaining-credit-amount').html(result);
+
+                    // }else{
+                    //     result = checkedValuesTotal - debitCheckedValuesTotal;
+                    //     $('.amount-paid').val(parseFloat(result).toFixed(2));
+                    //     $('.remaining-credit-amount').html('0.00');
+                    // }
+                  
+
+                } else {
+           
+                    $('.credit, .debit').trigger('click');
+                    $('.amount-paid').val(parseFloat(0).toFixed(2));
+            
+                }
+            });
+
+            $('.credit').change(function(){
+
+                var dataID                = $(this).attr('data-id');
+                var currencyCode          = $(this).attr('data-currencyCode');
+                var value                 = parseFloat($(this).val()).toFixed(2);
+
+                if($(this).is(':checked')){
+
+                    $(`.sbp-paid-amount-${dataID}`).val(`${value}`);
+                    getTotalPaidAmount();
+    
+                }
+                else {
+                
+                    $(`.sbp-paid-amount-${dataID}`).val((parseFloat(0).toFixed(2)));
+                    $('.amount-paid').val((parseFloat(getCheckedValues()).toFixed(2)));
+                }
+
+            });
+
+            $(document).on("keyup change", '.sbp-paid-amount', function(event) {
+
+                var value                 = parseFloat($(this).val());
+                var outstandingAmountLeft = $(this).attr('data-value');
+
+                if(value > outstandingAmountLeft){
+                    alert("Please Enter Correct Amount");
+                    $(this).val('0.00');
+                }
+                getTotalPaidAmount();
+            });
+
+            function getTotalPaidAmount(){
+
+                var result                = 0;
+                var paidAmountValues      = parseFloat(getPaidAmountValues());
+                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+                result = paidAmountValues - totalCreditNoteValues;
+                $('.amount-paid').val(result.toFixed(2));
+            }
+
+            function getRemainingCreditNoteAmount(){
+
+                var result  = 0;
+                var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
+                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+                result = totalWalletAmount - totalCreditNoteValues;
+                $('.remaining-credit-amount').html(result.toFixed(2));
+            }
+
+            $(document).on("keyup change", '.sbp-credit-note-amount', function(event) {
+
+                var value                 = parseFloat($(this).val());
+                var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
+                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+                var dataID                = $(this).attr('data-id');
+                var rowPaidValues         = parseFloat($(`.sbp-paid-amount-${dataID}`).val());
+
+                if(totalCreditNoteValues > totalWalletAmount || value > rowPaidValues){
+                    alert("Please Enter Correct Amount");
+                    $(this).val('0.00');
+                }else{
+                    getTotalPaidAmount();
+                    getRemainingCreditNoteAmount();
+                }
+                        
+            });
+
+            // $('.sbp-child').change(function(){
+
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+            //     var outstandingAmountLeft = $(this).attr('data-outstandingAmountLeft');
+            //     var dataID                = $(this).attr('data-id');
+            //     var type                = $(this).attr('data-type');
+
+            //     var totalPaidAmount = 0;
+
+            //     if($(this).is(':checked')){
+            //         $(`#${dataID}`).html(`${currencyCode} ${outstandingAmountLeft}`);
+
+
+
+            
+            //     }
+            //     else {
+
+            //         $(`#${dataID}`).html('');
+
+            //     }
+
+            // });
+
+            function getCheckedValues(){
+                var checkedValuesArray = $('.credit:checked').map((i, e) => parseFloat(e.value)).get();
+                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+                return parseFloat(checkedValuesTotal).toFixed(2);
+            }
+
+            function getPaidAmountValues(){
+                var checkedValuesArray = $('.sbp-paid-amount').map((i, e) => parseFloat(e.value)).get();
+                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+                return parseFloat(checkedValuesTotal).toFixed(2);
+            }
+
+
+            function getCreditNoteValues(){
+                var checkedValuesArray = $('.sbp-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+                return parseFloat(checkedValuesTotal).toFixed(2);
+            }
+
+            // $('.credit').change(function(){
+
+            //     var result = 0;
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+            //     var dataID                = $(this).attr('data-id');
+            //     var value                 = parseFloat($(this).val()).toFixed(2);
+
+            //     var checkDebit              = $('.debit').is(':checked');
+            //     var checkedValuesTotal      = parseFloat(getCheckedValues()).toFixed(2);
+            //     var totalWalletAmount       = parseFloat($('.debit').val()).toFixed(2);
+            //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+
+            //     if($(this).is(':checked')){
+
+            //         $(`.${dataID}`).html(`${currencyCode} ${value}`);
+
+            //         if(checkDebit){
+
+            //             if(debitCheckedValuesTotal > checkedValuesTotal){
+            //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+            //                 $('.amount-paid').val(checkedValuesTotal);
+            //                 $('.remaining-credit-amount').html(result);
+
+            //             }else{
+            //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+            //                 $('.amount-paid').val(parseFloat(result).toFixed(2));
+            //                 $('.remaining-credit-amount').html('0.00');
+            //             }
+            //         }else{
+            //             $('.amount-paid').val(checkedValuesTotal);
+            //         }
+                    
+            //     }
+            //     else {
+            //         $(`.${dataID}`).html(currencyCode + " " +parseFloat(0).toFixed(2));
+
+            //         if(checkDebit){
+
+            //             if(debitCheckedValuesTotal > checkedValuesTotal){
+            //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+
+            //                 $('.amount-paid').val(checkedValuesTotal);
+            //                 $('.remaining-credit-amount').html(result);
+
+            //             }else{
+            //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+            //                 $('.amount-paid').val(parseFloat(result).toFixed(2));
+            //                 $('.remaining-credit-amount').html('0.00');
+            //             }
+            //         }else{
+            //             $('.amount-paid').val(checkedValuesTotal);
+            //         }
+
+            //     }
+            // });
+
+            // $('.debit').change(function(){
+
+            //     var totalWalletAmount = parseFloat($(this).val()).toFixed(2);
+            //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+            //     var result = 0;
+            //     var checkedValuesTotal = parseFloat(getCheckedValues());
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+
+            //     if($(this).is(':checked')){
+
+            //         if(debitCheckedValuesTotal > checkedValuesTotal){
+
+            //             result = debitCheckedValuesTotal - checkedValuesTotal;
+            //             $('.remaining-credit-amount').html(result.toFixed(2));
+            //         }
+                    
+            //         else{
+            //             result = checkedValuesTotal - debitCheckedValuesTotal;
+            //             $('.amount-paid').val(parseFloat(result).toFixed(2));
+            //             $('.remaining-credit-amount').html('0.00');
+            //         }
+
+            //     }
+            //     else {
+
+            //         $(`.remaining-credit-amount`).html(totalWalletAmount);
+            //         $('.amount-paid').val(getCheckedValues());
+            //     }
+            // });
 
             $('#delete_all').on('click', function(e) {
                 e.preventDefault();

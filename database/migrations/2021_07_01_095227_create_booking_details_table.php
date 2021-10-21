@@ -45,10 +45,8 @@ class CreateBookingDetailsTable extends Migration
             $table->enum('added_in_sage', [0, 1])->default(0);
             $table->string('invoice')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
+            $table->enum('payment_status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
-            
-
-           
         });
     }
 

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Helper;
 
 use App\Airline;
@@ -47,6 +48,7 @@ use App\ServiceExcursionDetail;
 use App\TransferDetail;
 use App\User;
 use App\Wallet;
+use App\TotalWallet;
 
 use App\ReferenceCredential;
 
@@ -324,6 +326,26 @@ class BookingController extends Controller
 
     public function edit($id)
     {
+        // $a = TotalWallet::all();
+
+        // dd($a);
+
+    
+
+
+        // $booking_transactions = Wallet::select(
+        //     'supplier_id',
+        //     DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
+        //     DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
+        // )
+        // ->groupBy('supplier_id')
+		// ->where('supplier_id', 1)
+        // ->first();
+
+        // dd($booking_transactions->credit - $booking_transactions->debit);
+
+
+
         $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['booking']          = $booking;
@@ -438,6 +460,7 @@ class BookingController extends Controller
                             BookingDetailFinance::create($fin);
 
                             if($fin['payment_method_id'] == 3){
+
                                 Wallet::create([
                                     'booking_id'        => $booking->id,
                                     'booking_detail_id' => $booking_Details->id,
@@ -445,6 +468,11 @@ class BookingController extends Controller
                                     'amount'            => $fin['deposit_amount'],
                                     'type'              => 'debit'
                                 ]);
+
+                                TotalWallet::where('supplier_id',$booking_Details->supplier_id)->update([
+                                    'amount' => Helper::getSupplierWalletAmount($booking_Details->supplier_id)
+                                ]);
+
                             }
                         }
                     }
@@ -461,6 +489,7 @@ class BookingController extends Controller
 
                             BookingRefundPayment::create($refund);
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                            BookingDetail::where('id',$booking_Details->id)->update([ 'payment_status' => 'cancelled', 'outstanding_amount_left' => '0.00' ]);
                         }
                     }
                 }
@@ -487,7 +516,25 @@ class BookingController extends Controller
                                 'type'              => 'credit'
                             ]);
 
+                            $total_wallet = TotalWallet::where('supplier_id', $booking_Details->supplier_id);
+                            if(!$total_wallet->exists()){
+
+                                TotalWallet::create([
+                                    'supplier_id'     => $booking_Details->supplier_id,
+                                    'amount'          => $credit_note['credit_note_amount'],
+                                ]);
+
+                            }else {
+
+                                TotalWallet::where('id',$booking_Details->supplier_id)->update([
+                                    'amount' => Helper::getSupplierWalletAmount($booking_Details->supplier_id)
+                                ]);
+                            }
+
+ 
+
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                            BookingDetail::where('id',$booking_Details->id)->update([ 'payment_status' => 'cancelled', 'outstanding_amount_left' => '0.00' ]);
                         }
                     }
                 }

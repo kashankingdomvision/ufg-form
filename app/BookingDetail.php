@@ -39,7 +39,8 @@ class BookingDetail extends Model
         'added_in_sage', 
         'invoice',
         'outstanding_amount_left',
-        'status'
+        'status',
+        'payment_status'
     ];
 
     public function getCategory()
