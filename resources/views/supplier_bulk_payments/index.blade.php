@@ -67,10 +67,10 @@
                                 <div class="col-md-4">
                                   <div class="form-group">
                                     <label>Booking Season</label>
-                                    <select class="form-control select2single" name="season_id">
+                                    <select class="form-control select2single" name="season_id" required>
                                         <option value="">Select Season </option>
                                         @foreach ($booking_seasons as $booking_season)
-                                          <option value="{{ $booking_season->id }}" {{ request()->get('season_id') == $booking_season->id ? 'selected' : ''   }}>{{ $booking_season->name }}</option>
+                                          <option value="{{ $booking_season->id }}" {{ (request()->get('season_id') == $booking_season->id || $booking_season->default == 1  ) ? 'selected' : '' }}>{{ $booking_season->name }}</option>
                                         @endforeach
                                     </select>
                                   </div>
@@ -93,23 +93,8 @@
         </div>
     </form>
 </section>
-    
-  
-{{-- <x-page-filters :route="route('supplier-rate-sheet.index')"></x-page-filters> --}}
 
-  {{-- <section class="content p-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <a href="" id="delete_all" class="btn btn-danger btn-sm ">
-            <span class="fa fa-trash"></span> &nbsp;
-            <span>Delete Selected Record</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section> --}}
-
+<form action="{{ route('supplier-bulk-payments.store') }}" id="bulk_payment">
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -120,15 +105,30 @@
                 Supplier Bulk Payment List
               </h3>
             </div>
-            <div class="row">
-              <div class="col-md-12 mt-1 d-flex justify-content-end">
+            <div class="row {{ isset($supplier_id) && !empty($supplier_id) ? '' : 'd-none' }}">
+
+              <div class="col-md-10 mt-1 d-flex justify-content-end">
+                <div class="form-group" style="max-width: 15rem;">
+                  <label>Payment Method</label>
+                  <select  name="payment_method_id" class="form-control payment-method-id select2single">
+                    <option value="">Select Payment Method</option>
+                    @foreach ($payment_methods as $payment_method)
+                      <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2 mt-1 d-flex justify-content-end">
                 <div class="form-group form-inline">
-                  <label for="inputPassword6">Amount Paid: </label>
-                  <div class="input-group  mx-sm-3">
+                  <label for="inputPassword6">Total Paid Amount: </label>
+                  <div class="input-group mx-sm-3">
                     <div class="input-group-prepend">
-                      <span class="input-group-text sbp-payment">USD</span>
+                      <span class="input-group-text sbp-payment">
+                        {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
+                      </span>
                     </div>
-                    <input type="number" step="any" name="amount_paid" class="form-control amount-paid hide-arrows" min="0.00" step="any" >
+                    <input type="number" step="any" name="total_paid_amount" class="form-control total-paid-amount hide-arrows" min="0.00" step="any" >
                   </div>
                 </div>
               </div>
@@ -150,79 +150,111 @@
                       <th>Outstanding Amount Left</th>
                       <th>Paid Amount</th>
                       <th >Credit Note Amount</th>
+                      <th>Total Paid Amount</th>
                     </tr>
                   </thead>
                   <tbody>
 
-                  @foreach ($bookings as $key  => $booking )
+                  
 
-                    <tr>
-                      <td>
-                        <div class="icheck-primary">
-                          <input type="checkbox" class="sbp-child credit" value="{{$booking->outstanding_amount_left}}" id="{{$booking->id}}" data-id="{{$booking->id}}" data-currencyCode="{{ $booking->getCurrency->code }}" data-currencyID="{{ $booking->getCurrency->code }}" >
-                        </div>
-                      </td>
+                    @if($bookings && $bookings->count())
 
-                      <td> {{ $booking->ref_no }} </td>
-                      <td> {{ $booking->quote_ref }} </td>
-                      <td> {{ $booking->getCurrency->code }} {{ $booking->actual_cost_bc }} </td>
-                      <td> {{ $booking->getCurrency->code }} {{$booking->outstanding_amount_left}} </td>
-                
-                      <td class="{{$booking->id}}">
-                         {{-- {{ $booking->getCurrency->code }}  --}}
-                        <input type="text" data-id="{{$booking->id}}" data-value="{{$booking->outstanding_amount_left}}" class="form-control  sbp-paid-amount sbp-paid-amount-{{$booking->id}} remove-zero-values hide-arrows" name="" id="" value="0.00" style="max-width: 100px;">
-                        {{-- {{\Helper::number_format(0)}} --}}
-                       </td>
+                      @foreach ($bookings as $key => $booking )
 
-                      <td>
-                        <input type="text" data-id="{{$booking->id}}"  class="form-control sbp-credit-note-amount sbp-credit-note-amount-{{$booking->id}} remove-zero-values hide-arrows" name="" id="" value="0.00" style="max-width: 100px;">
-                      </td>
-                    </tr>
+                        <tr class="credit-row">
+                          <td>
+                            <div class="icheck-primary">
+                              <input type="checkbox" class="sbp-child credit" value="{{$booking->outstanding_amount_left}}" id="{{$booking->id}}" data-id="{{$booking->id}}" data-currencyCode="{{ $booking->getCurrency->code }}" data-currencyID="{{ $booking->getCurrency->code }}" >
+                            </div>
+                          </td>
 
-                    {{-- @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
-                      <tr>
-                        <td></td>
-                        <td> {{ $booking->ref_no }} </td>
-                        <td> {{ $booking->quote_ref }} </td>
-                        <td> {{ $booking_detail->actual_cost_bc }} </td>
-                        <td> {{ $booking_detail->outstanding_amount_left }} </td>
+                          <td> {{ $booking->ref_no }} </td>
+                          <td> {{ $booking->quote_ref }} </td>
+                          <td> {{ $booking->getCurrency->code }} {{ $booking->actual_cost_bc }} </td>
+                          <td> {{ $booking->getCurrency->code }} {{$booking->outstanding_amount_left}} </td>
+
+                          <td class="d-none">
+
+                            <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->id }}" >
+                            <input type="hidden" name="finance[{{$key}}][booking_detail_outstanding_amount_left]" value="{{ $booking->outstanding_amount_left }}" >
+
+                          </td>
+                    
+                          <td class="{{$booking->id}}">
+                            <div class="input-group mx-sm-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text sbp-payment">
+                                  {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
+                                </span>
+                              </div>
+                              <input type="text" name="finance[{{$key}}][deposit][deposit_amount]" class="form-control row-paid-amount sbp-paid-amount-{{$booking->id}} remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
+                            </div>
+                          </td>
+
+                          <td>
+                            <div class="input-group mx-sm-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text sbp-payment">
+                                  {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
+                                </span>
+                              </div>
+                              <input type="text" name="finance[{{$key}}][credit][credit_note]" class="form-control row-credit-note-amount remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
+                            </div>
+                          </td>
+
+                          <td>
+                            <div class="input-group mx-sm-3">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text sbp-payment">
+                                  {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
+                                </span>
+                              </div>
+                              <input type="text" name="finance[{{$key}}][total_deposit_amount]" class="form-control row-total-paid-amount remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
+                            </div>
+                          </td>
+
+                        </tr>
+
+                      @endforeach
+                    @else
+                      <tr align="center"><td colspan="100%">No record found.</td></tr>
+                    @endif
+
+                    @if($bookings && $bookings->count())
+      
+                      <tr class="border-top border-bottom">
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th>Current Credit Amount</th>
+                        <th>Remaining Credit Amount</th>
                       </tr>
-                    @endforeach --}}
+                      <tr class="border-bottom">
+                        <td colspan="6">
+                          <div class="icheck-primary">
+                            <input type="hidden" class="total-credit-amount" data-type="debit" name="total_credit_amount" value="{{$total_wallet->amount}}">
+                            <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{$total_wallet->amount}}">
+                            <input type="hidden" name="currency_id" value="{{ isset($currency_id) && !empty($currency_id) ? $currency_id : '' }}">
+                          </div>
+                        </td>
+                        <td>- <span>{{ \Helper::number_format($total_wallet->amount) }}</span> </td>
+                        <td class="remaining-credit-amount">{{ \Helper::number_format($total_wallet->amount) }}</span></td>
+                      </tr>
 
-                  @endforeach
-                  <thead>
-                  <tr class="border-top">
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th>Current Credit Amount</th>
-                    <th>Remaining Credit Amount</th>
-                  </tr>
-                </thead>
-                  <tr>
-                    <td>
-                      <div class="icheck-primary">
-                        <input type="hidden" class="total-credit-amount" data-type="debit" value="{{$total_wallet->amount}}" data-currencyCode="{{ $booking->getCurrency->code }}" data-currencyID="{{ $booking->getCurrency->code }}">
-                      </div>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>- <span > {{\Helper::number_format($total_wallet->amount)}}</span> </td>
-                    <td class="remaining-credit-amount">{{\Helper::number_format($total_wallet->amount)}}</span></td>
-                  </tr>
+                      <tr class="mt-2">
+                        <td colspan="7"></td>
+                        <td class="d-flex justify-content-left">
+                          <button type="submit" class="btn btn-success bulk-payment float-right mr-3">Pay</button>
+                          <button type="button" class="btn btn-danger float-right ">Cancel</button>
+                        </td>
+                      </tr>
+                    @endif
 
-                  <tr>
-                    <td colspan="6">
-                      <button type="button" class="btn btn-danger float-right ">Cancel</button>
-                      <button type="button" class="btn btn-success float-right mr-3">Pay</button>
-                    </td>
-                    <td></td>
-                  </tr>
-                
+                  </form>
+
                   </tbody>
                 </table>
               </div>

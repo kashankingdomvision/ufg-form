@@ -51915,85 +51915,166 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   });
   $('.sbp-parent').on('click', function (e) {
-    var totalWalletAmount = parseFloat($('.debit').val()).toFixed(2);
-    var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
-    var checkedValuesTotal = parseFloat(getCheckedValues());
-    var result = 0;
-
     if ($(this).is(':checked', true)) {
       $(".credit").prop('checked', false);
-      $(".debit").prop('checked', false);
       $('.credit').trigger('click');
-      console.log(debitCheckedValuesTotal);
-      console.log(checkedValuesTotal); // if(debitCheckedValuesTotal > checkedValuesTotal){
-      //     result = debitCheckedValuesTotal - checkedValuesTotal;
-      //     $('.amount-paid').val(checkedValuesTotal);
-      //     $('.remaining-credit-amount').html(result);
-      // }else{
-      //     result = checkedValuesTotal - debitCheckedValuesTotal;
-      //     $('.amount-paid').val(parseFloat(result).toFixed(2));
-      //     $('.remaining-credit-amount').html('0.00');
-      // }
     } else {
-      $('.credit, .debit').trigger('click');
-      $('.amount-paid').val(parseFloat(0).toFixed(2));
+      $('.credit').trigger('click');
+      $('.total-paid-amount').val(parseFloat(0).toFixed(2));
     }
   });
   $('.credit').change(function () {
-    var dataID = $(this).attr('data-id');
     var currencyCode = $(this).attr('data-currencyCode');
     var value = parseFloat($(this).val()).toFixed(2);
+    var row = $(this).closest('.credit-row');
 
     if ($(this).is(':checked')) {
-      $(".sbp-paid-amount-".concat(dataID)).val("".concat(value));
+      row.find('.row-paid-amount').val(value);
+      row.find('.row-total-paid-amount').val(value);
       getTotalPaidAmount();
     } else {
-      $(".sbp-paid-amount-".concat(dataID)).val(parseFloat(0).toFixed(2));
-      $('.amount-paid').val(parseFloat(getCheckedValues()).toFixed(2));
+      row.find('.row-paid-amount').val(parseFloat(0).toFixed(2));
+      row.find('.row-total-paid-amount').val(parseFloat(0).toFixed(2)); // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
     }
   });
-  $(document).on("keyup change", '.sbp-paid-amount', function (event) {
-    var value = parseFloat($(this).val());
-    var outstandingAmountLeft = $(this).attr('data-value');
+  $(document).on("change", '.row-paid-amount', function (event) {
+    var row = $(this).closest('.credit-row');
+    var currentPaidAmountValue = parseFloat($(this).val());
+    var rowCreditNoteAmount = row.find('.row-credit-note-amount').val();
+    var rowTotalPaidAmount = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
 
-    if (value > outstandingAmountLeft) {
+    if (rowTotalPaidAmount > totalWalletAmount) {
       alert("Please Enter Correct Amount");
       $(this).val('0.00');
+      row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
     }
 
-    getTotalPaidAmount();
+    getTotalPaidAmount(); // var value                 = parseFloat($(this).val());
+    // var row                   = $(this).closest('.credit-row');
+    // var outstandingAmountLeft = row.find('.credit').val();
+    // if(value > outstandingAmountLeft){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }
+    // getTotalPaidAmount();
   });
 
   function getTotalPaidAmount() {
-    var result = 0;
     var paidAmountValues = parseFloat(getPaidAmountValues());
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    result = paidAmountValues - totalCreditNoteValues;
-    $('.amount-paid').val(result.toFixed(2));
+    $('.total-paid-amount').val(getFloat(paidAmountValues));
   }
 
   function getRemainingCreditNoteAmount() {
-    var result = 0;
     var totalWalletAmount = parseFloat($('.total-credit-amount').val());
     var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    result = totalWalletAmount - totalCreditNoteValues;
-    $('.remaining-credit-amount').html(result.toFixed(2));
+    var result = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+    $('.remaining-credit-amount').html(getFloat(result));
+    $('.remaining-credit-amount').val(getFloat(result));
   }
 
-  $(document).on("keyup change", '.sbp-credit-note-amount', function (event) {
-    var value = parseFloat($(this).val());
-    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    var dataID = $(this).attr('data-id');
-    var rowPaidValues = parseFloat($(".sbp-paid-amount-".concat(dataID)).val());
+  function getPaidAmountValues() {
+    var checkedValuesArray = $('.row-total-paid-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
 
-    if (totalCreditNoteValues > totalWalletAmount || value > rowPaidValues) {
-      alert("Please Enter Correct Amount");
-      $(this).val('0.00');
-    } else {
+  function getCreditNoteValues() {
+    var checkedValuesArray = $('.row-credit-note-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
+
+  function getFloat(value) {
+    // console.log(parseFloat(value).toFixed(2));
+    return parseFloat(value).toFixed(2);
+  }
+
+  $(document).on("change", '.row-credit-note-amount', function (event) {
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    var currentCreditNoteValue = parseFloat($(this).val());
+    var row = $(this).closest('.credit-row');
+    var rowOutstandingAmount = row.find('.credit').val();
+    var rowPaidAmount = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+    var rowTotalPaidAmount = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+    if (row.find('.credit').is(':checked')) {
+      row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+      row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+      if (currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount) {
+        alert("Please Enter Correct Amount");
+        $(this).val('0.00');
+        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+      }
+
       getTotalPaidAmount();
       getRemainingCreditNoteAmount();
-    }
+    } else {
+      $(this).val('0.00');
+    } // var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+    // var rowPaidAmount         = parseFloat(row.find('.sbp-paid-amount').val());
+    // if(totalCreditNoteValues > totalWalletAmount || value > rowPaidAmount){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }else{
+    //     getTotalPaidAmount();
+    //     getRemainingCreditNoteAmount();
+    // }
+
+  });
+  $("#bulk_payment").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      // data: formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html(''); // setTimeout(function() {
+        //     if(data && data.status == 200){
+        //         alert(data.success_message);
+        //         window.location.href = REDIRECT_BASEURL + "quotes/index";
+        //     }
+        // }, 200);
+      },
+      error: function error(reject) {// if (reject.status === 422) {
+        //     var errors = $.parseJSON(reject.responseText);
+        //     setTimeout(function() {
+        //         var flag = true;
+        //         $("#overlay").removeClass('overlay').html('');
+        //         jQuery.each(errors.errors, function(index, value) {
+        //             index = index.replace(/\./g, '_');
+        //             $(`#${index}`).addClass('is-invalid');
+        //             $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+        //             if (flag) {
+        //                 $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+        //                 flag = false;
+        //             }
+        //         });
+        //     }, 400);
+        // }
+      }
+    });
   }); // $('.sbp-child').change(function(){
   //     var currencyCode          = $(this).attr('data-currencyCode');
   //     var outstandingAmountLeft = $(this).attr('data-outstandingAmountLeft');
@@ -52007,36 +52088,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //         $(`#${dataID}`).html('');
   //     }
   // });
-
-  function getCheckedValues() {
-    var checkedValuesArray = $('.credit:checked').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-  }
-
-  function getPaidAmountValues() {
-    var checkedValuesArray = $('.sbp-paid-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-  }
-
-  function getCreditNoteValues() {
-    var checkedValuesArray = $('.sbp-credit-note-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-  } // $('.credit').change(function(){
+  // function getCheckedValues(){
+  //     var checkedValuesArray = $('.credit:checked').map((i, e) => parseFloat(e.value)).get();
+  //     var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+  //     return parseFloat(checkedValuesTotal).toFixed(2);
+  // }
+  // $('.credit').change(function(){
   //     var result = 0;
   //     var currencyCode          = $(this).attr('data-currencyCode');
   //     var dataID                = $(this).attr('data-id');
@@ -52050,15 +52107,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //         if(checkDebit){
   //             if(debitCheckedValuesTotal > checkedValuesTotal){
   //                 result = debitCheckedValuesTotal - checkedValuesTotal;
-  //                 $('.amount-paid').val(checkedValuesTotal);
+  //                 $('.total-paid-amount').val(checkedValuesTotal);
   //                 $('.remaining-credit-amount').html(result);
   //             }else{
   //                 result = checkedValuesTotal - debitCheckedValuesTotal;
-  //                 $('.amount-paid').val(parseFloat(result).toFixed(2));
+  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
   //                 $('.remaining-credit-amount').html('0.00');
   //             }
   //         }else{
-  //             $('.amount-paid').val(checkedValuesTotal);
+  //             $('.total-paid-amount').val(checkedValuesTotal);
   //         }
   //     }
   //     else {
@@ -52066,15 +52123,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //         if(checkDebit){
   //             if(debitCheckedValuesTotal > checkedValuesTotal){
   //                 result = debitCheckedValuesTotal - checkedValuesTotal;
-  //                 $('.amount-paid').val(checkedValuesTotal);
+  //                 $('.total-paid-amount').val(checkedValuesTotal);
   //                 $('.remaining-credit-amount').html(result);
   //             }else{
   //                 result = checkedValuesTotal - debitCheckedValuesTotal;
-  //                 $('.amount-paid').val(parseFloat(result).toFixed(2));
+  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
   //                 $('.remaining-credit-amount').html('0.00');
   //             }
   //         }else{
-  //             $('.amount-paid').val(checkedValuesTotal);
+  //             $('.total-paid-amount').val(checkedValuesTotal);
   //         }
   //     }
   // });
@@ -52091,16 +52148,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //         }
   //         else{
   //             result = checkedValuesTotal - debitCheckedValuesTotal;
-  //             $('.amount-paid').val(parseFloat(result).toFixed(2));
+  //             $('.total-paid-amount').val(parseFloat(result).toFixed(2));
   //             $('.remaining-credit-amount').html('0.00');
   //         }
   //     }
   //     else {
   //         $(`.remaining-credit-amount`).html(totalWalletAmount);
-  //         $('.amount-paid').val(getCheckedValues());
+  //         $('.total-paid-amount').val(getCheckedValues());
   //     }
   // });
-
 
   $('#delete_all').on('click', function (e) {
     e.preventDefault();
