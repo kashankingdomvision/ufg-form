@@ -43,8 +43,8 @@ class BookingDetailFinance extends Model
         return $this->hasOne(Booking::class, 'id', 'booking_id');   
     }
 
-    public function getPaidDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
-    }
+    // public function getPaidDateAttribute( $value ) {
+    //     return (new Carbon($value))->format('d/m/Y');
+    // }
 
 }

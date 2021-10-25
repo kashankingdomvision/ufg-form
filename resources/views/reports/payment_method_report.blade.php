@@ -198,7 +198,7 @@
                                                     <td>{{ isset($booking_finance_detail->getStaffPerson->name) ? $booking_finance_detail->getStaffPerson->name : ''  }}</td>
                                                     <td>{{ isset($booking_finance_detail->getPaymentMethod->name) ? $booking_finance_detail->getPaymentMethod->name : ''  }}</td>
                                                     <td>{{ $booking_finance_detail->getCurrency->code.' '.$booking_finance_detail->deposit_amount }}</td>
-                                                    <td>{{ $booking_finance_detail->paid_date }}</td>
+                                                    <td>{{ !is_null($booking_finance_detail->paid_date) ?  Carbon\Carbon::parse($booking_finance_detail->paid_date)->format('d/m/Y') : '' }}</td>
                                                     <td>{{ $booking_finance_detail->getCurrency->code.' '.$booking_finance_detail->outstanding_amount }}</td>
                                                     <td>{{ ucfirst($booking_finance_detail->status) }}</td>
                                                 </tr>        

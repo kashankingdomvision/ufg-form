@@ -10,6 +10,7 @@ class BookingDetail extends Model
     protected $fillable = [
         
         'booking_id',
+        'booking_detail_unique_ref_id',
         'category_id',
         'supplier_id',
         'product_id',

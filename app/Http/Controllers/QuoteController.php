@@ -507,10 +507,14 @@ class QuoteController extends Controller
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
 
-            $quoteDetail['booking_id']              = $booking->id;
-            $quoteDetail['outstanding_amount_left'] = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost']             = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost_bc']          = $quoteDetail['estimated_cost_bc'];
+            $quoteDetail['booking_id']                   = $booking->id;
+            $quoteDetail['outstanding_amount_left']      = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost']                  = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost_bc']               = $quoteDetail['estimated_cost_bc'];
+            $quoteDetail['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
+
+            // dd($quoteDetail['booking_detail_unique_ref_id']);
+
 
             BookingDetail::create($quoteDetail);
         }

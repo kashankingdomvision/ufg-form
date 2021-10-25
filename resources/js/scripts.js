@@ -3557,10 +3557,12 @@ $(document).ready(function($) {
             $('.credit').change(function(){
 
                 var currencyCode          = $(this).attr('data-currencyCode');
-                var value                 = parseFloat($(this).val()).toFixed(2);
+                var value                 = parseFloat($(this).attr('data-value')).toFixed(2);
                 var row                   = $(this).closest('.credit-row');
 
                 if($(this).is(':checked')){
+
+                    $(this).val('1');
 
                     row.find('.row-paid-amount').val(value);
                     row.find('.row-total-paid-amount').val(value);
@@ -3570,9 +3572,11 @@ $(document).ready(function($) {
                 }
                 else {
                 
+                    $(this).val('0');
+
                     row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
                     row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
-
+                    getTotalPaidAmount();
                     // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
                 }
 
@@ -3580,17 +3584,18 @@ $(document).ready(function($) {
 
             $(document).on("change", '.row-paid-amount', function(event) {
 
-                var row                    = $(this).closest('.credit-row');
-                var currentPaidAmountValue = parseFloat($(this).val());
+                var row                        = $(this).closest('.credit-row');
+                var currentPaidAmountValue     = parseFloat($(this).val());
 
-                var rowCreditNoteAmount   = row.find('.row-credit-note-amount').val();
-                var rowTotalPaidAmount    = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+                var rowCreditNoteAmount        = row.find('.row-credit-note-amount').val();
+                var rowTotalPaidAmount         = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
 
-                var totalWalletAmount      = parseFloat($('.total-credit-amount').val());
+                var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
 
                 row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
 
-                if(rowTotalPaidAmount > totalWalletAmount){
+
+                if(rowTotalPaidAmount > totalOutstandingAmountLeft){
                     alert("Please Enter Correct Amount");
                     $(this).val('0.00');
 
@@ -3653,7 +3658,7 @@ $(document).ready(function($) {
                 var currentCreditNoteValue = parseFloat($(this).val());
 
                 var row                    = $(this).closest('.credit-row');
-                var rowOutstandingAmount   = row.find('.credit').val();
+                var rowOutstandingAmount   = row.find('.credit').attr('data-value');
 
                 var rowPaidAmount          = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
                 var rowTotalPaidAmount     = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
@@ -3702,10 +3707,15 @@ $(document).ready(function($) {
 
 
                 event.preventDefault();
+            
+                var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
+                if (checkedValues.length == 0) {
+                    alert("Please Check any Record First");
+                    return;
+                }
 
 
                 var url = $(this).attr('action');
-
 
                 $.ajax({
                     type: 'POST',
@@ -3716,11 +3726,14 @@ $(document).ready(function($) {
                     cache: false,
                     processData: false,
                     beforeSend: function() {
-                        $("#overlay").addClass('overlay');
-                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
                     },
                     success: function(data) {
-                        $("#overlay").removeClass('overlay').html('');
+                    
+                        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
                         // setTimeout(function() {
 
                         //     if(data && data.status == 200){
@@ -3731,31 +3744,30 @@ $(document).ready(function($) {
                     },
                     error: function(reject) {
 
-                        // if (reject.status === 422) {
+                        if (reject.status === 422) {
 
-                        //     var errors = $.parseJSON(reject.responseText);
+                            var errors = $.parseJSON(reject.responseText);
 
-                        //     setTimeout(function() {
+                            setTimeout(function() {
 
-                        //         var flag = true;
+                                $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+                                var flag = true;
 
-                        //         $("#overlay").removeClass('overlay').html('');
+                                jQuery.each(errors.errors, function(index, value) {
 
-                        //         jQuery.each(errors.errors, function(index, value) {
+                                    index = index.replace(/\./g, '_');
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
-                        //             index = index.replace(/\./g, '_');
-                        //             $(`#${index}`).addClass('is-invalid');
-                        //             $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                    if (flag) {
 
-                        //             if (flag) {
+                                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                        flag = false;
+                                    }
 
-                        //                 $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                        //                 flag = false;
-                        //             }
-
-                        //         });
-                        //     }, 400);
-                        // }
+                                });
+                            }, 400);
+                        }
                     },
                 });
             });

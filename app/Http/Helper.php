@@ -10,6 +10,7 @@ use App\BookingType;
 use App\Currency;
 use App\Supplier;
 use App\BookingCreditNote;
+use App\BookingDetail;
 use App\QuoteUpdateDetail;
 use App\SupplierRateSheet;
 use App\User;
@@ -71,6 +72,14 @@ class Helper
 	public static function getCreditNote(){
         $last_id = BookingCreditNote::latest()->pluck('id')->first();
        return "CN-".sprintf("%04s", ++$last_id);
+    }
+
+	
+	public static function getBDUniqueRefID(){
+
+		$last_id = BookingDetail::latest()->pluck('id')->first();
+		$last_id = str_pad(++$last_id,6,"0",STR_PAD_LEFT);
+		return $last_id;
     }
 
 	public static function getSupplierWalletAmount($supplier_id){

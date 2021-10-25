@@ -106,23 +106,24 @@
               </h3>
             </div>
             <div class="row {{ isset($supplier_id) && !empty($supplier_id) ? '' : 'd-none' }}">
-
-              <div class="col-md-10 mt-1 d-flex justify-content-end">
-                <div class="form-group" style="max-width: 15rem;">
+              <div class="col-md-10 mt-1 mb-2 d-flex justify-content-end">
+                <div class="form-group" style="max-width: 17rem;">
                   <label>Payment Method</label>
-                  <select  name="payment_method_id" class="form-control payment-method-id select2single">
+                  <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
                     <option value="">Select Payment Method</option>
                     @foreach ($payment_methods as $payment_method)
                       <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
                     @endforeach
                   </select>
+                 
+                  <span class="text-danger" role="alert"></span>
                 </div>
               </div>
 
-              <div class="col-md-2 mt-1 d-flex justify-content-end">
-                <div class="form-group form-inline">
+              <div class="col-md-2 mt-1 mb-2 d-flex justify-content-end">
+                <div class="form-group form-inline mr-1">
                   <label for="inputPassword6">Total Paid Amount: </label>
-                  <div class="input-group mx-sm-3">
+                  <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text sbp-payment">
                         {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
@@ -130,6 +131,7 @@
                     </div>
                     <input type="number" step="any" name="total_paid_amount" class="form-control total-paid-amount hide-arrows" min="0.00" step="any" >
                   </div>
+                  <span class="text-danger" role="alert"></span>
                 </div>
               </div>
             </div>
@@ -164,30 +166,35 @@
                         <tr class="credit-row">
                           <td>
                             <div class="icheck-primary">
-                              <input type="checkbox" class="sbp-child credit" value="{{$booking->outstanding_amount_left}}" id="{{$booking->id}}" data-id="{{$booking->id}}" data-currencyCode="{{ $booking->getCurrency->code }}" data-currencyID="{{ $booking->getCurrency->code }}" >
+                              <input type="checkbox" class="sbp-child credit" name="finance[{{$key}}][child]" value="0" data-value="{{$booking->outstanding_amount_left}}" id="{{$booking->booking_detail_id}}" data-id="{{$booking->booking_detail_id}}" 
+                              data-currencyID="{{ $booking->supplier_currency_id }}" 
+                              data-currencyCode="{{ $selected_supplier_currency }}"
+                              >
                             </div>
                           </td>
 
                           <td> {{ $booking->ref_no }} </td>
                           <td> {{ $booking->quote_ref }} </td>
-                          <td> {{ $booking->getCurrency->code }} {{ $booking->actual_cost_bc }} </td>
-                          <td> {{ $booking->getCurrency->code }} {{$booking->outstanding_amount_left}} </td>
+                          <td> {{ $selected_supplier_currency }} {{ $booking->actual_cost_bc }} </td>
+                          <td> {{ $selected_supplier_currency }} {{$booking->outstanding_amount_left}} </td>
 
                           <td class="d-none">
 
-                            <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->id }}" >
+                            <input type="hidden" name="finance[{{$key}}][supplier_id]" value="{{ $supplier_id }}" >
+                            <input type="hidden" name="finance[{{$key}}][booking_id]" value="{{ $booking->booking_id }}" >
+                            <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->booking_detail_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_detail_outstanding_amount_left]" value="{{ $booking->outstanding_amount_left }}" >
 
                           </td>
                     
-                          <td class="{{$booking->id}}">
+                          <td class="{{$booking->booking_detail_id}}">
                             <div class="input-group mx-sm-3">
                               <div class="input-group-prepend">
                                 <span class="input-group-text sbp-payment">
                                   {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
                                 </span>
                               </div>
-                              <input type="text" name="finance[{{$key}}][deposit][deposit_amount]" class="form-control row-paid-amount sbp-paid-amount-{{$booking->id}} remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
+                              <input type="text" name="finance[{{$key}}][deposit][deposit_amount]" class="form-control row-paid-amount sbp-paid-amount-{{$booking->booking_detail_id}} remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
                             </div>
                           </td>
 
@@ -235,9 +242,10 @@
                       <tr class="border-bottom">
                         <td colspan="6">
                           <div class="icheck-primary">
-                            <input type="hidden" class="total-credit-amount" data-type="debit" name="total_credit_amount" value="{{$total_wallet->amount}}">
+                            <input type="hidden" class="total-credit-amount" data-type="debit" name="current_credit_amount" value="{{$total_wallet->amount}}">
                             <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{$total_wallet->amount}}">
                             <input type="hidden" name="currency_id" value="{{ isset($currency_id) && !empty($currency_id) ? $currency_id : '' }}">
+                            <input type="hidden" name="season_id" value="{{ isset($season_id) && !empty($season_id) ? $season_id : '' }}">
                           </div>
                         </td>
                         <td>- <span>{{ \Helper::number_format($total_wallet->amount) }}</span> </td>
@@ -247,7 +255,7 @@
                       <tr class="mt-2">
                         <td colspan="7"></td>
                         <td class="d-flex justify-content-left">
-                          <button type="submit" class="btn btn-success bulk-payment float-right mr-3">Pay</button>
+                          <button type="submit" id="bulk_payment_submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Pay</button>
                           <button type="button" class="btn btn-danger float-right ">Cancel</button>
                         </td>
                       </tr>
