@@ -289,7 +289,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{ $route == 'supplier-bulk-payments.index' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'supplier-bulk-payments.index' || $route == 'supplier-bulk-payments.view' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-user nav-icon"></i>
                         <p>
@@ -303,6 +303,13 @@
                             <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Add Supplier Bulk Payments</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link {{ $route == 'supplier-bulk-payments.view' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>View Supplier Bulk Payments</p>
                             </a>
                         </li>
                     </ul>
