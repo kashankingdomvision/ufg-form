@@ -15,14 +15,17 @@ class CreateSupplierBulkPaymentsTable extends Migration
     {
         Schema::create('supplier_bulk_payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('supplier_id');
             $table->double('total_paid_amount');
             $table->double('current_credit_amount');
             $table->double('remaining_credit_amount');
+            $table->double('total_used_credit_amount');
             $table->date('payment_date')->nullable();
             $table->unsignedBigInteger('payment_method_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('currency_id');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');

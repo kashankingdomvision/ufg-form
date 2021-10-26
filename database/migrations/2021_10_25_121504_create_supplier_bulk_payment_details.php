@@ -18,6 +18,9 @@ class CreateSupplierBulkPaymentDetails extends Migration
             $table->unsignedBigInteger('supplier_bulk_payment_id');
             $table->unsignedBigInteger('booking_id');
             $table->string('bd_reference_id', 6);
+            $table->double('actual_cost');
+            $table->double('outstanding_amount_left');
+            $table->double('row_total_paid_amount');
             $table->double('paid_amount');
             $table->double('credit_note_amount');
             $table->unsignedBigInteger('currency_id');

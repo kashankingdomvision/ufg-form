@@ -179,10 +179,11 @@
                           <td> {{ $selected_supplier_currency }} {{$booking->outstanding_amount_left}} </td>
 
                           <td class="d-none">
-                            <input type="hidden"  name="finance[{{$key}}][booking_detail_unique_ref_id]" name="booking_detail_unique_ref_id" value="{{ isset($booking->booking_detail_unique_ref_id) && !empty($booking->booking_detail_unique_ref_id) ? $booking->booking_detail_unique_ref_id : '' }}">
-                            <input type="hidden" name="finance[{{$key}}][supplier_id]" value="{{ $supplier_id }}" >
+                            <input type="hidden" name="finance[{{$key}}][booking_detail_unique_ref_id]" value="{{ isset($booking->booking_detail_unique_ref_id) && !empty($booking->booking_detail_unique_ref_id) ? $booking->booking_detail_unique_ref_id : '' }}">
+                            {{-- <input type="hidden" name="finance[{{$key}}][supplier_id]" value="{{ $supplier_id }}" > --}}
                             <input type="hidden" name="finance[{{$key}}][booking_id]" value="{{ $booking->booking_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->booking_detail_id }}" >
+                            <input type="hidden" name="finance[{{$key}}][actual_cost]" value="{{ $booking->actual_cost }}">
                             <input type="hidden" name="finance[{{$key}}][booking_detail_outstanding_amount_left]" value="{{ $booking->outstanding_amount_left }}" >
                           </td>
                     
@@ -215,7 +216,7 @@
                                   {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
                                 </span>
                               </div>
-                              <input type="text" name="finance[{{$key}}][total_deposit_amount]" class="form-control row-total-paid-amount remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
+                              <input type="text" name="finance[{{$key}}][row_total_paid_amount]" class="form-control row-total-paid-amount remove-zero-values hide-arrows"  id="" value="0.00" style="max-width: 100px;">
                             </div>
                           </td>
 
@@ -246,6 +247,7 @@
                             <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{ isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0 }}">
                             <input type="hidden" name="currency_id" value="{{ isset($currency_id) && !empty($currency_id) ? $currency_id : '' }}">
                             <input type="hidden" name="season_id" value="{{ isset($season_id) && !empty($season_id) ? $season_id : '' }}">
+                            <input type="hidden" name="supplier_id" value="{{ isset($supplier_id) && !empty($supplier_id) ? $supplier_id : '' }}" >
                           </div>
                         </td>
                         <td>- <span>{{ \Helper::number_format(isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0) }}</span> </td>

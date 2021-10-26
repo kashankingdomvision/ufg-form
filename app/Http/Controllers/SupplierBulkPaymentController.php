@@ -55,6 +55,7 @@ class SupplierBulkPaymentController extends Controller
                     'booking_details.outstanding_amount_left',
                     'booking_details.supplier_currency_id as supplier_currency_id',
                     'booking_details.booking_detail_unique_ref_id',
+                    'booking_details.actual_cost',
                 ]);
 
                 $data['selected_supplier_currency'] = Supplier::find($request->supplier_id)->getCurrency->code;
@@ -74,15 +75,19 @@ class SupplierBulkPaymentController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->all());
+        // dd($request->supplier_id);
 
         $this->validate($request, ['payment_method_id' => 'required' ], ['required' => ' The Payment Method field is required.']);
-        try {
+        // try {
+
+            $total_used_credit_amount = $request->current_credit_amount - $request->remaining_credit_amount;
             
             $supplier_bulk_payment = SupplierBulkPayment::create([
+                'supplier_id'             => $request->supplier_id,
                 'total_paid_amount'       => $request->total_paid_amount,
                 'current_credit_amount'   => $request->current_credit_amount,
                 'remaining_credit_amount' => $request->remaining_credit_amount,
+                'total_used_credit_amount' => $total_used_credit_amount,
                 'payment_date'            => date('Y-m-d'),
                 'payment_method_id'       => $request->payment_method_id,
                 'user_id'                 => Auth::user()->id,
@@ -94,13 +99,13 @@ class SupplierBulkPaymentController extends Controller
     
                 if(isset($finance['child']) && $finance['child'] == 1 ){
     
-                    $deposit['booking_detail_id'] = $finance['booking_detail_id'];
-                    $deposit['booking_id']        = $finance['booking_id'];
-                    $deposit['supplier_id']       = $finance['supplier_id'];
-                    $deposit['payment_method_id'] = $request->payment_method_id;
-                    $deposit['currency_id']       = $request->currency_id;
-                    $deposit['user_id']           = Auth::user()->id;
-                    $outstanding_amount_left      = $finance['booking_detail_outstanding_amount_left'];
+                    $deposit['booking_detail_id']       = $finance['booking_detail_id'];
+                    $deposit['booking_id']              = $finance['booking_id'];
+                    $deposit['supplier_id']             = $request->supplier_id;
+                    $deposit['payment_method_id']       = $request->payment_method_id;
+                    $deposit['currency_id']             = $request->currency_id;
+                    $deposit['user_id']                 = Auth::user()->id;
+                    $outstanding_amount_left            = $finance['booking_detail_outstanding_amount_left'];
                     $deposit['deposit_due_date']  = date('Y-m-d');
                     $deposit['paid_date']         = date('Y-m-d');
     
@@ -127,13 +132,13 @@ class SupplierBulkPaymentController extends Controller
                         Wallet::create([
                             'booking_id'        => $finance['booking_id'],
                             'booking_detail_id' => $finance['booking_detail_id'],
-                            'supplier_id'       => $finance['supplier_id'],
+                            'supplier_id'       => $request->supplier_id,
                             'amount'            => $finance['credit']['credit_note'],
                             'type'              => 'debit'
                         ]);
     
-                        TotalWallet::where('supplier_id', $finance['supplier_id'])->update([
-                            'amount' => Helper::getSupplierWalletAmount($finance['supplier_id'])
+                        TotalWallet::where('supplier_id', $request->supplier_id)->update([
+                            'amount' => Helper::getSupplierWalletAmount($request->supplier_id)
                         ]);
     
                     }
@@ -143,6 +148,9 @@ class SupplierBulkPaymentController extends Controller
                         'supplier_bulk_payment_id' => $supplier_bulk_payment->id,     
                         'booking_id'               => $finance['booking_id'],     
                         'bd_reference_id'          => $finance['booking_detail_unique_ref_id'],     
+                        'actual_cost'              => $finance['actual_cost'],     
+                        'outstanding_amount_left'  => $finance['booking_detail_outstanding_amount_left'], 
+                        'row_total_paid_amount'    => $finance['row_total_paid_amount'], 
                         'paid_amount'              => isset($finance['deposit']['deposit_amount']) && !empty($finance['deposit']['deposit_amount']) ? $finance['deposit']['deposit_amount'] : '',     
                         'credit_note_amount'       => isset($finance['credit']['credit_note']) && !empty($finance['credit']['credit_note']) ? $finance['credit']['credit_note'] : '', 
                         'currency_id'              => $request->currency_id
@@ -155,15 +163,18 @@ class SupplierBulkPaymentController extends Controller
 
             return \Response::json(['status' => true, 'success_message' => 'Supplier Bulk Payment Added Successfully.'], 200); // Status code here
           
-        } catch (\Exception $e) {
-
-    
-        
-            return \Response::json(['status' => false, 'payment_error' => 'Something went wrong with Supplier Bulk Payment.'], 422); // Status code here
-            // return $e->getMessage();
-        }
+        // } catch (\Exception $e) {
+        //     return \Response::json(['status' => false, 'payment_error' => 'Something went wrong with Supplier Bulk Payment.'], 422); // Status code here
+        //     // return $e->getMessage();
+        // }
 
 
     }
 
+    public function view(Request $request)
+    {
+        $data['supplier_bulk_payments'] = SupplierBulkPayment::get();
+
+        return view('supplier_bulk_payments.view', $data);
+    }
 }
