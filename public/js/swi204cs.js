@@ -51028,8 +51028,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $("#quoteCreate").submit(function (event) {
     event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
+    var url = $(this).attr('action');
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html('');
     $.ajax({
@@ -51059,7 +51058,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             var flag = true;
             $("#overlay").removeClass('overlay').html('');
             jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
+              index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 
@@ -51684,7 +51687,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             } else {
               var flag = true;
               jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
+                index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
                 $("#".concat(index)).addClass('is-invalid');
                 $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 
