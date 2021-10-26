@@ -163,10 +163,18 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-    /* Commsisions */
-    Route::resource('supplier-bulk-payments', 'SupplierBulkPaymentController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+   /* Supplier Bulk Payments */
+
+    Route::group(['prefix' => 'supplier-bulk-payments', 'as' => 'supplier-bulk-payments.'], function () {
+
+        /* Add Supplier Bulk Payment */
+        Route::get('index', array('as' => 'index', 'uses' => 'SupplierBulkPaymentController@index'));
+        Route::post('supplier-bulk-payments/store', array('as' => 'store', 'uses' => 'SupplierBulkPaymentController@store'));
+        
+        /* View Supplier Bulk Payment */
+        Route::get('view', array('as' => 'view', 'uses' => 'SupplierBulkPaymentController@view'));
+    });
+
 
 
     /*
