@@ -3,7 +3,7 @@
 
 @extends('layouts.app')
 
-@section('title','View Supplier Bulk Payment')
+@section('title','Add Supplier Bulk Payments')
 
 @section('content')
 <div class="content-wrapper">
@@ -13,14 +13,14 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Supplier Bulk Payment </h4>
+            <h4>Add Supplier Bulk Payments </h4>
           </div>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Supplier Managment</a></li>
-            <li class="breadcrumb-item active">Supplier Rate Sheet </li>
+            <li class="breadcrumb-item"><a>Supplier Bulk Payments</a></li>
+            <li class="breadcrumb-item active">Add Supplier Bulk Payments </li>
           </ol>
         </div>
       </div>
