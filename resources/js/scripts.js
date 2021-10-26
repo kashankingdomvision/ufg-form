@@ -3705,7 +3705,6 @@ $(document).ready(function($) {
 
             $("#bulk_payment").submit(function(event) {
 
-
                 event.preventDefault();
             
                 var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
@@ -3714,14 +3713,12 @@ $(document).ready(function($) {
                     return;
                 }
 
-
                 var url = $(this).attr('action');
 
                 $.ajax({
                     type: 'POST',
                     url: url,
                     data: new FormData(this),
-                    // data: formData,
                     contentType: false,
                     cache: false,
                     processData: false,
@@ -3731,16 +3728,15 @@ $(document).ready(function($) {
                         $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
                     },
                     success: function(data) {
-                    
                         $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
 
-                        // setTimeout(function() {
+                        setTimeout(function() {
 
-                        //     if(data && data.status == 200){
-                        //         alert(data.success_message);
-                        //         window.location.href = REDIRECT_BASEURL + "quotes/index";
-                        //     }
-                        // }, 200);
+                            if(data && data.status == true){
+                                alert(data.success_message);
+                                location.reload();
+                            }
+                        }, 200);
                     },
                     error: function(reject) {
 
@@ -3749,24 +3745,33 @@ $(document).ready(function($) {
                             var errors = $.parseJSON(reject.responseText);
 
                             setTimeout(function() {
-
                                 $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-                                var flag = true;
 
-                                jQuery.each(errors.errors, function(index, value) {
+                                if (errors.hasOwnProperty("payment_error")) {
+                                    alert(errors.payment_error);
+                                    location.reload();
 
-                                    index = index.replace(/\./g, '_');
-                                    $(`#${index}`).addClass('is-invalid');
-                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                } else {
 
-                                    if (flag) {
+                                    var flag = true;
 
-                                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                        flag = false;
-                                    }
+                                    jQuery.each(errors.errors, function(index, value) {
 
-                                });
+                                        index = index.replace(/\./g, '_');
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                        if (flag) {
+
+                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                            flag = false;
+                                        }
+                                    });
+                                }
+
                             }, 400);
+
+ 
                         }
                     },
                 });

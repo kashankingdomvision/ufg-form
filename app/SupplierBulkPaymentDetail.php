@@ -9,6 +9,7 @@ class SupplierBulkPaymentDetail extends Model
     protected $fillable = [
         
         'supplier_bulk_payment_id',      
+        'supplier_bulk_payment_id',      
         'booking_id',   
         'bd_reference_id', 
         'paid_amount',            

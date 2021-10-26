@@ -78,8 +78,7 @@ class Helper
 	public static function getBDUniqueRefID(){
 
 		$last_id = BookingDetail::latest()->pluck('id')->first();
-		$last_id = str_pad(++$last_id,6,"0",STR_PAD_LEFT);
-		return $last_id;
+		return sprintf("%06s", ++$last_id);
     }
 
 	public static function getSupplierWalletAmount($supplier_id){

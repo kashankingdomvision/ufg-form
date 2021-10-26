@@ -524,6 +524,7 @@
                               </h3>
   
                               <div class="card-tools">
+                                <input type="hidden" name="quote[{{ $key }}][booking_detail_unique_ref_id]" value="{{ $booking_detail->booking_detail_unique_ref_id }}" >
                                 <input type="hidden" name="quote[{{ $key }}][created_by]" id="quote_{{ $key }}_created_by" value="{{ isset($booking_detail->getBookingCancellation->cancelled_by_id) && !empty($booking_detail->getBookingCancellation->cancelled_by_id) ? $booking_detail->getBookingCancellation->cancelled_by_id : Auth::id() }}" >
                                 <input type="hidden" name="quote[{{ $key }}][status]" id="quote_{{ $key }}_status" value="{{ isset($booking_detail->status) && !empty($booking_detail->status) ? $booking_detail->status : '' }}" >
                                 <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>

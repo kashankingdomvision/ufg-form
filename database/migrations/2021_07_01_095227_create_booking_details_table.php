@@ -16,7 +16,7 @@ class CreateBookingDetailsTable extends Migration
         Schema::create('booking_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('booking_id');
-            $table->unsignedBigInteger('booking_detail_unique_ref_id');
+            $table->string('booking_detail_unique_ref_id', 6)->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->string('product_id')->nullable();

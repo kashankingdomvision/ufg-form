@@ -105,7 +105,7 @@
                 Supplier Bulk Payment List
               </h3>
             </div>
-            <div class="row {{ isset($supplier_id) && !empty($supplier_id) ? '' : 'd-none' }}">
+            <div class="row {{ isset($supplier_id) && !empty($supplier_id) && $bookings->count() ? '' : 'd-none' }}">
               <div class="col-md-10 mt-1 mb-2 d-flex justify-content-end">
                 <div class="form-group" style="max-width: 17rem;">
                   <label>Payment Method</label>
@@ -126,7 +126,7 @@
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text sbp-payment">
-                        {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) ? $selected_supplier_currency : '' }}
+                        {{ isset($selected_supplier_currency) && !empty($selected_supplier_currency) && $bookings->count() ? $selected_supplier_currency : '' }}
                       </span>
                     </div>
                     <input type="number" step="any" name="total_paid_amount" class="form-control total-paid-amount hide-arrows" min="0.00" step="any" >
@@ -179,12 +179,11 @@
                           <td> {{ $selected_supplier_currency }} {{$booking->outstanding_amount_left}} </td>
 
                           <td class="d-none">
-
+                            <input type="hidden"  name="finance[{{$key}}][booking_detail_unique_ref_id]" name="booking_detail_unique_ref_id" value="{{ isset($booking->booking_detail_unique_ref_id) && !empty($booking->booking_detail_unique_ref_id) ? $booking->booking_detail_unique_ref_id : '' }}">
                             <input type="hidden" name="finance[{{$key}}][supplier_id]" value="{{ $supplier_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_id]" value="{{ $booking->booking_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->booking_detail_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_detail_outstanding_amount_left]" value="{{ $booking->outstanding_amount_left }}" >
-
                           </td>
                     
                           <td class="{{$booking->booking_detail_id}}">
@@ -242,21 +241,22 @@
                       <tr class="border-bottom">
                         <td colspan="6">
                           <div class="icheck-primary">
-                            <input type="hidden" class="total-credit-amount" data-type="debit" name="current_credit_amount" value="{{$total_wallet->amount}}">
-                            <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{$total_wallet->amount}}">
+                            
+                            <input type="hidden" class="total-credit-amount" data-type="debit" name="current_credit_amount" value="{{ isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0 }}">
+                            <input type="hidden" class="remaining-credit-amount"  name="remaining_credit_amount" value="{{ isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0 }}">
                             <input type="hidden" name="currency_id" value="{{ isset($currency_id) && !empty($currency_id) ? $currency_id : '' }}">
                             <input type="hidden" name="season_id" value="{{ isset($season_id) && !empty($season_id) ? $season_id : '' }}">
                           </div>
                         </td>
-                        <td>- <span>{{ \Helper::number_format($total_wallet->amount) }}</span> </td>
-                        <td class="remaining-credit-amount">{{ \Helper::number_format($total_wallet->amount) }}</span></td>
+                        <td>- <span>{{ \Helper::number_format(isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0) }}</span> </td>
+                        <td class="remaining-credit-amount">{{ \Helper::number_format(isset($total_wallet->amount) && !empty($total_wallet->amount) ? $total_wallet->amount : 0) }}</span></td>
                       </tr>
 
                       <tr class="mt-2">
                         <td colspan="7"></td>
                         <td class="d-flex justify-content-left">
-                          <button type="submit" id="bulk_payment_submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Pay</button>
-                          <button type="button" class="btn btn-danger float-right ">Cancel</button>
+                          <button type="submit" id="bulk_payment_submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Pay &nbsp; </button>
+                          <a href="{{ route('supplier-bulk-payments.index') }}" class="btn btn-danger float-right ">Cancel</a>
                         </td>
                       </tr>
                     @endif

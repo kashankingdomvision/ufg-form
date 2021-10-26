@@ -283,14 +283,31 @@
                         <li class="nav-item">
                             <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
                                 <i class="fas fa-wallet nav-icon"></i>
-                                <p>Wallet</p>
+                                <p>Supplier Wallet</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
+                <li class="nav-item {{ $route == 'supplier-bulk-payments.index' ? 'menu-open': '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>
+                            Supplier Bulk Payments
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Add Supplier Bulk Payments</p>
+                            </a>
+                        </li>
+                    </ul>
 
-
+                </li>
 
                 @if(Auth::user()->hasAdmin())
                 <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route ==  'store.texts.create' || $route ==  'store.texts.index' || $route ==  'store.texts.edit' ? 'menu-open': '' }}">
@@ -542,13 +559,6 @@
                     </ul>
                 </li>
                 @endif
-
-                <li class="nav-item">
-                    <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
-                        <i class="nav-icon far fa-circle"></i>
-                        <p>Supplier Bulk Payments Report</p>
-                    </a>
-                </li>
 
                 <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' || $route == 'reports.commission.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
