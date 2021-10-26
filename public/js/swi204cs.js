@@ -51244,9 +51244,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(".update-quote").submit(function (event) {
     event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
-    var formdata = $(this).serialize();
+    var url = $(this).attr('action');
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html(''); // $('#lead_passenger_contact').intlTelInput("getNumber");/
     // console.log($("input[name='full_number']").val()+ 'asdsa');
@@ -51288,7 +51286,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               window.location.href = REDIRECT_BASEURL + "quotes/index";
             } else {
               jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
+                index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
                 $("#".concat(index)).addClass('is-invalid');
                 $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 

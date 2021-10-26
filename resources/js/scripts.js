@@ -2698,9 +2698,8 @@ $(document).ready(function($) {
 
             $(".update-quote").submit(function(event) {
                 event.preventDefault();
-                var $form = $(this),
-                    url = $form.attr('action');
-                var formdata = $(this).serialize();
+             
+                var url = $(this).attr('action');
                 $('input, select').removeClass('is-invalid');
                 $('.text-danger').html('');
                 // $('#lead_passenger_contact').intlTelInput("getNumber");/
@@ -2752,6 +2751,12 @@ $(document).ready(function($) {
                                     jQuery.each(errors.errors, function(index, value) {
 
                                         index = index.replace(/\./g, '_');
+
+                                        // expand quote if feild has an error
+                                        $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                        $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                        $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+               
                                         $(`#${index}`).addClass('is-invalid');
                                         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
@@ -2760,6 +2765,10 @@ $(document).ready(function($) {
                                             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
                                             flag = false;
                                         }
+
+                                                                 
+
+
                                     });
                                 }
 
