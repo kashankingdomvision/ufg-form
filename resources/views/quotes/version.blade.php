@@ -467,7 +467,7 @@
                     </div>
 
                     @foreach ($quote['quote'] as $key => $q_detail )
-                        <div class="quote ui-state-default card card-default" data-key="{{ $key }}">
+                        <div class="quote card card-default" data-key="{{ $key }}">
 
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">
