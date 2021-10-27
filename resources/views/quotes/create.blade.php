@@ -579,7 +579,7 @@
                               <select name="quote[0][booking_type_id]" data-name="booking_type_id" id="quote_0_booking_type_id" class="form-control select2single booking-type-id">
                                 <option selected value="" >Select Booking Type</option>
                                 @foreach ($booking_types as $booking_type)
-                                  <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}"> {{$booking_type->name}} </option>
+                                  <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ $booking_type->slug == 'refundable' ? 'selected' : '' }}> {{$booking_type->name}} </option>
                                 @endforeach
                               </select>
 
