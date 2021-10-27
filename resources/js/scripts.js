@@ -3230,7 +3230,7 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
                             alert(data.success_message);
-                            // window.location.href = REDIRECT_BASEURL + "bookings/index";
+                            window.location.href = REDIRECT_BASEURL + "bookings/index";
                             // location.reload();
 
                         }, 200);

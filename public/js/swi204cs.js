@@ -51671,8 +51671,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message); // window.location.href = REDIRECT_BASEURL + "bookings/index";
-          // location.reload();
+          alert(data.success_message);
+          window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
         }, 200);
       },
       error: function error(reject) {
