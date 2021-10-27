@@ -507,10 +507,22 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product</label>
                                 <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
+                              </div>
+                            </div> --}}
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                  <option selected value="">Select Product</option>
+                                </select>
+                                @error('product_id')
+                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
                               </div>
                             </div>
   
@@ -762,7 +774,7 @@
                       </div>
                     </div>
                     <div class="parent-spinner text-gray spinner-border-sm "></div>
-                    <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1">
+                    {{-- <input type="hidden" id="packageinput0" name="packages[]" class="packageinput" value="1"> --}}
                   </div>
 
                   <div class="row">
@@ -959,6 +971,7 @@
       </div>
     </section>
 
+    @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('partials.view_rates_modal')

@@ -1,6 +1,6 @@
 require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 
-import $, { ajax, cssNumber } from 'jquery';
+import $, { ajax, cssNumber, event } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from 'sweetalert2';
@@ -1614,6 +1614,7 @@ $(document).ready(function($) {
 
             $(document).on('change', '.supplier-id', function() {
                 var quote = $(this).closest('.quote');
+                var quoteKey      = quote.data('key');
                 var supplier_name = $(this).find(':selected').attr('data-name');
                 var supplier_id   = $(this).val();
                 var season_id     = $('.season-id').val();
@@ -1621,23 +1622,49 @@ $(document).ready(function($) {
                 quote.find('.badge-supplier-id').html(supplier_name);
                 quote.find('.badge-supplier-id').removeClass('d-none');
 
+                var options = '';
+
+
                 if(season_id != "" && supplier_id != ""){
                     $.ajax({
                         type: 'get',
-                        url: `${BASEURL}get-supplier-rate-sheet`,
+                        // url: `${BASEURL}get-supplier-rate-sheet`,
+                        url: `${BASEURL}get-supplier-product-and-sheet`,
                         data: { 
                             'supplier_id': supplier_id,
                             'season_id': season_id,
                         },
                         success: function(response) {
-    
-                            if(response != ''){
+
+                            if(response && response.url != ""){
                                 quote.find('.view-supplier-rate').attr("href", response);
                                 quote.find('.view-supplier-rate').html("(View Supplier Rates)");
                             }else{
                                 quote.find('.view-supplier-rate').attr("href","");
                                 quote.find('.view-supplier-rate').html("");
                             }
+
+                            if(response && response.products.length != 0){
+                            
+                                options += "<option value=''>Select Product</option>";
+                                $.each(response.products, function(key, value) {
+                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                });
+
+                                $(`#quote_${quoteKey}_product_id`).html(options);
+                            }
+    
+                            /* old work for fetching only supplier's sheet */
+
+                            // if(response != ''){
+                            //     quote.find('.view-supplier-rate').attr("href", response);
+                            //     quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+                            // }else{
+                            //     quote.find('.view-supplier-rate').attr("href","");
+                            //     quote.find('.view-supplier-rate').html("");
+                            // }
+
+
     
                         }
                     });
@@ -1645,11 +1672,28 @@ $(document).ready(function($) {
                     quote.find('.view-supplier-rate').attr("href","");
                     quote.find('.view-supplier-rate').html("");
                 }
+
+            
+                
+            });
+
+            $(document).on('click', '.add-new-product', function() {
+
+                console.log("sds");
+        
+
+                var modal = 
+                jQuery('.add-new-product-modal').modal('show');
+                jQuery('.add-new-product-modal').find('.product-supplier-id').val('12');
+
+                
             });
 
             $(document).on('change', '.product-id', function() {
                 var quote = $(this).closest('.quote');
-                quote.find('.badge-product-id').html($(this).val());
+                var product_name = $(this).find(':selected').attr('data-name');
+
+                quote.find('.badge-product-id').html(product_name);
                 quote.find('.badge-product-id').removeClass('d-none');
             });
 

@@ -38,16 +38,38 @@ class ResponseController extends Controller
         return response()->json($commission_groups);
     }
     
-    public function getSupplierRateSheet(Request $request)
-    {
-        $url = '';
+    // public function getSupplierRateSheet(Request $request)
+    // {
+    //     $url = '';
 
+    //     $supplier = SupplierRateSheet::where([ "supplier_id" => $request->supplier_id, "season_id" => $request->season_id])->first();
+    //     if(!is_null($supplier)){
+    //         $url = url(Storage::url($supplier->file));
+    //     }
+
+    //     return $url;
+    // }
+
+    public function getSupplierProductAndSheet(Request $request)
+    {
+        // dd($request->all());
+
+        $response['url'] = '';
+        $response['products'] = '';
+
+     
         $supplier = SupplierRateSheet::where([ "supplier_id" => $request->supplier_id, "season_id" => $request->season_id])->first();
         if(!is_null($supplier)){
-            $url = url(Storage::url($supplier->file));
+            $response['url'] = url(Storage::url($supplier->file));
         }
 
-        return $url;
+        // dd($response['url'] );
+
+        $response['products'] = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+        // $response['products'] = '';
+
+        return $response;
+
     }
 
     public function getCategoryToSupplier(Request $request)
