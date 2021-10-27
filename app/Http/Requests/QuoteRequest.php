@@ -24,9 +24,12 @@ class QuoteRequest extends FormRequest
     public function rules()
     {
         return [
+
+            'quote_title'                               => 'required',
             'ref_no'                                    => 'required',
             'quote_no'                                  => 'required',
             'rate_type'                                 => 'required',
+            'markup_type'                               => 'required',
             'sale_person_id'                            => 'required',
             'brand_id'                                  => 'required',
             'holiday_type_id'                           => 'required',
@@ -40,27 +43,19 @@ class QuoteRequest extends FormRequest
             'lead_passenger_name'                       => 'required_if:agency,0',
             'lead_passenger_email'                      => 'required_if:agency,0',
             'lead_passenger_contact'                    => 'required_if:agency,0',    
-            // 'lead_passenger_dbo'                        => 'required_if:agency,0',
-            // 'lead_passsenger_nationailty_id'            => 'required_if:agency,0', 
-            // 'lead_passenger_bedding_preference'         => 'required_if:agency,0', 
-            // 'lead_passenger_dinning_preference'         => 'required_if:agency,0', 
             'pax_no'                                    => 'required',
             'quote'                                     => 'required|array',
             'quote.*.date_of_service'                   => 'required',
             'quote.*.end_date_of_service'               => 'required',
             'quote.*.category_id'                       => 'required',
             'quote.*.supplier_id'                       => 'required',
-            'quote.*.booking_type_id'                   => 'nullable',
             'quote.*.refundable_percentage'             => 'required_if:quote.*.booking_type_id,2',
-            // 'quote.*.booking_due_date'                  => 'required',
             'quote.*.supplier_currency_id'              => 'required',
             'quote.*.estimated_cost'                    => 'required',
             'quote.*.markup_amount'                     => 'required_if:markup_type,itemised',
             'quote.*.markup_percentage'                 => 'required_if:markup_type,itemised',
             'quote.*.selling_price_in_booking_currency' => 'required_if:markup_type,itemised',
             'quote.*.markup_amount_in_booking_currency' => 'required_if:markup_type,itemised',
-            'quote_title'                               => 'required',
-            'markup_type'                               => 'required',
         ];
     }
 

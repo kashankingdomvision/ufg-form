@@ -48,6 +48,7 @@ class BookingRequest extends FormRequest
             'quote.*.end_date_of_service'                     => 'required',
             'quote.*.category_id'                             => 'required',
             'quote.*.supplier_id'                             => 'required',
+            'quote.*.refundable_percentage'                   => 'required_if:quote.*.booking_type_id,2',
             'quote.*.supplier_currency_id'                    => 'required',
             'quote.*.estimated_cost'                          => 'required',
             'quote.*.markup_amount'                           => 'required_if:markup_type,itemised',
