@@ -1,10 +1,6 @@
-
-
-
 @extends('layouts.app')
 
 @section('title','Add Supplier Bulk Payments')
-
 @section('content')
 <div class="content-wrapper">
 
@@ -38,56 +34,54 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-      
-                    <div class="card card-default ">
-                            <button type="button" class="btn btn-tool m-0 text-dark " data-card-widget="collapse">
-                                <div class="card-header">
-                                <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
-                                </div>
-                            </button>
-                        <div class="card-body">
+                  <div class="card card-default ">
+                    <button type="button" class="btn btn-tool m-0 text-dark " data-card-widget="collapse">
+                      <div class="card-header">
+                        <h3 class="card-title"><b> <i class="fas fa-filter" aria-hidden="true"></i>  Filters &nbsp;<i class="fa fa-angle-down"></i></b></h3>
+                      </div>
+                    </button>
+                    <div class="card-body">
 
-                            <div class="row">
-
-                                <div class="col-md-4">
-                                  <div class="form-group">
-                                    <label>Supplier</label>
-                                    <select class="form-control select2single" name="supplier_id">
-                                        <option value="">Select Supplier </option>
-                                        @foreach ($suppliers as $supplier)
-                                          <option value="{{ $supplier->id }}" {{ request()->get('supplier_id') == $supplier->id  ? 'selected' : ''   }}>
-                                            {{ $supplier->name }} - 
-                                            {{ $supplier->getCurrency->code }}
-                                          </option>
-                                        @endforeach
-                                    </select>
-                                  </div>
-                                </div>
-                          
-                                <div class="col-md-4">
-                                  <div class="form-group">
-                                    <label>Booking Season</label>
-                                    <select class="form-control select2single" name="season_id" required>
-                                        <option value="">Select Season </option>
-                                        @foreach ($booking_seasons as $booking_season)
-                                          <option value="{{ $booking_season->id }}" {{ (request()->get('season_id') == $booking_season->id || $booking_season->default == 1  ) ? 'selected' : '' }}>{{ $booking_season->name }}</option>
-                                        @endforeach
-                                    </select>
-                                  </div>
-                                </div>
-                            </div>
-
-                           
-                            <div class="row mt-1">
-                                <div class="col-md-12">
-                                    <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                                        <a href="{{ route('supplier-bulk-payments.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
-                                    </div>
-                                </div>
-                            </div>
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Supplier</label>
+                            <select class="form-control select2single" name="supplier_id">
+                                <option value="">Select Supplier </option>
+                                @foreach ($suppliers as $supplier)
+                                  <option value="{{ $supplier->id }}" {{ request()->get('supplier_id') == $supplier->id  ? 'selected' : ''   }}>
+                                    {{ $supplier->name }} - 
+                                    {{ $supplier->getCurrency->code }}
+                                  </option>
+                                @endforeach
+                            </select>
+                          </div>
                         </div>
+                  
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label>Booking Season</label>
+                            <select class="form-control select2single" name="season_id" required>
+                                <option value="">Select Season </option>
+                                @foreach ($booking_seasons as $booking_season)
+                                  <option value="{{ $booking_season->id }}" {{ (request()->get('season_id') == $booking_season->id || $booking_season->default == 1  ) ? 'selected' : '' }}>{{ $booking_season->name }}</option>
+                                @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mt-1">
+                        <div class="col-md-12">
+                          <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
+                            <a href="{{ route('supplier-bulk-payments.index') }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                          </div>
+                        </div>
+                      </div>
+                      
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
@@ -157,8 +151,6 @@
                   </thead>
                   <tbody>
 
-                  
-
                     @if($bookings && $bookings->count())
 
                       @foreach ($bookings as $key => $booking )
@@ -166,7 +158,9 @@
                         <tr class="credit-row">
                           <td>
                             <div class="icheck-primary">
-                              <input type="checkbox" class="sbp-child credit" name="finance[{{$key}}][child]" value="0" data-value="{{$booking->outstanding_amount_left}}" id="{{$booking->booking_detail_id}}" data-id="{{$booking->booking_detail_id}}" 
+                              <input type="checkbox" class="sbp-child credit" name="finance[{{$key}}][child]" value="0" id="{{$booking->booking_detail_id}}"
+                              data-value="{{$booking->outstanding_amount_left}}" 
+                              data-id="{{$booking->booking_detail_id}}" 
                               data-currencyID="{{ $booking->supplier_currency_id }}" 
                               data-currencyCode="{{ $selected_supplier_currency }}"
                               >
@@ -180,7 +174,6 @@
 
                           <td class="d-none">
                             <input type="hidden" name="finance[{{$key}}][booking_detail_unique_ref_id]" value="{{ isset($booking->booking_detail_unique_ref_id) && !empty($booking->booking_detail_unique_ref_id) ? $booking->booking_detail_unique_ref_id : '' }}">
-                            {{-- <input type="hidden" name="finance[{{$key}}][supplier_id]" value="{{ $supplier_id }}" > --}}
                             <input type="hidden" name="finance[{{$key}}][booking_id]" value="{{ $booking->booking_id }}" >
                             <input type="hidden" name="finance[{{$key}}][booking_detail_id]" value="{{ $booking->booking_detail_id }}" >
                             <input type="hidden" name="finance[{{$key}}][actual_cost]" value="{{ $booking->actual_cost }}">
@@ -269,8 +262,6 @@
                 </table>
               </div>
             </div>
-
-            @include('includes.multiple_delete',['table_name' => 'supplier_rate_sheets'])
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">

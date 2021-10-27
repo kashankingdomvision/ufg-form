@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title','View Supplier Bulk Payment')
 @section('content')
     <div class="content-wrapper">
@@ -7,7 +8,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="d-flex">
-                            {{-- <h4>View User <x-add-new-button :route="route('users.create')" /> </h4> --}}
+                            <h4>View Supplier Bulk Payments </h4>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -34,7 +35,6 @@
                             <div class="card-header">
                                 <h3 class="card-title">Supplier Bulk Payment List</h3>
                             </div>
-
                            
                             <div class="card-body p-0">
                                 <div class="table-responsive">
@@ -59,12 +59,11 @@
                                         @if($supplier_bulk_payments && $supplier_bulk_payments->count())
                                             @foreach ($supplier_bulk_payments as $key => $sb_payment)
                                             <tr>
-
                                                 @php
                                                     $currency_code = isset($sb_payment->getCurrency->code) && !empty($sb_payment->getCurrency->code) ? $sb_payment->getCurrency->code : '';
                                                 @endphp
                                                 <td>
-                                                    <button class="btn btn-sm parent-row"  data-id="{{$sb_payment->id}}">
+                                                    <button class="btn btn-sm parent-row" data-id="{{$sb_payment->id}}">
                                                         <span class="fa fa-plus"></span>
                                                     </button>
                                                 </td>
@@ -88,13 +87,12 @@
                                                     <th class="text-center" style="width: 10px;">Booking Ref #</th>
                                                     <th class="text-center">Date of Service</th>
                                                     <th class="text-center">Category</th>
-                                                    <th >Product</th>
+                                                    <th>Product</th>
                                                     <th class="text-center" style="width: 120px;">Actual Cost</th>
                                                     <th class="text-center" style="width: 100px;">Outstanding Amount Left</th>
                                                     <th class="text-center">Paid Amount</th>
                                                     <th class="text-center">Credit Note Amount</th>
                                                     <th class="text-center">Total Paid Amount</th>
-                                          
                                                 </tr>
 
                                                 @foreach($sb_payment->getPaymentDetail as $key => $sb_payment_detail)

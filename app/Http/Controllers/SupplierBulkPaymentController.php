@@ -18,7 +18,6 @@ use App\Wallet;
 use App\SupplierBulkPayment;
 use App\SupplierBulkPaymentDetail;
 
-
 class SupplierBulkPaymentController extends Controller
 {
     /**
@@ -33,18 +32,15 @@ class SupplierBulkPaymentController extends Controller
         $data['payment_methods'] = PaymentMethod::where('id', '!=' , 3)->get();
         $data['bookings']        =  null;
 
-
         if(count($request->all()) > 0){
             if($request->has('supplier_id') && !empty($request->supplier_id) && $request->has('season_id') && !empty($request->season_id)){
 
                 $query = Booking::orderBy('bookings.id', 'ASC')
                 ->leftJoin('booking_details', 'bookings.id', '=', 'booking_details.booking_id')
-                ;
-                $query->where('bookings.season_id',$request->season_id);
-                $query->where('booking_details.supplier_id',$request->supplier_id);
-                $query->where('booking_details.payment_status', 'active');
-                $query->where('booking_details.outstanding_amount_left','>' ,0);
-                // $query->get();
+                ->where('bookings.season_id',$request->season_id)
+                ->where('booking_details.supplier_id',$request->supplier_id)
+                ->where('booking_details.payment_status', 'active')
+                ->where('booking_details.outstanding_amount_left','>' ,0);
 
                 $data['bookings'] =  $query->get([
                     'bookings.ref_no',
@@ -65,10 +61,7 @@ class SupplierBulkPaymentController extends Controller
                 $data['total_wallet']               = TotalWallet::where('supplier_id', $request->supplier_id)->first();
             }
 
-        //    dd($data['bookings']);
-
         }
-        
          
         return view('supplier_bulk_payments.index', $data);
     }
@@ -82,29 +75,29 @@ class SupplierBulkPaymentController extends Controller
             $total_used_credit_amount = $request->current_credit_amount - $request->remaining_credit_amount;
             
             $supplier_bulk_payment = SupplierBulkPayment::create([
-                'supplier_id'             => $request->supplier_id,
-                'total_paid_amount'       => $request->total_paid_amount,
-                'current_credit_amount'   => $request->current_credit_amount,
-                'remaining_credit_amount' => $request->remaining_credit_amount,
+                'supplier_id'              => $request->supplier_id,
+                'total_paid_amount'        => $request->total_paid_amount,
+                'current_credit_amount'    => $request->current_credit_amount,
+                'remaining_credit_amount'  => $request->remaining_credit_amount,
                 'total_used_credit_amount' => $total_used_credit_amount,
-                'payment_date'            => date('Y-m-d'),
-                'payment_method_id'       => $request->payment_method_id,
-                'user_id'                 => Auth::user()->id,
-                'season_id'               => $request->season_id,
-                'currency_id'             => $request->currency_id
+                'payment_date'             => date('Y-m-d'),
+                'payment_method_id'        => $request->payment_method_id,
+                'user_id'                  => Auth::user()->id,
+                'season_id'                => $request->season_id,
+                'currency_id'              => $request->currency_id
             ]);
     
             foreach ($request->finance as $key => $finance) {
     
                 if(isset($finance['child']) && $finance['child'] == 1 ){
     
-                    $deposit['booking_detail_id']       = $finance['booking_detail_id'];
-                    $deposit['booking_id']              = $finance['booking_id'];
-                    $deposit['supplier_id']             = $request->supplier_id;
-                    $deposit['payment_method_id']       = $request->payment_method_id;
-                    $deposit['currency_id']             = $request->currency_id;
-                    $deposit['user_id']                 = Auth::user()->id;
-                    $outstanding_amount_left            = $finance['booking_detail_outstanding_amount_left'];
+                    $deposit['booking_detail_id'] = $finance['booking_detail_id'];
+                    $deposit['booking_id']        = $finance['booking_id'];
+                    $deposit['supplier_id']       = $request->supplier_id;
+                    $deposit['payment_method_id'] = $request->payment_method_id;
+                    $deposit['currency_id']       = $request->currency_id;
+                    $deposit['user_id']           = Auth::user()->id;
+                    $outstanding_amount_left      = $finance['booking_detail_outstanding_amount_left'];
                     $deposit['deposit_due_date']  = date('Y-m-d');
                     $deposit['paid_date']         = date('Y-m-d');
     
@@ -154,10 +147,7 @@ class SupplierBulkPaymentController extends Controller
                         'credit_note_amount'       => isset($finance['credit']['credit_note']) && !empty($finance['credit']['credit_note']) ? $finance['credit']['credit_note'] : '', 
                         'currency_id'              => $request->currency_id
                     ]);
-    
-    
                 }
-                
             }
 
             return \Response::json(['status' => true, 'success_message' => 'Supplier Bulk Payment Added Successfully.'], 200); // Status code here
