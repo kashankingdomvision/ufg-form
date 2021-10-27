@@ -507,11 +507,18 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>End Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control date-of-service bookingEndDateOfService datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
+                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
                                     <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
 
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label>Number of Nights</label>
+                                    <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail['number_of_nights'] }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
+                                </div>
 
                                 <div class="col-sm-2">
                                 <div class="form-group">

@@ -576,6 +576,14 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
+                                  <label>Number of Nights</label>
+                                  <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $booking_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
                                   <label>Time of Service</label>
                                   <input type="time" value="{{ $booking_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service " placeholder="Time of Service" autocomplete="off">
                                 </div>

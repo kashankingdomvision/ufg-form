@@ -50214,6 +50214,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '.view-rates', function () {
     jQuery('#view_rates_modal').modal('show');
+  });
+  $(document).on('change', '.end-date-of-service', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();
+    var EndDateOFService = $("#quote_".concat(quoteKey, "_end_date_of_service")).val();
+
+    if (convertDate(EndDateOFService) < convertDate(DateOFService)) {
+      alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+      $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", '');
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
+    } else {
+      var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+      var days = Math.ceil(number / (1000 * 3600 * 24));
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val(days);
+    }
   }); // $(document).on('change', '.datepicker', function() {
   //     // var datePicker_id     = $(this).attr('id');
   //     var name = $(this).data('name');

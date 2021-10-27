@@ -22,6 +22,7 @@ class BookingDetail extends Model
         'refundable_percentage',
         'date_of_service',
         'end_date_of_service',
+        'number_of_nights',
         'time_of_service',
         'booking_date',
         'booking_due_date',

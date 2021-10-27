@@ -208,6 +208,7 @@ class BookingController extends Controller
             'supervisor_id'           => $quoteD['supervisor_id'],
             'date_of_service'         => $quoteD['date_of_service'],
             'end_date_of_service'     => $quoteD['end_date_of_service'],
+            'number_of_nights'        => $quoteD['number_of_nights'],
             'time_of_service'         => $quoteD['time_of_service'],
             'booking_date'            => $quoteD['booking_date'],
             'booking_due_date'        => $quoteD['booking_due_date'],
