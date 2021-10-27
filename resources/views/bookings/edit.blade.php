@@ -500,7 +500,9 @@
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                       </div>
                     </div>
+
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
+                    <div class="sortable sortable-spacing">
                       @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
                       {{-- @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail ) --}}
                         <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
@@ -1394,7 +1396,9 @@
                           </div>
                         </div>
                       @endforeach
-                      <div class="parent-spinner text-gray spinner-border-sm "></div>
+                    </div>
+                    
+                    <div class="parent-spinner text-gray spinner-border-sm "></div>
                     @endif
                     <div class="row">
                       <div class="col-12 text-right">

@@ -27,7 +27,7 @@ $(document).ready(function($) {
 
     // make quote section sortable
     $(function() {
-        $( "#parent" ).sortable();
+        $( ".sortable" ).sortable();
     });
  
             $(function() {

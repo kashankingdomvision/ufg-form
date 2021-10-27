@@ -559,7 +559,8 @@
                       </div>
                     </div>
 
-                    @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
+                    <div class="sortable sortable-spacing">
+                      @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
                         <div class="quote card card-default " data-key="{{$key}}">
 
                           <div class="card-header">
@@ -913,7 +914,8 @@
                           </div>
 
                         </div>
-                    @endforeach
+                      @endforeach
+                    </div>
 
                     <div class="parent-spinner text-gray spinner-border-sm "></div>
                   </div>

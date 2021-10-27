@@ -439,6 +439,7 @@
                     </div>
                   </div>
                   @if($booking['booking'] && count($booking['booking']))
+                  <div class="sortable sortable-spacing">
                     @foreach ($booking['booking'] as $key  => $booking_detail )
                       <div class="quote card card-default" data-key="{{$key}}">
 
@@ -1221,6 +1222,7 @@
 
                       </div>
                     @endforeach
+                  </div>
                   @endif
                 </div>
                 <div class="form-group row  mt-3">

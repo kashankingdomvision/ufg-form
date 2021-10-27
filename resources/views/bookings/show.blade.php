@@ -503,6 +503,7 @@
                         </div>
                       </div>
                       @if($booking->getBookingDetail && $booking->getBookingDetail->count())
+                      <div class="sortable sortable-spacing">
                         @foreach ($booking->getBookingDetail as $key  => $booking_detail )
                           <div class="quote card card-default" data-key="0">
 
@@ -1453,6 +1454,7 @@
 
                           </div>
                         @endforeach
+                      </div>
                       @endif
                     
                       <div class="form-group row mt-3">

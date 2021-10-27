@@ -4747,6 +4747,11 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   opacity: 0.5;
 }
 
+.sortable-spacing {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Form Control

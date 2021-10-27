@@ -51818,7 +51818,7 @@ var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').att
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // make quote section sortable
   $(function () {
-    $("#parent").sortable();
+    $(".sortable").sortable();
   });
   $(function () {
     $('.date-range-picker').daterangepicker({
