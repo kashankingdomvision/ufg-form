@@ -414,7 +414,7 @@
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                       </div>
                     </div>
-                    <div class="quote card card-default" data-key="0">
+                    <div class="quote ui-state-default card card-default" data-key="0">
 
                       <div class="card-header">
                         <h3 class="card-title card-title-style quote-title"></h3>

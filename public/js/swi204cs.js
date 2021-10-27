@@ -51816,9 +51816,7 @@ window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  // $( function() {
-  //     $( "#sortable" ).sortable();
-  // } );
+  // make quote section sortable
   $(function () {
     $("#parent").sortable();
   });

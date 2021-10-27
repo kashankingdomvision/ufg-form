@@ -25,13 +25,10 @@ var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
 
-    // $( function() {
-    //     $( "#sortable" ).sortable();
-    // } );
-
-    $( function() {
+    // make quote section sortable
+    $(function() {
         $( "#parent" ).sortable();
-    } );
+    });
  
             $(function() {
 
