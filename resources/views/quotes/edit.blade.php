@@ -558,8 +558,9 @@
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                       </div>
                     </div>
-                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get() as $key  => $q_detail )
-                        <div class="quote card card-default " data-key="{{$key}}">
+
+                    @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
+                        <div class="quote ui-state-default card card-default " data-key="{{$key}}">
 
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">

@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 
 import daterangepicker from 'daterangepicker';
+import 'jquery-ui/ui/widgets/sortable.js';
 
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
@@ -23,7 +24,15 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
-//
+
+    // $( function() {
+    //     $( "#sortable" ).sortable();
+    // } );
+
+    $( function() {
+        $( "#parent" ).sortable();
+    } );
+ 
             $(function() {
 
                 $('.date-range-picker').daterangepicker({
