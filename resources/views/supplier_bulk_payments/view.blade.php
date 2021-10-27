@@ -26,7 +26,7 @@
                 </div>
             </div>
         </section>
-        
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -46,7 +46,7 @@
                                                 <th class="text-center">Payment Date</th>
                                                 <th class="text-center" style="width: 145px;">Payment Method</th>
                                                 <th class="text-center">Pay By</th>
-                                                <th class="text-center">Season</th>
+                                                <th class="text-center" style="width: 130px;">Season</th>
                                                 <th class="text-center">Currency</th>
                                                 <th class="text-center">Credit Amount</th>
                                                 <th class="text-center" style="width: 175px;">Remaining Credit Amount</th>

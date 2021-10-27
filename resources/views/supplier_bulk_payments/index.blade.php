@@ -86,7 +86,7 @@
             </div>
         </div>
     </form>
-</section>
+  </section>
 
 <form action="{{ route('supplier-bulk-payments.store') }}" id="bulk_payment">
   <section class="content">
