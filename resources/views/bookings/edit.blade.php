@@ -501,7 +501,8 @@
                       </div>
                     </div>
                     @if($booking->getBookingDetail && $booking->getBookingDetail->count())
-                      @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail )
+                      @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
+                      {{-- @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail ) --}}
                         <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
 
                           <div class="card-header">
@@ -1400,6 +1401,7 @@
                         <button type="button" id="add_more_booking" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
                       </div>
                     </div>
+                  </div>
                     <div class="form-group row mt-1">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
                       <div class="col-sm-2">
@@ -1739,7 +1741,7 @@
                       </section>
                     @endif
 
-                  </div>
+                  
                   @if(isset($ufg_payment_records) && !empty($ufg_payment_records))
                     <div class="card mt-2">
                       <div class="card-header">
