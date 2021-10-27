@@ -75,10 +75,9 @@ class SupplierBulkPaymentController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request->supplier_id);
-
         $this->validate($request, ['payment_method_id' => 'required' ], ['required' => ' The Payment Method field is required.']);
-        // try {
+        
+        try {
 
             $total_used_credit_amount = $request->current_credit_amount - $request->remaining_credit_amount;
             
@@ -163,11 +162,10 @@ class SupplierBulkPaymentController extends Controller
 
             return \Response::json(['status' => true, 'success_message' => 'Supplier Bulk Payment Added Successfully.'], 200); // Status code here
           
-        // } catch (\Exception $e) {
-        //     return \Response::json(['status' => false, 'payment_error' => 'Something went wrong with Supplier Bulk Payment.'], 422); // Status code here
-        //     // return $e->getMessage();
-        // }
-
+        } catch (\Exception $e) {
+            return \Response::json(['status' => false, 'payment_error' => 'Something went wrong with Supplier Bulk Payment.'], 422); // Status code here
+            // return $e->getMessage();
+        }
 
     }
 
