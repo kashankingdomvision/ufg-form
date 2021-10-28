@@ -19,7 +19,8 @@ class CreateBookingDetailsTable extends Migration
             $table->string('booking_detail_unique_ref_id', 6)->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
-            $table->string('product_id')->nullable();
+            $table->unsignedBigInteger('product_id')->nullable();
+            // $table->string('product_id')->nullable();
             $table->unsignedBigInteger('booking_method_id')->nullable();
             $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('supervisor_id')->nullable();

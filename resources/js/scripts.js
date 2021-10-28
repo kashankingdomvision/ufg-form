@@ -1677,21 +1677,114 @@ $(document).ready(function($) {
                 
             });
 
+            var quoteKeyForProduct = '';
             $(document).on('click', '.add-new-product', function() {
 
-                console.log("sds");
-        
+                var quote           = $(this).closest('.quote');
+                quoteKeyForProduct  = quote.data('key');
+                var supplier_id     = quote.find('.supplier-id').val();
+                var modal           = jQuery('.add-new-product-modal');
 
-                var modal = 
-                jQuery('.add-new-product-modal').modal('show');
-                jQuery('.add-new-product-modal').find('.product-supplier-id').val('12');
+                if((supplier_id != "") && (typeof supplier_id !== 'undefined')){
 
-                
+                    modal.modal('show');
+                    modal.find('.product-supplier-id').val(supplier_id);
+
+                }else{
+                    alert("Please select Supplier first");
+                    return;
+                }
+
+            });
+
+            $("#form_add_product").submit(function(event) {
+
+                event.preventDefault();
+
+                var url      = $(this).attr('action');
+                var formData = $(this).serialize();
+                var options  = '';
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    beforeSend: function() {
+                        $('input').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#submit_add_product").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+                        $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        jQuery('.add-new-product-modal #form_add_product input, textarea').val('');
+                        jQuery('.add-new-product-modal').modal('hide');
+
+                        setTimeout(function() {
+
+                            if(data && data.status == true){
+                                alert(data.success_message);
+
+                                if(data.products.length != 0){
+                                
+                                    options += "<option value=''>Select Product</option>";
+                                    $.each(data.products, function(key, value) {
+                                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                    });
+    
+                                    $(`#quote_${quoteKeyForProduct}_product_id`).html(options);
+                                }
+                            }
+
+
+                        }, 200);
+                    },
+                    error: function(reject) {
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                jQuery.each(errors.errors, function(index, value) {
+                                    index = index.replace(/\./g, '_');
+
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                });
+
+                                if (errors.hasOwnProperty("product_error")) {
+                                    alert(errors.product_error);
+
+                                } else {
+
+                                    jQuery.each(errors.errors, function(index, value) {
+                                        index = index.replace(/\./g, '_');
+    
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                    });
+    
+                                }
+
+                            }, 200);
+
+                        }
+                    },
+                });
+
             });
 
             $(document).on('change', '.product-id', function() {
-                var quote = $(this).closest('.quote');
+                var quote        = $(this).closest('.quote');
                 var product_name = $(this).find(':selected').attr('data-name');
+                    
+                if(typeof product_name === 'undefined') {
+                    quote.find('.badge-product-id').html('');
+                    return;
+                }
 
                 quote.find('.badge-product-id').html(product_name);
                 quote.find('.badge-product-id').removeClass('d-none');
@@ -1718,7 +1811,6 @@ $(document).ready(function($) {
                         options += "<option value=''>Select Supplier</option>";
 
                         $.each(response, function(key, value) {
-
                             options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
 
@@ -2470,6 +2562,7 @@ $(document).ready(function($) {
 
                         $('.remove').addClass('remove-quote-detail-service');
                         $('.remove').removeClass('d-none');
+                        $('.add-new-product').removeClass('d-none');
 
                         getMarkupTypeFeildAttribute();
                     }

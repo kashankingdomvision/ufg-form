@@ -520,9 +520,8 @@
                                 <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
                                   <option selected value="">Select Product</option>
                                 </select>
-                                @error('product_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
+                                
+                                <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
   

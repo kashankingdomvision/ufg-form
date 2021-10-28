@@ -476,7 +476,7 @@
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
-                              <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && !empty($q_detail['product_id'])) ? $q_detail['product_id'] : '' }}</span>
+                              <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
                               <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
                             </h3>
                             <div class="card-tools">
@@ -569,10 +569,25 @@
                                 </div>
 
 
-                                <div class="col-sm-2">
+                                {{-- <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product</label>
                                     <input type="text" name="quote[0][product_id]" value="{{ $q_detail['product_id'] }}" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
+                                  </div>
+                                </div> --}}
+
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product d-none"> ( Add New Product ) </a></label>
+                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                      <option value="">Select Product</option>
+                                      @if(isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts)
+                                        @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts as  $product)
+                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                        @endforeach
+                                      @endif
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
 
@@ -1017,4 +1032,5 @@
   </div>
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
   @include('partials.view_rates_modal')
+  @include('partials.add_new_product')
 @endsection

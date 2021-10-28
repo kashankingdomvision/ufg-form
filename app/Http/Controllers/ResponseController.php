@@ -23,6 +23,7 @@ use App\User;
 use App\StoreText;
 use App\CommissionGroup;
 use App\SupplierRateSheet;
+use App\SupplierProduct;
 
 class ResponseController extends Controller
 {
@@ -37,6 +38,50 @@ class ResponseController extends Controller
         $commission_groups = CommissionGroup::where('commission_id',$request->commission_id)->get();
         return response()->json($commission_groups);
     }
+
+    
+    public function addProductWithSupplierSync(Request $request)
+    {    
+        $this->validate(
+            $request, 
+            [
+                'code' => 'required',
+                'name' => 'required'
+            ],
+            [
+                'code.required' => 'The Product Code field is required.',
+                'name.required' => 'The Product Name field is required.'
+            ]
+     
+        );
+
+        try {
+
+            $product = Product::create([
+                'code'        => $request->code,
+                'name'        => $request->name,
+                'description' => $request->description,
+            ]);
+    
+            $supplier = Supplier::find($request->product_supplier_id);
+            
+            SupplierProduct::create([
+                'supplier_id' => $supplier->id,
+                'product_id'  => $product->id
+            ]);
+    
+            $supplierProducts = $supplier->getProducts;
+
+            return \Response::json(['status' => true, 'success_message' => 'Supplier Bulk Payment Added Successfully.' , 'products' => $supplierProducts], 200); // Status code here
+          
+        } catch (\Exception $e) {
+
+            return \Response::json(['status' => false, 'product_error' => 'Something went wrong in Product Creation Please try again!' ], 422); // Status code here
+        
+        }
+ 
+    }
+    
     
     // public function getSupplierRateSheet(Request $request)
     // {

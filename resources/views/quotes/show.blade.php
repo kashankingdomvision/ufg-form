@@ -618,10 +618,25 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Product</label>
                                   <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" value="{{ $q_detail->product_id }}" placeholder="Enter Product">
+                                </div>
+                              </div> --}}
+                              
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product </label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
+                                    @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
+                                      @foreach ($q_detail->getSupplier->getProducts as  $product)
+                                        <option value="{{ $product->id }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 
