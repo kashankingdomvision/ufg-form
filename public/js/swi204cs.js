@@ -52008,6 +52008,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return x.toFixed(2);
   }
 
+  function checkForInt(x) {
+    if (isNaN(x) || !isFinite(x)) {
+      return '';
+    }
+
+    return parseInt(x);
+  }
+
   function isEmpty(value) {
     return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
   }
@@ -53038,7 +53046,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       var number = convertDate(EndDateOFService) - convertDate(DateOFService);
       var days = Math.ceil(number / (1000 * 3600 * 24));
-      $("#quote_".concat(quoteKey, "_number_of_nights")).val(days);
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val(checkForInt(days));
     }
   }); // $(document).on('change', '.datepicker', function() {
   //     // var datePicker_id     = $(this).attr('id');
