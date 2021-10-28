@@ -53254,6 +53254,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find('.badge-supplier-id').removeClass('d-none');
     var options = '';
 
+    if (typeof supplier_id === 'undefined' || supplier_id == "") {
+      $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
+      return;
+    }
+
     if (season_id != "" && supplier_id != "") {
       $.ajax({
         type: 'get',
@@ -53293,6 +53298,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       quote.find('.view-supplier-rate').attr("href", "");
       quote.find('.view-supplier-rate').html("");
+      $("#quote_".concat(quoteKey, "_product_id")).html("");
     }
   });
   var quoteKeyForProduct = '';
@@ -53399,7 +53405,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $.each(response, function (key, value) {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // selector.closest('.row').find('.supplier-id').html(options);
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>"); // selector.closest('.row').find('.supplier-id').html(options);
         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });

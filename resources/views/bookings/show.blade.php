@@ -520,7 +520,7 @@
                                 <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
                                 <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
                                 <span class="badge badge-info badge-supplier-id">{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : ''}}</span>
-                                <span class="badge badge-info badge-product-id">{{ isset($booking_detail->product_id) && !empty($booking_detail->product_id) ? $booking_detail->product_id : '' }}</span>
+                                <span class="badge badge-info badge-product-id">{{  isset($booking_detail->getProduct->name) && !empty($booking_detail->getProduct->name) ? $booking_detail->getProduct->name : '' }}</span>
                                 <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span>
                               </h3>
   
@@ -608,29 +608,27 @@
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2">
+                                {{-- <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product</label>
                                     <input type="text" name="quote[{{ $key }}][product_id]"  data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id" value="{{ $booking_detail->product_id }}" placeholder="Enter Product">
                                   </div>
-                                </div>
+                                </div> --}}
 
-                                {{-- <div class="col-sm-2">
+                                <div class="col-sm-2">
                                   <div class="form-group">
-                                    <label>Product</label>
+                                    <label>Product </label>
                                     <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                       <option value="">Select Product</option>
                                       @if(isset($booking_detail->getSupplier) && $booking_detail->getSupplier->getProducts)
                                         @foreach ($booking_detail->getSupplier->getProducts as  $product)
-                                          <option value="{{ $product->id }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                         @endforeach
                                       @endif
                                     </select>
-                                    @error('product_id')
-                                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                    @enderror
+                                    <span class="text-danger" role="alert"></span>
                                   </div>
-                                </div> --}}
+                                </div>
 
                                 {{-- <div class="col-sm-2">
                                   <div class="form-group">

@@ -1582,8 +1582,6 @@ $(document).ready(function($) {
                 }
             });
 
-
-
             $(document).on('click', '.expand-all-btn', function(event) {
                 $('#parent .quote').removeClass('collapsed-card');
                 $('#parent .card-body').css("display", "block");
@@ -1624,6 +1622,10 @@ $(document).ready(function($) {
 
                 var options = '';
 
+                if(typeof supplier_id === 'undefined' || supplier_id == "") {
+                    $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                    return;
+                }
 
                 if(season_id != "" && supplier_id != ""){
                     $.ajax({
@@ -1671,6 +1673,7 @@ $(document).ready(function($) {
                 }else{
                     quote.find('.view-supplier-rate').attr("href","");
                     quote.find('.view-supplier-rate').html("");
+                    $(`#quote_${quoteKey}_product_id`).html("");
                 }
 
             
@@ -1815,6 +1818,7 @@ $(document).ready(function($) {
                         });
 
                         $(`#quote_${quoteKey}_supplier_id`).html(options);
+                        $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
 
                         // selector.closest('.row').find('.supplier-id').html(options);
                         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');

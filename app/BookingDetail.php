@@ -55,6 +55,11 @@ class BookingDetail extends Model
         return $this->hasOne(Supplier::class,'id','supplier_id');
     }
 
+    public function getProduct()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
+
     public function getBooking()
     {
         return $this->hasOne(Booking::class, 'id', 'booking_id');   
