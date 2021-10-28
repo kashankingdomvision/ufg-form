@@ -1114,14 +1114,10 @@
                         <div class="row">
                           <div class="col-sm-3 relevant-quote">
                             <select name="quote_group" class="form-control select2-single" id="group_quote">
-                                @if(count($groups) > 0)
-                                <option value="0">Select group</option>
-                                @foreach ($groups as $group)
-                                    <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
-                                @endforeach
-                                @else
-                                    <option selected disabled>No group found.</option>
-                                @endif
+                              <option value="0">Select Group</option>
+                              @foreach ($groups as $group)
+                                <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
+                              @endforeach
                             </select>
                           </div>
                         </div>

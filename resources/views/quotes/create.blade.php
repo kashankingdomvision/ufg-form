@@ -943,10 +943,9 @@
                         <div class="row">
                           <div class="col-sm-3 relevant-quote">
                               <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
+                                <option value="" selected >Select Group</option>
                                 @foreach($groups as $group)
-                                    <option value="{{ $group->id }}">
-                                        {{ $group->name }}
-                                    </option>
+                                  <option value="{{ $group->id }}"> {{ $group->name }}</option>
                                 @endforeach
                               </select>
                           </div>
