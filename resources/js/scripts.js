@@ -2903,6 +2903,8 @@ $(document).ready(function($) {
                     beforeSend: function() {
                         $("#overlay").addClass('overlay');
                         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+
+                        $('.quote').removeClass('border border-danger');
                     },
                     success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
@@ -2935,6 +2937,8 @@ $(document).ready(function($) {
                                         index = index.replace(/\./g, '_');
 
                                         // expand quote if feild has an error
+                                        // $(`#${index}`).closest('.quote').addClass('border border-danger');
+
                                         $(`#${index}`).closest('.quote').removeClass('collapsed-card');
                                         $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
                                         $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);

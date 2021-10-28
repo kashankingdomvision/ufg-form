@@ -54208,6 +54208,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       beforeSend: function beforeSend() {
         $("#overlay").addClass('overlay');
         $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        $('.quote').removeClass('border border-danger');
       },
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
@@ -54231,6 +54232,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             } else {
               jQuery.each(errors.errors, function (index, value) {
                 index = index.replace(/\./g, '_'); // expand quote if feild has an error
+                // $(`#${index}`).closest('.quote').addClass('border border-danger');
 
                 $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
                 $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
