@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary"  id="submit_add_product">
+                    <button type="submit" class="btn btn-primary" id="submit_add_product">
                         <span class="mr-2 " role="status" aria-hidden="true"></span>
                         Submit
                       </button>

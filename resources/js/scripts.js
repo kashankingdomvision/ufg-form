@@ -1789,13 +1789,6 @@ $(document).ready(function($) {
 
                                 $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
 
-                                jQuery.each(errors.errors, function(index, value) {
-                                    index = index.replace(/\./g, '_');
-
-                                    $(`#${index}`).addClass('is-invalid');
-                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                                });
-
                                 if (errors.hasOwnProperty("product_error")) {
                                     alert(errors.product_error);
 

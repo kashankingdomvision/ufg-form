@@ -53382,11 +53382,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           var errors = $.parseJSON(reject.responseText);
           setTimeout(function () {
             $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
 
             if (errors.hasOwnProperty("product_error")) {
               alert(errors.product_error);
