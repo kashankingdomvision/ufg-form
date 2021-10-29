@@ -487,7 +487,7 @@
                                 <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
                                   <option selected value="">Select Category</option>
                                   @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" data-name="{{ $category->name }}"> {{ $category->name }} </option>
+                                    <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}"> {{ $category->name }} </option>
                                   @endforeach
                                 </select>
                                 <span class="text-danger" role="alert"></span>
@@ -598,9 +598,9 @@
                               <div class="form-group">
                                 <label>Booking Types </label>
                                 <select name="quote[0][booking_type_id]" data-name="booking_type_id" id="quote_0_booking_type_id" class="form-control select2single booking-type-id">
-                                  <option selected value="" >Select Booking Type</option>
+                                  <option value="" >Select Booking Type</option>
                                   @foreach ($booking_types as $booking_type)
-                                    <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ $booking_type->slug == 'refundable' ? 'selected' : '' }}> {{$booking_type->name}} </option>
+                                    <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" > {{$booking_type->name}} </option>
                                   @endforeach
                                 </select>
   

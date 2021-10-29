@@ -702,10 +702,10 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Booking Types</label>
-                                    <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control  select2single    booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                    <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type_id" id="quote_{{ $key }}_booking_type_id" class="form-control  select2single    booking-type-id @error('booking_type_id') is-invalid @enderror">
                                       <option value="">Select Booking Type</option>
                                       @foreach ($booking_types as $booking_type)
-                                      <option value="{{ $booking_type->id }}" {{ $booking_detail->booking_type_id == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
+                                      <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ $booking_detail->booking_type_id == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
                                       @endforeach
                                     </select>
 

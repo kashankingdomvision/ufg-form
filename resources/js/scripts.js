@@ -1831,10 +1831,20 @@ $(document).ready(function($) {
                 var quoteKey      = quote.data('key');
                 var category_id   = $(this).val();
                 var category_name = $(this).find(':selected').attr('data-name');
+                var category_slug = $(this).find(':selected').attr('data-slug');
                 var options       = '';
 
                 quote.find('.badge-category-id').html(category_name);
                 quote.find('.badge-category-id').removeClass('d-none');
+
+                if(category_slug == 'flights'){
+
+                    let refundable = $(`#quote_${quoteKey}_booking_type_id`).find("option[data-slug='refundable']").val();
+                    $(`#quote_${quoteKey}_booking_type_id`).val(refundable).trigger('change');
+               
+                }else{
+                    $(`#quote_${quoteKey}_booking_type_id`).val('').trigger('change');
+                }
 
                 $.ajax({
                     type: 'get',
