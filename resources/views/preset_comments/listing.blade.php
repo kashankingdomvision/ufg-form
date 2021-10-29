@@ -69,13 +69,13 @@
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr>
-                      <th>
+                      <th style="width: 100px;">
                         <div class="icheck-primary">
                           <input type="checkbox" class="parent">
                         </div>
                       </th>
-                      <th>Preset Comment</th>
-                      <th>Action</th>
+                      <th style="width: 500px;">Preset Comment</th>
+                      <th style="width: 100px;">Action</th>
                     </tr>
                   </thead>
                   <tbody>
