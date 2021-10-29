@@ -15,7 +15,7 @@ class CreatePresetCommentsTable extends Migration
     {
         Schema::create('preset_comments', function (Blueprint $table) {
             $table->id();
-            $table->string('comment');
+            $table->text('comment');
             $table->timestamps();
         });
     }
