@@ -49,7 +49,7 @@ use App\TransferDetail;
 use App\User;
 use App\Wallet;
 use App\TotalWallet;
-
+use App\PresetComment; 
 use App\ReferenceCredential;
 
 class BookingController extends Controller
@@ -363,6 +363,7 @@ class BookingController extends Controller
         $data['banks']            = Bank::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
