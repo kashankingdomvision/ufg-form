@@ -1698,9 +1698,10 @@ $(document).ready(function($) {
                 modal.modal('show');
             });
 
-            $(document).on('click', '#submit_add_product', function() {
+            $(document).on('click', '#insert_quick_text_confirm_btn', function() {
 
                 var quickText = $(".quick-comment:checked").val();
+                $(".quick-comment").prop('checked', false);
                 jQuery('.insert-quick-text-modal').modal('hide');
                 $(`#quote_${quoteKeyForComment}_comments`).val(quickText);
             });
@@ -2603,7 +2604,7 @@ $(document).ready(function($) {
 
                         $('.remove').addClass('remove-quote-detail-service');
                         $('.remove').removeClass('d-none');
-                        $('.add-new-product').removeClass('d-none');
+                        $('.add-new-product, .insert-quick-text').removeClass('d-none');
 
                         getMarkupTypeFeildAttribute();
                     }

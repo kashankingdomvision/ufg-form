@@ -53316,8 +53316,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var modal = jQuery('.insert-quick-text-modal');
     modal.modal('show');
   });
-  $(document).on('click', '#submit_add_product', function () {
+  $(document).on('click', '#insert_quick_text_confirm_btn', function () {
     var quickText = $(".quick-comment:checked").val();
+    $(".quick-comment").prop('checked', false);
     jQuery('.insert-quick-text-modal').modal('hide');
     $("#quote_".concat(quoteKeyForComment, "_comments")).val(quickText);
   }); // $(function(){ // let all dom elements are loaded
@@ -53976,7 +53977,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('#btnSubmitversion').append(btn_Submit);
         $('.remove').addClass('remove-quote-detail-service');
         $('.remove').removeClass('d-none');
-        $('.add-new-product').removeClass('d-none');
+        $('.add-new-product, .insert-quick-text').removeClass('d-none');
         getMarkupTypeFeildAttribute();
       }
     } else {

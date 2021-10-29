@@ -40,7 +40,8 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
 use App\CommissionGroup;
-use App\CommissionCriteria;
+use App\CommissionCriteria; 
+use App\PresetComment; 
 
 class QuoteController extends Controller
 {
@@ -267,6 +268,8 @@ class QuoteController extends Controller
         $data['groups']           = Group::orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
 
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+
         return view('quotes.create', $data);
     }
 
@@ -349,6 +352,7 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         return view('quotes.edit',$data);
     }
@@ -477,6 +481,7 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         if($type != NULL){
             $data['type'] = $type;
