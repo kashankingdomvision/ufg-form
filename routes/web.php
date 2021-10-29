@@ -314,6 +314,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
 
+        /* Preset Comment */
+        Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
         /* Bank */
         Route::resource('banks', 'SettingControllers\BankController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
