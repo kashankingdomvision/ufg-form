@@ -10,10 +10,10 @@
       </div>
 
       <div class="modal-body">
-        <div class="row" style="max-height: 500px; overflow-y: auto;">
+        <form>
+          <div class="row" style="max-height: 500px; overflow-y: auto;">
 
-          @if($preset_comments && $preset_comments->count())
-            <form action="">
+            @if($preset_comments && $preset_comments->count())
               @foreach ($preset_comments as $key => $preset_comment)
                 <div class="col-sm-4">
                   <div class="form-group">
@@ -26,16 +26,16 @@
                   </div>
                 </div>
               @endforeach
-            </form>
-          @else
-            No record found.
-          @endif
-
-        </div>
+            @else
+              No record found.
+            @endif
+              
+          </div>
+        </form>
       </div>
 
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" id="insert_quick_text_confirm_btn">OK</button>
+        <button type="submit" class="btn btn-primary" id="insert_quick_text_confirm_btn">OK, Add It</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel & Close</button>
       </div>
     </div>
