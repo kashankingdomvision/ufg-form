@@ -751,7 +751,7 @@
   
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Comments</label>
+                                <label>Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                                 <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                               </div>
                             </div>
@@ -968,7 +968,7 @@
         </div>
       </div>
     </section>
-
+    @include('partials.insert_quick_text')
     @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])

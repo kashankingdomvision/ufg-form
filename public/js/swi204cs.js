@@ -53309,6 +53309,26 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $("#quote_".concat(quoteKey, "_product_id")).html("");
     }
   });
+  var quoteKeyForComment = '';
+  $(document).on('click', '.insert-quick-text', function () {
+    var quote = $(this).closest('.quote');
+    quoteKeyForComment = quote.data('key');
+    var modal = jQuery('.insert-quick-text-modal');
+    modal.modal('show');
+  });
+  $(document).on('click', '#submit_add_product', function () {
+    var quickText = $(".quick-comment:checked").val();
+    jQuery('.insert-quick-text-modal').modal('hide');
+    $("#quote_".concat(quoteKeyForComment, "_comments")).val(quickText);
+  }); // $(function(){ // let all dom elements are loaded
+  //     jQuery('.insert-quick-text-modal').on('hidden.bs.modal', function () {
+  //         console.log("modal closed");
+  //         var values = $(".quick-comment:checked").val();
+  //         $(`#quote_${quoteKeyForComment}_comments`).val(values);
+  //         console.log(values);
+  //     });
+  // });
+
   var quoteKeyForProduct = '';
   $(document).on('click', '.add-new-product', function () {
     var quote = $(this).closest('.quote');
