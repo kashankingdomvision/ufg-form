@@ -46,6 +46,37 @@ use App\PresetComment;
 class QuoteController extends Controller
 {
 
+    public function compare_quote(Request $request)
+    {
+    
+        if ($request->isMethod('post')) {
+
+            if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
+                $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
+            }
+
+            
+            if(isset($request->quote_ref_two) && !empty($request->quote_ref_two)){
+                $data['quote_ref_two'] =  Quote::find($request->quote_ref_two);
+            }
+
+            if(isset($request->quote_ref_three) && !empty($request->quote_ref_three)){
+                $data['quote_ref_three'] =  Quote::find($request->quote_ref_three);
+            }
+
+            if(isset($request->quote_ref_four) && !empty($request->quote_ref_four)){
+                $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
+            }
+
+            // dd($data);
+
+        }
+    
+        $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
+
+ 
+        return view('compare_quote.index', $data);
+    }
 
     public $pagiantion = 10;
 

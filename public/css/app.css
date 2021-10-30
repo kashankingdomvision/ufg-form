@@ -4831,6 +4831,24 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-bottom: 1pt solid #dee2e6;
 }
 
+.col-style {
+  justify-content: center !important;
+  -webkit-justify-content: center !important;
+  display: flex !important;
+  border: 1px solid #dee2e6 !important;
+  font-size: 1.3rem;
+  padding: 0.7rem;
+}
+
+.col-heading-style {
+  justify-content: flex-start !important;
+  -webkit-justify-content: flex-start !important;
+  display: flex !important;
+  border: 1px solid #dee2e6 !important;
+  font-size: 1.3rem;
+  padding: 0.7rem;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2

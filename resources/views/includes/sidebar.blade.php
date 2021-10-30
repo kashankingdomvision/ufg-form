@@ -79,7 +79,7 @@
                     </ul>
                 </li> --}}
 
-                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' || $route == 'quotes.group-quote.index' || $route == 'quotes.group-quote.edit' || $route == 'quotes.group-quote.create' || $route == 'quotes.quote.documment' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' || $route == 'quotes.group-quote.index' || $route == 'quotes.group-quote.edit' || $route == 'quotes.group-quote.create' || $route == 'quotes.quote.documment' || $route == 'quotes.compare.quote'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
                         <p>
@@ -114,6 +114,15 @@
                                 <p>View Group Quote</p>
                             </a>
                         </li>
+
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('quotes.compare.quote') }}" class="nav-link {{ $route == 'quotes.compare.quote' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Compare Quote</p>
+                            </a>
+                        </li>
+                        
                     </ul>
                 </li>
 

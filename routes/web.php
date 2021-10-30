@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth']], function(){
         // Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
 
         Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
 
         /* Group Quote */
@@ -111,6 +112,8 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
         Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
+
+        Route::match(['get', 'post'], 'compare-quote', array('as' => 'compare.quote', 'uses' => 'QuoteController@compare_quote'));
     });
 
 
