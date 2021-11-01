@@ -51,6 +51,35 @@ class QuoteController extends Controller
     
         if ($request->isMethod('post')) {
 
+            // dd($request->all());
+
+
+            // $q = QuoteDetail::whereIn('quote_id', $request->all())->get('date_of_service')->toArray();
+
+            // dd($q );
+
+
+            
+
+
+            // $quote_ref_one = Quote::find($request->quote_ref_one)->getQuoteDetails()->get('date_of_service')->toArray();
+
+
+            // dd();
+
+
+
+            // $quote_ref_two = Quote::find($request->quote_ref_two)->getQuoteDetails()->get();
+
+            // // $c = array_merge_recursive($quote_ref_one,$quote_ref_two);
+
+            // // dd($c);
+
+            // dd($quote_ref_one);
+            // dd($quote_ref_two);
+
+            // $quote_ref_two = Quote::find($request->quote_ref_two);
+
             if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
                 $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
             }

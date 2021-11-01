@@ -243,6 +243,15 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     padding: 0.7rem;
 }
 
+.col-service-style{
+    justify-content : center!important;
+    -webkit-justify-content: center!important;
+    display: flex!important;
+    border : 1px solid #dee2e6!important;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2
