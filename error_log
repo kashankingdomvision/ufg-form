@@ -1,0 +1,11 @@
+[12-Aug-2021 08:32:40 Europe/London] PHP Fatal error:  Uncaught Error: Class 'Illuminate\Foundation\Application' not found in /home/stagingwebsite/public_html/php/ufg-form/bootstrap/app.php:14
+Stack trace:
+#0 /home/stagingwebsite/public_html/php/ufg-form/artisan(20): require_once()
+#1 {main}
+  thrown in /home/stagingwebsite/public_html/php/ufg-form/bootstrap/app.php on line 14
+[12-Aug-2021 08:45:32 Europe/London] PHP Warning:  require(/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php): failed to open stream: No such file or directory in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
+[12-Aug-2021 08:45:32 Europe/London] PHP Fatal error:  require(): Failed opening required '/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php' (include_path='.:/opt/alt/php72/usr/share/pear') in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
+[12-Aug-2021 08:45:35 Europe/London] PHP Warning:  require(/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php): failed to open stream: No such file or directory in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
+[12-Aug-2021 08:45:35 Europe/London] PHP Fatal error:  require(): Failed opening required '/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php' (include_path='.:/opt/alt/php72/usr/share/pear') in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
+[12-Aug-2021 08:45:48 Europe/London] PHP Warning:  require(/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php): failed to open stream: No such file or directory in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
+[12-Aug-2021 08:45:48 Europe/London] PHP Fatal error:  require(): Failed opening required '/home/stagingwebsite/public_html/php/ufg-form/vendor/autoload.php' (include_path='.:/opt/alt/php72/usr/share/pear') in /home/stagingwebsite/public_html/php/ufg-form/artisan on line 18
