@@ -86,6 +86,1819 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/axios/index.js":
+/*!*************************************!*\
+  !*** ./node_modules/axios/index.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! ./lib/axios */ "./node_modules/axios/lib/axios.js");
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/adapters/xhr.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/adapters/xhr.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var settle = __webpack_require__(/*! ./../core/settle */ "./node_modules/axios/lib/core/settle.js");
+var buildURL = __webpack_require__(/*! ./../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var buildFullPath = __webpack_require__(/*! ../core/buildFullPath */ "./node_modules/axios/lib/core/buildFullPath.js");
+var parseHeaders = __webpack_require__(/*! ./../helpers/parseHeaders */ "./node_modules/axios/lib/helpers/parseHeaders.js");
+var isURLSameOrigin = __webpack_require__(/*! ./../helpers/isURLSameOrigin */ "./node_modules/axios/lib/helpers/isURLSameOrigin.js");
+var createError = __webpack_require__(/*! ../core/createError */ "./node_modules/axios/lib/core/createError.js");
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    var fullPath = buildFullPath(config.baseURL, config.url);
+    request.open(config.method.toUpperCase(), buildURL(fullPath, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        status: request.status,
+        statusText: request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(createError('Request aborted', config, 'ECONNABORTED', request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config, null, request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      var timeoutErrorMessage = 'timeout of ' + config.timeout + 'ms exceeded';
+      if (config.timeoutErrorMessage) {
+        timeoutErrorMessage = config.timeoutErrorMessage;
+      }
+      reject(createError(timeoutErrorMessage, config, 'ECONNABORTED',
+        request));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(/*! ./../helpers/cookies */ "./node_modules/axios/lib/helpers/cookies.js");
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(fullPath)) && config.xsrfCookieName ?
+        cookies.read(config.xsrfCookieName) :
+        undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (!utils.isUndefined(config.withCredentials)) {
+      request.withCredentials = !!config.withCredentials;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        // Expected DOMException thrown by browsers not compatible XMLHttpRequest Level 2.
+        // But, this can be suppressed for 'json' type as it can be parsed by default 'transformResponse' function.
+        if (config.responseType !== 'json') {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/axios.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/axios.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+var Axios = __webpack_require__(/*! ./core/Axios */ "./node_modules/axios/lib/core/Axios.js");
+var mergeConfig = __webpack_require__(/*! ./core/mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
+var defaults = __webpack_require__(/*! ./defaults */ "./node_modules/axios/lib/defaults.js");
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Factory for creating new instances
+axios.create = function create(instanceConfig) {
+  return createInstance(mergeConfig(axios.defaults, instanceConfig));
+};
+
+// Expose Cancel & CancelToken
+axios.Cancel = __webpack_require__(/*! ./cancel/Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
+axios.CancelToken = __webpack_require__(/*! ./cancel/CancelToken */ "./node_modules/axios/lib/cancel/CancelToken.js");
+axios.isCancel = __webpack_require__(/*! ./cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(/*! ./helpers/spread */ "./node_modules/axios/lib/helpers/spread.js");
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports.default = axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/Cancel.js":
+/*!*************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/Cancel.js ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/CancelToken.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/CancelToken.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(/*! ./Cancel */ "./node_modules/axios/lib/cancel/Cancel.js");
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/cancel/isCancel.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/cancel/isCancel.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/Axios.js":
+/*!**********************************************!*\
+  !*** ./node_modules/axios/lib/core/Axios.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var buildURL = __webpack_require__(/*! ../helpers/buildURL */ "./node_modules/axios/lib/helpers/buildURL.js");
+var InterceptorManager = __webpack_require__(/*! ./InterceptorManager */ "./node_modules/axios/lib/core/InterceptorManager.js");
+var dispatchRequest = __webpack_require__(/*! ./dispatchRequest */ "./node_modules/axios/lib/core/dispatchRequest.js");
+var mergeConfig = __webpack_require__(/*! ./mergeConfig */ "./node_modules/axios/lib/core/mergeConfig.js");
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === 'string') {
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  } else {
+    config = config || {};
+  }
+
+  config = mergeConfig(this.defaults, config);
+
+  // Set config.method
+  if (config.method) {
+    config.method = config.method.toLowerCase();
+  } else if (this.defaults.method) {
+    config.method = this.defaults.method.toLowerCase();
+  } else {
+    config.method = 'get';
+  }
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, data, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/InterceptorManager.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/core/InterceptorManager.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/buildFullPath.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/buildFullPath.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isAbsoluteURL = __webpack_require__(/*! ../helpers/isAbsoluteURL */ "./node_modules/axios/lib/helpers/isAbsoluteURL.js");
+var combineURLs = __webpack_require__(/*! ../helpers/combineURLs */ "./node_modules/axios/lib/helpers/combineURLs.js");
+
+/**
+ * Creates a new URL by combining the baseURL with the requestedURL,
+ * only when the requestedURL is not already an absolute URL.
+ * If the requestURL is absolute, this function returns the requestedURL untouched.
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} requestedURL Absolute or relative URL to combine
+ * @returns {string} The combined full path
+ */
+module.exports = function buildFullPath(baseURL, requestedURL) {
+  if (baseURL && !isAbsoluteURL(requestedURL)) {
+    return combineURLs(baseURL, requestedURL);
+  }
+  return requestedURL;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/createError.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/createError.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(/*! ./enhanceError */ "./node_modules/axios/lib/core/enhanceError.js");
+
+/**
+ * Create an Error with the specified message, config, error code, request and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, request, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, request, response);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/dispatchRequest.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/core/dispatchRequest.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+var transformData = __webpack_require__(/*! ./transformData */ "./node_modules/axios/lib/core/transformData.js");
+var isCancel = __webpack_require__(/*! ../cancel/isCancel */ "./node_modules/axios/lib/cancel/isCancel.js");
+var defaults = __webpack_require__(/*! ../defaults */ "./node_modules/axios/lib/defaults.js");
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/enhanceError.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/axios/lib/core/enhanceError.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+module.exports = function enhanceError(error, config, code, request, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+
+  error.request = request;
+  error.response = response;
+  error.isAxiosError = true;
+
+  error.toJSON = function() {
+    return {
+      // Standard
+      message: this.message,
+      name: this.name,
+      // Microsoft
+      description: this.description,
+      number: this.number,
+      // Mozilla
+      fileName: this.fileName,
+      lineNumber: this.lineNumber,
+      columnNumber: this.columnNumber,
+      stack: this.stack,
+      // Axios
+      config: this.config,
+      code: this.code
+    };
+  };
+  return error;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/mergeConfig.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/core/mergeConfig.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+module.exports = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  var valueFromConfig2Keys = ['url', 'method', 'params', 'data'];
+  var mergeDeepPropertiesKeys = ['headers', 'auth', 'proxy'];
+  var defaultToConfig2Keys = [
+    'baseURL', 'url', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress',
+    'maxContentLength', 'validateStatus', 'maxRedirects', 'httpAgent',
+    'httpsAgent', 'cancelToken', 'socketPath'
+  ];
+
+  utils.forEach(valueFromConfig2Keys, function valueFromConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    }
+  });
+
+  utils.forEach(mergeDeepPropertiesKeys, function mergeDeepProperties(prop) {
+    if (utils.isObject(config2[prop])) {
+      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
+    } else if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (utils.isObject(config1[prop])) {
+      config[prop] = utils.deepMerge(config1[prop]);
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  utils.forEach(defaultToConfig2Keys, function defaultToConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  var axiosKeys = valueFromConfig2Keys
+    .concat(mergeDeepPropertiesKeys)
+    .concat(defaultToConfig2Keys);
+
+  var otherKeys = Object
+    .keys(config2)
+    .filter(function filterAxiosKeys(key) {
+      return axiosKeys.indexOf(key) === -1;
+    });
+
+  utils.forEach(otherKeys, function otherKeysDefaultToConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  return config;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/settle.js":
+/*!***********************************************!*\
+  !*** ./node_modules/axios/lib/core/settle.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var createError = __webpack_require__(/*! ./createError */ "./node_modules/axios/lib/core/createError.js");
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  if (!validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/core/transformData.js":
+/*!******************************************************!*\
+  !*** ./node_modules/axios/lib/core/transformData.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/defaults.js":
+/*!********************************************!*\
+  !*** ./node_modules/axios/lib/defaults.js ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(/*! ./utils */ "./node_modules/axios/lib/utils.js");
+var normalizeHeaderName = __webpack_require__(/*! ./helpers/normalizeHeaderName */ "./node_modules/axios/lib/helpers/normalizeHeaderName.js");
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(/*! ./adapters/xhr */ "./node_modules/axios/lib/adapters/xhr.js");
+  } else if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(/*! ./adapters/http */ "./node_modules/axios/lib/adapters/xhr.js");
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Accept');
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../process/browser.js */ "./node_modules/process/browser.js")))
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/bind.js":
+/*!************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/bind.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/buildURL.js":
+/*!****************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/buildURL.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%40/gi, '@').
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      } else {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    var hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      url = url.slice(0, hashmarkIndex);
+    }
+
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/combineURLs.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/combineURLs.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/cookies.js":
+/*!***************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/cookies.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs support document.cookie
+    (function standardBrowserEnv() {
+      return {
+        write: function write(name, value, expires, path, domain, secure) {
+          var cookie = [];
+          cookie.push(name + '=' + encodeURIComponent(value));
+
+          if (utils.isNumber(expires)) {
+            cookie.push('expires=' + new Date(expires).toGMTString());
+          }
+
+          if (utils.isString(path)) {
+            cookie.push('path=' + path);
+          }
+
+          if (utils.isString(domain)) {
+            cookie.push('domain=' + domain);
+          }
+
+          if (secure === true) {
+            cookie.push('secure');
+          }
+
+          document.cookie = cookie.join('; ');
+        },
+
+        read: function read(name) {
+          var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+          return (match ? decodeURIComponent(match[3]) : null);
+        },
+
+        remove: function remove(name) {
+          this.write(name, '', Date.now() - 86400000);
+        }
+      };
+    })() :
+
+  // Non standard browser env (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return {
+        write: function write() {},
+        read: function read() { return null; },
+        remove: function remove() {}
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isAbsoluteURL.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isAbsoluteURL.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/isURLSameOrigin.js":
+/*!***********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/isURLSameOrigin.js ***!
+  \***********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+    (function standardBrowserEnv() {
+      var msie = /(msie|trident)/i.test(navigator.userAgent);
+      var urlParsingNode = document.createElement('a');
+      var originURL;
+
+      /**
+    * Parse a URL to discover it's components
+    *
+    * @param {String} url The URL to be parsed
+    * @returns {Object}
+    */
+      function resolveURL(url) {
+        var href = url;
+
+        if (msie) {
+        // IE needs attribute set twice to normalize properties
+          urlParsingNode.setAttribute('href', href);
+          href = urlParsingNode.href;
+        }
+
+        urlParsingNode.setAttribute('href', href);
+
+        // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+        return {
+          href: urlParsingNode.href,
+          protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+          host: urlParsingNode.host,
+          search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+          hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+          hostname: urlParsingNode.hostname,
+          port: urlParsingNode.port,
+          pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+            urlParsingNode.pathname :
+            '/' + urlParsingNode.pathname
+        };
+      }
+
+      originURL = resolveURL(window.location.href);
+
+      /**
+    * Determine if a URL shares the same origin as the current location
+    *
+    * @param {String} requestURL The URL to test
+    * @returns {boolean} True if URL shares the same origin, otherwise false
+    */
+      return function isURLSameOrigin(requestURL) {
+        var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+        return (parsed.protocol === originURL.protocol &&
+            parsed.host === originURL.host);
+      };
+    })() :
+
+  // Non standard browser envs (web workers, react-native) lack needed support.
+    (function nonStandardBrowserEnv() {
+      return function isURLSameOrigin() {
+        return true;
+      };
+    })()
+);
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/normalizeHeaderName.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/normalizeHeaderName.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ../utils */ "./node_modules/axios/lib/utils.js");
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/parseHeaders.js":
+/*!********************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/parseHeaders.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(/*! ./../utils */ "./node_modules/axios/lib/utils.js");
+
+// Headers whose duplicates are ignored by node
+// c.f. https://nodejs.org/api/http.html#http_message_headers
+var ignoreDuplicateOf = [
+  'age', 'authorization', 'content-length', 'content-type', 'etag',
+  'expires', 'from', 'host', 'if-modified-since', 'if-unmodified-since',
+  'last-modified', 'location', 'max-forwards', 'proxy-authorization',
+  'referer', 'retry-after', 'user-agent'
+];
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) { return parsed; }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      if (parsed[key] && ignoreDuplicateOf.indexOf(key) >= 0) {
+        return;
+      }
+      if (key === 'set-cookie') {
+        parsed[key] = (parsed[key] ? parsed[key] : []).concat([val]);
+      } else {
+        parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+      }
+    }
+  });
+
+  return parsed;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/helpers/spread.js":
+/*!**************************************************!*\
+  !*** ./node_modules/axios/lib/helpers/spread.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/axios/lib/utils.js":
+/*!*****************************************!*\
+  !*** ./node_modules/axios/lib/utils.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bind = __webpack_require__(/*! ./helpers/bind */ "./node_modules/axios/lib/helpers/bind.js");
+
+/*global toString:true*/
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return toString.call(val) === '[object Array]';
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+ * Determine if a value is a Buffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Buffer, otherwise false
+ */
+function isBuffer(val) {
+  return val !== null && !isUndefined(val) && val.constructor !== null && !isUndefined(val.constructor)
+    && typeof val.constructor.isBuffer === 'function' && val.constructor.isBuffer(val);
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return (typeof FormData !== 'undefined') && (val instanceof FormData);
+}
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if ((typeof ArrayBuffer !== 'undefined') && (ArrayBuffer.isView)) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = (val) && (val.buffer) && (val.buffer instanceof ArrayBuffer);
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && typeof val === 'object';
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
+ */
+function isStandardBrowserEnv() {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                           navigator.product === 'NativeScript' ||
+                                           navigator.product === 'NS')) {
+    return false;
+  }
+  return (
+    typeof window !== 'undefined' &&
+    typeof document !== 'undefined'
+  );
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if (typeof obj !== 'object') {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = merge(result[key], val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Function equal to merge with the difference being that no reference
+ * to original objects is kept.
+ *
+ * @see merge
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function deepMerge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = deepMerge(result[key], val);
+    } else if (typeof val === 'object') {
+      result[key] = deepMerge({}, val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isBuffer: isBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  deepMerge: deepMerge,
+  extend: extend,
+  trim: trim
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js ***!
@@ -5086,6 +6899,2810 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
  * Exposing intl-tel-input as a component
  */
 module.exports = __webpack_require__(/*! ./build/js/intlTelInput */ "./node_modules/intl-tel-input/build/js/intlTelInput.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/data.js":
+/*!*******************************************!*\
+  !*** ./node_modules/jquery-ui/ui/data.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI :data 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: :data Selector
+//>>group: Core
+//>>description: Selects elements which have data stored under the specified key.
+//>>docs: http://api.jqueryui.com/data-selector/
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./version */ "./node_modules/jquery-ui/ui/version.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+return $.extend( $.expr.pseudos, {
+	data: $.expr.createPseudo ?
+		$.expr.createPseudo( function( dataName ) {
+			return function( elem ) {
+				return !!$.data( elem, dataName );
+			};
+		} ) :
+
+		// Support: jQuery <1.8
+		function( elem, i, match ) {
+			return !!$.data( elem, match[ 3 ] );
+		}
+} );
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/ie.js":
+/*!*****************************************!*\
+  !*** ./node_modules/jquery-ui/ui/ie.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./version */ "./node_modules/jquery-ui/ui/version.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+// This file is deprecated
+return $.ui.ie = !!/msie [\w.]+/.exec( navigator.userAgent.toLowerCase() );
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/scroll-parent.js":
+/*!****************************************************!*\
+  !*** ./node_modules/jquery-ui/ui/scroll-parent.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI Scroll Parent 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: scrollParent
+//>>group: Core
+//>>description: Get the closest ancestor element that is scrollable.
+//>>docs: http://api.jqueryui.com/scrollParent/
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./version */ "./node_modules/jquery-ui/ui/version.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+return $.fn.scrollParent = function( includeHidden ) {
+	var position = this.css( "position" ),
+		excludeStaticParent = position === "absolute",
+		overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/,
+		scrollParent = this.parents().filter( function() {
+			var parent = $( this );
+			if ( excludeStaticParent && parent.css( "position" ) === "static" ) {
+				return false;
+			}
+			return overflowRegex.test( parent.css( "overflow" ) + parent.css( "overflow-y" ) +
+				parent.css( "overflow-x" ) );
+		} ).eq( 0 );
+
+	return position === "fixed" || !scrollParent.length ?
+		$( this[ 0 ].ownerDocument || document ) :
+		scrollParent;
+};
+
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/version.js":
+/*!**********************************************!*\
+  !*** ./node_modules/jquery-ui/ui/version.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+$.ui = $.ui || {};
+
+return $.ui.version = "1.13.0";
+
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/widget.js":
+/*!*********************************************!*\
+  !*** ./node_modules/jquery-ui/ui/widget.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI Widget 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Widget
+//>>group: Core
+//>>description: Provides a factory for creating stateful widgets with a common API.
+//>>docs: http://api.jqueryui.com/jQuery.widget/
+//>>demos: http://jqueryui.com/widget/
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"), __webpack_require__(/*! ./version */ "./node_modules/jquery-ui/ui/version.js") ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+var widgetUuid = 0;
+var widgetHasOwnProperty = Array.prototype.hasOwnProperty;
+var widgetSlice = Array.prototype.slice;
+
+$.cleanData = ( function( orig ) {
+	return function( elems ) {
+		var events, elem, i;
+		for ( i = 0; ( elem = elems[ i ] ) != null; i++ ) {
+
+			// Only trigger remove when necessary to save time
+			events = $._data( elem, "events" );
+			if ( events && events.remove ) {
+				$( elem ).triggerHandler( "remove" );
+			}
+		}
+		orig( elems );
+	};
+} )( $.cleanData );
+
+$.widget = function( name, base, prototype ) {
+	var existingConstructor, constructor, basePrototype;
+
+	// ProxiedPrototype allows the provided prototype to remain unmodified
+	// so that it can be used as a mixin for multiple widgets (#8876)
+	var proxiedPrototype = {};
+
+	var namespace = name.split( "." )[ 0 ];
+	name = name.split( "." )[ 1 ];
+	var fullName = namespace + "-" + name;
+
+	if ( !prototype ) {
+		prototype = base;
+		base = $.Widget;
+	}
+
+	if ( Array.isArray( prototype ) ) {
+		prototype = $.extend.apply( null, [ {} ].concat( prototype ) );
+	}
+
+	// Create selector for plugin
+	$.expr.pseudos[ fullName.toLowerCase() ] = function( elem ) {
+		return !!$.data( elem, fullName );
+	};
+
+	$[ namespace ] = $[ namespace ] || {};
+	existingConstructor = $[ namespace ][ name ];
+	constructor = $[ namespace ][ name ] = function( options, element ) {
+
+		// Allow instantiation without "new" keyword
+		if ( !this._createWidget ) {
+			return new constructor( options, element );
+		}
+
+		// Allow instantiation without initializing for simple inheritance
+		// must use "new" keyword (the code above always passes args)
+		if ( arguments.length ) {
+			this._createWidget( options, element );
+		}
+	};
+
+	// Extend with the existing constructor to carry over any static properties
+	$.extend( constructor, existingConstructor, {
+		version: prototype.version,
+
+		// Copy the object used to create the prototype in case we need to
+		// redefine the widget later
+		_proto: $.extend( {}, prototype ),
+
+		// Track widgets that inherit from this widget in case this widget is
+		// redefined after a widget inherits from it
+		_childConstructors: []
+	} );
+
+	basePrototype = new base();
+
+	// We need to make the options hash a property directly on the new instance
+	// otherwise we'll modify the options hash on the prototype that we're
+	// inheriting from
+	basePrototype.options = $.widget.extend( {}, basePrototype.options );
+	$.each( prototype, function( prop, value ) {
+		if ( typeof value !== "function" ) {
+			proxiedPrototype[ prop ] = value;
+			return;
+		}
+		proxiedPrototype[ prop ] = ( function() {
+			function _super() {
+				return base.prototype[ prop ].apply( this, arguments );
+			}
+
+			function _superApply( args ) {
+				return base.prototype[ prop ].apply( this, args );
+			}
+
+			return function() {
+				var __super = this._super;
+				var __superApply = this._superApply;
+				var returnValue;
+
+				this._super = _super;
+				this._superApply = _superApply;
+
+				returnValue = value.apply( this, arguments );
+
+				this._super = __super;
+				this._superApply = __superApply;
+
+				return returnValue;
+			};
+		} )();
+	} );
+	constructor.prototype = $.widget.extend( basePrototype, {
+
+		// TODO: remove support for widgetEventPrefix
+		// always use the name + a colon as the prefix, e.g., draggable:start
+		// don't prefix for widgets that aren't DOM-based
+		widgetEventPrefix: existingConstructor ? ( basePrototype.widgetEventPrefix || name ) : name
+	}, proxiedPrototype, {
+		constructor: constructor,
+		namespace: namespace,
+		widgetName: name,
+		widgetFullName: fullName
+	} );
+
+	// If this widget is being redefined then we need to find all widgets that
+	// are inheriting from it and redefine all of them so that they inherit from
+	// the new version of this widget. We're essentially trying to replace one
+	// level in the prototype chain.
+	if ( existingConstructor ) {
+		$.each( existingConstructor._childConstructors, function( i, child ) {
+			var childPrototype = child.prototype;
+
+			// Redefine the child widget using the same prototype that was
+			// originally used, but inherit from the new version of the base
+			$.widget( childPrototype.namespace + "." + childPrototype.widgetName, constructor,
+				child._proto );
+		} );
+
+		// Remove the list of existing child constructors from the old constructor
+		// so the old child constructors can be garbage collected
+		delete existingConstructor._childConstructors;
+	} else {
+		base._childConstructors.push( constructor );
+	}
+
+	$.widget.bridge( name, constructor );
+
+	return constructor;
+};
+
+$.widget.extend = function( target ) {
+	var input = widgetSlice.call( arguments, 1 );
+	var inputIndex = 0;
+	var inputLength = input.length;
+	var key;
+	var value;
+
+	for ( ; inputIndex < inputLength; inputIndex++ ) {
+		for ( key in input[ inputIndex ] ) {
+			value = input[ inputIndex ][ key ];
+			if ( widgetHasOwnProperty.call( input[ inputIndex ], key ) && value !== undefined ) {
+
+				// Clone objects
+				if ( $.isPlainObject( value ) ) {
+					target[ key ] = $.isPlainObject( target[ key ] ) ?
+						$.widget.extend( {}, target[ key ], value ) :
+
+						// Don't extend strings, arrays, etc. with objects
+						$.widget.extend( {}, value );
+
+				// Copy everything else by reference
+				} else {
+					target[ key ] = value;
+				}
+			}
+		}
+	}
+	return target;
+};
+
+$.widget.bridge = function( name, object ) {
+	var fullName = object.prototype.widgetFullName || name;
+	$.fn[ name ] = function( options ) {
+		var isMethodCall = typeof options === "string";
+		var args = widgetSlice.call( arguments, 1 );
+		var returnValue = this;
+
+		if ( isMethodCall ) {
+
+			// If this is an empty collection, we need to have the instance method
+			// return undefined instead of the jQuery instance
+			if ( !this.length && options === "instance" ) {
+				returnValue = undefined;
+			} else {
+				this.each( function() {
+					var methodValue;
+					var instance = $.data( this, fullName );
+
+					if ( options === "instance" ) {
+						returnValue = instance;
+						return false;
+					}
+
+					if ( !instance ) {
+						return $.error( "cannot call methods on " + name +
+							" prior to initialization; " +
+							"attempted to call method '" + options + "'" );
+					}
+
+					if ( typeof instance[ options ] !== "function" ||
+						options.charAt( 0 ) === "_" ) {
+						return $.error( "no such method '" + options + "' for " + name +
+							" widget instance" );
+					}
+
+					methodValue = instance[ options ].apply( instance, args );
+
+					if ( methodValue !== instance && methodValue !== undefined ) {
+						returnValue = methodValue && methodValue.jquery ?
+							returnValue.pushStack( methodValue.get() ) :
+							methodValue;
+						return false;
+					}
+				} );
+			}
+		} else {
+
+			// Allow multiple hashes to be passed on init
+			if ( args.length ) {
+				options = $.widget.extend.apply( null, [ options ].concat( args ) );
+			}
+
+			this.each( function() {
+				var instance = $.data( this, fullName );
+				if ( instance ) {
+					instance.option( options || {} );
+					if ( instance._init ) {
+						instance._init();
+					}
+				} else {
+					$.data( this, fullName, new object( options, this ) );
+				}
+			} );
+		}
+
+		return returnValue;
+	};
+};
+
+$.Widget = function( /* options, element */ ) {};
+$.Widget._childConstructors = [];
+
+$.Widget.prototype = {
+	widgetName: "widget",
+	widgetEventPrefix: "",
+	defaultElement: "<div>",
+
+	options: {
+		classes: {},
+		disabled: false,
+
+		// Callbacks
+		create: null
+	},
+
+	_createWidget: function( options, element ) {
+		element = $( element || this.defaultElement || this )[ 0 ];
+		this.element = $( element );
+		this.uuid = widgetUuid++;
+		this.eventNamespace = "." + this.widgetName + this.uuid;
+
+		this.bindings = $();
+		this.hoverable = $();
+		this.focusable = $();
+		this.classesElementLookup = {};
+
+		if ( element !== this ) {
+			$.data( element, this.widgetFullName, this );
+			this._on( true, this.element, {
+				remove: function( event ) {
+					if ( event.target === element ) {
+						this.destroy();
+					}
+				}
+			} );
+			this.document = $( element.style ?
+
+				// Element within the document
+				element.ownerDocument :
+
+				// Element is window or document
+				element.document || element );
+			this.window = $( this.document[ 0 ].defaultView || this.document[ 0 ].parentWindow );
+		}
+
+		this.options = $.widget.extend( {},
+			this.options,
+			this._getCreateOptions(),
+			options );
+
+		this._create();
+
+		if ( this.options.disabled ) {
+			this._setOptionDisabled( this.options.disabled );
+		}
+
+		this._trigger( "create", null, this._getCreateEventData() );
+		this._init();
+	},
+
+	_getCreateOptions: function() {
+		return {};
+	},
+
+	_getCreateEventData: $.noop,
+
+	_create: $.noop,
+
+	_init: $.noop,
+
+	destroy: function() {
+		var that = this;
+
+		this._destroy();
+		$.each( this.classesElementLookup, function( key, value ) {
+			that._removeClass( value, key );
+		} );
+
+		// We can probably remove the unbind calls in 2.0
+		// all event bindings should go through this._on()
+		this.element
+			.off( this.eventNamespace )
+			.removeData( this.widgetFullName );
+		this.widget()
+			.off( this.eventNamespace )
+			.removeAttr( "aria-disabled" );
+
+		// Clean up events and states
+		this.bindings.off( this.eventNamespace );
+	},
+
+	_destroy: $.noop,
+
+	widget: function() {
+		return this.element;
+	},
+
+	option: function( key, value ) {
+		var options = key;
+		var parts;
+		var curOption;
+		var i;
+
+		if ( arguments.length === 0 ) {
+
+			// Don't return a reference to the internal hash
+			return $.widget.extend( {}, this.options );
+		}
+
+		if ( typeof key === "string" ) {
+
+			// Handle nested keys, e.g., "foo.bar" => { foo: { bar: ___ } }
+			options = {};
+			parts = key.split( "." );
+			key = parts.shift();
+			if ( parts.length ) {
+				curOption = options[ key ] = $.widget.extend( {}, this.options[ key ] );
+				for ( i = 0; i < parts.length - 1; i++ ) {
+					curOption[ parts[ i ] ] = curOption[ parts[ i ] ] || {};
+					curOption = curOption[ parts[ i ] ];
+				}
+				key = parts.pop();
+				if ( arguments.length === 1 ) {
+					return curOption[ key ] === undefined ? null : curOption[ key ];
+				}
+				curOption[ key ] = value;
+			} else {
+				if ( arguments.length === 1 ) {
+					return this.options[ key ] === undefined ? null : this.options[ key ];
+				}
+				options[ key ] = value;
+			}
+		}
+
+		this._setOptions( options );
+
+		return this;
+	},
+
+	_setOptions: function( options ) {
+		var key;
+
+		for ( key in options ) {
+			this._setOption( key, options[ key ] );
+		}
+
+		return this;
+	},
+
+	_setOption: function( key, value ) {
+		if ( key === "classes" ) {
+			this._setOptionClasses( value );
+		}
+
+		this.options[ key ] = value;
+
+		if ( key === "disabled" ) {
+			this._setOptionDisabled( value );
+		}
+
+		return this;
+	},
+
+	_setOptionClasses: function( value ) {
+		var classKey, elements, currentElements;
+
+		for ( classKey in value ) {
+			currentElements = this.classesElementLookup[ classKey ];
+			if ( value[ classKey ] === this.options.classes[ classKey ] ||
+					!currentElements ||
+					!currentElements.length ) {
+				continue;
+			}
+
+			// We are doing this to create a new jQuery object because the _removeClass() call
+			// on the next line is going to destroy the reference to the current elements being
+			// tracked. We need to save a copy of this collection so that we can add the new classes
+			// below.
+			elements = $( currentElements.get() );
+			this._removeClass( currentElements, classKey );
+
+			// We don't use _addClass() here, because that uses this.options.classes
+			// for generating the string of classes. We want to use the value passed in from
+			// _setOption(), this is the new value of the classes option which was passed to
+			// _setOption(). We pass this value directly to _classes().
+			elements.addClass( this._classes( {
+				element: elements,
+				keys: classKey,
+				classes: value,
+				add: true
+			} ) );
+		}
+	},
+
+	_setOptionDisabled: function( value ) {
+		this._toggleClass( this.widget(), this.widgetFullName + "-disabled", null, !!value );
+
+		// If the widget is becoming disabled, then nothing is interactive
+		if ( value ) {
+			this._removeClass( this.hoverable, null, "ui-state-hover" );
+			this._removeClass( this.focusable, null, "ui-state-focus" );
+		}
+	},
+
+	enable: function() {
+		return this._setOptions( { disabled: false } );
+	},
+
+	disable: function() {
+		return this._setOptions( { disabled: true } );
+	},
+
+	_classes: function( options ) {
+		var full = [];
+		var that = this;
+
+		options = $.extend( {
+			element: this.element,
+			classes: this.options.classes || {}
+		}, options );
+
+		function bindRemoveEvent() {
+			options.element.each( function( _, element ) {
+				var isTracked = $.map( that.classesElementLookup, function( elements ) {
+					return elements;
+				} )
+					.some( function( elements ) {
+						return elements.is( element );
+					} );
+
+				if ( !isTracked ) {
+					that._on( $( element ), {
+						remove: "_untrackClassesElement"
+					} );
+				}
+			} );
+		}
+
+		function processClassString( classes, checkOption ) {
+			var current, i;
+			for ( i = 0; i < classes.length; i++ ) {
+				current = that.classesElementLookup[ classes[ i ] ] || $();
+				if ( options.add ) {
+					bindRemoveEvent();
+					current = $( $.uniqueSort( current.get().concat( options.element.get() ) ) );
+				} else {
+					current = $( current.not( options.element ).get() );
+				}
+				that.classesElementLookup[ classes[ i ] ] = current;
+				full.push( classes[ i ] );
+				if ( checkOption && options.classes[ classes[ i ] ] ) {
+					full.push( options.classes[ classes[ i ] ] );
+				}
+			}
+		}
+
+		if ( options.keys ) {
+			processClassString( options.keys.match( /\S+/g ) || [], true );
+		}
+		if ( options.extra ) {
+			processClassString( options.extra.match( /\S+/g ) || [] );
+		}
+
+		return full.join( " " );
+	},
+
+	_untrackClassesElement: function( event ) {
+		var that = this;
+		$.each( that.classesElementLookup, function( key, value ) {
+			if ( $.inArray( event.target, value ) !== -1 ) {
+				that.classesElementLookup[ key ] = $( value.not( event.target ).get() );
+			}
+		} );
+
+		this._off( $( event.target ) );
+	},
+
+	_removeClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, false );
+	},
+
+	_addClass: function( element, keys, extra ) {
+		return this._toggleClass( element, keys, extra, true );
+	},
+
+	_toggleClass: function( element, keys, extra, add ) {
+		add = ( typeof add === "boolean" ) ? add : extra;
+		var shift = ( typeof element === "string" || element === null ),
+			options = {
+				extra: shift ? keys : extra,
+				keys: shift ? element : keys,
+				element: shift ? this.element : element,
+				add: add
+			};
+		options.element.toggleClass( this._classes( options ), add );
+		return this;
+	},
+
+	_on: function( suppressDisabledCheck, element, handlers ) {
+		var delegateElement;
+		var instance = this;
+
+		// No suppressDisabledCheck flag, shuffle arguments
+		if ( typeof suppressDisabledCheck !== "boolean" ) {
+			handlers = element;
+			element = suppressDisabledCheck;
+			suppressDisabledCheck = false;
+		}
+
+		// No element argument, shuffle and use this.element
+		if ( !handlers ) {
+			handlers = element;
+			element = this.element;
+			delegateElement = this.widget();
+		} else {
+			element = delegateElement = $( element );
+			this.bindings = this.bindings.add( element );
+		}
+
+		$.each( handlers, function( event, handler ) {
+			function handlerProxy() {
+
+				// Allow widgets to customize the disabled handling
+				// - disabled as an array instead of boolean
+				// - disabled class as method for disabling individual parts
+				if ( !suppressDisabledCheck &&
+						( instance.options.disabled === true ||
+						$( this ).hasClass( "ui-state-disabled" ) ) ) {
+					return;
+				}
+				return ( typeof handler === "string" ? instance[ handler ] : handler )
+					.apply( instance, arguments );
+			}
+
+			// Copy the guid so direct unbinding works
+			if ( typeof handler !== "string" ) {
+				handlerProxy.guid = handler.guid =
+					handler.guid || handlerProxy.guid || $.guid++;
+			}
+
+			var match = event.match( /^([\w:-]*)\s*(.*)$/ );
+			var eventName = match[ 1 ] + instance.eventNamespace;
+			var selector = match[ 2 ];
+
+			if ( selector ) {
+				delegateElement.on( eventName, selector, handlerProxy );
+			} else {
+				element.on( eventName, handlerProxy );
+			}
+		} );
+	},
+
+	_off: function( element, eventName ) {
+		eventName = ( eventName || "" ).split( " " ).join( this.eventNamespace + " " ) +
+			this.eventNamespace;
+		element.off( eventName );
+
+		// Clear the stack to avoid memory leaks (#10056)
+		this.bindings = $( this.bindings.not( element ).get() );
+		this.focusable = $( this.focusable.not( element ).get() );
+		this.hoverable = $( this.hoverable.not( element ).get() );
+	},
+
+	_delay: function( handler, delay ) {
+		function handlerProxy() {
+			return ( typeof handler === "string" ? instance[ handler ] : handler )
+				.apply( instance, arguments );
+		}
+		var instance = this;
+		return setTimeout( handlerProxy, delay || 0 );
+	},
+
+	_hoverable: function( element ) {
+		this.hoverable = this.hoverable.add( element );
+		this._on( element, {
+			mouseenter: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-hover" );
+			},
+			mouseleave: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-hover" );
+			}
+		} );
+	},
+
+	_focusable: function( element ) {
+		this.focusable = this.focusable.add( element );
+		this._on( element, {
+			focusin: function( event ) {
+				this._addClass( $( event.currentTarget ), null, "ui-state-focus" );
+			},
+			focusout: function( event ) {
+				this._removeClass( $( event.currentTarget ), null, "ui-state-focus" );
+			}
+		} );
+	},
+
+	_trigger: function( type, event, data ) {
+		var prop, orig;
+		var callback = this.options[ type ];
+
+		data = data || {};
+		event = $.Event( event );
+		event.type = ( type === this.widgetEventPrefix ?
+			type :
+			this.widgetEventPrefix + type ).toLowerCase();
+
+		// The original event may come from any element
+		// so we need to reset the target on the new event
+		event.target = this.element[ 0 ];
+
+		// Copy original event properties over to the new event
+		orig = event.originalEvent;
+		if ( orig ) {
+			for ( prop in orig ) {
+				if ( !( prop in event ) ) {
+					event[ prop ] = orig[ prop ];
+				}
+			}
+		}
+
+		this.element.trigger( event, data );
+		return !( typeof callback === "function" &&
+			callback.apply( this.element[ 0 ], [ event ].concat( data ) ) === false ||
+			event.isDefaultPrevented() );
+	}
+};
+
+$.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
+	$.Widget.prototype[ "_" + method ] = function( element, options, callback ) {
+		if ( typeof options === "string" ) {
+			options = { effect: options };
+		}
+
+		var hasOptions;
+		var effectName = !options ?
+			method :
+			options === true || typeof options === "number" ?
+				defaultEffect :
+				options.effect || defaultEffect;
+
+		options = options || {};
+		if ( typeof options === "number" ) {
+			options = { duration: options };
+		} else if ( options === true ) {
+			options = {};
+		}
+
+		hasOptions = !$.isEmptyObject( options );
+		options.complete = callback;
+
+		if ( options.delay ) {
+			element.delay( options.delay );
+		}
+
+		if ( hasOptions && $.effects && $.effects.effect[ effectName ] ) {
+			element[ method ]( options );
+		} else if ( effectName !== method && element[ effectName ] ) {
+			element[ effectName ]( options.duration, options.easing, callback );
+		} else {
+			element.queue( function( next ) {
+				$( this )[ method ]();
+				if ( callback ) {
+					callback.call( element[ 0 ] );
+				}
+				next();
+			} );
+		}
+	};
+} );
+
+return $.widget;
+
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/widgets/mouse.js":
+/*!****************************************************!*\
+  !*** ./node_modules/jquery-ui/ui/widgets/mouse.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI Mouse 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Mouse
+//>>group: Widgets
+//>>description: Abstracts mouse-based interactions to assist in creating certain widgets.
+//>>docs: http://api.jqueryui.com/mouse/
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+			__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"),
+			__webpack_require__(/*! ../ie */ "./node_modules/jquery-ui/ui/ie.js"),
+			__webpack_require__(/*! ../version */ "./node_modules/jquery-ui/ui/version.js"),
+			__webpack_require__(/*! ../widget */ "./node_modules/jquery-ui/ui/widget.js")
+		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+var mouseHandled = false;
+$( document ).on( "mouseup", function() {
+	mouseHandled = false;
+} );
+
+return $.widget( "ui.mouse", {
+	version: "1.13.0",
+	options: {
+		cancel: "input, textarea, button, select, option",
+		distance: 1,
+		delay: 0
+	},
+	_mouseInit: function() {
+		var that = this;
+
+		this.element
+			.on( "mousedown." + this.widgetName, function( event ) {
+				return that._mouseDown( event );
+			} )
+			.on( "click." + this.widgetName, function( event ) {
+				if ( true === $.data( event.target, that.widgetName + ".preventClickEvent" ) ) {
+					$.removeData( event.target, that.widgetName + ".preventClickEvent" );
+					event.stopImmediatePropagation();
+					return false;
+				}
+			} );
+
+		this.started = false;
+	},
+
+	// TODO: make sure destroying one instance of mouse doesn't mess with
+	// other instances of mouse
+	_mouseDestroy: function() {
+		this.element.off( "." + this.widgetName );
+		if ( this._mouseMoveDelegate ) {
+			this.document
+				.off( "mousemove." + this.widgetName, this._mouseMoveDelegate )
+				.off( "mouseup." + this.widgetName, this._mouseUpDelegate );
+		}
+	},
+
+	_mouseDown: function( event ) {
+
+		// don't let more than one widget handle mouseStart
+		if ( mouseHandled ) {
+			return;
+		}
+
+		this._mouseMoved = false;
+
+		// We may have missed mouseup (out of window)
+		if ( this._mouseStarted ) {
+			this._mouseUp( event );
+		}
+
+		this._mouseDownEvent = event;
+
+		var that = this,
+			btnIsLeft = ( event.which === 1 ),
+
+			// event.target.nodeName works around a bug in IE 8 with
+			// disabled inputs (#7620)
+			elIsCancel = ( typeof this.options.cancel === "string" && event.target.nodeName ?
+				$( event.target ).closest( this.options.cancel ).length : false );
+		if ( !btnIsLeft || elIsCancel || !this._mouseCapture( event ) ) {
+			return true;
+		}
+
+		this.mouseDelayMet = !this.options.delay;
+		if ( !this.mouseDelayMet ) {
+			this._mouseDelayTimer = setTimeout( function() {
+				that.mouseDelayMet = true;
+			}, this.options.delay );
+		}
+
+		if ( this._mouseDistanceMet( event ) && this._mouseDelayMet( event ) ) {
+			this._mouseStarted = ( this._mouseStart( event ) !== false );
+			if ( !this._mouseStarted ) {
+				event.preventDefault();
+				return true;
+			}
+		}
+
+		// Click event may never have fired (Gecko & Opera)
+		if ( true === $.data( event.target, this.widgetName + ".preventClickEvent" ) ) {
+			$.removeData( event.target, this.widgetName + ".preventClickEvent" );
+		}
+
+		// These delegates are required to keep context
+		this._mouseMoveDelegate = function( event ) {
+			return that._mouseMove( event );
+		};
+		this._mouseUpDelegate = function( event ) {
+			return that._mouseUp( event );
+		};
+
+		this.document
+			.on( "mousemove." + this.widgetName, this._mouseMoveDelegate )
+			.on( "mouseup." + this.widgetName, this._mouseUpDelegate );
+
+		event.preventDefault();
+
+		mouseHandled = true;
+		return true;
+	},
+
+	_mouseMove: function( event ) {
+
+		// Only check for mouseups outside the document if you've moved inside the document
+		// at least once. This prevents the firing of mouseup in the case of IE<9, which will
+		// fire a mousemove event if content is placed under the cursor. See #7778
+		// Support: IE <9
+		if ( this._mouseMoved ) {
+
+			// IE mouseup check - mouseup happened when mouse was out of window
+			if ( $.ui.ie && ( !document.documentMode || document.documentMode < 9 ) &&
+					!event.button ) {
+				return this._mouseUp( event );
+
+			// Iframe mouseup check - mouseup occurred in another document
+			} else if ( !event.which ) {
+
+				// Support: Safari <=8 - 9
+				// Safari sets which to 0 if you press any of the following keys
+				// during a drag (#14461)
+				if ( event.originalEvent.altKey || event.originalEvent.ctrlKey ||
+						event.originalEvent.metaKey || event.originalEvent.shiftKey ) {
+					this.ignoreMissingWhich = true;
+				} else if ( !this.ignoreMissingWhich ) {
+					return this._mouseUp( event );
+				}
+			}
+		}
+
+		if ( event.which || event.button ) {
+			this._mouseMoved = true;
+		}
+
+		if ( this._mouseStarted ) {
+			this._mouseDrag( event );
+			return event.preventDefault();
+		}
+
+		if ( this._mouseDistanceMet( event ) && this._mouseDelayMet( event ) ) {
+			this._mouseStarted =
+				( this._mouseStart( this._mouseDownEvent, event ) !== false );
+			if ( this._mouseStarted ) {
+				this._mouseDrag( event );
+			} else {
+				this._mouseUp( event );
+			}
+		}
+
+		return !this._mouseStarted;
+	},
+
+	_mouseUp: function( event ) {
+		this.document
+			.off( "mousemove." + this.widgetName, this._mouseMoveDelegate )
+			.off( "mouseup." + this.widgetName, this._mouseUpDelegate );
+
+		if ( this._mouseStarted ) {
+			this._mouseStarted = false;
+
+			if ( event.target === this._mouseDownEvent.target ) {
+				$.data( event.target, this.widgetName + ".preventClickEvent", true );
+			}
+
+			this._mouseStop( event );
+		}
+
+		if ( this._mouseDelayTimer ) {
+			clearTimeout( this._mouseDelayTimer );
+			delete this._mouseDelayTimer;
+		}
+
+		this.ignoreMissingWhich = false;
+		mouseHandled = false;
+		event.preventDefault();
+	},
+
+	_mouseDistanceMet: function( event ) {
+		return ( Math.max(
+				Math.abs( this._mouseDownEvent.pageX - event.pageX ),
+				Math.abs( this._mouseDownEvent.pageY - event.pageY )
+			) >= this.options.distance
+		);
+	},
+
+	_mouseDelayMet: function( /* event */ ) {
+		return this.mouseDelayMet;
+	},
+
+	// These are placeholder methods, to be overriden by extending plugin
+	_mouseStart: function( /* event */ ) {},
+	_mouseDrag: function( /* event */ ) {},
+	_mouseStop: function( /* event */ ) {},
+	_mouseCapture: function( /* event */ ) {
+		return true;
+	}
+} );
+
+} );
+
+
+/***/ }),
+
+/***/ "./node_modules/jquery-ui/ui/widgets/sortable.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/jquery-ui/ui/widgets/sortable.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+ * jQuery UI Sortable 1.13.0
+ * http://jqueryui.com
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ */
+
+//>>label: Sortable
+//>>group: Interactions
+//>>description: Enables items in a list to be sorted using the mouse.
+//>>docs: http://api.jqueryui.com/sortable/
+//>>demos: http://jqueryui.com/sortable/
+//>>css.structure: ../../themes/base/sortable.css
+
+( function( factory ) {
+	"use strict";
+
+	if ( true ) {
+
+		// AMD. Register as an anonymous module.
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [
+			__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js"),
+			__webpack_require__(/*! ./mouse */ "./node_modules/jquery-ui/ui/widgets/mouse.js"),
+			__webpack_require__(/*! ../data */ "./node_modules/jquery-ui/ui/data.js"),
+			__webpack_require__(/*! ../ie */ "./node_modules/jquery-ui/ui/ie.js"),
+			__webpack_require__(/*! ../scroll-parent */ "./node_modules/jquery-ui/ui/scroll-parent.js"),
+			__webpack_require__(/*! ../version */ "./node_modules/jquery-ui/ui/version.js"),
+			__webpack_require__(/*! ../widget */ "./node_modules/jquery-ui/ui/widget.js")
+		], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+} )( function( $ ) {
+"use strict";
+
+return $.widget( "ui.sortable", $.ui.mouse, {
+	version: "1.13.0",
+	widgetEventPrefix: "sort",
+	ready: false,
+	options: {
+		appendTo: "parent",
+		axis: false,
+		connectWith: false,
+		containment: false,
+		cursor: "auto",
+		cursorAt: false,
+		dropOnEmpty: true,
+		forcePlaceholderSize: false,
+		forceHelperSize: false,
+		grid: false,
+		handle: false,
+		helper: "original",
+		items: "> *",
+		opacity: false,
+		placeholder: false,
+		revert: false,
+		scroll: true,
+		scrollSensitivity: 20,
+		scrollSpeed: 20,
+		scope: "default",
+		tolerance: "intersect",
+		zIndex: 1000,
+
+		// Callbacks
+		activate: null,
+		beforeStop: null,
+		change: null,
+		deactivate: null,
+		out: null,
+		over: null,
+		receive: null,
+		remove: null,
+		sort: null,
+		start: null,
+		stop: null,
+		update: null
+	},
+
+	_isOverAxis: function( x, reference, size ) {
+		return ( x >= reference ) && ( x < ( reference + size ) );
+	},
+
+	_isFloating: function( item ) {
+		return ( /left|right/ ).test( item.css( "float" ) ) ||
+			( /inline|table-cell/ ).test( item.css( "display" ) );
+	},
+
+	_create: function() {
+		this.containerCache = {};
+		this._addClass( "ui-sortable" );
+
+		//Get the items
+		this.refresh();
+
+		//Let's determine the parent's offset
+		this.offset = this.element.offset();
+
+		//Initialize mouse events for interaction
+		this._mouseInit();
+
+		this._setHandleClassName();
+
+		//We're ready to go
+		this.ready = true;
+
+	},
+
+	_setOption: function( key, value ) {
+		this._super( key, value );
+
+		if ( key === "handle" ) {
+			this._setHandleClassName();
+		}
+	},
+
+	_setHandleClassName: function() {
+		var that = this;
+		this._removeClass( this.element.find( ".ui-sortable-handle" ), "ui-sortable-handle" );
+		$.each( this.items, function() {
+			that._addClass(
+				this.instance.options.handle ?
+					this.item.find( this.instance.options.handle ) :
+					this.item,
+				"ui-sortable-handle"
+			);
+		} );
+	},
+
+	_destroy: function() {
+		this._mouseDestroy();
+
+		for ( var i = this.items.length - 1; i >= 0; i-- ) {
+			this.items[ i ].item.removeData( this.widgetName + "-item" );
+		}
+
+		return this;
+	},
+
+	_mouseCapture: function( event, overrideHandle ) {
+		var currentItem = null,
+			validHandle = false,
+			that = this;
+
+		if ( this.reverting ) {
+			return false;
+		}
+
+		if ( this.options.disabled || this.options.type === "static" ) {
+			return false;
+		}
+
+		//We have to refresh the items data once first
+		this._refreshItems( event );
+
+		//Find out if the clicked node (or one of its parents) is a actual item in this.items
+		$( event.target ).parents().each( function() {
+			if ( $.data( this, that.widgetName + "-item" ) === that ) {
+				currentItem = $( this );
+				return false;
+			}
+		} );
+		if ( $.data( event.target, that.widgetName + "-item" ) === that ) {
+			currentItem = $( event.target );
+		}
+
+		if ( !currentItem ) {
+			return false;
+		}
+		if ( this.options.handle && !overrideHandle ) {
+			$( this.options.handle, currentItem ).find( "*" ).addBack().each( function() {
+				if ( this === event.target ) {
+					validHandle = true;
+				}
+			} );
+			if ( !validHandle ) {
+				return false;
+			}
+		}
+
+		this.currentItem = currentItem;
+		this._removeCurrentsFromItems();
+		return true;
+
+	},
+
+	_mouseStart: function( event, overrideHandle, noActivation ) {
+
+		var i, body,
+			o = this.options;
+
+		this.currentContainer = this;
+
+		//We only need to call refreshPositions, because the refreshItems call has been moved to
+		// mouseCapture
+		this.refreshPositions();
+
+		//Prepare the dragged items parent
+		this.appendTo = $( o.appendTo !== "parent" ?
+				o.appendTo :
+				this.currentItem.parent() );
+
+		//Create and append the visible helper
+		this.helper = this._createHelper( event );
+
+		//Cache the helper size
+		this._cacheHelperProportions();
+
+		/*
+		 * - Position generation -
+		 * This block generates everything position related - it's the core of draggables.
+		 */
+
+		//Cache the margins of the original element
+		this._cacheMargins();
+
+		//The element's absolute position on the page minus margins
+		this.offset = this.currentItem.offset();
+		this.offset = {
+			top: this.offset.top - this.margins.top,
+			left: this.offset.left - this.margins.left
+		};
+
+		$.extend( this.offset, {
+			click: { //Where the click happened, relative to the element
+				left: event.pageX - this.offset.left,
+				top: event.pageY - this.offset.top
+			},
+
+			// This is a relative to absolute position minus the actual position calculation -
+			// only used for relative positioned helper
+			relative: this._getRelativeOffset()
+		} );
+
+		// After we get the helper offset, but before we get the parent offset we can
+		// change the helper's position to absolute
+		// TODO: Still need to figure out a way to make relative sorting possible
+		this.helper.css( "position", "absolute" );
+		this.cssPosition = this.helper.css( "position" );
+
+		//Adjust the mouse offset relative to the helper if "cursorAt" is supplied
+		if ( o.cursorAt ) {
+			this._adjustOffsetFromHelper( o.cursorAt );
+		}
+
+		//Cache the former DOM position
+		this.domPosition = {
+			prev: this.currentItem.prev()[ 0 ],
+			parent: this.currentItem.parent()[ 0 ]
+		};
+
+		// If the helper is not the original, hide the original so it's not playing any role during
+		// the drag, won't cause anything bad this way
+		if ( this.helper[ 0 ] !== this.currentItem[ 0 ] ) {
+			this.currentItem.hide();
+		}
+
+		//Create the placeholder
+		this._createPlaceholder();
+
+		//Get the next scrolling parent
+		this.scrollParent = this.placeholder.scrollParent();
+
+		$.extend( this.offset, {
+			parent: this._getParentOffset()
+		} );
+
+		//Set a containment if given in the options
+		if ( o.containment ) {
+			this._setContainment();
+		}
+
+		if ( o.cursor && o.cursor !== "auto" ) { // cursor option
+			body = this.document.find( "body" );
+
+			// Support: IE
+			this.storedCursor = body.css( "cursor" );
+			body.css( "cursor", o.cursor );
+
+			this.storedStylesheet =
+				$( "<style>*{ cursor: " + o.cursor + " !important; }</style>" ).appendTo( body );
+		}
+
+		// We need to make sure to grab the zIndex before setting the
+		// opacity, because setting the opacity to anything lower than 1
+		// causes the zIndex to change from "auto" to 0.
+		if ( o.zIndex ) { // zIndex option
+			if ( this.helper.css( "zIndex" ) ) {
+				this._storedZIndex = this.helper.css( "zIndex" );
+			}
+			this.helper.css( "zIndex", o.zIndex );
+		}
+
+		if ( o.opacity ) { // opacity option
+			if ( this.helper.css( "opacity" ) ) {
+				this._storedOpacity = this.helper.css( "opacity" );
+			}
+			this.helper.css( "opacity", o.opacity );
+		}
+
+		//Prepare scrolling
+		if ( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				this.scrollParent[ 0 ].tagName !== "HTML" ) {
+			this.overflowOffset = this.scrollParent.offset();
+		}
+
+		//Call callbacks
+		this._trigger( "start", event, this._uiHash() );
+
+		//Recache the helper size
+		if ( !this._preserveHelperProportions ) {
+			this._cacheHelperProportions();
+		}
+
+		//Post "activate" events to possible containers
+		if ( !noActivation ) {
+			for ( i = this.containers.length - 1; i >= 0; i-- ) {
+				this.containers[ i ]._trigger( "activate", event, this._uiHash( this ) );
+			}
+		}
+
+		//Prepare possible droppables
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.current = this;
+		}
+
+		if ( $.ui.ddmanager && !o.dropBehaviour ) {
+			$.ui.ddmanager.prepareOffsets( this, event );
+		}
+
+		this.dragging = true;
+
+		this._addClass( this.helper, "ui-sortable-helper" );
+
+		//Move the helper, if needed
+		if ( !this.helper.parent().is( this.appendTo ) ) {
+			this.helper.detach().appendTo( this.appendTo );
+
+			//Update position
+			this.offset.parent = this._getParentOffset();
+		}
+
+		//Generate the original position
+		this.position = this.originalPosition = this._generatePosition( event );
+		this.originalPageX = event.pageX;
+		this.originalPageY = event.pageY;
+		this.lastPositionAbs = this.positionAbs = this._convertPositionTo( "absolute" );
+
+		this._mouseDrag( event );
+
+		return true;
+
+	},
+
+	_scroll: function( event ) {
+		var o = this.options,
+			scrolled = false;
+
+		if ( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				this.scrollParent[ 0 ].tagName !== "HTML" ) {
+
+			if ( ( this.overflowOffset.top + this.scrollParent[ 0 ].offsetHeight ) -
+					event.pageY < o.scrollSensitivity ) {
+				this.scrollParent[ 0 ].scrollTop =
+					scrolled = this.scrollParent[ 0 ].scrollTop + o.scrollSpeed;
+			} else if ( event.pageY - this.overflowOffset.top < o.scrollSensitivity ) {
+				this.scrollParent[ 0 ].scrollTop =
+					scrolled = this.scrollParent[ 0 ].scrollTop - o.scrollSpeed;
+			}
+
+			if ( ( this.overflowOffset.left + this.scrollParent[ 0 ].offsetWidth ) -
+					event.pageX < o.scrollSensitivity ) {
+				this.scrollParent[ 0 ].scrollLeft = scrolled =
+					this.scrollParent[ 0 ].scrollLeft + o.scrollSpeed;
+			} else if ( event.pageX - this.overflowOffset.left < o.scrollSensitivity ) {
+				this.scrollParent[ 0 ].scrollLeft = scrolled =
+					this.scrollParent[ 0 ].scrollLeft - o.scrollSpeed;
+			}
+
+		} else {
+
+			if ( event.pageY - this.document.scrollTop() < o.scrollSensitivity ) {
+				scrolled = this.document.scrollTop( this.document.scrollTop() - o.scrollSpeed );
+			} else if ( this.window.height() - ( event.pageY - this.document.scrollTop() ) <
+					o.scrollSensitivity ) {
+				scrolled = this.document.scrollTop( this.document.scrollTop() + o.scrollSpeed );
+			}
+
+			if ( event.pageX - this.document.scrollLeft() < o.scrollSensitivity ) {
+				scrolled = this.document.scrollLeft(
+					this.document.scrollLeft() - o.scrollSpeed
+				);
+			} else if ( this.window.width() - ( event.pageX - this.document.scrollLeft() ) <
+					o.scrollSensitivity ) {
+				scrolled = this.document.scrollLeft(
+					this.document.scrollLeft() + o.scrollSpeed
+				);
+			}
+
+		}
+
+		return scrolled;
+	},
+
+	_mouseDrag: function( event ) {
+		var i, item, itemElement, intersection,
+			o = this.options;
+
+		//Compute the helpers position
+		this.position = this._generatePosition( event );
+		this.positionAbs = this._convertPositionTo( "absolute" );
+
+		//Set the helper position
+		if ( !this.options.axis || this.options.axis !== "y" ) {
+			this.helper[ 0 ].style.left = this.position.left + "px";
+		}
+		if ( !this.options.axis || this.options.axis !== "x" ) {
+			this.helper[ 0 ].style.top = this.position.top + "px";
+		}
+
+		//Post events to containers
+		this._contactContainers( event );
+
+		if ( this.innermostContainer !== null ) {
+
+			//Do scrolling
+			if ( o.scroll ) {
+				if ( this._scroll( event ) !== false ) {
+
+					//Update item positions used in position checks
+					this._refreshItemPositions( true );
+
+					if ( $.ui.ddmanager && !o.dropBehaviour ) {
+						$.ui.ddmanager.prepareOffsets( this, event );
+					}
+				}
+			}
+
+			this.dragDirection = {
+				vertical: this._getDragVerticalDirection(),
+				horizontal: this._getDragHorizontalDirection()
+			};
+
+			//Rearrange
+			for ( i = this.items.length - 1; i >= 0; i-- ) {
+
+				//Cache variables and intersection, continue if no intersection
+				item = this.items[ i ];
+				itemElement = item.item[ 0 ];
+				intersection = this._intersectsWithPointer( item );
+				if ( !intersection ) {
+					continue;
+				}
+
+				// Only put the placeholder inside the current Container, skip all
+				// items from other containers. This works because when moving
+				// an item from one container to another the
+				// currentContainer is switched before the placeholder is moved.
+				//
+				// Without this, moving items in "sub-sortables" can cause
+				// the placeholder to jitter between the outer and inner container.
+				if ( item.instance !== this.currentContainer ) {
+					continue;
+				}
+
+				// Cannot intersect with itself
+				// no useless actions that have been done before
+				// no action if the item moved is the parent of the item checked
+				if ( itemElement !== this.currentItem[ 0 ] &&
+					this.placeholder[ intersection === 1 ?
+					"next" : "prev" ]()[ 0 ] !== itemElement &&
+					!$.contains( this.placeholder[ 0 ], itemElement ) &&
+					( this.options.type === "semi-dynamic" ?
+						!$.contains( this.element[ 0 ], itemElement ) :
+						true
+					)
+				) {
+
+					this.direction = intersection === 1 ? "down" : "up";
+
+					if ( this.options.tolerance === "pointer" ||
+							this._intersectsWithSides( item ) ) {
+						this._rearrange( event, item );
+					} else {
+						break;
+					}
+
+					this._trigger( "change", event, this._uiHash() );
+					break;
+				}
+			}
+		}
+
+		//Interconnect with droppables
+		if ( $.ui.ddmanager ) {
+			$.ui.ddmanager.drag( this, event );
+		}
+
+		//Call callbacks
+		this._trigger( "sort", event, this._uiHash() );
+
+		this.lastPositionAbs = this.positionAbs;
+		return false;
+
+	},
+
+	_mouseStop: function( event, noPropagation ) {
+
+		if ( !event ) {
+			return;
+		}
+
+		//If we are using droppables, inform the manager about the drop
+		if ( $.ui.ddmanager && !this.options.dropBehaviour ) {
+			$.ui.ddmanager.drop( this, event );
+		}
+
+		if ( this.options.revert ) {
+			var that = this,
+				cur = this.placeholder.offset(),
+				axis = this.options.axis,
+				animation = {};
+
+			if ( !axis || axis === "x" ) {
+				animation.left = cur.left - this.offset.parent.left - this.margins.left +
+					( this.offsetParent[ 0 ] === this.document[ 0 ].body ?
+						0 :
+						this.offsetParent[ 0 ].scrollLeft
+					);
+			}
+			if ( !axis || axis === "y" ) {
+				animation.top = cur.top - this.offset.parent.top - this.margins.top +
+					( this.offsetParent[ 0 ] === this.document[ 0 ].body ?
+						0 :
+						this.offsetParent[ 0 ].scrollTop
+					);
+			}
+			this.reverting = true;
+			$( this.helper ).animate(
+				animation,
+				parseInt( this.options.revert, 10 ) || 500,
+				function() {
+					that._clear( event );
+				}
+			);
+		} else {
+			this._clear( event, noPropagation );
+		}
+
+		return false;
+
+	},
+
+	cancel: function() {
+
+		if ( this.dragging ) {
+
+			this._mouseUp( new $.Event( "mouseup", { target: null } ) );
+
+			if ( this.options.helper === "original" ) {
+				this.currentItem.css( this._storedCSS );
+				this._removeClass( this.currentItem, "ui-sortable-helper" );
+			} else {
+				this.currentItem.show();
+			}
+
+			//Post deactivating events to containers
+			for ( var i = this.containers.length - 1; i >= 0; i-- ) {
+				this.containers[ i ]._trigger( "deactivate", null, this._uiHash( this ) );
+				if ( this.containers[ i ].containerCache.over ) {
+					this.containers[ i ]._trigger( "out", null, this._uiHash( this ) );
+					this.containers[ i ].containerCache.over = 0;
+				}
+			}
+
+		}
+
+		if ( this.placeholder ) {
+
+			//$(this.placeholder[0]).remove(); would have been the jQuery way - unfortunately,
+			// it unbinds ALL events from the original node!
+			if ( this.placeholder[ 0 ].parentNode ) {
+				this.placeholder[ 0 ].parentNode.removeChild( this.placeholder[ 0 ] );
+			}
+			if ( this.options.helper !== "original" && this.helper &&
+					this.helper[ 0 ].parentNode ) {
+				this.helper.remove();
+			}
+
+			$.extend( this, {
+				helper: null,
+				dragging: false,
+				reverting: false,
+				_noFinalSort: null
+			} );
+
+			if ( this.domPosition.prev ) {
+				$( this.domPosition.prev ).after( this.currentItem );
+			} else {
+				$( this.domPosition.parent ).prepend( this.currentItem );
+			}
+		}
+
+		return this;
+
+	},
+
+	serialize: function( o ) {
+
+		var items = this._getItemsAsjQuery( o && o.connected ),
+			str = [];
+		o = o || {};
+
+		$( items ).each( function() {
+			var res = ( $( o.item || this ).attr( o.attribute || "id" ) || "" )
+				.match( o.expression || ( /(.+)[\-=_](.+)/ ) );
+			if ( res ) {
+				str.push(
+					( o.key || res[ 1 ] + "[]" ) +
+					"=" + ( o.key && o.expression ? res[ 1 ] : res[ 2 ] ) );
+			}
+		} );
+
+		if ( !str.length && o.key ) {
+			str.push( o.key + "=" );
+		}
+
+		return str.join( "&" );
+
+	},
+
+	toArray: function( o ) {
+
+		var items = this._getItemsAsjQuery( o && o.connected ),
+			ret = [];
+
+		o = o || {};
+
+		items.each( function() {
+			ret.push( $( o.item || this ).attr( o.attribute || "id" ) || "" );
+		} );
+		return ret;
+
+	},
+
+	/* Be careful with the following core functions */
+	_intersectsWith: function( item ) {
+
+		var x1 = this.positionAbs.left,
+			x2 = x1 + this.helperProportions.width,
+			y1 = this.positionAbs.top,
+			y2 = y1 + this.helperProportions.height,
+			l = item.left,
+			r = l + item.width,
+			t = item.top,
+			b = t + item.height,
+			dyClick = this.offset.click.top,
+			dxClick = this.offset.click.left,
+			isOverElementHeight = ( this.options.axis === "x" ) || ( ( y1 + dyClick ) > t &&
+				( y1 + dyClick ) < b ),
+			isOverElementWidth = ( this.options.axis === "y" ) || ( ( x1 + dxClick ) > l &&
+				( x1 + dxClick ) < r ),
+			isOverElement = isOverElementHeight && isOverElementWidth;
+
+		if ( this.options.tolerance === "pointer" ||
+			this.options.forcePointerForContainers ||
+			( this.options.tolerance !== "pointer" &&
+				this.helperProportions[ this.floating ? "width" : "height" ] >
+				item[ this.floating ? "width" : "height" ] )
+		) {
+			return isOverElement;
+		} else {
+
+			return ( l < x1 + ( this.helperProportions.width / 2 ) && // Right Half
+				x2 - ( this.helperProportions.width / 2 ) < r && // Left Half
+				t < y1 + ( this.helperProportions.height / 2 ) && // Bottom Half
+				y2 - ( this.helperProportions.height / 2 ) < b ); // Top Half
+
+		}
+	},
+
+	_intersectsWithPointer: function( item ) {
+		var verticalDirection, horizontalDirection,
+			isOverElementHeight = ( this.options.axis === "x" ) ||
+				this._isOverAxis(
+					this.positionAbs.top + this.offset.click.top, item.top, item.height ),
+			isOverElementWidth = ( this.options.axis === "y" ) ||
+				this._isOverAxis(
+					this.positionAbs.left + this.offset.click.left, item.left, item.width ),
+			isOverElement = isOverElementHeight && isOverElementWidth;
+
+		if ( !isOverElement ) {
+			return false;
+		}
+
+		verticalDirection = this.dragDirection.vertical;
+		horizontalDirection = this.dragDirection.horizontal;
+
+		return this.floating ?
+			( ( horizontalDirection === "right" || verticalDirection === "down" ) ? 2 : 1 ) :
+			( verticalDirection && ( verticalDirection === "down" ? 2 : 1 ) );
+
+	},
+
+	_intersectsWithSides: function( item ) {
+
+		var isOverBottomHalf = this._isOverAxis( this.positionAbs.top +
+				this.offset.click.top, item.top + ( item.height / 2 ), item.height ),
+			isOverRightHalf = this._isOverAxis( this.positionAbs.left +
+				this.offset.click.left, item.left + ( item.width / 2 ), item.width ),
+			verticalDirection = this.dragDirection.vertical,
+			horizontalDirection = this.dragDirection.horizontal;
+
+		if ( this.floating && horizontalDirection ) {
+			return ( ( horizontalDirection === "right" && isOverRightHalf ) ||
+				( horizontalDirection === "left" && !isOverRightHalf ) );
+		} else {
+			return verticalDirection && ( ( verticalDirection === "down" && isOverBottomHalf ) ||
+				( verticalDirection === "up" && !isOverBottomHalf ) );
+		}
+
+	},
+
+	_getDragVerticalDirection: function() {
+		var delta = this.positionAbs.top - this.lastPositionAbs.top;
+		return delta !== 0 && ( delta > 0 ? "down" : "up" );
+	},
+
+	_getDragHorizontalDirection: function() {
+		var delta = this.positionAbs.left - this.lastPositionAbs.left;
+		return delta !== 0 && ( delta > 0 ? "right" : "left" );
+	},
+
+	refresh: function( event ) {
+		this._refreshItems( event );
+		this._setHandleClassName();
+		this.refreshPositions();
+		return this;
+	},
+
+	_connectWith: function() {
+		var options = this.options;
+		return options.connectWith.constructor === String ?
+			[ options.connectWith ] :
+			options.connectWith;
+	},
+
+	_getItemsAsjQuery: function( connected ) {
+
+		var i, j, cur, inst,
+			items = [],
+			queries = [],
+			connectWith = this._connectWith();
+
+		if ( connectWith && connected ) {
+			for ( i = connectWith.length - 1; i >= 0; i-- ) {
+				cur = $( connectWith[ i ], this.document[ 0 ] );
+				for ( j = cur.length - 1; j >= 0; j-- ) {
+					inst = $.data( cur[ j ], this.widgetFullName );
+					if ( inst && inst !== this && !inst.options.disabled ) {
+						queries.push( [ typeof inst.options.items === "function" ?
+							inst.options.items.call( inst.element ) :
+							$( inst.options.items, inst.element )
+								.not( ".ui-sortable-helper" )
+								.not( ".ui-sortable-placeholder" ), inst ] );
+					}
+				}
+			}
+		}
+
+		queries.push( [ typeof this.options.items === "function" ?
+			this.options.items
+				.call( this.element, null, { options: this.options, item: this.currentItem } ) :
+			$( this.options.items, this.element )
+				.not( ".ui-sortable-helper" )
+				.not( ".ui-sortable-placeholder" ), this ] );
+
+		function addItems() {
+			items.push( this );
+		}
+		for ( i = queries.length - 1; i >= 0; i-- ) {
+			queries[ i ][ 0 ].each( addItems );
+		}
+
+		return $( items );
+
+	},
+
+	_removeCurrentsFromItems: function() {
+
+		var list = this.currentItem.find( ":data(" + this.widgetName + "-item)" );
+
+		this.items = $.grep( this.items, function( item ) {
+			for ( var j = 0; j < list.length; j++ ) {
+				if ( list[ j ] === item.item[ 0 ] ) {
+					return false;
+				}
+			}
+			return true;
+		} );
+
+	},
+
+	_refreshItems: function( event ) {
+
+		this.items = [];
+		this.containers = [ this ];
+
+		var i, j, cur, inst, targetData, _queries, item, queriesLength,
+			items = this.items,
+			queries = [ [ typeof this.options.items === "function" ?
+				this.options.items.call( this.element[ 0 ], event, { item: this.currentItem } ) :
+				$( this.options.items, this.element ), this ] ],
+			connectWith = this._connectWith();
+
+		//Shouldn't be run the first time through due to massive slow-down
+		if ( connectWith && this.ready ) {
+			for ( i = connectWith.length - 1; i >= 0; i-- ) {
+				cur = $( connectWith[ i ], this.document[ 0 ] );
+				for ( j = cur.length - 1; j >= 0; j-- ) {
+					inst = $.data( cur[ j ], this.widgetFullName );
+					if ( inst && inst !== this && !inst.options.disabled ) {
+						queries.push( [ typeof inst.options.items === "function" ?
+							inst.options.items
+								.call( inst.element[ 0 ], event, { item: this.currentItem } ) :
+							$( inst.options.items, inst.element ), inst ] );
+						this.containers.push( inst );
+					}
+				}
+			}
+		}
+
+		for ( i = queries.length - 1; i >= 0; i-- ) {
+			targetData = queries[ i ][ 1 ];
+			_queries = queries[ i ][ 0 ];
+
+			for ( j = 0, queriesLength = _queries.length; j < queriesLength; j++ ) {
+				item = $( _queries[ j ] );
+
+				// Data for target checking (mouse manager)
+				item.data( this.widgetName + "-item", targetData );
+
+				items.push( {
+					item: item,
+					instance: targetData,
+					width: 0, height: 0,
+					left: 0, top: 0
+				} );
+			}
+		}
+
+	},
+
+	_refreshItemPositions: function( fast ) {
+		var i, item, t, p;
+
+		for ( i = this.items.length - 1; i >= 0; i-- ) {
+			item = this.items[ i ];
+
+			//We ignore calculating positions of all connected containers when we're not over them
+			if ( this.currentContainer && item.instance !== this.currentContainer &&
+					item.item[ 0 ] !== this.currentItem[ 0 ] ) {
+				continue;
+			}
+
+			t = this.options.toleranceElement ?
+				$( this.options.toleranceElement, item.item ) :
+				item.item;
+
+			if ( !fast ) {
+				item.width = t.outerWidth();
+				item.height = t.outerHeight();
+			}
+
+			p = t.offset();
+			item.left = p.left;
+			item.top = p.top;
+		}
+	},
+
+	refreshPositions: function( fast ) {
+
+		// Determine whether items are being displayed horizontally
+		this.floating = this.items.length ?
+			this.options.axis === "x" || this._isFloating( this.items[ 0 ].item ) :
+			false;
+
+		if ( this.innermostContainer !== null ) {
+			this._refreshItemPositions( fast );
+		}
+
+		var i, p;
+
+		if ( this.options.custom && this.options.custom.refreshContainers ) {
+			this.options.custom.refreshContainers.call( this );
+		} else {
+			for ( i = this.containers.length - 1; i >= 0; i-- ) {
+				p = this.containers[ i ].element.offset();
+				this.containers[ i ].containerCache.left = p.left;
+				this.containers[ i ].containerCache.top = p.top;
+				this.containers[ i ].containerCache.width =
+					this.containers[ i ].element.outerWidth();
+				this.containers[ i ].containerCache.height =
+					this.containers[ i ].element.outerHeight();
+			}
+		}
+
+		return this;
+	},
+
+	_createPlaceholder: function( that ) {
+		that = that || this;
+		var className, nodeName,
+			o = that.options;
+
+		if ( !o.placeholder || o.placeholder.constructor === String ) {
+			className = o.placeholder;
+			nodeName = that.currentItem[ 0 ].nodeName.toLowerCase();
+			o.placeholder = {
+				element: function() {
+
+					var element = $( "<" + nodeName + ">", that.document[ 0 ] );
+
+					that._addClass( element, "ui-sortable-placeholder",
+							className || that.currentItem[ 0 ].className )
+						._removeClass( element, "ui-sortable-helper" );
+
+					if ( nodeName === "tbody" ) {
+						that._createTrPlaceholder(
+							that.currentItem.find( "tr" ).eq( 0 ),
+							$( "<tr>", that.document[ 0 ] ).appendTo( element )
+						);
+					} else if ( nodeName === "tr" ) {
+						that._createTrPlaceholder( that.currentItem, element );
+					} else if ( nodeName === "img" ) {
+						element.attr( "src", that.currentItem.attr( "src" ) );
+					}
+
+					if ( !className ) {
+						element.css( "visibility", "hidden" );
+					}
+
+					return element;
+				},
+				update: function( container, p ) {
+
+					// 1. If a className is set as 'placeholder option, we don't force sizes -
+					// the class is responsible for that
+					// 2. The option 'forcePlaceholderSize can be enabled to force it even if a
+					// class name is specified
+					if ( className && !o.forcePlaceholderSize ) {
+						return;
+					}
+
+					// If the element doesn't have a actual height or width by itself (without
+					// styles coming from a stylesheet), it receives the inline height and width
+					// from the dragged item. Or, if it's a tbody or tr, it's going to have a height
+					// anyway since we're populating them with <td>s above, but they're unlikely to
+					// be the correct height on their own if the row heights are dynamic, so we'll
+					// always assign the height of the dragged item given forcePlaceholderSize
+					// is true.
+					if ( !p.height() || ( o.forcePlaceholderSize &&
+							( nodeName === "tbody" || nodeName === "tr" ) ) ) {
+						p.height(
+							that.currentItem.innerHeight() -
+							parseInt( that.currentItem.css( "paddingTop" ) || 0, 10 ) -
+							parseInt( that.currentItem.css( "paddingBottom" ) || 0, 10 ) );
+					}
+					if ( !p.width() ) {
+						p.width(
+							that.currentItem.innerWidth() -
+							parseInt( that.currentItem.css( "paddingLeft" ) || 0, 10 ) -
+							parseInt( that.currentItem.css( "paddingRight" ) || 0, 10 ) );
+					}
+				}
+			};
+		}
+
+		//Create the placeholder
+		that.placeholder = $( o.placeholder.element.call( that.element, that.currentItem ) );
+
+		//Append it after the actual current item
+		that.currentItem.after( that.placeholder );
+
+		//Update the size of the placeholder (TODO: Logic to fuzzy, see line 316/317)
+		o.placeholder.update( that, that.placeholder );
+
+	},
+
+	_createTrPlaceholder: function( sourceTr, targetTr ) {
+		var that = this;
+
+		sourceTr.children().each( function() {
+			$( "<td>&#160;</td>", that.document[ 0 ] )
+				.attr( "colspan", $( this ).attr( "colspan" ) || 1 )
+				.appendTo( targetTr );
+		} );
+	},
+
+	_contactContainers: function( event ) {
+		var i, j, dist, itemWithLeastDistance, posProperty, sizeProperty, cur, nearBottom,
+			floating, axis,
+			innermostContainer = null,
+			innermostIndex = null;
+
+		// Get innermost container that intersects with item
+		for ( i = this.containers.length - 1; i >= 0; i-- ) {
+
+			// Never consider a container that's located within the item itself
+			if ( $.contains( this.currentItem[ 0 ], this.containers[ i ].element[ 0 ] ) ) {
+				continue;
+			}
+
+			if ( this._intersectsWith( this.containers[ i ].containerCache ) ) {
+
+				// If we've already found a container and it's more "inner" than this, then continue
+				if ( innermostContainer &&
+						$.contains(
+							this.containers[ i ].element[ 0 ],
+							innermostContainer.element[ 0 ] ) ) {
+					continue;
+				}
+
+				innermostContainer = this.containers[ i ];
+				innermostIndex = i;
+
+			} else {
+
+				// container doesn't intersect. trigger "out" event if necessary
+				if ( this.containers[ i ].containerCache.over ) {
+					this.containers[ i ]._trigger( "out", event, this._uiHash( this ) );
+					this.containers[ i ].containerCache.over = 0;
+				}
+			}
+
+		}
+
+		this.innermostContainer = innermostContainer;
+
+		// If no intersecting containers found, return
+		if ( !innermostContainer ) {
+			return;
+		}
+
+		// Move the item into the container if it's not there already
+		if ( this.containers.length === 1 ) {
+			if ( !this.containers[ innermostIndex ].containerCache.over ) {
+				this.containers[ innermostIndex ]._trigger( "over", event, this._uiHash( this ) );
+				this.containers[ innermostIndex ].containerCache.over = 1;
+			}
+		} else {
+
+			// When entering a new container, we will find the item with the least distance and
+			// append our item near it
+			dist = 10000;
+			itemWithLeastDistance = null;
+			floating = innermostContainer.floating || this._isFloating( this.currentItem );
+			posProperty = floating ? "left" : "top";
+			sizeProperty = floating ? "width" : "height";
+			axis = floating ? "pageX" : "pageY";
+
+			for ( j = this.items.length - 1; j >= 0; j-- ) {
+				if ( !$.contains(
+						this.containers[ innermostIndex ].element[ 0 ], this.items[ j ].item[ 0 ] )
+				) {
+					continue;
+				}
+				if ( this.items[ j ].item[ 0 ] === this.currentItem[ 0 ] ) {
+					continue;
+				}
+
+				cur = this.items[ j ].item.offset()[ posProperty ];
+				nearBottom = false;
+				if ( event[ axis ] - cur > this.items[ j ][ sizeProperty ] / 2 ) {
+					nearBottom = true;
+				}
+
+				if ( Math.abs( event[ axis ] - cur ) < dist ) {
+					dist = Math.abs( event[ axis ] - cur );
+					itemWithLeastDistance = this.items[ j ];
+					this.direction = nearBottom ? "up" : "down";
+				}
+			}
+
+			//Check if dropOnEmpty is enabled
+			if ( !itemWithLeastDistance && !this.options.dropOnEmpty ) {
+				return;
+			}
+
+			if ( this.currentContainer === this.containers[ innermostIndex ] ) {
+				if ( !this.currentContainer.containerCache.over ) {
+					this.containers[ innermostIndex ]._trigger( "over", event, this._uiHash() );
+					this.currentContainer.containerCache.over = 1;
+				}
+				return;
+			}
+
+			if ( itemWithLeastDistance ) {
+				this._rearrange( event, itemWithLeastDistance, null, true );
+			} else {
+				this._rearrange( event, null, this.containers[ innermostIndex ].element, true );
+			}
+			this._trigger( "change", event, this._uiHash() );
+			this.containers[ innermostIndex ]._trigger( "change", event, this._uiHash( this ) );
+			this.currentContainer = this.containers[ innermostIndex ];
+
+			//Update the placeholder
+			this.options.placeholder.update( this.currentContainer, this.placeholder );
+
+			//Update scrollParent
+			this.scrollParent = this.placeholder.scrollParent();
+
+			//Update overflowOffset
+			if ( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+					this.scrollParent[ 0 ].tagName !== "HTML" ) {
+				this.overflowOffset = this.scrollParent.offset();
+			}
+
+			this.containers[ innermostIndex ]._trigger( "over", event, this._uiHash( this ) );
+			this.containers[ innermostIndex ].containerCache.over = 1;
+		}
+
+	},
+
+	_createHelper: function( event ) {
+
+		var o = this.options,
+			helper = typeof o.helper === "function" ?
+				$( o.helper.apply( this.element[ 0 ], [ event, this.currentItem ] ) ) :
+				( o.helper === "clone" ? this.currentItem.clone() : this.currentItem );
+
+		//Add the helper to the DOM if that didn't happen already
+		if ( !helper.parents( "body" ).length ) {
+			this.appendTo[ 0 ].appendChild( helper[ 0 ] );
+		}
+
+		if ( helper[ 0 ] === this.currentItem[ 0 ] ) {
+			this._storedCSS = {
+				width: this.currentItem[ 0 ].style.width,
+				height: this.currentItem[ 0 ].style.height,
+				position: this.currentItem.css( "position" ),
+				top: this.currentItem.css( "top" ),
+				left: this.currentItem.css( "left" )
+			};
+		}
+
+		if ( !helper[ 0 ].style.width || o.forceHelperSize ) {
+			helper.width( this.currentItem.width() );
+		}
+		if ( !helper[ 0 ].style.height || o.forceHelperSize ) {
+			helper.height( this.currentItem.height() );
+		}
+
+		return helper;
+
+	},
+
+	_adjustOffsetFromHelper: function( obj ) {
+		if ( typeof obj === "string" ) {
+			obj = obj.split( " " );
+		}
+		if ( Array.isArray( obj ) ) {
+			obj = { left: +obj[ 0 ], top: +obj[ 1 ] || 0 };
+		}
+		if ( "left" in obj ) {
+			this.offset.click.left = obj.left + this.margins.left;
+		}
+		if ( "right" in obj ) {
+			this.offset.click.left = this.helperProportions.width - obj.right + this.margins.left;
+		}
+		if ( "top" in obj ) {
+			this.offset.click.top = obj.top + this.margins.top;
+		}
+		if ( "bottom" in obj ) {
+			this.offset.click.top = this.helperProportions.height - obj.bottom + this.margins.top;
+		}
+	},
+
+	_getParentOffset: function() {
+
+		//Get the offsetParent and cache its position
+		this.offsetParent = this.helper.offsetParent();
+		var po = this.offsetParent.offset();
+
+		// This is a special case where we need to modify a offset calculated on start, since the
+		// following happened:
+		// 1. The position of the helper is absolute, so it's position is calculated based on the
+		// next positioned parent
+		// 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't
+		// the document, which means that the scroll is included in the initial calculation of the
+		// offset of the parent, and never recalculated upon drag
+		if ( this.cssPosition === "absolute" && this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) {
+			po.left += this.scrollParent.scrollLeft();
+			po.top += this.scrollParent.scrollTop();
+		}
+
+		// This needs to be actually done for all browsers, since pageX/pageY includes this
+		// information with an ugly IE fix
+		if ( this.offsetParent[ 0 ] === this.document[ 0 ].body ||
+				( this.offsetParent[ 0 ].tagName &&
+				this.offsetParent[ 0 ].tagName.toLowerCase() === "html" && $.ui.ie ) ) {
+			po = { top: 0, left: 0 };
+		}
+
+		return {
+			top: po.top + ( parseInt( this.offsetParent.css( "borderTopWidth" ), 10 ) || 0 ),
+			left: po.left + ( parseInt( this.offsetParent.css( "borderLeftWidth" ), 10 ) || 0 )
+		};
+
+	},
+
+	_getRelativeOffset: function() {
+
+		if ( this.cssPosition === "relative" ) {
+			var p = this.currentItem.position();
+			return {
+				top: p.top - ( parseInt( this.helper.css( "top" ), 10 ) || 0 ) +
+					this.scrollParent.scrollTop(),
+				left: p.left - ( parseInt( this.helper.css( "left" ), 10 ) || 0 ) +
+					this.scrollParent.scrollLeft()
+			};
+		} else {
+			return { top: 0, left: 0 };
+		}
+
+	},
+
+	_cacheMargins: function() {
+		this.margins = {
+			left: ( parseInt( this.currentItem.css( "marginLeft" ), 10 ) || 0 ),
+			top: ( parseInt( this.currentItem.css( "marginTop" ), 10 ) || 0 )
+		};
+	},
+
+	_cacheHelperProportions: function() {
+		this.helperProportions = {
+			width: this.helper.outerWidth(),
+			height: this.helper.outerHeight()
+		};
+	},
+
+	_setContainment: function() {
+
+		var ce, co, over,
+			o = this.options;
+		if ( o.containment === "parent" ) {
+			o.containment = this.helper[ 0 ].parentNode;
+		}
+		if ( o.containment === "document" || o.containment === "window" ) {
+			this.containment = [
+				0 - this.offset.relative.left - this.offset.parent.left,
+				0 - this.offset.relative.top - this.offset.parent.top,
+				o.containment === "document" ?
+					this.document.width() :
+					this.window.width() - this.helperProportions.width - this.margins.left,
+				( o.containment === "document" ?
+					( this.document.height() || document.body.parentNode.scrollHeight ) :
+					this.window.height() || this.document[ 0 ].body.parentNode.scrollHeight
+				) - this.helperProportions.height - this.margins.top
+			];
+		}
+
+		if ( !( /^(document|window|parent)$/ ).test( o.containment ) ) {
+			ce = $( o.containment )[ 0 ];
+			co = $( o.containment ).offset();
+			over = ( $( ce ).css( "overflow" ) !== "hidden" );
+
+			this.containment = [
+				co.left + ( parseInt( $( ce ).css( "borderLeftWidth" ), 10 ) || 0 ) +
+					( parseInt( $( ce ).css( "paddingLeft" ), 10 ) || 0 ) - this.margins.left,
+				co.top + ( parseInt( $( ce ).css( "borderTopWidth" ), 10 ) || 0 ) +
+					( parseInt( $( ce ).css( "paddingTop" ), 10 ) || 0 ) - this.margins.top,
+				co.left + ( over ? Math.max( ce.scrollWidth, ce.offsetWidth ) : ce.offsetWidth ) -
+					( parseInt( $( ce ).css( "borderLeftWidth" ), 10 ) || 0 ) -
+					( parseInt( $( ce ).css( "paddingRight" ), 10 ) || 0 ) -
+					this.helperProportions.width - this.margins.left,
+				co.top + ( over ? Math.max( ce.scrollHeight, ce.offsetHeight ) : ce.offsetHeight ) -
+					( parseInt( $( ce ).css( "borderTopWidth" ), 10 ) || 0 ) -
+					( parseInt( $( ce ).css( "paddingBottom" ), 10 ) || 0 ) -
+					this.helperProportions.height - this.margins.top
+			];
+		}
+
+	},
+
+	_convertPositionTo: function( d, pos ) {
+
+		if ( !pos ) {
+			pos = this.position;
+		}
+		var mod = d === "absolute" ? 1 : -1,
+			scroll = this.cssPosition === "absolute" &&
+				!( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ?
+					this.offsetParent :
+					this.scrollParent,
+			scrollIsRootNode = ( /(html|body)/i ).test( scroll[ 0 ].tagName );
+
+		return {
+			top: (
+
+				// The absolute mouse position
+				pos.top	+
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.top * mod +
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.top * mod -
+				( ( this.cssPosition === "fixed" ?
+					-this.scrollParent.scrollTop() :
+					( scrollIsRootNode ? 0 : scroll.scrollTop() ) ) * mod )
+			),
+			left: (
+
+				// The absolute mouse position
+				pos.left +
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.left * mod +
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.left * mod	-
+				( ( this.cssPosition === "fixed" ?
+					-this.scrollParent.scrollLeft() : scrollIsRootNode ? 0 :
+					scroll.scrollLeft() ) * mod )
+			)
+		};
+
+	},
+
+	_generatePosition: function( event ) {
+
+		var top, left,
+			o = this.options,
+			pageX = event.pageX,
+			pageY = event.pageY,
+			scroll = this.cssPosition === "absolute" &&
+				!( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				$.contains( this.scrollParent[ 0 ], this.offsetParent[ 0 ] ) ) ?
+					this.offsetParent :
+					this.scrollParent,
+				scrollIsRootNode = ( /(html|body)/i ).test( scroll[ 0 ].tagName );
+
+		// This is another very weird special case that only happens for relative elements:
+		// 1. If the css position is relative
+		// 2. and the scroll parent is the document or similar to the offset parent
+		// we have to refresh the relative offset during the scroll so there are no jumps
+		if ( this.cssPosition === "relative" && !( this.scrollParent[ 0 ] !== this.document[ 0 ] &&
+				this.scrollParent[ 0 ] !== this.offsetParent[ 0 ] ) ) {
+			this.offset.relative = this._getRelativeOffset();
+		}
+
+		/*
+		 * - Position constraining -
+		 * Constrain the position to a mix of grid, containment.
+		 */
+
+		if ( this.originalPosition ) { //If we are not dragging yet, we won't check for options
+
+			if ( this.containment ) {
+				if ( event.pageX - this.offset.click.left < this.containment[ 0 ] ) {
+					pageX = this.containment[ 0 ] + this.offset.click.left;
+				}
+				if ( event.pageY - this.offset.click.top < this.containment[ 1 ] ) {
+					pageY = this.containment[ 1 ] + this.offset.click.top;
+				}
+				if ( event.pageX - this.offset.click.left > this.containment[ 2 ] ) {
+					pageX = this.containment[ 2 ] + this.offset.click.left;
+				}
+				if ( event.pageY - this.offset.click.top > this.containment[ 3 ] ) {
+					pageY = this.containment[ 3 ] + this.offset.click.top;
+				}
+			}
+
+			if ( o.grid ) {
+				top = this.originalPageY + Math.round( ( pageY - this.originalPageY ) /
+					o.grid[ 1 ] ) * o.grid[ 1 ];
+				pageY = this.containment ?
+					( ( top - this.offset.click.top >= this.containment[ 1 ] &&
+						top - this.offset.click.top <= this.containment[ 3 ] ) ?
+							top :
+							( ( top - this.offset.click.top >= this.containment[ 1 ] ) ?
+								top - o.grid[ 1 ] : top + o.grid[ 1 ] ) ) :
+								top;
+
+				left = this.originalPageX + Math.round( ( pageX - this.originalPageX ) /
+					o.grid[ 0 ] ) * o.grid[ 0 ];
+				pageX = this.containment ?
+					( ( left - this.offset.click.left >= this.containment[ 0 ] &&
+						left - this.offset.click.left <= this.containment[ 2 ] ) ?
+							left :
+							( ( left - this.offset.click.left >= this.containment[ 0 ] ) ?
+								left - o.grid[ 0 ] : left + o.grid[ 0 ] ) ) :
+								left;
+			}
+
+		}
+
+		return {
+			top: (
+
+				// The absolute mouse position
+				pageY -
+
+				// Click offset (relative to the element)
+				this.offset.click.top -
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.top -
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.top +
+				( ( this.cssPosition === "fixed" ?
+					-this.scrollParent.scrollTop() :
+					( scrollIsRootNode ? 0 : scroll.scrollTop() ) ) )
+			),
+			left: (
+
+				// The absolute mouse position
+				pageX -
+
+				// Click offset (relative to the element)
+				this.offset.click.left -
+
+				// Only for relative positioned nodes: Relative offset from element to offset parent
+				this.offset.relative.left -
+
+				// The offsetParent's offset without borders (offset + border)
+				this.offset.parent.left +
+				( ( this.cssPosition === "fixed" ?
+					-this.scrollParent.scrollLeft() :
+					scrollIsRootNode ? 0 : scroll.scrollLeft() ) )
+			)
+		};
+
+	},
+
+	_rearrange: function( event, i, a, hardRefresh ) {
+
+		if ( a ) {
+			a[ 0 ].appendChild( this.placeholder[ 0 ] );
+		} else {
+			i.item[ 0 ].parentNode.insertBefore( this.placeholder[ 0 ],
+				( this.direction === "down" ? i.item[ 0 ] : i.item[ 0 ].nextSibling ) );
+		}
+
+		//Various things done here to improve the performance:
+		// 1. we create a setTimeout, that calls refreshPositions
+		// 2. on the instance, we have a counter variable, that get's higher after every append
+		// 3. on the local scope, we copy the counter variable, and check in the timeout,
+		// if it's still the same
+		// 4. this lets only the last addition to the timeout stack through
+		this.counter = this.counter ? ++this.counter : 1;
+		var counter = this.counter;
+
+		this._delay( function() {
+			if ( counter === this.counter ) {
+
+				//Precompute after each DOM insertion, NOT on mousemove
+				this.refreshPositions( !hardRefresh );
+			}
+		} );
+
+	},
+
+	_clear: function( event, noPropagation ) {
+
+		this.reverting = false;
+
+		// We delay all events that have to be triggered to after the point where the placeholder
+		// has been removed and everything else normalized again
+		var i,
+			delayedTriggers = [];
+
+		// We first have to update the dom position of the actual currentItem
+		// Note: don't do it if the current item is already removed (by a user), or it gets
+		// reappended (see #4088)
+		if ( !this._noFinalSort && this.currentItem.parent().length ) {
+			this.placeholder.before( this.currentItem );
+		}
+		this._noFinalSort = null;
+
+		if ( this.helper[ 0 ] === this.currentItem[ 0 ] ) {
+			for ( i in this._storedCSS ) {
+				if ( this._storedCSS[ i ] === "auto" || this._storedCSS[ i ] === "static" ) {
+					this._storedCSS[ i ] = "";
+				}
+			}
+			this.currentItem.css( this._storedCSS );
+			this._removeClass( this.currentItem, "ui-sortable-helper" );
+		} else {
+			this.currentItem.show();
+		}
+
+		if ( this.fromOutside && !noPropagation ) {
+			delayedTriggers.push( function( event ) {
+				this._trigger( "receive", event, this._uiHash( this.fromOutside ) );
+			} );
+		}
+		if ( ( this.fromOutside ||
+				this.domPosition.prev !==
+				this.currentItem.prev().not( ".ui-sortable-helper" )[ 0 ] ||
+				this.domPosition.parent !== this.currentItem.parent()[ 0 ] ) && !noPropagation ) {
+
+			// Trigger update callback if the DOM position has changed
+			delayedTriggers.push( function( event ) {
+				this._trigger( "update", event, this._uiHash() );
+			} );
+		}
+
+		// Check if the items Container has Changed and trigger appropriate
+		// events.
+		if ( this !== this.currentContainer ) {
+			if ( !noPropagation ) {
+				delayedTriggers.push( function( event ) {
+					this._trigger( "remove", event, this._uiHash() );
+				} );
+				delayedTriggers.push( ( function( c ) {
+					return function( event ) {
+						c._trigger( "receive", event, this._uiHash( this ) );
+					};
+				} ).call( this, this.currentContainer ) );
+				delayedTriggers.push( ( function( c ) {
+					return function( event ) {
+						c._trigger( "update", event, this._uiHash( this ) );
+					};
+				} ).call( this, this.currentContainer ) );
+			}
+		}
+
+		//Post events to containers
+		function delayEvent( type, instance, container ) {
+			return function( event ) {
+				container._trigger( type, event, instance._uiHash( instance ) );
+			};
+		}
+		for ( i = this.containers.length - 1; i >= 0; i-- ) {
+			if ( !noPropagation ) {
+				delayedTriggers.push( delayEvent( "deactivate", this, this.containers[ i ] ) );
+			}
+			if ( this.containers[ i ].containerCache.over ) {
+				delayedTriggers.push( delayEvent( "out", this, this.containers[ i ] ) );
+				this.containers[ i ].containerCache.over = 0;
+			}
+		}
+
+		//Do what was originally in plugins
+		if ( this.storedCursor ) {
+			this.document.find( "body" ).css( "cursor", this.storedCursor );
+			this.storedStylesheet.remove();
+		}
+		if ( this._storedOpacity ) {
+			this.helper.css( "opacity", this._storedOpacity );
+		}
+		if ( this._storedZIndex ) {
+			this.helper.css( "zIndex", this._storedZIndex === "auto" ? "" : this._storedZIndex );
+		}
+
+		this.dragging = false;
+
+		if ( !noPropagation ) {
+			this._trigger( "beforeStop", event, this._uiHash() );
+		}
+
+		//$(this.placeholder[0]).remove(); would have been the jQuery way - unfortunately,
+		// it unbinds ALL events from the original node!
+		this.placeholder[ 0 ].parentNode.removeChild( this.placeholder[ 0 ] );
+
+		if ( !this.cancelHelperRemoval ) {
+			if ( this.helper[ 0 ] !== this.currentItem[ 0 ] ) {
+				this.helper.remove();
+			}
+			this.helper = null;
+		}
+
+		if ( !noPropagation ) {
+			for ( i = 0; i < delayedTriggers.length; i++ ) {
+
+				// Trigger all delayed events
+				delayedTriggers[ i ].call( this, event );
+			}
+			this._trigger( "stop", event, this._uiHash() );
+		}
+
+		this.fromOutside = false;
+		return !this.cancelHelperRemoval;
+
+	},
+
+	_trigger: function() {
+		if ( $.Widget.prototype._trigger.apply( this, arguments ) === false ) {
+			this.cancel();
+		}
+	},
+
+	_uiHash: function( _inst ) {
+		var inst = _inst || this;
+		return {
+			helper: inst.helper,
+			placeholder: inst.placeholder || $( [] ),
+			position: inst.position,
+			originalPosition: inst.originalPosition,
+			offset: inst.positionAbs,
+			item: inst.currentItem,
+			sender: _inst ? _inst.element : null
+		};
+	}
+
+} );
+
+} );
 
 
 /***/ }),
@@ -37554,6 +42171,201 @@ webpackContext.id = "./node_modules/moment/locale sync recursive ^\\.\\/.*$";
 
 /***/ }),
 
+/***/ "./node_modules/process/browser.js":
+/*!*****************************************!*\
+  !*** ./node_modules/process/browser.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+
+/***/ }),
+
 /***/ "./node_modules/select2/dist/js/select2.js":
 /*!*************************************************!*\
   !*** ./node_modules/select2/dist/js/select2.js ***!
@@ -43764,7 +48576,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.1.4
+* sweetalert2 v11.1.7
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -45099,7 +49911,6 @@ S2.define('jquery.select2',[
   }
 
   const bodyClickListener = event => {
-    // TODO: replace with event.composedPath()
     for (let el = event.target; el && el !== document; el = el.parentNode) {
       for (const attr in clickHandlers) {
         const template = el.getAttribute(attr);
@@ -46357,7 +51168,7 @@ S2.define('jquery.select2',[
     const innerParams = privateProps.innerParams.get(instance || undefined);
 
     if (innerParams.showLoaderOnConfirm) {
-      showLoading(); // TODO: make showLoading an *instance* method
+      showLoading();
     }
 
     if (innerParams.preConfirm) {
@@ -46874,7 +51685,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.1.4';
+  SweetAlert.version = '11.1.7';
 
   const Swal = SweetAlert;
   Swal.default = Swal;
@@ -46884,7 +51695,7 @@ S2.define('jquery.select2',[
 }));
 if (typeof this !== 'undefined' && this.Sweetalert2){  this.swal = this.sweetAlert = this.Swal = this.SweetAlert = this.Sweetalert2}
 
-"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,".swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4!important;grid-row:1/4!important;grid-template-columns:1fr 99fr 1fr;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 .625em #d9d9d9;pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:700}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.3125em;padding:0}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-styled:focus{box-shadow:0 0 0 1px #fff,0 0 0 3px rgba(100,150,200,.5)}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.8em;left:-.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-toast-animate-success-line-tip .75s;animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-toast-animate-success-line-long .75s;animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{-webkit-animation:swal2-toast-show .5s;animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{-webkit-animation:swal2-toast-hide .1s forwards;animation:swal2-toast-hide .1s forwards}.swal2-container{display:grid;position:fixed;z-index:1060;top:0;right:0;bottom:0;left:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\" \"gap gap gap\";grid-template-rows:auto auto auto .625em;height:100%;padding:.625em .625em 0;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}.swal2-container::after{content:\"\";grid-column:1/4;grid-row:4;height:.625em}.swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{background:rgba(0,0,0,.4)}.swal2-container.swal2-backdrop-hide{background:0 0!important}.swal2-container.swal2-bottom-start,.swal2-container.swal2-center-start,.swal2-container.swal2-top-start{grid-template-columns:minmax(0,1fr) auto auto}.swal2-container.swal2-bottom,.swal2-container.swal2-center,.swal2-container.swal2-top{grid-template-columns:auto minmax(0,1fr) auto}.swal2-container.swal2-bottom-end,.swal2-container.swal2-center-end,.swal2-container.swal2-top-end{grid-template-columns:auto auto minmax(0,1fr)}.swal2-container.swal2-top-start>.swal2-popup{align-self:start}.swal2-container.swal2-top>.swal2-popup{grid-column:2;align-self:start;justify-self:center}.swal2-container.swal2-top-end>.swal2-popup,.swal2-container.swal2-top-right>.swal2-popup{grid-column:3;align-self:start;justify-self:end}.swal2-container.swal2-center-left>.swal2-popup,.swal2-container.swal2-center-start>.swal2-popup{grid-row:2;align-self:center}.swal2-container.swal2-center>.swal2-popup{grid-column:2;grid-row:2;align-self:center;justify-self:center}.swal2-container.swal2-center-end>.swal2-popup,.swal2-container.swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;align-self:center;justify-self:end}.swal2-container.swal2-bottom-left>.swal2-popup,.swal2-container.swal2-bottom-start>.swal2-popup{grid-column:1;grid-row:3;align-self:end}.swal2-container.swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;justify-self:center;align-self:end}.swal2-container.swal2-bottom-end>.swal2-popup,.swal2-container.swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;align-self:end;justify-self:end}.swal2-container.swal2-grow-fullscreen>.swal2-popup,.swal2-container.swal2-grow-row>.swal2-popup{grid-column:1/4;width:100%}.swal2-container.swal2-grow-column>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}.swal2-container.swal2-no-transition{transition:none!important}.swal2-popup{display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0,100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}.swal2-popup:focus{outline:0}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-title{position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:#595959;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-actions{display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:100%;margin:1.25em auto 0;padding:0}.swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))}.swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2))}.swal2-loader{display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 transparent #2778c4 transparent}.swal2-styled{margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px transparent;font-weight:500}.swal2-styled:not([disabled]){cursor:pointer}.swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7367f0;color:#fff;font-size:1em}.swal2-styled.swal2-confirm:focus{box-shadow:0 0 0 3px rgba(115,103,240,.5)}.swal2-styled.swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#ea5455;color:#fff;font-size:1em}.swal2-styled.swal2-deny:focus{box-shadow:0 0 0 3px rgba(234,84,85,.5)}.swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7d88;color:#fff;font-size:1em}.swal2-styled.swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,125,136,.5)}.swal2-styled.swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}.swal2-styled:focus{outline:0}.swal2-styled::-moz-focus-inner{border:0}.swal2-footer{justify-content:center;margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:#545454;font-size:1em}.swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto!important;height:.25em;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}.swal2-timer-progress-bar{width:100%;height:.25em;background:rgba(0,0,0,.2)}.swal2-image{max-width:100%;margin:2em auto 1em}.swal2-close{z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:0 0;color:#ccc;font-family:serif;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}.swal2-close:hover{transform:none;background:0 0;color:#f27474}.swal2-close:focus{outline:0;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}.swal2-close::-moz-focus-inner{border:0}.swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:#545454;font-size:1.125em;font-weight:400;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}.swal2-checkbox,.swal2-file,.swal2-input,.swal2-radio,.swal2-select,.swal2-textarea{margin:1em 2em 0}.swal2-file,.swal2-input,.swal2-textarea{box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:inherit;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px transparent;color:inherit;font-size:1.125em}.swal2-file.swal2-inputerror,.swal2-input.swal2-inputerror,.swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-file:focus,.swal2-input:focus,.swal2-textarea:focus{border:1px solid #b4dbed;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}.swal2-file::-moz-placeholder,.swal2-input::-moz-placeholder,.swal2-textarea::-moz-placeholder{color:#ccc}.swal2-file:-ms-input-placeholder,.swal2-input:-ms-input-placeholder,.swal2-textarea:-ms-input-placeholder{color:#ccc}.swal2-file::placeholder,.swal2-input::placeholder,.swal2-textarea::placeholder{color:#ccc}.swal2-range{margin:1em 2em 0;background:#fff}.swal2-range input{width:80%}.swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}.swal2-range input,.swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}.swal2-input{height:2.625em;padding:0 .75em}.swal2-file{width:75%;margin-right:auto;margin-left:auto;background:inherit;font-size:1.125em}.swal2-textarea{height:6.75em;padding:.75em}.swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:inherit;color:inherit;font-size:1.125em}.swal2-checkbox,.swal2-radio{align-items:center;justify-content:center;background:#fff;color:inherit}.swal2-checkbox label,.swal2-radio label{margin:0 .6em;font-size:1.125em}.swal2-checkbox input,.swal2-radio input{flex-shrink:0;margin:0 .4em}.swal2-input-label{display:flex;justify-content:center;margin:1em auto 0}.swal2-validation-message{align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}.swal2-validation-message::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}.swal2-icon{position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:.25em solid transparent;border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474;color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}.swal2-icon.swal2-error.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-error.swal2-icon-show .swal2-x-mark{-webkit-animation:swal2-animate-error-x-mark .5s;animation:swal2-animate-error-x-mark .5s}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-success{border-color:#a5dc86;color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-.25em;left:-.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-animate-success-line-tip .75s;animation:swal2-animate-success-line-tip .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-animate-success-line-long .75s;animation:swal2-animate-success-line-long .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-circular-line-right{-webkit-animation:swal2-rotate-success-circular-line 4.25s ease-in;animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:inherit;font-weight:600}.swal2-progress-steps li{display:inline-block;position:relative}.swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}.swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}[class^=swal2]{-webkit-tap-highlight-color:transparent}.swal2-show{-webkit-animation:swal2-show .3s;animation:swal2-show .3s}.swal2-hide{-webkit-animation:swal2-hide .15s forwards;animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@-webkit-keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@-webkit-keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@-webkit-keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@-webkit-keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@-webkit-keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@-webkit-keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@-webkit-keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@-webkit-keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@-webkit-keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@-webkit-keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@-webkit-keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@-webkit-keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto!important}body.swal2-no-backdrop .swal2-container{background-color:transparent!important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll!important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static!important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:transparent;pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-left,body.swal2-toast-shown .swal2-container.swal2-top-start{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-left,body.swal2-toast-shown .swal2-container.swal2-center-start{top:50%;right:auto;bottom:auto;left:0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;transform:translate(-50%,-50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-left,body.swal2-toast-shown .swal2-container.swal2-bottom-start{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}");
+"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,".swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4!important;grid-row:1/4!important;grid-template-columns:1fr 99fr 1fr;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 1px rgba(0,0,0,.075),0 1px 2px rgba(0,0,0,.075),1px 2px 4px rgba(0,0,0,.075),1px 3px 8px rgba(0,0,0,.075),2px 4px 16px rgba(0,0,0,.075);pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:700}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;transform:rotate(45deg);border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.8em;left:-.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-toast-animate-success-line-tip .75s;animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-toast-animate-success-line-long .75s;animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{-webkit-animation:swal2-toast-show .5s;animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{-webkit-animation:swal2-toast-hide .1s forwards;animation:swal2-toast-hide .1s forwards}.swal2-container{display:grid;position:fixed;z-index:1060;top:0;right:0;bottom:0;left:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\";grid-template-rows:minmax(-webkit-min-content,auto) minmax(-webkit-min-content,auto) minmax(-webkit-min-content,auto);grid-template-rows:minmax(min-content,auto) minmax(min-content,auto) minmax(min-content,auto);height:100%;padding:.625em;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}.swal2-container.swal2-backdrop-show,.swal2-container.swal2-noanimation{background:rgba(0,0,0,.4)}.swal2-container.swal2-backdrop-hide{background:0 0!important}.swal2-container.swal2-bottom-start,.swal2-container.swal2-center-start,.swal2-container.swal2-top-start{grid-template-columns:minmax(0,1fr) auto auto}.swal2-container.swal2-bottom,.swal2-container.swal2-center,.swal2-container.swal2-top{grid-template-columns:auto minmax(0,1fr) auto}.swal2-container.swal2-bottom-end,.swal2-container.swal2-center-end,.swal2-container.swal2-top-end{grid-template-columns:auto auto minmax(0,1fr)}.swal2-container.swal2-top-start>.swal2-popup{align-self:start}.swal2-container.swal2-top>.swal2-popup{grid-column:2;align-self:start;justify-self:center}.swal2-container.swal2-top-end>.swal2-popup,.swal2-container.swal2-top-right>.swal2-popup{grid-column:3;align-self:start;justify-self:end}.swal2-container.swal2-center-left>.swal2-popup,.swal2-container.swal2-center-start>.swal2-popup{grid-row:2;align-self:center}.swal2-container.swal2-center>.swal2-popup{grid-column:2;grid-row:2;align-self:center;justify-self:center}.swal2-container.swal2-center-end>.swal2-popup,.swal2-container.swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;align-self:center;justify-self:end}.swal2-container.swal2-bottom-left>.swal2-popup,.swal2-container.swal2-bottom-start>.swal2-popup{grid-column:1;grid-row:3;align-self:end}.swal2-container.swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;justify-self:center;align-self:end}.swal2-container.swal2-bottom-end>.swal2-popup,.swal2-container.swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;align-self:end;justify-self:end}.swal2-container.swal2-grow-fullscreen>.swal2-popup,.swal2-container.swal2-grow-row>.swal2-popup{grid-column:1/4;width:100%}.swal2-container.swal2-grow-column>.swal2-popup,.swal2-container.swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}.swal2-container.swal2-no-transition{transition:none!important}.swal2-popup{display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0,100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}.swal2-popup:focus{outline:0}.swal2-popup.swal2-loading{overflow-y:hidden}.swal2-title{position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:#595959;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}.swal2-actions{display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:auto;margin:1.25em auto 0;padding:0}.swal2-actions:not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}.swal2-actions:not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.1))}.swal2-actions:not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.2))}.swal2-loader{display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;-webkit-animation:swal2-rotate-loading 1.5s linear 0s infinite normal;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 transparent #2778c4 transparent}.swal2-styled{margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px transparent;font-weight:500}.swal2-styled:not([disabled]){cursor:pointer}.swal2-styled.swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7367f0;color:#fff;font-size:1em}.swal2-styled.swal2-confirm:focus{box-shadow:0 0 0 3px rgba(115,103,240,.5)}.swal2-styled.swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#ea5455;color:#fff;font-size:1em}.swal2-styled.swal2-deny:focus{box-shadow:0 0 0 3px rgba(234,84,85,.5)}.swal2-styled.swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7d88;color:#fff;font-size:1em}.swal2-styled.swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,125,136,.5)}.swal2-styled.swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}.swal2-styled:focus{outline:0}.swal2-styled::-moz-focus-inner{border:0}.swal2-footer{justify-content:center;margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:#545454;font-size:1em}.swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto!important;height:.25em;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}.swal2-timer-progress-bar{width:100%;height:.25em;background:rgba(0,0,0,.2)}.swal2-image{max-width:100%;margin:2em auto 1em}.swal2-close{z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:0 0;color:#ccc;font-family:serif;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}.swal2-close:hover{transform:none;background:0 0;color:#f27474}.swal2-close:focus{outline:0;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}.swal2-close::-moz-focus-inner{border:0}.swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:#545454;font-size:1.125em;font-weight:400;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}.swal2-checkbox,.swal2-file,.swal2-input,.swal2-radio,.swal2-select,.swal2-textarea{margin:1em 2em 0}.swal2-file,.swal2-input,.swal2-textarea{box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:inherit;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px transparent;color:inherit;font-size:1.125em}.swal2-file.swal2-inputerror,.swal2-input.swal2-inputerror,.swal2-textarea.swal2-inputerror{border-color:#f27474!important;box-shadow:0 0 2px #f27474!important}.swal2-file:focus,.swal2-input:focus,.swal2-textarea:focus{border:1px solid #b4dbed;outline:0;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}.swal2-file::-moz-placeholder,.swal2-input::-moz-placeholder,.swal2-textarea::-moz-placeholder{color:#ccc}.swal2-file:-ms-input-placeholder,.swal2-input:-ms-input-placeholder,.swal2-textarea:-ms-input-placeholder{color:#ccc}.swal2-file::placeholder,.swal2-input::placeholder,.swal2-textarea::placeholder{color:#ccc}.swal2-range{margin:1em 2em 0;background:#fff}.swal2-range input{width:80%}.swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}.swal2-range input,.swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}.swal2-input{height:2.625em;padding:0 .75em}.swal2-file{width:75%;margin-right:auto;margin-left:auto;background:inherit;font-size:1.125em}.swal2-textarea{height:6.75em;padding:.75em}.swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:inherit;color:inherit;font-size:1.125em}.swal2-checkbox,.swal2-radio{align-items:center;justify-content:center;background:#fff;color:inherit}.swal2-checkbox label,.swal2-radio label{margin:0 .6em;font-size:1.125em}.swal2-checkbox input,.swal2-radio input{flex-shrink:0;margin:0 .4em}.swal2-input-label{display:flex;justify-content:center;margin:1em auto 0}.swal2-validation-message{align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}.swal2-validation-message::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}.swal2-icon{position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:.25em solid transparent;border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}.swal2-icon.swal2-error{border-color:#f27474;color:#f27474}.swal2-icon.swal2-error .swal2-x-mark{position:relative;flex-grow:1}.swal2-icon.swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}.swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}.swal2-icon.swal2-error.swal2-icon-show{-webkit-animation:swal2-animate-error-icon .5s;animation:swal2-animate-error-icon .5s}.swal2-icon.swal2-error.swal2-icon-show .swal2-x-mark{-webkit-animation:swal2-animate-error-x-mark .5s;animation:swal2-animate-error-x-mark .5s}.swal2-icon.swal2-warning{border-color:#facea8;color:#f8bb86}.swal2-icon.swal2-info{border-color:#9de0f6;color:#3fc3ee}.swal2-icon.swal2-question{border-color:#c9dae1;color:#87adbd}.swal2-icon.swal2-success{border-color:#a5dc86;color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;transform:rotate(45deg);border-radius:50%}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=left]{top:-.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}.swal2-icon.swal2-success [class^=swal2-success-circular-line][class$=right]{top:-.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}.swal2-icon.swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-.25em;left:-.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}.swal2-icon.swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}.swal2-icon.swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}.swal2-icon.swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}.swal2-icon.swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-tip{-webkit-animation:swal2-animate-success-line-tip .75s;animation:swal2-animate-success-line-tip .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-line-long{-webkit-animation:swal2-animate-success-line-long .75s;animation:swal2-animate-success-line-long .75s}.swal2-icon.swal2-success.swal2-icon-show .swal2-success-circular-line-right{-webkit-animation:swal2-rotate-success-circular-line 4.25s ease-in;animation:swal2-rotate-success-circular-line 4.25s ease-in}.swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:inherit;font-weight:600}.swal2-progress-steps li{display:inline-block;position:relative}.swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}.swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}.swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}[class^=swal2]{-webkit-tap-highlight-color:transparent}.swal2-show{-webkit-animation:swal2-show .3s;animation:swal2-show .3s}.swal2-hide{-webkit-animation:swal2-hide .15s forwards;animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@-webkit-keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@keyframes swal2-toast-show{0%{transform:translateY(-.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0)}}@-webkit-keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@-webkit-keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@-webkit-keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@-webkit-keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@keyframes swal2-show{0%{transform:scale(.7)}45%{transform:scale(1.05)}80%{transform:scale(.95)}100%{transform:scale(1)}}@-webkit-keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(.5);opacity:0}}@-webkit-keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@-webkit-keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@-webkit-keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@-webkit-keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(.4);opacity:0}50%{margin-top:1.625em;transform:scale(.4);opacity:0}80%{margin-top:-.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@-webkit-keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0);opacity:1}}@-webkit-keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes swal2-rotate-loading{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto!important}body.swal2-no-backdrop .swal2-container{background-color:transparent!important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll!important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static!important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:transparent;pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{top:0;right:auto;bottom:auto;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{top:0;right:0;bottom:auto;left:auto}body.swal2-toast-shown .swal2-container.swal2-top-left,body.swal2-toast-shown .swal2-container.swal2-top-start{top:0;right:auto;bottom:auto;left:0}body.swal2-toast-shown .swal2-container.swal2-center-left,body.swal2-toast-shown .swal2-container.swal2-center-start{top:50%;right:auto;bottom:auto;left:0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{top:50%;right:auto;bottom:auto;left:50%;transform:translate(-50%,-50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{top:50%;right:0;bottom:auto;left:auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-left,body.swal2-toast-shown .swal2-container.swal2-bottom-start{top:auto;right:auto;bottom:0;left:0}body.swal2-toast-shown .swal2-container.swal2-bottom{top:auto;right:auto;bottom:0;left:50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{top:auto;right:0;bottom:0;left:auto}");
 
 /***/ }),
 
@@ -46984,7 +51795,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable.js */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6__);
 __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
+
 
 
 
@@ -46993,14 +51807,19 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+
+window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  //
+  // make quote section sortable
+  $(function () {
+    $(".sortable").sortable();
+  });
   $(function () {
     $('.date-range-picker').daterangepicker({
       autoUpdateInput: false,
@@ -47187,6 +52006,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     return x.toFixed(2);
+  }
+
+  function checkForInt(x) {
+    if (isNaN(x) || !isFinite(x)) {
+      return '';
+    }
+
+    return parseInt(x);
   }
 
   function isEmpty(value) {
@@ -48205,6 +53032,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('click', '.view-rates', function () {
     jQuery('#view_rates_modal').modal('show');
+  });
+  $(document).on('change', '.end-date-of-service', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();
+    var EndDateOFService = $("#quote_".concat(quoteKey, "_end_date_of_service")).val();
+
+    if (convertDate(EndDateOFService) < convertDate(DateOFService)) {
+      alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+      $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", '');
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
+    } else {
+      var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+      var days = Math.ceil(number / (1000 * 3600 * 24));
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val(checkForInt(days));
+    }
   }); // $(document).on('change', '.datepicker', function() {
   //     // var datePicker_id     = $(this).attr('id');
   //     var name = $(this).data('name');
@@ -48411,38 +53254,159 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(document).on('change', '.supplier-id', function () {
     var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
     var supplier_name = $(this).find(':selected').attr('data-name');
     var supplier_id = $(this).val();
     var season_id = $('.season-id').val();
     quote.find('.badge-supplier-id').html(supplier_name);
     quote.find('.badge-supplier-id').removeClass('d-none');
+    var options = '';
+
+    if (typeof supplier_id === 'undefined' || supplier_id == "") {
+      $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
+      return;
+    }
 
     if (season_id != "" && supplier_id != "") {
       $.ajax({
         type: 'get',
-        url: "".concat(BASEURL, "get-supplier-rate-sheet"),
+        // url: `${BASEURL}get-supplier-rate-sheet`,
+        url: "".concat(BASEURL, "get-supplier-product-and-sheet"),
         data: {
           'supplier_id': supplier_id,
           'season_id': season_id
         },
         success: function success(response) {
-          if (response != '') {
+          if (response && response.url != "") {
             quote.find('.view-supplier-rate').attr("href", response);
             quote.find('.view-supplier-rate').html("(View Supplier Rates)");
           } else {
             quote.find('.view-supplier-rate').attr("href", "");
             quote.find('.view-supplier-rate').html("");
           }
+
+          if (response && response.products.length != 0) {
+            options += "<option value=''>Select Product</option>";
+            $.each(response.products, function (key, value) {
+              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+            });
+            $("#quote_".concat(quoteKey, "_product_id")).html(options);
+          }
+          /* old work for fetching only supplier's sheet */
+          // if(response != ''){
+          //     quote.find('.view-supplier-rate').attr("href", response);
+          //     quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+          // }else{
+          //     quote.find('.view-supplier-rate').attr("href","");
+          //     quote.find('.view-supplier-rate').html("");
+          // }
+
         }
       });
     } else {
       quote.find('.view-supplier-rate').attr("href", "");
       quote.find('.view-supplier-rate').html("");
+      $("#quote_".concat(quoteKey, "_product_id")).html("");
     }
+  });
+  var quoteKeyForComment = '';
+  $(document).on('click', '.insert-quick-text', function () {
+    var quote = $(this).closest('.quote');
+    quoteKeyForComment = quote.data('key');
+    var modal = jQuery('.insert-quick-text-modal');
+    modal.modal('show');
+  });
+  $(document).on('click', '#insert_quick_text_confirm_btn', function () {
+    var quickText = $(".quick-comment:checked").val();
+    $(".quick-comment").prop('checked', false);
+    jQuery('.insert-quick-text-modal').modal('hide');
+    $("#quote_".concat(quoteKeyForComment, "_comments")).val(quickText);
+  }); // $(function(){ // let all dom elements are loaded
+  //     jQuery('.insert-quick-text-modal').on('hidden.bs.modal', function () {
+  //         console.log("modal closed");
+  //         var values = $(".quick-comment:checked").val();
+  //         $(`#quote_${quoteKeyForComment}_comments`).val(values);
+  //         console.log(values);
+  //     });
+  // });
+
+  var quoteKeyForProduct = '';
+  $(document).on('click', '.add-new-product', function () {
+    var quote = $(this).closest('.quote');
+    quoteKeyForProduct = quote.data('key');
+    var supplier_id = quote.find('.supplier-id').val();
+    var modal = jQuery('.add-new-product-modal');
+
+    if (supplier_id != "" && typeof supplier_id !== 'undefined') {
+      modal.modal('show');
+      modal.find('.product-supplier-id').val(supplier_id);
+    } else {
+      alert("Please select Supplier first");
+      return;
+    }
+  });
+  $("#form_add_product").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formData = $(this).serialize();
+    var options = '';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      beforeSend: function beforeSend() {
+        $('input').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#submit_add_product").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+        jQuery('.add-new-product-modal #form_add_product input, textarea').val('');
+        jQuery('.add-new-product-modal').modal('hide');
+        setTimeout(function () {
+          if (data && data.status == true) {
+            alert(data.success_message);
+
+            if (data.products.length != 0) {
+              options += "<option value=''>Select Product</option>";
+              $.each(data.products, function (key, value) {
+                options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+              });
+              $("#quote_".concat(quoteKeyForProduct, "_product_id")).html(options);
+            }
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+
+            if (errors.hasOwnProperty("product_error")) {
+              alert(errors.product_error);
+            } else {
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $("#".concat(index)).addClass('is-invalid');
+                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+              });
+            }
+          }, 200);
+        }
+      }
+    });
   });
   $(document).on('change', '.product-id', function () {
     var quote = $(this).closest('.quote');
-    quote.find('.badge-product-id').html($(this).val());
+    var product_name = $(this).find(':selected').attr('data-name');
+
+    if (typeof product_name === 'undefined') {
+      quote.find('.badge-product-id').html('');
+      return;
+    }
+
+    quote.find('.badge-product-id').html(product_name);
     quote.find('.badge-product-id').removeClass('d-none');
   });
   $(document).on('change', '.category-id', function () {
@@ -48451,9 +53415,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var quoteKey = quote.data('key');
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
+    var category_slug = $(this).find(':selected').attr('data-slug');
     var options = '';
     quote.find('.badge-category-id').html(category_name);
     quote.find('.badge-category-id').removeClass('d-none');
+
+    if (category_slug == 'flights') {
+      var refundable = $("#quote_".concat(quoteKey, "_booking_type_id")).find("option[data-slug='refundable']").val();
+      $("#quote_".concat(quoteKey, "_booking_type_id")).val(refundable).trigger('change');
+    } else {
+      $("#quote_".concat(quoteKey, "_booking_type_id")).val('').trigger('change');
+    }
+
     $.ajax({
       type: 'get',
       url: "".concat(BASEURL, "category/to/supplier"),
@@ -48465,7 +53438,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $.each(response, function (key, value) {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // selector.closest('.row').find('.supplier-id').html(options);
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>"); // selector.closest('.row').find('.supplier-id').html(options);
         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     });
@@ -48710,6 +53684,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
         $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
         $('.quote:last input, .quote:last select').removeClass('is-invalid');
+        $('.quote:last .added-in-sage').removeAttr('checked');
         $('.quote:last .booking-detail-cancellation').remove();
         $('.quote:last .revert-booking-detail-cancellation').remove();
         $('.quote:last .category-id').val(category_id).change();
@@ -49006,6 +53981,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('#btnSubmitversion').append(btn_Submit);
         $('.remove').addClass('remove-quote-detail-service');
         $('.remove').removeClass('d-none');
+        $('.add-new-product, .insert-quick-text').removeClass('d-none');
         getMarkupTypeFeildAttribute();
       }
     } else {
@@ -49018,8 +53994,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $("#quoteCreate").submit(function (event) {
     event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
+    var url = $(this).attr('action');
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html('');
     $.ajax({
@@ -49049,7 +54024,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             var flag = true;
             $("#overlay").removeClass('overlay').html('');
             jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
+              index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
               $("#".concat(index)).addClass('is-invalid');
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 
@@ -49234,9 +54213,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(".update-quote").submit(function (event) {
     event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
-    var formdata = $(this).serialize();
+    var url = $(this).attr('action');
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html(''); // $('#lead_passenger_contact').intlTelInput("getNumber");/
     // console.log($("input[name='full_number']").val()+ 'asdsa');
@@ -49256,6 +54233,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       beforeSend: function beforeSend() {
         $("#overlay").addClass('overlay');
         $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        $('.quote').removeClass('border border-danger');
       },
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
@@ -49278,7 +54256,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               window.location.href = REDIRECT_BASEURL + "quotes/index";
             } else {
               jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
+                index = index.replace(/\./g, '_'); // expand quote if feild has an error
+                // $(`#${index}`).closest('.quote').addClass('border border-danger');
+
+                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
                 $("#".concat(index)).addClass('is-invalid');
                 $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 
@@ -49672,7 +54655,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             } else {
               var flag = true;
               jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
+                index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
                 $("#".concat(index)).addClass('is-invalid');
                 $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
 
@@ -49903,6 +54890,273 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(".child").prop('checked', false);
     }
   });
+  $('.sbp-parent').on('click', function (e) {
+    if ($(this).is(':checked', true)) {
+      $(".credit").prop('checked', false);
+      $('.credit').trigger('click');
+    } else {
+      $('.credit').trigger('click');
+      $('.total-paid-amount').val(parseFloat(0).toFixed(2));
+    }
+  });
+  $('.credit').change(function () {
+    var currencyCode = $(this).attr('data-currencyCode');
+    var value = parseFloat($(this).attr('data-value')).toFixed(2);
+    var row = $(this).closest('.credit-row');
+
+    if ($(this).is(':checked')) {
+      $(this).val('1');
+      row.find('.row-paid-amount').val(value);
+      row.find('.row-total-paid-amount').val(value);
+      getTotalPaidAmount();
+    } else {
+      $(this).val('0');
+      row.find('.row-paid-amount').val(parseFloat(0).toFixed(2));
+      row.find('.row-total-paid-amount').val(parseFloat(0).toFixed(2));
+      getTotalPaidAmount(); // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
+    }
+  });
+  $(document).on("change", '.row-paid-amount', function (event) {
+    var row = $(this).closest('.credit-row');
+    var currentPaidAmountValue = parseFloat($(this).val());
+    var rowCreditNoteAmount = row.find('.row-credit-note-amount').val();
+    var rowTotalPaidAmount = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+    var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+    if (rowTotalPaidAmount > totalOutstandingAmountLeft) {
+      alert("Please Enter Correct Amount");
+      $(this).val('0.00');
+      row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
+    }
+
+    getTotalPaidAmount(); // var value                 = parseFloat($(this).val());
+    // var row                   = $(this).closest('.credit-row');
+    // var outstandingAmountLeft = row.find('.credit').val();
+    // if(value > outstandingAmountLeft){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }
+    // getTotalPaidAmount();
+  });
+
+  function getTotalPaidAmount() {
+    var paidAmountValues = parseFloat(getPaidAmountValues());
+    $('.total-paid-amount').val(getFloat(paidAmountValues));
+  }
+
+  function getRemainingCreditNoteAmount() {
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+    var result = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+    $('.remaining-credit-amount').html(getFloat(result));
+    $('.remaining-credit-amount').val(getFloat(result));
+  }
+
+  function getPaidAmountValues() {
+    var checkedValuesArray = $('.row-total-paid-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
+
+  function getCreditNoteValues() {
+    var checkedValuesArray = $('.row-credit-note-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
+
+  function getFloat(value) {
+    // console.log(parseFloat(value).toFixed(2));
+    return parseFloat(value).toFixed(2);
+  }
+
+  $(document).on("change", '.row-credit-note-amount', function (event) {
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    var currentCreditNoteValue = parseFloat($(this).val());
+    var row = $(this).closest('.credit-row');
+    var rowOutstandingAmount = row.find('.credit').attr('data-value');
+    var rowPaidAmount = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+    var rowTotalPaidAmount = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+    if (row.find('.credit').is(':checked')) {
+      row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+      row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+      if (currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount) {
+        alert("Please Enter Correct Amount");
+        $(this).val('0.00');
+        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+      }
+
+      getTotalPaidAmount();
+      getRemainingCreditNoteAmount();
+    } else {
+      $(this).val('0.00');
+    } // var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+    // var rowPaidAmount         = parseFloat(row.find('.sbp-paid-amount').val());
+    // if(totalCreditNoteValues > totalWalletAmount || value > rowPaidAmount){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }else{
+    //     getTotalPaidAmount();
+    //     getRemainingCreditNoteAmount();
+    // }
+
+  });
+  $("#bulk_payment").submit(function (event) {
+    event.preventDefault();
+    var checkedValues = $('.credit:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+
+    if (checkedValues.length == 0) {
+      alert("Please Check any Record First");
+      return;
+    }
+
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+        setTimeout(function () {
+          if (data && data.status == true) {
+            alert(data.success_message);
+            location.reload();
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+            if (errors.hasOwnProperty("payment_error")) {
+              alert(errors.payment_error);
+              location.reload();
+            } else {
+              var flag = true;
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $("#".concat(index)).addClass('is-invalid');
+                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+                if (flag) {
+                  $('html, body').animate({
+                    scrollTop: $("#".concat(index)).offset().top
+                  }, 1000);
+                  flag = false;
+                }
+              });
+            }
+          }, 400);
+        }
+      }
+    });
+  }); // $('.sbp-child').change(function(){
+  //     var currencyCode          = $(this).attr('data-currencyCode');
+  //     var outstandingAmountLeft = $(this).attr('data-outstandingAmountLeft');
+  //     var dataID                = $(this).attr('data-id');
+  //     var type                = $(this).attr('data-type');
+  //     var totalPaidAmount = 0;
+  //     if($(this).is(':checked')){
+  //         $(`#${dataID}`).html(`${currencyCode} ${outstandingAmountLeft}`);
+  //     }
+  //     else {
+  //         $(`#${dataID}`).html('');
+  //     }
+  // });
+  // function getCheckedValues(){
+  //     var checkedValuesArray = $('.credit:checked').map((i, e) => parseFloat(e.value)).get();
+  //     var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+  //     return parseFloat(checkedValuesTotal).toFixed(2);
+  // }
+  // $('.credit').change(function(){
+  //     var result = 0;
+  //     var currencyCode          = $(this).attr('data-currencyCode');
+  //     var dataID                = $(this).attr('data-id');
+  //     var value                 = parseFloat($(this).val()).toFixed(2);
+  //     var checkDebit              = $('.debit').is(':checked');
+  //     var checkedValuesTotal      = parseFloat(getCheckedValues()).toFixed(2);
+  //     var totalWalletAmount       = parseFloat($('.debit').val()).toFixed(2);
+  //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+  //     if($(this).is(':checked')){
+  //         $(`.${dataID}`).html(`${currencyCode} ${value}`);
+  //         if(checkDebit){
+  //             if(debitCheckedValuesTotal > checkedValuesTotal){
+  //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+  //                 $('.total-paid-amount').val(checkedValuesTotal);
+  //                 $('.remaining-credit-amount').html(result);
+  //             }else{
+  //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+  //                 $('.remaining-credit-amount').html('0.00');
+  //             }
+  //         }else{
+  //             $('.total-paid-amount').val(checkedValuesTotal);
+  //         }
+  //     }
+  //     else {
+  //         $(`.${dataID}`).html(currencyCode + " " +parseFloat(0).toFixed(2));
+  //         if(checkDebit){
+  //             if(debitCheckedValuesTotal > checkedValuesTotal){
+  //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+  //                 $('.total-paid-amount').val(checkedValuesTotal);
+  //                 $('.remaining-credit-amount').html(result);
+  //             }else{
+  //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+  //                 $('.remaining-credit-amount').html('0.00');
+  //             }
+  //         }else{
+  //             $('.total-paid-amount').val(checkedValuesTotal);
+  //         }
+  //     }
+  // });
+  // $('.debit').change(function(){
+  //     var totalWalletAmount = parseFloat($(this).val()).toFixed(2);
+  //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+  //     var result = 0;
+  //     var checkedValuesTotal = parseFloat(getCheckedValues());
+  //     var currencyCode          = $(this).attr('data-currencyCode');
+  //     if($(this).is(':checked')){
+  //         if(debitCheckedValuesTotal > checkedValuesTotal){
+  //             result = debitCheckedValuesTotal - checkedValuesTotal;
+  //             $('.remaining-credit-amount').html(result.toFixed(2));
+  //         }
+  //         else{
+  //             result = checkedValuesTotal - debitCheckedValuesTotal;
+  //             $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+  //             $('.remaining-credit-amount').html('0.00');
+  //         }
+  //     }
+  //     else {
+  //         $(`.remaining-credit-amount`).html(totalWalletAmount);
+  //         $('.total-paid-amount').val(getCheckedValues());
+  //     }
+  // });
+
   $('#delete_all').on('click', function (e) {
     e.preventDefault();
     var checkedValues = $('.child:checked').map(function (i, e) {

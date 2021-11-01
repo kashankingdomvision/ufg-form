@@ -182,6 +182,41 @@
         </form>
     </section>
 
+    <section class="content p-2">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+                <form method="POST" action="{{ route('reports.quote.report.export') }}">
+                    @csrf
+                    @php
+                        $currParams = [
+                            'client_type' => request()->get('client_type'),    
+                            'staff' => request()->get('staff'),    
+                            'booking_season' => request()->get('booking_season'),    
+                            'status' => request()->get('status'),    
+                            'commission_type' => request()->get('commission_type'),
+                            'booking_currency' => request()->get('booking_currency'),
+                            'brand' => request()->get('brand'),
+                            'dates' => request()->get('dates'),
+                            'month' => request()->get('month'),
+                            'year' => request()->get('year')
+                        ];
+                    @endphp
+                    <input type="hidden" name="params" value="{{ json_encode($currParams, TRUE) }}">
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Action
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <button type="submit" class="dropdown-item btn-link">Export</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+          </div>
+        </div>
+    </section>
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -264,27 +299,27 @@
                                                     <tr>
                                                        <td colspan="12"></td>
                                                        <tH>Total Net Price</tH>
-                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->net_price}} </td>
+                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->net_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
                                                        <td colspan="12"></td>
                                                        <th>Total Markup Amount</th>
-                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount}} </td>
-                                                       <td> {{$quote->markup_percentage.' %' }} </td>
+                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount }} </td>
+                                                       <td> {{ $quote->markup_percentage.' %' }} </td>
                                                     
                                                    </tr>
                                                     <tr>
                                                        <td colspan="12"></td>
                                                        <th>Total Selling Price</th>
-                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->selling_price}} </td>
+                                                       <td> {{ $quote->getBookingCurrency->code.' '.$quote->selling_price }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>
                                                      
                                                        <td colspan="12"></td>
                                                        <th>Total Profit Percentage</th>
-                                                       <td> {{$quote->profit_percentage.' %' }} </td>
+                                                       <td> {{ $quote->profit_percentage.' %' }} </td>
                                                        <td></td>
                                                    </tr>
                                                     <tr>

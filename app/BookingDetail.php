@@ -10,6 +10,7 @@ class BookingDetail extends Model
     protected $fillable = [
         
         'booking_id',
+        'booking_detail_unique_ref_id',
         'category_id',
         'supplier_id',
         'product_id',
@@ -21,6 +22,7 @@ class BookingDetail extends Model
         'refundable_percentage',
         'date_of_service',
         'end_date_of_service',
+        'number_of_nights',
         'time_of_service',
         'booking_date',
         'booking_due_date',
@@ -39,7 +41,8 @@ class BookingDetail extends Model
         'added_in_sage', 
         'invoice',
         'outstanding_amount_left',
-        'status'
+        'status',
+        'payment_status'
     ];
 
     public function getCategory()
@@ -50,6 +53,11 @@ class BookingDetail extends Model
     public function getSupplier()
     {
         return $this->hasOne(Supplier::class,'id','supplier_id');
+    }
+
+    public function getProduct()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
     }
 
     public function getBooking()
@@ -110,11 +118,15 @@ class BookingDetail extends Model
     }
     
     public function getBookingDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
+        if(!is_null($value)){
+            return (new Carbon($value))->format('d/m/Y');
+        }
     }
     
     public function getBookingDueDateAttribute( $value ) {
-        return (new Carbon($value))->format('d/m/Y');
+        if(!is_null($value)){
+            return (new Carbon($value))->format('d/m/Y');
+        }
     }
     
     public function setDateOfServiceAttribute( $value ) {

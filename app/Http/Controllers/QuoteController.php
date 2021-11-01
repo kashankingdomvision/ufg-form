@@ -40,11 +40,43 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
 use App\CommissionGroup;
-use App\CommissionCriteria;
+use App\CommissionCriteria; 
+use App\PresetComment; 
 
 class QuoteController extends Controller
 {
 
+    public function compare_quote(Request $request)
+    {
+    
+        if ($request->isMethod('post')) {
+
+            if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
+                $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
+            }
+
+            
+            if(isset($request->quote_ref_two) && !empty($request->quote_ref_two)){
+                $data['quote_ref_two'] =  Quote::find($request->quote_ref_two);
+            }
+
+            if(isset($request->quote_ref_three) && !empty($request->quote_ref_three)){
+                $data['quote_ref_three'] =  Quote::find($request->quote_ref_three);
+            }
+
+            if(isset($request->quote_ref_four) && !empty($request->quote_ref_four)){
+                $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
+            }
+
+            // dd($data);
+
+        }
+    
+        $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
+
+ 
+        return view('compare_quote.index', $data);
+    }
 
     public $pagiantion = 10;
 
@@ -220,6 +252,7 @@ class QuoteController extends Controller
             // 'supervisor_id'         => $quoteD['supervisor_id'],
             'date_of_service'       => $quoteD['date_of_service'],
             'end_date_of_service'   => $quoteD['end_date_of_service'],
+            'number_of_nights'      => $quoteD['number_of_nights'],
             'time_of_service'       => $quoteD['time_of_service'],
             // 'booking_date'          => $quoteD['booking_date'],
             // 'booking_due_date'      => $quoteD['booking_due_date'],
@@ -265,6 +298,8 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
+
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         return view('quotes.create', $data);
     }
@@ -348,6 +383,7 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         return view('quotes.edit',$data);
     }
@@ -476,6 +512,7 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         if($type != NULL){
             $data['type'] = $type;
@@ -507,10 +544,14 @@ class QuoteController extends Controller
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
 
-            $quoteDetail['booking_id']              = $booking->id;
-            $quoteDetail['outstanding_amount_left'] = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost']             = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost_bc']          = $quoteDetail['estimated_cost_bc'];
+            $quoteDetail['booking_id']                   = $booking->id;
+            $quoteDetail['outstanding_amount_left']      = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost']                  = $quoteDetail['estimated_cost'];
+            $quoteDetail['actual_cost_bc']               = $quoteDetail['estimated_cost_bc'];
+            $quoteDetail['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
+
+            // dd($quoteDetail['booking_detail_unique_ref_id']);
+
 
             BookingDetail::create($quoteDetail);
         }

@@ -439,6 +439,7 @@
                     </div>
                   </div>
                   @if($booking['booking'] && count($booking['booking']))
+                  <div class="sortable sortable-spacing">
                     @foreach ($booking['booking'] as $key  => $booking_detail )
                       <div class="quote card card-default" data-key="{{$key}}">
 
@@ -454,7 +455,7 @@
                             <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail['time_of_service']) && !empty($booking_detail['time_of_service']) ? $booking_detail['time_of_service'] : '' }}</span>
                             <span class="badge badge-info badge-category-id">{{ isset($booking_detail['category_id']) && ($log->getQueryData($booking_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($booking_detail['category_id'], 'Category')->first()->name : '' }}</span>
                             <span class="badge badge-info badge-supplier-id">{{ (isset($booking_detail['supplier_id']) && $log->getQueryData($booking_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($booking_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
-                            <span class="badge badge-info badge-product-id">{{ (isset($booking_detail['product_id']) && !empty($booking_detail['product_id'])) ? $booking_detail['product_id'] : '' }}</span>
+                            <span class="badge badge-info badge-product-id">{{ (isset($booking_detail['product_id']) && $log->getQueryData($booking_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($booking_detail['product_id'], 'Product')->first()->name : '' }}</span>
                             <span class="badge badge-info badge-supplier-currency-id">{{ (isset($booking_detail['supplier_currency_id']) && $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($booking_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
                           </h3>
 
@@ -479,6 +480,14 @@
                               <div class="form-group">
                                 <label>End Date of Service <span style="color:red">*</span></label>
                                 <input type="text" value="{{ $booking_detail['end_date_of_service'] }}" name="quote[{{ $key }}][end_date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker"  placeholder="Date of Service" autocomplete="off">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Number of Nights</label>
+                                <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $booking_detail['number_of_nights'] }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
@@ -532,10 +541,25 @@
                               </div>
                             </div>
                             
-                            <div class="col-sm-2">
+                            {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product</label>
                                 <input type="text" name="quote[{{ $key }}][product_id]"  data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id" value="{{ $booking_detail['product_id'] }}" placeholder="Enter Product">
+                              </div>
+                            </div> --}}
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product d-none"> ( Add New Product ) </a></label>
+                                <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                  <option value="">Select Product</option>
+                                  @if(isset($booking_detail['supplier_id']) && $log->getQueryData($booking_detail['supplier_id'], 'Supplier')->first()->getProducts)
+                                    @foreach ($log->getQueryData($booking_detail['supplier_id'], 'Supplier')->first()->getProducts as  $product)
+                                      <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail['product_id'] == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                    @endforeach
+                                  @endif
+                                </select>
+                                <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
@@ -608,10 +632,10 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Booking Types</label>
-                                <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type" id="quote_{{ $key }}_booking_type" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">
+                                <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type_id" id="quote_{{ $key }}_booking_type_id" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">
                                   <option value="">Select Booking Type</option>
                                   @foreach ($booking_types as $booking_type)
-                                    <option value="{{ $booking_type->id }}" {{ $booking_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
+                                    <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ $booking_detail['booking_type_id'] == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
                                   @endforeach
                                 </select>
                                 @error('booking_type_id')
@@ -788,8 +812,8 @@
 
                             @if($booking_detail['invoice'])
                             <div class="col-sm-2">
+                              <label>Invoice Preview</label>
                               <div class="form-group">
-                                <label>Invoice Preview</label>
                                 <a href="{{ url(Storage::url($booking_detail['invoice'])) }}" class="btn btn-outline-dark">Invoice</a>
                               </div>
                             </div>
@@ -803,6 +827,96 @@
                             </div>
 
                           </div>
+
+                          <!-- Administration row -->
+                          <h3 class="mt-2 mb-1-half">Administration</h3>
+                          <div class="row administraion-row">
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Booking Date</label>
+                                <input type="text" value="{{ $booking_detail['booking_date'] }}" name="quote[{{ $key }}][booking_date]" data-name="booking_date" id="quote_{{ $key }}_booking_date"  class="form-control booking-date datepicker bookingDate" autocomplete="off" placeholder="Booking Date">
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Booking Due Date  <span style="color:red">*</span></label>
+                                <input type="text" value="{{ $booking_detail['booking_due_date'] }}" name="quote[{{ $key }}][booking_due_date]" data-name="booking_due_date" id="quote_{{ $key }}_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" placeholder="Booking Due Date">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Booking Method</label>
+                                <select name="quote[{{ $key }}][booking_method_id]" data-name="booking_method_id" id="quote_{{ $key }}_booking_method_id" class="form-control  select2single  booking-method-id @error('booking_method_id') is-invalid @enderror">
+                                  <option value="">Select Booking Method</option>
+                                  @foreach ($booking_methods as $booking_method)
+                                      <option value="{{ $booking_method->id }}" {{ $booking_detail['booking_method_id'] == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
+                                  @endforeach
+                                </select>
+                                @error('booking_method_id')
+                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Booked By</label>
+                                <select name="quote[{{ $key }}][booked_by_id]" databooking="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control   select2single   booked-by-id @error('booked_by_id') is-invalid @enderror">
+                                  <option value="">Select Booked By </option>
+                                  @foreach ($booked_by as $book_id)
+                                      <option value="{{ $book_id->id }}" {{ $booking_detail['booked_by_id'] == $book_id->id  ? "selected" : "" }}> {{ $book_id->name }} </option>
+                                  @endforeach
+                                </select>
+                                @error('booked_by_id')
+                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Supervisor</label>
+                                <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control   select2single   supervisor-id @error('supervisor_id') is-invalid @enderror">
+                                  <option value="">Select Supervisor</option>
+                                  @foreach ($supervisors as $supervisor)
+                                    <option value="{{ $supervisor->id }}" {{ ($booking_detail['supervisor_id'] == $supervisor->id) ? 'selected' : NULL }}> {{ $supervisor->name }} </option>
+                                  @endforeach
+                                </select>
+                                @error('supervisor_id')
+                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                @enderror
+                              </div>
+                            </div>
+                            
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Booking Reference</label>
+                                <input type="text" value="{{ $booking_detail['booking_reference'] }}" name="quote[{{ $key }}][booking_reference]" data-name="booking_refrence" id="quote_{{ $key }}_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
+                              </div>
+                            </div>
+
+                            @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+                              <div class="col-sm-2 d-flex justify-content-center">
+                                <div class="form-group">
+                                  <label>Added in Sage</label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <div class="icheck-primary">
+                                        <input type="hidden" name="quote[{{ $key }}][added_in_sage]" value="{{ $booking_detail['added_in_sage'] }}"><input data-name="added_in_sage" id="quote_{{ $key }}_added_in_sage" class="added-in-sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($booking_detail['added_in_sage'] == 1) ? 'checked': '' }}> 
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            @endif
+
+                          </div>
+                          <!-- End Administration row -->
+
                           @if($booking_detail['finance'] && count($booking_detail['finance']) > 0)
                             @foreach ($booking_detail['finance'] as $fkey => $finance)
                               @php $count =  $fkey + 1; @endphp
@@ -1123,6 +1237,7 @@
 
                       </div>
                     @endforeach
+                  </div>
                   @endif
                 </div>
                 <div class="form-group row  mt-3">

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Helper;
 
 use App\Airline;
@@ -47,7 +48,8 @@ use App\ServiceExcursionDetail;
 use App\TransferDetail;
 use App\User;
 use App\Wallet;
-
+use App\TotalWallet;
+use App\PresetComment; 
 use App\ReferenceCredential;
 
 class BookingController extends Controller
@@ -200,16 +202,18 @@ class BookingController extends Controller
             'category_id'             => $quoteD['category_id'],
             'supplier_id'             => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'              => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-            // 'booking_method_id'       => $quoteD['booking_method_id'],
-            // 'booked_by_id'            => $quoteD['booked_by_id'],
-            // 'supervisor_id'           => $quoteD['supervisor_id'],
+            'booking_detail_unique_ref_id' => isset($quoteD['booking_detail_unique_ref_id']) && !empty($quoteD['booking_detail_unique_ref_id']) ? $quoteD['booking_detail_unique_ref_id'] : Helper::getBDUniqueRefID(), 
+            'booking_method_id'       => $quoteD['booking_method_id'],
+            'booked_by_id'            => $quoteD['booked_by_id'],
+            'supervisor_id'           => $quoteD['supervisor_id'],
             'date_of_service'         => $quoteD['date_of_service'],
             'end_date_of_service'     => $quoteD['end_date_of_service'],
+            'number_of_nights'        => $quoteD['number_of_nights'],
             'time_of_service'         => $quoteD['time_of_service'],
-            // 'booking_date'            => $quoteD['booking_date'],
-            // 'booking_due_date'        => $quoteD['booking_due_date'],
+            'booking_date'            => $quoteD['booking_date'],
+            'booking_due_date'        => $quoteD['booking_due_date'],
             'service_details'         => $quoteD['service_details'],
-            // 'booking_reference'       => $quoteD['booking_reference'],
+            'booking_reference'       => $quoteD['booking_reference'],
             'booking_type_id'         => $quoteD['booking_type_id'],
             'refundable_percentage'   => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
             'supplier_currency_id'    => $quoteD['supplier_currency_id'],
@@ -223,7 +227,7 @@ class BookingController extends Controller
             'actual_cost_bc'          => $quoteD['actual_cost_in_booking_currency'],
             'selling_price_bc'        => $quoteD['selling_price_in_booking_currency'],
             'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
-            // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
+            'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : 0,
             'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
         ];
     }
@@ -324,6 +328,22 @@ class BookingController extends Controller
 
     public function edit($id)
     {
+
+  
+
+        // $booking_transactions = Wallet::select(
+        //     'supplier_id',
+        //     DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
+        //     DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
+        // )
+        // ->groupBy('supplier_id')
+		// ->where('supplier_id', 1)
+        // ->first();
+
+        // dd($booking_transactions->credit - $booking_transactions->debit);
+
+
+
         $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['booking']          = $booking;
@@ -343,6 +363,7 @@ class BookingController extends Controller
         $data['banks']            = Bank::all();
         $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -438,6 +459,7 @@ class BookingController extends Controller
                             BookingDetailFinance::create($fin);
 
                             if($fin['payment_method_id'] == 3){
+
                                 Wallet::create([
                                     'booking_id'        => $booking->id,
                                     'booking_detail_id' => $booking_Details->id,
@@ -445,6 +467,11 @@ class BookingController extends Controller
                                     'amount'            => $fin['deposit_amount'],
                                     'type'              => 'debit'
                                 ]);
+
+                                TotalWallet::where('supplier_id',$booking_Details->supplier_id)->update([
+                                    'amount' => Helper::getSupplierWalletAmount($booking_Details->supplier_id)
+                                ]);
+
                             }
                         }
                     }
@@ -461,6 +488,7 @@ class BookingController extends Controller
 
                             BookingRefundPayment::create($refund);
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                            BookingDetail::where('id',$booking_Details->id)->update([ 'payment_status' => 'cancelled', 'outstanding_amount_left' => '0.00' ]);
                         }
                     }
                 }
@@ -487,7 +515,25 @@ class BookingController extends Controller
                                 'type'              => 'credit'
                             ]);
 
+                            $total_wallet = TotalWallet::where('supplier_id', $booking_Details->supplier_id);
+                            if(!$total_wallet->exists()){
+
+                                TotalWallet::create([
+                                    'supplier_id'     => $booking_Details->supplier_id,
+                                    'amount'          => $credit_note['credit_note_amount'],
+                                ]);
+
+                            }else {
+
+                                TotalWallet::where('id',$booking_Details->supplier_id)->update([
+                                    'amount' => Helper::getSupplierWalletAmount($booking_Details->supplier_id)
+                                ]);
+                            }
+
+ 
+
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
+                            BookingDetail::where('id',$booking_Details->id)->update([ 'payment_status' => 'cancelled', 'outstanding_amount_left' => '0.00' ]);
                         }
                     }
                 }

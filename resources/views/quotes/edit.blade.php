@@ -558,7 +558,9 @@
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                       </div>
                     </div>
-                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'ASC')->orderBy('time_of_service', 'ASC')->get() as $key  => $q_detail )
+
+                    <div class="sortable sortable-spacing">
+                      @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
                         <div class="quote card card-default " data-key="{{$key}}">
 
                           <div class="card-header">
@@ -567,7 +569,7 @@
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail->time_of_service) && !empty($q_detail->time_of_service) ? $q_detail->time_of_service : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($q_detail->getCategory->name) && !empty($q_detail->getCategory->name) ? $q_detail->getCategory->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ isset($q_detail->getSupplier->name) && !empty($q_detail->getSupplier->name) ? $q_detail->getSupplier->name : ''}}</span>
-                              <span class="badge badge-info badge-product-id">{{ isset($q_detail->product_id) && !empty($q_detail->product_id) ? $q_detail->product_id : '' }}</span>
+                              <span class="badge badge-info badge-product-id">{{ isset($q_detail->getProduct->name) && !empty($q_detail->getProduct->name) ? $q_detail->getProduct->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-currency-id">{{ isset($q_detail->getSupplierCurrency->name) && !empty($q_detail->getSupplierCurrency->name) ? $q_detail->getSupplierCurrency->code.' - '.$q_detail->getSupplierCurrency->name : '' }}</span>
                             </h3>
                             <div class="card-tools">
@@ -608,6 +610,14 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
+                                  <label>Number of Nights</label>
+                                  <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
                                   <label>Time of Service</label>
                                   <input type="time" value="{{ $q_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
                                 </div>
@@ -620,7 +630,7 @@
                                   <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
                                   <option value="">Select Category</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" data-name="{{ $category->name }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                      <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                   </select>
 
@@ -652,12 +662,43 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Product</label>
                                   <input type="text" name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control product-id " value="{{ $q_detail->product_id }}" placeholder="Enter Product">
                                 </div>
+                              </div> --}}
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
+                                    @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
+                                      @foreach ($q_detail->getSupplier->getProducts as  $product)
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
                               </div>
+
+                              {{-- <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id"  class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
+                                    @if(isset($q_detail->getCategory->getSupplier->getProducts) && !empty($q_detail->getCategory->getSupplier->getProducts))
+                                      @foreach ($q_detail->getCategory->getSupplier->getProducts as $product )
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}"  {{ ($q_detail->product_id == $product->id) ? 'selected' : NULL }} >{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div> --}}
 
                               {{-- <div class="col-sm-2">
                                 <div class="form-group">
@@ -885,14 +926,14 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Comments</label>
+                                  <label>Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                                   <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
                                 </div>
                               </div>
 
                               <div class="col-sm-2">
+                                <label>Add Stored Text</label>
                                 <div class="form-group">
-                                  <label>Add Stored Text</label>
                                   <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
                                   <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                     @include('partials.stored_text_modal')
@@ -904,7 +945,8 @@
                           </div>
 
                         </div>
-                    @endforeach
+                      @endforeach
+                    </div>
 
                     <div class="parent-spinner text-gray spinner-border-sm "></div>
                   </div>
@@ -1072,14 +1114,10 @@
                         <div class="row">
                           <div class="col-sm-3 relevant-quote">
                             <select name="quote_group" class="form-control select2-single" id="group_quote">
-                                @if(count($groups) > 0)
-                                <option value="0">Select group</option>
-                                @foreach ($groups as $group)
-                                    <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
-                                @endforeach
-                                @else
-                                    <option selected disabled>No group found.</option>
-                                @endif
+                              <option value="0">Select Group</option>
+                              @foreach ($groups as $group)
+                                <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
+                              @endforeach
                             </select>
                           </div>
                         </div>
@@ -1101,7 +1139,8 @@
         </div>
       </div>
     </section>
-
+    @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
+    @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('partials.view_rates_modal')

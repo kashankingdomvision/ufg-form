@@ -57,8 +57,7 @@ class CommissionController extends Controller
      */
     public function store(CommissionRequest $request)
     {
-        $commission = Commission::create([ 'name' => $request->name]);
-        $commission->seasons()->sync($request->season_id);
+        $commission = Commission::create([ 'name' => $request->name ]);
 
         return redirect()->route('commissions.commission.index')->with('success_message', 'Commission created successfully'); 
     }
@@ -73,6 +72,7 @@ class CommissionController extends Controller
     public function edit($id)
     {
         $data['commission'] = Commission::findOrFail(decrypt($id));
+        
         return view('commissions.edit', $data);
     }
 

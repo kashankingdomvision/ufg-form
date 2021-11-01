@@ -47,6 +47,8 @@ class QuoteDocumentsController extends Controller
         $data['quote_id']       =  $quote->id;
         $data['booking_amount_person']       =  $quote->amount_per_person;
         $data['selling_amount']              =  $quote->selling_price;
+        $data['booking_currency']            =  $quote->getCurrency->code;
+
         return view('quote_documents.index', $data);
     }
 

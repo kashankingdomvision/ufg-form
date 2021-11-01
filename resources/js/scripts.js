@@ -1,26 +1,35 @@
 require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 
-import $, { ajax, cssNumber } from 'jquery';
+import $, { ajax, cssNumber, event } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from 'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 
 import daterangepicker from 'daterangepicker';
+import 'jquery-ui/ui/widgets/sortable.js';
 
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 
+window.axios = require('axios');
+
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
-//
+
+    // make quote section sortable
+    $(function() {
+        $( ".sortable" ).sortable();
+    });
+ 
             $(function() {
 
                 $('.date-range-picker').daterangepicker({
@@ -194,6 +203,15 @@ $(document).ready(function($) {
                 }
 
                 return x.toFixed(2);
+            }
+
+            function checkForInt(x) {
+
+                if (isNaN(x) || !isFinite(x)) {
+                    return '';
+                }
+
+                return parseInt(x);
             }
 
             function isEmpty(value) {
@@ -1327,7 +1345,28 @@ $(document).ready(function($) {
                 jQuery('#view_rates_modal').modal('show');
             });
 
+            $(document).on('change', '.end-date-of-service', function() {
 
+                var quote    = $(this).closest('.quote');
+                var quoteKey = quote.data('key');
+
+                var DateOFService    = $(`#quote_${quoteKey}_date_of_service`).val();
+                var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
+               
+                if(convertDate(EndDateOFService) < convertDate(DateOFService)){
+           
+                    alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+                    $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
+                    $(`#quote_${quoteKey}_number_of_nights`).val('');
+                } else {
+
+                    var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+                    var days   = Math.ceil(number / (1000 * 3600 * 24));
+
+                    $(`#quote_${quoteKey}_number_of_nights`).val(checkForInt(days));
+                }
+
+            });
 
             // $(document).on('change', '.datepicker', function() {
             //     // var datePicker_id     = $(this).attr('id');
@@ -1552,8 +1591,6 @@ $(document).ready(function($) {
                 }
             });
 
-
-
             $(document).on('click', '.expand-all-btn', function(event) {
                 $('#parent .quote').removeClass('collapsed-card');
                 $('#parent .card-body').css("display", "block");
@@ -1584,6 +1621,7 @@ $(document).ready(function($) {
 
             $(document).on('change', '.supplier-id', function() {
                 var quote = $(this).closest('.quote');
+                var quoteKey      = quote.data('key');
                 var supplier_name = $(this).find(':selected').attr('data-name');
                 var supplier_id   = $(this).val();
                 var season_id     = $('.season-id').val();
@@ -1591,35 +1629,198 @@ $(document).ready(function($) {
                 quote.find('.badge-supplier-id').html(supplier_name);
                 quote.find('.badge-supplier-id').removeClass('d-none');
 
+                var options = '';
+
+                if(typeof supplier_id === 'undefined' || supplier_id == "") {
+                    $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                    return;
+                }
+
                 if(season_id != "" && supplier_id != ""){
                     $.ajax({
                         type: 'get',
-                        url: `${BASEURL}get-supplier-rate-sheet`,
+                        // url: `${BASEURL}get-supplier-rate-sheet`,
+                        url: `${BASEURL}get-supplier-product-and-sheet`,
                         data: { 
                             'supplier_id': supplier_id,
                             'season_id': season_id,
                         },
                         success: function(response) {
-    
-                            if(response != ''){
+
+                            if(response && response.url != ""){
                                 quote.find('.view-supplier-rate').attr("href", response);
                                 quote.find('.view-supplier-rate').html("(View Supplier Rates)");
                             }else{
                                 quote.find('.view-supplier-rate').attr("href","");
                                 quote.find('.view-supplier-rate').html("");
                             }
+
+                            if(response && response.products.length != 0){
+                            
+                                options += "<option value=''>Select Product</option>";
+                                $.each(response.products, function(key, value) {
+                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                });
+
+                                $(`#quote_${quoteKey}_product_id`).html(options);
+                            }
+    
+                            /* old work for fetching only supplier's sheet */
+
+                            // if(response != ''){
+                            //     quote.find('.view-supplier-rate').attr("href", response);
+                            //     quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+                            // }else{
+                            //     quote.find('.view-supplier-rate').attr("href","");
+                            //     quote.find('.view-supplier-rate').html("");
+                            // }
+
+
     
                         }
                     });
                 }else{
                     quote.find('.view-supplier-rate').attr("href","");
                     quote.find('.view-supplier-rate').html("");
+                    $(`#quote_${quoteKey}_product_id`).html("");
                 }
+
+            
+                
+            });
+
+            var quoteKeyForComment = '';
+            $(document).on('click', '.insert-quick-text', function() {
+
+                var quote           = $(this).closest('.quote');
+                quoteKeyForComment  = quote.data('key');
+                var modal           = jQuery('.insert-quick-text-modal');
+                modal.modal('show');
+            });
+
+            $(document).on('click', '#insert_quick_text_confirm_btn', function() {
+
+                var quickText = $(".quick-comment:checked").val();
+                $(".quick-comment").prop('checked', false);
+                jQuery('.insert-quick-text-modal').modal('hide');
+                $(`#quote_${quoteKeyForComment}_comments`).val(quickText);
+            });
+
+            // $(function(){ // let all dom elements are loaded
+            //     jQuery('.insert-quick-text-modal').on('hidden.bs.modal', function () {
+            //         console.log("modal closed");
+
+            //         var values = $(".quick-comment:checked").val();
+            //         $(`#quote_${quoteKeyForComment}_comments`).val(values);
+
+            //         console.log(values);
+            //     });
+            // });
+
+
+            var quoteKeyForProduct = '';
+            $(document).on('click', '.add-new-product', function() {
+
+                var quote           = $(this).closest('.quote');
+                quoteKeyForProduct  = quote.data('key');
+                var supplier_id     = quote.find('.supplier-id').val();
+                var modal           = jQuery('.add-new-product-modal');
+
+                if((supplier_id != "") && (typeof supplier_id !== 'undefined')){
+
+                    modal.modal('show');
+                    modal.find('.product-supplier-id').val(supplier_id);
+
+                }else{
+                    alert("Please select Supplier first");
+                    return;
+                }
+
+            });
+
+            $("#form_add_product").submit(function(event) {
+
+                event.preventDefault();
+
+                var url      = $(this).attr('action');
+                var formData = $(this).serialize();
+                var options  = '';
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    beforeSend: function() {
+                        $('input').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#submit_add_product").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+                        $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        jQuery('.add-new-product-modal #form_add_product input, textarea').val('');
+                        jQuery('.add-new-product-modal').modal('hide');
+
+                        setTimeout(function() {
+
+                            if(data && data.status == true){
+                                alert(data.success_message);
+
+                                if(data.products.length != 0){
+                                
+                                    options += "<option value=''>Select Product</option>";
+                                    $.each(data.products, function(key, value) {
+                                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                    });
+    
+                                    $(`#quote_${quoteKeyForProduct}_product_id`).html(options);
+                                }
+                            }
+
+
+                        }, 200);
+                    },
+                    error: function(reject) {
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+
+                                $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                if (errors.hasOwnProperty("product_error")) {
+                                    alert(errors.product_error);
+
+                                } else {
+
+                                    jQuery.each(errors.errors, function(index, value) {
+                                        index = index.replace(/\./g, '_');
+    
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                                    });
+    
+                                }
+
+                            }, 200);
+
+                        }
+                    },
+                });
+
             });
 
             $(document).on('change', '.product-id', function() {
-                var quote = $(this).closest('.quote');
-                quote.find('.badge-product-id').html($(this).val());
+                var quote        = $(this).closest('.quote');
+                var product_name = $(this).find(':selected').attr('data-name');
+                    
+                if(typeof product_name === 'undefined') {
+                    quote.find('.badge-product-id').html('');
+                    return;
+                }
+
+                quote.find('.badge-product-id').html(product_name);
                 quote.find('.badge-product-id').removeClass('d-none');
             });
 
@@ -1630,10 +1831,20 @@ $(document).ready(function($) {
                 var quoteKey      = quote.data('key');
                 var category_id   = $(this).val();
                 var category_name = $(this).find(':selected').attr('data-name');
+                var category_slug = $(this).find(':selected').attr('data-slug');
                 var options       = '';
 
                 quote.find('.badge-category-id').html(category_name);
                 quote.find('.badge-category-id').removeClass('d-none');
+
+                if(category_slug == 'flights'){
+
+                    let refundable = $(`#quote_${quoteKey}_booking_type_id`).find("option[data-slug='refundable']").val();
+                    $(`#quote_${quoteKey}_booking_type_id`).val(refundable).trigger('change');
+               
+                }else{
+                    $(`#quote_${quoteKey}_booking_type_id`).val('').trigger('change');
+                }
 
                 $.ajax({
                     type: 'get',
@@ -1644,11 +1855,11 @@ $(document).ready(function($) {
                         options += "<option value=''>Select Supplier</option>";
 
                         $.each(response, function(key, value) {
-
                             options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
 
                         $(`#quote_${quoteKey}_supplier_id`).html(options);
+                        $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
 
                         // selector.closest('.row').find('.supplier-id').html(options);
                         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
@@ -1940,6 +2151,8 @@ $(document).ready(function($) {
                         $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
                         $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
                         $('.quote:last input, .quote:last select').removeClass('is-invalid');
+                        $('.quote:last .added-in-sage').removeAttr('checked');
+                  
                        
                         $('.quote:last .booking-detail-cancellation').remove();
                         $('.quote:last .revert-booking-detail-cancellation').remove();
@@ -2394,6 +2607,7 @@ $(document).ready(function($) {
 
                         $('.remove').addClass('remove-quote-detail-service');
                         $('.remove').removeClass('d-none');
+                        $('.add-new-product, .insert-quick-text').removeClass('d-none');
 
                         getMarkupTypeFeildAttribute();
                     }
@@ -2409,8 +2623,7 @@ $(document).ready(function($) {
 
             $("#quoteCreate").submit(function(event) {
                 event.preventDefault();
-                var $form = $(this),
-                    url = $form.attr('action');
+                var url = $(this).attr('action');
 
                 $('input, select').removeClass('is-invalid');
                 $('.text-danger').html('');
@@ -2451,6 +2664,12 @@ $(document).ready(function($) {
                                 jQuery.each(errors.errors, function(index, value) {
 
                                     index = index.replace(/\./g, '_');
+
+                                    // expand quote if feild has an error
+                                    $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                    $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                    $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+
                                     $(`#${index}`).addClass('is-invalid');
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
@@ -2693,9 +2912,8 @@ $(document).ready(function($) {
 
             $(".update-quote").submit(function(event) {
                 event.preventDefault();
-                var $form = $(this),
-                    url = $form.attr('action');
-                var formdata = $(this).serialize();
+             
+                var url = $(this).attr('action');
                 $('input, select').removeClass('is-invalid');
                 $('.text-danger').html('');
                 // $('#lead_passenger_contact').intlTelInput("getNumber");/
@@ -2717,6 +2935,8 @@ $(document).ready(function($) {
                     beforeSend: function() {
                         $("#overlay").addClass('overlay');
                         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+
+                        $('.quote').removeClass('border border-danger');
                     },
                     success: function(data) {
                         $("#overlay").removeClass('overlay').html('');
@@ -2747,6 +2967,14 @@ $(document).ready(function($) {
                                     jQuery.each(errors.errors, function(index, value) {
 
                                         index = index.replace(/\./g, '_');
+
+                                        // expand quote if feild has an error
+                                        // $(`#${index}`).closest('.quote').addClass('border border-danger');
+
+                                        $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                        $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                        $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+               
                                         $(`#${index}`).addClass('is-invalid');
                                         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
@@ -2755,6 +2983,7 @@ $(document).ready(function($) {
                                             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
                                             flag = false;
                                         }
+
                                     });
                                 }
 
@@ -3239,6 +3468,12 @@ $(document).ready(function($) {
                                     jQuery.each(errors.errors, function(index, value) {
 
                                         index = index.replace(/\./g, '_');
+
+                                        // expand quote if feild has an error
+                                        $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                        $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                        $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+
                                         $(`#${index}`).addClass('is-invalid');
                                         $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
@@ -3533,6 +3768,363 @@ $(document).ready(function($) {
                     $(".child").prop('checked', false);
                 }
             });
+
+            $('.sbp-parent').on('click', function(e) {
+
+                if ($(this).is(':checked', true)) {
+
+                    $(".credit").prop('checked', false);
+                    $('.credit').trigger('click');
+
+                } else {
+           
+                    $('.credit').trigger('click');
+                    $('.total-paid-amount').val(parseFloat(0).toFixed(2));
+            
+                }
+            });
+
+            $('.credit').change(function(){
+
+                var currencyCode          = $(this).attr('data-currencyCode');
+                var value                 = parseFloat($(this).attr('data-value')).toFixed(2);
+                var row                   = $(this).closest('.credit-row');
+
+                if($(this).is(':checked')){
+
+                    $(this).val('1');
+
+                    row.find('.row-paid-amount').val(value);
+                    row.find('.row-total-paid-amount').val(value);
+
+                    getTotalPaidAmount();
+    
+                }
+                else {
+                
+                    $(this).val('0');
+
+                    row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
+                    row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
+                    getTotalPaidAmount();
+                    // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
+                }
+
+            });
+
+            $(document).on("change", '.row-paid-amount', function(event) {
+
+                var row                        = $(this).closest('.credit-row');
+                var currentPaidAmountValue     = parseFloat($(this).val());
+
+                var rowCreditNoteAmount        = row.find('.row-credit-note-amount').val();
+                var rowTotalPaidAmount         = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+
+                var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+
+                row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+
+                if(rowTotalPaidAmount > totalOutstandingAmountLeft){
+                    alert("Please Enter Correct Amount");
+                    $(this).val('0.00');
+
+
+                    row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
+                }
+
+                getTotalPaidAmount();
+
+                // var value                 = parseFloat($(this).val());
+                // var row                   = $(this).closest('.credit-row');
+                // var outstandingAmountLeft = row.find('.credit').val();
+
+                // if(value > outstandingAmountLeft){
+                //     alert("Please Enter Correct Amount");
+                //     $(this).val('0.00');
+                // }
+
+                // getTotalPaidAmount();
+            });
+
+            function getTotalPaidAmount(){
+
+                var paidAmountValues = parseFloat(getPaidAmountValues());
+                $('.total-paid-amount').val(getFloat(paidAmountValues));
+            }
+
+            function getRemainingCreditNoteAmount(){
+
+                var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
+                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+                var result                = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+
+                $('.remaining-credit-amount').html(getFloat(result));
+                $('.remaining-credit-amount').val(getFloat(result));
+            }
+
+            function getPaidAmountValues(){
+                var checkedValuesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(e.value)).get();
+                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+                return parseFloat(checkedValuesTotal).toFixed(2);
+            }
+
+            function getCreditNoteValues(){
+                var checkedValuesArray = $('.row-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+                return parseFloat(checkedValuesTotal).toFixed(2);
+            }
+
+
+            function getFloat(value){
+                // console.log(parseFloat(value).toFixed(2));
+                return parseFloat(value).toFixed(2);
+            }
+
+
+            $(document).on("change", '.row-credit-note-amount', function(event) {
+
+                var totalWalletAmount      = parseFloat($('.total-credit-amount').val());
+                var currentCreditNoteValue = parseFloat($(this).val());
+
+                var row                    = $(this).closest('.credit-row');
+                var rowOutstandingAmount   = row.find('.credit').attr('data-value');
+
+                var rowPaidAmount          = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+                var rowTotalPaidAmount     = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+
+                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+                if(row.find('.credit').is(':checked')){
+
+                    row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+                    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+                    if(currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount ){
+
+                        alert("Please Enter Correct Amount");
+                        $(this).val('0.00');
+    
+                        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+                        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+                    }
+
+
+                    getTotalPaidAmount();
+                    getRemainingCreditNoteAmount();
+                }
+                else {
+                    $(this).val('0.00');
+                }
+
+                
+
+                // var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+                // var rowPaidAmount         = parseFloat(row.find('.sbp-paid-amount').val());
+
+                // if(totalCreditNoteValues > totalWalletAmount || value > rowPaidAmount){
+                //     alert("Please Enter Correct Amount");
+                //     $(this).val('0.00');
+                // }else{
+                //     getTotalPaidAmount();
+                //     getRemainingCreditNoteAmount();
+                // }
+                        
+            });
+
+            $("#bulk_payment").submit(function(event) {
+
+                event.preventDefault();
+            
+                var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
+                if (checkedValues.length == 0) {
+                    alert("Please Check any Record First");
+                    return;
+                }
+
+                var url = $(this).attr('action');
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    beforeSend: function() {
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+                        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
+                    },
+                    success: function(data) {
+                        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        setTimeout(function() {
+
+                            if(data && data.status == true){
+                                alert(data.success_message);
+                                location.reload();
+                            }
+                        }, 200);
+                    },
+                    error: function(reject) {
+
+                        if (reject.status === 422) {
+
+                            var errors = $.parseJSON(reject.responseText);
+
+                            setTimeout(function() {
+                                $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                                if (errors.hasOwnProperty("payment_error")) {
+                                    alert(errors.payment_error);
+                                    location.reload();
+
+                                } else {
+
+                                    var flag = true;
+
+                                    jQuery.each(errors.errors, function(index, value) {
+
+                                        index = index.replace(/\./g, '_');
+                                        $(`#${index}`).addClass('is-invalid');
+                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                        if (flag) {
+
+                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                            flag = false;
+                                        }
+                                    });
+                                }
+
+                            }, 400);
+
+ 
+                        }
+                    },
+                });
+            });
+
+
+            // $('.sbp-child').change(function(){
+
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+            //     var outstandingAmountLeft = $(this).attr('data-outstandingAmountLeft');
+            //     var dataID                = $(this).attr('data-id');
+            //     var type                = $(this).attr('data-type');
+
+            //     var totalPaidAmount = 0;
+
+            //     if($(this).is(':checked')){
+            //         $(`#${dataID}`).html(`${currencyCode} ${outstandingAmountLeft}`);
+
+
+
+            
+            //     }
+            //     else {
+
+            //         $(`#${dataID}`).html('');
+
+            //     }
+
+            // });
+
+            // function getCheckedValues(){
+            //     var checkedValuesArray = $('.credit:checked').map((i, e) => parseFloat(e.value)).get();
+            //     var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+            //     return parseFloat(checkedValuesTotal).toFixed(2);
+            // }
+
+      
+
+            // $('.credit').change(function(){
+
+            //     var result = 0;
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+            //     var dataID                = $(this).attr('data-id');
+            //     var value                 = parseFloat($(this).val()).toFixed(2);
+
+            //     var checkDebit              = $('.debit').is(':checked');
+            //     var checkedValuesTotal      = parseFloat(getCheckedValues()).toFixed(2);
+            //     var totalWalletAmount       = parseFloat($('.debit').val()).toFixed(2);
+            //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+
+            //     if($(this).is(':checked')){
+
+            //         $(`.${dataID}`).html(`${currencyCode} ${value}`);
+
+            //         if(checkDebit){
+
+            //             if(debitCheckedValuesTotal > checkedValuesTotal){
+            //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+            //                 $('.total-paid-amount').val(checkedValuesTotal);
+            //                 $('.remaining-credit-amount').html(result);
+
+            //             }else{
+            //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+            //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+            //                 $('.remaining-credit-amount').html('0.00');
+            //             }
+            //         }else{
+            //             $('.total-paid-amount').val(checkedValuesTotal);
+            //         }
+                    
+            //     }
+            //     else {
+            //         $(`.${dataID}`).html(currencyCode + " " +parseFloat(0).toFixed(2));
+
+            //         if(checkDebit){
+
+            //             if(debitCheckedValuesTotal > checkedValuesTotal){
+            //                 result = debitCheckedValuesTotal - checkedValuesTotal;
+
+            //                 $('.total-paid-amount').val(checkedValuesTotal);
+            //                 $('.remaining-credit-amount').html(result);
+
+            //             }else{
+            //                 result = checkedValuesTotal - debitCheckedValuesTotal;
+            //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+            //                 $('.remaining-credit-amount').html('0.00');
+            //             }
+            //         }else{
+            //             $('.total-paid-amount').val(checkedValuesTotal);
+            //         }
+
+            //     }
+            // });
+
+            // $('.debit').change(function(){
+
+            //     var totalWalletAmount = parseFloat($(this).val()).toFixed(2);
+            //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
+            //     var result = 0;
+            //     var checkedValuesTotal = parseFloat(getCheckedValues());
+            //     var currencyCode          = $(this).attr('data-currencyCode');
+
+            //     if($(this).is(':checked')){
+
+            //         if(debitCheckedValuesTotal > checkedValuesTotal){
+
+            //             result = debitCheckedValuesTotal - checkedValuesTotal;
+            //             $('.remaining-credit-amount').html(result.toFixed(2));
+            //         }
+                    
+            //         else{
+            //             result = checkedValuesTotal - debitCheckedValuesTotal;
+            //             $('.total-paid-amount').val(parseFloat(result).toFixed(2));
+            //             $('.remaining-credit-amount').html('0.00');
+            //         }
+
+            //     }
+            //     else {
+
+            //         $(`.remaining-credit-amount`).html(totalWalletAmount);
+            //         $('.total-paid-amount').val(getCheckedValues());
+            //     }
+            // });
 
             $('#delete_all').on('click', function(e) {
                 e.preventDefault();

@@ -69,7 +69,7 @@
 
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-striped  table-hover">
+                <table class="table table-hover">
                   <thead>
                     <tr>
                       <th>
@@ -85,9 +85,9 @@
                       <th >Total Markup %</th>
                       <th >Total Selling Price</th>
                       <th >Total Profit Percentage</th>
-                      <th >Total Commission Amount</th>
+                      {{-- <th >Total Commission Amount</th> --}}
                       <th style="width: 160px;">Booking Currency</th>
-                      <th>Action</th>
+                      <th >Action</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -104,9 +104,12 @@
                           </div>
                         </td>
                         <td>
-                            <a id="collapse-anchor-{{$group->id}}" data-toggle="collapse" href="#collapse{{$group->id}}">
+                            {{-- <a id="collapse-anchor-{{$group->id}}" data-toggle="collapse" href="#collapse{{$group->id}}">
                                 <span class="text-secondary fa fa-eye"></span>
-                            </a>
+                            </a> --}}
+                            <button class="btn btn-sm parent-row"  data-id="{{$group->id}}">
+                              <span class="fa fa-plus"></span>
+                            </button>
                         </td>
                         <td>{{ $group->name }}</td>
                         <td>{{ \Helper::number_format($group->total_net_price).' '.$booking_currency }}</td>
@@ -114,7 +117,7 @@
                         <td>{{ \Helper::number_format($group->total_markup_percentage).' %' }}</td>
                         <td>{{ \Helper::number_format($group->total_selling_price).' '.$booking_currency }}</td>
                         <td>{{ \Helper::number_format($group->total_profit_percentage).' %' }}</td>
-                        <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td>
+                        {{-- <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td> --}}
                         <td>{{ isset($group->getBookingCurrency->name) && !empty($group->getBookingCurrency->name) ? $group->getBookingCurrency->code.' - '.$group->getBookingCurrency->name : '' }}</td>
                         <td colspan="2">
                           <form method="post" action="{{ route('quotes.group-quote.destroy', encrypt($group->id)) }}">
@@ -126,55 +129,61 @@
                             </button>
                           </form>
                         </td>
-                      </tr>
-                      <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
+                        
+                        <tbody class="child-row d-none" id="child-row-{{$group->id}}">
+                          <tr>
                           <th></th>
                           <th></th>
-                          <th>Quote Ref #</th>
-                          <th>Net Price</th>
-                          <th>Markup Amount</th>
-                          <th>Markup %</th>
-                          <th>Selling Price</th>
-                          <th>Profit Percentage</th>
-                          <th>Commission Amount</th>
-                          <th colspan="2">Booking Currency</th>
+                              <th>Quote Ref #</th>
+                              <th>Net Price</th>
+                              <th>Markup Amount</th>
+                              <th>Markup %</th>
+                              <th>Selling Price</th>
+                              <th>Profit Percentage</th>
+                              {{-- <th>Commission Amount</th> --}}
+                              <th style="width: 165px;">Booking Currency</th>
+                              <th colspan="2"></th>
+                          </tr>
+                          @foreach($group->quotes as $q)
+                            @php
+                              $booking_currency = isset($q->getBookingCurrency->code) && !empty($q->getBookingCurrency->code) ?  $q->getBookingCurrency->code : '';
+                            @endphp
+    
+                              {{-- id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent" --}}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              @if($q->booking_status != 'booked')
+                                <td> <a href="{{ route('quotes.final', encrypt($q->id)) }}">{{ $q->quote_ref }}</a> </td>
+                              @endif
+      
+                              @if($q->booking_status == 'booked')
+                                <td> <a href="{{ route('bookings.show', encrypt($q->getBooking->id)) }}">{{ $q->quote_ref }}</a> </td>
+                              @endif
+                              <td>{{ \Helper::number_format($q->net_price).' '.$booking_currency }}</td>
+                              <td>{{ \Helper::number_format($q->markup_amount).' '.$booking_currency }}</td>
+                              <td>{{ \Helper::number_format($q->markup_percentage).' %' }}</td>
+                              <td>{{ \Helper::number_format($q->selling_price).' '.$booking_currency }}</td>
+                              <td>{{ \Helper::number_format($q->profit_percentage).' %' }}</td>
+                              {{-- <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td> --}}
+                              <td>{{ isset($q->getBookingCurrency->name) && !empty($q->getBookingCurrency->name) ? $q->getBookingCurrency->code.' - '.$q->getBookingCurrency->name : '' }}</td>
+                              <td colspan="2">
+                                @if($q->booking_status == 'quote')
+                                  <a href="{{ route('quotes.final', encrypt($q->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                                    <span class="fa fa-eye"></span>
+                                  </a>
+                                @endif
+      
+                                @if($q->booking_status == 'booked')
+                                  <a href="{{ route('bookings.show',encrypt($q->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
+                                    <i class="fas fa-eye"></i>
+                                  </a>
+                                @endif
+                              </td>
+                            </tr>
+                          @endforeach
+                        </tbody>
                       </tr>
-                    @foreach($group->quotes as $q)
-                      @php
-                        $booking_currency = isset($q->getBookingCurrency->code) && !empty($q->getBookingCurrency->code) ?  $q->getBookingCurrency->code : '';
-                      @endphp
-
-                      <tr id="collapse{{$group->id}}" class="panel-collapse collapse" style="background-color:transparent">
-                        <td colspan="2"></td>
-                        @if($q->booking_status != 'booked')
-                          <td> <a href="{{ route('quotes.final', encrypt($q->id)) }}">{{ $q->quote_ref }}</a> </td>
-                        @endif
-
-                        @if($q->booking_status == 'booked')
-                          <td> <a href="{{ route('bookings.show', encrypt($q->getBooking->id)) }}">{{ $q->quote_ref }}</a> </td>
-                        @endif
-                        <td>{{ \Helper::number_format($q->net_price).' '.$booking_currency }}</td>
-                        <td>{{ \Helper::number_format($q->markup_amount).' '.$booking_currency }}</td>
-                        <td>{{ \Helper::number_format($q->markup_percentage).' %' }}</td>
-                        <td>{{ \Helper::number_format($q->selling_price).' '.$booking_currency }}</td>
-                        <td>{{ \Helper::number_format($q->profit_percentage).' %' }}</td>
-                        <td>{{ \Helper::number_format($q->commission_amount).' '.$booking_currency }} </td>
-                        <td>{{ isset($q->getBookingCurrency->name) && !empty($q->getBookingCurrency->name) ? $q->getBookingCurrency->code.' - '.$q->getBookingCurrency->name : '' }}</td>
-                        <td>
-                          @if($q->booking_status == 'quote')
-                            <a href="{{ route('quotes.final', encrypt($q->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
-                              <span class="fa fa-eye"></span>
-                            </a>
-                          @endif
-
-                          @if($q->booking_status == 'booked')
-                            <a href="{{ route('bookings.show',encrypt($q->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
-                              <i class="fas fa-eye"></i>
-                            </a>
-                          @endif
-                        </td>
-                      </tr>
-                    @endforeach
                     @endforeach
                   @else
                     <tr align="center"><td colspan="100%">No record found.</td></tr>

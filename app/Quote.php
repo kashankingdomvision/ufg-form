@@ -176,6 +176,11 @@ class Quote extends Model
     {
         return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
     }
+
+    public function getLeadPassengerResidentIn()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
+    }
     
     public function setRevelantQuoteAttribute($value)
     {

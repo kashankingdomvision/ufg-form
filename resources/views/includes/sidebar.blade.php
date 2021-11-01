@@ -79,7 +79,7 @@
                     </ul>
                 </li> --}}
 
-                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' || $route == 'quotes.group-quote.index' || $route == 'quotes.group-quote.edit' || $route == 'quotes.group-quote.create' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' || $route == 'quotes.group-quote.index' || $route == 'quotes.group-quote.edit' || $route == 'quotes.group-quote.create' || $route == 'quotes.quote.documment' || $route == 'quotes.compare.quote'  ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
                         <p>
@@ -90,7 +90,7 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('quotes.index') }}" class="nav-link {{ $route == 'quotes.index' || $route == 'quotes.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' ? 'active' : '' }}">
+                            <a href="{{ route('quotes.index') }}" class="nav-link {{ $route == 'quotes.index' || $route == 'quotes.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.quote.documment' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Quote</p>
                             </a>
@@ -114,6 +114,15 @@
                                 <p>View Group Quote</p>
                             </a>
                         </li>
+
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('quotes.compare.quote') }}" class="nav-link {{ $route == 'quotes.compare.quote' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Compare Quote</p>
+                            </a>
+                        </li>
+                        
                     </ul>
                 </li>
 
@@ -283,17 +292,41 @@
                         <li class="nav-item">
                             <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
                                 <i class="fas fa-wallet nav-icon"></i>
-                                <p>Wallet</p>
+                                <p>Supplier Wallet</p>
                             </a>
                         </li>
                     </ul>
                 </li>
 
+                <li class="nav-item {{ $route == 'supplier-bulk-payments.index' || $route == 'supplier-bulk-payments.view' ? 'menu-open': '' }}">
+                    <a href="#" class="nav-link">
+                        <i class="fa fa-user nav-icon"></i>
+                        <p>
+                            Supplier Bulk Payments
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>Add Supplier Bulk Payments</p>
+                            </a>
+                        </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link {{ $route == 'supplier-bulk-payments.view' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>View Supplier Bulk Payments</p>
+                            </a>
+                        </li>
+                    </ul>
 
+                </li>
 
                 @if(Auth::user()->hasAdmin())
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit'  ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route ==  'store.texts.create' || $route ==  'store.texts.index' || $route ==  'store.texts.edit' || $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -304,7 +337,14 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' ? 'active' : '' }}">
+                                <i class="fa fa-comment nav-icon"></i>
+                                <p>Preset Comments</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-cloud nav-icon"></i>
                                 <p>Seasons</p>
                             </a>
@@ -543,9 +583,7 @@
                 </li>
                 @endif
 
-
-
-                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' || $route == 'reports.commission.report' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
                         <p>
@@ -554,6 +592,14 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        @if(Auth::user()->hasAdmin())
+                            <li class="nav-item">
+                                <a href="{{ route('reports.commission.report') }}" class="nav-link {{  $route == 'reports.commission.report' ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>Commision Report</p>
+                                </a>
+                            </li>
+                        @endif
 
                         <li class="nav-item">
                             <a href="{{ route('reports.transfer.report') }}" class="nav-link {{  $route == 'reports.transfer.report' ? 'active' : '' }}">

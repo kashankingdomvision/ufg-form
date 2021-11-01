@@ -113,6 +113,35 @@
             </form>
         </section>
 
+        <section class="content p-2">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12">
+                    <form method="POST" action="{{ route('reports.customer.report.export') }}">
+                        @csrf
+                        @php
+                            $currParams = [
+                                'type' => request()->get('type'),
+                                'dates' => request()->get('dates'),
+                                'month' => request()->get('month'),
+                                'year' => request()->get('year')
+                            ];
+                        @endphp
+                        <input type="hidden" name="params" value="{{ json_encode($currParams, TRUE) }}">
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Action
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <button type="submit" class="dropdown-item btn-link">Export</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </section>
+
         <section class="content">
             <div class="container-fluid">
                 <div class="row">

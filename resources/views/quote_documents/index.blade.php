@@ -117,11 +117,11 @@
                                       </tr>
                                       <tr>
                                           <td width="30px" bgcolor="#2952a3">&nbsp;</td>
-                                          <td class="pb-1 pl-5">Total Selling Price  -  {{ $selling_amount }}</td>
+                                          <td class="pb-1 pl-5">Total Selling Price  - &nbsp; {{$booking_currency}} {{ $selling_amount }}</td>
                                       </tr>
                                       <tr>
                                           <td width="30px" bgcolor="#2952a3">&nbsp;</td>
-                                          <td class="pb-1 pl-5">Deposit Per Person - US ${{ $booking_amount_person }}</td>
+                                          <td class="pb-1 pl-5">Deposit Per Person -&nbsp; {{$booking_currency}}   {{ $booking_amount_person }}</td>
                                       </tr>
                                       <tr>
                                           <td width="30px" bgcolor="#2952a3">&nbsp;</td>

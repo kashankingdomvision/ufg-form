@@ -308,8 +308,8 @@
       </div>
     @if($booking_detail->invoice)
       <div class="col-sm-2">
+        <label>Invoice Preview</label>
         <div class="form-group">
-          <label>Invoice Preview</label>
           <a href="{{ $booking_detail->invoice_url }}" class="btn btn-outline-dark">Invoice</a>
         </div>
       </div>

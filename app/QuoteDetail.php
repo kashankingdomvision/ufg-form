@@ -17,6 +17,7 @@ class QuoteDetail extends Model
         'supervisor_id',
         'date_of_service',
         'end_date_of_service',
+        'number_of_nights',
         'booking_date',
         'booking_due_date',
         'service_details',

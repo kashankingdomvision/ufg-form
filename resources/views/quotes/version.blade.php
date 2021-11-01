@@ -466,7 +466,8 @@
                       </div>
                     </div>
 
-                    @foreach ($quote['quote'] as $key => $q_detail )
+                    <div class="sortable sortable-spacing">
+                      @foreach ($quote['quote'] as $key => $q_detail )
                         <div class="quote card card-default" data-key="{{ $key }}">
 
                           <div class="card-header">
@@ -475,7 +476,7 @@
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
-                              <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && !empty($q_detail['product_id'])) ? $q_detail['product_id'] : '' }}</span>
+                              <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
                               <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
                             </h3>
                             <div class="card-tools">
@@ -507,11 +508,18 @@
                                 <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>End Date of Service <span style="color:red">*</span></label>
-                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control date-of-service bookingEndDateOfService datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
+                                    <input type="text" value="{{ $q_detail['end_date_of_service']}}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker"  placeholder="DD/MM/YYYY" autocomplete="off">
                                     <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
 
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label>Number of Nights</label>
+                                    <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail['number_of_nights'] }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
+                                    <span class="text-danger" role="alert"></span>
+                                  </div>
+                                </div>
 
                                 <div class="col-sm-2">
                                 <div class="form-group">
@@ -525,7 +533,7 @@
                                     <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}"  data-name="{{ $category->name }}" {{ ($q_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                        <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" {{ ($q_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                     </select>
                                     @error('category_id')
@@ -561,10 +569,25 @@
                                 </div>
 
 
-                                <div class="col-sm-2">
+                                {{-- <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product</label>
                                     <input type="text" name="quote[0][product_id]" value="{{ $q_detail['product_id'] }}" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
+                                  </div>
+                                </div> --}}
+
+                                <div class="col-sm-2">
+                                  <div class="form-group">
+                                    <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product d-none"> ( Add New Product ) </a></label>
+                                    <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                      <option value="">Select Product</option>
+                                      @if(isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts)
+                                        @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts as  $product)
+                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                        @endforeach
+                                      @endif
+                                    </select>
+                                    <span class="text-danger" role="alert"></span>
                                   </div>
                                 </div>
 
@@ -804,7 +827,7 @@
                                 </div> -->
                                 <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>Comments</label>
+                                  <label>Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text d-none"> ( Insert Quick Text ) </a></label>
                                     <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail['comments'] }}</textarea>
                                 </div>
                                 </div>
@@ -812,7 +835,8 @@
                           </div>
 
                         </div>
-                    @endforeach
+                      @endforeach
+                    </div>
 
                     <div class="parent-spinner text-gray spinner-border-sm "></div>
                   </div>
@@ -978,17 +1002,11 @@
                               <div class="col-md-9">
                                   <div class="row">
                                       <div class="col-sm-3 relevant-quote">
-                                          <select name="quote_group" class="form-control select2-single"
-                                                  id="group_quote">
-                                              @if(count($groups) > 0)
-                                                  <option value="0">Select group</option>
-                                                  @foreach ($groups as $group)
-                                                      <option
-                                                          value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote['id']) ? 'selected' : null }}> {{ $group->name }} </option>
-                                                  @endforeach
-                                              @else
-                                                  <option selected disabled>No group found.</option>
-                                              @endif
+                                          <select name="quote_group" class="form-control select2-single" id="group_quote">
+                                            <option value="0">Select Group</option>
+                                            @foreach ($groups as $group)
+                                              <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote['id']) ? 'selected' : null }}> {{ $group->name }} </option>
+                                            @endforeach
                                           </select>
                                       </div>
                                   </div>
@@ -1006,6 +1024,8 @@
       </div>
     </section>
   </div>
+  @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
   @include('partials.view_rates_modal')
+  @include('partials.add_new_product')
 @endsection

@@ -100,6 +100,7 @@ Route::group(['middleware' => ['auth']], function(){
         // Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
 
         Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
 
         /* Group Quote */
@@ -111,6 +112,8 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
         Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
+
+        Route::match(['get', 'post'], 'compare-quote', array('as' => 'compare.quote', 'uses' => 'QuoteController@compare_quote'));
     });
 
 
@@ -161,6 +164,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
     });
+
+
+   /* Supplier Bulk Payments */
+
+    Route::group(['prefix' => 'supplier-bulk-payments', 'as' => 'supplier-bulk-payments.'], function () {
+
+        /* Add Supplier Bulk Payment */
+        Route::get('index', array('as' => 'index', 'uses' => 'SupplierBulkPaymentController@index'));
+        Route::post('supplier-bulk-payments/store', array('as' => 'store', 'uses' => 'SupplierBulkPaymentController@store'));
+        
+        /* View Supplier Bulk Payment */
+        Route::get('view', array('as' => 'view', 'uses' => 'SupplierBulkPaymentController@view'));
+    });
+
 
 
     /*
@@ -227,6 +244,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
 
         Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
+
+        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
+
+        // reports-export-routes
+        Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
+        Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));
+        Route::post('activity-by-user-report-export', array('as' => 'activity.by.user.report.export', 'uses' => 'ReportController@activity_by_user_report_excel'));
+        Route::post('supplier-report-export', array('as' => 'supplier.report.export', 'uses' => 'ReportController@supplier_report_export'));
+        Route::post('quote-report-export', array('as' => 'quote.report.export', 'uses' => 'ReportController@quote_report_export'));
+        Route::post('transfer-report-export', array('as' => 'transfer.report.export', 'uses' => 'ReportController@transfer_report_export'));
+        Route::post('payment_method-report-export', array('as' => 'payment_method.report.export', 'uses' => 'ReportController@payment_method_report_export'));
+        Route::post('refund-by-bank-report-export', array('as' => 'refund.by.bank.report.export', 'uses' => 'ReportController@refund_by_bank_report_export'));
+        Route::post('refund-by-credit-note-report-export', array('as' => 'refund.by.credit_note.report.export', 'uses' => 'ReportController@refund_by_credit_note_report_export'));
+        Route::post('wallet-report-export', array('as' => 'wallet.report.export', 'uses' => 'ReportController@wallet_report_export'));
+        Route::post('commission-report-export', array('as' => 'commission.report.export', 'uses' => 'ReportController@commission_report_export'));
     });
 
 
@@ -284,6 +316,11 @@ Route::group(['middleware' => ['auth']], function(){
     */
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
+
+        /* Preset Comment */
+        Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
 
         /* Bank */
         Route::resource('banks', 'SettingControllers\BankController',['only' => [
@@ -351,7 +388,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate/{ids?}', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filter_currency_rate'));
-        Route::get('get-supplier-rate-sheet',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
+        
+        // Route::get('get-supplier-rate-sheet',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
+        Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
+        
+        Route::post('add-product-with-supplier-sync',array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
     });
 
 

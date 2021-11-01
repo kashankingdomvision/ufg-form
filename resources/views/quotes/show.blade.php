@@ -514,7 +514,8 @@
                       </div>
                     </div>
 
-                    @foreach ($quote->getQuoteDetails()->orderBy('date_of_service', 'DESC')->get() as $key  => $q_detail )
+                    <div class="sortable sortable-spacing">
+                      @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
                         <div class="quote card card-default" data-key="{{$key}}">
 
                           <div class="card-header">
@@ -555,6 +556,14 @@
                                 <div class="form-group">
                                   <label>End Date of Service <span style="color:red">*</span></label>
                                   <input type="text" value="{{ $q_detail->end_date_of_service }}" placeholder="DD/MM/YYYY"  name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service datepicker" autocomplete="off">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Number of Nights</label>
+                                  <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
@@ -609,10 +618,25 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              {{-- <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Product</label>
                                   <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" value="{{ $q_detail->product_id }}" placeholder="Enter Product">
+                                </div>
+                              </div> --}}
+                              
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product </label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
+                                    @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
+                                      @foreach ($q_detail->getSupplier->getProducts as  $product)
+                                        <option value="{{ $product->id }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 
@@ -854,7 +878,9 @@
 
                           </div>
                         </div>
-                    @endforeach
+                      @endforeach
+                    </div>
+                    
                   </div>
                   <div class="row" id="storedText" @if(!$quote->stored_text) style="display:none; @endif">
                     <div class="col-md-12">

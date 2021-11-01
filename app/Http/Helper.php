@@ -10,9 +10,11 @@ use App\BookingType;
 use App\Currency;
 use App\Supplier;
 use App\BookingCreditNote;
+use App\BookingDetail;
 use App\QuoteUpdateDetail;
 use App\SupplierRateSheet;
 use App\User;
+use App\Wallet;
 use Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,11 @@ class Helper
 {
     public static function number_format($number){
 		return str_replace( ',', '', number_format($number,2));
+    }
+
+	public static function issetAndNotEmpty($variable){
+		$test = isset($variable) && !empty($variable) ? $variable : '';
+        return $test;
     }
 
 	public static function document_date_format($date){
@@ -66,6 +73,32 @@ class Helper
         $last_id = BookingCreditNote::latest()->pluck('id')->first();
        return "CN-".sprintf("%04s", ++$last_id);
     }
+
+	
+	public static function getBDUniqueRefID(){
+
+		$last_id = BookingDetail::latest()->pluck('id')->first();
+		return sprintf("%06s", ++$last_id);
+    }
+
+	public static function getSupplierWalletAmount($supplier_id){
+
+       $booking_transaction = Wallet::select(
+            'supplier_id',
+            DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
+            DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
+        )
+        ->groupBy('supplier_id')
+		->where('supplier_id', $supplier_id)
+        ->first();
+
+		// dd(/$booking_transaction);
+
+		$wallet_amount = $booking_transaction->credit - $booking_transaction->debit;
+
+		return $wallet_amount;
+    }
+
 
 	public static function get_payment_detial_by_ref_no($zoho_booking_reference) {
 

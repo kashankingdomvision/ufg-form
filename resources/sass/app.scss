@@ -38,6 +38,14 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
  * -------------------------------------------------------------------------------------
 */
 
+
+.m-1{
+    margin-top: 1rem !important;
+    margin-right: 1rem !important;
+    margin-left: 1rem !important;
+    margin-bottom: 1rem !important;
+} 
+
 .mt-1{
     margin-top: 1rem !important;
 } 
@@ -111,6 +119,12 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
     padding: 1rem;
     background-color:#F5F5F5;
     opacity:0.5;
+}
+
+.sortable-spacing{
+    // background-color: #e9ecefa1;
+    padding-top:2rem; 
+    padding-bottom:1.5rem;
 }
 
 /**
@@ -210,6 +224,25 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
 .tr-bottom-border-color{
     border-bottom: 1pt solid #dee2e6
 }
+
+.col-style{
+    justify-content : center!important;
+    -webkit-justify-content: center!important;
+    display: flex!important;
+    border : 1px solid #dee2e6!important;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+}
+
+.col-heading-style{
+    justify-content : flex-start!important;
+    -webkit-justify-content: flex-start!important;
+    display: flex!important;
+    border : 1px solid #dee2e6!important;
+    font-size: 1.3rem;
+    padding: 0.7rem;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2
