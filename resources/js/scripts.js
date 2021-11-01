@@ -16,7 +16,7 @@ import 'jquery-ui/ui/widgets/sortable.js';
 // var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-
+ 
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
