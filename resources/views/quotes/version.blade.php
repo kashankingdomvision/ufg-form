@@ -825,9 +825,9 @@
                                     <textarea name="quote[{{ $key }}][service_details]" data-name="service_details" id="quote_{{ $key }}_service_details" class="form-control service-details" rows="2" placeholder="Enter Service Details">{{ $q_detail['service_details'] }}</textarea>
                                 </div>
                                 </div> -->
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text d-none"> ( Insert Quick Text ) </a></label>
+                                  <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text d-none"> ( Insert Quick Text ) </a></label>
                                     <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail['comments'] }}</textarea>
                                 </div>
                                 </div>
