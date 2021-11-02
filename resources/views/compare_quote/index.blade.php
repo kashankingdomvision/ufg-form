@@ -56,7 +56,7 @@
                                         <select class="form-control select2single" name="quote_ref_one">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_one') == $quote->id) ? 'selected': ((request()->get('quote_ref_one') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_one') == $quote->id) ? 'selected': ((request()->get('quote_ref_one') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -67,7 +67,7 @@
                                         <select class="form-control select2single" name="quote_ref_two">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_two') == $quote->id) ? 'selected': ((request()->get('quote_ref_two') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_two') == $quote->id) ? 'selected': ((request()->get('quote_ref_two') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -78,7 +78,7 @@
                                         <select class="form-control select2single" name="quote_ref_three">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_three') == $quote->id) ? 'selected': ((request()->get('quote_ref_three') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_three') == $quote->id) ? 'selected': ((request()->get('quote_ref_three') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                         <select class="form-control select2single" name="quote_ref_four">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_four') == $quote->id) ? 'selected': ((request()->get('quote_ref_four') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_four') == $quote->id) ? 'selected': ((request()->get('quote_ref_four') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -116,11 +116,23 @@
 <section class="content">
     <div class="container-fluid">
 
-        @include('compare_quote.partials.booking')
-        @include('compare_quote.partials.agency')
-        @include('compare_quote.partials.lead_passenger')
-        @include('compare_quote.partials.total_calculation')
-        @include('compare_quote.partials.service_details')
+        <div class="row">
+            <div class="col-md-12 text-right mb-1 p-1">
+              <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-expand-all-btn" >Expand All</button>
+              <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-collapse-all-btn" >Collapse All</button>
+            </div>
+        </div>
+
+        <div id="compare_parent">
+
+            @include('compare_quote.partials.booking')
+            @include('compare_quote.partials.agency')
+            @include('compare_quote.partials.lead_passenger')
+            @include('compare_quote.partials.passenger_details')
+            @include('compare_quote.partials.service_details')
+            @include('compare_quote.partials.total_calculation')
+        </div>
+
 
     </div>
 </section>

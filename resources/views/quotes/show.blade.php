@@ -867,9 +867,9 @@
                               </div>
                               @endif --}}
         
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
-                                  <label>Comments</label>
+                                  <label> Internal Comments</label>
                                   <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
                                 </div>
                               </div>

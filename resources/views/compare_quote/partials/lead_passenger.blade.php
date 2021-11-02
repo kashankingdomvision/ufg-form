@@ -1,9 +1,9 @@
 
-<div class="card collapsed-card">
+<div class="card">
     <div class="card-header">
         <h3 class="card-title card-title-style">Lead Passenger Information</h3>
         <div class="card-tools">
-            <button type="button" class="btn btn-sm btn-outline-dark" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-dark compare-collapse-expand-btn" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
         </div>
     </div>
 

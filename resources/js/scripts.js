@@ -1607,6 +1607,23 @@ $(document).ready(function($) {
                 // $('.expand-all-btn').removeClass('d-none');
             });
 
+
+
+
+
+            $(document).on('click', '.compare-expand-all-btn', function(event) {
+                $('#compare_parent .card').removeClass('collapsed-card');
+                $('#compare_parent .card-body').css("display", "block");
+                $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+            });
+
+            $(document).on('click', '.compare-collapse-all-btn', function(event) {
+
+                $('#compare_parent .card').addClass('collapsed-card');
+                $('#compare_parent .card-body').css("display", "none");
+                $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
+            });
+
             $(document).on('change', '.date-of-service', function() {
                 var quote = $(this).closest('.quote');
                 quote.find('.badge-date-of-service').html($(this).val());

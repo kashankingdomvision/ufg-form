@@ -36,13 +36,13 @@
           </div>
 
           <div class="form-group">
-            <label>Quantity </label>
+            <label>Pax </label>
             <input type="number" name="quote[{{ $key }}][category_detials][service_excursion][quantity]" value="{{ isset($booking_detail->getServiceExcussionDetials) && isset($booking_detail->getServiceExcussionDetials->quantity) ? $booking_detail->getServiceExcussionDetials->quantity : '' }}" class="form-control quantity" {{ !isset($booking_detail->getServiceExcussionDetials) && !isset($booking_detail->getServiceExcussionDetials->quantity) ? 'disabled' : '' }}>
             <span class="text-danger" role="alert"></span>
           </div>
 
           <div class="form-group">
-            <label>Refrence </label>
+            <label>Reference </label>
             <input type="text" name="quote[{{ $key }}][category_detials][service_excursion][refrence]" value="{{ isset($booking_detail->getServiceExcussionDetials) && isset($booking_detail->getServiceExcussionDetials->refrence) ? $booking_detail->getServiceExcussionDetials->refrence : '' }}" class="form-control room-types hide-arrows" {{ !isset($booking_detail->getServiceExcussionDetials) && !isset($booking_detail->getServiceExcussionDetials->refrence) ? 'disabled' : '' }}>
             <span class="text-danger" role="alert"></span>
           </div>

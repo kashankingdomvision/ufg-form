@@ -23,4 +23,9 @@ class QuotePaxDetail extends Model
     {
         return $this->hasOne(Country::class, 'id', 'nationality_id');
     }
+
+    public function getPassengerResidentIn()
+    {
+        return $this->hasOne(Country::class, 'id', 'resident_in');
+    }
 }
