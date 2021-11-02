@@ -21,7 +21,7 @@
         @if(isset($quote_ref_one) || isset($quote_ref_two) || isset($quote_ref_three) || isset($quote_ref_four))
                     
             <div class="row">
-                <div class="col-md-2 col-style"></div>
+                <div class="col-md-4 col-heading-style font-weight-bold"></div>
 
                 @if(isset($quote_ref_one))
                     <div class="col col-style font-weight-bold">
@@ -38,15 +38,15 @@
                         {{ !empty($quote_ref_three->quote_ref) ? $quote_ref_three->quote_ref : '-' }}
                     </div>
                 @endif
-                {{-- @if(isset($quote_ref_four))
+                @if(isset($quote_ref_four))
                     <div class="col col-style font-weight-bold">
                         {{ !empty($quote_ref_four->quote_ref) ? $quote_ref_four->quote_ref : '-' }}
                     </div>
-                @endif --}}
+                @endif
             </div>
 
             <div class="row border">
-                <div class="col-md-2 col-style">Start Date </div>
+                <div class="col-md-4 col-heading-style font-weight-bold">Start Date </div>
                 @if(isset($quote_ref_one))
                     <div class="col">
                         <div class="row flex-column">
@@ -97,7 +97,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">End Date of Service </div>
+                <div class="col-md-4 col-heading-style font-weight-bold">End Date of Service </div>
                 @if(isset($quote_ref_one))
                     <div class="col">
                         <div class="row flex-column">
@@ -148,7 +148,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Number of Nights
                 </div>
                 @if(isset($quote_ref_one))
@@ -201,7 +201,7 @@
             </div>
             
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Time of Service
                 </div>
                 @if(isset($quote_ref_one))
@@ -254,7 +254,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Category
                 </div>
                 @if(isset($quote_ref_one))
@@ -307,7 +307,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Supplier
                 </div>
                 @if(isset($quote_ref_one))
@@ -360,7 +360,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Product
                 </div>
                 @if(isset($quote_ref_one))
@@ -413,7 +413,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Booking Types
                 </div>
                 @if(isset($quote_ref_one))
@@ -466,7 +466,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Supplier Currency 
                 </div>
                 @if(isset($quote_ref_one))
@@ -519,7 +519,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Estimated Cost
                 </div>
                 @if(isset($quote_ref_one))
@@ -572,7 +572,7 @@
             </div>
             
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Markup Amount
                 </div>
                 @if(isset($quote_ref_one))
@@ -625,7 +625,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Markup Percentage
                 </div>
                 @if(isset($quote_ref_one))
@@ -678,7 +678,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Selling Price
                 </div>
                 @if(isset($quote_ref_one))
@@ -731,7 +731,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Profit Percentage
                 </div>
                 @if(isset($quote_ref_one))
@@ -784,7 +784,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Estimated Cost in Booking Currency 
                 </div>
                 @if(isset($quote_ref_one))
@@ -837,7 +837,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Markup Amount in Booking Currency 
                 </div>
                 @if(isset($quote_ref_one))
@@ -890,7 +890,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Selling Price in Booking Currency
                 </div>
                 @if(isset($quote_ref_one))
@@ -943,7 +943,7 @@
             </div>
 
             <div class="row mt-1 border">
-                <div class="col-md-2 col-style">
+                <div class="col-md-4 col-heading-style font-weight-bold">
                     Comments
                 </div>
                 @if(isset($quote_ref_one))

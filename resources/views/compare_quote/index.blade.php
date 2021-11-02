@@ -121,6 +121,7 @@
         @include('compare_quote.partials.lead_passenger')
         @include('compare_quote.partials.total_calculation')
         @include('compare_quote.partials.service_details')
+        @include('compare_quote.partials.passenger_details')
 
     </div>
 </section>

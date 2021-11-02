@@ -1,5 +1,6 @@
 
-<div class="card collapsed-card">
+<div class="card ">
+    {{-- collapsed-card --}}
     <div class="card-header">
         <h3 class="card-title card-title-style">
             Total Calculations
