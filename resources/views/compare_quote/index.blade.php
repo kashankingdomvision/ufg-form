@@ -56,7 +56,7 @@
                                         <select class="form-control select2single" name="quote_ref_one">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_one') == $quote->id) ? 'selected': ((request()->get('quote_ref_one') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_one') == $quote->id) ? 'selected': ((request()->get('quote_ref_one') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -67,7 +67,7 @@
                                         <select class="form-control select2single" name="quote_ref_two">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_two') == $quote->id) ? 'selected': ((request()->get('quote_ref_two') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_two') == $quote->id) ? 'selected': ((request()->get('quote_ref_two') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -78,7 +78,7 @@
                                         <select class="form-control select2single" name="quote_ref_three">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_three') == $quote->id) ? 'selected': ((request()->get('quote_ref_three') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_three') == $quote->id) ? 'selected': ((request()->get('quote_ref_three') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -89,7 +89,7 @@
                                         <select class="form-control select2single" name="quote_ref_four">
                                             <option value="">Select Quote Reference </option>
                                             @foreach ($quotes as $quote)
-                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_four') == $quote->id) ? 'selected': ((request()->get('quote_ref_four') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref }}</option>
+                                                <option value="{{ $quote->id }}" {{ (old('quote_ref_four') == $quote->id) ? 'selected': ((request()->get('quote_ref_four') == $quote->id) ? 'selected' : null) }} >{{ $quote->quote_ref.' - '.$quote->ref_no }}</option>
                                             @endforeach
                                         </select>
                                     </div>
