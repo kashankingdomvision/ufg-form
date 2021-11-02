@@ -116,12 +116,23 @@
 <section class="content">
     <div class="container-fluid">
 
-        @include('compare_quote.partials.booking')
-        @include('compare_quote.partials.agency')
-        @include('compare_quote.partials.lead_passenger')
-        @include('compare_quote.partials.total_calculation')
-        @include('compare_quote.partials.service_details')
-        @include('compare_quote.partials.passenger_details')
+        <div class="row">
+            <div class="col-md-12 text-right mb-1 p-1">
+              <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-expand-all-btn" >Expand All</button>
+              <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-collapse-all-btn" >Collapse All</button>
+            </div>
+        </div>
+
+        <div id="compare_parent">
+
+            @include('compare_quote.partials.booking')
+            @include('compare_quote.partials.agency')
+            @include('compare_quote.partials.lead_passenger')
+            @include('compare_quote.partials.passenger_details')
+            @include('compare_quote.partials.service_details')
+            @include('compare_quote.partials.total_calculation')
+        </div>
+
 
     </div>
 </section>

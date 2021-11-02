@@ -6,7 +6,7 @@
             Total Calculations
         </h3>
         <div class="card-tools">
-            <button type="button" class="btn btn-sm btn-outline-dark" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+            <button type="button" class="btn btn-sm btn-outline-dark compare-collapse-expand-btn" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
         </div>
     </div>
 
