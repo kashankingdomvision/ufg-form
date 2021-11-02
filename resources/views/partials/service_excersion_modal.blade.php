@@ -42,7 +42,7 @@
           </div>
 
           <div class="form-group">
-            <label>Refrence </label>
+            <label>Reference </label>
             <input type="text" name="quote[{{ $key }}][category_detials][service_excursion][refrence]" value="{{ isset($booking_detail->getServiceExcussionDetials) && isset($booking_detail->getServiceExcussionDetials->refrence) ? $booking_detail->getServiceExcussionDetials->refrence : '' }}" class="form-control room-types hide-arrows" {{ !isset($booking_detail->getServiceExcussionDetials) && !isset($booking_detail->getServiceExcussionDetials->refrence) ? 'disabled' : '' }}>
             <span class="text-danger" role="alert"></span>
           </div>
