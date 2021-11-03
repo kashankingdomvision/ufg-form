@@ -344,7 +344,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('seasons.index') }}" class="nav-link {{ $route == 'seasons.index' || $route == 'seasons.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-cloud nav-icon"></i>
                                 <p>Seasons</p>
                             </a>
