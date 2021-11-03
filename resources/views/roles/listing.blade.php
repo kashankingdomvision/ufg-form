@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="d-flex">
-                            <h4>View Role <x-add-new-button :route="route('seasons.create')" /> </h4>
+                            <h4>View Role <x-add-new-button :route="route('roles.create')" /> </h4>
                         </div>
                     </div>
                     <div class="col-sm-6">
