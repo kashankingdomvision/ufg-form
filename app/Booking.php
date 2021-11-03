@@ -117,7 +117,7 @@ class Booking extends Model
     }
     
     function getSeason() {
-        return $this->hasOne(season::class, 'id','season_id');
+        return $this->hasOne(Season::class, 'id','season_id');
     }
     
     function getCurrency() {
