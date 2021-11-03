@@ -78,10 +78,9 @@
 <script>
 
     function callLaravelFileManger() {
-        var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
-
-        console.log(route_prefix);
-
+        var route_prefix = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+        // var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+        
         $('.fileManger').filemanager('image', {prefix: route_prefix});
     }
 
