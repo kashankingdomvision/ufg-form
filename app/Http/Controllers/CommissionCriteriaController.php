@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionCriteriaRequest;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
+
 use App\Commission;
 use App\CommissionGroup;
 use App\CommissionCriteria;
@@ -69,7 +71,6 @@ class CommissionCriteriaController extends Controller
         });
 
         if($commission_criterias->exists()){
-
             throw ValidationException::withMessages([ 'percentage' => 'The Percentage has already been taken with these Criteria.']);
         }
 
@@ -79,7 +80,8 @@ class CommissionCriteriaController extends Controller
             'commission_group_id' => $request->commission_group_id,
             'brand_id'            => $request->brand_id,
             'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id
+            'currency_id'         => $request->currency_id,
+            'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->seasons()->sync($request->season_id);
@@ -143,7 +145,8 @@ class CommissionCriteriaController extends Controller
             'commission_group_id' => $request->commission_group_id,
             'brand_id'            => $request->brand_id,
             'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id
+            'currency_id'         => $request->currency_id,
+            'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->seasons()->sync($request->season_id);
