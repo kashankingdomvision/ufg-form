@@ -140,17 +140,17 @@ $(document).ready(function($) {
                 return today = dd + '/' + mm + '/' + yyyy;
             }
 
-            function datepickerReset(key = null) {
+            function datepickerReset(key = null, quoteClass) {
 
                 var $season = $("#season_id");
                 var season_start_date = new Date($season.find(':selected').data('start'));
                 var season_end_date = new Date($season.find(':selected').data('end'));
                 if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
                     if (key != null) {
-                        $('.bookingDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        $('.bookingEndDateOfService:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                        $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                         $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
                     } else {
                         // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
@@ -1987,13 +1987,15 @@ $(document).ready(function($) {
                 $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
             });
 
-
             $(document).on('click', '.quotes-service-category-btn', function(e) {
 
                 e.preventDefault();
 
                 var category_id   = $(this).attr('data-id');
                 var category_name = $(this).attr('data-name');
+
+
+                var place = ''
 
                 jQuery('#new_service_modal').modal('hide');
                 $('.parent-spinner').addClass('spinner-border');
@@ -2002,65 +2004,90 @@ $(document).ready(function($) {
 
                     setTimeout(function() {
 
-
                         if ($('.select2single').data('select2')) {
                             $('.select2single').select2('destroy');
                         }
 
-                        $(".quote").eq(0).clone()
+                        var quote = $(".quote").eq(0).clone()
                             .find("input").val("").each(function() {
                                 this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                    return '[' + ($('.quote').length) + ']';
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+
                                 });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+
+                                    return `quote_${quoteLength}_${dataName}`;
+
                                 });
                             }).end()
                             .find("textarea").val("").each(function() {
                                 this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                    return '[' + (parseInt($('.quote').length)) + ']';
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
                                 });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+
+                                    return `quote_${quoteLength}_${dataName}`;
                                 });
                             }).end()
                             .find("select").val("").each(function() {
-                                this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+                                this.name = this.name.replace(/\[(\d+)\]/, function() { 
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
+                                    
                                 });
                             }).end().show().insertAfter(".quote:last");
 
-                        $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-                        $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-                        $(".quote:last").attr('data-key', $('.quote').length - 1);
-                        $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-                        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-                        $('.quote:last input, .quote:last select').removeClass('is-invalid');
-                        $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
-                        $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
-                        $('.quote:last .refundable-percentage-feild').addClass('d-none');
-                        // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+                        var quoteLength = $('.quote').length;
+                        var quoteKey    = quoteLength - 1;
+                        var quoteClass = `.quote-${quoteKey}`;
 
-                        $('.quote:last .category-id').val(category_id).change();
-                        $('.quote:last .badge-category-id').html(category_name);
-                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
-                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
+                        quote.attr('data-key', quoteKey);
+                        quote.removeClass(`quote-0`);
+                        quote.addClass(`quote-${quoteKey}`);
+                   
+                        $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
+                        $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
+                        $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
+                        $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
+                        
+                        $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                        $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                        $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
+                        $(`${quoteClass}`).find('.card-header .card-tools .remove').removeClass('d-none');
+                        $(`${quoteClass}`).find('.refundable-percentage-feild').addClass('d-none');
+                        $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                        $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
 
-
-                        var qleng = $('.quote').length - 1;
-                        $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
-                        $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
-                        $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
-                        $('#quote_' + qleng + '_holder').empty();
+                        $(`${quoteClass}`).find('.fileManger').attr('data-input', `quote_${quoteKey}_image` );
+                        $(`${quoteClass}`).find('.fileManger').attr('data-preview', `quote_${quoteKey}_holder` );
+                        $(`${quoteClass}`).find('.previewId').attr('id', `quote_${quoteKey}_holder` );
+                        $(`#quote_${quoteKey}_holder`).empty();
+                        
                         callLaravelFileManger();
-                        datepickerReset(1);
-                        calltextEditorSummerNote('#quote_' + qleng + '_service_details');
-                        calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
+                        datepickerReset(1,`${quoteClass}`);
+
+                        reinitializedSummerNote();
                         reinitializedDynamicFeilds();
 
                         $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
-
                         $('.parent-spinner').removeClass('spinner-border');
 
                     }, 180);
@@ -2068,9 +2095,229 @@ $(document).ready(function($) {
                 }
             });
 
+            function reinitializedSummerNote(quoteClass){
+
+                jQuery(`${quoteClass}`).find('.note-editor').remove();
+                jQuery(`${quoteClass}`).find('.summernote').summernote({
+                    height: 150,   //set editable area's height
+                    placeholder: 'Enter Text Here..',
+                    codemirror: { // codemirror options
+                        theme: 'monokai'
+                    },
+                });
+            }
+
+
+
             $(document).on('click', '#add_more, #add_more_booking', function(e) {
                 jQuery('#new_service_modal').modal('show');
+
+
             });
+
+            // var quotee = '';
+            $(document).on('click', '.add-new-service-below', function(e) {
+                console.log("sds");
+                var quote = $(this).closest('.quote').data('key');
+
+                // console.log(quotee.data('key'));
+                jQuery('#new_service_modal_before').modal('show');
+                jQuery('#new_service_modal_before').find('.current-key').val(quote);
+            });
+
+            $(document).on('click', '.quotes-service-category-btn-below', function(e) {
+
+                e.preventDefault();
+
+                var category_id   = $(this).attr('data-id');
+                var category_name = $(this).attr('data-name');
+
+                var classvalue =  jQuery('#new_service_modal_before').find('.current-key').val();
+                var onQuoteClass = `.quote-${classvalue}`;
+             
+
+                jQuery('#new_service_modal').modal('hide');
+                $('.parent-spinner').addClass('spinner-border');
+
+                if(category_id){
+
+                    setTimeout(function() {
+
+                        if ($('.select2single').data('select2')) {
+                            $('.select2single').select2('destroy');
+                        }
+
+                        var quote = $(".quote").eq(0).clone()
+                            .find("input").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+
+                                    return `quote_${quoteLength}_${dataName}`;
+
+                                });
+                            }).end()
+                            .find("textarea").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+
+                                    return `quote_${quoteLength}_${dataName}`;
+                                });
+                            }).end()
+                            .find("select").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() { 
+
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
+                                    
+                                });
+                            }).end().show().insertAfter(onQuoteClass);
+
+                        var quoteLength = $('.quote').length;
+                        var quoteKey    = quoteLength - 1;
+                        var quoteClass  = `.quote-${quoteKey}`;
+
+                        quote.attr('data-key', quoteKey);
+                        quote.removeClass(`quote-0`);
+                        quote.addClass(`quote-${quoteKey}`);
+                   
+                        $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
+                        $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
+                        $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
+                        $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
+                        
+                        $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                        $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                        $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
+                        $(`${quoteClass}`).find('.card-header .card-tools .remove').removeClass('d-none');
+                        $(`${quoteClass}`).find('.refundable-percentage-feild').addClass('d-none');
+                        $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                        $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+
+                        $(`${quoteClass}`).find('.fileManger').attr('data-input', `quote_${quoteKey}_image` );
+                        $(`${quoteClass}`).find('.fileManger').attr('data-preview', `quote_${quoteKey}_holder` );
+                        $(`${quoteClass}`).find('.previewId').attr('id', `quote_${quoteKey}_holder` );
+                        $(`#quote_${quoteKey}_holder`).empty();
+                        
+                        callLaravelFileManger();
+                        datepickerReset(1,`${quoteClass}`);
+
+                        reinitializedSummerNote(`${quoteClass}`);
+                        reinitializedDynamicFeilds();
+
+                        $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
+                        $('.parent-spinner').removeClass('spinner-border');
+
+                    }, 180);
+
+                }
+
+
+            });
+
+            // $(document).on('click', '.quotes-service-category-btn-below', function(e) {
+
+            //     e.preventDefault();
+
+            //     var category_id   = $(this).attr('data-id');
+            //     var category_name = $(this).attr('data-name');
+
+            //     var classvalue =  jQuery('#new_service_modal_before').find('.current-key').val();
+            //    var quoteClass = `.quote-${classvalue}`;
+
+            //     jQuery('#new_service_modal').modal('hide');
+            //     $('.parent-spinner').addClass('spinner-border');
+
+            //     if(category_id){
+
+            //         setTimeout(function() {
+
+
+            //             if ($('.select2single').data('select2')) {
+            //                 $('.select2single').select2('destroy');
+            //             }
+
+            //             var q = $(".quote").eq(0).clone()
+            //                 .find("input").val("").each(function() {
+            //                     this.name = this.name.replace(/\[(\d+)\]/, function() {
+            //                         return '[' + ($('.quote').length) + ']';
+            //                     });
+            //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+            //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            //                     });
+            //                 }).end()
+            //                 .find("textarea").val("").each(function() {
+            //                     this.name = this.name.replace(/\[(\d+)\]/, function() {
+            //                         return '[' + (parseInt($('.quote').length)) + ']';
+            //                     });
+            //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+            //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            //                     });
+            //                 }).end()
+            //                 .find("select").val("").each(function() {
+            //                     this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+            //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+            //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+            //                     });
+            //                 }).end().show().insertAfter(quoteClass);
+
+            //             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
+            //             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
+            //             $(".quote:last").attr('data-key', $('.quote').length - 1);
+            //             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
+            //             $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
+            //             $('.quote:last input, .quote:last select').removeClass('is-invalid');
+            //             $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
+            //             $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
+            //             $('.quote:last .refundable-percentage-feild').addClass('d-none');
+            //             // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
+
+            //             $('.quote:last .category-id').val(category_id).change();
+            //             $('.quote:last .badge-category-id').html(category_name);
+            //             $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
+            //             $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
+
+
+            //             var qleng = $('.quote').length - 1;
+            //             $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
+            //             $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
+            //             $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
+            //             $('#quote_' + qleng + '_holder').empty();
+            //             callLaravelFileManger();
+            //             datepickerReset(1);
+            //             calltextEditorSummerNote('#quote_' + qleng + '_service_details');
+            //             calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
+            //             reinitializedDynamicFeilds();
+
+            //             $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
+
+            //             $('.parent-spinner').removeClass('spinner-border');
+
+            //         }, 180);
+
+            //     }
+            // });
 
             $(document).on('click', '.bookings-service-category-btn', function(e) {
 

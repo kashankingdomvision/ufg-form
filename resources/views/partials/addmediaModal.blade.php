@@ -24,7 +24,7 @@
             <div class="form-group">
               <label>Service Details</label>
              
-                <textarea name="quote[{{ $val_ }}][service_details]" data-name="service_details" id="quote_{{ $val_ }}_service_details" class="form-control service-details summernote " rows="2" placeholder="Enter Service Details">{!! (isset($q_detail['service_details']) && $q_detail['service_details'] != null)? $q_detail['service_details'] : NULL !!}</textarea>
+                <textarea  name="quote[{{ $val_ }}][service_details]" data-name="service_details" id="quote_{{ $val_ }}_service_details" class="form-control service-details summernote " rows="2" placeholder="Enter Service Details">{!! (isset($q_detail['service_details']) && $q_detail['service_details'] != null)? $q_detail['service_details'] : NULL !!}</textarea>
              </div>
           </div>
         </div>

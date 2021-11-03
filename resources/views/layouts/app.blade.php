@@ -64,7 +64,7 @@
                         theme: 'monokai'
                     }
                 }, 'code', val);
-            }
+        }
 
         function setTextEditorValue(id, Text) {
             // $(id).summernote('destroy');

@@ -409,13 +409,13 @@
                   </div>
                   <div class="parent" id="parent">
                     <div class="row">
-                      <div class="col-md-12 text-right p-1">
+                      <div class="col-md-12 text-right mb-2 p-1">
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
                         <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                       </div>
                     </div>
                     <div class="sortable sortable-spacing">
-                      <div class="quote card card-default" data-key="0">
+                      <div class="quote card card-default quote-0" data-key="0">
   
                         <div class="card-header">
                           <h3 class="card-title card-title-style quote-title"></h3>
@@ -429,6 +429,7 @@
                           </h3>
   
                           <div class="card-tools">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below" ><i class="fas fa-plus"></i> &nbsp; Add New Service</a>
                             <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                             <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
                           </div>
@@ -972,6 +973,7 @@
     @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
+    @include('partials.new_service_modal_before',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('partials.view_rates_modal')
   </div>
 
