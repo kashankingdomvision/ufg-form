@@ -66,13 +66,20 @@
                   </div>
 
                   <div class="form-group">
+                    <label>Contact Number <span style="color:red">*</span></label>
+                    <input type="tel" name="phone" id="phone"  class="form-control phone phone0 " >
+                    <span class="text-danger error_msg0" role="alert"></span>
+                    <span class="text-success valid_msg0" role="alert"></span>
+                  </div>
+
+                  {{-- <div class="form-group">
                     <label>Phone</label>
                     <input type="number" name="phone" value="{{ old('phone') }}" class="form-control hide-arrows @error('phone') is-invalid @enderror"  placeholder="132456789" >
 
                     @error('phone')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                  </div>
+                  </div> --}}
 
                   <div class="form-group">
                     <label>About Us</label>

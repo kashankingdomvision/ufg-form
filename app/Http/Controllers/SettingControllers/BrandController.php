@@ -57,7 +57,7 @@ class BrandController extends Controller
             'name'      => $request->name,
             'email'     => $request->email,
             'address'   => $request->address,
-            'phone'     => $request->phone,
+            'phone'     => $request->full_number,
             'about_us'  => $request->about_us,
             'user_id'   => Auth::id(),
         ];
@@ -110,7 +110,7 @@ class BrandController extends Controller
             'name'      => $request->name,
             'email'     => $request->email,
             'address'   => $request->address,
-            'phone'     => $request->phone,
+            'phone'     => $request->full_number,
             'about_us'  => $request->about_us
         ];
         
