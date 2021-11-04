@@ -1994,9 +1994,6 @@ $(document).ready(function($) {
                 var category_id   = $(this).attr('data-id');
                 var category_name = $(this).attr('data-name');
 
-
-                var place = ''
-
                 jQuery('#new_service_modal').modal('hide');
                 $('.parent-spinner').addClass('spinner-border');
 
@@ -2117,12 +2114,11 @@ $(document).ready(function($) {
 
             // var quotee = '';
             $(document).on('click', '.add-new-service-below', function(e) {
-                console.log("sds");
+          
                 var quote = $(this).closest('.quote').data('key');
 
-                // console.log(quotee.data('key'));
-                jQuery('#new_service_modal_before').modal('show');
-                jQuery('#new_service_modal_before').find('.current-key').val(quote);
+                jQuery('#new_service_modal_below').modal('show');
+                jQuery('#new_service_modal_below').find('.current-key').val(quote);
             });
 
             $(document).on('click', '.quotes-service-category-btn-below', function(e) {
@@ -2132,11 +2128,10 @@ $(document).ready(function($) {
                 var category_id   = $(this).attr('data-id');
                 var category_name = $(this).attr('data-name');
 
-                var classvalue =  jQuery('#new_service_modal_before').find('.current-key').val();
+                var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
                 var onQuoteClass = `.quote-${classvalue}`;
-             
 
-                jQuery('#new_service_modal').modal('hide');
+                jQuery('#new_service_modal_below').modal('hide');
                 $('.parent-spinner').addClass('spinner-border');
 
                 if(category_id){
@@ -2226,7 +2221,7 @@ $(document).ready(function($) {
                         reinitializedSummerNote(`${quoteClass}`);
                         reinitializedDynamicFeilds();
 
-                        $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
+                        $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                         $('.parent-spinner').removeClass('spinner-border');
 
                     }, 180);
