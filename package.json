@@ -30,6 +30,7 @@
         "@sweetalert2/theme-bootstrap-4": "^5.0.7",
         "bootstrap-datepicker": "^1.9.0",
         "daterangepicker": "^3.1.0",
+        "formBuilder": "^3.7.3",
         "fs": "0.0.1-security",
         "intl-tel-input": "^17.0.13",
         "jquery-datetimepicker": "^2.5.21",

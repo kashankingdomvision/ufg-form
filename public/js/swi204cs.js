@@ -48576,7 +48576,7 @@ S2.define('jquery.select2',[
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
-* sweetalert2 v11.1.7
+* sweetalert2 v11.1.9
 * Released under the MIT License.
 */
 (function (global, factory) {
@@ -49229,6 +49229,7 @@ S2.define('jquery.select2',[
    *   then we can use that language feature.
    */
   var privateProps = {
+    awaitingPromise: new WeakMap(),
     promise: new WeakMap(),
     innerParams: new WeakMap(),
     domCache: new WeakMap()
@@ -50319,7 +50320,8 @@ S2.define('jquery.select2',[
    *   then we can use that language feature.
    */
   var privateMethods = {
-    swalPromiseResolve: new WeakMap()
+    swalPromiseResolve: new WeakMap(),
+    swalPromiseReject: new WeakMap()
   };
 
   /*
@@ -50362,29 +50364,66 @@ S2.define('jquery.select2',[
   }
 
   function close(resolveValue) {
+    resolveValue = prepareResolveValue(resolveValue);
+    const swalPromiseResolve = privateMethods.swalPromiseResolve.get(this);
+    const didClose = triggerClosePopup(this);
+
+    if (this.isAwaitingPromise()) {
+      // A swal awaiting for a promise (after a click on Confirm or Deny) cannot be dismissed anymore #2335
+      if (!resolveValue.isDismissed) {
+        handleAwaitingPromise(this);
+        swalPromiseResolve(resolveValue);
+      }
+    } else if (didClose) {
+      // Resolve Swal promise
+      swalPromiseResolve(resolveValue);
+    }
+  }
+  function isAwaitingPromise() {
+    return !!privateProps.awaitingPromise.get(this);
+  }
+
+  const triggerClosePopup = instance => {
     const popup = getPopup();
 
     if (!popup) {
-      return;
+      return false;
     }
 
-    resolveValue = prepareResolveValue(resolveValue);
-    const innerParams = privateProps.innerParams.get(this);
+    const innerParams = privateProps.innerParams.get(instance);
 
     if (!innerParams || hasClass(popup, innerParams.hideClass.popup)) {
-      return;
+      return false;
     }
 
-    const swalPromiseResolve = privateMethods.swalPromiseResolve.get(this);
     removeClass(popup, innerParams.showClass.popup);
     addClass(popup, innerParams.hideClass.popup);
     const backdrop = getContainer();
     removeClass(backdrop, innerParams.showClass.backdrop);
     addClass(backdrop, innerParams.hideClass.backdrop);
-    handlePopupAnimation(this, popup, innerParams); // Resolve Swal promise
+    handlePopupAnimation(instance, popup, innerParams);
+    return true;
+  };
 
-    swalPromiseResolve(resolveValue);
+  function rejectPromise(error) {
+    const rejectPromise = privateMethods.swalPromiseReject.get(this);
+    handleAwaitingPromise(this);
+
+    if (rejectPromise) {
+      // Reject Swal promise
+      rejectPromise(error);
+    }
   }
+
+  const handleAwaitingPromise = instance => {
+    if (instance.isAwaitingPromise()) {
+      privateProps.awaitingPromise.delete(instance); // The instance might have been previously partly destroyed, we must resume the destroy process in this case #2335
+
+      if (!privateProps.innerParams.get(instance)) {
+        instance._destroy();
+      }
+    }
+  };
 
   const prepareResolveValue = resolveValue => {
     // When user calls Swal.close()
@@ -51138,6 +51177,8 @@ S2.define('jquery.select2',[
     }
 
     if (innerParams.preDeny) {
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preDeny's promise is received
+
       const preDenyPromise = Promise.resolve().then(() => asPromise(innerParams.preDeny(value, innerParams.validationMessage)));
       preDenyPromise.then(preDenyValue => {
         if (preDenyValue === false) {
@@ -51148,7 +51189,7 @@ S2.define('jquery.select2',[
             value: typeof preDenyValue === 'undefined' ? value : preDenyValue
           });
         }
-      });
+      }).catch(error$$1 => rejectWith(instance || undefined, error$$1));
     } else {
       instance.closePopup({
         isDenied: true,
@@ -51164,6 +51205,10 @@ S2.define('jquery.select2',[
     });
   };
 
+  const rejectWith = (instance, error$$1) => {
+    instance.rejectPromise(error$$1);
+  };
+
   const confirm = (instance, value) => {
     const innerParams = privateProps.innerParams.get(instance || undefined);
 
@@ -51173,6 +51218,8 @@ S2.define('jquery.select2',[
 
     if (innerParams.preConfirm) {
       instance.resetValidationMessage();
+      privateProps.awaitingPromise.set(instance || undefined, true); // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesnt get destroyed until the result from this preConfirm's promise is received
+
       const preConfirmPromise = Promise.resolve().then(() => asPromise(innerParams.preConfirm(value, innerParams.validationMessage)));
       preConfirmPromise.then(preConfirmValue => {
         if (isVisible(getValidationMessage()) || preConfirmValue === false) {
@@ -51180,7 +51227,7 @@ S2.define('jquery.select2',[
         } else {
           succeedWith(instance, typeof preConfirmValue === 'undefined' ? value : preConfirmValue);
         }
-      });
+      }).catch(error$$1 => rejectWith(instance || undefined, error$$1));
     } else {
       succeedWith(instance, value);
     }
@@ -51423,7 +51470,7 @@ S2.define('jquery.select2',[
   };
 
   const swalPromise = (instance, domCache, innerParams) => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       // functions to handle all closings/dismissals
       const dismissWith = dismiss => {
         instance.closePopup({
@@ -51433,6 +51480,7 @@ S2.define('jquery.select2',[
       };
 
       privateMethods.swalPromiseResolve.set(instance, resolve);
+      privateMethods.swalPromiseReject.set(instance, reject);
 
       domCache.confirmButton.onclick = () => handleConfirmButtonClick(instance);
 
@@ -51571,6 +51619,8 @@ S2.define('jquery.select2',[
     const innerParams = privateProps.innerParams.get(this);
 
     if (!innerParams) {
+      disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining weakmaps #2335
+
       return; // This instance has already been destroyed
     } // Check if there is another Swal closing
 
@@ -51594,21 +51644,30 @@ S2.define('jquery.select2',[
   }
 
   const disposeSwal = instance => {
-    // Unset this.params so GC will dispose it (#1569)
+    disposeWeakMaps(instance); // Unset this.params so GC will dispose it (#1569)
+
     delete instance.params; // Unset globalState props so GC will dispose globalState (#1569)
 
     delete globalState.keydownHandler;
-    delete globalState.keydownTarget; // Unset WeakMaps so GC will be able to dispose them (#1569)
-
-    unsetWeakMaps(privateProps);
-    unsetWeakMaps(privateMethods); // Unset currentInstance
+    delete globalState.keydownTarget; // Unset currentInstance
 
     delete globalState.currentInstance;
   };
 
-  const unsetWeakMaps = obj => {
+  const disposeWeakMaps = instance => {
+    // If the current instance is awaiting a promise result, we keep the privateMethods to call them once the promise result is retreived #2335
+    if (instance.isAwaitingPromise()) {
+      unsetWeakMaps(privateProps, instance);
+      privateProps.awaitingPromise.set(instance, true);
+    } else {
+      unsetWeakMaps(privateMethods, instance);
+      unsetWeakMaps(privateProps, instance);
+    }
+  };
+
+  const unsetWeakMaps = (obj, instance) => {
     for (const i in obj) {
-      obj[i] = new WeakMap();
+      obj[i].delete(instance);
     }
   };
 
@@ -51619,6 +51678,8 @@ S2.define('jquery.select2',[
     disableLoading: hideLoading,
     getInput: getInput$1,
     close: close,
+    isAwaitingPromise: isAwaitingPromise,
+    rejectPromise: rejectPromise,
     closePopup: close,
     closeModal: close,
     closeToast: close,
@@ -51685,7 +51746,7 @@ S2.define('jquery.select2',[
     };
   });
   SweetAlert.DismissReason = DismissReason;
-  SweetAlert.version = '11.1.7';
+  SweetAlert.version = '11.1.9';
 
   const Swal = SweetAlert;
   Swal.default = Swal;

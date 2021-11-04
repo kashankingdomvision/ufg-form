@@ -19,7 +19,7 @@
         </div>
       </div>
     </section>
-    <section class="content">
+    {{-- <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="offset-md-2 col-md-8">
@@ -48,6 +48,124 @@
           </div>
         </div>
       </div>
+    </section> --}}
+
+    <section class="content" >
+      <div class="container-fluid">
+        <div class="row">
+          <div class="offset-md-2 col-md-8">
+
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title text-center">Category Form</h3>
+              </div>
+              {{-- {{ dd(route('categories.store')) }} --}}
+
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Category Name <span style="color:red">*</span></label>
+                  <input type="text" name="name" id="name" class="form-control name" placeholder="Category Name" required>
+                  <span class="text-danger" role="alert"></span>
+                </div>
+                
+                <div id="build-wrap"></div>
+                <div class="render-wrap"></div>
+              </div>
+
+           
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 @endsection
+
+@push('js')
+ 
+  <script src="{{ asset('js/category/jquery-ui.js') }}"></script>
+  <script src="{{ asset('js/category/formRender.js') }}"></script>
+  <script src="{{ asset('js/category/formBuilder.js') }}"></script>
+
+<script>
+
+// $.ajaxSetup({
+//   headers: {
+//     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//   }
+// });
+
+
+
+  jQuery(function ($) {
+    var fbTemplate = document.getElementById("build-wrap");
+    var options = {
+      onSave: function (evt, formData) {
+
+        var categoryName = $('.name').val();
+        // var url          = `${window.location.origin}/ufg-form/public/categories/store`;
+        var url          = '{{route('categories.store')}}';
+        console.log(formData);
+
+        console.log(url);
+
+        if(formData == '[]'){
+          formData = '';
+        }
+
+        var data = {
+          name : categoryName,
+          feilds : formData,
+          "_token": "{{ csrf_token() }}",
+        };
+
+        console.log(data);
+
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: data,
+          beforeSend: function() {
+            $("#overlay").addClass('overlay');
+            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+          },
+          success: function(data) {
+              $("#overlay").removeClass('overlay').html('');
+              
+              setTimeout(function() {
+
+                if(data && data.status == 200){
+                  alert(data.success_message);
+                  window.location.href = REDIRECT_BASEURL + "quotes/index";
+                }
+              }, 200);
+          },
+          error: function(reject) {
+
+            if (reject.status === 422) {
+
+              var errors = $.parseJSON(reject.responseText);
+
+              setTimeout(function() {
+
+                $("#overlay").removeClass('overlay').html('');
+
+                jQuery.each(errors.errors, function(index, value) {
+
+                  index = index.replace(/\./g, '_');
+
+                  $(`#${index}`).addClass('is-invalid');
+                  $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                });
+              }, 400);
+            }
+          },
+        });
+      }
+    };
+    $(fbTemplate).formBuilder(options);
+  });
+
+</script>
+@endpush

@@ -290,6 +290,13 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('category-detail-forms.create')}}" class="nav-link {{ $route == 'category-detail-forms.create'  ? 'active' : ''}}">
+                                <i class="fa fa-eye nav-icon"></i>
+                                <p>Add Category Form</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('wallets.index') }}" class="nav-link {{ $route == 'wallets.index' ? 'active' : '' }}">
                                 <i class="fas fa-wallet nav-icon"></i>
                                 <p>Supplier Wallet</p>

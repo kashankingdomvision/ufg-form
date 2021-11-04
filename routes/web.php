@@ -296,6 +296,11 @@ Route::group(['middleware' => ['auth']], function(){
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
+    /*  Supplier Categories */
+    Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
 
     /*
     |--------------------------------------------------------------------------

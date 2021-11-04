@@ -44,12 +44,17 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(Request $request)
     {
+ 
+
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'feilds' => $request->feilds,
         ]);
+
+        dd($request->all());
         return redirect()->route('categories.index')->with('success_message', 'Category created successfully'); 
     }
 
@@ -74,6 +79,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
+        dd($request->all());
+
         $category = Category::findOrFail(decrypt($id));
         $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
         

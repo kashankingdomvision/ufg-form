@@ -1,5 +1,6 @@
 require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 
+
 import $, { ajax, cssNumber, event } from 'jquery';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
