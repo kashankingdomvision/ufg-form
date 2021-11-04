@@ -54167,7 +54167,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('#btnSubmitversion').append(btn_Submit);
         $('.remove').addClass('remove-quote-detail-service');
         $('.remove').removeClass('d-none');
-        $('.add-new-product, .insert-quick-text').removeClass('d-none');
+        $('.add-new-product, .insert-quick-text, .add-new-service-below').removeClass('d-none');
         getMarkupTypeFeildAttribute();
       }
     } else {

@@ -973,7 +973,7 @@
     @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
-    @include('partials.new_service_modal_before',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
+    @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('partials.view_rates_modal')
   </div>
 

@@ -2866,7 +2866,7 @@ $(document).ready(function($) {
 
                         $('.remove').addClass('remove-quote-detail-service');
                         $('.remove').removeClass('d-none');
-                        $('.add-new-product, .insert-quick-text').removeClass('d-none');
+                        $('.add-new-product, .insert-quick-text, .add-new-service-below').removeClass('d-none');
 
                         getMarkupTypeFeildAttribute();
                     }

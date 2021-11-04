@@ -561,7 +561,7 @@
 
                     <div class="sortable sortable-spacing">
                       @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )
-                        <div class="quote card card-default " data-key="{{$key}}">
+                        <div class="quote card card-default quote-{{$key}}" data-key="{{$key}}">
 
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">
@@ -573,6 +573,7 @@
                               <span class="badge badge-info badge-supplier-currency-id">{{ isset($q_detail->getSupplierCurrency->name) && !empty($q_detail->getSupplierCurrency->name) ? $q_detail->getSupplierCurrency->code.' - '.$q_detail->getSupplierCurrency->name : '' }}</span>
                             </h3>
                             <div class="card-tools">
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below" ><i class="fas fa-plus"></i> &nbsp; Add New Service</a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove remove-quote-detail-service" title="Remove"><i class="fas fa-times"></i></a>
                             </div>
@@ -1143,6 +1144,7 @@
     @include('partials.add_new_product')
     @include('partials.template_modal')
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
+    @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('partials.view_rates_modal')
 
     @if($exist && $user_id)

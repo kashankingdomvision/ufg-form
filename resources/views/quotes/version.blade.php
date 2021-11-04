@@ -468,7 +468,7 @@
 
                     <div class="sortable sortable-spacing">
                       @foreach ($quote['quote'] as $key => $q_detail )
-                        <div class="quote card card-default" data-key="{{ $key }}">
+                        <div class="quote card card-default quote-{{$key}}" data-key="{{ $key }}">
 
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">
@@ -480,6 +480,7 @@
                               <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
                             </h3>
                             <div class="card-tools">
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below d-none" ><i class="fas fa-plus"></i> &nbsp; Add New Service</a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
                             </div>
@@ -1026,6 +1027,7 @@
   </div>
   @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
+  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
   @include('partials.view_rates_modal')
   @include('partials.add_new_product')
 @endsection

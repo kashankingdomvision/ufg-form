@@ -1,4 +1,4 @@
-<div class="modal fade" id="new_service_modal_before">
+<div class="modal fade" id="new_service_modal_below">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -9,7 +9,8 @@
             </div>
             <div class="modal-body p-2r">
 
-                <input type="text" name="current_key" class="current-key">
+                <input type="hidden" name="current_key" class="current-key">
+
                 <div class="row">
                     @foreach ($categories as $category)
                     <div class="col-md-4">
