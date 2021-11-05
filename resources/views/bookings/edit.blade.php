@@ -637,7 +637,15 @@
                                     @include('partials.transfer_modal')
                                     @include('partials.service_excersion_modal')
                                   </div>
-                                  <button type="button" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                  <button type="button" data-id="{{ $booking_detail->id }}" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Category Details</label>
+                                  <input type="text" name="quote[{{ $key }}][category_details]" value="@if(empty($booking_detail->category_details) || is_null($booking_detail->category_details)){{App\Category::find($booking_detail->category_id)->feilds}}@else{{$booking_detail->category_details}}@endif" id="quote_{{ $key }}_category_details" class="form-control">
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 
@@ -1901,11 +1909,56 @@
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
   
   @include('partials.cancel_booking_modal')
+  @include('partials.category_detail_feilds')
+
   {{-- @include('partials.cancel_booking_service') --}}
 
 @endsection
 @push('js')
+<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
+<script src="{{ asset('js/category/formRender.js') }}"></script>
+
 <script>
+
+  var quote  = '';
+  var key  = '';
+  var formRenderID  = "#build-wrap";
+
+  $(document).on('click', '.category-detail-feilds-submit', function() {
+    var data = JSON.stringify($(formRenderID).formRender("userData"));
+    $(`#quote_${key}_category_details`).val(data);
+  });
+
+  $(document).on('click', '.add-category-detail', function() {
+
+    quote                 = jQuery(this).closest('.quote');
+    key                   = quote.data('key');
+    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
+    var category_id       = $(`#quote_${key}_category_id`).val();
+    var booking_detail_id = $(this).attr('data-id');
+    var url               = '{{route('bookings.category.detail.feilds')}}';
+    var modal             = jQuery('.category-detail-feilds');
+    var feilds_data       = $(`#quote_${key}_category_details`).val();
+
+    if(typeof type === 'undefined') {
+      alert("Please Select Category first");
+      return;
+    }
+
+    jQuery(function($) {
+      var formRenderOptions = {
+        formData: feilds_data 
+      }
+
+      $(formRenderID).formRender( formRenderOptions );
+    });
+
+    modal.modal('show');
+    modal.find('.modal-title').html(`${category_name} Details`);
+    
+  });
+
   $(window).on('beforeunload', function() {
     $.ajaxSetup({
       headers: {

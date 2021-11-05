@@ -10,7 +10,7 @@ use App\Category;
 
 class CategoryController extends Controller
 {
-    public $pagination = 10;
+    public $pagination = 100;
     /**
      * Display a listing of the resource.
      *
@@ -44,15 +44,16 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
  
-
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
             'feilds' => $request->feilds,
         ]);
+
+        return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
 
         dd($request->all());
         return redirect()->route('categories.index')->with('success_message', 'Category created successfully'); 
@@ -77,18 +78,20 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategoryRequest $request, $id)
+    public function update(UpdateCategoryRequest $request)
     {
-        dd($request->all());
+       
+        // $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
 
-        $category = Category::findOrFail(decrypt($id));
-        $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
+        $category = Category::findOrFail(decrypt($request->id));
         
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'feilds' => $request->feilds,
         ]);
-        return redirect()->route('categories.index')->with('success_message', 'Category updated successfully'); 
+
+        return \Response::json(['status' => true, 'success_message' => 'Category updated successfully'], 200);
     }
 
     /**

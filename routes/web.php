@@ -69,6 +69,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('revert-booking-detail-cancellation/{id}', array('as' => 'revert.booking.detail.cancellation', 'uses' => 'BookingController@revert_booking_detail_cancellation'));
 
         Route::get('revert-cancel-booking/{id}', array('as' => 'revert.cancel.booking', 'uses' => 'BookingController@revert_cancel_booking'));
+
+        // not used currently
+        Route::post('category-detail-feilds', array('as' => 'category.detail.feilds', 'uses' => 'BookingController@category_detail_feilds'));
     });
 
 
@@ -300,6 +303,19 @@ Route::group(['middleware' => ['auth']], function(){
     Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
+
+    
+    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+        Route::get('index', array('as' => 'index', 'uses' => 'CategoryController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CategoryController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CategoryController@store'));
+        Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
+
+
+        // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+    });
+
 
 
     /*

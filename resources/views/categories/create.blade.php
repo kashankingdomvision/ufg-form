@@ -50,7 +50,7 @@
       </div>
     </section> --}}
 
-    <section class="content" >
+    <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="offset-md-2 col-md-8">
@@ -59,7 +59,6 @@
               <div class="card-header">
                 <h3 class="card-title text-center">Category Form</h3>
               </div>
-              {{-- {{ dd(route('categories.store')) }} --}}
 
               <div class="card-body">
                 <div class="form-group">
@@ -69,10 +68,9 @@
                 </div>
                 
                 <div id="build-wrap"></div>
-                <div class="render-wrap"></div>
               </div>
 
-           
+              <div id="overlay" class=""></div>
             </div>
           </div>
         </div>
@@ -89,25 +87,16 @@
 
 <script>
 
-// $.ajaxSetup({
-//   headers: {
-//     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//   }
-// });
-
-
-
   jQuery(function ($) {
     var fbTemplate = document.getElementById("build-wrap");
     var options = {
       onSave: function (evt, formData) {
 
         var categoryName = $('.name').val();
-        // var url          = `${window.location.origin}/ufg-form/public/categories/store`;
         var url          = '{{route('categories.store')}}';
-        console.log(formData);
 
-        console.log(url);
+        // console.log(formData);
+        // console.log(url);
 
         if(formData == '[]'){
           formData = '';
@@ -119,32 +108,35 @@
           "_token": "{{ csrf_token() }}",
         };
 
-        console.log(data);
+        // console.log(data);
 
         $.ajax({
           type: 'POST',
           url: url,
           data: data,
           beforeSend: function() {
+            $('input, select').removeClass('is-invalid');
+            $('.text-danger').html('');
             $("#overlay").addClass('overlay');
             $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
           },
           success: function(data) {
-              $("#overlay").removeClass('overlay').html('');
-              
-              setTimeout(function() {
+            $("#overlay").removeClass('overlay').html('');
+            
+            setTimeout(function() {
 
-                if(data && data.status == 200){
-                  alert(data.success_message);
-                  window.location.href = REDIRECT_BASEURL + "quotes/index";
-                }
-              }, 200);
+              if(data && data.status == true){
+                alert(data.success_message);
+                window.location.href = '{{route('categories.index')}}';
+              }
+            }, 200);
           },
           error: function(reject) {
 
             if (reject.status === 422) {
 
               var errors = $.parseJSON(reject.responseText);
+              var flag = true;
 
               setTimeout(function() {
 
@@ -157,9 +149,15 @@
                   $(`#${index}`).addClass('is-invalid');
                   $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
+                  if(flag){
+                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                    flag = false;
+                  }
+
                 });
               }, 400);
             }
+            
           },
         });
       }

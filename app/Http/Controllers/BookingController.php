@@ -229,6 +229,7 @@ class BookingController extends Controller
             'markup_amount_bc'        => $quoteD['markup_amount_in_booking_currency'],
             'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : 0,
             'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
+            'category_details'        => $quoteD['category_details'],
         ];
     }
 
@@ -651,6 +652,18 @@ class BookingController extends Controller
 
         return view('bookings.show',$data);
     }
+
+    // not used currently
+    public function category_detail_feilds(Request $request){
+
+        // dd($request->all());
+
+        $category = Category::find($request->category_id);
+
+
+        return \Response::json(['status' => true, 'category_detail_feilds' => $category->feilds ], 200);
+    }
+
 
     public function viewVersion($id)
     {

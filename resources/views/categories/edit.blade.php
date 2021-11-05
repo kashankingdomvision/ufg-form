@@ -18,7 +18,7 @@
         </div>
       </div>
     </section>
-    <section class="content">
+    {{-- <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="offset-md-2 col-md-8">
@@ -47,6 +47,128 @@
           </div>
         </div>
       </div>
+    </section> --}}
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="offset-md-2 col-md-8">
+
+            <div class="card card-secondary">
+              <div class="card-header">
+                <h3 class="card-title text-center">Category Form</h3>
+              </div>
+
+              {{-- {{ dd($category->feilds) }} --}}
+
+              <div class="card-body">
+                <input type="hidden" name="id" value="{{ encrypt($category->id) }}" class="form-control id">
+
+                <div class="form-group">
+                  <label>Category Name <span style="color:red">*</span></label>
+                  <input type="text" name="name" id="name" value="{{$category->name}}" class="form-control name" placeholder="Category Name" required>
+                  <span class="text-danger" role="alert"></span>
+                </div>
+                <div id="build-wrap"></div>
+              </div>
+
+              <div id="overlay" class=""></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </div>
 @endsection
+
+@push('js')
+ 
+  <script src="{{ asset('js/category/jquery-ui.js') }}"></script>
+  <script src="{{ asset('js/category/formRender.js') }}"></script>
+  <script src="{{ asset('js/category/formBuilder.js') }}"></script>
+
+  <script>
+
+  var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
+
+  jQuery(function($) {
+    var fbTemplate = document.getElementById('build-wrap'),
+      options = {
+        formData: presetData,
+        onSave: function (evt, formData) {
+
+          var categoryName = $('.name').val();
+          var id           = $('.id').val();
+          var url          = '{{route('categories.update' )}}';
+
+          if(formData == '[]'){
+            formData = '';
+          }
+
+          var data = {
+            id : id,
+            name : categoryName,
+            feilds : formData,
+            "_token": "{{ csrf_token() }}",
+          };
+
+          $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            beforeSend: function() {
+              $('input, select').removeClass('is-invalid');
+              $('.text-danger').html('');
+              $("#overlay").addClass('overlay');
+              $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+            },
+            success: function(data) {
+              $("#overlay").removeClass('overlay').html('');
+              
+              setTimeout(function() {
+
+                if(data && data.status == true){
+                  alert(data.success_message);
+                  window.location.href = '{{route('categories.index')}}';
+                }
+              }, 200);
+            },
+            error: function(reject) {
+
+              if (reject.status === 422) {
+
+                var errors = $.parseJSON(reject.responseText);
+                var flag = true;
+
+                setTimeout(function() {
+
+                  $("#overlay").removeClass('overlay').html('');
+
+                  jQuery.each(errors.errors, function(index, value) {
+
+                    index = index.replace(/\./g, '_');
+
+                    $(`#${index}`).addClass('is-invalid');
+                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                    if(flag){
+                      $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                      flag = false;
+                    }
+
+                  });
+                }, 400);
+              }
+              
+            },
+          });
+
+        }
+      };
+    $(fbTemplate).formBuilder(options);
+  });
+
+
+  </script>
+
+@endpush

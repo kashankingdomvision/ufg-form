@@ -42,7 +42,8 @@ class BookingDetail extends Model
         'invoice',
         'outstanding_amount_left',
         'status',
-        'payment_status'
+        'payment_status',
+        'category_details'
     ];
 
     public function getCategory()

@@ -54446,17 +54446,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   |--------------------------------------------------------------------------
   */
 
-  $(document).on('click', '.add-category-detail', function () {
-    var quote = jQuery(this).closest('.quote');
-    var key = quote.data('key');
-    var type = $("#quote_".concat(key, "_category_id")).find(':selected').data('slug');
-
-    if (typeof type === 'undefined') {
-      alert("Please Select Category first");
-    }
-
-    quote.find(".".concat(type, "_modal")).modal('show');
-    quote.find(".".concat(type, "_modal :input")).removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
+  $(document).on('click', '.add-category-detail', function () {// var quote = jQuery(this).closest('.quote');
+    // var key = quote.data('key');
+    // var type = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+    // if (typeof type === 'undefined') {
+    //     alert("Please Select Category first");
+    // }
+    // quote.find(`.${type}_modal`).modal('show');
+    // quote.find(`.${type}_modal :input`).removeAttr('disabled');
+    // jQuery('#accomadation_modal').modal('show').find('input').val('');
   });
   $(".update-quote").submit(function (event) {
     event.preventDefault();
@@ -54541,8 +54539,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(data) {
         if (data.success_message) {
-          $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
-          jQuery('#override_modal').modal('hide');
+          // $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+          jQuery('.category-detail-feilds').modal('show');
         } // $("#overlay").removeClass('overlay').html('');
         // setTimeout(function() {
         //     alert('Quote updated Successfully');
