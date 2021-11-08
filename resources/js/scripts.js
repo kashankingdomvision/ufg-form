@@ -1845,12 +1845,13 @@ $(document).ready(function($) {
             $(document).on('change', '.category-id', function() {
 
                 // var selector      = $(this);
-                var quote         = $(this).closest('.quote');
-                var quoteKey      = quote.data('key');
-                var category_id   = $(this).val();
-                var category_name = $(this).find(':selected').attr('data-name');
-                var category_slug = $(this).find(':selected').attr('data-slug');
-                var options       = '';
+                var quote             = $(this).closest('.quote');
+                var quoteKey          = quote.data('key');
+                var booking_detail_id = quote.find('.booking-detail-id').val();
+                var category_id       = $(this).val();
+                var category_name     = $(this).find(':selected').attr('data-name');
+                var category_slug     = $(this).find(':selected').attr('data-slug');
+                var options           = '';
 
                 quote.find('.badge-category-id').html(category_name);
                 quote.find('.badge-category-id').removeClass('d-none');
@@ -1867,26 +1868,32 @@ $(document).ready(function($) {
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}category/to/supplier`,
-                    data: { 'category_id': category_id },
+                    data: { 'category_id': category_id, 'booking_detail_id': booking_detail_id },
                     success: function(response) {
 
                         options += "<option value=''>Select Supplier</option>";
 
-                        $.each(response, function(key, value) {
+                        $.each(response.suppliers, function(key, value) {
                             options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
+           
+                        if (typeof response.category_details != 'undefined') {
+                            quote.find('.category-details').val(response.category_details);
+                        }
 
                         $(`#quote_${quoteKey}_supplier_id`).html(options);
+                        
+                        // reset product & supplier Sheet
                         $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                        quote.find('.view-supplier-rate').attr("href","");
+                        quote.find('.view-supplier-rate').html("");
 
                         // selector.closest('.row').find('.supplier-id').html(options);
                         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
                     }
                 })
 
-                quote.find('.view-supplier-rate').attr("href","");
-                quote.find('.view-supplier-rate').html("");
-                jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
+                // jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
             });
 
             // $(document).on('change', '.supplier-id',function(){

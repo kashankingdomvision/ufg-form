@@ -592,6 +592,13 @@
                                 </div>
                               </div>
 
+                              <div class="col-sm-2 d-none">
+                                <div class="form-group">
+                                  <label>Booking Detail ID</label>
+                                  <input type="text" value="{{ $booking_detail->id }}" name="quote[{{ $key }}][booking_detail_id]" data-name="booking_detail_id" id="quote_{{ $key }}_booking_detail_id" class="form-control booking-detail-id" placeholder="Booking Detail ID">
+                                </div>
+                              </div>
+
                               <div class="col-sm-2">
                                 <div class="form-group">
                                   <label>Category <span style="color:red">*</span></label>
@@ -641,10 +648,10 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Category Details</label>
-                                  <input type="text" name="quote[{{ $key }}][category_details]" value="@if(empty($booking_detail->category_details) || is_null($booking_detail->category_details)){{App\Category::find($booking_detail->category_id)->feilds}}@else{{$booking_detail->category_details}}@endif" id="quote_{{ $key }}_category_details" class="form-control">
+                                  <input type="text" name="quote[{{ $key }}][category_details]" value="@if(empty($booking_detail->category_details) || is_null($booking_detail->category_details)){{App\Category::find($booking_detail->category_id)->feilds}}@else{{$booking_detail->category_details}}@endif" id="quote_{{ $key }}_category_details" class="form-control category-details">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
@@ -1951,11 +1958,22 @@
         formData: feilds_data 
       }
 
-      $(formRenderID).formRender( formRenderOptions );
+      $(formRenderID).html("");
+      $(formRenderID).formRender(formRenderOptions);
+
+      if(feilds_data == ""){
+        $(formRenderID).html("No Form Data.");
+      }
     });
 
     modal.modal('show');
     modal.find('.modal-title').html(`${category_name} Details`);
+
+    if(feilds_data == ""){
+      modal.find('.modal-footer').addClass("d-none");
+    }else{
+      modal.find('.modal-footer').removeClass("d-none");
+    }
     
   });
 

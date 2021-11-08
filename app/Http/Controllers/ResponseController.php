@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\BookingType;
 use App\BookingMethod;
+use App\BookingDetail;
 use App\Category;
 use App\Currency;
 use App\Country;
@@ -119,10 +120,24 @@ class ResponseController extends Controller
 
     public function getCategoryToSupplier(Request $request)
     {
+        $category_details = '';
+ 
         $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
-                            $query->where('id', $request->category_id);
-                    })->get();
-        return response()->json($supplier);
+            $query->where('id', $request->category_id);
+        })->get();
+
+        $booking_detail = BookingDetail::where('category_id', $request->category_id)->where('id', $request->booking_detail_id)->first('category_details');
+        
+        if(is_null($booking_detail)){
+
+            $category_details = Category::find($request->category_id)->feilds;
+
+        }else{
+
+            $category_details = $booking_detail->category_details;
+        }
+
+        return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details ]);
     }
     
     public function getSupplierToProductORCurrency(Request $request)

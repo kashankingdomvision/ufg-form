@@ -53485,6 +53485,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     // var selector      = $(this);
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
+    var booking_detail_id = quote.find('.booking-detail-id').val();
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
@@ -53503,21 +53504,27 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       type: 'get',
       url: "".concat(BASEURL, "category/to/supplier"),
       data: {
-        'category_id': category_id
+        'category_id': category_id,
+        'booking_detail_id': booking_detail_id
       },
       success: function success(response) {
         options += "<option value=''>Select Supplier</option>";
-        $.each(response, function (key, value) {
+        $.each(response.suppliers, function (key, value) {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
-        $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>"); // selector.closest('.row').find('.supplier-id').html(options);
+
+        if (typeof response.category_details != 'undefined') {
+          quote.find('.category-details').val(response.category_details);
+        }
+
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // reset product & supplier Sheet
+
+        $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
+        quote.find('.view-supplier-rate').attr("href", "");
+        quote.find('.view-supplier-rate').html(""); // selector.closest('.row').find('.supplier-id').html(options);
         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
-    });
-    quote.find('.view-supplier-rate').attr("href", "");
-    quote.find('.view-supplier-rate').html("");
-    jQuery(this).closest('.quote').find(".transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input").attr('disabled', 'disabled');
+    }); // jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
   }); // $(document).on('change', '.supplier-id',function(){
   //     var $selector = $(this);
   //     var supplier_id = $(this).val();

@@ -9,13 +9,13 @@
                 </button>
             </div>
 
-            <div class="modal-body" style="min-height: 550px;">
+            <div class="modal-body" >
                 <div id="build-wrap"></div>
             </div>
 
             <div class="modal-footer justify-content-right">
                 <button class="btn btn-primary category-detail-feilds-submit" type="button" data-dismiss="modal">
-                Submit
+                OK, Update It!
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
