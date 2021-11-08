@@ -45,6 +45,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->text('service_details')->nullable();
             $table->text('comments')->nullable();
             $table->string('image')->nullable();
+            $table->text('category_details')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
             

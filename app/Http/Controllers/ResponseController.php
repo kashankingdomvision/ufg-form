@@ -121,23 +121,25 @@ class ResponseController extends Controller
     public function getCategoryToSupplier(Request $request)
     {
         $category_details = '';
+        $category         = '';
+        $table_name       = 'App\\'.$request->table_name;
  
         $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
             $query->where('id', $request->category_id);
         })->get();
 
-        $booking_detail = BookingDetail::where('category_id', $request->category_id)->where('id', $request->booking_detail_id)->first('category_details');
-        
-        if(is_null($booking_detail)){
+        $booking_detail = $table_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
+        $category       = Category::where('id', $request->category_id)->first();
 
-            $category_details = Category::find($request->category_id)->feilds;
+        if(is_null($booking_detail)){
+            $category_details = $category->feilds;
 
         }else{
 
             $category_details = $booking_detail->category_details;
         }
 
-        return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details ]);
+        return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
     }
     
     public function getSupplierToProductORCurrency(Request $request)

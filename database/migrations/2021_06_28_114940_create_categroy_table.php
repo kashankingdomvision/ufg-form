@@ -18,6 +18,8 @@ class CreateCategroyTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('feilds');
+            $table->enum('booking', [0, 1])->default(0);
+            $table->enum('quote', [0, 1])->default(0);
             $table->timestamps();
         });
     }

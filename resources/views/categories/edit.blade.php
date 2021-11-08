@@ -69,6 +69,15 @@
                   <input type="text" name="name" id="name" value="{{$category->name}}" class="form-control name" placeholder="Category Name" required>
                   <span class="text-danger" role="alert"></span>
                 </div>
+
+                <div class="form-group">
+                  <label>Appeared In <span style="color:red">*</span></label>
+                  <br>
+                  <input type="hidden" name="quote" class="quote" value="{{$category->quote}}"><input id="quote" class="quote" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->quote == 1) ? 'checked': '' }}><label for="quote"> &nbsp; Quote</label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="hidden" name="booking" class="booking" value="{{$category->booking}}"><input id="booking" class="booking" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->booking == 1) ? 'checked': '' }}><label for="booking" > &nbsp; Booking</label>
+                </div>
+
                 <div id="build-wrap"></div>
               </div>
 
@@ -99,6 +108,8 @@
 
           var categoryName = $('.name').val();
           var id           = $('.id').val();
+          var quote        = $('.quote').val();
+          var booking      = $('.booking').val();
           var url          = '{{route('categories.update' )}}';
 
           if(formData == '[]'){
@@ -106,9 +117,11 @@
           }
 
           var data = {
-            id : id,
-            name : categoryName,
-            feilds : formData,
+            id      : id,
+            name    : categoryName,
+            feilds  : formData,
+            quote   : quote,
+            booking : booking,
             "_token": "{{ csrf_token() }}",
           };
 

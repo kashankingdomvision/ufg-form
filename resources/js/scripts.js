@@ -1847,7 +1847,19 @@ $(document).ready(function($) {
                 // var selector      = $(this);
                 var quote             = $(this).closest('.quote');
                 var quoteKey          = quote.data('key');
-                var booking_detail_id = quote.find('.booking-detail-id').val();
+
+                // console.log(quoteKey);
+
+                var detail_id = $(`#quote_${quoteKey}_detail_id`).val();
+                var table_name = $(`#quote_${quoteKey}_table_name`).val();
+
+                // var detail_id         = quote.find('.detail-id').val();
+                // var table_name        = quote.find('.table-name').val();
+                // var detail_id         = $(this).attr('data-detailID');
+                // var table_name        = $(this).attr('data-tableName');
+
+                // console.log(detail_id);
+
                 var category_id       = $(this).val();
                 var category_name     = $(this).find(':selected').attr('data-name');
                 var category_slug     = $(this).find(':selected').attr('data-slug');
@@ -1868,7 +1880,7 @@ $(document).ready(function($) {
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}category/to/supplier`,
-                    data: { 'category_id': category_id, 'booking_detail_id': booking_detail_id },
+                    data: { 'category_id': category_id, 'detail_id': detail_id, 'table_name': table_name },
                     success: function(response) {
 
                         options += "<option value=''>Select Supplier</option>";
@@ -1877,8 +1889,27 @@ $(document).ready(function($) {
                             options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
            
-                        if (typeof response.category_details != 'undefined') {
+                        if(typeof response.category_details != 'undefined') {
                             quote.find('.category-details').val(response.category_details);
+                        }
+
+                        if((response.category != "") && (typeof response.category !== 'undefined')){
+
+                            if(response.category.quote == 1){
+                                quote.find('.quote-category-detail-btn-parent').removeClass('d-none');
+                                quote.find('.quote-category-detail-btn-parent').addClass('d-flex');
+                            }else{
+                                quote.find('.quote-category-detail-btn-parent').removeClass('d-flex');
+                                quote.find('.quote-category-detail-btn-parent').addClass('d-none');
+                            }
+
+                            if(response.category.booking == 1){
+                                quote.find('.booking-category-detail-btn-parent').removeClass('d-none');
+                                quote.find('.booking-category-detail-btn-parent').addClass('d-flex');
+                            }else{
+                                quote.find('.booking-category-detail-btn-parent').removeClass('d-flex');
+                                quote.find('.booking-category-detail-btn-parent').addClass('d-none');
+                            }
                         }
 
                         $(`#quote_${quoteKey}_supplier_id`).html(options);
@@ -2071,7 +2102,8 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
-                        
+                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
                         $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -2207,8 +2239,9 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
-                        $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
-                        
+                        $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00'); 
+                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
                         $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -2397,6 +2430,10 @@ $(document).ready(function($) {
                                 return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
                             });
                         });
+
+                        var quoteLength = $('.quote').length;
+                        var quoteKey    = quoteLength - 1;
+                        $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
         
                         $('.mediaModal').find('a').attr('id', '')
                         $('.refund-payment-hidden-section:last').attr("hidden", true);

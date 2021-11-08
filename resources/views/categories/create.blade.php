@@ -66,6 +66,14 @@
                   <input type="text" name="name" id="name" class="form-control name" placeholder="Category Name" required>
                   <span class="text-danger" role="alert"></span>
                 </div>
+
+                <div class="form-group">
+                  <label>Appeared In <span style="color:red">*</span></label>
+                  <br>
+                  <input type="hidden" name="quote" value="0"><input id="quote" class="quote" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="quote"> &nbsp; Quote</label>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="hidden" name="booking" value="0"><input id="booking" class="booking" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
+                </div>
                 
                 <div id="build-wrap"></div>
               </div>

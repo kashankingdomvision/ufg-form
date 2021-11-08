@@ -48,14 +48,15 @@ class CategoryController extends Controller
     {
  
         Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'feilds' => $request->feilds,
+            'name'    => $request->name,
+            'slug'    => Str::slug($request->name),
+            'feilds'  => $request->feilds,
+            'quote'   => $request->quote,
+            'booking' => $request->booking,
         ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
 
-        dd($request->all());
         return redirect()->route('categories.index')->with('success_message', 'Category created successfully'); 
     }
 
@@ -80,15 +81,16 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request)
     {
-       
         // $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
 
         $category = Category::findOrFail(decrypt($request->id));
         
         $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'feilds' => $request->feilds,
+            'name'    => $request->name,
+            'slug'    => Str::slug($request->name),
+            'feilds'  => $request->feilds,
+            'quote'   => $request->quote,
+            'booking' => $request->booking,
         ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Category updated successfully'], 200);

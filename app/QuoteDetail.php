@@ -40,6 +40,7 @@ class QuoteDetail extends Model
         'booking_type_id',
         'parent_id',
         'image',
+        'category_details',
     ];
     
     public function getChildQuote()

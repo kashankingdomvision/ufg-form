@@ -7,8 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     protected $fillable = [
-            'name', 'slug','feilds'
-        ];
+
+        'name',
+        'slug',
+        'feilds',
+        'quote',
+        'booking',
+    ];
 
     public function getSupplier()
     {
