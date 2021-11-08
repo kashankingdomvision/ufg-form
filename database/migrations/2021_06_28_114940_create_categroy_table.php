@@ -17,6 +17,7 @@ class CreateCategroyTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
+            $table->text('feilds');
             $table->timestamps();
         });
     }
