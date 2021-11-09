@@ -2121,7 +2121,7 @@ $(document).ready(function($) {
                         callLaravelFileManger();
                         datepickerReset(1,`${quoteClass}`);
 
-                        reinitializedSummerNote();
+                        reinitializedSummerNote(`${quoteClass}`);
                         reinitializedDynamicFeilds();
 
                         $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);

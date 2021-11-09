@@ -4756,6 +4756,11 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   padding-bottom: 1.5rem;
 }
 
+.note-placeholder {
+  width: 460px;
+  height: 300px;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Form Control
