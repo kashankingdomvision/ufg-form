@@ -440,8 +440,8 @@
                   </div>
                   @if($booking['booking'] && count($booking['booking']))
                   <div class="sortable sortable-spacing">
-                    @foreach ($booking['booking'] as $key  => $booking_detail )
-                      <div class="quote card card-default" data-key="{{$key}}">
+                    @foreach ($booking['booking'] as $key => $booking_detail )
+                      <div class="quote card card-default quote-{{$key}}" data-key="{{$key}}">
 
                         <div class="card-header">
                           <h3 class="card-title card-title-style quote-title">

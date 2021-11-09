@@ -505,7 +505,7 @@
                     <div class="sortable sortable-spacing">
                       @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
                       {{-- @foreach ($booking->getBookingDetail()->orderByRaw('FIELD(status, "active", "cancelled")')->get() as $key  => $booking_detail ) --}}
-                        <div class="quote card card-default {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
+                        <div class="quote card card-default quote-{{$key}} {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
 
                           <div class="card-header">
 
@@ -544,7 +544,7 @@
                                   Revert Cancel Service
                                 </a>
                               @endif
-
+                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below" ><i class="fas fa-plus"></i> &nbsp; Add New Service</a>
                               <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
                               <a href="javascript:void(0)" class="remove-booking-detail-service btn btn-sm btn-outline-dark mr-2" title="Remove"><i class="fas fa-times"></i></a>
                              
@@ -638,7 +638,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-1 booking-category-detail-btn-parent d-flex justify-content-center">
+                              <div class="col-sm-1 booking-category-detail-btn-parent justify-content-center {{ isset($booking_detail->getCategory->booking) && ($booking_detail->getCategory->booking == 0) ? 'd-none' : 'd-flex' }}">
                                 <div class="form-group ">
                                   <div class="modal-parent">
                                     @include('partials.accomadation_modal')
@@ -1005,7 +1005,7 @@
 
                                       <div class="col-sm-1 d-flex justify-content-center">
                                         <div class="form-group">
-                                          <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" >X</button>
+                                          <button type="button" onclick="this.closest('.finance-clonning').remove()" class="finance-clonning-btn btn btn-outline-dark btn-sm {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" >X</button>
                                         </div>
                                       </div>
                                       <div class="col-sm-3">
@@ -1074,7 +1074,7 @@
                                       </div>
                                     </div>
                                     <div class="col-2 d-flex justify-content-center">
-                                      <div class="form-group">
+                                      <div class="form-group calender-feild-form-group">
                                         <label>Calender</label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
@@ -1915,7 +1915,8 @@
   @include('partials.credit_note')
   @include('partials.view_rates_modal')
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
-  
+  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'bookings-service-category-btn-below' ])
+
   @include('partials.cancel_booking_modal')
   @include('partials.category_detail_feilds')
 

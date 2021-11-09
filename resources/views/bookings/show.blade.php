@@ -505,7 +505,7 @@
                       @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       <div class="sortable sortable-spacing">
                         @foreach ($booking->getBookingDetail as $key  => $booking_detail )
-                          <div class="quote card card-default" data-key="0">
+                          <div class="quote card card-default quote-{{$key}}" data-key="0">
 
                             <div class="card-header">
                               <h3 class="card-title card-title-style quote-title">

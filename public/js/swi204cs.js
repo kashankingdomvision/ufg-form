@@ -53884,6 +53884,128 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   //     }
   // });
 
+  $(document).on('click', '.bookings-service-category-btn-below', function (e) {
+    e.preventDefault();
+    var category_id = $(this).attr('data-id');
+    var category_name = $(this).attr('data-name');
+    jQuery('#new_service_modal_below').modal('hide');
+    $('.parent-spinner').addClass('spinner-border');
+    var classvalue = jQuery('#new_service_modal_below').find('.current-key').val();
+    var onQuoteClass = ".quote-".concat(classvalue);
+
+    if (category_id) {
+      setTimeout(function () {
+        if ($('.select2single').data('select2')) {
+          $('.select2single').select2('destroy');
+        }
+
+        var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
+          });
+        }).end().find("textarea").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
+          });
+        }).end().find("select").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
+          });
+          this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
+          });
+        }).end().show().insertAfter(onQuoteClass);
+        var quoteLength = $('.quote').length;
+        var quoteKey = quoteLength - 1;
+        var quoteClass = ".quote-".concat(quoteKey);
+        quote.attr('data-key', quoteKey);
+        quote.removeClass("quote-0");
+        quote.addClass("quote-".concat(quoteKey));
+        $("".concat(quoteClass)).find('.finance .row:not(:first):not(:last)').remove();
+        $("".concat(quoteClass)).find('.actual-cost').attr("data-status", "");
+        $("".concat(quoteClass)).find('.markup-amount').attr("readonly", false);
+        $("".concat(quoteClass)).find('.markup-percentage').attr("readonly", false);
+        $("".concat(quoteClass)).find('.cal_selling_price').attr('checked', 'checked');
+        $("".concat(quoteClass)).find('.deposit-amount').val('0.00');
+        $("".concat(quoteClass, " .finance")).find("input").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "[".concat(quoteLength, "]");
+          });
+          var n = 1;
+          this.id = this.id.replace(/[0-9]+/g, function (v) {
+            return n++ == 2 ? 0 : v;
+          }, function () {
+            var name = $(this).attr("data-name");
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
+          });
+        }).end().find("select").val("").each(function () {
+          this.name = this.name.replace(/\[(\d+)\]/, function () {
+            // return '[' + ($('.quote').length - 1) + ']';
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "[".concat(quoteLength, "]");
+          });
+          var n = 1;
+          this.id = this.id.replace(/[0-9]+/g, function (v) {
+            return n++ == 2 ? 0 : v;
+          }, function () {
+            var name = $(this).attr("data-name");
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
+          });
+        });
+        $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
+        $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
+        $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
+        $("".concat(quoteClass)).find('.refund-by-credit-note-section').attr("hidden", true);
+        $("".concat(quoteClass)).find('.finance-clonning').removeClass("cancelled-payment-styling");
+        $("".concat(quoteClass)).find('.btn-group').removeClass("d-none");
+        $("".concat(quoteClass)).find('.clone_booking_finance').removeClass("d-none");
+        $("".concat(quoteClass)).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+        $("".concat(quoteClass)).find('.payment-method').attr("disabled", false);
+        $("".concat(quoteClass)).find('.outstanding-amount').attr("readonly", true);
+        $("".concat(quoteClass)).find('.cancel-payemnt-btn').attr("hidden", true);
+        $("".concat(quoteClass)).find('.refund-by-credit-note-section').remove();
+        $("".concat(quoteClass)).find('.refund-by-bank-section').remove();
+        $("".concat(quoteClass)).find('.supplier-id').html("<option selected value=\"\">Select Supplier</option>");
+        $("".concat(quoteClass)).find('.product-id').html("<option selected value=\"\">Select Product</option>");
+        $("".concat(quoteClass)).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+        $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
+        $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
+        $("".concat(quoteClass)).find('.added-in-sage').removeAttr('checked');
+        $("".concat(quoteClass)).find('.booking-detail-cancellation').remove();
+        $("".concat(quoteClass)).find('.revert-booking-detail-cancellation').remove();
+        $("".concat(quoteClass)).find('.category-id').val(category_id).change();
+        $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
+        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-service-status').html('');
+        $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+        datepickerReset(1, "".concat(quoteClass));
+        reinitializedDynamicFeilds();
+        $('html, body').animate({
+          scrollTop: $(quoteClass).offset().top
+        }, 1000);
+        $('.parent-spinner').removeClass('spinner-border');
+      }, 180);
+    }
+  });
   $(document).on('click', '.bookings-service-category-btn', function (e) {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
@@ -53899,88 +54021,107 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            return '[' + $('.quote').length + ']';
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
           });
           this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
           });
         }).end().find("textarea").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            return '[' + parseInt($('.quote').length) + ']';
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
           });
           this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
           });
         }).end().find("select").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            return '[' + $('.quote').length + ']';
+            var quoteLength = $('.quote').length;
+            return "[".concat(quoteLength, "]");
           });
           this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-            return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+            var quoteLength = $('.quote').length;
+            var dataName = $(this).attr("data-name");
+            return "quote_".concat(quoteLength, "_").concat(dataName);
           });
         }).end().show().insertAfter(".quote:last");
-        quote.find('.finance .row:not(:first):not(:last)').remove();
-        quote.find('.actual-cost').attr("data-status", "");
-        quote.find('.markup-amount').attr("readonly", false);
-        quote.find('.markup-percentage').attr("readonly", false);
-        quote.find('.cal_selling_price').attr('checked', 'checked');
-        quote.find('.deposit-amount').val('0.00');
-        $('.quote:last .finance').find("input").val("").each(function () {
+        var quoteLength = $('.quote').length;
+        var quoteKey = quoteLength - 1;
+        var quoteClass = ".quote-".concat(quoteKey);
+        quote.attr('data-key', quoteKey);
+        quote.removeClass("quote-0");
+        quote.addClass("quote-".concat(quoteKey));
+        $("".concat(quoteClass)).find('.finance .row:not(:first):not(:last)').remove();
+        $("".concat(quoteClass)).find('.actual-cost').attr("data-status", "");
+        $("".concat(quoteClass)).find('.markup-amount').attr("readonly", false);
+        $("".concat(quoteClass)).find('.markup-percentage').attr("readonly", false);
+        $("".concat(quoteClass)).find('.cal_selling_price').attr('checked', 'checked');
+        $("".concat(quoteClass)).find('.deposit-amount').val('0.00');
+        $("".concat(quoteClass, " .finance")).find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            return '[' + ($('.quote').length - 1) + ']';
+            // return '[' + ($('.quote').length - 1) + ']';
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "[".concat(quoteLength, "]");
           });
           var n = 1;
-          var name = $(this).attr("data-name");
           this.id = this.id.replace(/[0-9]+/g, function (v) {
             return n++ == 2 ? 0 : v;
           }, function () {
-            return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+            var name = $(this).attr("data-name");
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
           });
         }).end().find("select").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            return '[' + ($('.quote').length - 1) + ']';
+            // return '[' + ($('.quote').length - 1) + ']';
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "[".concat(quoteLength, "]");
           });
           var n = 1;
-          var name = $(this).attr("data-name");
           this.id = this.id.replace(/[0-9]+/g, function (v) {
             return n++ == 2 ? 0 : v;
           }, function () {
-            return "quote_".concat($('.quote').length - 1, "_finance_", 0, "_").concat(name);
+            var name = $(this).attr("data-name");
+            var quoteLength = parseInt($('.quote').length) - 1;
+            return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
           });
         });
-        var quoteLength = $('.quote').length;
-        var quoteKey = quoteLength - 1;
         $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
-        $('.mediaModal').find('a').attr('id', '');
-        $('.refund-payment-hidden-section:last').attr("hidden", true);
-        $('.refund-by-credit-note-section:last').attr("hidden", true);
-        $('.finance-clonning:last').removeClass("cancelled-payment-styling");
-        $('.btn-group:last').removeClass("d-none");
-        $('.clone_booking_finance:last').removeClass("d-none");
-        $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
-        $('.payment-method:last').attr("disabled", false);
-        $('.outstanding-amount:last').attr("readonly", true);
-        $('.cancel-payemnt-btn:last').attr("hidden", true);
-        $('.refund-by-credit-note-section:last').remove();
-        $('.refund-by-bank-section:last').remove();
-        $('.supplier-id:last').html("<option selected value=\"\">Select Supplier</option>");
-        $('.product-id:last').html("<option selected value=\"\">Select Product</option>");
-        $(".quote:last").attr('data-key', $('.quote').length - 1);
-        $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-        $('.quote:last input, .quote:last select').removeClass('is-invalid');
-        $('.quote:last .added-in-sage').removeAttr('checked');
-        $('.quote:last .booking-detail-cancellation').remove();
-        $('.quote:last .revert-booking-detail-cancellation').remove();
-        $('.quote:last .category-id').val(category_id).change();
-        $('.quote:last .badge-category-id').html(category_name);
-        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
-        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
-        $('.quote:last .badge-service-status').html('');
-        datepickerReset(1);
+        $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
+        $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
+        $("".concat(quoteClass)).find('.refund-by-credit-note-section').attr("hidden", true);
+        $("".concat(quoteClass)).find('.finance-clonning').removeClass("cancelled-payment-styling");
+        $("".concat(quoteClass)).find('.btn-group').removeClass("d-none");
+        $("".concat(quoteClass)).find('.clone_booking_finance').removeClass("d-none");
+        $("".concat(quoteClass)).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+        $("".concat(quoteClass)).find('.payment-method').attr("disabled", false);
+        $("".concat(quoteClass)).find('.outstanding-amount').attr("readonly", true);
+        $("".concat(quoteClass)).find('.cancel-payemnt-btn').attr("hidden", true);
+        $("".concat(quoteClass)).find('.refund-by-credit-note-section').remove();
+        $("".concat(quoteClass)).find('.refund-by-bank-section').remove();
+        $("".concat(quoteClass)).find('.supplier-id').html("<option selected value=\"\">Select Supplier</option>");
+        $("".concat(quoteClass)).find('.product-id').html("<option selected value=\"\">Select Product</option>");
+        $("".concat(quoteClass)).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+        $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
+        $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
+        $("".concat(quoteClass)).find('.added-in-sage').removeAttr('checked');
+        $("".concat(quoteClass)).find('.booking-detail-cancellation').remove();
+        $("".concat(quoteClass)).find('.revert-booking-detail-cancellation').remove();
+        $("".concat(quoteClass)).find('.category-id').val(category_id).change();
+        $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
+        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-service-status').html('');
+        $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+        datepickerReset(1, "".concat(quoteClass));
         reinitializedDynamicFeilds();
         $('html, body').animate({
-          scrollTop: $('.quote:last').offset().top
+          scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);
         $('.parent-spinner').removeClass('spinner-border');
       }, 180);

@@ -2354,6 +2354,153 @@ $(document).ready(function($) {
 
             //     }
             // });
+            
+            $(document).on('click', '.bookings-service-category-btn-below', function(e) {
+
+                e.preventDefault();
+
+                var category_id   = $(this).attr('data-id');
+                var category_name = $(this).attr('data-name');
+
+                jQuery('#new_service_modal_below').modal('hide');
+                $('.parent-spinner').addClass('spinner-border');
+
+                var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
+                var onQuoteClass = `.quote-${classvalue}`;
+
+                if(category_id){
+
+                    setTimeout(function() {
+
+                        if ($('.select2single').data('select2')) {
+                            $('.select2single').select2('destroy');
+                        }
+        
+                        var quote = $(".quote").eq(0).clone()
+                            .find("input").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() {
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
+                                });
+                            }).end()
+                            .find("textarea").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() {
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
+                                });
+                            }).end()
+                            .find("select").val("").each(function() {
+                                this.name = this.name.replace(/\[(\d+)\]/, function() { 
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
+                                this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
+                                });
+                            }).end().show().insertAfter(onQuoteClass);
+
+                        var quoteLength = $('.quote').length;
+                        var quoteKey    = quoteLength - 1;
+                        var quoteClass  = `.quote-${quoteKey}`;
+
+                        quote.attr('data-key', quoteKey);
+                        quote.removeClass(`quote-0`);
+                        quote.addClass(`quote-${quoteKey}`);
+        
+                        $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
+                        $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
+                        $(`${quoteClass}`).find('.markup-amount').attr("readonly", false);
+                        $(`${quoteClass}`).find('.markup-percentage').attr("readonly", false);
+                        $(`${quoteClass}`).find('.cal_selling_price').attr('checked', 'checked');
+                        $(`${quoteClass}`).find('.deposit-amount').val('0.00');
+
+                        $(`${quoteClass} .finance`).find("input").val("").each(function() {
+                            this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                                let quoteLength = parseInt($('.quote').length) - 1;
+                                return `[${quoteLength}]`;
+                            });
+        
+                            let n = 1;
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                               
+                                let name        = $(this).attr("data-name");
+                                let quoteLength = parseInt($('.quote').length) - 1;
+
+                                return `quote_${quoteLength}_finance_${0}_${name}`;
+                            });
+        
+                        }).end()
+                        .find("select").val("").each(function() {
+                            this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                                // return '[' + ($('.quote').length - 1) + ']';
+                                let quoteLength = parseInt($('.quote').length) - 1;
+                                return `[${quoteLength}]`;
+                            });
+
+                            let n           = 1;
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+
+                                let name        = $(this).attr("data-name");
+                                let quoteLength = parseInt($('.quote').length) - 1;
+
+                                return `quote_${quoteLength}_finance_${0}_${name}`;
+                            });
+                        });
+
+                        $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                        $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
+                        $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
+                        $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);
+                        $(`${quoteClass}`).find('.finance-clonning').removeClass("cancelled-payment-styling");
+                        $(`${quoteClass}`).find('.btn-group').removeClass("d-none");
+                        $(`${quoteClass}`).find('.clone_booking_finance').removeClass("d-none");
+                        $(`${quoteClass}`).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+                        $(`${quoteClass}`).find('.payment-method').attr("disabled", false);
+                        $(`${quoteClass}`).find('.outstanding-amount').attr("readonly", true);
+                        $(`${quoteClass}`).find('.cancel-payemnt-btn').attr("hidden", true);
+                        $(`${quoteClass}`).find('.refund-by-credit-note-section').remove();
+                        $(`${quoteClass}`).find('.refund-by-bank-section').remove();
+                        $(`${quoteClass}`).find('.supplier-id').html(`<option selected value="">Select Supplier</option>`);
+                        $(`${quoteClass}`).find('.product-id').html(`<option selected value="">Select Product</option>`);
+                        $(`${quoteClass}`).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+                        $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                        $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                        $(`${quoteClass}`).find('.added-in-sage').removeAttr('checked');
+                        $(`${quoteClass}`).find('.booking-detail-cancellation').remove();
+                        $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
+                        $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                        $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        $(`${quoteClass}`).find('.badge-service-status').html('');
+                        $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+
+                        datepickerReset(1,`${quoteClass}`);
+                        reinitializedDynamicFeilds();
+
+                        $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
+                        $('.parent-spinner').removeClass('spinner-border');
+
+                    }, 180);
+
+                }
+
+            });
 
             $(document).on('click', '.bookings-service-category-btn', function(e) {
 
@@ -2376,101 +2523,122 @@ $(document).ready(function($) {
                         var quote = $(".quote").eq(0).clone()
                             .find("input").val("").each(function() {
                                 this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                    return '[' + ($('.quote').length) + ']';
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
                                 });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                                    let quoteLength = $('.quote').length;
+                                    let dataName    = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
                                 });
                             }).end()
                             .find("textarea").val("").each(function() {
                                 this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                    return '[' + (parseInt($('.quote').length)) + ']';
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
                                 });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
                                 });
                             }).end()
                             .find("select").val("").each(function() {
-                                this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
+                                this.name = this.name.replace(/\[(\d+)\]/, function() { 
+                                    let quoteLength = $('.quote').length;
+                                    return `[${quoteLength}]`;
+                                });
                                 this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-                                    return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+                                    let quoteLength = $('.quote').length;
+                                    let dataName = $(this).attr("data-name");
+                                    return `quote_${quoteLength}_${dataName}`;
                                 });
                             }).end().show().insertAfter(".quote:last");
-        
-                        quote.find('.finance .row:not(:first):not(:last)').remove();
-                        quote.find('.actual-cost').attr("data-status", "");
-                        quote.find('.markup-amount').attr("readonly", false);
-                        quote.find('.markup-percentage').attr("readonly", false);
-                        quote.find('.cal_selling_price').attr('checked', 'checked');
-                        quote.find('.deposit-amount').val('0.00');
-        
-                        $('.quote:last .finance').find("input").val("").each(function() {
-                            this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                return '[' + ($('.quote').length - 1) + ']';
-                            });
-        
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-        
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
-                                return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
-                            });
-        
-                        }).end()
-        
-                        .find("select").val("").each(function() {
-                            this.name = this.name.replace(/\[(\d+)\]/, function() {
-                                return '[' + ($('.quote').length - 1) + ']';
-                            });
-        
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-        
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
-                                return `quote_${$('.quote').length - 1}_finance_${0}_${name}`;
-                            });
-                        });
 
                         var quoteLength = $('.quote').length;
                         var quoteKey    = quoteLength - 1;
+                        var quoteClass  = `.quote-${quoteKey}`;
+
+                        quote.attr('data-key', quoteKey);
+                        quote.removeClass(`quote-0`);
+                        quote.addClass(`quote-${quoteKey}`);
+        
+                        $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
+                        $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
+                        $(`${quoteClass}`).find('.markup-amount').attr("readonly", false);
+                        $(`${quoteClass}`).find('.markup-percentage').attr("readonly", false);
+                        $(`${quoteClass}`).find('.cal_selling_price').attr('checked', 'checked');
+                        $(`${quoteClass}`).find('.deposit-amount').val('0.00');
+
+                        $(`${quoteClass} .finance`).find("input").val("").each(function() {
+                            this.name = this.name.replace(/\[(\d+)\]/, function() {
+                                // return '[' + ($('.quote').length - 1) + ']';
+
+                                let quoteLength = parseInt($('.quote').length) - 1;
+                                return `[${quoteLength}]`;
+                            });
+        
+                            let n = 1;
+
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                               
+                                let name        = $(this).attr("data-name");
+                                let quoteLength = parseInt($('.quote').length) - 1;
+
+                                return `quote_${quoteLength}_finance_${0}_${name}`;
+                            });
+        
+                        }).end()
+                        .find("select").val("").each(function() {
+                            this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                                // return '[' + ($('.quote').length - 1) + ']';
+                                let quoteLength = parseInt($('.quote').length) - 1;
+                                return `[${quoteLength}]`;
+                            });
+
+                            let n           = 1;
+                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+
+                                let name        = $(this).attr("data-name");
+                                let quoteLength = parseInt($('.quote').length) - 1;
+
+                                return `quote_${quoteLength}_finance_${0}_${name}`;
+                            });
+                        });
+
                         $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
-        
-                        $('.mediaModal').find('a').attr('id', '')
-                        $('.refund-payment-hidden-section:last').attr("hidden", true);
-                        $('.refund-by-credit-note-section:last').attr("hidden", true);
-                        $('.finance-clonning:last').removeClass("cancelled-payment-styling");
-        
-                        $('.btn-group:last').removeClass("d-none");
-                        $('.clone_booking_finance:last').removeClass("d-none");
-                        $('.finance-clonning:last input, finance-clonning:last select').attr("readonly", false);
-                        $('.payment-method:last').attr("disabled", false);
-                        $('.outstanding-amount:last').attr("readonly", true);
-                        $('.cancel-payemnt-btn:last').attr("hidden", true);
-                        $('.refund-by-credit-note-section:last').remove();
-                        $('.refund-by-bank-section:last').remove();
-        
-                        $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-                        $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-                        $(".quote:last").attr('data-key', $('.quote').length - 1);
-                        $(".estimated-cost:last, .actual-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-                        $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-                        $('.quote:last input, .quote:last select').removeClass('is-invalid');
-                        $('.quote:last .added-in-sage').removeAttr('checked');
-                  
-                       
-                        $('.quote:last .booking-detail-cancellation').remove();
-                        $('.quote:last .revert-booking-detail-cancellation').remove();
+                        $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
+                        $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
+                        $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);
+                        $(`${quoteClass}`).find('.finance-clonning').removeClass("cancelled-payment-styling");
+                        $(`${quoteClass}`).find('.btn-group').removeClass("d-none");
+                        $(`${quoteClass}`).find('.clone_booking_finance').removeClass("d-none");
+                        $(`${quoteClass}`).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+                        $(`${quoteClass}`).find('.payment-method').attr("disabled", false);
+                        $(`${quoteClass}`).find('.outstanding-amount').attr("readonly", true);
+                        $(`${quoteClass}`).find('.cancel-payemnt-btn').attr("hidden", true);
+                        $(`${quoteClass}`).find('.refund-by-credit-note-section').remove();
+                        $(`${quoteClass}`).find('.refund-by-bank-section').remove();
+                        $(`${quoteClass}`).find('.supplier-id').html(`<option selected value="">Select Supplier</option>`);
+                        $(`${quoteClass}`).find('.product-id').html(`<option selected value="">Select Product</option>`);
+                        $(`${quoteClass}`).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+                        $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                        $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                        $(`${quoteClass}`).find('.added-in-sage').removeAttr('checked');
+                        $(`${quoteClass}`).find('.booking-detail-cancellation').remove();
+                        $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
+                        $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                        $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        $(`${quoteClass}`).find('.badge-service-status').html('');
+                        $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
 
-                        $('.quote:last .category-id').val(category_id).change();
-                        $('.quote:last .badge-category-id').html(category_name);
-                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
-                        $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
-                        $('.quote:last .badge-service-status').html('');
-
-                        datepickerReset(1);
+                        datepickerReset(1,`${quoteClass}`);
                         reinitializedDynamicFeilds();
 
-                        $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
+                        $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                         $('.parent-spinner').removeClass('spinner-border');
 
                     }, 180);
