@@ -575,13 +575,29 @@
                                 </div>
                               </div>
 
+                              <div class="col-sm-2 d-none">
+                                <div class="form-group">
+                                  <label>Quote Detail ID</label>
+                                  <input type="text" value="{{ $q_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id"  class="form-control detail-id">
+                                  <input type="text" value="QuoteDetail"         name="quote[{{ $key }}][table_name]" id="quote_{{ $key }}_table_name" class="form-control table-name">
+                                </div>
+                              </div>
+
+                              <div class="col-sm-2 d-none">
+                                <div class="form-group">
+                                  <label>Category Details</label>
+                                  <input type="text" name="quote[{{ $key }}][category_details]" value="@if(isset($q_detail->getCategory->quote) && isset($q_detail->getCategory->quote) == 1)@if(empty($q_detail->category_details) || is_null($q_detail->category_details)){{ $q_detail->getCategory->feilds }}@else{{$q_detail->category_details}}@endif @endif" id="quote_{{ $key }}_category_details" class="form-control category-details">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                  <label>Category</label>
+                                  <label>Category <span style="color:red">*</span></label>
                                   <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
-                                      <option value="{{ $category->id }}" data-name="{{ $category->name }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
+                                      <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" {{ ($q_detail->category_id == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
                                     @endforeach
                                   </select>
 
@@ -637,6 +653,12 @@
                                     @endif
                                   </select>
                                   <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col-sm-1 justify-content-center quote-category-detail-btn-parent {{ isset($q_detail->getCategory->quote) && ($q_detail->getCategory->quote == 0) ? 'd-none' : 'd-flex' }}">
+                                <div class="form-group ">
+                                  <button type="button" data-id="{{ $q_detail->id }}" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div>
                               </div>
 
@@ -1069,6 +1091,7 @@
                   </div>
 
                 </div>
+                @include('partials.category_detail_feilds')
               </form>
               <div id="overlay" class=""></div>
             </div>
@@ -1077,4 +1100,62 @@
       </div>
     </section>
   </div>
+  
 @endsection
+
+
+@push('js')
+
+<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
+<script src="{{ asset('js/category/formRender.js') }}"></script>
+
+<script>
+
+  var quote  = '';
+  var key  = '';
+  var formRenderID  = "#build-wrap"; 
+
+  $(document).on('click', '.add-category-detail', function() {
+
+    quote                 = jQuery(this).closest('.quote');
+    key                   = quote.data('key');
+    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
+    var category_id       = $(`#quote_${key}_category_id`).val();
+    var booking_detail_id = $(this).attr('data-id');
+    var url               = '{{route('bookings.category.detail.feilds')}}';
+    var modal             = jQuery('.category-detail-feilds');
+    var feilds_data       = $(`#quote_${key}_category_details`).val();
+
+    if(typeof type === 'undefined') {
+      alert("Please Select Category first");
+      return;
+    }
+
+    jQuery(function($){
+      var formRenderOptions = {
+        formData: feilds_data 
+      }
+
+      $(formRenderID).html("");
+      $(formRenderID).formRender(formRenderOptions);
+
+      if(feilds_data == ""){
+        $(formRenderID).html("No Form Data.");
+      }
+    });
+
+    modal.modal('show');
+    modal.find('.modal-title').html(`${category_name} Details`);
+
+    if(feilds_data == ""){
+      modal.find('.modal-footer').addClass("d-none");
+    }else{
+      modal.find('.modal-footer').removeClass("d-none");
+    }
+
+  });
+
+
+</script>
+@endpush

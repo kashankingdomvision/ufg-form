@@ -54251,7 +54251,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
-  $('#reCall, .disablebutton').prop("disabled", false);
+  $('#reCall, .disablebutton, .add-category-detail, .versions .category-detail-feilds-close').prop("disabled", false);
+  $(".versions .category-detail-feilds-submit").addClass("d-none");
   $(".collapse-all-btn").removeAttr('disabled');
   $(".expand-all-btn").removeAttr('disabled');
   $('#reCall').on('click', function () {
