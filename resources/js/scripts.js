@@ -3346,8 +3346,8 @@ $(document).ready(function($) {
                                 jQuery.each(errors.errors, function(index, value) {
 
                                     index = index.replace(/\./g, '_');
-                                    $('#' + index).addClass('is-invalid');
-                                    $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                                    $(`#${index}`).addClass('is-invalid');
+                                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                                 });
 
                             }, 400);

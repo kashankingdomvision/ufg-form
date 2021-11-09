@@ -54594,8 +54594,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             $("#overlay").removeClass('overlay').html('');
             jQuery.each(errors.errors, function (index, value) {
               index = index.replace(/\./g, '_');
-              $('#' + index).addClass('is-invalid');
-              $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
           }, 400);
         }
