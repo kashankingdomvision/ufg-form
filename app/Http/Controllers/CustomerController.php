@@ -22,7 +22,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $emails = DB::table('quotes')->groupBy('lead_passenger_email');
+        $emails = DB::table('quotes')->where('agency', '0')->groupBy('lead_passenger_email');
 
         if ($request->has('search') && !empty($request->search)) {
 
