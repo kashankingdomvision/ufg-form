@@ -51945,7 +51945,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         }).end().find("select").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            // return '[' + ($('.quote').length - 1) + ']';
             var quoteLength = parseInt($('.quote').length) - 1;
             return "[".concat(quoteLength, "]");
           });
@@ -52066,7 +52065,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         }).end().find("select").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
-            // return '[' + ($('.quote').length - 1) + ']';
             var quoteLength = parseInt($('.quote').length) - 1;
             return "[".concat(quoteLength, "]");
           });

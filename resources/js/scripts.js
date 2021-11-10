@@ -2440,8 +2440,6 @@ $(document).ready(function($) {
                         }).end()
                         .find("select").val("").each(function() {
                             this.name = this.name.replace(/\[(\d+)\]/, function() {
-
-                                // return '[' + ($('.quote').length - 1) + ']';
                                 let quoteLength = parseInt($('.quote').length) - 1;
                                 return `[${quoteLength}]`;
                             });
@@ -2586,7 +2584,6 @@ $(document).ready(function($) {
                         .find("select").val("").each(function() {
                             this.name = this.name.replace(/\[(\d+)\]/, function() {
 
-                                // return '[' + ($('.quote').length - 1) + ']';
                                 let quoteLength = parseInt($('.quote').length) - 1;
                                 return `[${quoteLength}]`;
                             });
