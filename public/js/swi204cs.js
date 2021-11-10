@@ -51694,7 +51694,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_holder")).empty();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
-        reinitializedSummerNote();
+        reinitializedSummerNote("".concat(quoteClass));
         reinitializedDynamicFeilds();
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top
