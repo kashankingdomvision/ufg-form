@@ -54,7 +54,9 @@ $(document).ready(function($) {
             /*  ajaxSetup */
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': CSRFTOKEN
+                    // 'X-CSRF-TOKEN': CSRFTOKEN
+
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
 

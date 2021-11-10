@@ -49892,7 +49892,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   $.ajaxSetup({
     headers: {
-      'X-CSRF-TOKEN': CSRFTOKEN
+      // 'X-CSRF-TOKEN': CSRFTOKEN
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
   });
   $('.select2').select2({
