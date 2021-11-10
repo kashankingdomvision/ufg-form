@@ -49860,11 +49860,11 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
@@ -51097,6 +51097,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (convertDate(EndDateOFService) < convertDate(DateOFService)) {
       alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
       $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", '');
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
+    } else {
+      var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+      var days = Math.ceil(number / (1000 * 3600 * 24));
+      $("#quote_".concat(quoteKey, "_number_of_nights")).val(checkForInt(days));
+    }
+  });
+  $(document).on('change', '.date-of-service', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();
+    var EndDateOFService = $("#quote_".concat(quoteKey, "_end_date_of_service")).val();
+
+    if (convertDate(EndDateOFService) < convertDate(DateOFService)) {
+      alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+      $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", '');
       $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
     } else {
       var number = convertDate(EndDateOFService) - convertDate(DateOFService);
