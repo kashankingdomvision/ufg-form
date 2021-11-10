@@ -1,5 +1,5 @@
 <div class="modal fade category-detail-feilds">
-    <div class="modal-dialog  modal-lg">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -9,7 +9,7 @@
                 </button>
             </div>
 
-            <div class="modal-body" >
+            <div class="modal-body">
                 <div id="build-wrap"></div>
             </div>
 
@@ -17,10 +17,9 @@
                 <button class="btn btn-primary category-detail-feilds-submit" type="button" data-dismiss="modal">
                 OK, Update It!
                 </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default category-detail-feilds-close" data-dismiss="modal">Close</button>
             </div>
 
         </div>
     </div>
-
-  </div>
+</div>
