@@ -130,6 +130,15 @@
                     </div>
                     <!-- For Commission Calculation -->
 
+                    <div class="row d-none">
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <label>Quote Detail Model Name</label>
+                          <input type="text" value="QuoteDetail" name="model_name" id="model_name" class="form-control model-name">
+                        </div>
+                      </div>
+                    </div>
+
                     {{-- <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
@@ -628,7 +637,6 @@
                                 <div class="form-group">
                                   <label>Quote Detail ID</label>
                                   <input type="text" value="{{ $q_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id"  class="form-control detail-id">
-                                  <input type="text" value="QuoteDetail"         name="quote[{{ $key }}][table_name]" id="quote_{{ $key }}_table_name" class="form-control table-name">
                                 </div>
                               </div>
 
