@@ -68,6 +68,15 @@
                   </div>
                   <!-- For Commission Calculation -->
 
+                  <div class="row d-none">
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>Quote Detail Model Name</label>
+                        <input type="text" value="QuoteDetail" name="model_name" id="model_name" class="form-control model-name">
+                      </div>
+                    </div>
+                  </div>
+
                     {{-- <div class="col-sm-6">
                       <div class="form-group">
                         <label>Commission Type <span style="color:red">*</span></label>
@@ -481,6 +490,13 @@
                                 <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
                               </div>
                             </div>
+
+                            <div class="col-sm-2 d-none">
+                              <div class="form-group">
+                                <label>Quote Detail ID</label>
+                                <input type="text" value="" name="quote[0][detail_id]"  id="quote_0_detail_id"  class="form-control detail-id">
+                              </div>
+                            </div>
   
                             <div class="col-sm-2">
                               <div class="form-group">
@@ -526,6 +542,20 @@
                               </div>
                             </div>
   
+                            <div class="col-sm-1 justify-content-center quote-category-detail-btn-parent d-none">
+                              <div class="form-group ">
+                                <button type="button" data-id="" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                              </div>
+                            </div>
+
+                            <div class="col-sm-2 d-none">
+                              <div class="form-group">
+                                <label>Category Details</label>
+                                <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
                             {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supervisor</label>
@@ -975,6 +1005,67 @@
     @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('partials.view_rates_modal')
+    @include('partials.category_detail_feilds')
   </div>
 
 @endsection
+
+@push('js')
+
+<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
+<script src="{{ asset('js/category/formRender.js') }}"></script>
+
+<script>
+
+  var quote  = '';
+  var key  = '';
+  var formRenderID  = "#build-wrap"; 
+  
+  $(document).on('click', '.category-detail-feilds-submit', function() {
+    var data = JSON.stringify($(formRenderID).formRender("userData"));
+    $(`#quote_${key}_category_details`).val(data);
+  });
+
+  $(document).on('click', '.add-category-detail', function() {
+
+    quote                 = jQuery(this).closest('.quote');
+    key                   = quote.data('key');
+    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
+    var category_id       = $(`#quote_${key}_category_id`).val();
+    var booking_detail_id = $(this).attr('data-id');
+    var url               = '{{route('bookings.category.detail.feilds')}}';
+    var modal             = jQuery('.category-detail-feilds');
+    var feilds_data       = $(`#quote_${key}_category_details`).val();
+
+    if(typeof type === 'undefined') {
+      alert("Please Select Category first");
+      return;
+    }
+
+    jQuery(function($) {
+      var formRenderOptions = {
+        formData: feilds_data 
+      }
+
+      $(formRenderID).html("");
+      $(formRenderID).formRender(formRenderOptions);
+
+      if(feilds_data == ""){
+        $(formRenderID).html("No Form Data.");
+      }
+    });
+
+    modal.modal('show');
+    modal.find('.modal-title').html(`${category_name} Details`);
+
+    if(feilds_data == ""){
+      modal.find('.modal-footer').addClass("d-none");
+    }else{
+      modal.find('.modal-footer').removeClass("d-none");
+    }
+
+  });
+
+</script>
+@endpush

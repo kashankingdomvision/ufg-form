@@ -1849,8 +1849,8 @@ $(document).ready(function($) {
 
                 // console.log(quoteKey);
 
-                var detail_id = $(`#quote_${quoteKey}_detail_id`).val();
-                var table_name = $(`#quote_${quoteKey}_table_name`).val();
+                var detail_id  = $(`#quote_${quoteKey}_detail_id`).val();
+                var table_name = $(`#model_name`).val();
 
                 // var detail_id         = quote.find('.detail-id').val();
                 // var table_name        = quote.find('.table-name').val();

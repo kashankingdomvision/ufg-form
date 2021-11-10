@@ -51479,7 +51479,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var quoteKey = quote.data('key'); // console.log(quoteKey);
 
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
-    var table_name = $("#quote_".concat(quoteKey, "_table_name")).val(); // var detail_id         = quote.find('.detail-id').val();
+    var table_name = $("#model_name").val(); // var detail_id         = quote.find('.detail-id').val();
     // var table_name        = quote.find('.table-name').val();
     // var detail_id         = $(this).attr('data-detailID');
     // var table_name        = $(this).attr('data-tableName');
