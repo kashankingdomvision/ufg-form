@@ -4876,6 +4876,11 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   padding: 0.7rem;
 }
 
+.note-placeholder {
+  width: 460px;
+  height: 300px;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Select2

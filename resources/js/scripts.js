@@ -1851,15 +1851,8 @@ $(document).ready(function($) {
 
                 // console.log(quoteKey);
 
-                var detail_id = $(`#quote_${quoteKey}_detail_id`).val();
-                var table_name = $(`#quote_${quoteKey}_table_name`).val();
-
-                // var detail_id         = quote.find('.detail-id').val();
-                // var table_name        = quote.find('.table-name').val();
-                // var detail_id         = $(this).attr('data-detailID');
-                // var table_name        = $(this).attr('data-tableName');
-
-                // console.log(detail_id);
+                var detail_id  = $(`#quote_${quoteKey}_detail_id`).val();
+                var model_name = $(`#model_name`).val();
 
                 var category_id       = $(this).val();
                 var category_name     = $(this).find(':selected').attr('data-name');
@@ -1881,7 +1874,7 @@ $(document).ready(function($) {
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}category/to/supplier`,
-                    data: { 'category_id': category_id, 'detail_id': detail_id, 'table_name': table_name },
+                    data: { 'category_id': category_id, 'detail_id': detail_id, 'model_name': model_name },
                     success: function(response) {
 
                         options += "<option value=''>Select Supplier</option>";
@@ -2103,7 +2096,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
-                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+                        // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -2241,7 +2234,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00'); 
-                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+                        // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -2558,11 +2551,7 @@ $(document).ready(function($) {
 
                         var quoteLength = $('.quote').length;
                         var quoteKey    = quoteLength - 1;
-                        var quoteClass  = `.quote-${quoteKey}`;
-
-                        quote.attr('data-key', quoteKey);
-                        quote.removeClass(`quote-0`);
-                        quote.addClass(`quote-${quoteKey}`);
+                        // $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
         
                         $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                         $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
@@ -3057,7 +3046,8 @@ $(document).ready(function($) {
 
             $(".versions :input").prop("disabled", true);
             $('#bookingVersion :input').prop('disabled', true);
-            $('#reCall, .disablebutton, .add-category-detail, .versions .category-detail-feilds-close').prop("disabled", false);
+            $('#reCall, .disablebutton').prop("disabled", false);
+            $(".add-category-detail, .versions .category-detail-feilds-close").removeAttr("disabled");
             $(".versions .category-detail-feilds-submit").addClass("d-none");
 
             $(".collapse-all-btn").removeAttr('disabled');

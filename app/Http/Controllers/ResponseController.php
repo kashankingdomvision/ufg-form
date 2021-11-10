@@ -122,13 +122,13 @@ class ResponseController extends Controller
     {
         $category_details = '';
         $category         = '';
-        $table_name       = 'App\\'.$request->table_name;
+        $model_name       = 'App\\'.$request->model_name;
  
         $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
             $query->where('id', $request->category_id);
         })->get();
 
-        $booking_detail = $table_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
+        $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
         $category       = Category::where('id', $request->category_id)->first();
 
         if(is_null($booking_detail)){
