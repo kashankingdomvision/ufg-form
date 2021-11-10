@@ -624,7 +624,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Quote Detail ID</label>
                                   <input type="text" value="{{ $q_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id"  class="form-control detail-id">
@@ -679,7 +679,7 @@
                               </div>
 
                               {{-- d-none --}}
-                              <div class="col-sm-2 ">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Category Details</label>
                                   <input type="text" name="quote[{{ $key }}][category_details]" value="@if(isset($q_detail->getCategory->quote) && isset($q_detail->getCategory->quote) == 1)@if(empty($q_detail->category_details) || is_null($q_detail->category_details)){{ $q_detail->getCategory->feilds }}@else{{$q_detail->category_details}}@endif @endif" id="quote_{{ $key }}_category_details" class="form-control category-details">
