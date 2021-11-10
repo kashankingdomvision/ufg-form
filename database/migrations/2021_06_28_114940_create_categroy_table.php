@@ -17,9 +17,9 @@ class CreateCategroyTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
-            $table->text('feilds');
-            $table->enum('booking', [0, 1])->default(0);
-            $table->enum('quote', [0, 1])->default(0);
+            $table->text('feilds')->nullable();
+            $table->enum('booking', [0, 1])->default(0)->nullable();
+            $table->enum('quote', [0, 1])->default(0)->nullable();
             $table->timestamps();
         });
     }
