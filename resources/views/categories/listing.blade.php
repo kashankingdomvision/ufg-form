@@ -69,6 +69,7 @@
                         </div>
                       </th>
                       <th>Category Name</th>
+                      <th>Appeared In</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -82,6 +83,18 @@
                         </div>
                       </td>
                       <td>{{ $category->name }}</td>
+
+                      <td >
+                        <h5>
+                          @if($category->quote == 1)
+                            <span class="badge badge-info mr-2">Quote</span>
+                          @endif
+                          @if($category->booking == 1)
+                            <span class="badge badge-info">Booking</span>
+                          @endif
+                        </h5>
+                      </td>
+
                       <td class="d-flex">
                         <a href="{{ route('categories.edit', encrypt($category->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         <form method="post" action="{{ route('categories.destroy', encrypt($category->id)) }}">
