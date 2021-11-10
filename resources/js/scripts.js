@@ -2551,7 +2551,11 @@ $(document).ready(function($) {
 
                         var quoteLength = $('.quote').length;
                         var quoteKey    = quoteLength - 1;
-                        // $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                        var quoteClass = `.quote-${quoteKey}`;
+
+                        quote.attr('data-key', quoteKey);
+                        quote.removeClass(`quote-0`);
+                        quote.addClass(`quote-${quoteKey}`);
         
                         $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                         $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");

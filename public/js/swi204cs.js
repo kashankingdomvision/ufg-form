@@ -52039,8 +52039,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         }).end().show().insertAfter(".quote:last");
         var quoteLength = $('.quote').length;
-        var quoteKey = quoteLength - 1; // $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
-
+        var quoteKey = quoteLength - 1;
+        var quoteClass = ".quote-".concat(quoteKey);
+        quote.attr('data-key', quoteKey);
+        quote.removeClass("quote-0");
+        quote.addClass("quote-".concat(quoteKey));
         $("".concat(quoteClass)).find('.finance .row:not(:first):not(:last)').remove();
         $("".concat(quoteClass)).find('.actual-cost').attr("data-status", "");
         $("".concat(quoteClass)).find('.markup-amount').attr("readonly", false);
