@@ -1850,14 +1850,7 @@ $(document).ready(function($) {
                 // console.log(quoteKey);
 
                 var detail_id  = $(`#quote_${quoteKey}_detail_id`).val();
-                var table_name = $(`#model_name`).val();
-
-                // var detail_id         = quote.find('.detail-id').val();
-                // var table_name        = quote.find('.table-name').val();
-                // var detail_id         = $(this).attr('data-detailID');
-                // var table_name        = $(this).attr('data-tableName');
-
-                // console.log(detail_id);
+                var model_name = $(`#model_name`).val();
 
                 var category_id       = $(this).val();
                 var category_name     = $(this).find(':selected').attr('data-name');
@@ -1879,7 +1872,7 @@ $(document).ready(function($) {
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}category/to/supplier`,
-                    data: { 'category_id': category_id, 'detail_id': detail_id, 'table_name': table_name },
+                    data: { 'category_id': category_id, 'detail_id': detail_id, 'model_name': model_name },
                     success: function(response) {
 
                         options += "<option value=''>Select Supplier</option>";
@@ -2101,7 +2094,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
-                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+                        // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -2239,7 +2232,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00'); 
-                        $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+                        // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -2432,7 +2425,7 @@ $(document).ready(function($) {
 
                         var quoteLength = $('.quote').length;
                         var quoteKey    = quoteLength - 1;
-                        $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                        // $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
         
                         $('.mediaModal').find('a').attr('id', '')
                         $('.refund-payment-hidden-section:last').attr("hidden", true);

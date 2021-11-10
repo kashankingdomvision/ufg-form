@@ -51479,12 +51479,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var quoteKey = quote.data('key'); // console.log(quoteKey);
 
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
-    var table_name = $("#model_name").val(); // var detail_id         = quote.find('.detail-id').val();
-    // var table_name        = quote.find('.table-name').val();
-    // var detail_id         = $(this).attr('data-detailID');
-    // var table_name        = $(this).attr('data-tableName');
-    // console.log(detail_id);
-
+    var model_name = $("#model_name").val();
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
@@ -51505,7 +51500,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       data: {
         'category_id': category_id,
         'detail_id': detail_id,
-        'table_name': table_name
+        'model_name': model_name
       },
       success: function success(response) {
         options += "<option value=''>Select Supplier</option>";
@@ -51683,8 +51678,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
-        $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00');
-        $("#quote_".concat(quoteKey, "_table_name")).val('QuoteDetail');
+        $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
         $("".concat(quoteClass)).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -51786,8 +51781,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
-        $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00');
-        $("#quote_".concat(quoteKey, "_table_name")).val('QuoteDetail');
+        $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
+
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
         $("".concat(quoteClass)).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -51941,8 +51936,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         });
         var quoteLength = $('.quote').length;
-        var quoteKey = quoteLength - 1;
-        $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
+        var quoteKey = quoteLength - 1; // $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+
         $('.mediaModal').find('a').attr('id', '');
         $('.refund-payment-hidden-section:last').attr("hidden", true);
         $('.refund-by-credit-note-section:last').attr("hidden", true);
