@@ -137,6 +137,15 @@
                   </div>
                 </div>
                 <!-- For Commission Calculation -->
+                
+                <div class="row d-none">
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <label>Booking Detail Model Name</label>
+                      <input type="text" value="BookingDetail" name="model_name" id="model_name" class="form-control model-name">
+                    </div>
+                  </div>
+                </div>
 
                   <div class="row mb-2">
                     <div class="col-sm-6">
@@ -592,11 +601,10 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Booking Detail ID</label>
                                   <input type="text" value="{{ $booking_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id" class="form-control detail-id">
-                                  <input type="text" value="BookingDetail"             name="quote[{{ $key }}][table_name]" id="quote_{{ $key }}_table_name" class="form-control table-name">
                                 </div>
                               </div>
 
@@ -649,7 +657,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 ">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Category Details</label>
                                   <input type="text" name="quote[{{ $key }}][category_details]" value="@if(isset($booking_detail->getCategory->booking) && isset($booking_detail->getCategory->booking) == 1)@if(empty($booking_detail->category_details) || is_null($booking_detail->category_details)){{ $booking_detail->getCategory->feilds }}@else{{$booking_detail->category_details}}@endif @endif" id="quote_{{ $key }}_category_details" class="form-control category-details">
