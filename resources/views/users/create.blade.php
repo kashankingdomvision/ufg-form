@@ -77,7 +77,7 @@
                       <select name="role" class="form-control select2single role  @error('role') is-invalid @enderror" >
                         <option value="">Select User Type</option>
                         @foreach ($roles as $role)
-                          <option value="{{ $role->id }}" data-role="{{ $role->name }}"> {{ $role->name }}</option>
+                          <option value="{{ $role->id }}" {{ ($role->id == old('role')) ? 'selected' : ''}} data-role="{{ $role->name }}"> {{ $role->name }}</option>
                         @endforeach
                       </select>
 
@@ -92,7 +92,7 @@
                       <select name="supervisor_id" id="supervisor_id" class="form-control select2single supervisor-id  @error('supervisor_id') is-invalid @enderror" >
                         <option value="">Select Supervisor</option>
                         @foreach ($supervisors as $supervisor)
-                          <option value="{{ $supervisor->id }}" > {{ $supervisor->name }}</option>
+                          <option value="{{ $supervisor->id }}" {{ ($supervisor->id == old('supervisor_id')) ? 'selected' : ''}} > {{ $supervisor->name }}</option>
                         @endforeach
                       </select>
 
@@ -106,7 +106,7 @@
                       <select name="commission_id" class="form-control select2single @error('commission_id') is-invalid @enderror">
                         <option value="">Select Commission</option>
                         @foreach($commisions as $commision)
-                          <option value="{{ $commision->id }}">{{ $commision->name }}</option>
+                          <option value="{{ $commision->id }}" {{ ($commision->id == old('commission_id')) ? 'selected' : ''}}>{{ $commision->name }}</option>
                         @endforeach
                       </select>
 
@@ -161,7 +161,7 @@
                       <label>Markup Type</label>
                       <div>
                         <label class="radio-inline mr-1">
-                          <input type="radio" name="markup_type" value="itemised" class="rate-type">
+                          <input type="radio" name="markup_type" value="itemised" class="rate-type" checked>
                           <span>&nbsp;Itemised Markup </span>
                         </label>
                         <label class="radio-inline mr-1">

@@ -118,7 +118,7 @@
                       <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id @error('commission_group_id') is-invalid @enderror">
                         <option value="">Select Commission Group</option>
                         @foreach ($commission_groups as $commission_group)
-                          <option value="{{ $commission_group->id }}" {{  (old('commission_group_id') == $commission_group->id) ? "selected" : ($user->commission_group_id == $commission_group->id ? 'selected' : '') }} >{{ $commission_group->name }}</option>
+                          <option value="{{ $commission_group->id }}" {{  (old('commission_group_id') == $commission_group->id || $commission_group->id == $commission_group->id ) ? "selected" : ($user->commission_group_id == $commission_group->id ? 'selected' : '') }} >{{ $commission_group->name }}</option>
                         @endforeach
                       </select>
   
