@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             CommissionTableSeeder::class,
             UserTableSeeder::class,
             CommissionCriteriaSeederTable::class,
+            PresetCommentSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
