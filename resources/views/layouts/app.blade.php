@@ -93,7 +93,8 @@
 </script>
 
 @stack('scripts')
-
+{{-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> --}}
+<script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
