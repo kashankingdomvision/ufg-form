@@ -17,6 +17,7 @@ use App\Season;
 use App\Template;
 use App\TemplateDetail;
 use App\User;
+use App\PresetComment;
 
 class TemplateController extends Controller
 {
@@ -34,17 +35,19 @@ class TemplateController extends Controller
       'category_id'           => $quoteD['category_id'],
       'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
       'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-      'booking_method_id'     => $quoteD['booking_method_id'],
-      'booked_by_id'          => $quoteD['booked_by_id'],
-      'supervisor_id'         => $quoteD['supervisor_id'],
+      // 'booking_method_id'     => $quoteD['booking_method_id'],
+      // 'booked_by_id'          => $quoteD['booked_by_id'],
+      // 'supervisor_id'         => $quoteD['supervisor_id'],
       'date_of_service'       => $quoteD['date_of_service'],
       'end_date_of_service'   => $quoteD['end_date_of_service'],
+      'number_of_nights'      => $quoteD['number_of_nights'],
       'time_of_service'       => $quoteD['time_of_service'],
-      'booking_date'          => $quoteD['booking_date'],
-      'booking_due_date'      => $quoteD['booking_due_date'],
+      // 'booking_date'          => $quoteD['booking_date'],
+      // 'booking_due_date'      => $quoteD['booking_due_date'],
       'service_details'       => $quoteD['service_details'],
-      'booking_reference'     => $quoteD['booking_reference'],
-      'booking_type_id'       => (isset($quoteD['booking_type_id']))? $quoteD['booking_type_id'] : $quoteD['booking_type'],
+      // 'booking_reference'     => $quoteD['booking_reference'],
+      'booking_type_id'       => $quoteD['booking_type_id']??$quoteD['booking_type_id'],
+      'refundable_percentage' => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
       'supplier_currency_id'  => $quoteD['supplier_currency_id'],
       'comments'              => $quoteD['comments'],
       'estimated_cost'        => $quoteD['estimated_cost'],
@@ -55,8 +58,11 @@ class TemplateController extends Controller
       'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
       'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
       'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
-      'added_in_sage'         => (isset($quoteD['added_in_sage']))? (($quoteD['added_in_sage'] == "0")? '0' : '1') : '0',
-    ];
+      'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
+      'stored_text'           => isset($quoteD['stored_text']['text']) ? $quoteD['stored_text']['text'] : '',
+      'action_date'           => isset($quoteD['stored_text']['date']) ? $quoteD['stored_text']['date'] : '',
+      // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
+  ];
   }
   
   
@@ -112,20 +118,25 @@ class TemplateController extends Controller
     $data['seasons']          = Season::all();
     $data['booked_by']        = User::all()->sortBy('name');
     $data['booking_types']    = BookingType::all();
+    $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
     return view('templates.create', $data);
   }
     
   public function store(TemplateRequest $request)
   {
+
+    // dd($request->all());
+
     $template = Template::create([
       'user_id'     => Auth::id(),
       'title'       => $request->template_name,
       'season_id'   => $request->season_id,
       'currency_id' => $request->currency_id,
       'rate_type'   => $request->rate_type,
+      'markup_type' => $request->markup_type,
     ]);
-
+    
     foreach ($request->quote as $quote) {
       $data = $this->getTemplateDetailsArray($quote, $template->id);
       TemplateDetail::create($data);

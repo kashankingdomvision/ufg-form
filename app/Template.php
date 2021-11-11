@@ -11,6 +11,8 @@ class Template extends Model
         'title',
         'season_id',
         'currency_id',
+        'rate_type',
+        'markup_type',
     ];
 
     public function getUser()

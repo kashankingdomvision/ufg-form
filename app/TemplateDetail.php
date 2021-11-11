@@ -9,31 +9,40 @@ class TemplateDetail extends Model
     protected $fillable = [ 
         
         'template_id',
-        'date_of_service',
-        'end_date_of_service',
-        'time_of_service',
         'category_id',
         'supplier_id',
         'product_id',
-        'supervisor_id',
-        'booking_date',
-        'booking_due_date',
-        'booking_reference',
         'booking_method_id',
         'booked_by_id',
+        'supervisor_id',
+        'date_of_service',
+        'end_date_of_service',
+        'number_of_nights',
+        'booking_date',
+        'booking_due_date',
+        'service_details',
+        'booking_reference',
         'booking_type_id',
+        'refundable_percentage',
         'supplier_currency_id',
+        'comments',
         'estimated_cost',
         'markup_amount',
         'markup_percentage',
         'selling_price',
         'profit_percentage',
         'estimated_cost_bc',
-        'markup_amount_bc',
         'selling_price_bc',
-        'added_in_sage',
-        'service_details',
-        'comments',
+        'markup_amount_bc',
+        'added_in_sage', 
+        'time_of_service', 
+        'amount_per_person',
+        'booking_type_id',
+        'parent_id',
+        'image',
+        'category_details',
+        'stored_text',
+        'action_date',
     ];
 
     public function getCategory()
@@ -81,5 +90,13 @@ class TemplateDetail extends Model
     
     public function setBookingDueDateAttribute( $value ) {
         $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+
+    public function getActionDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function setActionDateAttribute( $value ) {
+        $this->attributes['action_date']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }

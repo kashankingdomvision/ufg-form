@@ -13,13 +13,13 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var File_Manager_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var File_Manager_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-var File_Manager_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var File_Manager_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 
 // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -1882,7 +1882,7 @@ $(document).ready(function($) {
                 var quote             = $(this).closest('.quote');
                 var quoteKey          = quote.data('key');
 
-                // console.log(quoteKey);
+                console.log(' working');
 
                 var detail_id  = $(`#quote_${quoteKey}_detail_id`).val();
                 var model_name = $(`#model_name`).val();
@@ -3198,8 +3198,10 @@ $(document).ready(function($) {
 
                 disabledFeild(".create-template [name=_method]");
 
+                console.log($('.create-template').serialize());
+
                 let templateName = $('#template_name').val();
-                var formData = $('.create-template').serialize() + '&template_name=' + templateName;
+                var formData = $('.create-template').serialize() + '&template_name=' + templateName ;
                 var url = `${REDIRECT_BASEURL}template/store`;
 
                 $.ajax({

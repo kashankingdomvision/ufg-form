@@ -20,6 +20,7 @@ class CreateTemplateTable extends Migration
             $table->unsignedBigInteger('currency_id')->nullable();;
             $table->string('title');
             $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('status', [0, 1])->default(1);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
