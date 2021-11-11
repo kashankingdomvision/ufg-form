@@ -2,28 +2,38 @@ require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 
 
 import $, { ajax, cssNumber, event } from 'jquery';
+import 'jquery-ui/ui/widgets/sortable.js';
 import select2 from 'select2';
 import intlTelInput from 'intl-tel-input';
 import Swal from 'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 
 import daterangepicker from 'daterangepicker';
-import 'jquery-ui/ui/widgets/sortable.js';
 
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
- 
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var File_Manager_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var File_Manager_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+
 // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
+
+    
+    callLaravelFileManger();
+    function callLaravelFileManger() {
+        var route_prefix = File_Manager_URL;
+        jQuery('.fileManger').filemanager('image', {prefix: route_prefix});
+    }
 
     // make quote section sortable
     $(function() {
@@ -5265,7 +5275,7 @@ $(document).on('click', '.addmodalforquote', function() {
     var quote = jQuery(this).closest('.quote');
     var key = quote.data('key');
     var target = '.'+$(this).data('show');
-    console.log(target);
+    // console.log(target);
     quote.find(target).modal('show');
     quote.find(target+':input').removeAttr('disabled');
     // jQuery('#accomadation_modal').modal('show').find('input').val('');

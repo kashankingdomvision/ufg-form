@@ -77,19 +77,19 @@
 <script src="{{ asset('vendor/laravel-filemanager/js/stand-alone-button.js') }}"></script>
 <script>
 
-    function callLaravelFileManger() {
-        var route_prefix = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
-        // var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+    // function callLaravelFileManger() {
+    //     var route_prefix = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+    //     // var route_prefix = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
         
-        $('.fileManger').filemanager('image', {prefix: route_prefix});
-    }
+    //     $('.fileManger').filemanager('image', {prefix: route_prefix});
+    // }
 
     // remove image work
     // $(document).on('dblclick', '.square', function(e) {
     //     console.log("sdsd");
     // });
 
-    callLaravelFileManger();
+    // callLaravelFileManger();
 </script>
 
 @stack('scripts')

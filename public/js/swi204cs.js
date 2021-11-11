@@ -49838,18 +49838,18 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
-/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable.js */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
-/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable.js */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
+/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
+/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
 __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
 
 
@@ -49860,16 +49860,27 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var File_Manager_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var File_Manager_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  // make quote section sortable
+  callLaravelFileManger();
+
+  function callLaravelFileManger() {
+    var route_prefix = File_Manager_URL;
+    jQuery('.fileManger').filemanager('image', {
+      prefix: route_prefix
+    });
+  } // make quote section sortable
+
+
   $(function () {
     $(".sortable").sortable();
   });
@@ -51282,7 +51293,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       // $('#lead_passenger_contact').removeClass('phone');
       // $('#lead_passenger_contact').removeClass('phone0');
 
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#lead_passenger_contact'), {
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#lead_passenger_contact'), {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
       });
       iti.destroy(); // intTelinput('gc');
@@ -51291,7 +51302,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       agency_.addClass('d-none');
       passenger_.removeClass('d-none');
       passenger_.find('input, select').removeAttr('disabled');
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(document.querySelector('#agency_contact'), {
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#agency_contact'), {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
       });
       iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');
@@ -53755,7 +53766,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var input = document.querySelector('.phone' + key);
     var errorMsg = document.querySelector('.error_msg' + key);
     var validMsg = document.querySelector('.valid_msg' + key);
-    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_2___default()(input, {
+    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
       separateDialCode: true,
       formatOnDisplay: true,
@@ -53936,7 +53947,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     if (checkedValues.length > 0) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
+      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
         title: 'Are you sure?',
         text: message,
         focusConfirm: false,
@@ -53958,7 +53969,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               }, 600);
             }
           });
-        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.DismissReason.cancel) {///no action here
+        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
         }
       });
     } else {
@@ -53989,7 +54000,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     if (checkedValues.length > 0) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
+      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
         title: 'Are you sure?',
         text: message,
         focusConfirm: false,
@@ -54011,7 +54022,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               }, 600);
             }
           });
-        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.DismissReason.cancel) {///no action here
+        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
         }
       });
     } else {
@@ -54082,23 +54093,23 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('click', '.addmodalforquote', function () {
     var quote = jQuery(this).closest('.quote');
     var key = quote.data('key');
-    var target = '.' + $(this).data('show');
-    console.log(target);
+    var target = '.' + $(this).data('show'); // console.log(target);
+
     quote.find(target).modal('show');
     quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
   }); /////////////////// Stored Text End
 }); // CreateGroupQuote //
 
 var checkedQuoteValues = null;
-var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
+var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
   didOpen: function didOpen(toast) {
-    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.stopTimer);
-    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.resumeTimer);
+    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.stopTimer);
+    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.resumeTimer);
   }
 }); //Create group quote
 
@@ -54141,7 +54152,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(func
           window.location.href = data.redirect;
         }, 2800);
       } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a(data.type, data.msg, data.icon);
+        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
       }
     }
   });
@@ -54162,7 +54173,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
           window.location.href = data.redirect;
         }, 2800);
       } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a(data.type, data.msg, data.icon);
+        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
       }
     }
   });
