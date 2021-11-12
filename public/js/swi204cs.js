@@ -49863,7 +49863,7 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
 var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
 var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-var File_Manager_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 // var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 // var File_Manager_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 // window.axios = require('axios');
@@ -49874,7 +49874,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   callLaravelFileManger();
 
   function callLaravelFileManger() {
-    var route_prefix = File_Manager_URL;
+    var route_prefix = FILE_MANAGER_URL;
     jQuery('.fileManger').filemanager('image', {
       prefix: route_prefix
     });
@@ -49965,6 +49965,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function disabledFeild(p) {
     $(p).attr("disabled", true);
+  }
+
+  function removeDisabledAttribute(p) {
+    $(p).removeAttr("disabled");
   }
 
   datepickerReset();
@@ -50268,6 +50272,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function getQuoteTotalValues() {
+    console.log("getQuoteTotalValues working");
     var markupType = $("input[name=markup_type]:checked").val();
     var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map(function (i, e) {
       return parseFloat(e.value);
@@ -52514,9 +52519,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         jQuery('#modal-default').modal('hide');
         setTimeout(function () {
           alert('Template Created Successfully');
+          removeDisabledAttribute(".create-template [name=_method]");
         }, 400);
       },
       error: function error(reject) {
+        removeDisabledAttribute(".create-template [name=_method]");
+
         if (reject.status === 422) {
           var errors = $.parseJSON(reject.responseText);
           setTimeout(function () {
@@ -52547,13 +52555,29 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               templateResult: formatState,
               templateSelection: formatState
             });
-            $(".booking-currency-id").val(data.template.currency_id).change();
+            $("input[name=markup_type][value='".concat(data.template.markup_type, "']")).attr('checked', 'checked');
+            $("input[name=rate_type][value='".concat(data.template.rate_type, "']")).attr('checked', 'checked');
+            $(".booking-currency-id").val(data.template.currency_id).change(); // make quote section sortable
+
+            $(function () {
+              $(".sortable").sortable();
+            });
+            getQuoteTotalValues();
+            jQuery('.note-editor').remove();
+            jQuery('.summernote').summernote({
+              height: 150,
+              //set editable area's height
+              placeholder: 'Enter Text Here..',
+              codemirror: {
+                // codemirror options
+                theme: 'monokai'
+              }
+            });
           }
         }
       },
       error: function error(reject) {
-        alert(reject);
-        searchRef.text('Search').prop('disabled', false);
+        console.log(reject); // searchRef.text('Search').prop('disabled', false);
       }
     });
   });
@@ -52654,8 +52678,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".update-quote").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
-    $('input, select').removeClass('is-invalid');
-    $('.text-danger').html(''); // $('#lead_passenger_contact').intlTelInput("getNumber");/
+    removeDisabledAttribute(".create-template [name=_method]"); // $('#lead_passenger_contact').intlTelInput("getNumber");/
     // console.log($("input[name='full_number']").val()+ 'asdsa');
     // $('#lead_passenger_contact').intlTelInput("getNumber")
 
@@ -52680,6 +52703,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       cache: false,
       processData: false,
       beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
         $("#overlay").addClass('overlay');
         $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
         $('.quote').removeClass('border border-danger');

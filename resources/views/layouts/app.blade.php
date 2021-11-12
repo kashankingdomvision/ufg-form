@@ -10,8 +10,7 @@
 
         {{-- title start --}}
         <title>{{ config('app.name', 'Laravel') }} | @yield('title') </title>
-        {{-- title end --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.14/js/utils.js"></script>
+        
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
         <!-- Font Awesome -->
@@ -25,6 +24,9 @@
 
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+
+        {{-- title end --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/11.0.14/js/utils.js"></script>
     </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     @guest
@@ -93,13 +95,14 @@
 </script>
 
 @stack('scripts')
+
+@stack('js')
 {{-- <script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js"></script> --}}
 <script src="{{ asset('js/jquery-migrate-3.0.0.min.js') }}"></script>
 <script src="{{ asset('js/summernote-bs4.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('js/adminlte.js') }}"></script>
 
-@stack('js')
 
 </body>
 </html>

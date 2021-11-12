@@ -361,7 +361,12 @@ class ResponseController extends Controller
     
     public function call_template($id)
     {
-        $template = Template::findOrFail(decrypt($id));
+
+        // dd(decrypt($id));
+
+        $template = Template::find(decrypt($id));
+
+        
         $data['template']         = $template;
         $data['categories']       = Category::all()->sortBy('name');
         $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
@@ -372,8 +377,11 @@ class ResponseController extends Controller
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['booking_types']    = BookingType::all();
+        $data['storetexts']       = StoreText::get();
+        
         $return['template']       = $template;
         $return['template_view']  = View::make('partials.quote_template', $data)->render();
+   
         return response()->json($return);
     }
     

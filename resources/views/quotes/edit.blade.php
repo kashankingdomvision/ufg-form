@@ -662,20 +662,20 @@
                               @endphp
 
                               <div class="col-sm-2">
-                                    <div class="form-group">
-                                    <label>
-                                      Supplier <span style="color:red">*</span>
-                                      <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
-                                    </label>
-                                    <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
-                                        <option value="">Select Supplier</option>
-                                        @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier)
-                                            @foreach ($q_detail->getCategory->getSupplier as $supplier )
-                                            <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
-                                            @endforeach
-                                        @endif
-                                    </select>
-                                    <span class="text-danger" role="alert"></span>
+                                <div class="form-group">
+                                  <label>
+                                    Supplier <span style="color:red">*</span>
+                                    <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
+                                  </label>
+                                  <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
+                                      <option value="">Select Supplier</option>
+                                      @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier)
+                                          @foreach ($q_detail->getCategory->getSupplier as $supplier )
+                                          <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
+                                          @endforeach
+                                      @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 

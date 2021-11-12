@@ -18,6 +18,7 @@ use App\Template;
 use App\TemplateDetail;
 use App\User;
 use App\PresetComment;
+use App\StoreText;
 
 class TemplateController extends Controller
 {
@@ -50,6 +51,7 @@ class TemplateController extends Controller
       'refundable_percentage' => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
       'supplier_currency_id'  => $quoteD['supplier_currency_id'],
       'comments'              => $quoteD['comments'],
+      'image'                 => isset($quoteD['image']) ? $quoteD['image'] : '',
       'estimated_cost'        => $quoteD['estimated_cost'],
       'markup_amount'         => $quoteD['markup_amount'],
       'markup_percentage'     => $quoteD['markup_percentage'],
@@ -174,6 +176,7 @@ class TemplateController extends Controller
       $data['seasons']          = Season::all();
       $data['booked_by']        = User::all()->sortBy('name');
       $data['booking_types']    = BookingType::all();
+      $data['storetexts']       = StoreText::get();
 
       return view('templates.edit', $data);
   }
@@ -188,6 +191,7 @@ class TemplateController extends Controller
       'season_id'   => $request->season_id,
       'currency_id' => $request->currency_id,
       'rate_type'   => $request->rate_type,
+      'markup_type' => $request->markup_type,
     ]);
 
     $template->getDetails()->delete();

@@ -15,7 +15,7 @@ import daterangepicker from 'daterangepicker';
 
 var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var File_Manager_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
 // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 // var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
@@ -31,7 +31,7 @@ $(document).ready(function($) {
     
     callLaravelFileManger();
     function callLaravelFileManger() {
-        var route_prefix = File_Manager_URL;
+        var route_prefix = FILE_MANAGER_URL;
         jQuery('.fileManger').filemanager('image', {prefix: route_prefix});
     }
 
@@ -131,6 +131,11 @@ $(document).ready(function($) {
             function disabledFeild(p) {
                 $(p).attr("disabled", true);
             }
+
+            function removeDisabledAttribute(p) {
+                $(p).removeAttr("disabled");
+            }
+
 
             datepickerReset();
 
@@ -429,10 +434,12 @@ $(document).ready(function($) {
 
             function getQuoteTotalValues() {
 
+                console.log("getQuoteTotalValues working");
+
                 var markupType = $("input[name=markup_type]:checked").val();
 
                 var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+                var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
                 $(".total-net-price").val(check(estimatedCostInBookingCurrency));
 
@@ -3221,11 +3228,12 @@ $(document).ready(function($) {
 
                         setTimeout(function() {
                             alert('Template Created Successfully');
+                            removeDisabledAttribute(".create-template [name=_method]");
                         }, 400);
                     },
                     error: function(reject) {
+                        removeDisabledAttribute(".create-template [name=_method]");
                         if (reject.status === 422) {
-
                             var errors = $.parseJSON(reject.responseText);
 
                             setTimeout(function() {
@@ -3248,6 +3256,8 @@ $(document).ready(function($) {
 
                 var templateID = $(this).val();
 
+            
+
                 $.ajax({
                     url: `${BASEURL}template/${templateID}/partial`,
                     type: 'get',
@@ -3256,6 +3266,7 @@ $(document).ready(function($) {
 
                         if (data) {
                             if (confirm("Are you sure! you want to override Quote Details?")) {
+
 
                                 $('#parent').html(data.template_view);
 
@@ -3266,14 +3277,32 @@ $(document).ready(function($) {
                                     templateSelection: formatState,
                                 });
 
+                                $(`input[name=markup_type][value='${data.template.markup_type}']`).attr('checked', 'checked');
+                                $(`input[name=rate_type][value='${data.template.rate_type}']`).attr('checked', 'checked');
                                 $(".booking-currency-id").val(data.template.currency_id).change();
+
+                                // make quote section sortable
+                                $(function() {
+                                    $( ".sortable" ).sortable();
+                                });
+
+                                getQuoteTotalValues();
+
+                                jQuery('.note-editor').remove();
+                                jQuery('.summernote').summernote({
+                                    height: 150,   //set editable area's height
+                                    placeholder: 'Enter Text Here..',
+                                    codemirror: { // codemirror options
+                                        theme: 'monokai'
+                                    },
+                                });
                             }
                         }
 
                     },
                     error: function(reject) {
-                        alert(reject);
-                        searchRef.text('Search').prop('disabled', false);
+                        console.log(reject);
+                        // searchRef.text('Search').prop('disabled', false);
                     },
                 });
 
@@ -3417,8 +3446,9 @@ $(document).ready(function($) {
                 event.preventDefault();
              
                 var url = $(this).attr('action');
-                $('input, select').removeClass('is-invalid');
-                $('.text-danger').html('');
+
+                removeDisabledAttribute(".create-template [name=_method]");
+           
                 // $('#lead_passenger_contact').intlTelInput("getNumber");/
                 // console.log($("input[name='full_number']").val()+ 'asdsa');
 
@@ -3446,6 +3476,9 @@ $(document).ready(function($) {
                     cache: false,
                     processData: false,
                     beforeSend: function() {
+                        $('input, select').removeClass('is-invalid');
+                        $('.text-danger').html('');
+
                         $("#overlay").addClass('overlay');
                         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
 
