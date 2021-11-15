@@ -1723,7 +1723,11 @@ $(document).ready(function($) {
 
                                 $(`#quote_${quoteKey}_product_id`).html(options);
                             }
-    
+
+                            if(response && response.supplier_currency != ""){
+                                $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
+                            }
+
                             /* old work for fetching only supplier's sheet */
 
                             // if(response != ''){

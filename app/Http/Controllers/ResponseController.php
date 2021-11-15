@@ -109,10 +109,9 @@ class ResponseController extends Controller
             $response['url'] = url(Storage::url($supplier->file));
         }
 
-        // dd($response['url'] );
 
-        $response['products'] = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
-        // $response['products'] = '';
+        $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+        $response['supplier_currency'] = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->currency_id : '';
 
         return $response;
 

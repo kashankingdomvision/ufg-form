@@ -51389,6 +51389,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             });
             $("#quote_".concat(quoteKey, "_product_id")).html(options);
           }
+
+          if (response && response.supplier_currency != "") {
+            $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier_currency).trigger('change');
+          }
           /* old work for fetching only supplier's sheet */
           // if(response != ''){
           //     quote.find('.view-supplier-rate').attr("href", response);
