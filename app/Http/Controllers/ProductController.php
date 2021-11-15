@@ -7,6 +7,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Str;
 use App\Product;
+use App\Http\Helper;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $data['product_code'] = Helper::getProductCode();
+
+        return view('products.create', $data);
     }
 
     /**
@@ -73,10 +76,6 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $id)
     {
         $product = Product::findOrFail(decrypt($id));
-        $request->validate([ 
-            'name'          => 'required|string|unique:products,id,'.$product->id,
-            'code'          => 'required|string|unique:products,id,'.$product->id,
-        ]);
         
         $product->update($request->all());
         return redirect()->route('products.index')->with('success_message', 'Product update successfully');

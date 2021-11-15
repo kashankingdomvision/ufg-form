@@ -25,7 +25,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'name'          => 'required|string|unique:products',
-            'code'          => 'required|string',
+            'code'          => 'required|string|unique:products',
             'description'   => 'required|string',
         ];
     }

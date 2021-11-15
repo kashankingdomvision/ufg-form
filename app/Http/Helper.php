@@ -69,6 +69,13 @@ class Helper
        return "QR-".sprintf("%04s", ++$last_id);
     }
 
+	public static function getProductCode(){
+
+		// $last_id = Product::latest()->pluck('id')->first();
+		$last_id = Product::orderBY('id', 'DESC')->pluck('id')->first();
+       	return "PC-".sprintf("%04s", ++$last_id);
+    }
+
 	public static function getCreditNote(){
         $last_id = BookingCreditNote::latest()->pluck('id')->first();
        return "CN-".sprintf("%04s", ++$last_id);

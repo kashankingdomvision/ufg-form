@@ -30,7 +30,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label>Product Code <span style="color:red">*</span></label>
-                    <input type="text" name="code" value="{{ old('code') }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" required>
+                    <input type="text" name="code" value="{{  !empty(old('code')) ? old('code') : $product_code }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" required>
                     @error('code')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror

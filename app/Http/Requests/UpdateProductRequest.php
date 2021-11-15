@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateProductRequest extends FormRequest
 {
@@ -24,9 +25,8 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required','unique:categories,name,' . $this->name.',name',
-            'code'          => 'required|string',
-            'description'   => 'required|string',
+            'code'  => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
+            'name'  => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
         ];
     }
 
