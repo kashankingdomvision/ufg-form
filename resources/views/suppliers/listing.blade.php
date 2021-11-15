@@ -110,7 +110,7 @@
                                                 <td>{{ $supplier->name }}</td>
                                                 <td>{{ $supplier->email }}</td>
                                                 <td>{{ $supplier->phone }}</td>
-                                                <td>{{ $supplier->getCurrency->name??NULL }}</td>
+                                                <td>{{ isset($supplier->getCurrency->name) && !empty($supplier->getCurrency->name) ? $supplier->getCurrency->code.' - '.$supplier->getCurrency->name : '' }}</td>
                                                 <td class="d-flex">
                                                 <form method="post" action="{{ route('suppliers.destroy', encrypt($supplier->id)) }}">
                                                 <a  href="{{ route('suppliers.edit', encrypt($supplier->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
