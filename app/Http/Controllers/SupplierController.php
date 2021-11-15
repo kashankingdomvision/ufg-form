@@ -11,6 +11,7 @@ use App\Product;
 use App\Supplier;
 use App\SupplierCategory;
 use App\SupplierProduct;
+use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
 {
@@ -179,7 +180,18 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        Supplier::destroy(decrypt($id));
-        return redirect()->route('suppliers.index')->with('success_message', 'Supplier deleted successfully');
+        $bcn_count = DB::table('booking_credit_notes')->where('supplier_id', decrypt($id))->count();
+        $bt_count  = DB::table('booking_transactions')->where('supplier_id', decrypt($id))->count();
+        $w_count   = DB::table('wallets')->where('supplier_id', decrypt($id))->count();
+        $srs_count = DB::table('supplier_rate_sheets')->where('supplier_id', decrypt($id))->count();
+        $tw_count  = DB::table('total_wallets')->where('supplier_id', decrypt($id))->count();
+        $sbp_count = DB::table('supplier_bulk_payments')->where('supplier_id', decrypt($id))->count();
+
+        if($bcn_count == 0 && $bt_count == 0 && $w_count == 0 && $srs_count == 0 && $tw_count == 0 && $sbp_count == 0){
+            Supplier::destroy(decrypt($id));
+            return redirect()->route('suppliers.index')->with('success_message', 'Supplier deleted successfully');
+        }
+
+        return redirect()->route('suppliers.index')->with('error_message', "Supplier can not deleted beacuse it is associated one or more record.");
     }
 }
