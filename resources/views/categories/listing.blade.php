@@ -70,6 +70,7 @@
                       </th>
                       <th>Category Name</th>
                       <th>Appeared In</th>
+                      <th>Sort Order</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -94,6 +95,8 @@
                           @endif
                         </h5>
                       </td>
+
+                      <td>{{ $category->sort_order }}</td>
 
                       <td class="d-flex">
                         <a href="{{ route('categories.edit', encrypt($category->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>

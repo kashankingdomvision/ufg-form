@@ -63,16 +63,23 @@
               <div class="card-body">
                 <div class="form-group">
                   <label>Category Name <span style="color:red">*</span></label>
-                  <input type="text" name="name" id="name" class="form-control name" placeholder="Category Name" required>
+                  <input type="text" name="name" id="name" class="form-control name" placeholder="Category Name" >
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
+                  <label>Sort Order <span style="color:red">*</span></label>
+                  <input type="number" name="sort_order" id="sort_order" class="form-control sort-order" placeholder="Sort Order" >
+                  <span class="text-danger" role="alert"></span>
+                </div>
+
+
+                <div class="form-group">
                   <label>Appeared In <span style="color:red">*</span></label>
                   <br>
-                  <input type="hidden" name="quote" value="0"><input id="quote" class="quote" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="quote"> &nbsp; Quote</label>
+                  <input type="hidden" name="quote" class="quote" value="0"><input id="quote"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="quote"> &nbsp; Quote</label>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="hidden" name="booking" value="0"><input id="booking" class="booking" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
+                  <input type="hidden" name="booking" class="booking" value="0"><input id="booking"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
                 </div>
                 
                 <div id="build-wrap"></div>
@@ -101,22 +108,23 @@
       onSave: function (evt, formData) {
 
         var categoryName = $('.name').val();
+        var sort_order   = $('.sort-order').val();
+        var quote        = $('.quote').val();
+        var booking      = $('.booking').val();
         var url          = '{{route('categories.store')}}';
-
-        // console.log(formData);
-        // console.log(url);
 
         if(formData == '[]'){
           formData = '';
         }
 
         var data = {
-          name : categoryName,
-          feilds : formData,
-          "_token": "{{ csrf_token() }}",
+          name       : categoryName,
+          feilds     : formData,
+          quote      : quote,
+          booking    : booking,
+          sort_order : sort_order,
+          "_token"   : "{{ csrf_token() }}",
         };
-
-        // console.log(data);
 
         $.ajax({
           type: 'POST',

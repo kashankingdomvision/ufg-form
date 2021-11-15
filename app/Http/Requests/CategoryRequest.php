@@ -24,14 +24,17 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|unique:categories'
+            'name'       => 'required|string|unique:categories',
+            'sort_order' => 'required|integer'
+            // 'sort_order' => 'required|string|unique:categories'
         ];
     }
     
     public function attributes()
     {
         return [
-            'name' => 'Category name',
+            'name'       => 'Category name',
+            'sort_order' => 'Sort Order',
         ];
     }
 }

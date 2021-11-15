@@ -16,6 +16,7 @@ class CreateCategroyTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->mediumInteger('sort_order');
             $table->string('slug');
             $table->text('feilds')->nullable();
             $table->enum('booking', [0, 1])->default(0)->nullable();

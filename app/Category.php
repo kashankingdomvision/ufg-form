@@ -13,6 +13,7 @@ class Category extends Model
         'feilds',
         'quote',
         'booking',
+        'sort_order'
     ];
 
     public function getSupplier()
