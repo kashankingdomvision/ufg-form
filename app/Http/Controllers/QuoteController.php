@@ -308,7 +308,7 @@ class QuoteController extends Controller
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
-        $data['categories']       = Category::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::whereHas('getRole', function($query){
@@ -396,7 +396,7 @@ class QuoteController extends Controller
         $data['quote']            = $quote;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
-        $data['categories']       = Category::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::whereHas('getRole', function($query){
@@ -526,7 +526,7 @@ class QuoteController extends Controller
         $data['quote']            = $quote;
         $data['log']              = $log;
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['categories']       = Category::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::whereHas('getRole', function($query){
@@ -637,7 +637,7 @@ class QuoteController extends Controller
     public function finalQuote($id)
     {
         $data['countries']        = Country::orderBy('name', 'ASC')->get();
-        $data['categories']       = Category::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::whereHas('getRole', function($query){

@@ -368,7 +368,7 @@ class ResponseController extends Controller
 
         
         $data['template']         = $template;
-        $data['categories']       = Category::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
         $data['suppliers']        = Supplier::all()->sortBy('name');
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');

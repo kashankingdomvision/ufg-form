@@ -46,7 +46,7 @@ class SupplierController extends Controller
         
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
         $data['suppliers'] = $supplier->paginate($this->pagination);       
-        $data['categories'] = Category::get();
+        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         
         return view('suppliers.listing', $data);
     }
@@ -58,7 +58,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $data['categories'] = Category::get();
+        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
         return view('suppliers.create', $data);
@@ -122,7 +122,7 @@ class SupplierController extends Controller
     public function edit($id)
     {
         $data['supplier'] = Supplier::findOrFail(decrypt($id));
-        $data['categories'] = Category::get();
+        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
         return view('suppliers.edit',$data);

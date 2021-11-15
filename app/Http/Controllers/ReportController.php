@@ -301,7 +301,7 @@ class ReportController extends Controller
 
     public function supplier_report(Request $request)
     {
-        $data['categories'] = Category::orderBy('name', 'ASC')->get();
+        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
 
         $supplier = Supplier::with('getCategories','getCurrency')->orderBy('id', 'ASC');
@@ -964,7 +964,7 @@ class ReportController extends Controller
     {
         try {
             $passedParams = json_decode(request()->params, true);
-            $data['categories'] = Category::orderBy('name', 'ASC')->get();
+            $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
             $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
             $supplier = Supplier::with('getCategories','getCurrency')->orderBy('id', 'ASC');
 

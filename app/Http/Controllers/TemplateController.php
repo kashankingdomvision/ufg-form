@@ -111,7 +111,7 @@ class TemplateController extends Controller
     
   public function create()
   {
-    $data['categories']       = Category::all()->sortBy('name');
+    $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
     $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
@@ -167,7 +167,7 @@ class TemplateController extends Controller
   public function edit($id)
   {
       $data['template']         = Template::findOrFail(decrypt($id));
-      $data['categories']       = Category::all()->sortBy('name');
+      $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
       $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
       $data['suppliers']        = Supplier::all()->sortBy('name');
       $data['booking_methods']  = BookingMethod::all()->sortBy('id');
