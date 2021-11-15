@@ -89,8 +89,9 @@
                                                 <label for="year">Year</label>
                                                 <select class="form-control select2single" name="year" id="year">
                                                     <option value="">Select Year</option>
-                                                    <option value="{{date("Y")}}" {{ (old('year') == date("Y")) ? 'selected' :((request()->get('year') == date("Y")) ? 'selected' : null ) }}>This Year</option>
-                                                    <option value="{{date("Y")-1}}" {{ (old('year') == date("Y")-1) ? 'selected' :((request()->get('year') == date("Y")-1) ? 'selected' : null ) }}>Last Year</option>
+                                                    @for ($i = date("Y")-5 ; $i < date("Y")+5 ; $i++)
+                                                        <option value="{{ $i }}" {{ (old('year') == $i) ? 'selected' :((request()->get('year') == $i) ? 'selected' : null ) }}> {{ $i }}</option>
+                                                    @endfor
                                                 </select>
                                             </div>
                                         </div>
