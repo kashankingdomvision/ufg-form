@@ -80,10 +80,11 @@
                       <label for="inputEmail3" class="">Currency</label>
                       <select name="currency" class="form-control select2single" >
                           @foreach ($currencies as $currency)
-                          <option value="{{$currency->id}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ (old("currency") == $currency->id ? "selected" : "") }} >{{ $currency->name }}</option>
+                          <option value="{{$currency->id}}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ (old("currency") == $currency->id ? "selected" : "") }} >&nbsp; {{$currency->code}} - {{$currency->name}}</option>
                           @endforeach
                       </select>
                     </div>
+
                     <div class="form-group">
                       <label  class="">Description :</label>
                       <textarea name="description"  class="form-control summernote">{{ old('description') }}</textarea>

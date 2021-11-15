@@ -78,11 +78,11 @@
                     </div>
       
                     <div class="form-group">
-                      <label for="inputEmail3" class="">Currecy</label>
-                      <select name="currency" class="form-control  select2single  ">
+                      <label for="inputEmail3" class="">Currency</label>
+                      <select name="currency" class="form-control  select2single">
                           <option value="">Select Currecy</option>
                           @foreach ($currencies as $currency)
-                            <option value="{{$currency->id}}" {{ ($currency->id == $supplier->currency_id)? "selected" : ((old('currency') == $currency->id)? 'selected' : NULL) }}>{{ $currency->name }}</option>
+                            <option value="{{$currency->id}}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ ($currency->id == $supplier->currency_id)? "selected" : ((old('currency') == $currency->id)? 'selected' : NULL) }}>&nbsp; {{$currency->code}} - {{$currency->name}}</option>
                           @endforeach
                       </select>
                       <div class="alert-danger" style="text-align:center">{{$errors->first('currency')}}</div>
