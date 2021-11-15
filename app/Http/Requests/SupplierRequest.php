@@ -24,10 +24,10 @@ class SupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'username'      =>  'required|string',
-            'email'         =>  'required|email|unique:suppliers',
-            'categories'    =>  'required|array',
-            'products'      =>  'required|array',
+            'username'      => 'required|unique:suppliers,name',
+            'email'         => 'required|email|unique:suppliers',
+            'categories'    => 'required|array',
+            'products'      => 'required|array',
         ];
     }
     
