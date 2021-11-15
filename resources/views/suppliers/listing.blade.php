@@ -107,7 +107,6 @@
                                                       <input type="checkbox" class="child" value="{{$supplier->id}}" >
                                                     </div>
                                                 </td>
-                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $supplier->name }}</td>
                                                 <td>{{ $supplier->email }}</td>
                                                 <td>{{ $supplier->phone }}</td>
