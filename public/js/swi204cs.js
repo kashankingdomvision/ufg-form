@@ -49866,7 +49866,7 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
 var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
 var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
-var File_Manager_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
