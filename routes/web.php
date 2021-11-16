@@ -389,6 +389,11 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
+        /* Towns */
+        Route::resource('towns', 'SettingControllers\TownController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
 	});
 
 
