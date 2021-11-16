@@ -25,6 +25,7 @@ use App\StoreText;
 use App\CommissionGroup;
 use App\SupplierRateSheet;
 use App\SupplierProduct;
+use App\Town;
 
 class ResponseController extends Controller
 {
@@ -34,6 +35,13 @@ class ResponseController extends Controller
         return response()->json($holiday_types);
     }
 
+    public function getCountryToTown(Request $request)
+    {    
+        $towns = Town::where('country_id',$request->country_id)->get();
+
+        return response()->json($towns);
+    }
+ 
     public function getCommissionGroups(Request $request)
     {    
         $commission_groups = CommissionGroup::where('commission_id',$request->commission_id)->get();

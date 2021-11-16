@@ -51,6 +51,44 @@
                       <span class="text-danger error_msg0 hide" role="alert"></span>
                       <span class="text-success valid_msg0 hide" role="alert"></span>
                     </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Country <span style="color:red">*</span></label>
+                          <select name="country_id" class="form-control select2single getCountryToTown @error('country_id') is-invalid @enderror" >
+                            <option value="">Select Country</option>
+                              @foreach ($countries as $country)
+                                <option value="{{$country->id}}" {{ $country->id == $supplier->country_id  ? 'selected' : '' }}> {{$country->name}} </option>
+                              @endforeach
+                          </select>
+      
+                          @error('country_id')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                          @enderror
+                        </div> 
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Town <span style="color:red">*</span></label>
+                          <select name="town_id" class="form-control select2single town-id appendCountryTown @error('town_id') is-invalid @enderror" >
+                            <option value="">Select Town</option>
+                            @if(isset($supplier->getCountry) && $supplier->getCountry->getTowns)
+                              @foreach ($supplier->getCountry->getTowns as $town )
+                              <option value="{{ $town->id }}"  {{ ($supplier->town_id == $town->id)? 'selected' : NULL}}  >{{ $town->name }}</option>
+                              @endforeach
+                            @endif
+                          </select>
+      
+                          @error('town_id')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                          @enderror
+                        </div> 
+                      </div>
+
+                    </div>
+
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category <span style="color:red">*</span></label>
                       <select name="categories[]" class="form-control select2-multiple @error('categories') is-invalid @enderror" multiple required>

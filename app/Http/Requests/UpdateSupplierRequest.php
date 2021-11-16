@@ -17,6 +17,8 @@ class UpdateSupplierRequest extends FormRequest
         return [
             'username'    => ['required', Rule::unique('suppliers','name')->ignore(decrypt($this->supplier))],
             'email'       => ['required', Rule::unique('suppliers')->ignore(decrypt($this->supplier))],
+            'country_id'  => 'required',
+            'town_id'     => 'required',
             'categories'  =>  'required|array',
             'products'    =>  'required|array',
         ];
@@ -32,6 +34,8 @@ class UpdateSupplierRequest extends FormRequest
         return [
             'username'     =>  'Name',
             'email'        =>  'Email address',
+            'country_id'   =>  'Country',
+            'town_id'      =>  'Town',
             'categories'   =>  'Categories',
             'products'     =>  'Products',
         ];

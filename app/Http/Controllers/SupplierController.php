@@ -11,6 +11,8 @@ use App\Product;
 use App\Supplier;
 use App\SupplierCategory;
 use App\SupplierProduct;
+use App\Country;
+
 use Illuminate\Support\Facades\DB;
 
 class SupplierController extends Controller
@@ -62,6 +64,8 @@ class SupplierController extends Controller
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
+        $data['countries'] = Country::all();
+
         return view('suppliers.create', $data);
     }
 
@@ -126,6 +130,8 @@ class SupplierController extends Controller
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
+        $data['countries'] = Country::all();
+        
         return view('suppliers.edit',$data);
     }
 

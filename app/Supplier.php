@@ -27,4 +27,14 @@ class Supplier extends Model
     {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
     }
+
+    public function getCountry()
+    {
+        return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+
+    public function getTown()
+    {
+        return $this->hasOne(Town::class, 'id', 'town_id');
+    }
 }

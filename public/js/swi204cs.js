@@ -51278,6 +51278,25 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
     getCommissionRate();
   });
+  $(document).on('change', '.getCountryToTown', function () {
+    var country_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'country/to/town';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'country_id': country_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Town</option>';
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+        });
+        $('.appendCountryTown').html(options);
+      }
+    });
+  });
   $(document).on('change', '.holiday-type-id', function () {
     getCommissionRate();
   });

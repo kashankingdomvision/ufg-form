@@ -11,4 +11,9 @@ class Country extends Model
         'name',
         'phonecode',
     ];
+
+    public function getTowns()
+    {
+        return $this->hasMany(Town::class, 'country_id', 'id');
+    }
 }

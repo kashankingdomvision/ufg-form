@@ -26,6 +26,8 @@ class SupplierRequest extends FormRequest
         return [
             'username'      => 'required|unique:suppliers,name',
             'email'         => 'required|email|unique:suppliers',
+            'country_id'    => 'required',
+            'town_id'       => 'required',
             'categories'    => 'required|array',
             'products'      => 'required|array',
         ];
@@ -37,6 +39,8 @@ class SupplierRequest extends FormRequest
         return [
             'username'     =>  'Name',
             'email'        =>  'Email address',
+            'country_id'   =>  'Country',
+            'town_id'      =>  'Town',
             'categories'   =>  'Categories',
             'products'     =>  'Products',
         ];

@@ -407,6 +407,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
         Route::get('get-commission',array('as'=>'get-commission','uses'=>'QuoteController@get_commission'));
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
+
+        Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
+
         Route::get('get-commission-groups',array('as'=>'commission.groups','uses'=>'ResponseController@getCommissionGroups'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
