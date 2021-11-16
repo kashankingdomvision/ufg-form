@@ -384,6 +384,11 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 
 
+        /* Countries */
+        Route::resource('countries', 'SettingControllers\CountryController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
 	});
 
 
