@@ -26,6 +26,8 @@ class CountryController extends Controller
 
             if($request->has('search') && !empty($request->search)){
                 $query->where('name', 'like', '%'.$request->search.'%');
+                $query->orWhere('sortname', 'like', '%'.$request->search.'%');
+                $query->orWhere('phonecode', 'like', '%'.$request->search.'%');
             }
         }
 
