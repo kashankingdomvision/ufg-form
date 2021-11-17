@@ -79,6 +79,8 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::create([
             'currency_id' => $request->currency, 
+            'country_id'  => $request->country_id, 
+            'town_id'     => $request->town_id, 
             'name'        => $request->username, 
             'email'       => $request->email, 
             'phone'       => $request->full_number,
@@ -151,6 +153,8 @@ class SupplierController extends Controller
 
         $supplier->update([
             'currency_id' => $request->currency, 
+            'country_id'  => $request->country_id, 
+            'town_id'     => $request->town_id, 
             'name'        => $request->username, 
             'email'       => $request->email, 
             'phone'       => $request->full_number,
