@@ -49860,13 +49860,13 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
-var FILE_MANAGER_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');

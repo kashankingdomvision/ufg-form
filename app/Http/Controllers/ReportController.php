@@ -19,6 +19,7 @@ use App\Exports\PaymentMethodReportExport;
 use App\Exports\RefundByBankReportExport;
 use App\Exports\RefundByCreditNoteReportExport;
 use App\Exports\WalletReportExport;
+use App\Exports\CompareQuoteExport;
 
 use App\Http\Helper;
 use App\Booking;
@@ -26,6 +27,7 @@ use App\Brand;
 use App\Category;
 use App\Currency;
 use App\Quote;
+use App\QuoteDetail;
 use App\Role;
 use App\Supplier;
 use App\User;
@@ -789,6 +791,283 @@ class ReportController extends Controller
         } catch(\Exception $e) {
             return redirect()->back()->with('error_message', $e->getMessage());
         }
+    }
+
+    public function compare_quote_export(Request $request) {
+        try {
+            $passedParams = json_decode(request()->params, true);
+
+            //- booking information
+            $BI_columns      = array('quote_title','rate_type','ref_no' ,'ref_no' , 'quote_ref'  , 'tas_ref');
+            $BI_headings     = array('Quote Title','Currency Rate Type', 'Zoho Reference', 'Quote Reference',);
+
+            $BI_quote_values = $this->get_quote_value($passedParams, $BI_columns, $BI_headings);
+
+            // dd($BI_quote_values);
+
+
+            //- service details
+            $qd_columns = [ 
+                'date_of_service','end_date_of_service','number_of_nights','time_of_service','category_id','supplier_id','product_id','booking_type_id','supplier_currency_id','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','estimated_cost_bc','markup_amount_bc','selling_price_bc','comments',
+            ];
+
+
+            $headings = $this->get_quote_heading_array($passedParams);
+        
+
+
+            $quoteD_values = $this->get_quote_detail_with_value($passedParams, $qd_columns);
+
+            $DOS_array        = $quoteD_values['date_of_service'];
+            $EDOS_array       = $quoteD_values['end_date_of_service'];
+            $NON_array        = $quoteD_values['number_of_nights'];
+            $TOS_array        = $quoteD_values['time_of_service'];
+            $SC_ID_array      = $quoteD_values['supplier_currency_id'];
+            $Comment_array    = $quoteD_values['comments'];
+
+            $CN_array         = $this->get_ids_value_array( $quoteD_values['category_id'], 'Category', 'name' );
+            $SN_array         = $this->get_ids_value_array( $quoteD_values['supplier_id'], 'Supplier', 'name' );
+            $PN_array         = $this->get_ids_value_array( $quoteD_values['product_id'], 'Product', 'name' );
+            $BTN_array        = $this->get_ids_value_array( $quoteD_values['booking_type_id'], 'BookingType', 'name' );
+            $SC_array         = $this->get_currency_value_array( $quoteD_values['supplier_currency_id'], 'Currency', 'code' , 'name' );
+            $EC_array         = $this->get_cost_value_array( $quoteD_values['estimated_cost'], $SC_ID_array, 'Currency', 'code');
+            $MA_array         = $this->get_cost_value_array( $quoteD_values['markup_amount'], $SC_ID_array, 'Currency', 'code');
+            $MP_array         = $this->get_percentage_value_array( $quoteD_values['markup_percentage']);
+            $SP_array         = $this->get_cost_value_array( $quoteD_values['selling_price'], $SC_ID_array, 'Currency', 'code');
+            $PP_array         = $this->get_percentage_value_array( $quoteD_values['profit_percentage']);
+            $ECIBC_array      = $this->get_cost_value_array( $quoteD_values['estimated_cost_bc'], $SC_ID_array, 'Currency', 'code');
+            $MAIBC_array      = $this->get_cost_value_array( $quoteD_values['markup_amount_bc'], $SC_ID_array, 'Currency', 'code');
+            $SPIBC_array      = $this->get_cost_value_array( $quoteD_values['selling_price_bc'], $SC_ID_array, 'Currency', 'code');
+
+            $start_date         = $this->get_column_array( $DOS_array, 'Start Date' );
+            $end_date           = $this->get_column_array( $EDOS_array, 'End Date' );
+            $number_of_nights   = $this->get_column_array( $NON_array, 'Number of Nights' );
+            $time_of_service    = $this->get_column_array( $TOS_array, 'Time of Service' );
+            $category_name      = $this->get_column_array( $CN_array, 'Category' );
+            $supplier_name      = $this->get_column_array( $SN_array, 'Supplier' );
+            $product_name       = $this->get_column_array( $PN_array, 'Product' );
+            $booking_type_name  = $this->get_column_array( $BTN_array, 'Booking Type' );
+            $supplier_currency  = $this->get_column_array( $SC_array, 'Supplier Currency' );
+            $estimated_cost     = $this->get_column_array( $EC_array, 'Estimated Cost' );
+            $markup_amount      = $this->get_column_array( $MA_array, 'Markup Amount' );
+            $markup_percentage  = $this->get_column_array( $MP_array, 'Markup Percentage' );
+            $selling_price      = $this->get_column_array( $SP_array, 'Selling Price' );
+            $profit_price       = $this->get_column_array( $PP_array, 'Profit Percentage' );
+            $estimated_cost_in_booking_currency = $this->get_column_array( $ECIBC_array, 'Estimated Cost in Booking Currency' );
+            $markup_amount_in_booking_currency  = $this->get_column_array( $MAIBC_array, 'Markup Amount in Booking Currency' );
+            $selling_price_in_booking_currency  = $this->get_column_array( $SPIBC_array, 'Selling Price in Booking Currency' );
+            $comments         = $this->get_column_array( $Comment_array, 'Internal Comments' );
+            
+            $data['service_details']     = array($start_date, $end_date, $number_of_nights, $time_of_service, $category_name , $supplier_name, $product_name, $booking_type_name, $supplier_currency, $estimated_cost, $markup_amount, $markup_percentage, $selling_price, $profit_price, $estimated_cost_in_booking_currency, $markup_amount_in_booking_currency, $selling_price_in_booking_currency, $comments);
+            $data['booking_information'] = $BI_quote_values;
+            $data['headings'] = $headings;
+
+            // dd($data);
+       
+            $reportName = "Compare Quote Report";
+            
+            return Excel::download(new CompareQuoteExport($data), "$reportName.xlsx");
+
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error_message', $e->getMessage());
+        }
+    }
+
+    public function get_percentage_value_array($EC_array){
+
+        $f = array();
+
+        foreach($EC_array as $pkey => $a){
+            foreach($a as $ckey => $b){
+
+                $f[$pkey][$ckey] = \Helper::number_format($EC_array[$pkey][$ckey]).' %';
+            }
+        }
+
+        return $f;
+    }
+
+    public function get_cost_value_array($EC_array , $SC_array , $model_name, $column_name ){
+        $model_name = 'App\\'.$model_name;
+
+        $f = array();
+
+        foreach($SC_array as $pkey => $a){
+            foreach($a as $ckey => $b){
+
+                $f[$pkey][$ckey] = $model_name::where('id', $b)->value($column_name).' '.\Helper::number_format($EC_array[$pkey][$ckey]);
+            
+            }
+        }
+
+        return $f;
+    }
+
+    public function get_ids_value_array($C_array , $model_name, $column_name ){
+        $model_name = 'App\\'.$model_name;
+
+        $f = array();
+
+        foreach($C_array as $pkey => $a){
+            foreach($a as $ckey => $b){
+
+                $f[$pkey][$ckey] = $model_name::where('id', $b)->value($column_name);
+            
+            }
+        }
+
+        return $f;
+    }
+
+    public function get_currency_value_array($C_array , $model_name, $column_name, $scolumn_name){
+        $model_name = 'App\\'.$model_name;
+
+        $f = array();
+
+        foreach($C_array as $pkey => $a){
+            foreach($a as $ckey => $b){
+
+                $f[$pkey][$ckey] = $model_name::where('id', $b)->value($column_name).' - '.$model_name::where('id', $b)->value($scolumn_name);
+            
+            }
+        }
+
+        return $f;
+    }
+
+    public function get_quote_heading_array($passedParams){
+
+        $f = array();
+
+        foreach($passedParams as $pkey => $a){
+            if(!is_null($a)){
+                $f[$pkey] = Quote::where('id', $a)->value('quote_ref').' - '.Quote::where('id', $a)->value('ref_no');
+            }
+        }
+
+        return $f;
+    }
+
+
+    public function get_quote_detail_with_value($passedParams, $columns){
+
+        foreach($columns as $key => $column){
+            
+            $feild_array = array();
+
+            if(!is_null($passedParams['quote_ref_one'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_one'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_two'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_two'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_three'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_three'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_four'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_four'])->pluck($column)->toArray();
+            }
+
+            $a[$column] = $feild_array;
+        }
+
+        return $a;
+    }
+
+
+    public function get_quote_detail_value($passedParams, $columns){
+
+        foreach($columns as $key => $column){
+            
+            $feild_array = array();
+
+            if(!is_null($passedParams['quote_ref_one'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_one'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_two'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_two'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_three'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_three'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_four'])){
+
+                $feild_array[] = QuoteDetail::where('quote_id', $passedParams['quote_ref_four'])->pluck($column)->toArray();
+            }
+
+            $a[$column] = $feild_array;
+        }
+
+        return $a;
+    }
+
+    public function get_column_array( $z, $label){
+
+        $hsc = 0;
+        foreach($z as $x) {
+            if(count($x) > $hsc)
+                $hsc = count($x);
+        }
+
+        $hh = array();
+        foreach($z as $key => $zz) {
+            for($i=0; $i < $hsc; $i++) {
+                $hh[$key][$i] = @$zz[$i];
+            }
+        }
+
+        $rows = array();
+        foreach($hh as $key => $zz) {
+            $rows['rows'][$key] = array_column($hh, $key);
+        }
+
+        $result = array(
+            'label' => $label,
+            'rows'  => $rows['rows']
+        );
+
+        return $result;
+    }
+
+    public function get_quote_value( $passedParams, $columns, $headings){
+
+        foreach($columns as $key => $column){
+
+            $feild_array = array();
+
+            if(!is_null($passedParams['quote_ref_one'])){
+                $feild_array[] = Quote::where('id', $passedParams['quote_ref_one'])->value($column);
+            }
+    
+            if(!is_null($passedParams['quote_ref_two'])){
+                $feild_array[] = Quote::where('id', $passedParams['quote_ref_two'])->value($column);
+            }
+
+            if(!is_null($passedParams['quote_ref_three'])){
+                $feild_array[] = Quote::where('id', $passedParams['quote_ref_three'])->value($column);
+            }
+
+            if(!is_null($passedParams['quote_ref_four'])){
+                $feild_array[] = Quote::where('id', $passedParams['quote_ref_four'])->value($column);
+            }
+
+            $a[$headings[$key]] = $feild_array;
+        }
+
+        return $a;
     }
 
     public function activity_by_user_report_excel(Request $request){

@@ -253,6 +253,9 @@ Route::group(['middleware' => ['auth']], function(){
         // reports-export-routes
         Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
         Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));
+        
+        Route::post('compare-quote-report-export', array('as' => 'compare.quote.export', 'uses' => 'ReportController@compare_quote_export'));
+        
         Route::post('activity-by-user-report-export', array('as' => 'activity.by.user.report.export', 'uses' => 'ReportController@activity_by_user_report_excel'));
         Route::post('supplier-report-export', array('as' => 'supplier.report.export', 'uses' => 'ReportController@supplier_report_export'));
         Route::post('quote-report-export', array('as' => 'quote.report.export', 'uses' => 'ReportController@quote_report_export'));

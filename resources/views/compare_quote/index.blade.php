@@ -117,7 +117,30 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-12 text-right mb-1 p-1">
+            <div class="col-md-9">
+                <form method="POST" action="{{ route('reports.compare.quote.export') }}">
+                    @csrf
+                    @php
+                        $currParams = [
+                            'quote_ref_one'   => request()->get('quote_ref_one'),
+                            'quote_ref_two'   => request()->get('quote_ref_two'),
+                            'quote_ref_three' => request()->get('quote_ref_three'),
+                            'quote_ref_four' => request()->get('quote_ref_four'),
+                        ];
+                    @endphp
+                    <input type="hidden" name="params" value="{{ json_encode($currParams, TRUE) }}">
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Select Action
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <button type="submit" class="dropdown-item btn-link">Export</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-3 text-right mb-1 p-1">
               <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-expand-all-btn" >Expand All</button>
               <button type="button" class="btn btn-sm btn-outline-dark mr-2 compare-collapse-all-btn" >Collapse All</button>
             </div>

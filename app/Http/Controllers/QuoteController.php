@@ -126,6 +126,86 @@ class QuoteController extends Controller
 
     public function index(Request $request)
     {
+
+        $z[] = QuoteDetail::where('quote_id', 1)->pluck('date_of_service')->toArray();
+        $z[] = QuoteDetail::where('quote_id', 2)->pluck('date_of_service')->toArray();
+
+        $y = 0;
+        foreach($z as $x) {
+            if(count($x) > $y)
+                $y = count($x);
+        }
+        // echo $y;
+     
+       
+        // foreach($z as $key => $zz) {
+
+        //     $hh['rows'][] = $zz;
+        // }
+
+// array:2 [▼
+//   0 => array:1 [▼
+//     0 => "12/11/2021"
+//   ]
+//   1 => array:2 [▼
+//     0 => "08/11/2021"
+//     1 => "02/11/2021"
+//   ]
+// ]
+
+      // dd($z);
+
+
+
+        // saad bhai code  
+        // $hh = array();
+        // foreach($z as $key => $zz) {
+        //     for($i=0; $i < $y; $i++) {
+        //         $hh[$key][$i] = @$zz[$i];
+        //     }
+        // }
+
+        // $kk = array();
+        // foreach($hh as $key => $zz) {
+        //     $kk['rows'][$key] = array_column($hh, $key);
+        // }
+
+        // dd($kk);
+     
+        // $arr = array(
+        //     array(
+        //         'label' => 'Start Date',
+        //         'rows' => array(
+        //             array(
+        //                 '2021', '2020', '2019'
+        //             ),
+        //             array(
+        //                 '2018', '2017', '2016'
+        //             ),
+        //         )
+        //     ),
+        //     array(
+        //         'label' => 'End Date',
+        //         'rows' => array(
+        //             array(
+        //                 '2021', '2020', '2019'
+        //             ),
+        //             array(
+        //                 '2018', '2017'
+        //             ),
+        //         )
+        //     ),
+        // );
+
+        // $data['arr'] = $arr;
+
+        // dd($data);
+
+        // dd(isset($arr["QR-0001"][1]) ? $arr["QR-0001"][1] : '' );
+        // dd($arr["QR-0002"][0]);
+
+        // return view('exports.listing' , $data);
+
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
         if(count($request->all()) >0){
             $quote = $this->searchFilters($quote, $request);
