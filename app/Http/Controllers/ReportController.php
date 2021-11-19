@@ -32,6 +32,7 @@ use App\Role;
 use App\Supplier;
 use App\User;
 use App\Wallet;
+use App\QuotePaxDetail;
 use App\Season;
 use App\PaymentMethod;
 use App\BookingDetailFinance;
@@ -797,27 +798,80 @@ class ReportController extends Controller
         try {
             $passedParams = json_decode(request()->params, true);
 
-            //- booking information
-            $BI_columns      = array('quote_title','rate_type','ref_no' ,'ref_no' , 'quote_ref'  , 'tas_ref');
-            $BI_headings     = array('Quote Title','Currency Rate Type', 'Zoho Reference', 'Quote Reference',);
+            //- Booking Information
+            $BI_columns                            = array('quote_title','rate_type','ref_no','quote_ref','tas_ref','markup_type','user_id','brand_id','holiday_type_id','season_id','currency_id','agency','pax_no');
+            $quote_values                          = $this->get_quote_value($passedParams, $BI_columns);
+            $BI_quote_values['Quote Title']        = $quote_values['quote_title'];
+            $BI_quote_values['Sales Person']       = $this->get_quote_ids_value_array($quote_values['user_id'] , 'User', 'name');
+            $BI_quote_values['Currency Rate Type'] = $quote_values['rate_type'];
+            $BI_quote_values['Zoho Reference']     = $quote_values['ref_no'];
+            $BI_quote_values['Quote Reference']    = $quote_values['quote_ref'];
+            $BI_quote_values['TAS Reference']      = $quote_values['tas_ref'];
+            $BI_quote_values['Markup Type']        = $quote_values['markup_type'];
+            $BI_quote_values['Brand']              = $this->get_quote_ids_value_array($quote_values['brand_id'] , 'Brand', 'name');
+            $BI_quote_values['Type Of Holiday']    = $this->get_quote_ids_value_array($quote_values['holiday_type_id'] , 'HolidayType', 'name');
+            $BI_quote_values['Booking Season']     = $this->get_quote_ids_value_array($quote_values['season_id'] , 'Season', 'name');
+            $BI_quote_values['Booking Currency']   = $this->get_quote_currency_value_array($quote_values['currency_id'] , 'Currency', 'code' , 'name');
+            $BI_quote_values['Agency Booking']     = $this->get_quote_boolean_value_array($quote_values['agency']);
+            $BI_quote_values['Pax No.']            = $quote_values['pax_no'];
+            //- Booking Information
 
-            $BI_quote_values = $this->get_quote_value($passedParams, $BI_columns, $BI_headings);
+            //- Agency Information
+            $AI_columns                             = array('agency_name','agency_contact_name','agency_contact','agency_email');
+            $AI_quote_values_array                  = $this->get_quote_value($passedParams, $AI_columns);
+            $AI_quote_values['Agency Name']         = $AI_quote_values_array['agency_name'];
+            $AI_quote_values['Agency Contact Name'] = $AI_quote_values_array['agency_contact_name'];
+            $AI_quote_values['Agency Contact No.']  = $AI_quote_values_array['agency_contact'];
+            $AI_quote_values['Agency Email']        = $AI_quote_values_array['agency_email'];
+            //- Agency Information
 
-            // dd($BI_quote_values);
+            //- Lead Passenger Information
+            $LPI_columns                                = array('lead_passenger_name','lead_passenger_email','lead_passenger_contact','lead_passenger_dbo','lead_passsenger_nationailty_id','lead_passenger_resident','lead_passenger_bedding_preference','lead_passenger_dinning_preference','lead_passenger_covid_vaccinated');
+            $LPI_quote_values_array                     = $this->get_quote_value($passedParams, $LPI_columns);
+            $LPI_quote_values['Lead Passenger Name']    = $LPI_quote_values_array['lead_passenger_name'];
+            $LPI_quote_values['Lead Passenger Email']   = $LPI_quote_values_array['lead_passenger_email'];
+            $LPI_quote_values['Contact Number']         = $LPI_quote_values_array['lead_passenger_contact'];
+            $LPI_quote_values['Date Of Birth']          = $this->get_quote_date_format_array($LPI_quote_values_array['lead_passenger_dbo']);
+            $LPI_quote_values['Nationality (Passport)'] = $this->get_quote_ids_value_array($LPI_quote_values_array['lead_passsenger_nationailty_id'] , 'Country', 'name');
+            $LPI_quote_values['Resident In']            = $this->get_quote_ids_value_array($LPI_quote_values_array['lead_passenger_resident'] , 'Country', 'name');
+            $LPI_quote_values['Bedding Preferences']    = $LPI_quote_values_array['lead_passenger_bedding_preference'];
+            $LPI_quote_values['Dinning Preferences']    = $LPI_quote_values_array['lead_passenger_dinning_preference'];
+            $LPI_quote_values['Covid Vaccinated']       = $this->get_quote_boolean_value_array($LPI_quote_values_array['lead_passenger_covid_vaccinated']);
+            //- Lead Passenger Information
 
+            //- Passenger Details
+            $pd_columns                 = array('full_name','email','contact','date_of_birth','nationality_id','resident_in','bedding_preference','dinning_preference','covid_vaccinated');
+            $paxD_values                = $this->get_pax_detail_with_value($passedParams, $pd_columns);
+            $pd_nationality_array       = $this->get_ids_value_array( $paxD_values['nationality_id'], 'Country', 'name' );
+            $pd_resident_in_array       = $this->get_ids_value_array( $paxD_values['resident_in'], 'Country', 'name' );
+            $pd_covid_vaccinated_array  = $this->get_quoteD_boolean_value_array( $paxD_values['covid_vaccinated']);
+            $pd_date_of_birth_array     = $this->get_quoteD_date_format_array($paxD_values['date_of_birth']);
 
-            //- service details
-            $qd_columns = [ 
-                'date_of_service','end_date_of_service','number_of_nights','time_of_service','category_id','supplier_id','product_id','booking_type_id','supplier_currency_id','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','estimated_cost_bc','markup_amount_bc','selling_price_bc','comments',
-            ];
+            $pd_full_name           = $this->get_column_array( $paxD_values['full_name'], 'Full Name' );
+            $pd_email               = $this->get_column_array( $paxD_values['email'], 'Email' );
+            $pd_contact             = $this->get_column_array( $paxD_values['contact'], 'Contact Number' );
+            $pd_date_of_birth       = $this->get_column_array( $pd_date_of_birth_array, 'Date of Birth' );
+            $pd_nationality         = $this->get_column_array( $pd_nationality_array, 'Nationality (Passport)' );
+            $pd_resident_in         = $this->get_column_array( $pd_resident_in_array, 'Resident In' );
+            $pd_bedding_preference  = $this->get_column_array( $paxD_values['bedding_preference'], 'Bedding Preferences' );
+            $pd_dinning_preference  = $this->get_column_array( $paxD_values['dinning_preference'], 'Dinning Preferences' );
+            $pd_covid_vaccinated    = $this->get_column_array( $pd_covid_vaccinated_array, 'Covid Vaccinated' );
+            //- Passenger Details
 
+            //- Total Calculations
+            $TC_columns                                    = array('net_price','markup_amount', 'markup_percentage', 'profit_percentage','amount_per_person');
+            $TC_quote_values_array                         = $this->get_quote_value($passedParams, $TC_columns);
+            $TC_quote_values['Total Net Price']            = $this->get_quote_cost_value_array($TC_quote_values_array['net_price'] ,$quote_values['currency_id'] , 'Currency', 'code' );
+            $TC_quote_values['Total Markup Amount']        = $this->get_quote_cost_value_array($TC_quote_values_array['markup_amount'] ,$quote_values['currency_id'] , 'Currency', 'code' );
+            $TC_quote_values['Total Markup Percentage']    = $this->get_quote_percentage_value_array($TC_quote_values_array['markup_percentage'] );
+            $TC_quote_values['Total Profit Percentage']    = $this->get_quote_percentage_value_array($TC_quote_values_array['profit_percentage'] );
+            $TC_quote_values['Booking Amount Per Person']  = $this->get_quote_cost_value_array($TC_quote_values_array['amount_per_person'] ,$quote_values['currency_id'] , 'Currency', 'code' );
+            //- Total Calculations
 
-            $headings = $this->get_quote_heading_array($passedParams);
-        
-
-
-            $quoteD_values = $this->get_quote_detail_with_value($passedParams, $qd_columns);
-
+            //- Service Details
+            $qd_columns       = array('date_of_service','end_date_of_service','number_of_nights','time_of_service','category_id','supplier_id','product_id','booking_type_id','supplier_currency_id','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','estimated_cost_bc','markup_amount_bc','selling_price_bc','comments');
+            $headings         = $this->get_quote_heading_array($passedParams);
+            $quoteD_values    = $this->get_quote_detail_with_value($passedParams, $qd_columns);
             $DOS_array        = $quoteD_values['date_of_service'];
             $EDOS_array       = $quoteD_values['end_date_of_service'];
             $NON_array        = $quoteD_values['number_of_nights'];
@@ -857,20 +911,50 @@ class ReportController extends Controller
             $markup_amount_in_booking_currency  = $this->get_column_array( $MAIBC_array, 'Markup Amount in Booking Currency' );
             $selling_price_in_booking_currency  = $this->get_column_array( $SPIBC_array, 'Selling Price in Booking Currency' );
             $comments         = $this->get_column_array( $Comment_array, 'Internal Comments' );
-            
-            $data['service_details']     = array($start_date, $end_date, $number_of_nights, $time_of_service, $category_name , $supplier_name, $product_name, $booking_type_name, $supplier_currency, $estimated_cost, $markup_amount, $markup_percentage, $selling_price, $profit_price, $estimated_cost_in_booking_currency, $markup_amount_in_booking_currency, $selling_price_in_booking_currency, $comments);
-            $data['booking_information'] = $BI_quote_values;
-            $data['headings'] = $headings;
+            //- Service Details
 
-            // dd($data);
+
+            $data['service_details']            = array($start_date, $end_date, $number_of_nights, $time_of_service, $category_name , $supplier_name, $product_name, $booking_type_name, $supplier_currency, $estimated_cost, $markup_amount, $markup_percentage, $selling_price, $profit_price, $estimated_cost_in_booking_currency, $markup_amount_in_booking_currency, $selling_price_in_booking_currency, $comments);
+            $data['booking_information']        = $BI_quote_values;
+            $data['agency_information']         = $AI_quote_values;
+            $data['lead_passenger_information'] = $LPI_quote_values;
+            $data['pax_details']                = array($pd_full_name, $pd_email, $pd_contact, $pd_date_of_birth, $pd_nationality, $pd_resident_in, $pd_bedding_preference, $pd_dinning_preference, $pd_covid_vaccinated);
+            $data['total_calculations']         = $TC_quote_values;
+            $data['headings']                   = $headings;
        
-            $reportName = "Compare Quote Report";
+            $reportName = "Compare Quote";
             
             return Excel::download(new CompareQuoteExport($data), "$reportName.xlsx");
 
         } catch(\Exception $e) {
             return redirect()->back()->with('error_message', $e->getMessage());
         }
+    }
+
+    public function get_quote_date_format_array($EC_array){
+
+        $f = array();
+
+        foreach($EC_array as $ckey => $b){
+
+            $f[$ckey] = Carbon::parse($b)->format('d/m/Y');
+        }
+
+        return $f;
+    }
+
+    public function get_quoteD_date_format_array($EC_array){
+
+        $f = array();
+
+        foreach($EC_array as $pkey => $a){
+            foreach($a as $ckey => $b){
+
+                $f[$pkey][$ckey] =  Carbon::parse($EC_array[$pkey][$ckey])->format('d/m/Y'); 
+            }
+        }
+
+        return $f;
     }
 
     public function get_percentage_value_array($EC_array){
@@ -887,6 +971,18 @@ class ReportController extends Controller
         return $f;
     }
 
+    public function get_quote_percentage_value_array($EC_array){
+
+        $f = array();
+
+        foreach($EC_array as $ckey => $b){
+
+            $f[$ckey] = \Helper::number_format($EC_array[$ckey]).' %';
+        }
+
+        return $f;
+    }
+
     public function get_cost_value_array($EC_array , $SC_array , $model_name, $column_name ){
         $model_name = 'App\\'.$model_name;
 
@@ -898,6 +994,20 @@ class ReportController extends Controller
                 $f[$pkey][$ckey] = $model_name::where('id', $b)->value($column_name).' '.\Helper::number_format($EC_array[$pkey][$ckey]);
             
             }
+        }
+
+        return $f;
+    }
+
+    public function get_quote_cost_value_array($EC_array , $SC_array , $model_name, $column_name ){
+        $model_name = 'App\\'.$model_name;
+
+        $f = array();
+        
+        foreach($SC_array as $ckey => $b){
+
+            $f[$ckey] = $model_name::where('id', $b)->value($column_name).' '.\Helper::number_format($EC_array[$ckey]);
+        
         }
 
         return $f;
@@ -948,7 +1058,6 @@ class ReportController extends Controller
         return $f;
     }
 
-
     public function get_quote_detail_with_value($passedParams, $columns){
 
         foreach($columns as $key => $column){
@@ -981,6 +1090,37 @@ class ReportController extends Controller
         return $a;
     }
 
+    public function get_pax_detail_with_value($passedParams, $columns){
+
+        foreach($columns as $key => $column){
+            
+            $feild_array = array();
+
+            if(!is_null($passedParams['quote_ref_one'])){
+
+                $feild_array[] = QuotePaxDetail::where('quote_id', $passedParams['quote_ref_one'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_two'])){
+
+                $feild_array[] = QuotePaxDetail::where('quote_id', $passedParams['quote_ref_two'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_three'])){
+
+                $feild_array[] = QuotePaxDetail::where('quote_id', $passedParams['quote_ref_three'])->pluck($column)->toArray();
+            }
+
+            if(!is_null($passedParams['quote_ref_four'])){
+
+                $feild_array[] = QuotePaxDetail::where('quote_id', $passedParams['quote_ref_four'])->pluck($column)->toArray();
+            }
+
+            $a[$column] = $feild_array;
+        }
+
+        return $a;
+    }
 
     public function get_quote_detail_value($passedParams, $columns){
 
@@ -1042,7 +1182,7 @@ class ReportController extends Controller
         return $result;
     }
 
-    public function get_quote_value( $passedParams, $columns, $headings){
+    public function get_quote_value( $passedParams, $columns){
 
         foreach($columns as $key => $column){
 
@@ -1064,12 +1204,66 @@ class ReportController extends Controller
                 $feild_array[] = Quote::where('id', $passedParams['quote_ref_four'])->value($column);
             }
 
-            $a[$headings[$key]] = $feild_array;
+            $a[$column] = $feild_array;
         }
 
         return $a;
     }
 
+    public function get_quote_ids_value_array($C_array , $model_name, $column_name ){
+
+        $q = array();
+
+        $model_name = 'App\\'.$model_name;
+       
+        foreach($C_array as $key => $id ){
+
+            $q[$key] = $model_name::where('id', $id)->value($column_name);
+        }
+
+        return $q;
+    }
+
+    
+    public function get_quote_currency_value_array($C_array , $model_name, $column_name, $scolumn_name){
+
+        $q = array();
+
+        $model_name = 'App\\'.$model_name;
+       
+        foreach($C_array as $key => $id ){
+
+            $q[$key] = $model_name::where('id', $id)->value($column_name).' - '.$model_name::where('id', $id)->value($scolumn_name);
+        }
+
+        return $q;
+    }
+
+
+    public function get_quote_boolean_value_array($C_array){
+        $q = array();
+      
+        foreach($C_array as $key => $value){
+
+            $q[$key] = ($value == 0) ? 'No' : 'Yes';
+        }
+        return $q;
+    }
+    
+    public function get_quoteD_boolean_value_array($C_array){
+        $f = array();
+
+        foreach($C_array as $pkey => $a){
+            foreach($a as $ckey => $value){
+
+                $f[$pkey][$ckey] = ($value == 0) ? 'No' : 'Yes';
+            
+            }
+        }
+
+        return $f;
+    }
+   
     public function activity_by_user_report_excel(Request $request){
         try {
             $passedParams = json_decode(request()->params, true);
