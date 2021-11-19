@@ -350,8 +350,9 @@ class QuoteController extends Controller
         return $data;
     }
 
-    public function getQuoteDetailsArray($quoteD, $id)
+    public function getQuoteDetailsArray($quoteD, $id, $quote )
     {
+
         return [
             'category_id'           => $quoteD['category_id'],
             'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
@@ -372,13 +373,13 @@ class QuoteController extends Controller
             'supplier_currency_id'  => $quoteD['supplier_currency_id'],
             'comments'              => $quoteD['comments'],
             'estimated_cost'        => $quoteD['estimated_cost'],
-            'markup_amount'         => $quoteD['markup_amount'],
-            'markup_percentage'     => $quoteD['markup_percentage'],
-            'selling_price'         => $quoteD['selling_price'],
-            'profit_percentage'     => $quoteD['profit_percentage'],
+            'markup_amount'         => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount'] : NULL,
+            'markup_percentage'     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_percentage'] : NULL,
+            'selling_price'         => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
+            'profit_percentage'     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
             'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
-            'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
-            'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
+            'selling_price_bc'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
+            'markup_amount_bc'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
             'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
             // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
         ];
@@ -419,7 +420,7 @@ class QuoteController extends Controller
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
-                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
                 $quoteDetail['quote_id'] = $quote->id;
                 if(isset($qu_details['image']) && !empty($qu_details['image'])){
                     $quoteDetail['image'] = $qu_details['image'];
@@ -522,7 +523,7 @@ class QuoteController extends Controller
         if($request->has('quote') && count($request->quote) > 0){
             $quote->getQuoteDetails()->delete();
             foreach ($request->quote as $qu_details) {
-                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
                 $quoteDetail['quote_id'] = $quote->id;
                 if(isset($qu_details['image']) && !empty($qu_details['image'])){
                     $quoteDetail['image'] = $qu_details['image'];
@@ -652,7 +653,7 @@ class QuoteController extends Controller
         $booking = Booking::create($getQuote);
 
         foreach ($quote->getQuoteDetails as $qu_details) {
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id);
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
 
             $quoteDetail['booking_id']                   = $booking->id;
             $quoteDetail['outstanding_amount_left']      = $quoteDetail['estimated_cost'];
@@ -778,7 +779,7 @@ class QuoteController extends Controller
         $getQuote   = $this->quoteArray($quote,'clone');
         $clone      = Quote::create($getQuote);
         foreach ($quote->getQuoteDetails as $qu_details) {
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id);
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id, $clone);
             $quoteDetail['quote_id'] = $clone->id;
             if(isset($qu_details['image']) && !empty($qu_details['image'])){
                 $quoteDetail['image'] = $qu_details['image'];

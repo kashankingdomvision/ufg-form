@@ -1169,15 +1169,20 @@ class ReportController extends Controller
             }
         }
 
-        $rows = array();
-        foreach($hh as $key => $zz) {
-            $rows['rows'][$key] = array_column($hh, $key);
-        }
+        $rows   = array();
+        $result = array();
 
-        $result = array(
-            'label' => $label,
-            'rows'  => $rows['rows']
-        );
+        if(!empty($hh)){
+            
+            foreach($hh as $key => $zz) {
+                $rows['rows'][$key] = array_column($hh, $key);
+            }
+    
+            $result = array(
+                'label' => $label,
+                'rows'  => $rows['rows']
+            );
+        }
 
         return $result;
     }
