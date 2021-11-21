@@ -60,29 +60,48 @@
 
         <tr><td></td><td></td><td></td><td></td></tr>
 
+        
         @foreach ($pax_details as $key => $rows) 
-            @foreach ($rows['rows'] as $key1 => $columns) 
-                @php
-                    $cols = count($columns)
-                @endphp
 
+            @if(!empty($rows['rows']))
+                @foreach ($rows['rows'] as $key1 => $columns) 
+                    @php
+                        $cols = count($columns)
+                    @endphp
+
+                    <tr>
+                        <td>
+                            @if($key1 == 0)
+                            {{ $rows['label']}}
+                            @endif
+                        </td>
+                    
+                        @foreach ($columns as $col)  
+                            <td> {{ $col }} </td>
+                        @endforeach
+                    </tr>
+                    <br>
+                @endforeach
+
+                {{-- <tr><td></td><td></td><td></td><td></td></tr> --}}
+
+                @else
                 <tr>
-                    <td>
-                        @if($key1 == 0)
-                        {{ $rows['label']}}
-                        @endif
-                    </td>
-                
-                    @foreach ($columns as $col)  
-                        <td> {{ $col }} </td>
-                    @endforeach
-                </tr>
-                <br>
-            @endforeach
 
-            <tr><td></td><td></td><td></td><td></td></tr>
+                    <td>
+                        
+                        {{ $rows['label']}}
+                        
+                    </td>
+                    
+                </tr>
+ 
+            @endif
+
 
         @endforeach
+
+        <tr><td></td><td></td><td></td><td></td></tr>
 
         @foreach ($service_details as $key => $rows) 
             @foreach ($rows['rows'] as $key1 => $columns) 

@@ -1172,17 +1172,14 @@ class ReportController extends Controller
         $rows   = array();
         $result = array();
 
-        if(!empty($hh)){
-            
             foreach($hh as $key => $zz) {
                 $rows['rows'][$key] = array_column($hh, $key);
             }
-    
+
             $result = array(
                 'label' => $label,
-                'rows'  => $rows['rows']
+                'rows'  => !empty($rows['rows']) ? $rows['rows'] : ''
             );
-        }
 
         return $result;
     }
