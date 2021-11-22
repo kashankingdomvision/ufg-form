@@ -4,16 +4,16 @@
         <tr>
             <td></td>
             @foreach ($headings as $key => $bi) 
-            <td> {{$bi}} </td>
+            <td style="width: 35px;" align="center"> {{$bi}} </td>
             @endforeach
         </tr>   
         <tr><td></td><td></td><td></td><td></td></tr>
   
         @foreach ($booking_information as $key => $bi) 
             <tr>
-                <td> {{$key}} </td>
+                <td style="width: 35px;"> {{$key}} </td>
                 @foreach ($bi as $key => $bi) 
-                    <td class="text-center"> 
+                    <td  align="center"> 
                         @if($bi == 'live')
                             Live Rate
                         @elseif($bi == 'manual')
@@ -38,7 +38,7 @@
             <tr>
                 <td> {{$key}} </td>
                 @foreach ($bi as $key => $bi) 
-                    <td class="text-center"> 
+                    <td align="center"> 
                         {{ !empty($bi) ? $bi : '-'  }} 
                     </td>
                 @endforeach
@@ -51,7 +51,7 @@
             <tr>
                 <td> {{$key}} </td>
                 @foreach ($bi as $key => $bi) 
-                    <td class="text-center"> 
+                    <td align="center"> 
                         {{ !empty($bi) ? $bi : '-'  }} 
                     </td>
                 @endforeach
@@ -65,9 +65,11 @@
 
             @if(!empty($rows['rows']))
                 @foreach ($rows['rows'] as $key1 => $columns) 
-                    @php
+                    {{-- @php
                         $cols = count($columns)
-                    @endphp
+                    @endphp --}}
+
+                   
 
                     <tr>
                         <td>
@@ -77,15 +79,12 @@
                         </td>
                     
                         @foreach ($columns as $col)  
-                            <td> {{ $col }} </td>
+                            <td align="center"> {{ $col }} </td>
                         @endforeach
                     </tr>
-                    <br>
+                    
                 @endforeach
-
-                {{-- <tr><td></td><td></td><td></td><td></td></tr> --}}
-
-                @else
+            @else
                 <tr>
 
                     <td>
@@ -95,12 +94,8 @@
                     </td>
                     
                 </tr>
- 
             @endif
-
-
         @endforeach
-
         <tr><td></td><td></td><td></td><td></td></tr>
 
         @foreach ($service_details as $key => $rows) 
@@ -117,21 +112,21 @@
                     </td>
                 
                     @foreach ($columns as $col)  
-                        <td> {{ $col }} </td>
+                        <td align="center"> {{ $col }} </td>
                     @endforeach
                 </tr>
                 <br>
             @endforeach
 
-            <tr><td></td><td></td><td></td><td></td></tr>
+            {{-- <tr><td></td><td></td><td></td><td></td></tr> --}}
 
         @endforeach
 
         @foreach ($total_calculations as $key => $bi) 
             <tr>
-                <td> {{$key}} </td>
+                <td > {{$key}} </td>
                 @foreach ($bi as $key => $bi) 
-                    <td class="text-center"> 
+                    <td align="center"> 
                         {{ !empty($bi) ? $bi : '-'  }} 
                     </td>
                 @endforeach
