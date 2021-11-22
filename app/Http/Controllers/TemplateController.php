@@ -29,10 +29,10 @@ class TemplateController extends Controller
     $this->pagination = 10;
   }
   
-  public function getTemplateDetailsArray($quoteD, $template_id)
+  public function getTemplateDetailsArray($quoteD, $template)
   {
     return [
-      'template_id'           => $template_id,
+      'template_id'           => isset($template->id) && !empty($template->id) ? $template->id : NULL,
       'category_id'           => $quoteD['category_id'],
       'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
       'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
@@ -53,18 +53,18 @@ class TemplateController extends Controller
       'comments'              => $quoteD['comments'],
       'image'                 => isset($quoteD['image']) ? $quoteD['image'] : '',
       'estimated_cost'        => $quoteD['estimated_cost'],
-      'markup_amount'         => $quoteD['markup_amount'],
-      'markup_percentage'     => $quoteD['markup_percentage'],
-      'selling_price'         => $quoteD['selling_price'],
-      'profit_percentage'     => $quoteD['profit_percentage'],
+      'markup_amount'         => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['markup_amount'] : NULL,
+      'markup_percentage'     => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['markup_percentage'] : NULL,
+      'selling_price'         => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
+      'profit_percentage'     => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
       'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
-      'selling_price_bc'      => $quoteD['selling_price_in_booking_currency']??$quoteD['selling_price_bc'],
-      'markup_amount_bc'      => $quoteD['markup_amount_in_booking_currency']??$quoteD['markup_amount_bc'],
+      'selling_price_bc'      => isset($template->markup_type) && $template->markup_type == 'itemised' ? $template['selling_price_in_booking_currency'] : NULL,
+      'markup_amount_bc'      => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
       'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
       'stored_text'           => isset($quoteD['stored_text']['text']) ? $quoteD['stored_text']['text'] : '',
       'action_date'           => isset($quoteD['stored_text']['date']) ? $quoteD['stored_text']['date'] : '',
       // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
-  ];
+    ];
   }
   
   
@@ -127,9 +127,6 @@ class TemplateController extends Controller
     
   public function store(TemplateRequest $request)
   {
-
-    // dd($request->all());
-
     $template = Template::create([
       'user_id'     => Auth::id(),
       'title'       => $request->template_name,
@@ -140,7 +137,7 @@ class TemplateController extends Controller
     ]);
     
     foreach ($request->quote as $quote) {
-      $data = $this->getTemplateDetailsArray($quote, $template->id);
+      $data = $this->getTemplateDetailsArray($quote, $template);
       TemplateDetail::create($data);
     }
 
@@ -166,19 +163,19 @@ class TemplateController extends Controller
     
   public function edit($id)
   {
-      $data['template']         = Template::findOrFail(decrypt($id));
-      $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-      $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
-      $data['suppliers']        = Supplier::all()->sortBy('name');
-      $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-      $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-      $data['users']            = User::all()->sortBy('name');
-      $data['seasons']          = Season::all();
-      $data['booked_by']        = User::all()->sortBy('name');
-      $data['booking_types']    = BookingType::all();
-      $data['storetexts']       = StoreText::get();
+    $data['template']         = Template::findOrFail(decrypt($id));
+    $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+    $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
+    $data['suppliers']        = Supplier::all()->sortBy('name');
+    $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+    $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['users']            = User::all()->sortBy('name');
+    $data['seasons']          = Season::all();
+    $data['booked_by']        = User::all()->sortBy('name');
+    $data['booking_types']    = BookingType::all();
+    $data['storetexts']       = StoreText::get();
 
-      return view('templates.edit', $data);
+    return view('templates.edit', $data);
   }
     
   public function update(TemplateRequest $request, $id)
@@ -197,13 +194,12 @@ class TemplateController extends Controller
     $template->getDetails()->delete();
 
     foreach ($request->quote as $quote) {
-      $data = $this->getTemplateDetailsArray($quote, $template->id);
+      $data = $this->getTemplateDetailsArray($quote, $template);
       TemplateDetail::create($data);
     }
       
-    return redirect()->route('templates.index')->with('success_message', 'Template Successfully Updated');
+    return \Response::json(['status' => 200, 'success_message' => 'Template Updated Successfully'], 200);
+    // return redirect()->route('templates.index')->with('success_message', 'Template Successfully Updated');
   }
-    
-  
     
 }
