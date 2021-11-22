@@ -387,7 +387,7 @@ class QuoteController extends Controller
 
     public function create()
     {
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -475,7 +475,7 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail(decrypt($id));
         $data['quote']            = $quote;
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -606,7 +606,7 @@ class QuoteController extends Controller
         $quote                    = $log->data;
         $data['quote']            = $quote;
         $data['log']              = $log;
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -717,7 +717,7 @@ class QuoteController extends Controller
     /* view final quote */
     public function finalQuote($id)
     {
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');

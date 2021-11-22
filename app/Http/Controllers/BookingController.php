@@ -346,7 +346,7 @@ class BookingController extends Controller
 
 
         $booking = Booking::findOrFail(decrypt($id));
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['booking']          = $booking;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -612,7 +612,7 @@ class BookingController extends Controller
 
     public function show($id,$status = null)
     {
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -670,7 +670,7 @@ class BookingController extends Controller
         $booking_log                = BookingLog::findOrFail(decrypt($id));
         $data['log']                = $booking_log;
         $data['booking']            = $booking_log->data;
-        $data['countries']          = Country::orderBy('name', 'ASC')->get();
+        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
         $data['booked_by']          = User::all()->sortBy('name');
@@ -757,7 +757,7 @@ class BookingController extends Controller
 
     public function booking_detail_clone($count){
 
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         // $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();

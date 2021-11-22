@@ -85,7 +85,7 @@ class QuoteDocumentsController extends Controller
     public function generateExport($id) {
         $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
         $data['quote']            = $quote;
-        $data['countries']        = Country::orderBy('name', 'ASC')->get();
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['templates']        = Template::all()->sortBy('name');
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();

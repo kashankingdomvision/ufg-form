@@ -394,7 +394,7 @@ class ResponseController extends Controller
     
     public function getPaxPartial($count)
     {
-        $data['countries'] = Country::orderBy('name', 'ASC')->get();
+        $data['countries'] = Country::orderBy('sort_order', 'ASC')->get();
         $data['count']     = $count;
         $re['response']    = View::make('partials.paxdetail', $data)->render();
         return response()->json($re);
