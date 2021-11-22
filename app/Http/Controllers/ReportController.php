@@ -798,6 +798,11 @@ class ReportController extends Controller
         try {
             $passedParams = json_decode(request()->params, true);
 
+            if($passedParams['quote_ref_one'] == null && $passedParams['quote_ref_two'] == null && $passedParams['quote_ref_three'] == null && $passedParams['quote_ref_four'] == null){
+
+                return redirect()->back()->with('error_message', "Please Compare atleast Two Quote To Export.");
+            }
+
             //- Booking Information
             $BI_columns                            = array('quote_title','rate_type','ref_no','quote_ref','tas_ref','markup_type','user_id','brand_id','holiday_type_id','season_id','currency_id','agency','pax_no');
             $quote_values                          = $this->get_quote_value($passedParams, $BI_columns);
