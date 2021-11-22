@@ -3429,8 +3429,12 @@ $(document).ready(function($) {
 
                         $("#overlay").removeClass('overlay').html('');
                         setTimeout(function() {
-                            alert('Template Updated Successfully');
-                            window.location.href = `${REDIRECT_BASEURL}template/index`;
+
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = `${REDIRECT_BASEURL}template/index`;
+                            }
+                            
                         }, 400);
                     },
                     error: function(reject) {

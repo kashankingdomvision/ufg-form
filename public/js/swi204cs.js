@@ -52677,8 +52677,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert('Template Updated Successfully');
-          window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+          }
         }, 400);
       },
       error: function error(reject) {
