@@ -102,6 +102,8 @@
                 </tr>
             
             @endforeach
+
+            <tr><td></td><td></td><td></td><td></td></tr>
         @endforeach
 
         @foreach ($total_calculations as $key => $bi) 
