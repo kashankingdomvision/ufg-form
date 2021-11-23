@@ -22,7 +22,6 @@ class TemplateDetail extends Model
         'booking_due_date',
         'service_details',
         'booking_reference',
-        'booking_type_id',
         'refundable_percentage',
         'supplier_currency_id',
         'comments',
