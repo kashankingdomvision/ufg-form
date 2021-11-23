@@ -394,9 +394,7 @@
 
             <div class="col-sm-3">
               <div class="form-group">
-                <label>Internal Comments 
-                    {{-- <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a> --}}
-                </label>
+                <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                 <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
               </div>
             </div>
