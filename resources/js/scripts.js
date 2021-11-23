@@ -3324,7 +3324,7 @@ $(document).ready(function($) {
 
                                 getQuoteTotalValues();
 
-                                jQuery('.note-editor').remove();
+                                // jQuery('.note-editor').remove();
                                 jQuery('.summernote').summernote({
                                     height: 150,   //set editable area's height
                                     placeholder: 'Enter Text Here..',
@@ -3343,6 +3343,15 @@ $(document).ready(function($) {
                 });
 
             });
+
+
+            // jQuery('.summernotes').summernote({
+            //     height: 150,   //set editable area's height
+            //     placeholder: 'Enter Text Here..',
+            //     codemirror: { // codemirror options
+            //         theme: 'monokai'
+            //     },
+            // });
 
             $("#create_template").submit(function(event) {
 

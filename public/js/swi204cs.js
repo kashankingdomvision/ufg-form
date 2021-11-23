@@ -52598,8 +52598,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             $(function () {
               $(".sortable").sortable();
             });
-            getQuoteTotalValues();
-            jQuery('.note-editor').remove();
+            getQuoteTotalValues(); // jQuery('.note-editor').remove();
+
             jQuery('.summernote').summernote({
               height: 150,
               //set editable area's height
@@ -52616,7 +52616,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         console.log(reject); // searchRef.text('Search').prop('disabled', false);
       }
     });
-  });
+  }); // jQuery('.summernotes').summernote({
+  //     height: 150,   //set editable area's height
+  //     placeholder: 'Enter Text Here..',
+  //     codemirror: { // codemirror options
+  //         theme: 'monokai'
+  //     },
+  // });
+
   $("#create_template").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
