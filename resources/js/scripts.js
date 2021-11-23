@@ -3379,8 +3379,11 @@ $(document).ready(function($) {
                         $("#overlay").removeClass('overlay').html('');
 
                         setTimeout(function() {
-                            alert('Template Created Successfully');
-                            window.location.href = `${REDIRECT_BASEURL}template/index`;
+
+                            if(data && data.status == 200){
+                                alert(data.success_message);
+                                window.location.href = `${REDIRECT_BASEURL}template/index`;
+                            }
                         }, 400);
                     },
                     error: function(reject) {
@@ -3388,8 +3391,10 @@ $(document).ready(function($) {
                         if (reject.status === 422) {
 
                             var errors = $.parseJSON(reject.responseText);
-
+                            
                             setTimeout(function() {
+
+                                var flag = true;
 
                                 $("#overlay").removeClass('overlay').html('');
 
@@ -3397,10 +3402,21 @@ $(document).ready(function($) {
 
                                     index = index.replace(/\./g, '_');
 
+                                    // expand quote if feild has an error
+                                    $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                    $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                    $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+
                                     $(`#${index}`).addClass('is-invalid');
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                                });
 
+                                    if (flag) {
+
+                                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                        flag = false;
+                                    }
+
+                                });
                             }, 400);
 
                         }

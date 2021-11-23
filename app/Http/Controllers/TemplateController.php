@@ -58,7 +58,7 @@ class TemplateController extends Controller
       'selling_price'         => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
       'profit_percentage'     => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
       'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
-      'selling_price_bc'      => isset($template->markup_type) && $template->markup_type == 'itemised' ? $template['selling_price_in_booking_currency'] : NULL,
+      'selling_price_bc'      => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
       'markup_amount_bc'      => isset($template->markup_type) && $template->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
       'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
       'stored_text'           => isset($quoteD['stored_text']['text']) ? $quoteD['stored_text']['text'] : '',
@@ -121,12 +121,14 @@ class TemplateController extends Controller
     $data['booked_by']        = User::all()->sortBy('name');
     $data['booking_types']    = BookingType::all();
     $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+    $data['storetexts']       = StoreText::get();
 
     return view('templates.create', $data);
   }
     
   public function store(TemplateRequest $request)
   {
+
     $template = Template::create([
       'user_id'     => Auth::id(),
       'title'       => $request->template_name,
@@ -141,7 +143,8 @@ class TemplateController extends Controller
       TemplateDetail::create($data);
     }
 
-    return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
+    return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
+    // return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
   }
     
   public function detail($id)
