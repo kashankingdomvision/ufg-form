@@ -103,6 +103,9 @@
                                                 </div>
                                             </th>
                                               <th>Template Name</th>
+                                              <th>Currency</th>
+                                              <th>Currency Rate Type</th>
+                                              <th>Markup Type</th>
                                               <th>Season</th>
                                               <th>Created By</th>
                                               <th>Created At</th>
@@ -119,6 +122,21 @@
                                                         </div>
                                                     </td>
                                                     <td>{!! $template->title !!}</td>
+                                                    <td>{{ isset($template->getCurrency->name) && !empty($template->getCurrency->name) ? $template->getCurrency->code.' - '.$template->getCurrency->name : '' }}</td>
+                                                    <td> 
+                                                        @if($template->rate_type == 'live')
+                                                            Live Rate
+                                                        @elseif($template->rate_type == 'manual')
+                                                            Manual Rate
+                                                        @endif
+                                                    </td>
+                                                    <td> 
+                                                        @if($template->markup_type == 'itemised')
+                                                            Itemised Markup 
+                                                        @elseif($template->markup_type == 'whole')
+                                                            Whole Markup
+                                                        @endif
+                                                    </td>
                                                     <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
                                                     <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
                                                     <td>{{ $template->formated_created_at }}</td>
