@@ -50272,7 +50272,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function getQuoteTotalValues() {
-    console.log("getQuoteTotalValues working");
     var markupType = $("input[name=markup_type]:checked").val();
     var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map(function (i, e) {
       return parseFloat(e.value);
@@ -52576,7 +52575,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
-  $('#tempalte_id').on('change', function () {
+  $('.tempalte-id').on('change', function () {
     var templateID = $(this).val();
     $.ajax({
       url: "".concat(BASEURL, "template/").concat(templateID, "/partial"),
@@ -54242,29 +54241,29 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
       }
     }
   });
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
-  setTimeout(function () {
-    jQuery('.alert-success').fadeOut(1500);
-    jQuery('.alert-danger').fadeOut(1500);
-  }, 3000);
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.booking-currency-id').on('change', function () {
-    var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#routeForGroups').val() + '/' + jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-      type: "GET",
-      url: url,
-      success: function success(response) {
-        if (response.status) {
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').empty();
-          jquery__WEBPACK_IMPORTED_MODULE_0___default.a.each(response.groups, function (value, key) {
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').append(jquery__WEBPACK_IMPORTED_MODULE_0___default()("<option></option>").attr("value", key.id).text(key.name));
-          });
-          jquery__WEBPACK_IMPORTED_MODULE_0___default()('.dynamic-group').select2();
-        }
-      }
-    });
-  });
-});
+}); // $(document).ready(function() {
+//    setTimeout(function() {
+//        jQuery('.alert-success').fadeOut(1500);
+//        jQuery('.alert-danger').fadeOut(1500);
+//     }, 3000);
+//     $('.booking-currency-id').on('change', function() {
+//         let url = $('#routeForGroups').val() + '/' + $(this).val();
+//         console.log(url);
+//         $.ajax({
+//             type: "GET",
+//             url: url,
+//             success:function(response) {
+//                 if(response.status) {
+//                     $('.dynamic-group').empty();
+//                     $.each(response.groups, function(value, key) {
+//                         $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
+//                     });
+//                     $('.dynamic-group').select2();
+//                 }
+//             }
+//         });
+//     });
+// });
 
 /***/ }),
 

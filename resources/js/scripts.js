@@ -436,8 +436,6 @@ $(document).ready(function($) {
 
             function getQuoteTotalValues() {
 
-                console.log("getQuoteTotalValues working");
-
                 var markupType = $("input[name=markup_type]:checked").val();
 
                 var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
@@ -3293,11 +3291,9 @@ $(document).ready(function($) {
 
             });
 
-            $('#tempalte_id').on('change', function() {
+            $('.tempalte-id').on('change', function() {
 
                 var templateID = $(this).val();
-
-            
 
                 $.ajax({
                     url: `${BASEURL}template/${templateID}/partial`,
@@ -3307,7 +3303,6 @@ $(document).ready(function($) {
 
                         if (data) {
                             if (confirm("Are you sure! you want to override Quote Details?")) {
-
 
                                 $('#parent').html(data.template_view);
 
@@ -5448,25 +5443,28 @@ $(".add-new-group-quote").submit(function (e) {
     });
 });
 
-    $(document).ready(function() {
-       setTimeout(function() {
-           jQuery('.alert-success').fadeOut(1500);
-           jQuery('.alert-danger').fadeOut(1500);
-        }, 3000);
-        $('.booking-currency-id').on('change', function() {
-            let url = $('#routeForGroups').val() + '/' + $(this).val();
-            $.ajax({
-                type: "GET",
-                url: url,
-                success:function(response) {
-                    if(response.status) {
-                        $('.dynamic-group').empty();
-                        $.each(response.groups, function(value, key) {
-                            $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
-                        });
-                        $('.dynamic-group').select2();
-                    }
-                }
-            });
-        });
-    });
+    // $(document).ready(function() {
+    //    setTimeout(function() {
+    //        jQuery('.alert-success').fadeOut(1500);
+    //        jQuery('.alert-danger').fadeOut(1500);
+    //     }, 3000);
+    //     $('.booking-currency-id').on('change', function() {
+    //         let url = $('#routeForGroups').val() + '/' + $(this).val();
+
+    //         console.log(url);
+
+    //         $.ajax({
+    //             type: "GET",
+    //             url: url,
+    //             success:function(response) {
+    //                 if(response.status) {
+    //                     $('.dynamic-group').empty();
+    //                     $.each(response.groups, function(value, key) {
+    //                         $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
+    //                     });
+    //                     $('.dynamic-group').select2();
+    //                 }
+    //             }
+    //         });
+    //     });
+    // });

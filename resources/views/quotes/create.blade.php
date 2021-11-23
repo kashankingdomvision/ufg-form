@@ -407,15 +407,27 @@
 
 
                   <div class="row mb-2">
-                      <div class="col-md-2 offset-md-10">
-                        <select name="template" id="tempalte_id" class="float-right select2single form-control template">
-                          <option  disabled selected value="">Select Template</option>
-                          @foreach ($templates as $template)
-                            <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
-                          @endforeach
-                        </select>
+                    <div class="col-md-2 offset-md-8">
+                      <label for="">Other Template</label>
+                      <select name="template" class="float-right select2single form-control template tempalte-id">
+                        <option  disabled selected value="">Select Template</option>
+                        @foreach ($public_templates as $template)
+                          <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+
+                    <div class="col-md-2 ">
+                      <label for="">My Template</label>
+                      <select name="template" class="float-right select2single form-control template tempalte-id">
+                        <option  disabled selected value="">Select Template</option>
+                        @foreach ($my_templates as $template)
+                          <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
+
                   <div class="parent" id="parent">
                     <div class="row">
                       <div class="col-md-12 text-right mb-2 p-1">
