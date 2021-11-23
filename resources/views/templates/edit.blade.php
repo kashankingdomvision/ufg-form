@@ -255,7 +255,7 @@
 
                                                 <div class="col-sm-2">
                                                   <div class="form-group">
-                                                    <label>Product </label>
+                                                    <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                                     <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                                       <option value="">Select Product</option>
                                                       @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
@@ -498,7 +498,7 @@
                   
                                                 <div class="col-sm-3">
                                                   <div class="form-group">
-                                                    <label>Internal Comments </label>
+                                                    <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                                                     <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
                                                   </div>
                                                 </div>
@@ -543,6 +543,8 @@
 
   </div>
 
+  @include('partials.add_new_product')
+  @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
   @include('partials.category_detail_feilds')
 @endsection

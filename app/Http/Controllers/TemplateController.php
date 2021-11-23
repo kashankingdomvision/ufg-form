@@ -174,6 +174,7 @@ class TemplateController extends Controller
     $data['booked_by']        = User::all()->sortBy('name');
     $data['booking_types']    = BookingType::all();
     $data['storetexts']       = StoreText::get();
+    $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
 
     return view('templates.edit', $data);
   }
