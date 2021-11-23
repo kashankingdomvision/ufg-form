@@ -81,7 +81,7 @@ class ResponseController extends Controller
     
             $supplierProducts = $supplier->getProducts;
 
-            return \Response::json(['status' => true, 'success_message' => 'Supplier Bulk Payment Added Successfully.' , 'products' => $supplierProducts], 200); // Status code here
+            return \Response::json(['status' => true, 'success_message' => 'Product Added Successfully.' , 'products' => $supplierProducts], 200); // Status code here
           
         } catch (\Exception $e) {
 
