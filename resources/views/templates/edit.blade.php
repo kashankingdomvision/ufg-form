@@ -121,6 +121,15 @@
                                 </div>
 
                                 <div class="parent" id="parent">
+
+                                  <div class="row">
+                                    <div class="col-md-12 text-right mb-2 p-1">
+                                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
+                                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
+                                    </div>
+                                  </div>
+
+                                  <div class="sortable sortable-spacing">
                                     @foreach ($template->getDetails as $key  => $q_detail )
                                         <div class="quote card card-default quote-{{$key}}" data-key="{{$key}}">
                                             
@@ -517,6 +526,8 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                  </div>
+                                  
                                     <div class="parent-spinner text-gray spinner-border-sm "></div>
                                 </div>
 
