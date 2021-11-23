@@ -158,10 +158,8 @@ class TemplateController extends Controller
     
   public function destroy($id)
   {
-    $template = Template::findOrFail(decrypt($id));
-    $template->delete();
-    
-    return redirect()->back()->with('success_message', 'Deleted Successfully');
+    Template::destroy(decrypt($id));
+    return redirect()->back()->with('success_message', 'Template Deleted Successfully');
   }
     
   public function edit($id)
