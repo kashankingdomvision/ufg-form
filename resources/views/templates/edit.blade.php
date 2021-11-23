@@ -517,6 +517,7 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    <div class="parent-spinner text-gray spinner-border-sm "></div>
                                 </div>
 
                                 <div class="row">
@@ -546,6 +547,7 @@
   @include('partials.add_new_product')
   @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
+  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
   @include('partials.category_detail_feilds')
 @endsection
 
