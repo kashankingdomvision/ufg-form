@@ -388,8 +388,8 @@ class QuoteController extends Controller
     public function create()
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['public_templates'] = Template::where('user_id', '!=' , Auth::id())->get();
-        $data['my_templates']     = Template::where('user_id', '=' , Auth::id())->get();
+        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');

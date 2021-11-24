@@ -146,6 +146,27 @@ class TemplateController extends Controller
     return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
     // return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
   }
+
+  public function store(TemplateRequest $request)
+  {
+
+    $template = Template::create([
+      'user_id'     => Auth::id(),
+      'title'       => $request->template_name,
+      'season_id'   => $request->season_id,
+      'currency_id' => $request->currency_id,
+      'rate_type'   => $request->rate_type,
+      'markup_type' => $request->markup_type,
+    ]);
+    
+    foreach ($request->quote as $quote) {
+      $data = $this->getTemplateDetailsArray($quote, $template);
+      TemplateDetail::create($data);
+    }
+
+    return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
+    // return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
+  }
     
   public function detail($id)
   {

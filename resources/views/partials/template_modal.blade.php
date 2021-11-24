@@ -14,6 +14,20 @@
             <input type="text" name="template_name" id="template_name" class="form-control" placeholder="Template name">
             <span class="text-danger" role="alert"></span>
           </div>
+
+          <div class="form-group">
+            <label>Privacy Status <span style="color:red">*</span></label>
+            <div>
+              <label class="radio-inline">
+                <input type="radio" name="privacy_status" class="privacy-status" value="1"> Public
+
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="privacy_status" class="privacy-status" value="0"> Private
+              </label>
+            </div>
+          </div>
           
         </div>
 

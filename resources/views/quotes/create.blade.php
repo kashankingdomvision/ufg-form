@@ -425,7 +425,7 @@
 
                   <div class="row mb-2">
                     <div class="col-md-2 offset-md-8">
-                      <label for="">Other Template</label>
+                      <label for="">Public Template</label>
                       <select name="template" class="float-right select2single form-control template tempalte-id">
                         <option  disabled selected value="">Select Template</option>
                         @foreach ($public_templates as $template)
@@ -435,10 +435,10 @@
                     </div>
 
                     <div class="col-md-2 ">
-                      <label for="">My Template</label>
+                      <label for="">Private Template</label>
                       <select name="template" class="float-right select2single form-control template tempalte-id">
                         <option  disabled selected value="">Select Template</option>
-                        @foreach ($my_templates as $template)
+                        @foreach ($private_templates as $template)
                           <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
                         @endforeach
                       </select>
