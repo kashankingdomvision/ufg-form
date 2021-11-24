@@ -50271,6 +50271,46 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   }
 
+  function onChangeAgencyCommissionType() {
+    var agency = $("input[name=agency]:checked").val();
+    var agencyCommissionType = $("input[name=agency_commission]:checked").val();
+    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+
+    if (agency == 1 && agencyCommissionType == 'net-price') {
+      $('.agency-commission-feild').addClass('d-none');
+      $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+    }
+
+    if (agency == 1 && agencyCommissionType == 'paid-net-of-commission') {
+      $('.agency-commission-feild').removeClass('d-none');
+      getCalculatedTotalNetMarkup();
+    }
+
+    if (agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure') {
+      $('.agency-commission-feild').removeClass('d-none');
+      $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+    }
+  }
+
+  $(document).on('change, click', '.agency-commission-type', function () {
+    onChangeAgencyCommissionType();
+  });
+  $(document).on('change', '.agency-commission', function () {
+    getCalculatedTotalNetMarkup();
+  });
+
+  function getCalculatedTotalNetMarkup() {
+    var agencyCommission = $('.agency-commission').val();
+    var agencyTotalMarkup = $('.total-markup-amount').val();
+    var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
+    $('.agency-total-markup').val(check(totalAgencyNetMarkup));
+  }
+
   function getQuoteTotalValues() {
     var markupType = $("input[name=markup_type]:checked").val();
     var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map(function (i, e) {
@@ -50319,6 +50359,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
     }
 
+    onChangeAgencyCommissionType();
     getCommissionRate();
     getBookingAmountPerPerson();
     getSellingPrice(); // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
@@ -50719,7 +50760,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $("#quote_".concat(key, "_markup_amount_in_booking_currency")).val(check(calculatedMarkupAmountInBookingCurrency));
       key++;
     }
-  }
+  } // $(document).on('change', '.agency-commission', function() {
+  //     onChangeAgencyCommission();
+  // });
+
 
   $(document).on('change', '.booking-supplier-currency-id', function () {
     var code = $(this).find(":selected").data("code");

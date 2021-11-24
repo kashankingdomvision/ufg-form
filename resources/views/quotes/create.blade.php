@@ -265,6 +265,23 @@
                       </div>
                     </div>
 
+                    <div class="col-sm-6 agencyField d-none">
+                      <div class="form-group">
+                        <label>Agency Commission <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline">
+                            <input type="radio" name="agency_commission" class="agency-commission-type" value="net-price" >&nbsp; Net Price &nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="agency_commission" class="agency-commission-type" value="paid-net-of-commission" >&nbsp; Paid Net of Commission &nbsp;&nbsp;
+                          </label>
+                          <label class="radio-inline">
+                            <input type="radio" name="agency_commission" class="agency-commission-type" value="we-pay-commission-on-departure">&nbsp; We pay Commission on Departure
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-md-12 agency-columns" >
 
                       <div class="row mt-1 agencyField d-none" >
@@ -943,6 +960,70 @@
                       </div>
                     </div>
                   </div>
+
+                  
+                  <div class="agencyField d-none">
+                    <hr>
+
+                    {{-- <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Net Price</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control agency-net-price remove-zero-values" step="any" min="0" name="agency_net_price" value="0.00" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div> --}}
+
+                    {{-- <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Selling Price</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control agency-selling-price remove-zero-values" step="any" min="0" name="agency_selling_price" value="0.00" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div> --}}
+  
+                    <div class="form-group row agency-commission-feild d-none">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0" name="agency_commission" value="0.00" >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Markup</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control agency-total-markup remove-zero-values" step="any" min="0" name="agency_total_markup" value="0.00" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <hr>
+                  </div>
+
 
                   <div class="form-group row">
 
