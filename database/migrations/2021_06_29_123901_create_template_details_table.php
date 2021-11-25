@@ -40,8 +40,8 @@ class CreateTemplateDetailsTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->double('estimated_cost_bc')->nullable();
-            $table->double('markup_amount_bc')->nullable();
-            $table->double('selling_price_bc')->nullable();
+            $table->double('markup_amount_in_booking_currency')->nullable();
+            $table->double('selling_price_in_booking_currency')->nullable();
             // $table->enum('added_in_sage', [0, 1])->default(0);
             $table->text('service_details')->nullable();
             $table->text('comments')->nullable();

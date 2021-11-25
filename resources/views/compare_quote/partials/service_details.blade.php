@@ -845,7 +845,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_one_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_one->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_bc) : '-' }}
+                                    {{ ($quote_ref_one->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -857,7 +857,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_two_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_two->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_bc) : '-' }}
+                                    {{ ($quote_ref_two->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -869,7 +869,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_three_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_three->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_bc) : '-' }}
+                                    {{ ($quote_ref_three->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -881,7 +881,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_four_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_four->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_bc) : '-' }}
+                                    {{ ($quote_ref_four->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->markup_amount_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -898,7 +898,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_one_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_one->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_bc) : '-' }}
+                                    {{ ($quote_ref_one->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -910,7 +910,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_two_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_two->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_bc) : '-' }}
+                                    {{ ($quote_ref_two->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -922,7 +922,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_three_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_three->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_bc) : '-' }}
+                                    {{ ($quote_ref_three->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>
@@ -934,7 +934,7 @@
                         <div class="row flex-column">
                             @foreach ($quote_ref_four_details as $key => $q_detail )
                                 <div class="col border col-style">
-                                    {{ ($quote_ref_four->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_bc) : '-' }}
+                                    {{ ($quote_ref_four->markup_type == 'itemised') ? $q_detail->getSupplierCurrency->code.' '.\Helper::number_format($q_detail->selling_price_in_booking_currency) : '-' }}
                                 </div>
                             @endforeach
                         </div>

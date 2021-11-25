@@ -381,8 +381,8 @@ class QuoteController extends Controller
             'selling_price'         => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
             'profit_percentage'     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
             'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
-            'selling_price_bc'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_bc'] : NULL,
-            'markup_amount_bc'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_bc'] : NULL,
+            'selling_price_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
+            'markup_amount_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
             'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
             // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
         ];
@@ -655,9 +655,12 @@ class QuoteController extends Controller
         $getQuote['quote_id']       = $quote->id;
         $getQuote['booking_status'] = 'confirmed';
         $getQuote['booking_date']   = Carbon::now();
-        $booking = Booking::create($getQuote);
+        // $booking = Booking::create($getQuote);
 
         foreach ($quote->getQuoteDetails as $qu_details) {
+
+            // dd($qu_details);
+
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
 
             $quoteDetail['booking_id']                   = $booking->id;

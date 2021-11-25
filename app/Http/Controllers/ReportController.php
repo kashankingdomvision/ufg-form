@@ -874,7 +874,7 @@ class ReportController extends Controller
             //- Total Calculations
 
             //- Service Details
-            $qd_columns       = array('date_of_service','end_date_of_service','number_of_nights','time_of_service','category_id','supplier_id','product_id','booking_type_id','supplier_currency_id','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','estimated_cost_bc','markup_amount_bc','selling_price_bc','comments');
+            $qd_columns       = array('date_of_service','end_date_of_service','number_of_nights','time_of_service','category_id','supplier_id','product_id','booking_type_id','supplier_currency_id','estimated_cost','markup_amount','markup_percentage','selling_price','profit_percentage','estimated_cost_bc','markup_amount_in_booking_currency','selling_price_in_booking_currency','comments');
             $headings         = $this->get_quote_heading_array($passedParams);
             $quoteD_values    = $this->get_quote_detail_with_value($passedParams, $qd_columns);
             $DOS_array        = $quoteD_values['date_of_service'];
@@ -895,8 +895,8 @@ class ReportController extends Controller
             $SP_array         = $this->get_cost_value_array( $quoteD_values['selling_price'], $SC_ID_array, 'Currency', 'code');
             $PP_array         = $this->get_percentage_value_array( $quoteD_values['profit_percentage']);
             $ECIBC_array      = $this->get_cost_value_array( $quoteD_values['estimated_cost_bc'], $SC_ID_array, 'Currency', 'code');
-            $MAIBC_array      = $this->get_cost_value_array( $quoteD_values['markup_amount_bc'], $SC_ID_array, 'Currency', 'code');
-            $SPIBC_array      = $this->get_cost_value_array( $quoteD_values['selling_price_bc'], $SC_ID_array, 'Currency', 'code');
+            $MAIBC_array      = $this->get_cost_value_array( $quoteD_values['markup_amount_in_booking_currency'], $SC_ID_array, 'Currency', 'code');
+            $SPIBC_array      = $this->get_cost_value_array( $quoteD_values['selling_price_in_booking_currency'], $SC_ID_array, 'Currency', 'code');
 
             $start_date         = $this->get_column_array( $DOS_array, 'Start Date' );
             $end_date           = $this->get_column_array( $EDOS_array, 'End Date' );

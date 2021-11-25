@@ -43,8 +43,8 @@ class CreateBookingDetailsTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->double('actual_cost_bc')->nullable();
-            $table->double('selling_price_bc')->nullable();
-            $table->double('markup_amount_bc')->nullable();
+            $table->double('selling_price_in_booking_currency')->nullable();
+            $table->double('markup_amount_in_booking_currency')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);
             $table->string('invoice')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
