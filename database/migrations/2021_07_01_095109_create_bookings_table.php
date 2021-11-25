@@ -45,7 +45,7 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('lead_passenger_resident')->nullable();
             $table->string('lead_passenger_dinning_preference')->nullable();
             $table->string('lead_passenger_bedding_preference')->nullable();
-            $table->enum('lead_passenger_covid_vaccinated',[0, 1])->default(0);
+            $table->enum('lead_passenger_covid_vaccinated',[0, 1, 2])->default(0);
             $table->bigInteger('pax_no')->default(1);
             $table->double('net_price')->nullable();
             $table->double('markup_amount')->nullable();

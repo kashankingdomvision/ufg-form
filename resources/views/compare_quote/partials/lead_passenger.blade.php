@@ -244,8 +244,8 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
-                    Covid Vaccinated
+                <div class="col-md-3 col-heading-style font-weight-bold">
+                    Uptodate Covid Vacination Status
                 </div>
                 @if(isset($quote_ref_one))
                     <div class="col col-style">

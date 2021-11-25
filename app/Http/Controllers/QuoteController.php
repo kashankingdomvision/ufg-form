@@ -332,7 +332,7 @@ class QuoteController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
-            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
+            'lead_passenger_covid_vaccinated'   =>  $request->lead_passenger_covid_vaccinated??NULL,
             'pax_no'                            =>  $request->pax_no??'0',
             'net_price'                         =>  $request->total_net_price??$request->net_price,
             'markup_amount'                     =>  $request->total_markup_amount??$request->markup_amount,
@@ -454,7 +454,7 @@ class QuoteController extends Controller
                     'dinning_preference'    => $pax_data['dinning_preference'],
                     'nationality_id'        => $pax_data['nationality_id'],
                     'resident_in'           => $pax_data['resident_in'],
-                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
+                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
                 ]);
             }
         }
@@ -558,7 +558,7 @@ class QuoteController extends Controller
                     'dinning_preference'    => $pax_data['dinning_preference'],
                     'nationality_id'        => $pax_data['nationality_id'],
                     'resident_in'           => $pax_data['resident_in'],
-                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1')? '1' : '0'
+                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
                 ]);
             }
        }
@@ -685,6 +685,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
                     'nationality_id'        => $pax['nationality_id'],
+                    'resident_in'           => $pax['resident_in'],
                 ]);
             }
         }
@@ -805,7 +806,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
                     'nationality_id'        => $pax['nationality_id'],
-                    'covid_vaccinated'      => ((int) $pax['covid_vaccinated'] == '1')? '1' : '0'
+                    'covid_vaccinated'      => $pax['covid_vaccinated']
                 ]);
             }
         }

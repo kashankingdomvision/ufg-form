@@ -352,13 +352,16 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Covid Vaccinated</label>
+                              <label>Uptodate Covid Vacination Status</label>
                               <div>
                                 <label class="radio-inline">
-                                  <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $quote['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes
+                                  <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $quote['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes &nbsp;&nbsp;
                                 </label>
                                 <label class="radio-inline">
-                                  <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ( $quote['lead_passenger_covid_vaccinated']  ==  0 ||  $quote['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > No
+                                  <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ( $quote['lead_passenger_covid_vaccinated']  ==  0 ||  $quote['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > No &nbsp;&nbsp;
+                                </label>
+                                <label class="radio-inline">
+                                  <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="2" {{ ( $quote['lead_passenger_covid_vaccinated']  ==  2 ||  $quote['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > Not Sure &nbsp;&nbsp;
                                 </label>
                               </div>
                               <span class="text-danger" role="alert"></span>
@@ -439,21 +442,27 @@
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                           <div class="form-group">
-                                            <label>Covid Vaccinated</label>
+                                            <label>Uptodate Covid Vacination Status</label>
                                             <div>
                                               <label class="radio-inline">
                                                 <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="1"
                                                 @if($pax['covid_vaccinated'] == 1)
                                                 checked
-                                                @endif> Yes
+                                                @endif> Yes &nbsp;&nbsp;
                                               </label>
                                               <label class="radio-inline">
                                                 <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="0"
                                                 @if($pax['covid_vaccinated'] == 0)
                                                 checked
-                                                @endif > No
+                                                @endif > No &nbsp;&nbsp;
+                                              </label>
+                                              <label class="radio-inline">
+                                                <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="2"
+                                                @if($pax['covid_vaccinated'] == 2)
+                                                checked
+                                                @endif > Not Sure
                                               </label>
                                             </div>
                                           </div>

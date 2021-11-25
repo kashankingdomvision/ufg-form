@@ -334,13 +334,16 @@
 
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Covid Vaccinated </label>
+                            <label>Uptodate Covid Vacination Status </label>
                             <div>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  1) ? 'checked' : '' }}> Yes &nbsp;&nbsp;
                               </label>
                               <label class="radio-inline">
-                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  0 ||  $booking['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > No
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  0 ||  $booking['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > No &nbsp;&nbsp;
+                              </label>
+                              <label class="radio-inline">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="2" {{ ( $booking['lead_passenger_covid_vaccinated']  ==  2 ||  $booking['lead_passenger_covid_vaccinated']  == null) ? 'checked' : '' }} > Not Sure
                               </label>
                             </div>
                             <span class="text-danger" role="alert"></span>
@@ -382,6 +385,24 @@
                                           <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax['email'] }}" class="form-control" placeholder="EMAIL ADDRESS" >
                                           <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                       </div>
+
+                                      <div class="col-md-3 mb-2">
+                                        <label >Contact Number</label> 
+                                        <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax['contact'] }}" class="form-control phone phone{{ $count }}" >
+                                        <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
+                                        <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
+                                      </div>
+
+                                      <div class="col-md-3 mb-2">
+                                        <label>Date Of Birth</label> 
+                                        <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax['date_of_birth'] }}" class="form-control" placeholder="DBO" >
+                                        <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                      </div>
+
+                                 
+                                   
+                                  </div>
+                                  <div class="row">
                                       <div class="col-sm-3">
                                         <label>Nationality</label>
                                         <select name="pax[{{ $count }}][nationality_id]" class="form-control select2singlesingle nationality-id">
@@ -391,19 +412,17 @@
                                             @endforeach
                                         </select>
                                       </div>
-                                      <div class="col-md-3 mb-2">
-                                          <label >Contact Number</label> 
-                                          <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax['contact'] }}" class="form-control phone phone{{ $count }}" >
-                                          <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
-                                          <span class="text-danger valid_msg{{ $count }}" role="alert" > </span>
+
+                                      <div class="col-sm-3">
+                                        <label>Resident In </label>
+                                        <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                                <option selected value="" >Select Resident In</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}" {{ ($pax['resident_in'] == $country->id)? 'selected':null }}> {{ $country->name }} </option>
+                                            @endforeach
+                                        </select>
                                       </div>
-                                  </div>
-                                  <div class="row">
-                                      <div class="col-md-3 mb-2">
-                                          <label>Date Of Birth</label> 
-                                          <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax['date_of_birth'] }}" class="form-control" placeholder="DBO" >
-                                          <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                      </div>
+
                                       <div class="col-md-3 mb-2">
                                           <label>Bedding Preference</label> 
                                           <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax['bedding_preference'] }}" class="form-control" placeholder="BEDDING PREFERENCES" >
@@ -415,21 +434,27 @@
                                           <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                       </div>
 
-                                      <div class="col-md-2">
+                                      <div class="col-md-3">
                                         <div class="form-group">
-                                          <label>Covid Vaccinated</label>
+                                          <label>Uptodate Covid Vacination Status</label>
                                           <div>
                                             <label class="radio-inline">
                                               <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="1" 
                                               @if($pax['covid_vaccinated'] == 1)
                                               checked
-                                              @endif> Yes
+                                              @endif> Yes &nbsp;&nbsp;
                                             </label>
                                             <label class="radio-inline">
                                               <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="0"
                                               @if($pax['covid_vaccinated'] == 0)
                                               checked
-                                              @endif > No
+                                              @endif > No &nbsp;&nbsp;
+                                            </label>
+                                            <label class="radio-inline">
+                                              <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="2"
+                                              @if($pax['covid_vaccinated'] == 2)
+                                              checked
+                                              @endif > Not Sure
                                             </label>
                                           </div>
                                         </div>

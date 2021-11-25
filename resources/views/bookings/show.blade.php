@@ -376,6 +376,20 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
+                            <div class="col-sm-3">
+                              <div class="form-group">
+                                <label>Resident In</label>
+                                <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
+                                  <option selected value="" >Select Resident</option>
+                                  @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" {{ ($booking->lead_passenger_resident == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                                  @endforeach
+                                </select>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
                             <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Dinning Preferences </label>
@@ -395,13 +409,17 @@
                             
                             <div class="col-sm-3">
                               <div class="form-group">
-                                <label>Covid Vaccinated </label>
+                                <label>Uptodate Covid Vacination Status </label>
                                 <div>
                                   <label class="radio-inline">
-                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ($booking->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}> Yes
+                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" {{ ($booking->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}> Yes &nbsp;&nbsp;
                                   </label>
                                   <label class="radio-inline">
-                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ($booking->lead_passenger_covid_vaccinated ==  0 || $booking->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} > No
+                                    <input type="radio" name="lead_passenger_covid_vaccinated" id="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" {{ ($booking->lead_passenger_covid_vaccinated ==  0 || $booking->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} > No &nbsp;&nbsp;
+                                  </label>
+
+                                  <label class="radio-inline">
+                                    <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="2" {{ ($booking->lead_passenger_covid_vaccinated ==  2 || $booking->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} > Not Sure
                                   </label>
                                 </div>
                                 <span class="text-danger" role="alert"></span>
@@ -467,6 +485,16 @@
                                     @endforeach
                                   </select>
                                 </div>
+
+                                <div class="col-sm-3">
+                                  <label>Resident In</label>
+                                  <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                    <option selected value="" >Select Resident In</option>
+                                      @foreach ($countries as $country)
+                                          <option value="{{ $country->id }}" {{ (old('resident_in') == $country->id)? 'selected':( ($pax->resident_in == $country->id)? 'selected':null) }}> {{ $country->name }} </option>
+                                      @endforeach
+                                  </select>
+                                </div>
                       
                                 <div class="col-md-3 mb-2">
                                   <label>Bedding Preference</label> 
@@ -479,21 +507,28 @@
                                   <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                   <div class="form-group">
-                                    <label>Covid Vaccinated</label>
+                                    <label>Uptodate Covid Vacination Status</label>
                                     <div>
                                       <label class="radio-inline">
                                         <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="1" 
                                         @if($pax->covid_vaccinated == 1)
                                         checked
-                                        @endif> Yes
+                                        @endif> Yes &nbsp;&nbsp;
                                       </label>
                                       <label class="radio-inline">
                                         <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="0"
                                         @if($pax->covid_vaccinated == 0)
                                         checked
-                                        @endif > No
+                                        @endif > No &nbsp;&nbsp;
+                                      </label>
+
+                                      <label class="radio-inline">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" class="covid-vaccinated" value="2"
+                                        @if($pax->covid_vaccinated == 2)
+                                        checked
+                                        @endif > Not Sure 
                                       </label>
                                     </div>
                                   </div>

@@ -176,7 +176,7 @@ class BookingController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
-            'lead_passenger_covid_vaccinated'   =>  ((int) $request->lead_passenger_covid_vaccinated == '1')? '1' : '0',
+            'lead_passenger_covid_vaccinated'   =>  $request->lead_passenger_covid_vaccinated,
             'lead_passenger_resident'           =>  $request->lead_passenger_resident??NULL,
             'brand_id'                          =>  $request->brand_id,
             'holiday_type_id'                   =>  $request->holiday_type_id,
@@ -587,7 +587,8 @@ class BookingController extends Controller
                     'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                     'dinning_preference'    => $pax_data['dinning_preference']??NULL,
                     'nationality_id'        => $pax_data['nationality_id']??NULL,
-                    'covid_vaccinated'      => ((int) $pax_data['covid_vaccinated'] == '1') ? '1' : '0'
+                    'resident_in'           => $pax_data['resident_in']??NULL,
+                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
                 ]);
             }
         }

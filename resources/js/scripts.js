@@ -5087,13 +5087,16 @@ $(document).ready(function($) {
 
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label>Covid Vaccinated </label>
+                            <label>Uptodate Covid Vacination Status </label>
                             <div>
                                 <label class="radio-inline">
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No &nbsp;&nbsp;
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="2" > Not Sure
                                 </label>
                             </div>
                         </div>
@@ -5179,15 +5182,18 @@ $(document).ready(function($) {
                                     <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label>Covid Vaccinated </label>
+                                        <label>Uptodate Covid Vacination Status </label>
                                         <div>
                                             <label class="radio-inline">
-                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes
+                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
                                             </label>
                                             <label class="radio-inline">
-                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No
+                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No &nbsp;&nbsp;
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="2" > Not Sure
                                             </label>
                                         </div>
                                     </div>

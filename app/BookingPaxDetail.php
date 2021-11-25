@@ -8,6 +8,7 @@ class BookingPaxDetail extends Model
 {
     protected $fillable = [ 
         'nationality_id',
+        'resident_in',
         'booking_id',
         'full_name',
         'email',
