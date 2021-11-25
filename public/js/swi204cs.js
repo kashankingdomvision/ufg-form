@@ -50308,7 +50308,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var agencyCommission = $('.agency-commission').val();
     var agencyTotalMarkup = $('.total-markup-amount').val();
     var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
-    console.log(totalAgencyNetMarkup);
     $('.total-net-margin').val(check(totalAgencyNetMarkup));
   }
 
@@ -50565,6 +50564,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(".total-selling-price").val(check(actualCostInBookingCurrency));
     }
 
+    onChangeAgencyCommissionType();
     getCommissionRate();
     getBookingAmountPerPerson();
     getSellingPrice();
@@ -52269,9 +52269,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (status && status == 'booking') {
       getBookingTotalValues();
       getBookingBookingCurrencyValues();
+      console.log("getBookingTotalValues sdasasd");
     } else {
       getQuoteBookingCurrencyValues();
       getQuoteTotalValues();
+      console.log("getQuoteTotalValues sdasasd");
     }
 
     getCommissionRate(); // getSellingPrice();

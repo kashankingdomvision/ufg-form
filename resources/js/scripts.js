@@ -474,9 +474,6 @@ $(document).ready(function($) {
                 var agencyTotalMarkup    = $('.total-markup-amount').val();
                 var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
 
-
-                console.log(totalAgencyNetMarkup);
-
                 $('.total-net-margin').val(check(totalAgencyNetMarkup));
             }
 
@@ -732,6 +729,7 @@ $(document).ready(function($) {
                     $(".total-selling-price").val(check(actualCostInBookingCurrency));
                 }
 
+                onChangeAgencyCommissionType();
                 getCommissionRate();
                 getBookingAmountPerPerson();
                 getSellingPrice();
