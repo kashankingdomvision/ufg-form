@@ -65,6 +65,31 @@
 
 
                 <div class="row mb-2">
+
+                  <div class="col-sm-6">
+                    <label>Booking Title <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" name="booking_title" id="booking_title" class="form-control" value="{{ isset($booking['booking_title']) & !empty($booking['booking_title']) ? $booking['booking_title'] : '' }}" placeholder="Enter Booking Title">
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+                      <div>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" data-status="booking" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
+                          <span>&nbsp;Live Rate</span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" data-status="booking" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
+                          <span>&nbsp;Manual Rate</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Zoho Reference <span class="text-danger">*</span></label>
@@ -84,21 +109,7 @@
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
-                      <div>
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="rate_type" data-status="booking" {{ ($booking['rate_type'] == 'live')? 'checked': NULL }} value="live" >
-                          <span>&nbsp;Live Rate</span>
-                        </label>
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="rate_type" data-status="booking" {{ ($booking['rate_type'] == 'manual')? 'checked': NULL }} value="manual">
-                          <span>&nbsp;Manual Rate</span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+                
 
                   <div class="col-sm-6">
                     <div class="form-group">

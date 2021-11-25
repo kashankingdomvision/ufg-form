@@ -156,6 +156,7 @@ class BookingController extends Controller
             'markup_type'                       =>  $request->markup_type??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
+            'booking_title'                     =>  $request->booking_title,
             'ref_no'                            =>  $request->ref_no,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'ref_name'                          =>  $request->ref_name??'zoho',

@@ -148,6 +148,31 @@
                 </div>
 
                   <div class="row mb-2">
+
+                    <div class="col-sm-6">
+                      <label>Booking Title <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" name="booking_title" id="booking_title" class="form-control" value="{{ $booking->booking_title }}" placeholder="Enter Booking Title">
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
+                            <span>&nbsp;Live Rate</span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
+                            <span>&nbsp;Manual Rate</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="col-sm-6">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
@@ -173,21 +198,7 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="manual" {{ ($booking->rate_type == 'manual')? 'checked': NULL }}>
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
+             
 
                     <div class="col-sm-6">
                       <div class="form-group">
