@@ -107,13 +107,15 @@
                                               <th>Currency Rate Type</th>
                                               <th>Markup Type</th>
                                               <th>Season</th>
+                                              <th>Privacy Status</th>
                                               <th>Created By</th>
                                               <th>Created At</th>
-                                            <th>Action</th>
+                                              <th>Action</th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                         @if($templates && $templates->count())
+                                            <tr class="text-center"><td colspan="10"><h4>Public Template</h4></td></tr>
                                             @foreach ($templates as $key => $template)
                                                 <tr>
                                                     <td>
@@ -138,6 +140,7 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
+                                                    <td>{{ $template->privacy_status == 1 ? 'Public' : '' }} </td>
                                                     <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
                                                     <td>{{ $template->formated_created_at }}</td>
                                                     <td width="10%">
@@ -148,9 +151,48 @@
                                                     </td>
                                                 </tr>
                                             @endforeach
-                                        @else
-                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
                                         @endif
+
+
+                                        @if($private_templates && $private_templates->count())
+                                        <tr class="text-center"><td colspan="10"><h4>Private Template</h4></td></tr>
+                                            @foreach ($private_templates as $key => $template)
+                                                <tr>
+                                                    <td>
+                                                        <div class="icheck-primary">
+                                                            <input type="checkbox" class="child" value="{{$template->id}}" >
+                                                        </div>
+                                                    </td>
+                                                    <td>{!! $template->title !!}</td>
+                                                    <td>{{ isset($template->getCurrency->name) && !empty($template->getCurrency->name) ? $template->getCurrency->code.' - '.$template->getCurrency->name : '' }}</td>
+                                                    <td> 
+                                                        @if($template->rate_type == 'live')
+                                                            Live Rate
+                                                        @elseif($template->rate_type == 'manual')
+                                                            Manual Rate
+                                                        @endif
+                                                    </td>
+                                                    <td> 
+                                                        @if($template->markup_type == 'itemised')
+                                                            Itemised Markup 
+                                                        @elseif($template->markup_type == 'whole')
+                                                            Whole Markup
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ isset($template->getSeason->name) && !empty($template->getSeason->name) ? $template->getSeason->name : '' }}</td>
+                                                    <td>{{ $template->privacy_status == 0 ? 'Private' : '' }} </td>
+                                                    <td>{{ isset($template->getUser->name) && !empty($template->getUser->name) ? $template->getUser->name : '' }}</td>
+                                                    <td>{{ $template->formated_created_at }}</td>
+                                                    <td width="10%">
+                                                    <a href="{{ route('templates.edit', encrypt($template->id)) }}" class="btn btn-outline-success btn-xs mr-2" title="Edit" data-title="Edit" data-target="#edit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a onclick="return confirm('Are you sure you want to Delete Records?');" href="{{ route('templates.delete', encrypt($template->id)) }}" class="btn btn-outline-danger btn-xs" data-title="Delete" title="Delete" data-target="#delete"><span class="fa fa-trash-alt"></span></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+
                                         </tbody>
                                       </table>
                                 </div>
@@ -159,7 +201,7 @@
                             @include('includes.multiple_delete',['table_name' => 'templates'])
 
                             <div class="card-footer clearfix">
-                                {{$templates->links()}}
+                                
                             </div>
                         </div>
 

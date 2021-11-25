@@ -71,7 +71,8 @@ class TemplateController extends Controller
   
   public function index(Request $request)
   {
-    $template = Template::orderBy('id', 'DESC');
+    $template          = Template::orderBy('id', 'DESC')->where('privacy_status', 1);
+    $private_templates = Template::orderBy('id', 'DESC')->where('user_id', Auth::id())->where('privacy_status', 0);
 
     if(count($request->all())> 0){
       if($request->has('search') && !empty($request->search)){
@@ -102,10 +103,41 @@ class TemplateController extends Controller
         $query->whereDate('created_at', '<=', $dates->end_date);
       });
     }
-    
-    $data['templates'] = $template->paginate($this->pagination);
-    $data['seasons']   = Season::all();
-    $data['users']     = User::all()->sortBy('name');
+
+    if(count($request->all())> 0){
+      if($request->has('search') && !empty($request->search)){
+        $private_templates->where('title', 'like', '%'.$request->search.'%')
+        ->orWhereHas('getSeason', function($query) use($request){
+          $query->where('name', $request->search);
+        });
+      }
+      
+      if($request->has('season') && !empty($request->season)){
+        $private_templates->whereHas('getSeason', function($query) use($request){
+            $query->where('name', 'like', '%'.$request->season.'%' );
+        });
+      }
+      
+      if($request->has('created_by') && !empty($request->created_by)){
+        $private_templates->whereHas('getUser', function($query) use($request)
+        {
+            $query->where('name', $request->created_by);
+        });
+      }
+      
+      $private_templates->when($request->dates, function ($query) use ($request) {
+
+        $dates = Helper::dates($request->dates);
+
+        $query->whereDate('created_at', '>=', $dates->start_date);
+        $query->whereDate('created_at', '<=', $dates->end_date);
+      });
+    }
+
+    $data['templates']         = $template->get();
+    $data['private_templates'] = $private_templates->get();
+    $data['seasons']           = Season::all();
+    $data['users']             = User::all()->sortBy('name');
     
     return view('templates.listing', $data);
   }
