@@ -110,6 +110,23 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Privacy Status <span style="color:red">*</span></label>
+                        <div>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="privacy_status" value="1" class="privacy-status" checked>
+                            <span>&nbsp;Public  </span>
+                          </label>
+                          <label class="radio-inline mr-1">
+                            <input type="radio" name="privacy_status" value="0" class="privacy-status">
+                            <span>&nbsp;Private </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
 
                   <div class="row d-none">

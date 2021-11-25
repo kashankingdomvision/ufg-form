@@ -25,6 +25,7 @@ class TemplateRequest extends FormRequest
     {
         return [
             'template_name'                             =>  'required',
+            'privacy_status'                            =>  'required',
             'season_id'                                 =>  'required',
             'currency_id'                               =>  'required',
             'quote'                                     => 'required|array',
@@ -48,6 +49,7 @@ class TemplateRequest extends FormRequest
         return [
 
             'template_name'                             => 'Template Name',
+            'privacy_status'                            => 'Privacy Status',
             'season_id'                                 => 'Booking Season',
             'currency_id'                               => 'Booking currency',
             'quote.*.date_of_service'                   => 'Start Date of Service',

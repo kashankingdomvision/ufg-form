@@ -130,6 +130,8 @@ class TemplateController extends Controller
   public function store(TemplateRequest $request)
   {
 
+    // dd($request->all());
+
     $template = Template::create([
       'user_id'        => Auth::id(),
       'title'          => $request->template_name,
@@ -207,12 +209,13 @@ class TemplateController extends Controller
     $template = Template::findOrFail(decrypt($id));
 
     $template->update([
-      'user_id'     => Auth::id(),
-      'title'       => $request->template_name,
-      'season_id'   => $request->season_id,
-      'currency_id' => $request->currency_id,
-      'rate_type'   => $request->rate_type,
-      'markup_type' => $request->markup_type,
+      'user_id'        => Auth::id(),
+      'title'          => $request->template_name,
+      'season_id'      => $request->season_id,
+      'currency_id'    => $request->currency_id,
+      'rate_type'      => $request->rate_type,
+      'markup_type'    => $request->markup_type,
+      'privacy_status' => $request->privacy_status
     ]);
 
     $template->getDetails()->delete();
