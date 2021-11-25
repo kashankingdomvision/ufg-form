@@ -49860,13 +49860,13 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
-var FILE_MANAGER_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
@@ -50273,28 +50273,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function onChangeAgencyCommissionType() {
     var agency = $("input[name=agency]:checked").val();
-    var agencyCommissionType = $("input[name=agency_commission]:checked").val();
+    var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
     var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
       return parseFloat(e.value);
     }).get();
     var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
     }, 0);
+    console.log("onChangeAgencyCommissionType");
 
     if (agency == 1 && agencyCommissionType == 'net-price') {
-      $('.agency-commission-feild').addClass('d-none');
-      $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+      $('.paid-net-commission-on-departure').addClass('d-none');
     }
 
-    if (agency == 1 && agencyCommissionType == 'paid-net-of-commission') {
-      $('.agency-commission-feild').removeClass('d-none');
+    if (agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure') {
+      $('.paid-net-commission-on-departure').removeClass('d-none');
       getCalculatedTotalNetMarkup();
-    }
+    } // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+    //     $('.paid-net-commission-on-departure').removeClass('d-none');
+    //     getCalculatedTotalNetMarkup();
+    //     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+    // }
 
-    if (agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure') {
-      $('.agency-commission-feild').removeClass('d-none');
-      $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
-    }
   }
 
   $(document).on('change, click', '.agency-commission-type', function () {
@@ -50308,7 +50308,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var agencyCommission = $('.agency-commission').val();
     var agencyTotalMarkup = $('.total-markup-amount').val();
     var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
-    $('.agency-total-markup').val(check(totalAgencyNetMarkup));
+    console.log(totalAgencyNetMarkup);
+    $('.total-net-margin').val(check(totalAgencyNetMarkup));
   }
 
   function getQuoteTotalValues() {
@@ -51367,6 +51368,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if ($(this).val() == 1) {
       $('#pax_no').val(1).change();
+      $("input[name=agency_commission_type][value=net-price]").prop('checked', true);
       agency_.removeClass('d-none');
       passenger_.addClass('d-none');
       agency_.find('input, select').removeAttr('disabled');
@@ -51380,6 +51382,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       iti.destroy(); // intTelinput('gc');
     } else {
       $('#pax_no').val(1).change();
+      $('.paid-net-commission-on-departure').addClass('d-none');
       agency_.addClass('d-none');
       passenger_.removeClass('d-none');
       passenger_.find('input, select').removeAttr('disabled');
