@@ -644,9 +644,9 @@
   
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Booking Types </label>
+                                <label>Payment Type </label>
                                 <select name="quote[0][booking_type_id]" data-name="booking_type_id" id="quote_0_booking_type_id" class="form-control select2single booking-type-id">
-                                  <option value="" >Select Booking Type</option>
+                                  <option value="" >Select Payment Type</option>
                                   @foreach ($booking_types as $booking_type)
                                     <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" > {{$booking_type->name}} </option>
                                   @endforeach

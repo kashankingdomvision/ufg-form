@@ -414,7 +414,7 @@
 
             <div class="row mt-1 border">
                 <div class="col-md-4 col-heading-style font-weight-bold">
-                    Booking Types
+                    Payment Types
                 </div>
                 @if(isset($quote_ref_one))
                     <div class="col">

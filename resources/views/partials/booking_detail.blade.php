@@ -156,9 +156,9 @@
       </div>
         <div class="col-sm-2">
           <div class="form-group">
-            <label>Booking Types</label>
+            <label>Payment Type</label>
             <select name="quote[{{ $count }}][booking_type]" data-name="booking_type" id="quote_{{ $count }}_booking_type" class="form-control  select2single    booking-type-id @error('booking_type_id') is-invalid @enderror">
-              <option value="">Select Booking Type</option>
+              <option value="">Select Payment Type</option>
               @foreach ($booking_types as $booking_type)
                 <option value="{{ $booking_type->id }}" {{ $booking_detail->booking_type_id == $booking_type->id  ? "selected" : "" }}> {{ $booking_type->name }} </option>
               @endforeach
