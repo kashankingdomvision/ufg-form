@@ -52269,11 +52269,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (status && status == 'booking') {
       getBookingTotalValues();
       getBookingBookingCurrencyValues();
-      console.log("getBookingTotalValues sdasasd");
     } else {
       getQuoteBookingCurrencyValues();
       getQuoteTotalValues();
-      console.log("getQuoteTotalValues sdasasd");
     }
 
     getCommissionRate(); // getSellingPrice();
@@ -53206,12 +53204,23 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     event.preventDefault();
     $('#update-booking :input').prop('disabled', false);
     var url = $(this).attr('action');
+    var formData = new FormData(this);
+    var full_number = '';
+    var agency = $("input[name=agency]:checked").val();
+
+    if (agency == 0) {
+      full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+    } else {
+      full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+    }
+
+    formData.append('full_number', full_number);
     /* Send the data using post */
 
     $.ajax({
       type: 'POST',
       url: url,
-      data: new FormData(this),
+      data: formData,
       contentType: false,
       cache: false,
       processData: false,
