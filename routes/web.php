@@ -162,7 +162,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', ['as' => 'index', 'uses' => 'TemplateController@index']);
         Route::get('create', ['as' => 'create', 'uses' => 'TemplateController@create']);
         Route::post('store', ['as' => 'store', 'uses' => 'TemplateController@store']);
-        Route::post('store-for-quote', ['as' => 'store', 'uses' => 'TemplateController@store_for_']);
+        Route::post('store-for-quote', ['as' => 'store.for.quote', 'uses' => 'TemplateController@store_for_quote']);
         Route::get('detail/{id}', ['as' => 'detail', 'uses' => 'TemplateController@detail']);
         Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'TemplateController@destroy']);
         Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);

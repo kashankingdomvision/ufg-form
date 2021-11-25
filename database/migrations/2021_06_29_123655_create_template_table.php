@@ -22,6 +22,7 @@ class CreateTemplateTable extends Migration
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('status', [0, 1])->default(1);
+            $table->tinyInteger('privacy_status');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');

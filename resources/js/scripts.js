@@ -3286,19 +3286,23 @@ $(document).ready(function($) {
             |--------------------------------------------------------------------------
             */
 
+            // Reset Template Modal On Open
             $(document).on('click', '#save_template', function() {
-                jQuery('#modal-default').modal('show').find('input').val('');
+
+                var modal = jQuery('#modal-default').modal('show');
+
+                modal.find('#template_name').val('');
+                modal.find("input[name=privacy_status][value=1]").prop('checked', true);
             });
 
             $(document).on('click', '#submit_template', function() {
 
                 disabledFeild(".create-template [name=_method]");
 
-                console.log($('.create-template').serialize());
-
-                let templateName = $('#template_name').val();
-                var formData = $('.create-template').serialize() + '&template_name=' + templateName ;
-                var url = `${REDIRECT_BASEURL}template/store`;
+                var templateName  = $('#template_name').val();
+                var privacyStatus = $('input[name="privacy_status"]:checked').val();
+                var formData      = $('.create-template').serialize() + '&template_name=' + templateName + '&privacy_status=' + privacyStatus ;
+                var url           = `${REDIRECT_BASEURL}template/store-for-quote`;
 
                 $.ajax({
                     type: 'POST',

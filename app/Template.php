@@ -13,6 +13,7 @@ class Template extends Model
         'currency_id',
         'rate_type',
         'markup_type',
+        'privacy_status'
     ];
 
     public function getUser()

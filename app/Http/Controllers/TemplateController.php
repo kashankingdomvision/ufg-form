@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\TemplateRequest;
+use App\Http\Requests\QuoteTemplateRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -130,12 +131,13 @@ class TemplateController extends Controller
   {
 
     $template = Template::create([
-      'user_id'     => Auth::id(),
-      'title'       => $request->template_name,
-      'season_id'   => $request->season_id,
-      'currency_id' => $request->currency_id,
-      'rate_type'   => $request->rate_type,
-      'markup_type' => $request->markup_type,
+      'user_id'        => Auth::id(),
+      'title'          => $request->template_name,
+      'season_id'      => $request->season_id,
+      'currency_id'    => $request->currency_id,
+      'rate_type'      => $request->rate_type,
+      'markup_type'    => $request->markup_type,
+      'privacy_status' => $request->privacy_status
     ]);
     
     foreach ($request->quote as $quote) {
@@ -144,19 +146,19 @@ class TemplateController extends Controller
     }
 
     return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
-    // return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
   }
 
-  public function store(TemplateRequest $request)
+  public function store_for_quote(QuoteTemplateRequest $request)
   {
 
     $template = Template::create([
-      'user_id'     => Auth::id(),
-      'title'       => $request->template_name,
-      'season_id'   => $request->season_id,
-      'currency_id' => $request->currency_id,
-      'rate_type'   => $request->rate_type,
-      'markup_type' => $request->markup_type,
+      'user_id'        => Auth::id(),
+      'title'          => $request->template_name,
+      'season_id'      => $request->season_id,
+      'currency_id'    => $request->currency_id,
+      'rate_type'      => $request->rate_type,
+      'markup_type'    => $request->markup_type,
+      'privacy_status' => $request->privacy_status
     ]);
     
     foreach ($request->quote as $quote) {
@@ -165,7 +167,6 @@ class TemplateController extends Controller
     }
 
     return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
-    // return redirect()->route('templates.index')->with('success_message', 'Template Created Successfully');
   }
     
   public function detail($id)

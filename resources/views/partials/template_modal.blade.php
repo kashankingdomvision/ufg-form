@@ -2,7 +2,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Template Modal</h4>
+          <h4 class="modal-title">Add Template </h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -18,13 +18,13 @@
           <div class="form-group">
             <label>Privacy Status <span style="color:red">*</span></label>
             <div>
-              <label class="radio-inline">
-                <input type="radio" name="privacy_status" class="privacy-status" value="1"> Public
-
-                &nbsp;&nbsp;&nbsp;&nbsp;
+              <label class="radio-inline mr-1">
+                <input type="radio" name="privacy_status" value="1" class="privacy-status" checked>
+                <span>&nbsp;Public  </span>
               </label>
-              <label class="radio-inline">
-                <input type="radio" name="privacy_status" class="privacy-status" value="0"> Private
+              <label class="radio-inline mr-1">
+                <input type="radio" name="privacy_status" value="0" class="privacy-status">
+                <span>&nbsp;Private </span>
               </label>
             </div>
           </div>
@@ -36,6 +36,8 @@
             <span class="mr-2 " role="status" aria-hidden="true"></span>
             Save Template
           </button>
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
 
       </div>
