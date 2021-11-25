@@ -655,11 +655,9 @@ class QuoteController extends Controller
         $getQuote['quote_id']       = $quote->id;
         $getQuote['booking_status'] = 'confirmed';
         $getQuote['booking_date']   = Carbon::now();
-        // $booking = Booking::create($getQuote);
+        $booking = Booking::create($getQuote);
 
         foreach ($quote->getQuoteDetails as $qu_details) {
-
-            // dd($qu_details);
 
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
 
