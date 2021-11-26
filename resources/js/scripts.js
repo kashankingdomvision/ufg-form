@@ -13,13 +13,13 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 
 // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -441,8 +441,6 @@ $(document).ready(function($) {
 
                 var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
                 var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                console.log("onChangeAgencyCommissionType");
 
                 if(agency == 1 && agencyCommissionType == 'net-price'){
                     $('.paid-net-commission-on-departure').addClass('d-none');
@@ -1775,12 +1773,15 @@ $(document).ready(function($) {
                 var season_id     = $('.season-id').val();
 
                 quote.find('.badge-supplier-id').html(supplier_name);
-                quote.find('.badge-supplier-id').removeClass('d-none');
+                // quote.find('.badge-supplier-id').removeClass('d-none');
 
                 var options = '';
 
                 if(typeof supplier_id === 'undefined' || supplier_id == "") {
+
+                    quote.find('.badge-supplier-id').html("");
                     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                    $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
                     return;
                 }
 
@@ -1982,8 +1983,6 @@ $(document).ready(function($) {
                 var quote             = $(this).closest('.quote');
                 var quoteKey          = quote.data('key');
 
-                console.log(' working');
-
                 var detail_id  = $(`#quote_${quoteKey}_detail_id`).val();
                 var model_name = $(`#model_name`).val();
 
@@ -1992,8 +1991,14 @@ $(document).ready(function($) {
                 var category_slug     = $(this).find(':selected').attr('data-slug');
                 var options           = '';
 
+                if(typeof category_id === 'undefined' || category_id == ""){
+                    quote.find('.badge-category-id').html("");
+                    $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
+                    $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+                }
+
                 quote.find('.badge-category-id').html(category_name);
-                quote.find('.badge-category-id').removeClass('d-none');
+                // quote.find('.badge-category-id').removeClass('d-none');
 
                 if(category_slug == 'flights'){
 
@@ -2779,13 +2784,20 @@ $(document).ready(function($) {
 
             $(document).on('change', '.supplier-currency-id', function() {
 
-                var code = $(this).find(':selected').data('code');
-                var quote = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-                var bookingCurrency = $('#currency_id').val();
-                var currency_name = $(this).find(':selected').attr('data-name');
+                var code             = $(this).find(':selected').data('code');
+                var quote            = $(this).closest('.quote');
+                var quoteKey         = quote.data('key');
+                var bookingCurrency  = $('#currency_id').val();
+                var currency_name    = $(this).find(':selected').attr('data-name');
+                var supplierCurrency = $(this).val();
 
-                
+
+                if(typeof supplierCurrency === 'undefined' || supplierCurrency == "") {
+                    quote.find("[class*=supplier-currency-code]").html("");
+                    quote.find('.badge-supplier-currency-id').html("");
+                    return;
+                }
+
                 if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
                     alert("Please Select Booking Currency first");
                     return;
@@ -2793,7 +2805,7 @@ $(document).ready(function($) {
                 
                 quote.find("[class*=supplier-currency-code]").html(code);
                 quote.find('.badge-supplier-currency-id').html(currency_name);
-                quote.find('.badge-supplier-currency-id').removeClass('d-none');
+                // quote.find('.badge-supplier-currency-id').removeClass('d-none');
 
                 getQuoteSupplierCurrencyValues(code, quoteKey);
                 getQuoteTotalValues();
