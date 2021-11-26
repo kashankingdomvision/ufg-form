@@ -46,7 +46,7 @@
 
                   <div class="form-group">
                     <label for="name">Name <span style="color:red">*</span></label>
-                    <input type="text" id="name" name="name" value="{{ $group->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Commission Name" required>
+                    <input type="text" id="name" name="name" value="{{ $group->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Group Name" >
 
                     @error('name')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -54,7 +54,7 @@
                   </div>
 
                     <div class="form-group">
-                      <label for="quotes">Quotes <span style="color:red">*</span></label>
+                      <label for="quotes">Quotes (Select atleast Two Quotes) <span style="color:red">*</span></label>
                       <select class="form-control select2-multiple @error('quote_ids') is-invalid @enderror"  data-placeholder="Select Quotes" multiple id="quotes" name="quote_ids[]">
                         @foreach ($quotes as $quote)
                           @php

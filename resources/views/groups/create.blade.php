@@ -52,7 +52,7 @@
                   </div>
 
                     <div class="form-group">
-                        <label for="quotes">Quotes <span style="color:red">*</span></label>
+                        <label for="quotes">Quotes (Select atleast Two Quotes) <span style="color:red">*</span></label>
                         <select class="form-control select2-multiple @error('quote_ids') is-invalid @enderror"
                                 data-placeholder="Select Quotes" multiple id="quotes" name="quote_ids[]">
                             @foreach ($quotes as $quote)

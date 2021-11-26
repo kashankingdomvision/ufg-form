@@ -121,7 +121,7 @@
                         <td>{{ isset($group->getBookingCurrency->name) && !empty($group->getBookingCurrency->name) ? $group->getBookingCurrency->code.' - '.$group->getBookingCurrency->name : '' }}</td>
                         <td colspan="2">
                           <form method="post" action="{{ route('quotes.group-quote.destroy', encrypt($group->id)) }}">
-                            <a href="{{ route('quotes.group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <a href="{{ route('quotes.group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs mr-2" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

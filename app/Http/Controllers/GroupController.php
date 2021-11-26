@@ -59,10 +59,18 @@ class GroupController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|unique:groups|max:255',
+                'name'      => 'required|unique:groups|max:255',
+                'quote_ids' => 'required',
+            ],[
+                'quote_ids.required' => 'You have to choose the file!',
             ]);
-            if ($validator->fails()) {
+
+            if ($validator->errors()->first('name')) {
                 return ['status' => false, 'type' => 'Warning', 'icon' => 'error', 'msg' => $validator->errors()->first('name')];
+            }
+
+            if ($validator->errors()->first('quote_ids')) {
+                return ['status' => false, 'type' => 'Warning', 'icon' => 'error', 'msg' => "Please select atleast Two Quotes"];
             }
 
             // Explode the ID put them in array respectively.
@@ -152,11 +160,19 @@ class GroupController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required|unique:groups,name,'.decrypt($id),
+                'name'      => 'required|unique:groups,name,'.decrypt($id),
+                'quote_ids' => 'required',
+            ],[
+                'quote_ids.required' => 'You have to choose the file!',
             ]);
 
-            if ($validator->fails()) {
-                return ['status' => false, 'type' => 'Warning', 'icon' => 'error', 'msg' => $validator->errors()->first('name')];
+            if ($validator->errors()->first('name')) {
+                return redirect()->back()->with('error_message', "The Name feild is required.");
+            }
+
+            if($validator->errors()->first('quote_ids')) {
+                return redirect()->back()->with('error_message', 'Select Atleast Two Quotes to Proceed.');
+                // return ['status' => false, 'type' => 'Warning', 'icon' => 'error', 'msg' => "Please select atleast Two Quotes"];
             }
 
             if(count($request->quote_ids) < 2) {
