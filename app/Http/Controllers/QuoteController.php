@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\Http\Helper;
 use App\Brand;
 use App\Booking;
@@ -36,7 +37,6 @@ use App\Supplier;
 use App\Template;
 use App\User;
 use App\StoreText;
-use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
 use App\CommissionGroup;
@@ -48,42 +48,11 @@ class QuoteController extends Controller
 
     public function compare_quote(Request $request)
     {
-    
         if ($request->isMethod('post')) {
-
-            // dd($request->all());
-
-
-            // $q = QuoteDetail::whereIn('quote_id', $request->all())->get('date_of_service')->toArray();
-
-            // dd($q );
-
-
-            
-
-
-            // $quote_ref_one = Quote::find($request->quote_ref_one)->getQuoteDetails()->get('date_of_service')->toArray();
-
-
-            // dd();
-
-
-
-            // $quote_ref_two = Quote::find($request->quote_ref_two)->getQuoteDetails()->get();
-
-            // // $c = array_merge_recursive($quote_ref_one,$quote_ref_two);
-
-            // // dd($c);
-
-            // dd($quote_ref_one);
-            // dd($quote_ref_two);
-
-            // $quote_ref_two = Quote::find($request->quote_ref_two);
 
             if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
                 $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
             }
-
             
             if(isset($request->quote_ref_two) && !empty($request->quote_ref_two)){
                 $data['quote_ref_two'] =  Quote::find($request->quote_ref_two);
@@ -97,13 +66,10 @@ class QuoteController extends Controller
                 $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
             }
 
-            // dd($data);
-
         }
     
         $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
 
- 
         return view('compare_quote.index', $data);
     }
 
@@ -120,92 +86,11 @@ class QuoteController extends Controller
         $data['brand_about']    =  $quote->getBrand->about_us;
         $pdf = PDF::loadView('quote_documents.pdf', $data);
         return $pdf->stream();
-        // return $pdf->download('medium.pdf');
     }
 
 
     public function index(Request $request)
     {
-
-        $z[] = QuoteDetail::where('quote_id', 1)->pluck('date_of_service')->toArray();
-        $z[] = QuoteDetail::where('quote_id', 2)->pluck('date_of_service')->toArray();
-
-        $y = 0;
-        foreach($z as $x) {
-            if(count($x) > $y)
-                $y = count($x);
-        }
-        // echo $y;
-     
-       
-        // foreach($z as $key => $zz) {
-
-        //     $hh['rows'][] = $zz;
-        // }
-
-// array:2 [▼
-//   0 => array:1 [▼
-//     0 => "12/11/2021"
-//   ]
-//   1 => array:2 [▼
-//     0 => "08/11/2021"
-//     1 => "02/11/2021"
-//   ]
-// ]
-
-      // dd($z);
-
-
-
-        // saad bhai code  
-        // $hh = array();
-        // foreach($z as $key => $zz) {
-        //     for($i=0; $i < $y; $i++) {
-        //         $hh[$key][$i] = @$zz[$i];
-        //     }
-        // }
-
-        // $kk = array();
-        // foreach($hh as $key => $zz) {
-        //     $kk['rows'][$key] = array_column($hh, $key);
-        // }
-
-        // dd($kk);
-     
-        // $arr = array(
-        //     array(
-        //         'label' => 'Start Date',
-        //         'rows' => array(
-        //             array(
-        //                 '2021', '2020', '2019'
-        //             ),
-        //             array(
-        //                 '2018', '2017', '2016'
-        //             ),
-        //         )
-        //     ),
-        //     array(
-        //         'label' => 'End Date',
-        //         'rows' => array(
-        //             array(
-        //                 '2021', '2020', '2019'
-        //             ),
-        //             array(
-        //                 '2018', '2017'
-        //             ),
-        //         )
-        //     ),
-        // );
-
-        // $data['arr'] = $arr;
-
-        // dd($data);
-
-        // dd(isset($arr["QR-0001"][1]) ? $arr["QR-0001"][1] : '' );
-        // dd($arr["QR-0002"][0]);
-
-        // return view('exports.listing' , $data);
-
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
         if(count($request->all()) >0){
             $quote = $this->searchFilters($quote, $request);
@@ -708,9 +593,7 @@ class QuoteController extends Controller
         }
 
         if($action == "Archive"){
-
             Quote::findOrFail(decrypt($check_values))->update(['is_archive' => 1]);
-
             return ['status' => true, 'message' => 'Records Archived Successfully !!'];
         }
 
@@ -814,51 +697,13 @@ class QuoteController extends Controller
        return redirect()->back()->with('success_message', 'Quote clone successfully');
     }
 
-
-   // public function iteration($date)
-    // {
-    //     $iterations = QuoteDetail::distinct()->where('quote_id',1)->pluck('iteration')->toArray();
-    //     foreach($iterations as $ik => $i) {
-
-    //         $d =  QuoteDetail::where('date_of_service', $date)->where('iteration',$i)->orderBy('category_id','ASC')->get()->toArray();
-    //         $f = $this->iterationWithText($d);
-    //         $iteration[] = $f;
-    //     }
-    //     return $iteration;
-    // }
-
-    // public function iterationWithText($iterationObject){
-
-    //     $arr = [];
-
-    //     $transfer_date_of_service = isset($iterationObject[0]['date_of_service']) ? $iterationObject[0]['date_of_service'] : '';
-    //     $transfer_time_of_service = isset($iterationObject[0]['time_of_service']) ? $iterationObject[0]['time_of_service'] : '';
-
-    //     $accommodation_date_of_service = isset($iterationObject[1]['date_of_service']) ? $iterationObject[1]['date_of_service'] : '';
-    //     $accommodation_time_of_service = isset($iterationObject[1]['time_of_service']) ? $iterationObject[1]['time_of_service'] : '' ;
-
-    //     $transfer_product_name      = $this->getProductName(isset($iterationObject[0]['product_id']) ? $iterationObject[0]['product_id'] : '');
-    //     $accommodation_product_name = $this->getProductName(isset($iterationObject[1]['product_id']) ? $iterationObject[1]['product_id'] : '');
-
-    //     $arr[0] = "Transfer to $accommodation_product_name via $transfer_product_name on $transfer_date_of_service $transfer_time_of_service";
-    //     $arr[1] = "$accommodation_product_name";
-    //     $arr[2] = "Check in: $accommodation_date_of_service $accommodation_time_of_service";
-    //     $arr[3] = "27 Days";
-
-    //     return $arr;
-    // }
-
-    // public function getProductName($id){
-    //    $product = Product::find($id);
-    //    return isset($product->name) ? $product->name : '';
-    // }
-
-     public function getGroups($currency_id){
+    public function getGroups($currency_id){
         try {
             $data['groups'] = Group::where('currency_id', $currency_id)->orderBy('created_at','DESC')->get();
             return ['status' => true, 'groups' => $data['groups']];
+            
         } catch (\Exception $e) {
             return ['status' => false, 'error' => $e->getMessage()];
         }
-     }
+    }
 }
