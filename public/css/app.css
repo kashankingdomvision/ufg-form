@@ -4643,6 +4643,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
  * -------------------------------------------------------------------------------------
  */
 
+::marker {
+  content: none;
+}
+
 .inline-flex {
   display: inline-flex;
 }

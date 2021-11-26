@@ -21,6 +21,10 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
  * -------------------------------------------------------------------------------------
  */
 
+::marker {
+    content: none;
+}
+
 .inline-flex{
     display: inline-flex;
 }
