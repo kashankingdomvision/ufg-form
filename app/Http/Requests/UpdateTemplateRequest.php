@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
-class TemplateRequest extends FormRequest
+class UpdateTemplateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,12 @@ class TemplateRequest extends FormRequest
     public function rules()
     {
         return [
+            // 'template_name'                             =>  ['required', Rule::unique('templates','title')->ignore(decrypt($this->id))],
             'template_name'    => [
                 'required',
                 Rule::unique('templates','title')
                 ->where('user_id', Auth::id())
+                ->ignore(decrypt($this->id))
             ],
             'privacy_status'                            =>  'required',
             'season_id'                                 =>  'required',
@@ -47,7 +49,6 @@ class TemplateRequest extends FormRequest
             'quote.*.markup_amount_in_booking_currency' => 'required_if:markup_type,itemised',
         ];
     }
-
 
     public function attributes()
     {

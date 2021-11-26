@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TemplateRequest;
 use App\Http\Requests\QuoteTemplateRequest;
+use App\Http\Requests\UpdateTemplateRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -236,7 +237,7 @@ class TemplateController extends Controller
     return view('templates.edit', $data);
   }
     
-  public function update(TemplateRequest $request, $id)
+  public function update(UpdateTemplateRequest $request, $id)
   {
     $template = Template::findOrFail(decrypt($id));
 

@@ -3,7 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 class QuoteTemplateRequest extends FormRequest
 {
     /**
@@ -24,7 +25,11 @@ class QuoteTemplateRequest extends FormRequest
     public function rules()
     {
         return [
-            'template_name'                             =>  'required',
+            'template_name'    => [
+                'required',
+                Rule::unique('templates','title')
+                ->where('user_id', Auth::id())
+            ],
         ];
     }
 
@@ -32,7 +37,7 @@ class QuoteTemplateRequest extends FormRequest
     {
         return [
 
-            'template_name'                             => 'Template Name',
+            'template_name' => 'Template Name',
         ];
     }
 }
