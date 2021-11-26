@@ -111,6 +111,26 @@
     var fbTemplate = document.getElementById('build-wrap'),
       options = {
         formData: presetData,
+        typeUserAttrs: {
+          autocomplete: {
+              data: {
+                  label: 'Id',
+                  options: {
+                      'airport_codes': 'Airport Codes',
+                      'harbours': 'Harbours, Train and Points of Interest',
+                      'hotels': 'Hotels',
+                      'all': 'All',
+                      'none': 'None'
+                  },
+              },
+          }
+        },
+        replaceFields:
+        [{
+          type: "autocomplete",
+          label: "Autocomplete",
+          values: [{ label: "", value: "", disabled:true }],
+        }],
         onSave: function (evt, formData) {
 
           var categoryName = $('.name').val();
@@ -187,8 +207,8 @@
 
         }
       };
-    $(fbTemplate).formBuilder(options);
-  });
+      $(fbTemplate).formBuilder(options);
+    });
 
 
   </script>

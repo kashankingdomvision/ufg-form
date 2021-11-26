@@ -117,6 +117,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
 
         Route::match(['get', 'post'], 'compare-quote', array('as' => 'compare.quote', 'uses' => 'QuoteController@compare_quote'));
+
+        Route::get('get_autocomplete_data',  'QuoteController@get_autocomplete_data')->name('get_autocomplete_data');
     });
 
 

@@ -1106,22 +1106,63 @@
     var booking_detail_id = $(this).attr('data-id');
     var url               = '{{route('bookings.category.detail.feilds')}}';
     var modal             = jQuery('.category-detail-feilds');
-    var feilds_data       = $(`#quote_${key}_category_details`).val();
+    var fields_data       = $(`#quote_${key}_category_details`).val();
 
     if(typeof type === 'undefined') {
       alert("Please Select Category first");
       return;
     }
 
+    var airport_codes;
+    var harbours;
+    var hotels;
+    var all;
+
+    $.ajax({
+      type: "GET",
+      url: '{{ route("quotes.get_autocomplete_data") }}',
+      datatype: "json",
+      async: false,
+      success: function(data){
+        airport_codes = data.airport_codes;
+        harbours = data.harbours;
+        hotels = data.hotels;
+        all = data.all;
+      }
+    });
+
+    function get_table(data)
+    {
+      return (data === "airport_codes") ? airport_codes : (data === "harbours") ? harbours : (data === "hotels") ? hotels : all;
+    }
+
+    var fieldData = JSON.parse(fields_data);
+    for(var i = 0; i < fieldData.length; i++)
+    {
+      if(fieldData[i].type === "autocomplete")
+      {
+        if(fieldData[i].data !== "none") {
+          $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
+            fieldData[i].values.push({
+                label: item.name,
+                value:  item.name,
+                selected: false
+            });
+          });
+        }
+      }
+    }
+    fields_data = JSON.stringify(fieldData);
+
     jQuery(function($) {
       var formRenderOptions = {
-        formData: feilds_data 
+        formData: fields_data 
       }
 
       $(formRenderID).html("");
       $(formRenderID).formRender(formRenderOptions);
 
-      if(feilds_data == ""){
+      if(fields_data == ""){
         $(formRenderID).html("No Form Data.");
       }
     });
@@ -1129,7 +1170,7 @@
     modal.modal('show');
     modal.find('.modal-title').html(`${category_name} Details`);
 
-    if(feilds_data == ""){
+    if(fields_data == ""){
       modal.find('.modal-footer').addClass("d-none");
     }else{
       modal.find('.modal-footer').removeClass("d-none");

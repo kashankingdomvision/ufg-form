@@ -46,7 +46,6 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-
         Category::create([
             'name'       => $request->name,
             'slug'       => Str::slug($request->name),
@@ -82,9 +81,6 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request)
     {
-        // dd($request->all());
-        // $request->validate([ 'name' => 'required|unique:categories,id,'.$category->id]);
-
         $category = Category::findOrFail(decrypt($request->id));
         
         $category->update([

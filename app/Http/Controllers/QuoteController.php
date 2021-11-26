@@ -705,5 +705,19 @@ class QuoteController extends Controller
         } catch (\Exception $e) {
             return ['status' => false, 'error' => $e->getMessage()];
         }
+     }
+
+    public function get_autocomplete_data()
+    {
+        $array = [];
+        $array['airport_codes'] = DB::table('airport_codes')->get();
+        $array['harbours'] = DB::table('harbours')->get();
+        $array['hotels'] = DB::table('hotels')->get();
+        $array['all'] = DB::table('hotels')
+            ->select('name')
+            ->union(DB::table('airport_codes')->select('name'))
+            ->union(DB::table('harbours')->select('name'))
+            ->get();
+        return $array;
     }
 }

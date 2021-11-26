@@ -18,7 +18,7 @@ class CreateCategroyTable extends Migration
             $table->string('name');
             $table->mediumInteger('sort_order');
             $table->string('slug');
-            $table->text('feilds')->nullable();
+            $table->longText('feilds')->nullable();
             $table->enum('booking', [0, 1])->default(0)->nullable();
             $table->enum('quote', [0, 1])->default(0)->nullable();
             $table->timestamps();
