@@ -245,7 +245,7 @@
 
             <div class="row">
                 <div class="col-md-3 col-heading-style font-weight-bold">
-                    Uptodate Covid Vacination Status
+                    Uptodate Covid Vaccination Status
                 </div>
                 @if(isset($quote_ref_one))
                     <div class="col col-style">

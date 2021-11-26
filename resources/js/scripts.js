@@ -5087,7 +5087,7 @@ $(document).ready(function($) {
 
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label>Uptodate Covid Vacination Status </label>
+                            <label>Uptodate Covid Vaccination Status </label>
                             <div>
                                 <label class="radio-inline">
                                     <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
@@ -5184,7 +5184,7 @@ $(document).ready(function($) {
 
                                 <div class="col-sm-3">
                                     <div class="form-group">
-                                        <label>Uptodate Covid Vacination Status </label>
+                                        <label>Uptodate Covid Vaccination Status </label>
                                         <div>
                                             <label class="radio-inline">
                                                 <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
