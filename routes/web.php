@@ -344,6 +344,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
 
+        /* Hotels */
+		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+
         /* Preset Comment */
         Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
