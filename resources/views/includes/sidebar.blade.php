@@ -333,7 +333,7 @@
                 </li>
 
                 @if(Auth::user()->hasAdmin())
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route ==  'store.texts.create' || $route ==  'store.texts.index' || $route ==  'store.texts.edit' || $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' || $route ==  'seasons.index' || $route ==  'seasons.edit' || $route == 'setting.countries.index' || $route == 'setting.countries.create' || $route == 'setting.countries.edit' || $route == 'setting.towns.create' || $route == 'setting.towns.index' || $route == 'setting.towns.edit' || $route == 'setting.hotels.create' || $route == 'setting.hotels.index' || $route == 'setting.hotels.edit' ? 'menu-open': '' }}">
+                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route ==  'store.texts.create' || $route ==  'store.texts.index' || $route ==  'store.texts.edit' || $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' || $route ==  'seasons.index' || $route ==  'seasons.edit' || $route == 'setting.countries.index' || $route == 'setting.countries.create' || $route == 'setting.countries.edit' || $route == 'setting.towns.create' || $route == 'setting.towns.index' || $route == 'setting.towns.edit' || $route == 'setting.hotels.create' || $route == 'setting.hotels.index' || $route == 'setting.hotels.edit' || $route == 'setting.airport_codes.index' || $route == 'setting.airport_codes.create' || $route == 'setting.airport_codes.edit' ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -342,6 +342,13 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.airport_codes.index') }}" class="nav-link {{ $route == 'setting.airport_codes.index' || $route == 'setting.airport_codes.create' || $route == 'setting.airport_codes.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-plane nav-icon"></i>
+                                <p>Airport</p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="{{ route('setting.hotels.index') }}" class="nav-link {{ $route == 'setting.hotels.index' || $route == 'setting.hotels.create' || $route == 'setting.hotels.edit'  ? 'active' : '' }}">

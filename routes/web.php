@@ -344,6 +344,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
 
+        /* AirportCode */
+		Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+
         /* Hotels */
 		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
 			'index','create', 'store', 'edit', 'update', 'destroy'
