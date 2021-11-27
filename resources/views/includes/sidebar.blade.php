@@ -1,5 +1,5 @@
 @php
-    $route = \Route::currentRouteName()
+    $route = \Route::currentRouteName();
     $setting_routes = [
         'setting.airlines.index',
         'setting.airlines.create',
