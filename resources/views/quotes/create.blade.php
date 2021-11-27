@@ -369,7 +369,7 @@
 
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Uptodate Covid Vaccination Status</label>
+                            <label>Up To Date Covid Vaccination Status</label>
                             <div>
                               <label class="radio-inline">
                                 <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;

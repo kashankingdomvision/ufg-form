@@ -841,7 +841,7 @@ class ReportController extends Controller
             $LPI_quote_values['Resident In']            = $this->get_quote_ids_value_array($LPI_quote_values_array['lead_passenger_resident'] , 'Country', 'name');
             $LPI_quote_values['Bedding Preferences']    = $LPI_quote_values_array['lead_passenger_bedding_preference'];
             $LPI_quote_values['Dinning Preferences']    = $LPI_quote_values_array['lead_passenger_dinning_preference'];
-            $LPI_quote_values['Uptodate Covid Vaccination Status']       = $this->get_quote_boolean_value_array($LPI_quote_values_array['lead_passenger_covid_vaccinated']);
+            $LPI_quote_values['Up To Date Covid Vaccination Status']       = $this->get_quote_boolean_value_array($LPI_quote_values_array['lead_passenger_covid_vaccinated']);
             //- Lead Passenger Information
 
             //- Passenger Details
@@ -860,7 +860,7 @@ class ReportController extends Controller
             $pd_resident_in         = $this->get_column_array( $pd_resident_in_array, 'Resident In' );
             $pd_bedding_preference  = $this->get_column_array( $paxD_values['bedding_preference'], 'Bedding Preferences' );
             $pd_dinning_preference  = $this->get_column_array( $paxD_values['dinning_preference'], 'Dinning Preferences' );
-            $pd_covid_vaccinated    = $this->get_column_array( $pd_covid_vaccinated_array, 'Uptodate Covid Vaccination Status' );
+            $pd_covid_vaccinated    = $this->get_column_array( $pd_covid_vaccinated_array, 'Up To Date Covid Vaccination Status' );
             //- Passenger Details
 
             //- Total Calculations
