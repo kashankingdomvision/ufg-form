@@ -18,8 +18,8 @@
     @endif
   </td>
   <td width="8">{!! $quote->has_user_edit !!}</td>
-  <td>{{ $quote->getSalePerson->name }}</td>
-  <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td>
+  {{-- <td>{{ $quote->getSalePerson->name }}</td> --}}
+  {{-- <td>{{ ($quote->user_id == 'sale_person_id')? '-' : $quote->getUser->name }}</td> --}}
   <td>{{ $quote->ref_no }}</td>
 
   @if($quote->booking_status != 'booked')
@@ -37,7 +37,7 @@
   <td>{!! $quote->booking_formated_status !!}</td>
   <td>{{ $quote->formated_booking_date }}</td>
   <td>{{ $quote->formated_created_at }}</td>
-  
+  <td>{{ isset($quote->getUser->name) && !empty($quote->getUser->name) ? $quote->getUser->name : '' }}</td>
   <td width="10%" class="d-flex">
     @if($quote->booking_status == 'quote')
         <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit" title="Edit">

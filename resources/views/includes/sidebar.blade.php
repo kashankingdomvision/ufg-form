@@ -1,7 +1,51 @@
 @php
-  $route = \Route::currentRouteName()
+    $route = \Route::currentRouteName();
+    $setting_routes = [
+        'setting.airlines.index',
+        'setting.airlines.create',
+        'setting.airlines.edit',
+        'setting.payment_methods.index',
+        'setting.payment_methods.create',
+        'setting.payment_methods.edit',
+        'setting.booking_methods.index',
+        'setting.booking_methods.create',
+        'setting.booking_methods.edit',
+        'setting.brands.index',
+        'setting.brands.create',
+        'setting.brands.edit',
+        'setting.holidaytypes.index',
+        'setting.holidaytypes.create',
+        'setting.holidaytypes.edit',
+        'setting.currencies.index',
+        'setting.currencies.create',
+        'setting.currencies.edit',
+        'setting.currency_conversions.index',
+        'setting.currency_conversions.edit',
+        'store.texts.create',
+        'store.texts.index', 
+        'store.texts.edit',
+        'setting.preset-comments.index',
+        'setting.preset-comments.create',
+        'setting.preset-comments.edit',
+        'seasons.index',
+        'seasons.edit',
+        'setting.countries.index',
+        'setting.countries.create',
+        'setting.countries.edit',
+        'setting.towns.create',
+        'setting.towns.index',
+        'setting.towns.edit',
+        'setting.hotels.create',
+        'setting.hotels.index',
+        'setting.hotels.edit',
+        'setting.airport_codes.index',
+        'setting.airport_codes.create',
+        'setting.airport_codes.edit',
+        'setting.harbours.index',
+        'setting.harbours.create',
+        'setting.harbours.edit',
+    ];
 @endphp
-
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
     {{-- <a href="{{ route('dashboard.index') }}" class="brand-link d-xs-none ">
@@ -333,7 +377,7 @@
                 </li>
 
                 @if(Auth::user()->hasAdmin())
-                <li class="nav-item {{ $route == 'setting.airlines.index' || $route == 'setting.airlines.create' || $route == 'setting.airlines.edit' || $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' || $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' || $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' || $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' || $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' || $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' || $route ==  'store.texts.create' || $route ==  'store.texts.index' || $route ==  'store.texts.edit' || $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' || $route ==  'seasons.index' || $route ==  'seasons.edit' || $route == 'setting.countries.index' || $route == 'setting.countries.create' || $route == 'setting.countries.edit' || $route == 'setting.towns.create' || $route == 'setting.towns.index' || $route == 'setting.towns.edit' ? 'menu-open': '' }}">
+                <li class="nav-item {{ in_array($route, $setting_routes) ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
                         <p>
@@ -342,6 +386,28 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.harbours.index') }}" class="nav-link {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-map-marker nav-icon"></i>
+                                <p>Harbours, Train and Points of Interest</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.airport_codes.index') }}" class="nav-link {{ $route == 'setting.airport_codes.index' || $route == 'setting.airport_codes.create' || $route == 'setting.airport_codes.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-plane nav-icon"></i>
+                                <p>Airport</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.hotels.index') }}" class="nav-link {{ $route == 'setting.hotels.index' || $route == 'setting.hotels.create' || $route == 'setting.hotels.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-hotel nav-icon"></i>
+                                <p>Hotels</p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="{{ route('setting.countries.index') }}" class="nav-link {{ $route == 'setting.countries.index' || $route == 'setting.countries.create' || $route == 'setting.countries.edit'  ? 'active' : '' }}">

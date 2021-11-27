@@ -344,6 +344,21 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
 
+        /* Harbours, Train and Points of Interest */
+		Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+
+        /* AirportCode */
+		Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+
+        /* Hotels */
+		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
+			'index','create', 'store', 'edit', 'update', 'destroy'
+		]]);
+
         /* Preset Comment */
         Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
