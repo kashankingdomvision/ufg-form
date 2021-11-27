@@ -114,7 +114,7 @@
         typeUserAttrs: {
           autocomplete: {
               data: {
-                  label: 'Id',
+                  label: 'Type',
                   options: {
                       'airport_codes': 'Airport Codes',
                       'harbours': 'Harbours, Train and Points of Interest',
