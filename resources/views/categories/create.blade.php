@@ -105,6 +105,8 @@
   jQuery(function ($) {
     
     var fbTemplate = document.getElementById("build-wrap");
+    var currFieldData;
+
     var options = {
       typeUserAttrs: {
         autocomplete: {
@@ -120,12 +122,31 @@
           }
         },
       },
-      replaceFields:
-      [{
-        type: "autocomplete",
-        label: "Autocomplete",
-        values: [{ label: "", value: "", disabled:true }],
-      }],
+      onAddField: function(fieldId, fieldData) {
+        getFieldData(fieldData);
+      },
+      onOpenFieldEdit: function(field, fieldData) {
+        if(currFieldData.type == "autocomplete")
+        {
+          var currFieldId = document.querySelectorAll(`#`+field.id+` SELECT`)[0].id;
+
+          var elem = document.querySelector(`#`+field.id+` .field-options`);
+          elem.classList.add("d-none");
+
+          emptyLi(`#`+field.id+` .sortable-options LI`);
+
+          $('#'+currFieldId).on('change', function()
+          {
+            if($(this).val() === "none")
+            {
+              elem.classList.remove("d-none");
+            } else {
+              elem.classList.add("d-none");
+              emptyLi(`#`+field.id+` .sortable-options LI`);
+            }
+          });
+        }
+      },
       onSave: function (evt, formData) {
 
         var categoryName = $('.name').val();
@@ -199,9 +220,22 @@
         });
       }
     };
-    
-    $(fbTemplate).formBuilder(options);
 
+    $(fbTemplate).formBuilder(options);    
+
+    function emptyLi(fvalue)
+    {
+      const elemLi = document.querySelectorAll(fvalue);
+      for (const remElemLi of elemLi) {
+        remElemLi.parentNode.removeChild(remElemLi);
+      }
+    }
+    
+    function getFieldData(fieldData)
+    {
+      currFieldData = fieldData;
+    }
+    
   });
 
 </script>

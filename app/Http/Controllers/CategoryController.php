@@ -46,6 +46,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
+        dd($request->feilds);
         Category::create([
             'name'       => $request->name,
             'slug'       => Str::slug($request->name),
