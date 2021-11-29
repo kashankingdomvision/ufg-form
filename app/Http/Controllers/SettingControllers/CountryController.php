@@ -20,7 +20,7 @@ class CountryController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Country::orderBy('id', 'ASC');
+        $query = Country::orderBy('sort_order', 'ASC');
 
         if(count($request->all()) > 0){
 

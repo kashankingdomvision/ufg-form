@@ -36,7 +36,7 @@ class TownController extends Controller
         }
 
 
-        $data['countries'] = Country::all();
+        $data['countries'] = Country::orderBy('sort_order', 'ASC')->get();
         $data['towns']     = $query->paginate($this->pagination);
 
         return view('towns.listing', $data);
@@ -49,7 +49,7 @@ class TownController extends Controller
     */
     public function create()
     {
-        $data['countries'] = Country::all();
+        $data['countries'] = Country::orderBy('sort_order', 'ASC')->get();
 
         return view('towns.create', $data);
     }

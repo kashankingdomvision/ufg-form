@@ -64,7 +64,7 @@ class SupplierController extends Controller
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
-        $data['countries'] = Country::all();
+        $data['countries']  = Country::orderBy('sort_order', 'ASC')->get();
 
         return view('suppliers.create', $data);
     }
@@ -128,11 +128,11 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $data['supplier'] = Supplier::findOrFail(decrypt($id));
+        $data['supplier']   = Supplier::findOrFail(decrypt($id));
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         $data['products']   = Product::get();
         $data['currencies'] = Currency::get();
-        $data['countries'] = Country::all();
+        $data['countries']  = Country::orderBy('sort_order', 'ASC')->get();
         
         return view('suppliers.edit',$data);
     }
