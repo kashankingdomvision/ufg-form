@@ -299,1374 +299,1209 @@ $(document).ready(function($) {
         }
     }
 
-            $(document).on('change', '.rate-type', function() {
+    $(document).on('change', '.rate-type', function() {
 
-                var status = $(this).attr("data-status");
+        var status = $(this).attr("data-status");
 
-                if (status && status == 'booking') {
-                    getBookingRateTypeValues();
+        if (status && status == 'booking') {
+            getBookingRateTypeValues();
 
-                } else {
+        } else {
 
-                    getQuoteRateTypeValues();
-                }
-            });
+            getQuoteRateTypeValues();
+        }
+    });
 
-            $(document).on('change', '.commission-id', function() {
+    $(document).on('change', '.commission-id', function() {
 
-                let commission_id = $(this).val();
-                var options       = '';
-                var url           = BASEURL + 'get-commission-groups'
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    data: { 'commission_id': commission_id },
-                    success: function(response){
-                        options += '<option value="">Select Commission Group</option>';
-                        $.each(response, function(key, value) {
-                            options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
-                        });
-
-                        // $('.commission-group-id').html(options);
-                    }
+        let commission_id = $(this).val();
+        var options       = '';
+        var url           = BASEURL + 'get-commission-groups'
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'commission_id': commission_id },
+            success: function(response){
+                options += '<option value="">Select Commission Group</option>';
+                $.each(response, function(key, value) {
+                    options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
                 });
-            });
 
-            /* Hide Potentail Commission for another Behalf User */
-            $(document).on('change', '.sales-person-id', function() {
-
-                var salesPersonID = $(this).val();
-                var userID        = $('.user-id').val();
-
-                if(salesPersonID != userID){
-                    $('#potential_commission_feild').addClass('d-none');
-                }
-
-                if(salesPersonID == userID){
-                    $('#potential_commission_feild').removeClass('d-none');
-                }
-            });
-
-            /* Focus In/Out Function on Calculation Values */
-            $(document).on('focus', '.remove-zero-values', function() {
-                var value = parseFloat($(this).val()).toFixed(2);
-                if(value == 0.00){
-                    $(this).val('');
-                }
-            });
-
-            $(document).on('focusout', '.remove-zero-values', function() {
-                var value = $(this).val();
-                if(value == ''){
-                    $(this).val((parseFloat(0).toFixed(2)));
-                }
-            });
-            /* End Focus In/Out Function on Calculation Values */
-
-            /*
-            |--------------------------------------------------------------------------
-            | Quote Management Calculation Functions
-            |--------------------------------------------------------------------------
-            */
-
-            function getBookingAmountPerPerson() {
-                var paxNumber = parseFloat($(".pax-number").val());
-                var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
-                var bookingAmountPerPerson = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
-
-                $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+                // $('.commission-group-id').html(options);
             }
+        });
+    });
 
-            function getQuoteBookingCurrencyValues() {
+    /* Hide Potentail Commission for another Behalf User */
+    $(document).on('change', '.sales-person-id', function() {
 
-                var rateType = $("input[name=rate_type]:checked").val();
-                var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
-                var quoteSize = parseInt($('.quote').length);
-                var calculatedEstimatedCostInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var key = 0;
+        var salesPersonID = $(this).val();
+        var userID        = $('.user-id').val();
 
-                while (key < quoteSize) {
+        if(salesPersonID != userID){
+            $('#potential_commission_feild').addClass('d-none');
+        }
 
-                    var estimatedCost = estimatedCostArray[key];
-                    var supplierCurrency = supplierCurrencyArray[key];
-                    var sellingPrice = sellingPriceArray[key];
-                    var markupAmount = markupAmountArray[key];
+        if(salesPersonID == userID){
+            $('#potential_commission_feild').removeClass('d-none');
+        }
+    });
 
-                    if (supplierCurrency && bookingCurrency) {
+    /* Focus In/Out Function on Calculation Values */
+    $(document).on('focus', '.remove-zero-values', function() {
+        var value = parseFloat($(this).val()).toFixed(2);
+        if(value == 0.00){
+            $(this).val('');
+        }
+    });
 
-                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+    $(document).on('focusout', '.remove-zero-values', function() {
+        var value = $(this).val();
+        if(value == ''){
+            $(this).val((parseFloat(0).toFixed(2)));
+        }
+    });
+    /* End Focus In/Out Function on Calculation Values */
 
-                    } else {
+    /*
+    |--------------------------------------------------------------------------
+    | Quote Management Calculation Functions
+    |--------------------------------------------------------------------------
+    */
 
-                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-                    }
+    function getBookingAmountPerPerson() {
+        var paxNumber = parseFloat($(".pax-number").val());
+        var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
+        var bookingAmountPerPerson = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
 
-                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    key++;
-                }
-            }
+        $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
+    }
 
-            function onChangeAgencyCommissionType(){
+    function getQuoteBookingCurrencyValues() {
 
-                var agency               = $("input[name=agency]:checked").val();
-                var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
+        var rateType = $("input[name=rate_type]:checked").val();
+        var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize = parseInt($('.quote').length);
+        var calculatedEstimatedCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
 
-                var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        while (key < quoteSize) {
 
-                if(agency == 1 && agencyCommissionType == 'net-price'){
-                    $('.paid-net-commission-on-departure').addClass('d-none');
-                }
+            var estimatedCost = estimatedCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice = sellingPriceArray[key];
+            var markupAmount = markupAmountArray[key];
 
-                if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
-                    $('.paid-net-commission-on-departure').removeClass('d-none');
-                    getCalculatedTotalNetMarkup();
-                }
-                
-                // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
-                //     $('.paid-net-commission-on-departure').removeClass('d-none');
-                //     getCalculatedTotalNetMarkup();
-                //     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
-                // }
-            }
+            if (supplierCurrency && bookingCurrency) {
 
-            $(document).on('change, click', '.agency-commission-type', function() {
-                onChangeAgencyCommissionType();
-            });
-
-            $(document).on('change', '.agency-commission', function() {
-                getCalculatedTotalNetMarkup();
-            });
-
-            function getCalculatedTotalNetMarkup() {
-
-                var agencyCommission     = $('.agency-commission').val();
-                var agencyTotalMarkup    = $('.total-markup-amount').val();
-                var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
-
-                $('.total-net-margin').val(check(totalAgencyNetMarkup));
-            }
-
-
-            function getQuoteTotalValues() {
-
-                var markupType = $("input[name=markup_type]:checked").val();
-
-                var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-
-                if(markupType == 'itemised'){
-
-                    var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                    var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                    var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
-                    var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
-
-                    var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
-                    var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
-
-                    $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-                    $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-                    $(".total-markup-percent").val(check(markupPercentage));
-                    $(".total-profit-percentage").val(check(profitPercentage));
-
-                }
-
-                if(markupType == 'whole'){
-
-                    $(".total-markup-amount").val(parseFloat(0).toFixed(2));
-                    $(".total-markup-percent").val(parseFloat(0).toFixed(2));
-                    $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
-                    $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
-                }
-
-                onChangeAgencyCommissionType();
-
-                getCommissionRate();
-                getBookingAmountPerPerson();
-                getSellingPrice();
-                
-                // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-                // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-                // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-                // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-                // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
-
-                // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
-                // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
-
-                // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
-                // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
-
-                // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-                // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
-                // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
-                // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
-                // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
-
-            }
-
-            function getQuoteDetailsValues(key, changeFeild) {
-
-                var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
-                var rateType = $("input[name=rate_type]:checked").val();
                 var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
-                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
-                var calculatedSellingPrice = 0;
-                var calculatedMarkupPercentage = 0;
-                var calculatedMarkupAmount = 0;
-                var calculatedProfitPercentage = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var calculatedEstimatedCostInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var markupType = $("input[name=markup_type]:checked").val();
-
-                if (changeFeild == 'estimated_cost') {
-
-                    // calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-
-                    if(markupType == 'itemised'){
-
-                        calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-                        calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
-                        calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-                        $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-                        $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-
-                    }
-
-                }
-
-                if (changeFeild == 'markup_amount') {
-
-                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
-                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
-                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
-                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                }
-
-                if (changeFeild == 'markup_percentage') {
-
-                    calculatedMarkupAmount = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
-                    calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
-                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
-                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-                    $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                }
-
-                getQuoteTotalValues();
-                // getSellingPrice();
-            }
-
-            function getQuoteRateTypeValues() {
-
-                var rateType = $("input[name=rate_type]:checked").val();
-                var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
-                var quoteSize = parseInt($('.quote').length);
-                var calculatedEstimatedCostInBookingCurrency = 0
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var key = 0;
-
-                while (key < quoteSize) {
-
-                    var estimatedCost = estimatedCostArray[key];
-                    var supplierCurrency = supplierCurrencyArray[key];
-                    var sellingPrice = sellingPriceArray[key];
-                    var markupAmount = markupAmountArray[key];
-
-                    if (supplierCurrency && bookingCurrency) {
-
-                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-
-                    } else {
-
-                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-                    }
-
-                    $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    key++;
-                }
-
-                getQuoteTotalValues();
-                // getSellingPrice();
-            }
-
-            function getQuoteSupplierCurrencyValues(supplierCurrency, key) {
-
-                var rateType = $("input[name=rate_type]:checked").val();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-                var calculatedEstimatedCostInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
-
                 calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
                 calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
 
-                $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
-                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            } else {
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
             }
 
-            /*
-            |--------------------------------------------------------------------------
-            | End Quote Management
-            |--------------------------------------------------------------------------
-            */
+            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+    }
 
-            /*
-            |--------------------------------------------------------------------------
-            | Booking Management Calculation Functions
-            |--------------------------------------------------------------------------
-            */
+    function onChangeAgencyCommissionType(){
 
-            function getBookingTotalValues() {
+        var agency               = $("input[name=agency]:checked").val();
+        var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
 
-                var markupType = $("input[name=markup_type]:checked").val();
+        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-                var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-                $(".total-net-price").val(check(actualCostInBookingCurrency));
+        if(agency == 1 && agencyCommissionType == 'net-price'){
+            $('.paid-net-commission-on-departure').addClass('d-none');
+        }
 
-                if(markupType == 'itemised'){
-                    var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                    var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+            $('.paid-net-commission-on-departure').removeClass('d-none');
+            getCalculatedTotalNetMarkup();
+        }
+        
+        // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+        //     $('.paid-net-commission-on-departure').removeClass('d-none');
+        //     getCalculatedTotalNetMarkup();
+        //     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+        // }
+    }
 
-                    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-                    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+    $(document).on('change, click', '.agency-commission-type', function() {
+        onChangeAgencyCommissionType();
+    });
 
-                    var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
-                    var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+    $(document).on('change', '.agency-commission', function() {
+        getCalculatedTotalNetMarkup();
+    });
 
-                    var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
-                    var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
-                   
-                    $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
-                    $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
-                    $(".total-markup-percent").val(check(markupPercentage));
-                    $(".total-profit-percentage").val(check(profitPercentage));
-                }
+    function getCalculatedTotalNetMarkup() {
 
-                if(markupType == 'whole'){
+        var agencyCommission     = $('.agency-commission').val();
+        var agencyTotalMarkup    = $('.total-markup-amount').val();
+        var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
 
-                    $(".total-markup-amount").val(parseFloat(0).toFixed(2));
-                    $(".total-markup-percent").val(parseFloat(0).toFixed(2));
-                    $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
-                    $(".total-selling-price").val(check(actualCostInBookingCurrency));
-                }
+        $('.total-net-margin').val(check(totalAgencyNetMarkup));
+    }
 
-                onChangeAgencyCommissionType();
-                getCommissionRate();
-                getBookingAmountPerPerson();
-                getSellingPrice();
-            }
+    function getQuoteTotalValues() {
 
-            function getBookingRateTypeValues() {
+        var markupType = $("input[name=markup_type]:checked").val();
 
-                var rateType = $("input[name=rate_type]:checked").val();
-                var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
-                var quoteSize = parseInt($('.quote').length);
-                var calculatedActualCostInBookingCurrency = 0
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var key = 0;
+        var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-                while (key < quoteSize) {
+        $(".total-net-price").val(check(estimatedCostInBookingCurrency));
 
-                    var actualCost = actualCostArray[key];
-                    var supplierCurrency = supplierCurrencyArray[key];
-                    var sellingPrice = sellingPriceArray[key];
-                    var markupAmount = markupAmountArray[key];
+        if(markupType == 'itemised'){
 
-                    // console.log( supplierCurrency);
+            var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-                    if (supplierCurrency && bookingCurrency) {
+            var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+            var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+            var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
 
-                    } else {
+            var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+            var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
 
-                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-                    }
+            $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+            $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+            $(".total-markup-percent").val(check(markupPercentage));
+            $(".total-profit-percentage").val(check(profitPercentage));
 
-                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    key++;
-                }
+        }
 
-                getBookingTotalValues();
-                // getSellingPrice();
-            }
+        if(markupType == 'whole'){
 
-            function getBookingSupplierCurrencyValues(supplierCurrency, key) {
+            $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+            $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+            $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+            $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
+        }
 
-                var rateType = $("input[name=rate_type]:checked").val();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-                var calculatedActualCostInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
+        onChangeAgencyCommissionType();
 
-                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+        getCommissionRate();
+        getBookingAmountPerPerson();
+        getSellingPrice();
+        
+        // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-                $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            }
+        // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-            function getBookingDetailValues(key) {
+        // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
 
-                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-                var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
-                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
-                var rateType = $('input[name="rate_type"]:checked').val();
-                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
 
-                var calculatedMarkupAmount = 0;
-                var calculatedMarkupPercentage = 0;
-                var calculatedProfitPercentage = 0;
-                var calculatedActualCostInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
+        // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
+        // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
 
-                calculatedMarkupAmount = parseFloat(sellingPrice) - parseFloat(actualCost);
-                calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
-                calculatedProfitPercentage = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
-                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+        // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+        // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
+        // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
+        // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
+        // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
 
-                $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+    }
+
+    function getQuoteDetailsValues(key, changeFeild) {
+
+        var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
+        var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+        var rateType = $("input[name=rate_type]:checked").val();
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var calculatedSellingPrice = 0;
+        var calculatedMarkupPercentage = 0;
+        var calculatedMarkupAmount = 0;
+        var calculatedProfitPercentage = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedEstimatedCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var markupType = $("input[name=markup_type]:checked").val();
+
+        if (changeFeild == 'estimated_cost') {
+
+            // calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+
+            if(markupType == 'itemised'){
+
+                calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+                calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
+                calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
                 $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-                $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-                $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+                $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
                 $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
 
-                getBookingTotalValues();
-                // getSellingPrice();
             }
 
-            function getQuoteDetailValuesForBooking(key, changeFeild) {
+        }
 
-                var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-                var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
-                var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
-                var rateType = $('input[name="rate_type"]:checked').val();
+        if (changeFeild == 'markup_amount') {
+
+            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(estimatedCost);
+            calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(estimatedCost / 100);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        if (changeFeild == 'markup_percentage') {
+
+            calculatedMarkupAmount = (parseFloat(estimatedCost) / 100) * parseFloat(markupPercentage);
+            calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(estimatedCost);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        getQuoteTotalValues();
+        // getSellingPrice();
+    }
+
+    function getQuoteRateTypeValues() {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize = parseInt($('.quote').length);
+        var calculatedEstimatedCostInBookingCurrency = 0
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
+
+        while (key < quoteSize) {
+
+            var estimatedCost = estimatedCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice = sellingPriceArray[key];
+            var markupAmount = markupAmountArray[key];
+
+            if (supplierCurrency && bookingCurrency) {
+
                 var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
-                var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
-                var calculatedSellingPrice = 0;
-                var calculatedMarkupPercentage = 0;
-                var calculatedMarkupAmount = 0;
-                var calculatedProfitPercentage = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var calculatedActualCostInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
+                calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
 
-                if (changeFeild == 'actual_cost') {
+            } else {
 
-                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
-                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
-                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-                    calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-
-                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                }
-
-                if (changeFeild == 'markup_amount') {
-
-                    calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
-                    calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
-                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
-                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-                    $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
-                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                }
-
-                if (changeFeild == 'markup_percentage') {
-
-                    calculatedMarkupAmount = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
-                    calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
-                    calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
-                    calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
-                    calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
-
-                    $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
-                    $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
-                    $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                }
-
-                getBookingTotalValues();
-                // getSellingPrice();
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
             }
 
-            function getBookingBookingCurrencyValues() {
-
-                var rateType = $("input[name=rate_type]:checked").val();
-                var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
-                var quoteSize = parseInt($(".quote").length);
-                var calculatedActualCostInBookingCurrency = 0;
-                var calculatedSellingPriceInBookingCurrency = 0;
-                var calculatedMarkupAmountInBookingCurrency = 0;
-                var key = 0;
-
-                while (key < quoteSize) {
-
-                    var actualCost = actualCostArray[key];
-                    var supplierCurrency = supplierCurrencyArray[key];
-                    var sellingPrice = sellingPriceArray[key];
-                    var markupAmount = markupAmountArray[key];
-
-                    if (supplierCurrency && bookingCurrency) {
-
-                        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-                        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-
-                    } else {
-
-                        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-                        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-                    }
-
-                    $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-                    $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-                    $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
-                    key++;
-                }
-            }
-
-            // $(document).on('change', '.agency-commission', function() {
-
-            //     onChangeAgencyCommission();
-            // });
-
-            $(document).on('change', '.booking-supplier-currency-id', function() {
-
-                var code = $(this).find(":selected").data("code");
-                var quote = $(this).closest(".quote");
-                var quoteKey = quote.data("key");
-                var currency_name = $(this).find(':selected').attr('data-name');
-                
-                quote.find("[class*=supplier-currency-code]").html(code);
-                quote.find('.badge-supplier-currency-id').html(currency_name);
-                quote.find('.badge-supplier-currency-id').removeClass('d-none');
-
-                getBookingSupplierCurrencyValues(code, quoteKey);
-                getBookingTotalValues();
-                // getSellingPrice();
-            });
-
-            $(document).on('change', '.payment-method', function() {
-
-                var payment_method = $(this).val();
-                var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
-                var current_payment_methods = $(this);
-
-                var quoteKey = $(this).closest('.quote').data('key');
-                var financeKey = $(this).closest('.finance-clonning').data('financekey');
-
-                var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
-                var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-                var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
-
-                var wa = 0;
-                var outstandingAmountLeft = estimatedCost - totalDepositAmount;
-                var currentDepositAmount = $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
-
-
-                if (supplier_id != null && payment_method == 3) {
-
-                    $.ajax({
-                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
-                        type: 'get',
-                        success: function(data) {
-
-                            if (data.response == true) {
-                                wa = parseFloat(data.message);
-
-                                if (currentDepositAmount > wa) {
-                                    alert("Please Enter Correct Wallet Amount");
-
-
-                                    $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                                } else {
-                                    $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
-                                }
-
-                            }
-                        },
-                        error: function(reject) {
-
-                            if (reject.status === 422) {
-                                var errors = $.parseJSON(reject.responseText);
-                                alert(errors.message);
-                                $(current_payment_methods).val('').trigger('change');
-                            }
-                        },
-                    });
-
-                } else {
-                    $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
-                }
-            });
-
-            $(document).on('change', '.deposit-amount', function() {
-
-                var quoteKey = $(this).closest('.quote').data('key');
-                var financeKey = $(this).closest('.finance-clonning').data('financekey');
-                var closestFinance = $(this).closest('.finance');
-                var depositAmount = parseFloat($(this).val()).toFixed(2);
-                var estimated_cost = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
-                var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
-                var supplier_id = $(`#quote_${quoteKey}_supplier_id`).val();
-                var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-                var outstandingAmountLeft = estimated_cost - totalDepositAmount;
-                var walletAmount = 0;
-
-                if (payment_method && payment_method == 3) {
-
-                    $.ajax({
-                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
-                        type: 'get',
-                        success: function(data) {
-
-                            if (data.response == true) {
-                                walletAmount = parseFloat(data.message);
-
-                                if (depositAmount > walletAmount) {
-                                    alert("Please Enter Correct Wallet Amount");
-                                    $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                                    $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                                } else {
-
-                                    if (outstandingAmountLeft < 0) {
-                                        alert("Please Enter Correct Amount");
-                                        $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                                    } else {
-
-                                        $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
-                                    }
-                                }
-                            }
-                        },
-                        error: function(reject) {}
-                    });
-                } else {
-
-                    if (outstandingAmountLeft >= 0 && payment_method != '') {
-
-                        $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
-
-                    } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-                        alert("Please Enter Correct Deposit Amount");
-                        $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
-                        $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
-                    }
-
-                }
-
-            });
-
-            function getActualCost(quote) {
-
-                var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-                var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-                var amountArray = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
-                var amountTotalArray = amountArray.filter(function(value) { return !Number.isNaN(value); });
-                var totalAmount = amountTotalArray.reduce((a, b) => (a + b), 0);
-                var actualCost = totalDepositAmount - totalAmount;
-
-                return actualCost;
-            }
-
-            function getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey) {
-
-                var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
-                var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-                var rateType = $("input[name=rate_type]:checked").val();
-                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-
-                var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-                var calculatedSellingPriceInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
-
-                $(`#quote_${quoteKey}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
-                $(`#quote_${quoteKey}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
-            }
-
-            $(document).on('change', '.refund_amount', function() {
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = $(this).closest('.quote').data('key');
-                var actualCost = parseFloat(getActualCost(quote));
-
-
-                if (actualCost < 0) {
-                    alert("Please Enter Correct Amount");
-                    $(this).val('0.00');
-                } else {
-
-                    $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-                    $(`#quote_${quoteKey}_markup_amount`).val('0.00');
-                    $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
-                    $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
-                    $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
-                    $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
-
-                    getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
-
-                    getBookingTotalValues();
-                    // getSellingPrice();
-                }
-
-            });
-
-            $(document).on('change', '.credit-note-amount', function() {
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = $(this).closest('.quote').data('key');
-                var actualCost = parseFloat(getActualCost(quote));
-
-
-                if (actualCost < 0) {
-                    alert("Please Enter Correct Paid Amount");
-                    $(this).val('0.00');
-                } else {
-
-                    $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-                    $(`#quote_${quoteKey}_markup_amount`).val('0.00');
-                    $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
-                    $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
-                    $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
-                    $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
-
-                    getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
-
-                    getBookingTotalValues();
-                    // getSellingPrice();
-                }
-
-            });
-
-            $(document).on('click', '.refund-to-bank', function() {
-
-                if ($('.select2single').data('select2')) {
-                    $('.select2single').select2('destroy');
-                }
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-                var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
-
-                if (parseInt(refundPaymentRowLength) == 0) {
-
-                    if (confirm("Are you sure you want Refund Payment? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
-                        quote.find('.refund-payment-section').attr("hidden", false);
-                    }
-                } else {
-
-                    quote.find('.refund-payment-row').first().clone().find("input").val("").each(function() {
-
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-
-                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
-                                return `][${refundPaymentRowLength}]`;
-                            });
-
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
-                                return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
-                            });
-
-                        }).end()
-                        .find('.refund-payment-label').each(function() {
-
-                            this.id = `refund_payment_label_${refundPaymentRowLength}`;
-                            $(this).text(`Refund Payment #${refundPaymentRowLength+1}`);
-
-                        }).end()
-                        .find("select").val("").each(function() {
-
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-
-                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
-                                return `][${refundPaymentRowLength}]`;
-                            });
-
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
-                                return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
-                            });
-
-                        }).end()
-                        .find('.select2single').select2({
-                            width: '100%',
-                            theme: "bootstrap",
-                        }).end()
-                        .show()
-                        .insertAfter(quote.find('.refund-payment-row:last'));
-
-                    quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
-                    quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
-                    quote.find('.refund-payment-row:last .refund_amount').val('');
-                    quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
-                }
-
-                reinitializedDynamicFeilds();
-
-
-                // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
-                // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
-
-                // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
-
-                // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-                // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-
-                // $(this).closest('.quote').find('.refund_amount').val('0.00');
-
-                // var booking_detail_id = $(this).data('booking_detail_id');
-
-                // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-                // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-                // $('#total_deposit_amount').val(totalDepositAmount);
-
-                // jQuery('#refund_to_bank_modal').modal('show');
-                // $('#booking_detail_id').val(booking_detail_id);
-
-            });
-
-            $(document).on('click', '.credit-note', function() {
-
-                if ($('.select2single').data('select2')) {
-                    $('.select2single').select2('destroy');
-                }
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-                var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
-
-                // console.log(creditNoteRowLength);
-
-                if (parseInt(creditNoteRowLength) == 0) {
-                    if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
-                        quote.find('.credit-note-section').attr("hidden", false);
-                    }
-
-                } else {
-
-                    quote.find('.credit-note-row').first().clone().find("input").val("").each(function() {
-
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-
-                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
-                                return `][${creditNoteRowLength}]`;
-                            });
-
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
-                                return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
-                            });
-
-                        }).end()
-                        .find('.credit_note_label').each(function() {
-
-                            this.id = `credit_note_label_${creditNoteRowLength}`;
-                            $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
-
-                        }).end()
-                        .find("select").val("").each(function() {
-
-                            let n = 1;
-                            let name = $(this).attr("data-name");
-
-                            this.name = this.name.replace(/]\[(\d+)]/g, function() {
-                                return `][${creditNoteRowLength}]`;
-                            });
-
-                            this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
-                                return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
-                            });
-
-                        }).end()
-                        .find('.select2single').select2({
-                            width: '100%',
-                            theme: "bootstrap",
-                        }).end()
-                        .show()
-                        .insertAfter(quote.find(".credit-note-row:last"));
-
-                    // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
-                    // quote.find('.refund-payment-row:last .refund_amount').val('');
-                    quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
-                }
-
-                reinitializedDynamicFeilds();
-
-            });
-
-            $(document).on('click', '.refund-payment-hidden-btn', function() {
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-                var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
-
-                if (parseInt(refundPaymentRowLength) == 1) {
-                    quote.find('.refund-payment-section').attr("hidden", true);
-                    quote.find('.refund-payment-section .refund_amount').val("");
-                } else {
-                    $(this).closest('.refund-payment-row').remove();
-                }
-
-                var actualCost = parseFloat(getActualCost(quote));
-                $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-
-                getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
-                getBookingTotalValues();
-                // getSellingPrice();
-            });
-
-            $(document).on('click', '.credit-note-hidden-btn', function() {
-
-                var quote = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-                var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
-
-                if (parseInt(creditNoteRowLength) == 1) {
-                    quote.find('.credit-note-section').attr("hidden", true);
-                    quote.find('.credit-note-section .credit-note-amount').val("");
-                } else {
-                    $(this).closest('.credit-note-row').remove();
-                }
-
-                var actualCost = parseFloat(getActualCost(quote));
-                $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
-
-                getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
-                getBookingTotalValues();
-                // getSellingPrice();
-
-            });
-
-            /*
-            |--------------------------------------------------------------------------
-            | End Booking Management
-            |--------------------------------------------------------------------------
-            */
-
-            $("#generate-pdf").submit(function(event) {
-                event.preventDefault();
-                var $form = $(this),
-                    url = $form.attr('action');
-                var editor = $('#editor').html();
-                var formData = $(this).serializeArray();
-                formData.push({ name: 'data', value: editor });
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: formData,
-                    success: function(data) {
-                        // console.log(data, 'data');
-                    },
-                    error: function(reject) {
-
-                        if (reject.status === 422) {
-
-                            var errors = $.parseJSON(reject.responseText);
-
-                            setTimeout(function() {
-                                $("#overlay").removeClass('overlay').html('');
-
-                                if (errors.hasOwnProperty("overrride_errors")) {
-                                    alert(errors.overrride_errors);
-                                    window.location.href = REDIRECT_BASEURL + "quotes/index";
-                                } else {
-
-                                    jQuery.each(errors.errors, function(index, value) {
-
-                                        index = index.replace(/\./g, '_');
-                                        $('#' + index).addClass('is-invalid');
-                                        $('#' + index).closest('.form-group').find('.text-danger').html(value);
-                                    });
-                                }
-
-                            }, 400);
-                        }
-                    },
-                });
-            });
-
-            $(document).on('click', '.view-rates', function() {
-                jQuery('#view_rates_modal').modal('show');
-            });
-
-            $(document).on('change', '.end-date-of-service', function() {
-
-                var quote    = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-
-                var DateOFService    = $(`#quote_${quoteKey}_date_of_service`).val();
-                var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
-                var nowDate          = todayDate();
-
-                if(convertDate(EndDateOFService) < convertDate(nowDate)){
-                    alert('Please select valid Date, The date you select is already Passed.');
-                    $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
-                    $(`#quote_${quoteKey}_number_of_nights`).val('');
-                }
-               
-                if(convertDate(EndDateOFService) < convertDate(DateOFService)){
-           
-                    alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
-                    $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
-                    $(`#quote_${quoteKey}_number_of_nights`).val('');
-                } else {
-
-                    var number = convertDate(EndDateOFService) - convertDate(DateOFService);
-                    var days   = Math.ceil(number / (1000 * 3600 * 24));
-
-                    $(`#quote_${quoteKey}_number_of_nights`).val(checkForInt(days));
-                }
-
-            });
-
-            $(document).on('change', '.date-of-service', function() {
-
-                var quote    = $(this).closest('.quote');
-                var quoteKey = quote.data('key');
-
-                var DateOFService    = $(`#quote_${quoteKey}_date_of_service`).val();
-                var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
-                var nowDate          = todayDate();
-
-                if(convertDate(DateOFService) < convertDate(nowDate)){
-                    alert('Please select valid Date, The date you select is already Passed.');
-                    $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
-                    $(`#quote_${quoteKey}_number_of_nights`).val('');
-                }
-               
-                if(convertDate(EndDateOFService) < convertDate(DateOFService)){
-           
-                    alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
-                    $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
-                    $(`#quote_${quoteKey}_number_of_nights`).val('');
-                } else {
-
-                    var number = convertDate(EndDateOFService) - convertDate(DateOFService);
-                    var days   = Math.ceil(number / (1000 * 3600 * 24));
-
-                    $(`#quote_${quoteKey}_number_of_nights`).val(checkForInt(days));
-                }
-
-            });
-
-            // $(document).on('change', '.datepicker', function() {
-            //     // var datePicker_id     = $(this).attr('id');
-            //     var name = $(this).data('name');
-            //     var key = $(this).closest('.quote').data('key');
-            //     var DateOFService = $('#quote_' + key + '_date_of_service').val();
-            //     var BookingDate = $('#quote_' + key + '_booking_date').val();
-            //     var BookingDueDate = $('#quote_' + key + '_booking_due_date').val();
-            //     var EndDateOFService = $('#quote_' + key + '_end_date_of_service').val();
-
-            //     // console.log(DateOFService + ' #quote_'+key+'_date_of_service ');
-
-            //     //*******Seasons start and*********//
-            //     var $season = $("#season_id");
-            //     var season_start_date = new Date($season.find(':selected').data('start'));
-            //     var season_end_date = new Date($season.find(':selected').data('end'));
-            //     // console.log('season start date', season_start_date);
-            //     // console.log('season end date', season_end_date);
-            //     // console.log(name+ ' case name');
-
-            //     if (convertDate(DateOFService) > convertDate(EndDateOFService)) {
-            //         $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
-            //     }
-
-
-            //     switch (name) {
-
-            //         case 'end_date_of_service':
-            //             EndDateOFService = convertDate($(this).val());
-
-
-
-            //             if (convertDate(BookingDate) >= EndDateOFService) {
-            //                 $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-            //                 BookingDate = '';
-            //             }
-
-            //             if (convertDate(BookingDueDate) >= EndDateOFService) {
-            //                 $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
-            //                 BookingDueDate = '';
-            //             }
-
-
-            //             // BookingDueDate = (BookingDueDate != '')? convertDate(BookingDueDate) : season_start_date;
-            //             // BookingDate    = (BookingDate != '')? convertDate(BookingDate) : DateOFService;
-
-            //             // if(DateOFService < BookingDueDate){
-            //             //     $('#quote_'+key+'_booking_due_date').datepicker("setDate", '');
-            //             //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-            //             // }
-            //             if (convertDate(DateOFService) > EndDateOFService) {
-            //                 $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
-            //                 // $('#quote_'+key+'_date_of_service').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: EndDateOFService});
-
-            //             }
-            //             var BookingDate = (BookingDate != '') ? convertDate(BookingDate) : ((BookingDueDate != '') ? convertDate(BookingDueDate) : season_start_date);
-            //             // console.log(BookingDate+ BookingDueDate);
-            //             $('#quote_' + key + '_date_of_service').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: EndDateOFService });
-            //             //     $('#quote_'+key+'_booking_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService});
-            //             //     $('#quote_'+key+'_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate});
-            //             break;
-
-            //         case 'date_of_service':
-            //             // console.log('run date of service function');
-
-
-
-            //             DateOFService = ($(this).val() != '') ? convertDate($(this).val()) : season_end_date;
-            //             BookingDueDate = (BookingDueDate != '') ? convertDate(BookingDueDate) : season_start_date;
-            //             BookingDate = (BookingDate != '') ? convertDate(BookingDate) : DateOFService;
-
-            //             if (DateOFService > convertDate(EndDateOFService)) {
-            //                 $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
-            //                 EndDateOFService = '';
-            //             }
-
-            //             if (DateOFService < BookingDueDate) {
-            //                 $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
-            //                 $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService });
-            //             } else {
-            //                 $('#quote_' + key + '_booking_due_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: BookingDate });
-            //             }
-
-            //             if (DateOFService < BookingDate) {
-            //                 $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-            //                 $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: DateOFService });
-            //             } else {
-            //                 $('#quote_' + key + '_booking_date').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService });
-            //             }
-
-
-
-            //             $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date });
-            //             $('#quote_' + key + '_end_date_of_service').datepicker('remove').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: DateOFService, endDate: season_end_date });
-            //             break;
-            //         case 'booking_date':
-            //             BookingDate = convertDate($(this).val());
-
-            //             if (BookingDate <= convertDate(BookingDueDate)) {
-            //                 $('#quote_' + key + '_booking_due_date').datepicker("setDate", '');
-            //                 BookingDueDate = '';
-            //             }
-
-            //             if (BookingDate > convertDate(DateOFService)) {
-            //                 $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
-            //                 $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
-            //                 DateOFService = '';
-            //             }
-
-            //             $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDate, endDate: season_end_date });
-            //             var endDos_start = (DateOFService != '') ? convertDate(DateOFService) : ((BookingDate != '') ? BookingDate : season_start_date);
-            //             $('#quote_' + key + '_end_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: endDos_start, endDate: season_end_date });
-            //             var setDueDate = (BookingDate != '') ? BookingDate : (DateOFService != '') ? convertDate(DateOFService) : season_end_date;
-            //             // console.log(setDueDate);
-            //             $('#quote_' + key + '_booking_due_date').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: setDueDate });
-
-            //             break;
-            //         case 'booking_due_date':
-            //             BookingDueDate = convertDate($(this).val());
-            //             if (BookingDueDate > convertDate(BookingDate)) {
-            //                 $('#quote_' + key + '_booking_date').datepicker("setDate", '');
-            //                 BookingDate = '';
-            //                 // console.log('run');
-            //             }
-
-            //             if (BookingDueDate > convertDate(DateOFService)) {
-            //                 $('#quote_' + key + '_date_of_service').datepicker("setDate", '');
-            //                 DateOFService = '';
-            //             }
-
-            //             if (BookingDueDate > convertDate(EndDateOFService)) {
-            //                 $('#quote_' + key + '_end_date_of_service').datepicker("setDate", '');
-            //                 EndDateOFService = '';
-            //             }
-
-
-            //             // if(convertDate(BookingDueDate) > convertDate(DateOFService)){
-            //             //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-            //             //     $('#quote_'+key+'_date_of_service').datepicker("setDate", '');
-            //             // }
-            //             // if(convertDate(BookingDueDate) > convertDate(BookingDate)){
-            //             //     $('#quote_'+key+'_booking_date').datepicker("setDate", '');
-            //             // }
-
-            //             var Booking_Date = (BookingDate != '') ? convertDate(BookingDate) : BookingDueDate;
-            //             // console.log(Booking_Date);
-            //             DateOFService = (DateOFService != '') ? convertDate(DateOFService) : season_end_date;
-            //             // console.log('Date of service'+ DateOFService);
-
-            //             $('#quote_' + key + '_booking_date').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: BookingDueDate, endDate: DateOFService });
-            //             $('#quote_' + key + '_date_of_service').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: Booking_Date, endDate: DateOFService });
-
-            //             break;
-
-            //         default:
-            //             datepickerReset();
-            //             break;
-            //     }
-            // });
-
-            $(document).on('change', '.getBrandtoHoliday', function() {
-                let brand_id = $(this).val();
-                var options = '';
-                var url = BASEURL + 'brand/to/holidays'
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    data: { 'brand_id': brand_id },
-                    success: function(response) {
-                        options += '<option value="">Select Type Of Holiday</option>';
-                        $.each(response, function(key, value) {
-                            options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                        });
-                        $('.appendHolidayType').html(options);
-                    }
-                });
-
-                getCommissionRate();
-            });
-
-            $(document).on('change', '.getCountryToTown', function() {
-                let country_id = $(this).val();
-                var options    = '';
-
-                var url = BASEURL + 'country/to/town'
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    data: { 'country_id': country_id },
-                    success: function(response) {
-                        options += '<option value="">Select Town</option>';
-                        $.each(response, function(key, value) {
-                            options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                        });
-
-                        $('.appendCountryTown').html(options);
-                    }
-                });
+            $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+
+        getQuoteTotalValues();
+        // getSellingPrice();
+    }
+
+    function getQuoteSupplierCurrencyValues(supplierCurrency, key) {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        var estimatedCost = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
+        var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+        var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var calculatedEstimatedCostInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+
+        $(`#quote_${key}_estimated_cost_in_booking_currency`).val(check(calculatedEstimatedCostInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | End Quote Management
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booking Management Calculation Functions
+    |--------------------------------------------------------------------------
+    */
+
+    function getBookingTotalValues() {
+
+        var markupType = $("input[name=markup_type]:checked").val();
+
+        var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        $(".total-net-price").val(check(actualCostInBookingCurrency));
+
+        if(markupType == 'itemised'){
+            var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+            var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+            var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+            var markupPercentage = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+            var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+            var profitPercentage = profitPercentageArray.reduce((a, b) => (a + b), 0);
             
+            $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+            $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+            $(".total-markup-percent").val(check(markupPercentage));
+            $(".total-profit-percentage").val(check(profitPercentage));
+        }
+
+        if(markupType == 'whole'){
+
+            $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+            $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+            $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+            $(".total-selling-price").val(check(actualCostInBookingCurrency));
+        }
+
+        onChangeAgencyCommissionType();
+        getCommissionRate();
+        getBookingAmountPerPerson();
+        getSellingPrice();
+    }
+
+    function getBookingRateTypeValues() {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize = parseInt($('.quote').length);
+        var calculatedActualCostInBookingCurrency = 0
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
+
+        while (key < quoteSize) {
+
+            var actualCost = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice = sellingPriceArray[key];
+            var markupAmount = markupAmountArray[key];
+
+            // console.log( supplierCurrency);
+
+            if (supplierCurrency && bookingCurrency) {
+
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+            } else {
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+
+        getBookingTotalValues();
+        // getSellingPrice();
+    }
+
+    function getBookingSupplierCurrencyValues(supplierCurrency, key) {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+        var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    function getBookingDetailValues(key) {
+
+        var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var sellingPrice = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+        var rateType = $('input[name="rate_type"]:checked').val();
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+
+        var calculatedMarkupAmount = 0;
+        var calculatedMarkupPercentage = 0;
+        var calculatedProfitPercentage = 0;
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+
+        calculatedMarkupAmount = parseFloat(sellingPrice) - parseFloat(actualCost);
+        calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
+        calculatedProfitPercentage = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
+        calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+
+        $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+        $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+        $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+
+        getBookingTotalValues();
+        // getSellingPrice();
+    }
+
+    function getQuoteDetailValuesForBooking(key, changeFeild) {
+
+        var actualCost = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+        var rateType = $('input[name="rate_type"]:checked').val();
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var calculatedSellingPrice = 0;
+        var calculatedMarkupPercentage = 0;
+        var calculatedMarkupAmount = 0;
+        var calculatedProfitPercentage = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        if (changeFeild == 'actual_cost') {
+
+            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        if (changeFeild == 'markup_amount') {
+
+            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        if (changeFeild == 'markup_percentage') {
+
+            calculatedMarkupAmount = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
+            calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        getBookingTotalValues();
+        // getSellingPrice();
+    }
+
+    function getBookingBookingCurrencyValues() {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize = parseInt($(".quote").length);
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
+
+        while (key < quoteSize) {
+
+            var actualCost = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice = sellingPriceArray[key];
+            var markupAmount = markupAmountArray[key];
+
+            if (supplierCurrency && bookingCurrency) {
+
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+            } else {
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+    }
+
+    $(document).on('change', '.booking-supplier-currency-id', function() {
+
+        var code = $(this).find(":selected").data("code");
+        var quote = $(this).closest(".quote");
+        var quoteKey = quote.data("key");
+        var currency_name = $(this).find(':selected').attr('data-name');
+        
+        quote.find("[class*=supplier-currency-code]").html(code);
+        quote.find('.badge-supplier-currency-id').html(currency_name);
+        quote.find('.badge-supplier-currency-id').removeClass('d-none');
+
+        getBookingSupplierCurrencyValues(code, quoteKey);
+        getBookingTotalValues();
+        // getSellingPrice();
+    });
+
+    $(document).on('change', '.payment-method', function() {
+
+        var payment_method = $(this).val();
+        var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
+        var current_payment_methods = $(this);
+
+        var quoteKey = $(this).closest('.quote').data('key');
+        var financeKey = $(this).closest('.finance-clonning').data('financekey');
+
+        var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
+        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+
+        var wa = 0;
+        var outstandingAmountLeft = estimatedCost - totalDepositAmount;
+        var currentDepositAmount = $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
+
+
+        if (supplier_id != null && payment_method == 3) {
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                type: 'get',
+                success: function(data) {
+
+                    if (data.response == true) {
+                        wa = parseFloat(data.message);
+
+                        if (currentDepositAmount > wa) {
+                            alert("Please Enter Correct Wallet Amount");
+
+
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                        } else {
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+                        }
+
+                    }
+                },
+                error: function(reject) {
+
+                    if (reject.status === 422) {
+                        var errors = $.parseJSON(reject.responseText);
+                        alert(errors.message);
+                        $(current_payment_methods).val('').trigger('change');
+                    }
+                },
             });
 
-            $(document).on('change', '.holiday-type-id', function() {
-                getCommissionRate();
-            });
+        } else {
+            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+        }
+    });
 
-            $('.season-id').on('change', function() {
-                getCommissionRate();
-                // $('.datepicker').datepicker("setDate", '');
-                // datepickerReset();
+    $(document).on('change', '.deposit-amount', function() {
+
+        var quoteKey = $(this).closest('.quote').data('key');
+        var financeKey = $(this).closest('.finance-clonning').data('financekey');
+        var closestFinance = $(this).closest('.finance');
+        var depositAmount = parseFloat($(this).val()).toFixed(2);
+        var estimated_cost = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+        var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
+        var supplier_id = $(`#quote_${quoteKey}_supplier_id`).val();
+        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+        var walletAmount = 0;
+
+        if (payment_method && payment_method == 3) {
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                type: 'get',
+                success: function(data) {
+
+                    if (data.response == true) {
+                        walletAmount = parseFloat(data.message);
+
+                        if (depositAmount > walletAmount) {
+                            alert("Please Enter Correct Wallet Amount");
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                        } else {
+
+                            if (outstandingAmountLeft < 0) {
+                                alert("Please Enter Correct Amount");
+                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                            } else {
+
+                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                            }
+                        }
+                    }
+                },
+                error: function(reject) {}
             });
+        } else {
+
+            if (outstandingAmountLeft >= 0 && payment_method != '') {
+
+                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+
+            } else if (outstandingAmountLeft < 0 && payment_method != 3) {
+                alert("Please Enter Correct Deposit Amount");
+                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+            }
+
+        }
+
+    });
+
+    function getActualCost(quote) {
+
+        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var amountArray = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
+        var amountTotalArray = amountArray.filter(function(value) { return !Number.isNaN(value); });
+        var totalAmount = amountTotalArray.reduce((a, b) => (a + b), 0);
+        var actualCost = totalDepositAmount - totalAmount;
+
+        return actualCost;
+    }
+
+    function getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey) {
+
+        var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var rateType = $("input[name=rate_type]:checked").val();
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+
+        var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+        var calculatedSellingPriceInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+
+        $(`#quote_${quoteKey}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${quoteKey}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    $(document).on('change', '.refund_amount', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = $(this).closest('.quote').data('key');
+        var actualCost = parseFloat(getActualCost(quote));
+
+
+        if (actualCost < 0) {
+            alert("Please Enter Correct Amount");
+            $(this).val('0.00');
+        } else {
+
+            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
+
+            getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+
+            getBookingTotalValues();
+            // getSellingPrice();
+        }
+
+    });
+
+    $(document).on('change', '.credit-note-amount', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = $(this).closest('.quote').data('key');
+        var actualCost = parseFloat(getActualCost(quote));
+
+
+        if (actualCost < 0) {
+            alert("Please Enter Correct Paid Amount");
+            $(this).val('0.00');
+        } else {
+
+            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
+
+            getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+
+            getBookingTotalValues();
+            // getSellingPrice();
+        }
+
+    });
+
+    $(document).on('click', '.refund-to-bank', function() {
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+        if (parseInt(refundPaymentRowLength) == 0) {
+
+            if (confirm("Are you sure you want Refund Payment? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                quote.find('.refund-payment-section').attr("hidden", false);
+            }
+        } else {
+
+            quote.find('.refund-payment-row').first().clone().find("input").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${refundPaymentRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.refund-payment-label').each(function() {
+
+                    this.id = `refund_payment_label_${refundPaymentRowLength}`;
+                    $(this).text(`Refund Payment #${refundPaymentRowLength+1}`);
+
+                }).end()
+                .find("select").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${refundPaymentRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                }).end()
+                .show()
+                .insertAfter(quote.find('.refund-payment-row:last'));
+
+            quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
+            quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+            quote.find('.refund-payment-row:last .refund_amount').val('');
+            quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
+        }
+
+        reinitializedDynamicFeilds();
+
+
+        // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
+        // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
+
+        // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
+
+        // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+        // $(this).closest('.quote').find('.refund_amount').val('0.00');
+
+        // var booking_detail_id = $(this).data('booking_detail_id');
+
+        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        // $('#total_deposit_amount').val(totalDepositAmount);
+
+        // jQuery('#refund_to_bank_modal').modal('show');
+        // $('#booking_detail_id').val(booking_detail_id);
+
+    });
+
+    $(document).on('click', '.credit-note', function() {
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+        // console.log(creditNoteRowLength);
+
+        if (parseInt(creditNoteRowLength) == 0) {
+            if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                quote.find('.credit-note-section').attr("hidden", false);
+            }
+
+        } else {
+
+            quote.find('.credit-note-row').first().clone().find("input").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${creditNoteRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.credit_note_label').each(function() {
+
+                    this.id = `credit_note_label_${creditNoteRowLength}`;
+                    $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
+
+                }).end()
+                .find("select").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${creditNoteRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                }).end()
+                .show()
+                .insertAfter(quote.find(".credit-note-row:last"));
+
+            // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+            // quote.find('.refund-payment-row:last .refund_amount').val('');
+            quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
+        }
+
+        reinitializedDynamicFeilds();
+
+    });
+
+    $(document).on('click', '.refund-payment-hidden-btn', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+        if (parseInt(refundPaymentRowLength) == 1) {
+            quote.find('.refund-payment-section').attr("hidden", true);
+            quote.find('.refund-payment-section .refund_amount').val("");
+        } else {
+            $(this).closest('.refund-payment-row').remove();
+        }
+
+        var actualCost = parseFloat(getActualCost(quote));
+        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+        getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+        getBookingTotalValues();
+        // getSellingPrice();
+    });
+
+    $(document).on('click', '.credit-note-hidden-btn', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+        if (parseInt(creditNoteRowLength) == 1) {
+            quote.find('.credit-note-section').attr("hidden", true);
+            quote.find('.credit-note-section .credit-note-amount').val("");
+        } else {
+            $(this).closest('.credit-note-row').remove();
+        }
+
+        var actualCost = parseFloat(getActualCost(quote));
+        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+        getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+        getBookingTotalValues();
+        // getSellingPrice();
+
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | End Booking Management
+    |--------------------------------------------------------------------------
+    */
+
+    $("#generate-pdf").submit(function(event) {
+        event.preventDefault();
+        var $form = $(this),
+            url = $form.attr('action');
+        var editor = $('#editor').html();
+        var formData = $(this).serializeArray();
+        formData.push({ name: 'data', value: editor });
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            success: function(data) {
+                // console.log(data, 'data');
+            },
+            error: function(reject) {
+
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+                        $("#overlay").removeClass('overlay').html('');
+
+                        if (errors.hasOwnProperty("overrride_errors")) {
+                            alert(errors.overrride_errors);
+                            window.location.href = REDIRECT_BASEURL + "quotes/index";
+                        } else {
+
+                            jQuery.each(errors.errors, function(index, value) {
+
+                                index = index.replace(/\./g, '_');
+                                $('#' + index).addClass('is-invalid');
+                                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+                            });
+                        }
+
+                    }, 400);
+                }
+            },
+        });
+    });
+
+    $(document).on('click', '.view-rates', function() {
+        jQuery('#view_rates_modal').modal('show');
+    });
+
+    $(document).on('change', '.end-date-of-service', function() {
+
+        var quote    = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+
+        var DateOFService    = $(`#quote_${quoteKey}_date_of_service`).val();
+        var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
+        var nowDate          = todayDate();
+
+        if(convertDate(EndDateOFService) < convertDate(nowDate)){
+            alert('Please select valid Date, The date you select is already Passed.');
+            $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
+            $(`#quote_${quoteKey}_number_of_nights`).val('');
+        }
+        
+        if(convertDate(EndDateOFService) < convertDate(DateOFService)){
+    
+            alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+            $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
+            $(`#quote_${quoteKey}_number_of_nights`).val('');
+        } else {
+
+            var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+            var days   = Math.ceil(number / (1000 * 3600 * 24));
+
+            $(`#quote_${quoteKey}_number_of_nights`).val(checkForInt(days));
+        }
+
+    });
+
+    $(document).on('change', '.date-of-service', function() {
+
+        var quote    = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+
+        var DateOFService    = $(`#quote_${quoteKey}_date_of_service`).val();
+        var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
+        var nowDate          = todayDate();
+
+        if(convertDate(DateOFService) < convertDate(nowDate)){
+            alert('Please select valid Date, The date you select is already Passed.');
+            $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
+            $(`#quote_${quoteKey}_number_of_nights`).val('');
+        }
+        
+        if(convertDate(EndDateOFService) < convertDate(DateOFService)){
+    
+            alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+            $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
+            $(`#quote_${quoteKey}_number_of_nights`).val('');
+        } else {
+
+            var number = convertDate(EndDateOFService) - convertDate(DateOFService);
+            var days   = Math.ceil(number / (1000 * 3600 * 24));
+
+            $(`#quote_${quoteKey}_number_of_nights`).val(checkForInt(days));
+        }
+
+    });
+
+    $(document).on('change', '.getBrandtoHoliday', function() {
+        let brand_id = $(this).val();
+        var options = '';
+        var url = BASEURL + 'brand/to/holidays'
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'brand_id': brand_id },
+            success: function(response) {
+                options += '<option value="">Select Type Of Holiday</option>';
+                $.each(response, function(key, value) {
+                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                });
+                $('.appendHolidayType').html(options);
+            }
+        });
+
+        getCommissionRate();
+    });
+
+    $(document).on('change', '.getCountryToTown', function() {
+        let country_id = $(this).val();
+        var options    = '';
+
+        var url = BASEURL + 'country/to/town'
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'country_id': country_id },
+            success: function(response) {
+                options += '<option value="">Select Town</option>';
+                $.each(response, function(key, value) {
+                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                });
+
+                $('.appendCountryTown').html(options);
+            }
+        });
+    
+    });
+
+    $(document).on('change', '.holiday-type-id', function() {
+        getCommissionRate();
+    });
+
+    $('.season-id').on('change', function() {
+        getCommissionRate();
+        // $('.datepicker').datepicker("setDate", '');
+        // datepickerReset();
+    });
 
             $(document).on('change', '.select-agency', function() {
                 var agency_ = $('.agencyField');
