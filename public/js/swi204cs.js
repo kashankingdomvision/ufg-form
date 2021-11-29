@@ -49872,19 +49872,10 @@ var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/larav
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   callLaravelFileManger();
-
-  function callLaravelFileManger() {
-    var route_prefix = FILE_MANAGER_URL;
-    jQuery('.fileManger').filemanager('image', {
-      prefix: route_prefix
-    });
-  } // make quote section sortable
-
-
+  datepickerReset();
   $(function () {
+    // make quote section sortable
     $(".sortable").sortable();
-  });
-  $(function () {
     $('.date-range-picker').daterangepicker({
       autoUpdateInput: false,
       locale: {
@@ -49903,8 +49894,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   $.ajaxSetup({
     headers: {
-      // 'X-CSRF-TOKEN': CSRFTOKEN
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      'X-CSRF-TOKEN': CSRFTOKEN
     }
   });
   $('.select2').select2({
@@ -49938,6 +49928,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     templateSelection: formatState
   });
 
+  function callLaravelFileManger() {
+    var route_prefix = FILE_MANAGER_URL;
+    jQuery('.fileManger').filemanager('image', {
+      prefix: route_prefix
+    });
+  }
+
   function formatState(option) {
     var optionImage = $(option.element).attr('data-image');
 
@@ -49959,10 +49956,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   }
 
-  function log(variable) {
-    console.log("".concat(variable, ": ").concat(variable));
-  }
-
   function disabledFeild(p) {
     $(p).attr("disabled", true);
   }
@@ -49970,8 +49963,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function removeDisabledAttribute(p) {
     $(p).removeAttr("disabled");
   }
-
-  datepickerReset();
 
   var curday = function curday(sp) {
     var today = new Date();

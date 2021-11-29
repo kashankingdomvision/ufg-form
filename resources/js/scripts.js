@@ -28,292 +28,276 @@ var CSRFTOKEN = $('#csrf-token').attr('content');
 
 $(document).ready(function($) {
 
-    
     callLaravelFileManger();
+    datepickerReset();
+
+    $(function() {
+
+        // make quote section sortable
+        $(".sortable").sortable();
+
+        $('.date-range-picker').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear',
+                format: 'DD/MM/YYYY',
+            }
+        });
+
+        $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+
+        $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
+    });
+
+    /*  ajaxSetup */
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': CSRFTOKEN
+        }
+    });
+
+    $('.select2').select2({
+        width: '100%',
+        theme: "classic",
+    });
+
+    $('.select2single').select2({
+        width: '100%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
+
+    $('.nationality-select2').select2({
+        width: '100%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
+
+    $('.select2-multiple').select2({
+        width: '100%',
+        theme: "classic",
+    });
+
+    $('.select2-single').select2({
+        width: '90%',
+        theme: "bootstrap",
+    });
+
+    $('.selling-price-other-currency').select2({
+        width: '68%',
+        theme: "bootstrap",
+        templateResult: formatState,
+        templateSelection: formatState,
+    });
+
     function callLaravelFileManger() {
         var route_prefix = FILE_MANAGER_URL;
         jQuery('.fileManger').filemanager('image', {prefix: route_prefix});
     }
 
-    // make quote section sortable
-    $(function() {
-        $( ".sortable" ).sortable();
-    });
- 
-            $(function() {
+    function formatState(option) {
+        var optionImage = $(option.element).attr('data-image');
+        if (!optionImage) {
+            return option.text;
+        }
 
-                $('.date-range-picker').daterangepicker({
-                    autoUpdateInput: false,
-                    locale: {
-                        cancelLabel: 'Clear',
-                        format: 'DD/MM/YYYY',
-                    }
-                });
+        return $(`<span><img height="20" width="20" src="${optionImage}" width="60px" />${option.text}</span>`);
+    };
 
-                $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
-                    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-                });
+    function reinitializedDynamicFeilds() {
+        $('.select2single').select2({
+            width: '100%',
+            theme: "bootstrap",
+            templateResult: formatState,
+            templateSelection: formatState,
+        });
+    }
 
-                $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
-                    $(this).val('');
-                });
+    function disabledFeild(p) {
+        $(p).attr("disabled", true);
+    }
 
-            });
+    function removeDisabledAttribute(p) {
+        $(p).removeAttr("disabled");
+    }
 
+    var curday = function(sp) {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //As January is 0.
+        var yyyy = today.getFullYear();
+        if (dd < 10) dd = '0' + dd;
+        if (mm < 10) mm = '0' + mm;
+        return (yyyy + sp + mm + sp + dd);
+    };
 
-            /*  ajaxSetup */
-            $.ajaxSetup({
-                headers: {
-                    // 'X-CSRF-TOKEN': CSRFTOKEN
+    function todayDate() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        return today = dd + '/' + mm + '/' + yyyy;
+    }
 
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
+    function datepickerReset(key = null, quoteClass) {
 
-            $('.select2').select2({
-                width: '100%',
-                theme: "classic",
-            });
+        var $season = $("#season_id");
+        var season_start_date = new Date($season.find(':selected').data('start'));
+        var season_end_date = new Date($season.find(':selected').data('end'));
+        if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
+            if (key != null) {
+                $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+            } else {
+                // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
 
-            $('.select2single').select2({
-                width: '100%',
-                theme: "bootstrap",
-                templateResult: formatState,
-                templateSelection: formatState,
-            });
-
-            $('.nationality-select2').select2({
-                width: '100%',
-                theme: "bootstrap",
-                templateResult: formatState,
-                templateSelection: formatState,
-            });
-
-            $('.select2-multiple').select2({
-                width: '100%',
-                theme: "classic",
-            });
-
-            $('.select2-single').select2({
-                width: '90%',
-                theme: "bootstrap",
-            });
-
-            $('.selling-price-other-currency').select2({
-                width: '68%',
-                theme: "bootstrap",
-                templateResult: formatState,
-                templateSelection: formatState,
-            });
-
-            function formatState(option) {
-                var optionImage = $(option.element).attr('data-image');
-                if (!optionImage) {
-                    return option.text;
-                }
-
-                return $(`<span><img height="20" width="20" src="${optionImage}" width="60px" />${option.text}</span>`);
-            };
-
-            function reinitializedDynamicFeilds() {
-                $('.select2single').select2({
-                    width: '100%',
-                    theme: "bootstrap",
-                    templateResult: formatState,
-                    templateSelection: formatState,
-                });
             }
+        } else {
+            $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+        }
+    }
 
-            function log(variable) {
-                console.log(`${variable}: ${variable}`);
+    function convertDate(date) {
+        var dateParts = date.split("/");
+        return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    }
+
+    var currencyConvert = getJson();
+    function getJson() {
+        return JSON.parse($.ajax({
+            type: 'GET',
+            url: `${BASEURL}get-currency-conversion`,
+            dataType: 'json',
+            global: false,
+            async: false,
+            success: function(data) {
+                return data;
             }
+        }).responseText);
+    }
 
-            function disabledFeild(p) {
-                $(p).attr("disabled", true);
+    var commissionRate = getCommissionJson();
+    function getCommissionJson() {
+        return JSON.parse($.ajax({
+            type: 'GET',
+            url: `${BASEURL}get-commission`,
+            dataType: 'json',
+            global: false,
+            async: false,
+            success: function(data) {
+                return data;
             }
+        }).responseText);
+    }
 
-            function removeDisabledAttribute(p) {
-                $(p).removeAttr("disabled");
-            }
+    function check(x) {
 
+        if (isNaN(x) || !isFinite(x)) {
+            return parseFloat(0).toFixed(2);
+        }
 
-            datepickerReset();
+        return x.toFixed(2);
+    }
 
-            var curday = function(sp) {
-                var today = new Date();
-                var dd = today.getDate();
-                var mm = today.getMonth() + 1; //As January is 0.
-                var yyyy = today.getFullYear();
-                if (dd < 10) dd = '0' + dd;
-                if (mm < 10) mm = '0' + mm;
-                return (yyyy + sp + mm + sp + dd);
-            };
+    function checkForInt(x) {
 
-            function todayDate() {
-                var today = new Date();
-                var dd = String(today.getDate()).padStart(2, '0');
-                var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                var yyyy = today.getFullYear();
-                return today = dd + '/' + mm + '/' + yyyy;
-            }
+        if (isNaN(x) || !isFinite(x)) {
+            return '';
+        }
 
-           
+        return parseInt(x);
+    }
 
-            function datepickerReset(key = null, quoteClass) {
+    function isEmpty(value) {
+        return (value == null || value == '' || value == 'undefined' ? 'N/A' : value);
+    }
 
-                var $season = $("#season_id");
-                var season_start_date = new Date($season.find(':selected').data('start'));
-                var season_end_date = new Date($season.find(':selected').data('end'));
-                if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
-                    if (key != null) {
-                        $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
-                    } else {
-                        // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                        $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+    function getRate(supplierCurrency, bookingCurrency, rateType) {
 
-                    }
-                } else {
-                    $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
-                }
-            }
+        var object = currencyConvert.filter(function(elem) {
+            return elem.from == supplierCurrency && elem.to == bookingCurrency
+        });
 
-            function convertDate(date) {
-                var dateParts = date.split("/");
-                return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-            }
+        return (object.shift()[rateType]);
+    }
 
-            var currencyConvert = getJson();
+    function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID){
 
-            function getJson() {
-                return JSON.parse($.ajax({
-                    type: 'GET',
-                    url: `${BASEURL}get-currency-conversion`,
-                    dataType: 'json',
-                    global: false,
-                    async: false,
-                    success: function(data) {
-                        return data;
-                    }
-                }).responseText);
-            }
+        var commissionPercentage = 0.00;
+        var object = commissionRate.filter(function(elem) {
+            return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID
+        });
 
-            var commissionRate = getCommissionJson();
-            function getCommissionJson() {
-                return JSON.parse($.ajax({
-                    type: 'GET',
-                    url: `${BASEURL}get-commission`,
-                    dataType: 'json',
-                    global: false,
-                    async: false,
-                    success: function(data) {
-                        return data;
-                    }
-                }).responseText);
-            }
+        if(object.length > 0){
+            commissionPercentage = object.shift().percentage;
+        }
 
-            function check(x) {
+        return commissionPercentage;
+    }
 
-                if (isNaN(x) || !isFinite(x)) {
-                    return parseFloat(0).toFixed(2);
-                }
+    function getCommissionRate(){
 
-                return x.toFixed(2);
-            }
+        var calculatedCommisionAmount = 0;
+        var totalNetPrice             = $('.total-net-price').val();
+        var commissionID              = $('.commission-id').val();
+        var commissionGroupID         = $('.commission-group-id').val();
+        var brandID                   = $('.brand-id').val();
+        var holidayTypeID             = $('.holiday-type-id').val();
+        var currencyID                = $('.booking-currency-id').val();
+        var seasonID                  = $('.season-id').val();
 
-            function checkForInt(x) {
+        // console.log(totalNetPrice);
+        // console.log(commissionID);
+        // console.log(commissionGroupID);
+        // console.log(brandID);
+        // console.log(holidayTypeID);
+        // console.log(seasonID);
+        // console.log(currencyID);
 
-                if (isNaN(x) || !isFinite(x)) {
-                    return '';
-                }
+        if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
 
-                return parseInt(x);
-            }
+            var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
+            calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
 
-            function isEmpty(value) {
-                return (value == null || value == '' || value == 'undefined' ? 'N/A' : value);
-            }
+        } else {
+            calculatedCommisionAmount = 0.00;
+        }
 
-            function getRate(supplierCurrency, bookingCurrency, rateType) {
+        $('.commission-amount').val(check(calculatedCommisionAmount));
+    }
 
-                var object = currencyConvert.filter(function(elem) {
-                    return elem.from == supplierCurrency && elem.to == bookingCurrency
-                });
+    function getSellingPrice() {
 
+        var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
 
+        if (sellingPriceOtherCurrency) {
 
-                return (object.shift()[rateType]);
-            }
+            var rateType                      = $('input[name="rate_type"]:checked').val();
+            var bookingCurrency               = $(".booking-currency-id").find(':selected').data('code');
+            var totalSellingPrice             = parseFloat($('.total-selling-price').val());
+            var rate                          = getRate(bookingCurrency, sellingPriceOtherCurrency, rateType);
+            var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
 
-            function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID){
+            $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
+            $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
+        }
 
-                var commissionPercentage = 0.00;
-                var object = commissionRate.filter(function(elem) {
-                    return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID
-                });
-
-                if(object.length > 0){
-                    commissionPercentage = object.shift().percentage;
-                }
-
-                return commissionPercentage;
-            }
-
-            function getCommissionRate(){
-
-                var calculatedCommisionAmount = 0;
-                var totalNetPrice             = $('.total-net-price').val();
-                var commissionID              = $('.commission-id').val();
-                var commissionGroupID         = $('.commission-group-id').val();
-                var brandID                   = $('.brand-id').val();
-                var holidayTypeID             = $('.holiday-type-id').val();
-                var currencyID                = $('.booking-currency-id').val();
-                var seasonID                  = $('.season-id').val();
-
-                // console.log(totalNetPrice);
-                // console.log(commissionID);
-                // console.log(commissionGroupID);
-                // console.log(brandID);
-                // console.log(holidayTypeID);
-                // console.log(seasonID);
-                // console.log(currencyID);
-
-                if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
-
-                    var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
-                    calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
-
-                } else {
-                    calculatedCommisionAmount = 0.00;
-                }
-
-                $('.commission-amount').val(check(calculatedCommisionAmount));
-            }
-
-            function getSellingPrice() {
-
-                var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
-
-                if (sellingPriceOtherCurrency) {
-
-                    var rateType                      = $('input[name="rate_type"]:checked').val();
-                    var bookingCurrency               = $(".booking-currency-id").find(':selected').data('code');
-                    var totalSellingPrice             = parseFloat($('.total-selling-price').val());
-                    var rate                          = getRate(bookingCurrency, sellingPriceOtherCurrency, rateType);
-                    var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
-
-                    $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
-                    $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
-                }
-
-                if (sellingPriceOtherCurrency == '') {
-                    $('.selling-price-other-currency-rate').val('0.00');
-                    $('.selling-price-other-currency-code').val('');
-                }
-            }
+        if (sellingPriceOtherCurrency == '') {
+            $('.selling-price-other-currency-rate').val('0.00');
+            $('.selling-price-other-currency-code').val('');
+        }
+    }
 
             $(document).on('change', '.rate-type', function() {
 
