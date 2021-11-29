@@ -51502,15 +51502,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".quick-comment").prop('checked', false);
     jQuery('.insert-quick-text-modal').modal('hide');
     $("#quote_".concat(quoteKeyForComment, "_comments")).val(quickText);
-  }); // $(function(){ // let all dom elements are loaded
-  //     jQuery('.insert-quick-text-modal').on('hidden.bs.modal', function () {
-  //         console.log("modal closed");
-  //         var values = $(".quick-comment:checked").val();
-  //         $(`#quote_${quoteKeyForComment}_comments`).val(values);
-  //         console.log(values);
-  //     });
-  // });
-
+  });
   var quoteKeyForProduct = '';
   $(document).on('click', '.add-new-product', function () {
     var quote = $(this).closest('.quote');
@@ -51665,25 +51657,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
       }
     }); // jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
-  }); // $(document).on('change', '.supplier-id',function(){
-  //     var $selector = $(this);
-  //     var supplier_id = $(this).val();
-  //     var options = '';
-  //     $.ajax({
-  //         type: 'get',
-  //         url: BASEURL+'supplier/to/product/currency',
-  //         data: { 'id': supplier_id },
-  //         success: function(response) {
-  //             options += '<option value="">Select Product</option>';
-  //             $.each(response.product,function(key,value){
-  //                 options += '<option value="'+value.id+'">'+value.name+'</option>';
-  //             });
-  //             $selector.closest('.row').find('.supplier-currency-id').val(response.currency).change();
-  //             $selector.closest('.row').find('.product-id').html(options);
-  //         }
-  //     })
-  // });
-
+  });
   $(document).on('change', '.role', function () {
     var role = $(this).find('option:selected').data('role');
     var supervisor = $('#supervisor_feild');
@@ -51932,72 +51906,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('.parent-spinner').removeClass('spinner-border');
       }, 180);
     }
-  }); // $(document).on('click', '.quotes-service-category-btn-below', function(e) {
-  //     e.preventDefault();
-  //     var category_id   = $(this).attr('data-id');
-  //     var category_name = $(this).attr('data-name');
-  //     var classvalue =  jQuery('#new_service_modal_before').find('.current-key').val();
-  //    var quoteClass = `.quote-${classvalue}`;
-  //     jQuery('#new_service_modal').modal('hide');
-  //     $('.parent-spinner').addClass('spinner-border');
-  //     if(category_id){
-  //         setTimeout(function() {
-  //             if ($('.select2single').data('select2')) {
-  //                 $('.select2single').select2('destroy');
-  //             }
-  //             var q = $(".quote").eq(0).clone()
-  //                 .find("input").val("").each(function() {
-  //                     this.name = this.name.replace(/\[(\d+)\]/, function() {
-  //                         return '[' + ($('.quote').length) + ']';
-  //                     });
-  //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-  //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-  //                     });
-  //                 }).end()
-  //                 .find("textarea").val("").each(function() {
-  //                     this.name = this.name.replace(/\[(\d+)\]/, function() {
-  //                         return '[' + (parseInt($('.quote').length)) + ']';
-  //                     });
-  //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-  //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-  //                     });
-  //                 }).end()
-  //                 .find("select").val("").each(function() {
-  //                     this.name = this.name.replace(/\[(\d+)\]/, function() { return '[' + ($('.quote').length) + ']'; });
-  //                     this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
-  //                         return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-  //                     });
-  //                 }).end().show().insertAfter(quoteClass);
-  //             $('.supplier-id:last').html(`<option selected value="">Select Supplier</option>`);
-  //             $('.product-id:last').html(`<option selected value="">Select Product</option>`);
-  //             $(".quote:last").attr('data-key', $('.quote').length - 1);
-  //             $(".estimated-cost:last, .markup-amount:last, .markup-percentage:last, .selling-price:last, .profit-percentage:last, .estimated-cost-in-booking-currency:last, .selling-price-in-booking-currency:last, .markup-amount-in-booking-currency:last").val('0.00').attr('data-code', '');
-  //             $('.quote:last .text-danger, .quote:last .supplier-currency-code').html('');
-  //             $('.quote:last input, .quote:last select').removeClass('is-invalid');
-  //             $('.quote:last .card-header .card-tools .remove').addClass('remove-quote-detail-service');
-  //             $('.quote:last .card-header .card-tools .remove').removeClass('d-none');
-  //             $('.quote:last .refundable-percentage-feild').addClass('d-none');
-  //             // $(".quote:last").prepend("<div class='row'><div class='col-sm-12'><button type='button' class='btn pull-right close'> x </button></div>");
-  //             $('.quote:last .category-id').val(category_id).change();
-  //             $('.quote:last .badge-category-id').html(category_name);
-  //             $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').addClass('d-none');
-  //             $('.quote:last .badge-date-of-service, .quote:last .badge-time-of-service, .quote:last .badge-supplier-id, .quote:last .badge-product-id, .quote:last .badge-supplier-currency-id').html('');
-  //             var qleng = $('.quote').length - 1;
-  //             $('.fileManger:last').attr('data-input', 'quote_' + qleng + '_image');
-  //             $('.fileManger:last').attr('data-preview', 'quote_' + qleng + '_holder');
-  //             $('.previewId:last').attr('id', 'quote_' + qleng + '_holder');
-  //             $('#quote_' + qleng + '_holder').empty();
-  //             callLaravelFileManger();
-  //             datepickerReset(1);
-  //             calltextEditorSummerNote('#quote_' + qleng + '_service_details');
-  //             calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
-  //             reinitializedDynamicFeilds();
-  //             $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
-  //             $('.parent-spinner').removeClass('spinner-border');
-  //         }, 180);
-  //     }
-  // });
-
+  });
   $(document).on('click', '.bookings-service-category-btn-below', function (e) {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
@@ -52238,12 +52147,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $('.parent-spinner').removeClass('spinner-border');
       }, 180);
     }
-  }); // $(document).on('click', '.close', function() {
-  //     $(this).closest(".quote").remove();
-  //     getQuoteTotalValues();
-  //     getSellingPrice();
-  // });
-
+  });
   $(document).on('change', '.supplier-currency-id', function () {
     var code = $(this).find(':selected').data('code');
     var quote = $(this).closest('.quote');
@@ -52684,14 +52588,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         console.log(reject); // searchRef.text('Search').prop('disabled', false);
       }
     });
-  }); // jQuery('.summernotes').summernote({
-  //     height: 150,   //set editable area's height
-  //     placeholder: 'Enter Text Here..',
-  //     codemirror: { // codemirror options
-  //         theme: 'monokai'
-  //     },
-  // });
-
+  });
   $("#create_template").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
@@ -52792,16 +52689,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   |--------------------------------------------------------------------------
   */
 
-  $(document).on('click', '.add-category-detail', function () {// var quote = jQuery(this).closest('.quote');
-    // var key = quote.data('key');
-    // var type = $(`#quote_${key}_category_id`).find(':selected').data('slug');
-    // if (typeof type === 'undefined') {
-    //     alert("Please Select Category first");
-    // }
-    // quote.find(`.${type}_modal`).modal('show');
-    // quote.find(`.${type}_modal :input`).removeAttr('disabled');
-    // jQuery('#accomadation_modal').modal('show').find('input').val('');
-  });
   $(".update-quote").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
@@ -53614,16 +53501,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       getRemainingCreditNoteAmount();
     } else {
       $(this).val('0.00');
-    } // var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    // var rowPaidAmount         = parseFloat(row.find('.sbp-paid-amount').val());
-    // if(totalCreditNoteValues > totalWalletAmount || value > rowPaidAmount){
-    //     alert("Please Enter Correct Amount");
-    //     $(this).val('0.00');
-    // }else{
-    //     getTotalPaidAmount();
-    //     getRemainingCreditNoteAmount();
-    // }
-
+    }
   });
   $("#bulk_payment").submit(function (event) {
     event.preventDefault();
@@ -53686,89 +53564,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         }
       }
     });
-  }); // $('.sbp-child').change(function(){
-  //     var currencyCode          = $(this).attr('data-currencyCode');
-  //     var outstandingAmountLeft = $(this).attr('data-outstandingAmountLeft');
-  //     var dataID                = $(this).attr('data-id');
-  //     var type                = $(this).attr('data-type');
-  //     var totalPaidAmount = 0;
-  //     if($(this).is(':checked')){
-  //         $(`#${dataID}`).html(`${currencyCode} ${outstandingAmountLeft}`);
-  //     }
-  //     else {
-  //         $(`#${dataID}`).html('');
-  //     }
-  // });
-  // function getCheckedValues(){
-  //     var checkedValuesArray = $('.credit:checked').map((i, e) => parseFloat(e.value)).get();
-  //     var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
-  //     return parseFloat(checkedValuesTotal).toFixed(2);
-  // }
-  // $('.credit').change(function(){
-  //     var result = 0;
-  //     var currencyCode          = $(this).attr('data-currencyCode');
-  //     var dataID                = $(this).attr('data-id');
-  //     var value                 = parseFloat($(this).val()).toFixed(2);
-  //     var checkDebit              = $('.debit').is(':checked');
-  //     var checkedValuesTotal      = parseFloat(getCheckedValues()).toFixed(2);
-  //     var totalWalletAmount       = parseFloat($('.debit').val()).toFixed(2);
-  //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
-  //     if($(this).is(':checked')){
-  //         $(`.${dataID}`).html(`${currencyCode} ${value}`);
-  //         if(checkDebit){
-  //             if(debitCheckedValuesTotal > checkedValuesTotal){
-  //                 result = debitCheckedValuesTotal - checkedValuesTotal;
-  //                 $('.total-paid-amount').val(checkedValuesTotal);
-  //                 $('.remaining-credit-amount').html(result);
-  //             }else{
-  //                 result = checkedValuesTotal - debitCheckedValuesTotal;
-  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
-  //                 $('.remaining-credit-amount').html('0.00');
-  //             }
-  //         }else{
-  //             $('.total-paid-amount').val(checkedValuesTotal);
-  //         }
-  //     }
-  //     else {
-  //         $(`.${dataID}`).html(currencyCode + " " +parseFloat(0).toFixed(2));
-  //         if(checkDebit){
-  //             if(debitCheckedValuesTotal > checkedValuesTotal){
-  //                 result = debitCheckedValuesTotal - checkedValuesTotal;
-  //                 $('.total-paid-amount').val(checkedValuesTotal);
-  //                 $('.remaining-credit-amount').html(result);
-  //             }else{
-  //                 result = checkedValuesTotal - debitCheckedValuesTotal;
-  //                 $('.total-paid-amount').val(parseFloat(result).toFixed(2));
-  //                 $('.remaining-credit-amount').html('0.00');
-  //             }
-  //         }else{
-  //             $('.total-paid-amount').val(checkedValuesTotal);
-  //         }
-  //     }
-  // });
-  // $('.debit').change(function(){
-  //     var totalWalletAmount = parseFloat($(this).val()).toFixed(2);
-  //     var debitCheckedValuesTotal = parseFloat(totalWalletAmount);
-  //     var result = 0;
-  //     var checkedValuesTotal = parseFloat(getCheckedValues());
-  //     var currencyCode          = $(this).attr('data-currencyCode');
-  //     if($(this).is(':checked')){
-  //         if(debitCheckedValuesTotal > checkedValuesTotal){
-  //             result = debitCheckedValuesTotal - checkedValuesTotal;
-  //             $('.remaining-credit-amount').html(result.toFixed(2));
-  //         }
-  //         else{
-  //             result = checkedValuesTotal - debitCheckedValuesTotal;
-  //             $('.total-paid-amount').val(parseFloat(result).toFixed(2));
-  //             $('.remaining-credit-amount').html('0.00');
-  //         }
-  //     }
-  //     else {
-  //         $(`.remaining-credit-amount`).html(totalWalletAmount);
-  //         $('.total-paid-amount').val(getCheckedValues());
-  //     }
-  // });
-
+  });
   $('#delete_all').on('click', function (e) {
     e.preventDefault();
     var checkedValues = $('.child:checked').map(function (i, e) {
