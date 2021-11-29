@@ -168,8 +168,8 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             'Total Profit Percentage Value' => $data['quote']->getCurrency->code.' '.$data['quote']->profit_percentage. ' %' ? $data['quote']->getCurrency->code.' '.$data['quote']->profit_percentage. ' %' : '---',
         ];
         $keyed[] = [
-            'Potential Commission' => 'POTENTIAL COMMISSION:',
-            'Potential Commission Value' => $data['quote']->getCurrency->code.' '.$data['quote']->commission_amount ? $data['quote']->getCurrency->code.' '.$data['quote']->commission_amount : '---',
+            'Staff Commission' => 'STAFF COMMISSION:',
+            'Staff Commission Value' => $data['quote']->getCurrency->code.' '.$data['quote']->commission_amount ? $data['quote']->getCurrency->code.' '.$data['quote']->commission_amount : '---',
         ];
         $keyed[] = [
             'Booking Amount Per Person' => 'BOOKING AMOUNT PER PERSON:',

@@ -324,7 +324,7 @@
                                                    </tr>
                                                     <tr>
                                                        <td colspan="12"></td>
-                                                       <th>Potential Commission</th>
+                                                       <th>Staff Commission</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->commission_amount }} </td>
                                                        <td></td>
                                                    </tr>
