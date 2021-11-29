@@ -50103,7 +50103,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function getCommissionRate() {
     var calculatedCommisionAmount = 0;
-    var totalNetPrice = $('.total-net-price').val();
+    var netMargin = $('.total-net-margin').val();
     var commissionID = $('.commission-id').val();
     var commissionGroupID = $('.commission-group-id').val();
     var brandID = $('.brand-id').val();
@@ -50119,7 +50119,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID) {
       var commissionPercentage = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
-      calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+      calculatedCommisionAmount = parseFloat(netMargin / 100) * parseFloat(commissionPercentage);
     } else {
       calculatedCommisionAmount = 0.00;
     }
@@ -50278,13 +50278,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure') {
       $('.paid-net-commission-on-departure').removeClass('d-none');
-      getCalculatedTotalNetMarkup();
-    } // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+    }
+
+    getCalculatedTotalNetMarkup(); // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
     //     $('.paid-net-commission-on-departure').removeClass('d-none');
     //     getCalculatedTotalNetMarkup();
     //     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
     // }
-
   }
 
   $(document).on('change, click', '.agency-commission-type', function () {
@@ -53210,6 +53210,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     getCommissionRate();
     getBookingAmountPerPerson();
     getSellingPrice();
+    getCalculatedTotalNetMarkup();
   }
 
   function getBookingTotalValuesOnMarkupChange(changeFeild) {
@@ -53242,6 +53243,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.total-profit-percentage').val(check(calculatedProfitPercentage)); // getCommissionRate();
 
     getBookingAmountPerPerson();
+    getCalculatedTotalNetMarkup();
   }
 
   $(document).on('change', '.deposit-due-date', function () {

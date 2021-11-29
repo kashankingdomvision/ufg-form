@@ -1627,7 +1627,7 @@
                         </div>
       
                         <div class="form-group row">
-                          <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Margin</label>
+                          <label for="inputEmail3" class="col-sm-3 col-form-label">Net Margin</label>
                           <div class="col-sm-2">
                             <div class="form-group">
                               <div class="input-group">

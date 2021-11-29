@@ -249,7 +249,7 @@ $(document).ready(function($) {
     function getCommissionRate(){
 
         var calculatedCommisionAmount = 0;
-        var totalNetPrice             = $('.total-net-price').val();
+        var netMargin                 = $('.total-net-margin').val();
         var commissionID              = $('.commission-id').val();
         var commissionGroupID         = $('.commission-group-id').val();
         var brandID                   = $('.brand-id').val();
@@ -268,7 +268,7 @@ $(document).ready(function($) {
         if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
 
             var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
-            calculatedCommisionAmount = parseFloat(totalNetPrice / 100) * parseFloat(commissionPercentage);
+            calculatedCommisionAmount = parseFloat(netMargin / 100) * parseFloat(commissionPercentage);
 
         } else {
             calculatedCommisionAmount = 0.00;
@@ -432,9 +432,9 @@ $(document).ready(function($) {
 
         if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
             $('.paid-net-commission-on-departure').removeClass('d-none');
-            getCalculatedTotalNetMarkup();
         }
         
+        getCalculatedTotalNetMarkup();
         // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
         //     $('.paid-net-commission-on-departure').removeClass('d-none');
         //     getCalculatedTotalNetMarkup();
@@ -4083,6 +4083,7 @@ $(document).ready(function($) {
                 getCommissionRate();
                 getBookingAmountPerPerson();
                 getSellingPrice();
+                getCalculatedTotalNetMarkup();
             }
 
             function getBookingTotalValuesOnMarkupChange(changeFeild){
@@ -4122,6 +4123,7 @@ $(document).ready(function($) {
 
                 // getCommissionRate();
                 getBookingAmountPerPerson();
+                getCalculatedTotalNetMarkup();
             }
 
 

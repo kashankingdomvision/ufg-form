@@ -907,10 +907,38 @@
                     </div>
                   </div>
 
+                  <div class="paid-net-commission-on-departure d-none">
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0" name="agency_commission" value="0.00" >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+  
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-3 col-form-label">Net Margin</label>
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                            </div>
+                            <input type="number" step="any" class="form-control total-net-margin remove-zero-values" step="any" min="0" name="total_net_margin" value="0.00" readonly>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="form-group row">
-
                     <label for="inputEmail3" class="col-sm-3 col-form-label">Total Selling Price</label>
-
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
@@ -967,39 +995,7 @@
                   </div>
 
                   
-                  <div class="paid-net-commission-on-departure d-none">
-                    <hr>
-  
-                    <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
-                      <div class="col-sm-2">
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
-                            </div>
-                            <input type="number" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0" name="agency_commission" value="0.00" >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-  
-                    <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Margin</label>
-                      <div class="col-sm-2">
-                        <div class="form-group">
-                          <div class="input-group">
-                            <div class="input-group-prepend">
-                              <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
-                            </div>
-                            <input type="number" step="any" class="form-control total-net-margin remove-zero-values" step="any" min="0" name="total_net_margin" value="0.00" readonly>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <hr>
-                  </div>
+   
 
 
                   <div class="form-group row">
