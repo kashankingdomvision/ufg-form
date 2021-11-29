@@ -1882,6 +1882,14 @@ $(document).ready(function($) {
                 if((supplier_id != "") && (typeof supplier_id !== 'undefined')){
 
                     modal.modal('show');
+
+                    // reset modal feilds
+                    $('#form_add_product').trigger("reset");
+                    modal.find('#form_add_product #description').summernote("reset");
+                    modal.find('#form_add_product #inclusions').summernote("reset");
+                    modal.find('#form_add_product #packing_list').summernote("reset");
+
+                    // set supplier id
                     modal.find('.product-supplier-id').val(supplier_id);
 
                 }else{
@@ -1911,7 +1919,6 @@ $(document).ready(function($) {
                     success: function(data) {
                         $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
 
-                        jQuery('.add-new-product-modal #form_add_product input, textarea').val('');
                         jQuery('.add-new-product-modal').modal('hide');
 
                         setTimeout(function() {
@@ -2268,7 +2275,7 @@ $(document).ready(function($) {
 
                 jQuery(`${quoteClass}`).find('.note-editor').remove();
                 jQuery(`${quoteClass}`).find('.summernote').summernote({
-                    height: 150,   //set editable area's height
+                    height: 100,   //set editable area's height
                     placeholder: 'Enter Text Here..',
                     codemirror: { // codemirror options
                         theme: 'monokai'
@@ -3396,7 +3403,7 @@ $(document).ready(function($) {
 
                                 // jQuery('.note-editor').remove();
                                 jQuery('.summernote').summernote({
-                                    height: 150,   //set editable area's height
+                                    height: 100,   //set editable area's height
                                     placeholder: 'Enter Text Here..',
                                     codemirror: { // codemirror options
                                         theme: 'monokai'

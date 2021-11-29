@@ -47,7 +47,7 @@
     <script>
         $(document).ready(function() {
             $('.summernote').summernote({
-                height: 150,   //set editable area's height
+                height: 100,   //set editable area's height
                 placeholder: 'Enter Text Here..',
                 codemirror: { // codemirror options
                     theme: 'monokai'
@@ -60,7 +60,7 @@
             $('.summernote:last').summernote('destroy');
             $('.note-editor:last').remove();
             $('.summernote').summernote({
-                    height: 150,   //set editable area's height
+                    height: 100,   //set editable area's height
                     placeholder: 'Enter Text Here..',
                     codemirror: { // codemirror options
                         theme: 'monokai'

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ProductRequest;
 
 use App\BookingType;
 use App\BookingMethod;
@@ -49,20 +50,19 @@ class ResponseController extends Controller
     }
 
     
-    public function addProductWithSupplierSync(Request $request)
+    public function addProductWithSupplierSync(ProductRequest $request)
     {    
-        $this->validate(
-            $request, 
-            [
-                'code' => 'required',
-                'name' => 'required'
-            ],
-            [
-                'code.required' => 'The Product Code field is required.',
-                'name.required' => 'The Product Name field is required.'
-            ]
-     
-        );
+        // $this->validate(
+        //     $request, 
+        //     [
+        //         'code' => 'required',
+        //         'name' => 'required'
+        //     ],
+        //     [
+        //         'code.required' => 'The Product Code field is required.',
+        //         'name.required' => 'The Product Name field is required.'
+        //     ]
+        // );
 
         try {
 

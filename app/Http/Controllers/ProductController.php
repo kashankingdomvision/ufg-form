@@ -37,9 +37,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data['product_code'] = Helper::getProductCode();
-
-        return view('products.create', $data);
+        return view('products.create');
     }
 
     /**
@@ -50,7 +48,15 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        Product::create($request->all());
+
+        Product::create([
+            'code'         => $request->code,
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'inclusions'   => $request->inclusions,
+            'packing_list' => $request->packing_list,
+        ]);
+        
         return redirect()->route('products.index')->with('success_message', 'Product created successfully');
     }
 
@@ -75,9 +81,14 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        $product = Product::findOrFail(decrypt($id));
-        
-        $product->update($request->all());
+        Product::findOrFail(decrypt($id))->update([
+            'code'         => $request->code,
+            'name'         => $request->name,
+            'description'  => $request->description,
+            'inclusions'   => $request->inclusions,
+            'packing_list' => $request->packing_list,
+        ]);
+
         return redirect()->route('products.index')->with('success_message', 'Product update successfully');
     }
 

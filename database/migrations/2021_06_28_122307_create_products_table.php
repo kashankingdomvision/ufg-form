@@ -18,6 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('code');
             $table->string('name');
             $table->longText('description')->nullable();
+            $table->longText('inclusions')->nullable();
+            $table->longText('packing_list')->nullable();
             $table->timestamps();
         });
     }

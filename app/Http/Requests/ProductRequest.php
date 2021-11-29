@@ -26,16 +26,14 @@ class ProductRequest extends FormRequest
         return [
             'name'          => 'required|string|unique:products',
             'code'          => 'required|string|unique:products',
-            'description'   => 'required|string',
         ];
     }
     
     public function attributes()
     {
         return [
-            'name'          => 'Product name',
-            'code'          => 'Product code',
-            'description'   => 'Product description',
+            'name'          => 'Product Name',
+            'code'          => 'Product Code',
         ];
     }
 }

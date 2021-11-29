@@ -51519,7 +51519,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var modal = jQuery('.add-new-product-modal');
 
     if (supplier_id != "" && typeof supplier_id !== 'undefined') {
-      modal.modal('show');
+      modal.modal('show'); // reset modal feilds
+
+      $('#form_add_product').trigger("reset");
+      modal.find('#form_add_product #description').summernote("reset");
+      modal.find('#form_add_product #inclusions').summernote("reset");
+      modal.find('#form_add_product #packing_list').summernote("reset"); // set supplier id
+
       modal.find('.product-supplier-id').val(supplier_id);
     } else {
       alert("Please select Supplier first");
@@ -51542,7 +51548,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(data) {
         $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-        jQuery('.add-new-product-modal #form_add_product input, textarea').val('');
         jQuery('.add-new-product-modal').modal('hide');
         setTimeout(function () {
           if (data && data.status == true) {
@@ -51829,7 +51834,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function reinitializedSummerNote(quoteClass) {
     jQuery("".concat(quoteClass)).find('.note-editor').remove();
     jQuery("".concat(quoteClass)).find('.summernote').summernote({
-      height: 150,
+      height: 100,
       //set editable area's height
       placeholder: 'Enter Text Here..',
       codemirror: {
@@ -52664,7 +52669,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             getQuoteTotalValues(); // jQuery('.note-editor').remove();
 
             jQuery('.summernote').summernote({
-              height: 150,
+              height: 100,
               //set editable area's height
               placeholder: 'Enter Text Here..',
               codemirror: {

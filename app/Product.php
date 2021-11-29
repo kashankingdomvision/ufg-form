@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'code', 'name', 'description'
+        'code',
+        'name',
+        'description',
+        'inclusions',
+        'packing_list',
     ];
     
     public function getSuppliers()

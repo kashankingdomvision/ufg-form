@@ -30,13 +30,13 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label>Product Code <span style="color:red">*</span></label>
-                    <input type="text" name="code" value="{{  !empty(old('code')) ? old('code') : $product_code }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" required>
+                    <input type="text" name="code" value="{{ !empty(\Helper::getProductCode()) ? \Helper::getProductCode() : '' }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" required>
                     @error('code')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                   </div>
                   <div class="form-group">
-                    <label>Product Name</label>
+                    <label>Product Name <span style="color:red">*</span></label>
                     <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Product Name" >
                     @error('name')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -46,6 +46,22 @@
                     <label>Description</label>
                     <textarea name="description"  class="form-control summernote">{{ old('description') }}</textarea>
                     @error('description')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
+                  <div class="form-group">
+                    <label>Inclusions</label>
+                    <textarea name="inclusions" class="form-control summernote">{{ old('inclusions') }}</textarea>
+                    @error('inclusions')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+                  
+                  <div class="form-group">
+                    <label>Packing List</label>
+                    <textarea name="packing_list" class="form-control summernote">{{ old('packing_list') }}</textarea>
+                    @error('packing_list')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                   </div>
