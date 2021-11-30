@@ -249,7 +249,9 @@ $(document).ready(function($) {
     function getCommissionRate(){
 
         var calculatedCommisionAmount = 0;
-        var netMargin                 = $('.total-net-margin').val();
+        var agency                    = $("input[name=agency]:checked").val();
+        var agencyCommissionType      = $("input[name=agency_commission_type]:checked").val();
+        var netValue                  = $('.total-markup-amount').val();
         var commissionID              = $('.commission-id').val();
         var commissionGroupID         = $('.commission-group-id').val();
         var brandID                   = $('.brand-id').val();
@@ -265,10 +267,15 @@ $(document).ready(function($) {
         // console.log(seasonID);
         // console.log(currencyID);
 
+
+        if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+            netValue = $('.total-net-margin').val();
+        }
+
         if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
 
             var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
-            calculatedCommisionAmount = parseFloat(netMargin / 100) * parseFloat(commissionPercentage);
+            calculatedCommisionAmount = parseFloat(netValue / 100) * parseFloat(commissionPercentage);
 
         } else {
             calculatedCommisionAmount = 0.00;
@@ -435,6 +442,7 @@ $(document).ready(function($) {
         }
         
         getCalculatedTotalNetMarkup();
+        getCommissionRate();
         // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
         //     $('.paid-net-commission-on-departure').removeClass('d-none');
         //     getCalculatedTotalNetMarkup();
@@ -448,6 +456,7 @@ $(document).ready(function($) {
 
     $(document).on('change', '.agency-commission', function() {
         getCalculatedTotalNetMarkup();
+        getCommissionRate();
     });
 
     function getCalculatedTotalNetMarkup() {
