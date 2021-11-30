@@ -51262,6 +51262,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
       agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
     }
+
+    getCommissionRate();
   });
   $(document).on('click', '.expand-all-btn', function (event) {
     $('#parent .quote').removeClass('collapsed-card');
