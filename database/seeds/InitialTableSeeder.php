@@ -16,7 +16,7 @@ class InitialTableSeeder extends Seeder
         DB::statement($sql);
         
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/countries.sql');
-        DB::statement($sql);
+        DB::unprepared($sql);
 
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/hotels.sql');
         DB::statement($sql);

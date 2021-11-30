@@ -252,3 +252,10 @@ INSERT INTO `countries` (`id`, `phone`, `code`, `name`, `symbol`, `capital`, `cu
 (250, 967, 'YE', 'Yemen', '﷼', 'Sanaa', 'YER', 'Asia', 'AS', 'YEM'),
 (251, 260, 'ZM', 'Zambia', 'ZK', 'Lusaka', 'ZMW', 'Africa', 'AF', 'ZMB'),
 (252, 263, 'ZW', 'Zimbabwe', '$', 'Harare', 'ZWL', 'Africa', 'AF', 'ZWE');
+
+UPDATE `countries` SET `sort_order` = '1' WHERE `countries`.`id` = 238;
+UPDATE `countries` SET `sort_order` = '2' WHERE `countries`.`id` = 239;
+UPDATE `countries` SET `sort_order` = '3' WHERE `countries`.`id` = 14;
+UPDATE `countries` SET `sort_order` = '4' WHERE `countries`.`id` = 40;
+UPDATE `countries` SET `sort_order` = '5' WHERE `countries`.`id` = 161;
+UPDATE `countries` SET `sort_order` = '6' WHERE `sort_order` = 0;
