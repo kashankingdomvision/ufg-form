@@ -430,9 +430,6 @@ $(document).ready(function($) {
         var agency               = $("input[name=agency]:checked").val();
         var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
 
-        var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
-        var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
         if(agency == 1 && agencyCommissionType == 'net-price'){
             $('.paid-net-commission-on-departure').addClass('d-none');
         }

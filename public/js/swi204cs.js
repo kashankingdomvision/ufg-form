@@ -50271,12 +50271,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function onChangeAgencyCommissionType() {
     var agency = $("input[name=agency]:checked").val();
     var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
-    var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
 
     if (agency == 1 && agencyCommissionType == 'net-price') {
       $('.paid-net-commission-on-departure').addClass('d-none');
