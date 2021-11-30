@@ -53242,8 +53242,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     calculatedProfitPercentage = (parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice) * 100;
-    $('.total-profit-percentage').val(check(calculatedProfitPercentage)); // getCommissionRate();
-
+    $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+    getCommissionRate();
     getBookingAmountPerPerson();
     getCalculatedTotalNetMarkup();
   }

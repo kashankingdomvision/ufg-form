@@ -4127,7 +4127,7 @@ $(document).ready(function($) {
                 calculatedProfitPercentage = ((parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice)) * 100;
                 $('.total-profit-percentage').val(check(calculatedProfitPercentage));
 
-                // getCommissionRate();
+                getCommissionRate();
                 getBookingAmountPerPerson();
                 getCalculatedTotalNetMarkup();
             }
