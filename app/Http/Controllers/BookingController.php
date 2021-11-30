@@ -164,7 +164,7 @@ class BookingController extends Controller
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
             'agency_commission_type'            =>  $request->agency == 1 ? $request->agency_commission_type : NULL,
             'agency_commission'                 =>  $request->agency == 1 && $request->agency_commission_type == 'paid-net-of-commission' || $request->agency == 1 && $request->agency_commission_type == 'we-pay-commission-on-departure' ? $request->agency_commission : NULL,
-            'total_net_margin'                  =>  $request->agency == 1 && $request->agency_commission_type == 'paid-net-of-commission' || $request->agency == 1 && $request->agency_commission_type == 'we-pay-commission-on-departure' ? $request->total_net_margin : NULL,
+            'total_net_margin'                  =>  $request->agency == 1 && $request->agency_commission_type == 'paid-net-of-commission' || $request->agency == 1 && $request->agency_commission_type == 'we-pay-commission-on-departure' ? $request->total_net_margin : $request->total_markup_amount,
             'agency_name'                       =>  $request->agency_name??NULL,
             'agency_contact'                    =>  ($request->agency_contact != NULL)? $request->full_number : NULL,
             'agency_email'                      =>  $request->agency_email??NULL,
