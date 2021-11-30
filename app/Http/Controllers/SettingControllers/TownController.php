@@ -75,7 +75,7 @@ class TownController extends Controller
     public function edit($id)
     {
         $data['town']      = Town::findOrFail(decrypt($id));
-        $data['countries'] = Country::get();
+        $data['countries'] = Country::orderBy('sort_order', 'ASC')->get();
 
         return view('towns.edit', $data);
     }
