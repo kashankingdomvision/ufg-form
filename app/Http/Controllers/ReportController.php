@@ -868,7 +868,7 @@ class ReportController extends Controller
             $TC_quote_values_array                         = $this->get_quote_value($passedParams, $TC_columns);
             $TC_quote_values['Total Net Price']            = $this->get_quote_cost_value_array($TC_quote_values_array['net_price'] ,$quote_values['currency_id'] , 'Currency', 'code' );
             $TC_quote_values['Total Markup Amount (Gross Margin)']        = $this->get_quote_cost_value_array($TC_quote_values_array['markup_amount'] ,$quote_values['currency_id'] , 'Currency', 'code' );
-            $TC_quote_values['Total Markup Percentage']    = $this->get_quote_percentage_value_array($TC_quote_values_array['markup_percentage'] );
+            $TC_quote_values['Total Markup Percentage (Gross Margin)']    = $this->get_quote_percentage_value_array($TC_quote_values_array['markup_percentage'] );
             $TC_quote_values['Total Profit Percentage']    = $this->get_quote_percentage_value_array($TC_quote_values_array['profit_percentage'] );
             $TC_quote_values['Booking Amount Per Person']  = $this->get_quote_cost_value_array($TC_quote_values_array['amount_per_person'] ,$quote_values['currency_id'] , 'Currency', 'code' );
             //- Total Calculations

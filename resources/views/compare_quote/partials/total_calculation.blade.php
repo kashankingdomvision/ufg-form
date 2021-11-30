@@ -92,7 +92,7 @@
 
             <div class="row">
                 <div class="col-md-2 col-heading-style font-weight-bold">
-                    Total Markup Percentage
+                    Total Markup Percentage (Gross Margin)
                 </div>
                 @if(isset($quote_ref_one))
                     <div class="col col-style">
