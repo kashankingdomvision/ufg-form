@@ -44,6 +44,9 @@
         'setting.harbours.index',
         'setting.harbours.create',
         'setting.harbours.edit',
+        'setting.locations.create',
+        'setting.locations.index',
+        'setting.locations.edit',
     ];
 @endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -416,12 +419,12 @@
                             </a>
                         </li>
 
-                        {{-- <li class="nav-item">
-                            <a href="{{ route('setting.towns.index') }}" class="nav-link {{ $route == 'setting.towns.index' || $route == 'setting.towns.create' || $route == 'setting.towns.edit' ? 'active' : '' }}">
-                                <i class="fa fa-city nav-icon"></i>
-                                <p>Towns</p>
+                        <li class="nav-item">
+                            <a href="{{ route('setting.locations.index') }}" class="nav-link {{ $route == 'setting.locations.index' || $route == 'setting.locations.create' || $route == 'setting.locations.edit' ? 'active' : '' }}">
+                                <i class="fa fa-map-marker nav-icon"></i>
+                                <p>Locations</p>
                             </a>
-                        </li> --}}
+                        </li>
 
                         {{-- <li class="nav-item">
                             <a href="{{ route('setting.towns.index') }}" class="nav-link {{ $route == 'setting.towns.index' || $route == 'setting.towns.create' || $route == 'setting.towns.edit' ? 'active' : '' }}">

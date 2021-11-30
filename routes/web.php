@@ -415,6 +415,11 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
+        /* Locations */
+        Route::resource('locations', 'SettingControllers\LocationController',['only' => [
+            'index','create', 'store', 'edit', 'update', 'destroy'
+        ]]);
+
 	});
 
 
