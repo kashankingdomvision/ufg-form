@@ -27,7 +27,7 @@ class SupplierRequest extends FormRequest
             'username'      => 'required|unique:suppliers,name',
             'email'         => 'required|email|unique:suppliers',
             'country_id'    => 'required',
-            'town_id'       => 'required',
+            // 'town_id'       => 'required',
             'categories'    => 'required|array',
             'products'      => 'required|array',
         ];

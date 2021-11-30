@@ -69,7 +69,7 @@
                         </div> 
                       </div>
 
-                      <div class="col-md-6">
+                      {{-- <div class="col-md-6">
                         <div class="form-group">
                           <label>Town <span style="color:red">*</span></label>
                           <select name="town_id" class="form-control select2single town-id appendCountryTown @error('town_id') is-invalid @enderror" >
@@ -85,7 +85,7 @@
                             <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                           @enderror
                         </div> 
-                      </div>
+                      </div> --}}
 
                     </div>
 
