@@ -14,7 +14,7 @@
         @if(isset($quote_ref_one) || isset($quote_ref_two) || isset($quote_ref_three) || isset($quote_ref_four))
                     
             <div class="row">
-                <div class="col-md-2 col-style"></div>
+                <div class="col-md-3 col-style"></div>
 
                 @if(isset($quote_ref_one))
                     <div class="col col-style font-weight-bold">
@@ -39,7 +39,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
+                <div class="col-md-3 col-heading-style font-weight-bold">
                     Total Net Price
                 </div>
                 @if(isset($quote_ref_one))
@@ -65,7 +65,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
+                <div class="col-md-3 col-heading-style font-weight-bold">
                     Total Markup Amount (Gross Margin)
                 </div>
                 @if(isset($quote_ref_one))
@@ -91,7 +91,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
+                <div class="col-md-3 col-heading-style font-weight-bold">
                     Total Markup Percentage (Gross Margin)
                 </div>
                 @if(isset($quote_ref_one))
@@ -117,7 +117,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
+                <div class="col-md-3 col-heading-style font-weight-bold">
                     Total Profit Percentage
                 </div>
                 @if(isset($quote_ref_one))
@@ -143,7 +143,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-2 col-heading-style font-weight-bold">
+                <div class="col-md-3 col-heading-style font-weight-bold">
                     Booking Amount Per Person
                 </div>
                 @if(isset($quote_ref_one))
