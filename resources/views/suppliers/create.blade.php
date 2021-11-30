@@ -58,7 +58,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Country <span style="color:red">*</span></label>
-                          <select name="country_id" class="form-control select2single getCountryToTown @error('country_id') is-invalid @enderror" >
+                          <select name="country_id" class="form-control select2single getCountryToTown getCountryToLocation @error('country_id') is-invalid @enderror" >
                             <option value="">Select Country</option>
                               @foreach ($countries as $country)
                                 <option value="{{$country->id}}" {{ (old('country_id') == $country->id) ? 'selected' : '' }}> {{$country->name}} </option>
@@ -70,7 +70,20 @@
                           @enderror
                         </div> 
                       </div>
-                      
+
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label>Location <span style="color:red">*</span></label>
+                          <select name="location_id" class="form-control select2single location-id appendCountryLocation @error('location_id') is-invalid @enderror" >
+                            <option value="">Select Location</option>
+                          </select>
+      
+                          @error('location_id')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                          @enderror
+                        </div> 
+                      </div>
+
                       {{-- <div class="col-md-6">
                         <div class="form-group">
                           <label>Town <span style="color:red">*</span></label>

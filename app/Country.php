@@ -16,4 +16,10 @@ class Country extends Model
     {
         return $this->hasMany(Town::class, 'country_id', 'id');
     }
+
+    public function getLocations()
+    {
+        return $this->hasMany(Location::class, 'country_id', 'id');
+    }
+ 
 }

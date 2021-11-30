@@ -435,6 +435,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
 
         Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
+        Route::get('country/to/location',array('as'=>'country.locations','uses'=>'ResponseController@getCountryToLocation'));
 
         Route::get('get-commission-groups',array('as'=>'commission.groups','uses'=>'ResponseController@getCommissionGroups'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));

@@ -27,6 +27,7 @@ use App\CommissionGroup;
 use App\SupplierRateSheet;
 use App\SupplierProduct;
 use App\Town;
+use App\Location;
 
 class ResponseController extends Controller
 {
@@ -42,6 +43,14 @@ class ResponseController extends Controller
 
         return response()->json($towns);
     }
+
+    public function getCountryToLocation(Request $request)
+    {    
+        $locations = Location::where('country_id',$request->country_id)->get();
+
+        return response()->json($locations);
+    }
+ 
  
     public function getCommissionGroups(Request $request)
     {    

@@ -10,6 +10,7 @@ class Supplier extends Model
         'currency_id',
         'country_id',
         'town_id',
+        'location_id',
         'name',
         'email',
         'phone',
