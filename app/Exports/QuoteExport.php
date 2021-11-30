@@ -152,11 +152,11 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
             'Total Net Price Value' => $data['quote']->getCurrency->code.' '.$data['quote']->net_price ? $data['quote']->getCurrency->code.' '.$data['quote']->net_price : '---',
         ];
         $keyed[] = [
-            'Total Markup Amount' => 'TOTAL MARKUP AMOUNT:',
+            'Total Markup Amount (Gross Margin)' => 'TOTAL MARKUP AMOUNT (GROSS MARGIN):',
             'Total Markup Amount Value' => $data['quote']->getCurrency->code.' '.$data['quote']->markup_amount ? $data['quote']->getCurrency->code.' '.$data['quote']->markup_amount : '---',
         ];
         $keyed[] = [
-            'Total Markup Amount Percent' => 'TOTAL MARKUP AMOUNT PERCENT:',
+            'Total Markup Amount Percent (Gross Margin)' => 'TOTAL MARKUP AMOUNT PERCENT (GROSS MARGIN):',
             'Total Markup Amount Percent Value' => $data['quote']->getCurrency->code.' '.$data['quote']->markup_percentage. ' %' ? $data['quote']->getCurrency->code.' '.$data['quote']->markup_percentage. ' %' : '---',
         ];
         $keyed[] = [

@@ -304,7 +304,7 @@
                                                    </tr>
                                                     <tr>
                                                        <td colspan="12"></td>
-                                                       <th>Total Markup Amount</th>
+                                                       <th>Total Markup Amount (Gross Margin)</th>
                                                        <td> {{ $quote->getBookingCurrency->code.' '.$quote->markup_amount }} </td>
                                                        <td> {{ $quote->markup_percentage.' %' }} </td>
                                                     

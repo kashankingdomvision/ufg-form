@@ -81,7 +81,7 @@
 
                       <th >Group Name</th>
                       <th >Total Net Price</th>
-                      <th >Total Markup Amount</th>
+                      <th >Total Markup Amount (Gross Margin)</th>
                       <th >Total Markup %</th>
                       <th >Total Selling Price</th>
                       <th >Total Profit Percentage</th>
