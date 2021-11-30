@@ -423,6 +423,13 @@
                             </a>
                         </li> --}}
 
+                        {{-- <li class="nav-item">
+                            <a href="{{ route('setting.towns.index') }}" class="nav-link {{ $route == 'setting.towns.index' || $route == 'setting.towns.create' || $route == 'setting.towns.edit' ? 'active' : '' }}">
+                                <i class="fa fa-city nav-icon"></i>
+                                <p>Towns</p>
+                            </a>
+                        </li> --}}
+
 
                         <li class="nav-item">
                             <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' ? 'active' : '' }}">
