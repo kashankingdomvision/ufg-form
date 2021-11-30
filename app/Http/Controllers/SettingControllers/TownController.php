@@ -20,9 +20,6 @@ class TownController extends Controller
    */
     public function index(Request $request)
     {
-
-   
-
         $query = Town::orderBy('id', 'ASC');
         if(count($request->all()) > 0){
 
@@ -34,7 +31,6 @@ class TownController extends Controller
                 $query->where('country_id', $request->country_id);
             }
         }
-
 
         $data['countries'] = Country::orderBy('sort_order', 'ASC')->get();
         $data['towns']     = $query->paginate($this->pagination);
