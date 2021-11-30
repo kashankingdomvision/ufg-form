@@ -1612,20 +1612,6 @@
                       </div>
 
                       <div class="form-group row">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label">Staff Commission</label>
-                        <div class="col-sm-2">
-                          <div class="form-group">
-                            <div class="input-group">
-                              <div class="input-group-prepend">
-                                <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
-                              </div>
-                              <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking->commission_amount) }}" readonly>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
                         <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
                         <div class="col-sm-2">
                           <div class="form-group">
@@ -1639,6 +1625,19 @@
                         </div>
                       </div>
 
+                      <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label">Staff Commission</label>
+                        <div class="col-sm-2">
+                          <div class="form-group">
+                            <div class="input-group">
+                              <div class="input-group-prepend">
+                                <span class="input-group-text booking-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
+                              </div>
+                              <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking->commission_amount) }}" readonly>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
    
 
                       <div class="form-group row">
