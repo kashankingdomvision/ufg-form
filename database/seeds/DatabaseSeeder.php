@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             BookingMethodSeeder::class,
             BookingTypeSeeder::class,
             CurrencyConversionSeeder::class,
-            ProductTableSeeder::class,
+            // ProductTableSeeder::class,
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
             // SupplierTableSeeder::class,
@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
             PresetCommentSeeder::class,
             CountryTableSeeder::class,
             LocationTableSeeder::class,
+            ProductTableSeeder::class,
             SupplierTableSeeder::class,
-
             
             InitialTableSeeder::class,
         ]);
