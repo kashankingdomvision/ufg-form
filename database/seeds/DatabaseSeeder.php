@@ -24,14 +24,18 @@ class DatabaseSeeder extends Seeder
             ProductTableSeeder::class,
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
-            SupplierTableSeeder::class,
+            // SupplierTableSeeder::class,
             ReferenceCredentialTableSeeder::class,
             BankTableSeeder::class,
             CommissionTableSeeder::class,
             UserTableSeeder::class,
             CommissionCriteriaSeederTable::class,
             PresetCommentSeeder::class,
+            CountryTableSeeder::class,
+            LocationTableSeeder::class,
+            SupplierTableSeeder::class,
 
+            
             InitialTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();

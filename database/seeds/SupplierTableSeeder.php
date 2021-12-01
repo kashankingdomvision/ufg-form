@@ -17,6 +17,8 @@ class SupplierTableSeeder extends Seeder
         $data = [
             [
                 'currency_id'   => 1,
+                'country_id'    => 56,
+                'location_id'   => 1,
                 'name'  => 'Jaun Elia',
                 'email' => 'jaun@gmail.com',
                 'phone' => '03024214334',
@@ -26,6 +28,8 @@ class SupplierTableSeeder extends Seeder
             
             [
                 'currency_id'   => 3,
+                'country_id'    => 56,
+                'location_id'   => 1,
                 'name'  => 'Kevin Levin',
                 'email' => 'kevinlevin@yahoo.co.uk',
                 'phone' => '+92034973095',
@@ -35,6 +39,8 @@ class SupplierTableSeeder extends Seeder
             
             [
                 'currency_id'   => 2,
+                'country_id'    => 56,
+                'location_id'   => 1,
                 'name'  => 'Peter Parker',
                 'email' => 'parker@yahoo.co.uk',
                 'phone' => '89798693322',
@@ -46,6 +52,8 @@ class SupplierTableSeeder extends Seeder
         foreach ($data as $supp) {
             $supplier = Supplier::create([
                 'currency_id'   => $supp['currency_id'],
+                'country_id'    => $supp['country_id'],
+                'location_id'   => $supp['location_id'],
                 'name'          => $supp['name'],       
                 'email'         => $supp['email'],      
                 'phone'         => $supp['phone'],      
