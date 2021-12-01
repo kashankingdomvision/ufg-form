@@ -1,5 +1,26 @@
 @php
     $route = \Route::currentRouteName();
+
+    $supplier_routes = [
+        'suppliers.index',
+        'suppliers.create',
+        'suppliers.edit',
+        'suppliers.index',
+        'products.create',
+        'products.edit',
+        'products.index',
+        'categories.create',
+        'categories.index',
+        'categories.edit',
+        'wallets.index',
+        'supplier-rate-sheet.create',
+        'supplier-rate-sheet.index',
+        'supplier-rate-sheet.edit',
+        'group_owners.create',
+        'group_owners.index',
+        'group_owners.edit',
+    ];
+
     $setting_routes = [
         'setting.airlines.index',
         'setting.airlines.create',
@@ -295,7 +316,7 @@
                     </li>
                 @endif
 
-                <li class="nav-item {{ ($route == 'suppliers.index' || $route == 'suppliers.create' || $route == 'suppliers.edit' || $route == 'suppliers.index' || $route == 'products.create') || $route == 'products.edit' || $route == 'products.index'  || $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' || $route == 'wallets.index' || $route == 'supplier-rate-sheet.create' || $route == 'supplier-rate-sheet.index' || $route == 'supplier-rate-sheet.edit' ? 'menu-open': '' }}">
+                <li class="nav-item {{ in_array($route, $supplier_routes) ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-user nav-icon"></i>
                         <p>
@@ -309,6 +330,13 @@
                             <a href="{{ route('suppliers.index') }}" class="nav-link {{  $route == 'suppliers.create' || $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Supplier</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('group_owners.index') }}" class="nav-link {{  $route == 'group_owners.create' || $route == 'group_owners.index' || $route == 'group_owners.edit' ? 'active' : '' }}">
+                                <i class="fa fa-users nav-icon"></i>
+                                <p>Group Owners</p>
                             </a>
                         </li>
 

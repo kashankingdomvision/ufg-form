@@ -290,6 +290,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('suppliers', 'SupplierController');
 
+    /*  Supplier Group Owner */
+    Route::resource('group_owners', 'GroupOwnerController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
     /*  Supplier Rate Sheet */
     Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
