@@ -25,11 +25,12 @@ class SupplierRequest extends FormRequest
     {
         return [
             'username'      => 'required|unique:suppliers,name',
-            'email'         => 'required|email|unique:suppliers',
             'country_id'    => 'required',
-            // 'town_id'       => 'required',
+            'location_id'   => 'required',
             'categories'    => 'required|array',
-            'products'      => 'required|array',
+            // 'products'      => 'required|array',
+            // 'email'         => 'required|email|unique:suppliers',
+            // 'town_id'       => 'required',
         ];
     }
     
@@ -37,12 +38,13 @@ class SupplierRequest extends FormRequest
     public function attributes()
     {
         return [
-            'username'     =>  'Name',
-            'email'        =>  'Email address',
-            'country_id'   =>  'Country',
-            'town_id'      =>  'Town',
-            'categories'   =>  'Categories',
-            'products'     =>  'Products',
+            'username'     => 'Name',
+            'country_id'   => 'Country',
+            'location_id'  => 'Location',
+            'categories'   => 'Categories',
+            // 'products'     =>  'Products',
+            // 'email'        =>  'Email address',
+            // 'town_id'      =>  'Town',
         ];
     }
 }

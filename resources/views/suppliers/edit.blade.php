@@ -28,9 +28,19 @@
                 <form method="POST" action="{{ route('suppliers.update', encrypt($supplier->id) ) }}">
                   @csrf @method('put')
                   <div class="card-body">
+
                     <div class="form-group">
-                      <label for="inputEmail3" class="">Name <span style="color:red">*</span></label>
-                      <input type="text" name="username"  class="form-control @error('username') is-invalid @enderror" placeholder="Username" value="{{$supplier->name}}" required>
+                      <label for="inputEmail3" class="">Supplier Code</label>
+                      <input type="text" name="code" class="form-control @error('code') is-invalid @enderror" placeholder="Supplier Code" value="{{$supplier->code}}" >
+
+                      @error('code')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inputEmail3" class="">Supplier Name <span style="color:red">*</span></label>
+                      <input type="text" name="username"  class="form-control @error('username') is-invalid @enderror" placeholder="Username" value="{{$supplier->name}}" >
 
                       @error('username')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -38,18 +48,27 @@
                     </div>
                     <div class="form-group">
                       <label for="inputEmail3" class="">Email</label>
-                      <input type="email" name="email"  class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{$supplier->email}}" required>
+                      <input type="email" name="email"  class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{$supplier->email}}" >
                        
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
+
                     <div class="form-group">
                       <label for="inputEmail3" class="">Phone Number</label>
                       <input type="tel" class="form-control phone phone0" type="tel" name="phone" placeholder="12345678" value="{{$supplier->phone}}">
-                      <div class="alert-danger" style="text-align:center">{{$errors->first('phone')}}</div>
                       <span class="text-danger error_msg0 hide" role="alert"></span>
                       <span class="text-success valid_msg0 hide" role="alert"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inputEmail3" class="">Contact Person </label>
+                      <input type="text" name="contact_person" class="form-control @error('contact_person') is-invalid @enderror" placeholder="Contact Person" value="{{$supplier->contact_person}}"  >
+
+                      @error('contact_person')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
                     </div>
 
                     <div class="form-group">
@@ -123,7 +142,7 @@
 
                     <div class="form-group">
                       <label for="inputEmail3" class="">Category <span style="color:red">*</span></label>
-                      <select name="categories[]" class="form-control select2-multiple @error('categories') is-invalid @enderror" multiple required>
+                      <select name="categories[]" class="form-control select2-multiple @error('categories') is-invalid @enderror" multiple >
                           @foreach ($categories as $category)
                             <option value="{{ $category->id }}"  {{ (in_array($category->id, $supplier->getCategories()->pluck('id')->toArray()))? 'selected' : NULL }}>{{ $category->name }}</option>
                           @endforeach
@@ -135,8 +154,8 @@
                     </div>
       
                     <div class="form-group">
-                      <label for="inputEmail3" class=""> Products <span style="color:red">*</span></label>
-                      <select name="products[]" class="form-control select2-multiple @error('products') is-invalid @enderror" multiple required>
+                      <label for="inputEmail3" class=""> Products </label>
+                      <select name="products[]" class="form-control select2-multiple @error('products') is-invalid @enderror" multiple >
                         @foreach ($products as $product)
                           <option value="{{$product->id}}" {{ (in_array($product->id, $supplier->getProducts()->pluck('id')->toArray()) )? 'selected' : NULL}} >{{$product->name}}</option>
                         @endforeach
@@ -157,6 +176,16 @@
                       </select>
                       <div class="alert-danger" style="text-align:center">{{$errors->first('currency')}}</div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="inputEmail3" class="">Commission Rate</label>
+                      <input type="text" name="commission_rate" class="form-control @error('commission_rate') is-invalid @enderror" placeholder="Commission Rate" value="{{$supplier->commission_rate}}" >
+
+                      @error('commission_rate')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
+
                     <div class="form-group">
                       <label  class="">Description :</label>
                       <textarea name="description"  class="form-control summernote">{{ $supplier->description }}</textarea>

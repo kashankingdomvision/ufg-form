@@ -16,11 +16,12 @@ class UpdateSupplierRequest extends FormRequest
     {
         return [
             'username'    => ['required', Rule::unique('suppliers','name')->ignore(decrypt($this->supplier))],
-            'email'       => ['required', Rule::unique('suppliers')->ignore(decrypt($this->supplier))],
             'country_id'  => 'required',
-            // 'town_id'     => 'required',
+            'location_id' => 'required',
             'categories'  =>  'required|array',
-            'products'    =>  'required|array',
+            // 'products'    =>  'required|array',
+            // 'email'       => ['required', Rule::unique('suppliers')->ignore(decrypt($this->supplier))],
+            // 'town_id'     => 'required',
         ];
     }
 
@@ -33,11 +34,12 @@ class UpdateSupplierRequest extends FormRequest
     {
         return [
             'username'     =>  'Name',
-            'email'        =>  'Email address',
             'country_id'   =>  'Country',
-            'town_id'      =>  'Town',
+            'location_id'  =>  'Location',
             'categories'   =>  'Categories',
-            'products'     =>  'Products',
+            // 'products'     =>  'Products',
+            // 'email'        =>  'Email address',
+            // 'town_id'      =>  'Town',
         ];
     }
 }

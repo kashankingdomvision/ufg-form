@@ -16,6 +16,7 @@ class AlterAddFeildsInSuppliersTable extends Migration
         Schema::table('suppliers', function (Blueprint $table) {
 
             $table->unsignedBigInteger('group_owner_id')->after('location_id')->nullable(); 
+            $table->string('contact_person')->after('phone')->nullable(); 
             $table->string('code')->after('group_owner_id')->nullable(); 
             $table->double('commission_rate')->after('description')->nullable(); 
             

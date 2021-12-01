@@ -71,6 +71,26 @@ class SupplierController extends Controller
         return view('suppliers.create', $data);
     }
 
+    public function suppliersArray($request)
+    {
+        $data = [
+            'currency_id'     => $request->currency, 
+            'country_id'      => $request->country_id, 
+            'location_id'     => $request->location_id, 
+            'group_owner_id'  => $request->group_owner_id, 
+            'name'            => $request->username, 
+            'code'            => $request->code,
+            'email'           => $request->email, 
+            'phone'           => $request->full_number,
+            'contact_person'  => $request->contact_person,
+            'commission_rate' => $request->commission_rate,
+            'description'     => $request->description,
+            // 'town_id'      => $request->town_id, 
+        ];
+    
+        return $data;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -79,17 +99,7 @@ class SupplierController extends Controller
      */
     public function store(SupplierRequest $request)
     {
-        $supplier = Supplier::create([
-            'currency_id' => $request->currency, 
-            'country_id'  => $request->country_id, 
-            // 'town_id'     => $request->town_id, 
-            'location_id' => $request->location_id, 
-            'group_owner_id' => $request->group_owner_id, 
-            'name'        => $request->username, 
-            'email'       => $request->email, 
-            'phone'       => $request->full_number,
-            'description' => $request->description,
-        ]);
+        $supplier = Supplier::create($this->suppliersArray($request));
         
         if($request->has('categories') && count($request->categories) > 0){
             foreach ($request->categories as $category) {
@@ -156,18 +166,8 @@ class SupplierController extends Controller
         SupplierCategory::where('supplier_id', $supplier->id)->delete();
         SupplierProduct::where('supplier_id', $supplier->id)->delete();
 
-        $supplier->update([
-            'currency_id' => $request->currency, 
-            'country_id'  => $request->country_id, 
-            // 'town_id'     => $request->town_id,
-            'location_id' => $request->location_id,
-            'group_owner_id' => $request->group_owner_id, 
-            'name'        => $request->username, 
-            'email'       => $request->email, 
-            'phone'       => $request->full_number,
-            'description' => $request->description,
-        ]);
-        
+        $supplier->update($this->suppliersArray($request));
+
         if($request->has('categories') && count($request->categories) > 0){
             foreach ($request->categories as $category) {
                 SupplierCategory::create([
