@@ -37,8 +37,9 @@
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                       @enderror
                     </div>
+
                     <div class="form-group">
-                      <label for="inputEmail3" class="">Email <span style="color:red">*</span></label>
+                      <label for="inputEmail3" class="">Email </label>
                       <input type="email" name="email"  class="form-control @error('email') is-invalid @enderror" placeholder="Email" value="{{old('email')}}"  >
                       @error('email')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -53,6 +54,20 @@
                       <span class="text-danger error_msg0 hide" role="alert"></span>
                       <span class="text-success valid_msg0 hide" role="alert"></span>
                     </div>
+
+                    <div class="form-group">
+                      <label>Group Owner </label>
+                      <select name="group_owner_id" class="form-control select2single @error('group_owner_id') is-invalid @enderror" >
+                        <option value="">Select Group Owner</option>
+                          @foreach ($group_owners as $group_owner)
+                            <option value="{{$group_owner->id}}" {{ (old('group_owner_id') == $group_owner->id) ? 'selected' : '' }}> {{$group_owner->name}} </option>
+                          @endforeach
+                      </select>
+  
+                      @error('group_owner_id')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div> 
 
                     <div class="row">
                       <div class="col-md-6">

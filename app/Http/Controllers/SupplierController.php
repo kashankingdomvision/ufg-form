@@ -12,6 +12,7 @@ use App\Supplier;
 use App\SupplierCategory;
 use App\SupplierProduct;
 use App\Country;
+use App\GroupOwner;
 
 use Illuminate\Support\Facades\DB;
 
@@ -61,10 +62,11 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
-        $data['products']   = Product::get();
-        $data['currencies'] = Currency::get();
-        $data['countries']  = Country::orderBy('sort_order', 'ASC')->get();
+        $data['categories']   = Category::orderby('sort_order', 'ASC')->get();
+        $data['products']     = Product::get();
+        $data['currencies']   = Currency::get();
+        $data['countries']    = Country::orderBy('sort_order', 'ASC')->get();
+        $data['group_owners'] = GroupOwner::orderBy('name')->get();
 
         return view('suppliers.create', $data);
     }
@@ -82,6 +84,7 @@ class SupplierController extends Controller
             'country_id'  => $request->country_id, 
             // 'town_id'     => $request->town_id, 
             'location_id' => $request->location_id, 
+            'group_owner_id' => $request->group_owner_id, 
             'name'        => $request->username, 
             'email'       => $request->email, 
             'phone'       => $request->full_number,
@@ -129,12 +132,13 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        $data['supplier']   = Supplier::findOrFail(decrypt($id));
-        $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
-        $data['products']   = Product::get();
-        $data['currencies'] = Currency::get();
-        $data['countries']  = Country::orderBy('sort_order', 'ASC')->get();
-        
+        $data['supplier']     = Supplier::findOrFail(decrypt($id));
+        $data['categories']   = Category::orderby('sort_order', 'ASC')->get();
+        $data['products']     = Product::get();
+        $data['currencies']   = Currency::get();
+        $data['countries']    = Country::orderBy('sort_order', 'ASC')->get();
+        $data['group_owners'] = GroupOwner::orderBy('name')->get();
+
         return view('suppliers.edit',$data);
     }
 
@@ -157,6 +161,7 @@ class SupplierController extends Controller
             'country_id'  => $request->country_id, 
             // 'town_id'     => $request->town_id,
             'location_id' => $request->location_id,
+            'group_owner_id' => $request->group_owner_id, 
             'name'        => $request->username, 
             'email'       => $request->email, 
             'phone'       => $request->full_number,
