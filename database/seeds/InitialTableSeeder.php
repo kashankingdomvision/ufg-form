@@ -29,5 +29,8 @@ class InitialTableSeeder extends Seeder
 
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/harbours.sql');
         DB::statement($sql);
+
+        $sql = file_get_contents(database_path() . '/seeds/sql_dump/group_owners.sql');
+        DB::unprepared($sql);
     }
 }

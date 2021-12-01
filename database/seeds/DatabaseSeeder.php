@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
             BookingMethodSeeder::class,
             BookingTypeSeeder::class,
             CurrencyConversionSeeder::class,
-            InitialTableSeeder::class,
             ProductTableSeeder::class,
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
@@ -32,6 +31,8 @@ class DatabaseSeeder extends Seeder
             UserTableSeeder::class,
             CommissionCriteriaSeederTable::class,
             PresetCommentSeeder::class,
+
+            InitialTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
