@@ -1822,7 +1822,6 @@ $(document).ready(function($) {
 
             $(document).on('change', '.category-id', function() {
 
-                // var selector      = $(this);
                 var quote             = $(this).closest('.quote');
                 var quoteKey          = quote.data('key');
 
@@ -1832,17 +1831,17 @@ $(document).ready(function($) {
                 var category_id       = $(this).val();
                 var category_name     = $(this).find(':selected').attr('data-name');
                 var category_slug     = $(this).find(':selected').attr('data-slug');
-                var options           = '';
+                // var options           = '';
 
                 // set category name in car header
                 quote.find('.badge-category-id').html(category_name);
 
                 // set supplier dropdown null when category become null
-                if(typeof category_id === 'undefined' || category_id == ""){
-                    quote.find('.badge-category-id').html("");
-                    $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
-                    $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-                }
+                // if(typeof category_id === 'undefined' || category_id == ""){
+                //     quote.find('.badge-category-id').html("");
+                //     $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
+                //     $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+                // }
 
                 // set Payment type (Booking Type) refundable when category is fligt
                 if(category_slug == 'flights'){
@@ -1859,11 +1858,11 @@ $(document).ready(function($) {
                     success: function(response) {
 
                         // set supplier dropdown
-                        options += "<option value=''>Select Supplier</option>";
-                        $.each(response.suppliers, function(key, value) {
-                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-                        });
-                        $(`#quote_${quoteKey}_supplier_id`).html(options);
+                        // options += "<option value=''>Select Supplier</option>";
+                        // $.each(response.suppliers, function(key, value) {
+                        //     options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                        // });
+                        // $(`#quote_${quoteKey}_supplier_id`).html(options);
            
                         // set category details feilds 
                         if(typeof response.category_details != 'undefined') {
@@ -1891,9 +1890,9 @@ $(document).ready(function($) {
                         }
                         
                         // reset product & supplier Sheet
-                        $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-                        quote.find('.view-supplier-rate').attr("href","");
-                        quote.find('.view-supplier-rate').html("");
+                        // $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                        // quote.find('.view-supplier-rate').attr("href","");
+                        // quote.find('.view-supplier-rate').html("");
                     }
                 })
 

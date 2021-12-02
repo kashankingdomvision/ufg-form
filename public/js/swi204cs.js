@@ -51475,24 +51475,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find('.badge-product-id').removeClass('d-none');
   });
   $(document).on('change', '.category-id', function () {
-    // var selector      = $(this);
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
     var model_name = $("#model_name").val();
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
-    var category_slug = $(this).find(':selected').attr('data-slug');
-    var options = ''; // set category name in car header
+    var category_slug = $(this).find(':selected').attr('data-slug'); // var options           = '';
+    // set category name in car header
 
     quote.find('.badge-category-id').html(category_name); // set supplier dropdown null when category become null
-
-    if (typeof category_id === 'undefined' || category_id == "") {
-      quote.find('.badge-category-id').html("");
-      $("#quote_".concat(quoteKey, "_supplier_id")).html("<option value=''>Select Supplier</option>");
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-    } // set Payment type (Booking Type) refundable when category is fligt
-
+    // if(typeof category_id === 'undefined' || category_id == ""){
+    //     quote.find('.badge-category-id').html("");
+    //     $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
+    //     $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+    // }
+    // set Payment type (Booking Type) refundable when category is fligt
 
     if (category_slug == 'flights') {
       var refundable = $("#quote_".concat(quoteKey, "_booking_type_id")).find("option[data-slug='refundable']").val();
@@ -51511,12 +51509,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(response) {
         // set supplier dropdown
-        options += "<option value=''>Select Supplier</option>";
-        $.each(response.suppliers, function (key, value) {
-          options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
-        });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // set category details feilds 
-
+        // options += "<option value=''>Select Supplier</option>";
+        // $.each(response.suppliers, function(key, value) {
+        //     options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+        // });
+        // $(`#quote_${quoteKey}_supplier_id`).html(options);
+        // set category details feilds 
         if (typeof response.category_details != 'undefined') {
           quote.find('.category-details').val(response.category_details);
         } // Hide & Show Category details btn according to status
@@ -51539,11 +51537,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             quote.find('.booking-category-detail-btn-parent').addClass('d-none');
           }
         } // reset product & supplier Sheet
+        // $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+        // quote.find('.view-supplier-rate').attr("href","");
+        // quote.find('.view-supplier-rate').html("");
 
-
-        $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
-        quote.find('.view-supplier-rate').attr("href", "");
-        quote.find('.view-supplier-rate').html("");
       }
     });
   });
