@@ -49860,13 +49860,13 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
-var FILE_MANAGER_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
@@ -51483,15 +51483,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
-    var options = '';
+    var options = ''; // set category name in car header
+
+    quote.find('.badge-category-id').html(category_name); // set supplier dropdown null when category become null
 
     if (typeof category_id === 'undefined' || category_id == "") {
       quote.find('.badge-category-id').html("");
       $("#quote_".concat(quoteKey, "_supplier_id")).html("<option value=''>Select Supplier</option>");
       $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-    }
+    } // set Payment type (Booking Type) refundable when category is fligt
 
-    quote.find('.badge-category-id').html(category_name); // quote.find('.badge-category-id').removeClass('d-none');
 
     if (category_slug == 'flights') {
       var refundable = $("#quote_".concat(quoteKey, "_booking_type_id")).find("option[data-slug='refundable']").val();
@@ -51509,14 +51510,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         'model_name': model_name
       },
       success: function success(response) {
+        // set supplier dropdown
         options += "<option value=''>Select Supplier</option>";
         $.each(response.suppliers, function (key, value) {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // set category details feilds 
 
         if (typeof response.category_details != 'undefined') {
           quote.find('.category-details').val(response.category_details);
-        }
+        } // Hide & Show Category details btn according to status
+
 
         if (response.category != "" && typeof response.category !== 'undefined') {
           if (response.category.quote == 1) {
@@ -51534,16 +51538,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             quote.find('.booking-category-detail-btn-parent').removeClass('d-flex');
             quote.find('.booking-category-detail-btn-parent').addClass('d-none');
           }
-        }
+        } // reset product & supplier Sheet
 
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options); // reset product & supplier Sheet
 
         $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
         quote.find('.view-supplier-rate').attr("href", "");
-        quote.find('.view-supplier-rate').html(""); // selector.closest('.row').find('.supplier-id').html(options);
-        // selector.closest('.row').find('.product-id').html('<option value="">Select Product</option>');
+        quote.find('.view-supplier-rate').html("");
       }
-    }); // jQuery(this).closest('.quote').find(`.transfer_modal :input, .accommodation_modal :input, service-excursion_modal :input`).attr('disabled', 'disabled');
+    });
   });
   $(document).on('change', '.role', function () {
     var role = $(this).find('option:selected').data('role');
