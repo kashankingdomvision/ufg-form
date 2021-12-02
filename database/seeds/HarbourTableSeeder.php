@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class InitialTableSeeder extends Seeder
+class HarbourTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,5 +11,7 @@ class InitialTableSeeder extends Seeder
      */
     public function run()
     {
+        $sql = file_get_contents(database_path() . '/seeds/sql_dump/harbours.sql');
+        DB::statement($sql);
     }
 }

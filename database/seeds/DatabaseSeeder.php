@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\User;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,10 +21,8 @@ class DatabaseSeeder extends Seeder
             BookingMethodSeeder::class,
             BookingTypeSeeder::class,
             CurrencyConversionSeeder::class,
-            // ProductTableSeeder::class,
             PaymentMethodSeeder::class,
             SeasonTableSeeder::class,
-            // SupplierTableSeeder::class,
             ReferenceCredentialTableSeeder::class,
             BankTableSeeder::class,
             CommissionTableSeeder::class,
@@ -36,8 +34,11 @@ class DatabaseSeeder extends Seeder
             ProductTableSeeder::class,
             GroupOwnerTableSeeder::class,
             SupplierTableSeeder::class,
+            AllCurrencyTableSeeder::class,
+            HotelTableSeeder::class,
+            AirportCodeTableSeeder::class,
+            HarbourTableSeeder::class,
             
-            InitialTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }
