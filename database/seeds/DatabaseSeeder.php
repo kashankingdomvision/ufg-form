@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             CountryTableSeeder::class,
             LocationTableSeeder::class,
             ProductTableSeeder::class,
+            GroupOwnerTableSeeder::class,
             SupplierTableSeeder::class,
             
             InitialTableSeeder::class,
