@@ -157,6 +157,31 @@ class ResponseController extends Controller
 
         return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
     }
+
+    public function getLocationToSupplier(Request $request)
+    {
+        // $suppliers = Supplier::where('location_id', $request->suppplier_location_id)->where()->get();
+
+        $suppliers = Supplier::whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })
+        ->where('location_id', $request->suppplier_location_id)
+        ->get();
+
+        return response()->json([ 'suppliers' => $suppliers ]);
+    }
+
+    public function getLocationToProduct(Request $request)
+    {
+
+        $products = Product::whereHas('getSuppliers', function($query) use($request) {
+            $query->where('id', $request->supplier_id);
+        })
+        ->where('location_id', $request->product_location_id)
+        ->get();
+     
+        return response()->json([ 'products' => $products ]);
+    }
     
     public function getSupplierToProductORCurrency(Request $request)
     {

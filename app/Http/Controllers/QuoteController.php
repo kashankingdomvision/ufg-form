@@ -42,6 +42,7 @@ use App\ReferenceCredential;
 use App\CommissionGroup;
 use App\CommissionCriteria; 
 use App\PresetComment; 
+use App\Location; 
 
 class QuoteController extends Controller
 {
@@ -243,8 +244,10 @@ class QuoteController extends Controller
 
         return [
             'category_id'           => $quoteD['category_id'],
+            'supplier_location_id'  => $quoteD['supplier_location_id'],
             'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
+            'product_location_id'   => $quoteD['product_location_id'],
             // 'booking_method_id'     => $quoteD['booking_method_id'],
             // 'booked_by_id'          => $quoteD['booked_by_id'],
             // 'supervisor_id'         => $quoteD['supervisor_id'],
@@ -300,6 +303,7 @@ class QuoteController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
 
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+        $data['locations']        = Location::get();
 
         return view('quotes.create', $data);
     }

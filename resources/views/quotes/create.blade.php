@@ -527,6 +527,19 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Supplier Location <span style="color:red">*</span></label>
+                                <select name="quote[0][supplier_location_id]" data-name="supplier_location_id" id="quote_0_supplier_location_id" class="form-control supplier-location-id select2single @error('supplier_location_id') is-invalid @enderror">
+                                  <option value="">Select Location</option>
+                                  @foreach ($locations as $location)
+                                    <option value="{{ $location->id }}" > {{ $location->name }} </option>
+                                  @endforeach
+                                </select>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
   
                             <div class="col-sm-2">
                               <div class="form-group">
@@ -547,6 +560,19 @@
                                 <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
                               </div>
                             </div> --}}
+
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Product Location <span style="color:red">*</span></label>
+                                <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
+                                  <option value="">Select Location</option>
+                                  @foreach ($locations as $location)
+                                    <option value="{{ $location->id }}" > {{ $location->name }} </option>
+                                  @endforeach
+                                </select>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
 
                             <div class="col-sm-2">
                               <div class="form-group">
