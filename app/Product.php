@@ -9,9 +9,14 @@ class Product extends Model
     protected $fillable = [
         'code',
         'name',
+        'country_id',
+        'location_id',
+        'currency_id',
+        'duration',
+        'price',
         'description',
         'inclusions',
-        'packing_list',
+        'packing_list'
     ];
     
     public function getSuppliers()

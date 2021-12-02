@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Str;
-use App\Product;
 use App\Http\Helper;
+
+use App\Product;
+use App\Location;
+use App\Currency;
 
 class ProductController extends Controller
 {
@@ -37,7 +40,28 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $data['locations']  = Location::get();
+        $data['currencies'] = Currency::get();
+
+        return view('products.create', $data);
+    }
+
+    public function productsArray($request)
+    {
+        $data = [
+            'code'          => $request->code,
+            'name'          => $request->name,
+            'country_id'    => $request->country_id,
+            'location_id'   => $request->location_id,
+            'currency_id'   => $request->currency_id,
+            'duration'      => $request->duration,
+            'price'         => $request->price,
+            'description'   => $request->description,
+            'inclusions'    => $request->inclusions,
+            'packing_list'  => $request->packing_list,
+        ];
+    
+        return $data;
     }
 
     /**
@@ -49,13 +73,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
 
-        Product::create([
-            'code'         => $request->code,
-            'name'         => $request->name,
-            'description'  => $request->description,
-            'inclusions'   => $request->inclusions,
-            'packing_list' => $request->packing_list,
-        ]);
+        Product::create($this->productsArray($request));
         
         return redirect()->route('products.index')->with('success_message', 'Product created successfully');
     }
@@ -68,7 +86,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data['product'] = Product::findOrFail(decrypt($id));
+        $data['product']    = Product::findOrFail(decrypt($id));
+        $data['locations']  = Location::get();
+        $data['currencies'] = Currency::get();
+
         return view('products.edit', $data);
     }
 
@@ -81,13 +102,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
-        Product::findOrFail(decrypt($id))->update([
-            'code'         => $request->code,
-            'name'         => $request->name,
-            'description'  => $request->description,
-            'inclusions'   => $request->inclusions,
-            'packing_list' => $request->packing_list,
-        ]);
+        Product::findOrFail(decrypt($id))->update($this->productsArray($request));
 
         return redirect()->route('products.index')->with('success_message', 'Product update successfully');
     }

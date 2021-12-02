@@ -25,8 +25,9 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'code'  => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
-            'name'  => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
+            'code'        => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
+            'name'        => ['required', Rule::unique('products')->ignore(decrypt($this->product))],
+            'location_id' => 'required',
         ];
     }
 
@@ -35,7 +36,8 @@ class UpdateProductRequest extends FormRequest
         return [
             'name'          => 'Product name',
             'code'          => 'Product code',
-            'description'   => 'Product description',
+            'location_id'   => 'Location',
+            // 'description'   => 'Product description',
         ];
     }
 }

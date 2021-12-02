@@ -45,6 +45,48 @@
                     @enderror
                   </div>
 
+                  
+                  <div class="form-group">
+                    <label>Product Location <span style="color:red">*</span></label>
+                    <select name="location_id" class="form-control select2single @error('location_id') is-invalid @enderror" >
+                      <option value="">Select Location</option>
+                      @foreach ($locations as $location)
+                        <option value="{{ $location->id }}" {{ ($location->id == $product->location_id) ? "selected" : ((old('location_id') == $location->id)? 'selected' : NULL) }} > {{ $location->name }} {{ isset($location->getCountry->name) && !empty($location->getCountry->name) ? ' ('.$location->getCountry->name.')' : '' }}</option>
+                      @endforeach
+                    </select>
+
+                    @error('location_id')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div> 
+
+                  <div class="form-group">
+                    <label>Duration </label>
+                    <input type="text" name="duration" value="{{ old('duration')??$product->duration }}"  class="form-control @error('duration') is-invalid @enderror" placeholder="Duration" >
+                    @error('duration')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
+                  <div class="form-group">
+                    <label for="inputEmail3" class="">Currency</label>
+                    <select name="currency_id" class="form-control select2single" >
+                      <option value="">Select Currency</option>
+                      @foreach ($currencies as $currency)
+                        <option value="{{$currency->id}}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ ($currency->id == $product->currency_id) ? "selected" : ((old('currency_id') == $currency->id)? 'selected' : NULL) }}>&nbsp; {{$currency->code}} - {{$currency->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label>Price </label>
+                    <input type="text" name="price" value="{{ old('price')??$product->price }}" class="form-control @error('price') is-invalid @enderror" placeholder="Price" >
+                    @error('price')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
+
                   <div class="form-group">
                     <label>Description</label>
                     <textarea name="description" class="form-control summernote" rows="3">{{ old('description')??$product->description }}</textarea>
