@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ProductTableSeeder::class,
             GroupOwnerTableSeeder::class,
             SupplierTableSeeder::class,
+            SupplierProductTableSeeder::class,
             AllCurrencyTableSeeder::class,
             HotelTableSeeder::class,
             AirportCodeTableSeeder::class,
