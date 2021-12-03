@@ -30,6 +30,10 @@ class Supplier extends Model
         return $this->belongsToMany(Product::class, 'supplier_products', 'supplier_id', 'product_id');
     }
 
+    public function getProductsWithLocation($location_id){
+        return $this->getProducts()->where('location_id', $location_id);
+    }
+
     public function getCurrency()
     {
         return $this->hasOne(Currency::class, 'id', 'currency_id');

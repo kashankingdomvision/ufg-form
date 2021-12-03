@@ -626,6 +626,19 @@
                                 </div>
                               </div>
 
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Supplier Location <span style="color:red">*</span></label>
+                                  <select name="quote[{{ $key }}][supplier_location_id]" data-name="supplier_location_id" id="quote_{{ $key }}_supplier_location_id" class="form-control supplier-location-id select2single">
+                                    <option value="">Select Location</option>
+                                    @foreach ($locations as $location)
+                                      <option value="{{ $location->id }}" {{ ($q_detail->supplier_location_id == $location->id)? 'selected' : NULL}}> {{ $location->name }} </option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
                               @php
                                 $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
@@ -634,22 +647,32 @@
 
                               <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label>
-                                      Supplier <span style="color:red">*</span>
-                                      <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
-                                    </label>
+                                  <label>
+                                    Supplier <span style="color:red">*</span>
+                                    <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
+                                  </label>
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
-                                      @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier)
-                                        @foreach ($q_detail->getCategory->getSupplier as $supplier )
+                                      @if(isset($q_detail->getCategory) && isset($q_detail->supplier_location_id) && !empty($q_detail->supplier_location_id))
+                                        @foreach ($q_detail->getCategory->getSupplierWithLocation($q_detail->supplier_location_id)->get() as $supplier )
                                           <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                         @endforeach
                                       @endif
                                   </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
 
-                                  @error('supplier_id')
-                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                  @enderror
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product Location <span style="color:red">*</span></label>
+                                  <select name="quote[{{ $key }}][product_location_id]" data-name="product_location_id" id="quote_{{ $key }}_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
+                                    <option value="">Select Location</option>
+                                    @foreach ($locations as $location)
+                                      <option value="{{ $location->id }}" {{ ($q_detail->product_location_id == $location->id)? 'selected' : NULL}}> {{ $location->name }} </option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 
@@ -665,9 +688,9 @@
                                   <label>Product </label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
-                                      @foreach ($q_detail->getSupplier->getProducts as  $product)
-                                        <option value="{{ $product->id }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
+                                    @if(isset($q_detail->getSupplier) && isset($q_detail->product_location_id) && !empty($q_detail->product_location_id))
+                                      @foreach ($q_detail->getSupplier->getProductsWithLocation($q_detail->product_location_id)->get() as $product)
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                       @endforeach
                                     @endif
                                   </select>
