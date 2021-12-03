@@ -531,7 +531,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier Location <span style="color:red">*</span></label>
-                                <select name="quote[0][supplier_location_id]" data-name="supplier_location_id" id="quote_0_supplier_location_id" class="form-control supplier-location-id select2single @error('supplier_location_id') is-invalid @enderror">
+                                <select name="quote[0][supplier_location_id]" data-name="supplier_location_id" id="quote_0_supplier_location_id" class="form-control supplier-location-id select2single" disabled>
                                   <option value="">Select Location</option>
                                   @foreach ($locations as $location)
                                     <option value="{{ $location->id }}" > {{ $location->name }} </option>
@@ -547,7 +547,7 @@
                                   Supplier <span style="color:red">*</span>
                                   <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                                 </label>
-                                <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single @error('supplier_id') is-invalid @enderror">
+                                <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single" disabled>
                                   <option selected value="">Select Supplier</option>
                                 </select>
                                 <span class="text-danger" role="alert"></span>
@@ -564,7 +564,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product Location </label>
-                                <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
+                                <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single" disabled>
                                   <option value="">Select Location</option>
                                   @foreach ($locations as $location)
                                     <option value="{{ $location->id }}" > {{ $location->name }} </option>
@@ -577,10 +577,9 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
-                                <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
+                                <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
                                   <option selected value="">Select Product</option>
                                 </select>
-                                
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>

@@ -1761,12 +1761,16 @@ $(document).ready(function($) {
                 // set category name in car header
                 quote.find('.badge-category-id').html(category_name);
 
+                /* remove attribute when category selected */
+                $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
+
                 /* reset location when category change*/
                 $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
 
                 // set supplier dropdown null when category become null
                 if(typeof category_id === 'undefined' || category_id == ""){
                     quote.find('.badge-category-id').html("");
+                    $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
                     // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
                     // $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
                     return;
@@ -1835,12 +1839,14 @@ $(document).ready(function($) {
                 var category_id           = $(`#quote_${quoteKey}_category_id`).val();
                 var options               = '';
 
+                $(`#quote_${quoteKey}_supplier_id`).removeAttr('disabled');
+
                 /* set supplier dropdown null when supplier location become null */
                 if(typeof suppplier_location_id === 'undefined' || suppplier_location_id == ""){
                     // quote.find('.badge-category-id').html("");
                     // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
                     $(`#quote_${quoteKey}_supplier_id`).val("").change();
-                    
+                    $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
                     return;
                 }
 
@@ -1877,6 +1883,8 @@ $(document).ready(function($) {
                 /* set cart header */
                 quote.find('.badge-supplier-id').html(supplier_name);
 
+                $(`#quote_${quoteKey}_product_location_id`).removeAttr('disabled');
+
                 /* reset location when supplier change*/
                 $(`#quote_${quoteKey}_product_location_id`).val("").change();
 
@@ -1885,6 +1893,7 @@ $(document).ready(function($) {
                     quote.find('.badge-supplier-id').html("");
                     // $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
                     $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
+                    $(`#quote_${quoteKey}_product_location_id`).attr('disabled', 'disabled');
                     return;
                 }
 
@@ -1949,11 +1958,14 @@ $(document).ready(function($) {
                 var supplier_id           = $(`#quote_${quoteKey}_supplier_id`).val();
                 var options               = '';
 
+                $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+
                 /* set product dropdown null when product location become null */
                 if(typeof product_location_id === 'undefined' || product_location_id == ""){
                     // quote.find('.badge-category-id').html("");
                     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
                     $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+                    $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
                     return;
                 }
 
