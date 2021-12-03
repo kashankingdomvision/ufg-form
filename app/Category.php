@@ -20,4 +20,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Supplier::class,'supplier_categories','category_id', 'supplier_id');
     }
+
+    public function getSupplierWithLocation($location_id)
+    {
+        return $this->getSupplier()->where('location_id', $location_id);
+    }
 }

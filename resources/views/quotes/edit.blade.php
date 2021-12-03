@@ -707,9 +707,9 @@
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
                                       @if(isset($q_detail->getCategory) && $q_detail->getCategory->getSupplier && !empty($q_detail->supplier_location_id))
-                                          @foreach ($q_detail->getCategory->getSupplier->where('location_id', $q_detail->supplier_location_id) as $supplier )
+                                        @foreach ($q_detail->getCategory->getSupplierWithLocation($q_detail->supplier_location_id)->get() as $supplier )
                                           <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
-                                          @endforeach
+                                        @endforeach
                                       @endif
                                   </select>
                                   <span class="text-danger" role="alert"></span>
