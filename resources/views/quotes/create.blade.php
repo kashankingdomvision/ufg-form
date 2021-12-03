@@ -563,7 +563,7 @@
 
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Product Location <span style="color:red">*</span></label>
+                                <label>Product Location </label>
                                 <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
                                   <option value="">Select Location</option>
                                   @foreach ($locations as $location)
