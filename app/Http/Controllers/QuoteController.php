@@ -23,26 +23,26 @@ use App\Category;
 use App\Commission;
 use App\Country;
 use App\CurrencyConversion;
+use App\CommissionGroup;
+use App\CommissionCriteria; 
 use App\Group;
 use App\HolidayType;
+use App\Location;
 use App\Product;
+use App\PresetComment; 
 use App\QuoteUpdateDetail;
 use App\QuoteDocument;
 use App\Quote;
 use App\QuoteDetail;
 use App\QuotePaxDetail;
 use App\QuoteLog;
-use App\Season;
-use App\Supplier;
-use App\Template;
-use App\User;
-use App\StoreText;
 use App\QuoteDetailStoredText;
 use App\ReferenceCredential;
-use App\CommissionGroup;
-use App\CommissionCriteria; 
-use App\PresetComment; 
-use App\Location; 
+use App\Season;
+use App\Supplier;
+use App\StoreText;
+use App\Template;
+use App\User;
 
 class QuoteController extends Controller
 {
@@ -462,6 +462,65 @@ class QuoteController extends Controller
 
        return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
     }
+    
+    public function quoteVersion($id, $type = null)
+    {
+        $log = QuoteLog::findOrFail(decrypt($id));
+
+        $quote                    = $log->data;
+        $data['quote']            = $quote;
+        $data['log']              = $log;
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
+        $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+        $data['locations']        = Location::get();
+
+        if($type != NULL){
+            $data['type'] = $type;
+        }
+        return view('quotes.version', $data);
+    }
+
+    /* view final quote */
+    public function finalQuote($id)
+    {
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $quote                    = Quote::findOrFail(decrypt($id));
+        $data['quote']            = $quote;
+        $data['commission_types'] = Commission::all();
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        $data['storetexts']       = StoreText::get();
+        $data['groups']           = Group::orderBy('id','ASC')->get();
+        $data['locations']        = Location::get();
+
+        return view('quotes.show',$data);
+    }
 
     public function add_and_update_quote_group($quote) {
         /*if quote is already connected with a group*/
@@ -492,39 +551,6 @@ class QuoteController extends Controller
             $old_quote_group->save();
             $old_quote_group->quotes()->detach($quote->id);
         }
-    }
-
-    public function quoteVersion($id, $type = null)
-    {
-        $log = QuoteLog::findOrFail(decrypt($id));
-
-        $quote                    = $log->data;
-        $data['quote']            = $quote;
-        $data['log']              = $log;
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
-        $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
-        $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
-        
-        if($type != NULL){
-            $data['type'] = $type;
-        }
-        return view('quotes.version', $data);
     }
 
     public function cancel($id)
@@ -609,32 +635,6 @@ class QuoteController extends Controller
     {
         $data['quotes'] = Quote::onlyTrashed()->paginate($this->pagiantion);
         return view('quotes.trash', $data);
-    }
-
-    /* view final quote */
-    public function finalQuote($id)
-    {
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $quote                    = Quote::findOrFail(decrypt($id));
-        $data['quote']            = $quote;
-        $data['commission_types'] = Commission::all();
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
-        $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('id','ASC')->get();
-        $data['locations']        = Location::get();
-
-        return view('quotes.show',$data);
     }
 
     /* update status in archive */
