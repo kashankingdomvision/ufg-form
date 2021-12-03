@@ -389,7 +389,8 @@ class QuoteController extends Controller
         $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-
+        $data['locations']        = Location::get();
+        
         return view('quotes.edit',$data);
     }
 

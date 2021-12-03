@@ -51438,7 +51438,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var refundable = $("#quote_".concat(quoteKey, "_booking_type_id")).find("option[data-slug='refundable']").val();
       $("#quote_".concat(quoteKey, "_booking_type_id")).val(refundable).trigger('change');
     } else {
-      $("#quote_".concat(quoteKey, "_booking_type_id")).val('').trigger('change');
+      $("#quote_".concat(quoteKey, "_booking_type_id")).val('').change();
     }
 
     $.ajax({
@@ -51496,12 +51496,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
       // quote.find('.badge-category-id').html("");
-      $("#quote_".concat(quoteKey, "_supplier_id")).html("<option value=''>Select Supplier</option>");
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
+      // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
+      $("#quote_".concat(quoteKey, "_supplier_id")).val("").change();
       return;
-    }
-    /* get suppliers according to location */
+    } // $(`#quote_${quoteKey}_product_id`).val("").change();
 
+
+    $("#quote_".concat(quoteKey, "_product_location_id")).val("").change();
+    /* get suppliers according to location */
 
     $.ajax({
       type: 'get',
@@ -51512,7 +51514,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       },
       success: function success(response) {
         /* set supplier dropdown*/
-        options += "<option value=''>Select Supplier</option>";
+        options += "<option value=\"\">Select Supplier</option>";
         $.each(response.suppliers, function (key, value) {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
@@ -51532,7 +51534,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find('.badge-supplier-id').html(supplier_name);
     /* reset location when supplier change*/
 
-    $("#quote_".concat(quoteKey, "_product_location_id")).val("").trigger('change');
+    $("#quote_".concat(quoteKey, "_product_location_id")).val("").change();
     /* unset card header & supplier currency */
 
     if (typeof supplier_id === 'undefined' || supplier_id == "") {

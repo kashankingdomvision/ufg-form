@@ -1777,7 +1777,7 @@ $(document).ready(function($) {
                     let refundable = $(`#quote_${quoteKey}_booking_type_id`).find("option[data-slug='refundable']").val();
                     $(`#quote_${quoteKey}_booking_type_id`).val(refundable).trigger('change');
                 }else{
-                    $(`#quote_${quoteKey}_booking_type_id`).val('').trigger('change');
+                    $(`#quote_${quoteKey}_booking_type_id`).val('').change();
                 }
 
                 $.ajax({
@@ -1838,10 +1838,14 @@ $(document).ready(function($) {
                 /* set supplier dropdown null when supplier location become null */
                 if(typeof suppplier_location_id === 'undefined' || suppplier_location_id == ""){
                     // quote.find('.badge-category-id').html("");
-                    $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
-                    $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+                    // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
+                    $(`#quote_${quoteKey}_supplier_id`).val("").change();
+                    
                     return;
                 }
+
+                // $(`#quote_${quoteKey}_product_id`).val("").change();
+                $(`#quote_${quoteKey}_product_location_id`).val("").change();
 
                 /* get suppliers according to location */
                 $.ajax({
@@ -1851,7 +1855,7 @@ $(document).ready(function($) {
                     success: function(response) {
 
                         /* set supplier dropdown*/
-                        options += "<option value=''>Select Supplier</option>";
+                        options += `<option value="">Select Supplier</option>`;
                         $.each(response.suppliers, function(key, value) {
                             options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                         });
@@ -1874,7 +1878,7 @@ $(document).ready(function($) {
                 quote.find('.badge-supplier-id').html(supplier_name);
 
                 /* reset location when supplier change*/
-                $(`#quote_${quoteKey}_product_location_id`).val("").trigger('change');
+                $(`#quote_${quoteKey}_product_location_id`).val("").change();
 
                 /* unset card header & supplier currency */
                 if(typeof supplier_id === 'undefined' || supplier_id == "") {
