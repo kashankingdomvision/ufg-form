@@ -1880,10 +1880,18 @@
 @push('js')
 <script>
   @if($status && !empty($status))
-    $('#update-payment :input').prop('disabled', true);
-    $('.finance :input, .refund-payment-section :input, .credit-note-section  :input, .submit, #update-booking input:hidden, .cancel-payemnt-btn .btn, .clone_booking_finance').prop('disabled', false);
+    $('#update-payment :input').attr('disabled', 'disabled');
+
+    $('.finance :input').removeAttr('disabled');
+    $('.refund-payment-section :input').removeAttr('disabled');
+    $('.credit-note-section :input').removeAttr('disabled');
+    $('button[type="submit"]').removeAttr('disabled');
+    $('.cancel-payemnt-btn .btn').removeAttr('disabled');
+    $('.clone_booking_finance').removeAttr('disabled');
+
+    // $('.finance :input, .refund-payment-section :input, .credit-note-section  :input, .submit, .cancel-payemnt-btn .btn, .clone_booking_finance').prop('disabled', false);
   @else
-    $('#update-payment :input').prop('disabled', true);
+    $('#update-payment :input').attr('disabled', 'disabled');
   @endif
 
   $(window).on('beforeunload', function() {
