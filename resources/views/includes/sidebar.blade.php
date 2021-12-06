@@ -85,7 +85,7 @@
             <div class="d-flex">
                 <img src="{{ asset('img/fa.png') }}" class="ml-2" >
                 <p>
-                    <img src="{{ asset('img/logo.png') }}" >
+                    <img src="{{ asset('img/logo.png') }}" width="205px">
                 </p>
             </div>
         </a>
