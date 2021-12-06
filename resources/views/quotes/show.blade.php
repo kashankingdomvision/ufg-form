@@ -645,7 +645,7 @@
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
                               @endphp
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>
                                     Supplier <span style="color:red">*</span>
@@ -683,7 +683,7 @@
                                 </div>
                               </div> --}}
                               
-                              <div class="col-sm-2">
+                              <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Product </label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">

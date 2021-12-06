@@ -541,7 +541,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>
                                   Supplier <span style="color:red">*</span>
@@ -574,7 +574,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-3">
                               <div class="form-group">
                                 <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                 <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
