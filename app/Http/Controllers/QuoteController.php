@@ -522,49 +522,6 @@ class QuoteController extends Controller
         return view('quotes.show',$data);
     }
 
-    public function add_and_update_quote_group($quote) {
-        /*if quote is already connected with a group*/
-        $this->update_quote_group($quote);
-
-        /* update quote values with a group total values */
-        $new_quote_group = Group::find(request()->quote_group);
-        $new_quote_group->total_net_price = $new_quote_group->total_net_price + $quote->net_price;
-        $new_quote_group->total_markup_amount = $new_quote_group->total_markup_amount + $quote->markup_amount;
-        $new_quote_group->total_markup_percentage = $new_quote_group->total_markup_percentage + $quote->markup_percentage;
-        $new_quote_group->total_selling_price = $new_quote_group->total_selling_price + $quote->selling_price;
-        $new_quote_group->total_profit_percentage = $new_quote_group->total_profit_percentage + $quote->profit_percentage;
-        $new_quote_group->total_commission_amount = $new_quote_group->total_commission_amount + $quote->commission_amount;
-        $new_quote_group->save();
-        $new_quote_group->quotes()->attach($quote->id);
-    }
-
-    public function update_quote_group($quote) {
-        $update_quote_group = DB::table('group_quote')->where('quote_id', $quote->id)->get()->first();
-        if(!empty($update_quote_group)) {
-            $old_quote_group = Group::find($update_quote_group->group_id);
-            $old_quote_group->total_net_price = $old_quote_group->total_net_price - $quote->net_price;
-            $old_quote_group->total_markup_amount = $old_quote_group->total_markup_amount - $quote->markup_amount;
-            $old_quote_group->total_markup_percentage = $old_quote_group->total_markup_percentage - $quote->markup_percentage;
-            $old_quote_group->total_selling_price = $old_quote_group->total_selling_price - $quote->selling_price;
-            $old_quote_group->total_profit_percentage = $old_quote_group->total_profit_percentage - $quote->profit_percentage;
-            $old_quote_group->total_commission_amount = $old_quote_group->total_commission_amount - $quote->commission_amount;
-            $old_quote_group->save();
-            $old_quote_group->quotes()->detach($quote->id);
-        }
-    }
-
-    public function cancel($id)
-    {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
-        return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');
-    }
-
-    public function restore($id)
-    {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
-        return redirect()->back()->with('success_message', 'Quote Restore Successfully');
-    }
-
     public function booking($id)
     {
         $quote = Quote::findORFail(decrypt($id));
@@ -612,6 +569,49 @@ class QuoteController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Quote Booked successfully');
+    }
+
+    public function add_and_update_quote_group($quote) {
+        /*if quote is already connected with a group*/
+        $this->update_quote_group($quote);
+
+        /* update quote values with a group total values */
+        $new_quote_group = Group::find(request()->quote_group);
+        $new_quote_group->total_net_price = $new_quote_group->total_net_price + $quote->net_price;
+        $new_quote_group->total_markup_amount = $new_quote_group->total_markup_amount + $quote->markup_amount;
+        $new_quote_group->total_markup_percentage = $new_quote_group->total_markup_percentage + $quote->markup_percentage;
+        $new_quote_group->total_selling_price = $new_quote_group->total_selling_price + $quote->selling_price;
+        $new_quote_group->total_profit_percentage = $new_quote_group->total_profit_percentage + $quote->profit_percentage;
+        $new_quote_group->total_commission_amount = $new_quote_group->total_commission_amount + $quote->commission_amount;
+        $new_quote_group->save();
+        $new_quote_group->quotes()->attach($quote->id);
+    }
+
+    public function update_quote_group($quote) {
+        $update_quote_group = DB::table('group_quote')->where('quote_id', $quote->id)->get()->first();
+        if(!empty($update_quote_group)) {
+            $old_quote_group = Group::find($update_quote_group->group_id);
+            $old_quote_group->total_net_price = $old_quote_group->total_net_price - $quote->net_price;
+            $old_quote_group->total_markup_amount = $old_quote_group->total_markup_amount - $quote->markup_amount;
+            $old_quote_group->total_markup_percentage = $old_quote_group->total_markup_percentage - $quote->markup_percentage;
+            $old_quote_group->total_selling_price = $old_quote_group->total_selling_price - $quote->selling_price;
+            $old_quote_group->total_profit_percentage = $old_quote_group->total_profit_percentage - $quote->profit_percentage;
+            $old_quote_group->total_commission_amount = $old_quote_group->total_commission_amount - $quote->commission_amount;
+            $old_quote_group->save();
+            $old_quote_group->quotes()->detach($quote->id);
+        }
+    }
+
+    public function cancel($id)
+    {
+        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');
+    }
+
+    public function restore($id)
+    {
+        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
+        return redirect()->back()->with('success_message', 'Quote Restore Successfully');
     }
 
     public function multiple_action(Request $request)
