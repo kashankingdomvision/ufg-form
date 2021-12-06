@@ -13,13 +13,13 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 
 // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -935,10 +935,22 @@ $(document).ready(function($) {
         var quote = $(this).closest(".quote");
         var quoteKey = quote.data("key");
         var currency_name = $(this).find(':selected').attr('data-name');
-        
+        var supplierCurrency = $(this).val();
+        var bookingCurrency  = $('#currency_id').val();
+
+        if(typeof supplierCurrency === 'undefined' || supplierCurrency == "") {
+            quote.find("[class*=supplier-currency-code]").html("");
+            quote.find('.badge-supplier-currency-id').html("");
+            return;
+        }
+
+        if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
+            alert("Please Select Booking Currency first");
+            return;
+        }
+
         quote.find("[class*=supplier-currency-code]").html(code);
         quote.find('.badge-supplier-currency-id').html(currency_name);
-        quote.find('.badge-supplier-currency-id').removeClass('d-none');
 
         getBookingSupplierCurrencyValues(code, quoteKey);
         getBookingTotalValues();
