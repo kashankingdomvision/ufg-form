@@ -194,6 +194,7 @@
                                             {{-- <th>Behalf</th> --}}
                                             <th>Zoho Ref #</th>
                                             <th>Quote Ref #</th>
+                                            <th>Lead Passenger</th>
                                             <th>Season</th>
                                             <th>Brand</th>
                                             <th>Booking Currency</th>
@@ -232,6 +233,7 @@
                                                     {{-- <td width="8">{{ $quote->getSalePerson->name }}</td> --}}
                                                     <td>{{ $quote->ref_no }}</td>
 
+
                                                     @if($quote->booking_status != 'booked')
                                                         <td> <a href="{{ route('quotes.final', encrypt($quote->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     @endif
@@ -240,6 +242,7 @@
                                                         <td> <a href="{{ route('bookings.show', encrypt($quote->getBooking->id)) }}">{{ $quote->quote_ref }}</a> </td>
                                                     @endif
 
+                                                    <td>{{ $quote->lead_passenger_name }}</td>
                                                     <td>{{ $quote->getSeason->name }}</td>
                                                     <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
 
