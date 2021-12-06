@@ -1909,7 +1909,7 @@ $(document).ready(function($) {
 
                             if(response && response.url != ""){
                                 quote.find('.view-supplier-rate').attr("href", response.url);
-                                quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+                                quote.find('.view-supplier-rate').html("(View Rates)");
                             }else{
                                 quote.find('.view-supplier-rate').attr("href","");
                                 quote.find('.view-supplier-rate').html("");

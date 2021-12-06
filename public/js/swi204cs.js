@@ -51563,7 +51563,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         success: function success(response) {
           if (response && response.url != "") {
             quote.find('.view-supplier-rate').attr("href", response.url);
-            quote.find('.view-supplier-rate').html("(View Supplier Rates)");
+            quote.find('.view-supplier-rate').html("(View Rates)");
           } else {
             quote.find('.view-supplier-rate').attr("href", "");
             quote.find('.view-supplier-rate').html("");
