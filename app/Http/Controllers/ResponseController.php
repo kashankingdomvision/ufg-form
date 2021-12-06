@@ -173,13 +173,16 @@ class ResponseController extends Controller
 
     public function getLocationToProduct(Request $request)
     {
+        // $products = Product::whereHas('getSuppliers', function($query) use($request) {
+        //     $query->where('id', $request->supplier_id);
+        // })
+        // ->where('location_id', $request->product_location_id)
+        // ->get();
 
-        $products = Product::whereHas('getSuppliers', function($query) use($request) {
-            $query->where('id', $request->supplier_id);
-        })
+        $products = Supplier::find($request->supplier_id)->getProducts()
         ->where('location_id', $request->product_location_id)
         ->get();
-     
+
         return response()->json([ 'products' => $products ]);
     }
     
