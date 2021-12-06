@@ -1908,7 +1908,7 @@ $(document).ready(function($) {
                         success: function(response) {
 
                             if(response && response.url != ""){
-                                quote.find('.view-supplier-rate').attr("href", response);
+                                quote.find('.view-supplier-rate').attr("href", response.url);
                                 quote.find('.view-supplier-rate').html("(View Supplier Rates)");
                             }else{
                                 quote.find('.view-supplier-rate').attr("href","");
