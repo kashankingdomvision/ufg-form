@@ -1082,3 +1082,5 @@ $(document).on('change', '.category-id', function() {
 
 //     });
 // }, 800);
+
+ // $('#update-booking :input').prop('disabled', false);
