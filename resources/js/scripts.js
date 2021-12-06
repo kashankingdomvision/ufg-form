@@ -3905,14 +3905,11 @@ $(document).ready(function($) {
                 event.preventDefault();
 
                 $('.payment-method').removeAttr('disabled');
-                // $('#update-booking :input').prop('disabled', false);
 
-                var url = $(this).attr('action');
-
-                var formData = new FormData(this);
-                
+                var url         = $(this).attr('action');
+                var formData    = new FormData(this);
+                var agency      = $("input[name=agency]:checked").val();
                 var full_number = '';
-                var agency = $("input[name=agency]:checked").val();
 
                 if(agency == 0){
                     full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
@@ -3922,7 +3919,6 @@ $(document).ready(function($) {
 
                 formData.append('full_number', full_number);
 
-                /* Send the data using post */
                 $.ajax({
                     type: 'POST',
                     url: url,

@@ -53095,12 +53095,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $("#update-booking").submit(function (event) {
     event.preventDefault();
-    $('.payment-method').removeAttr('disabled'); // $('#update-booking :input').prop('disabled', false);
-
+    $('.payment-method').removeAttr('disabled');
     var url = $(this).attr('action');
     var formData = new FormData(this);
-    var full_number = '';
     var agency = $("input[name=agency]:checked").val();
+    var full_number = '';
 
     if (agency == 0) {
       full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
@@ -53109,8 +53108,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     formData.append('full_number', full_number);
-    /* Send the data using post */
-
     $.ajax({
       type: 'POST',
       url: url,
