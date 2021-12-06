@@ -82,42 +82,58 @@ Route::group(['middleware' => ['auth']], function(){
     */
 
     Route::group(['prefix' => 'quotes', 'as' => 'quotes.'], function () {
+
+        /* crud routes */
         Route::get('index', array('as' => 'index', 'uses' => 'QuoteController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'QuoteController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'QuoteController@store'));
-    	Route::get('cancel/{id}',array('as'=>'cancelled','uses'=>'QuoteController@cancel'));
-        Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'QuoteController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'QuoteController@update'));
-        Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
-        Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
-        Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
         Route::get('final/{id}', array('as' => 'final', 'uses' => 'QuoteController@finalQuote'));
-        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        Route::get('trash', array('as' => 'view.trash', 'uses' => 'QuoteController@getTrash'));
+
+        /* cancel quote route */
+    	Route::get('cancel/{id}',array('as'=>'cancelled','uses'=>'QuoteController@cancel'));
+
+        /* restore quote route */
+        Route::get('restore/{id}', array('as' => 'restore', 'uses' => 'QuoteController@restore'));
+
+        /* version quote route */
+        Route::get('{id}/version/{va?}', array('as' => 'view.version', 'uses' => 'QuoteController@quoteVersion'));
+        
+        /* quote convet to booking route */
+        Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
+
+        /* archive quote routes */
         Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
+        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        
+        /* override access quote route */
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
-        Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
-        // Route::get('documents/{quote}',  'QuoteDocumentsController@documentIndex')->name('document');
+        
+        /* quote clone route */
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
+
+        /* multiple-action route */
+        Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
+        
+        /* quote export route */
         Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
-        // Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteController@quote_document'));
-
-        Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
-
+        
+        /* quote document routes */
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
-
-        /* Group Quote */
-        // Route::resource('group', 'GroupController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
+        Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+        
+        /* group quote routes */
         Route::resource('group-quote', 'GroupController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
         Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
 
+        /* compare quote routes */
         Route::match(['get', 'post'], 'compare-quote', array('as' => 'compare.quote', 'uses' => 'QuoteController@compare_quote'));
 
+        /* category detail get_autocomplete_data routes */
         Route::get('get_autocomplete_data',  'QuoteController@get_autocomplete_data')->name('get_autocomplete_data');
     });
 
