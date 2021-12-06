@@ -122,19 +122,19 @@ Route::group(['middleware' => ['auth']], function(){
         
         /* quote document routes */
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
-        Route::get('{id}/generate/pdf',  'QuoteDocumentsController@generatePDF')->name('document.pdf');
+        Route::get('{id}/generate/pdf', array('as' => 'document.pdf', 'uses' => 'QuoteDocumentsController@generatePDF'));
         
         /* group quote routes */
         Route::resource('group-quote', 'GroupController',['only' => [
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
-        Route::get('getGroups/{id}', 'QuoteController@getGroups')->name('getGroups');
+        Route::get('getGroups/{id}', array('as' => 'getGroups', 'uses' => 'QuoteController@getGroups'));
 
         /* compare quote routes */
         Route::match(['get', 'post'], 'compare-quote', array('as' => 'compare.quote', 'uses' => 'QuoteController@compare_quote'));
 
         /* category detail get_autocomplete_data routes */
-        Route::get('get_autocomplete_data',  'QuoteController@get_autocomplete_data')->name('get_autocomplete_data');
+        Route::get('get_autocomplete_data', array('as' => 'get_autocomplete_data', 'uses' => 'QuoteController@get_autocomplete_data'));
     });
 
 
