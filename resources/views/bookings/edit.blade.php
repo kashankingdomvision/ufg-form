@@ -657,6 +657,19 @@
                                 </div>
                               </div>
 
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Supplier Location <span style="color:red">*</span></label>
+                                  <select name="quote[{{ $key }}][supplier_location_id]" data-name="supplier_location_id" id="quote_{{ $key }}_supplier_location_id" class="form-control supplier-location-id select2single">
+                                    <option value="">Select Location</option>
+                                    @foreach ($locations as $location)
+                                      <option value="{{ $location->id }}" {{ ($booking_detail->supplier_location_id == $location->id)? 'selected' : NULL}}> {{ $location->name }} </option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
                               @php
                                 $supplier_url = \Helper::getSupplierRateSheetUrl($booking_detail->supplier_id, $booking->season_id);
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
@@ -672,8 +685,8 @@
 
                                     <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id feild-supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
-                                      @if(isset($booking_detail->getCategory) && $booking_detail->getCategory->getSupplier)
-                                        @foreach ($booking_detail->getCategory->getSupplier as $supplier )
+                                      @if(isset($booking_detail->getCategory) && isset($booking_detail->supplier_location_id) && !empty($booking_detail->supplier_location_id))
+                                        @foreach ($booking_detail->getCategory->getSupplierWithLocation($booking_detail->supplier_location_id)->get() as $supplier )
                                           <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($booking_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                         @endforeach
                                       @endif
@@ -708,13 +721,26 @@
                                 </div>
                               </div> --}}
 
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product Location </label>
+                                  <select name="quote[{{ $key }}][product_location_id]" data-name="product_location_id" id="quote_{{ $key }}_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
+                                    <option value="">Select Location</option>
+                                    @foreach ($locations as $location)
+                                      <option value="{{ $location->id }}" {{ ($booking_detail->product_location_id == $location->id)? 'selected' : NULL}}> {{ $location->name }} </option>
+                                    @endforeach
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
                               <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if(isset($booking_detail->getSupplier) && $booking_detail->getSupplier->getProducts)
-                                      @foreach ($booking_detail->getSupplier->getProducts as  $product)
+                                    @if(isset($booking_detail->getSupplier) && isset($booking_detail->product_location_id) && !empty($booking_detail->product_location_id))
+                                      @foreach ($booking_detail->getSupplier->getProductsWithLocation($booking_detail->product_location_id)->get() as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                       @endforeach
                                     @endif

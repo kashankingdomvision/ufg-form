@@ -39,6 +39,7 @@ use App\Country;
 use App\Category;
 use App\CurrencyConversion;
 use App\HolidayType;
+use App\Location;
 use App\PaymentMethod;
 use App\QuoteUpdateDetail;
 use App\Quote;
@@ -338,17 +339,6 @@ class BookingController extends Controller
 
   
 
-        // $booking_transactions = Wallet::select(
-        //     'supplier_id',
-        //     DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
-        //     DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
-        // )
-        // ->groupBy('supplier_id')
-		// ->where('supplier_id', 1)
-        // ->first();
-
-        // dd($booking_transactions->credit - $booking_transactions->debit);
-
 
 
         $booking = Booking::findOrFail(decrypt($id));
@@ -371,6 +361,7 @@ class BookingController extends Controller
         $data['quote_ref']        = Quote::where('quote_ref','!=', $booking['quote_ref'])->get('quote_ref');
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+        $data['locations']        = Location::get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -636,6 +627,7 @@ class BookingController extends Controller
         $data['payment_methods']  = PaymentMethod::all();
         $data['banks']            = Bank::all();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['locations']        = Location::get();
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -691,6 +683,7 @@ class BookingController extends Controller
         $data['commission_types']   = Commission::all();
         $data['banks']              = Bank::all();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
+        $data['locations']        = Location::get();
 
         return view('bookings.version',$data);
     }
@@ -857,4 +850,15 @@ class BookingController extends Controller
 
     //     return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
     // }
+
+    // $booking_transactions = Wallet::select(
+    //     'supplier_id',
+    //     DB::raw("sum(case when type = 'credit' then amount else 0 end) as credit"),
+    //     DB::raw("sum(case when type = 'debit' then amount else 0 end) as debit")
+    // )
+    // ->groupBy('supplier_id')
+    // ->where('supplier_id', 1)
+    // ->first();
+
+    // dd($booking_transactions->credit - $booking_transactions->debit);
 }
