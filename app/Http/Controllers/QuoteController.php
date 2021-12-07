@@ -273,6 +273,7 @@ class QuoteController extends Controller
             'selling_price_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
             'markup_amount_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
             'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
+            'image'                 => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
             // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
         ];
     }
@@ -316,9 +317,6 @@ class QuoteController extends Controller
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
                 $quoteDetail['quote_id'] = $quote->id;
-                if(isset($qu_details['image']) && !empty($qu_details['image'])){
-                    $quoteDetail['image'] = $qu_details['image'];
-                }
 
                 $qd = QuoteDetail::create($quoteDetail);
                 if(isset($qu_details['stored_text'])){
@@ -421,9 +419,7 @@ class QuoteController extends Controller
             foreach ($request->quote as $qu_details) {
                 $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
                 $quoteDetail['quote_id'] = $quote->id;
-                if(isset($qu_details['image']) && !empty($qu_details['image'])){
-                    $quoteDetail['image'] = $qu_details['image'];
-                }
+
                 $qd = QuoteDetail::create($quoteDetail);
                 if(isset($qu_details['stored_text'])){
                     QuoteDetailStoredText::create([
@@ -680,9 +676,7 @@ class QuoteController extends Controller
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id, $clone);
             $quoteDetail['quote_id'] = $clone->id;
-            if(isset($qu_details['image']) && !empty($qu_details['image'])){
-                $quoteDetail['image'] = $qu_details['image'];
-            }
+       
             QuoteDetail::create($quoteDetail);
         }
 
