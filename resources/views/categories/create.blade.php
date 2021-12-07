@@ -108,6 +108,7 @@
     var currFieldData;
 
     var options = {
+      disableFields: ['file','hidden','button'],
       typeUserAttrs: {
         autocomplete: {
           data: {

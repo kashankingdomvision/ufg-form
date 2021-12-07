@@ -112,6 +112,7 @@
     var currFieldData;
     var fbTemplate = document.getElementById('build-wrap'),
       options = {
+        disableFields: ['file','hidden','button'],
         formData: presetData,
         typeUserAttrs: {
           autocomplete: {
