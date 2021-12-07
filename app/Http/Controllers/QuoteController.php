@@ -393,8 +393,33 @@ class QuoteController extends Controller
         return view('quotes.edit',$data);
     }
 
+    public function getQuoteCategoryDetailArray( $quoteD, $category_detail )
+    {
+
+        $data = [
+            'quote_id'         => $quoteD['quote_id'],
+            'quote_detail_id'  => $quoteD['id'],
+            'category_id'      => $quoteD['category_id'],
+            'type'             => $category_detail['type'],
+            'key'              => $category_detail['label'],
+        ];
+
+        if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
+            $data['value'] = json_encode($category_detail['userData']);
+        }else{
+            $data['value'] = $category_detail['userData'][0];
+        }
+
+        return $data;
+    }
+
     public function update(QuoteRequest $request, $id)
     {
+
+        // $category_details = json_decode($request->quote[1]['category_details'], true);
+        // dd($category_details);
+        // dd($request->all());
+
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
         if(is_null($quote_update_detail)){
             return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
@@ -428,6 +453,20 @@ class QuoteController extends Controller
                         'action_date'       => $qu_details['stored_text']['date']
                     ]);
                 }
+
+                if(isset($qu_details['category_details']) && !empty($qu_details['category_details'])){
+
+                    $category_details = json_decode($qu_details['category_details'], true);
+
+                    foreach ($category_details as $category_detail){
+                        if(isset($category_detail['userData'])){
+
+                            $quoteCategoryDetail = $this->getQuoteCategoryDetailArray($qd, $category_detail);
+                            QuoteCategoryDetail::create($quoteCategoryDetail);
+                        }
+                    }
+                }
+
             }
         }
 
