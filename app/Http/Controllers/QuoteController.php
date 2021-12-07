@@ -37,6 +37,7 @@ use App\QuoteDetail;
 use App\QuotePaxDetail;
 use App\QuoteLog;
 use App\QuoteDetailStoredText;
+use App\QuoteCategoryDetail;
 use App\ReferenceCredential;
 use App\Season;
 use App\Supplier;
@@ -696,6 +697,7 @@ class QuoteController extends Controller
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
                     'nationality_id'        => $pax['nationality_id'],
+                    'resident_in'           => $pax['resident_in'],
                     'covid_vaccinated'      => $pax['covid_vaccinated']
                 ]);
             }
