@@ -414,7 +414,7 @@ class QuoteController extends Controller
         return $data;
     }
 
-    public function getCloneQuoteCategoryDetailArray( $quoteD, $category_detail ){
+    public function getBookingQuoteCategoryDetailArray( $quoteD, $category_detail ){
        
         return [
             'booking_id'         => $quoteD['booking_id'],
@@ -595,8 +595,8 @@ class QuoteController extends Controller
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
 
-                    $getCloneQuoteCategoryDetailArray = $this->getCloneQuoteCategoryDetailArray($bookingDetail, $feilds);
-                    BookingCategoryDetail::create($getCloneQuoteCategoryDetailArray);
+                    $getBookingQuoteCategoryDetailArray = $this->getBookingQuoteCategoryDetailArray($bookingDetail, $feilds);
+                    BookingCategoryDetail::create($getBookingQuoteCategoryDetailArray);
                 }
             }
         }
