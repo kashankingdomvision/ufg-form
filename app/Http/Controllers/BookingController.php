@@ -536,30 +536,6 @@ class BookingController extends Controller
                     }
                 }
 
-                if(isset($qu_details['category_detials'])){
-                    
-                    if(isset($qu_details['category_detials']['accommodation']) && !empty($qu_details['category_detials']['accommodation'])){
-
-                        $accommodation_details                      = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
-                        $accommodation_details['booking_detail_id'] = $booking_Details->id;
-                        AccomodationDetail::create($accommodation_details);
-                    }
-
-                    if(isset($qu_details['category_detials']['transfer'])){
-                       
-                        $transfer_details                      = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
-                        $transfer_details['booking_detail_id'] = $booking_Details->id;
-                        TransferDetail::create($transfer_details);
-                    }
-
-                    if(isset($qu_details['category_detials']['service_excursion'])){
-                       
-                        $service_excursion                      = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
-                        $service_excursion['booking_detail_id'] = $booking_Details->id;
-                        ServiceExcursionDetail::create($service_excursion);
-                    }
-
-                }
 
             }
         }
@@ -861,4 +837,30 @@ class BookingController extends Controller
     // ->first();
 
     // dd($booking_transactions->credit - $booking_transactions->debit);
+// ____________________________________________________________________________________________________________________________________--
+    // if(isset($qu_details['category_detials'])){
+        
+    //     if(isset($qu_details['category_detials']['accommodation']) && !empty($qu_details['category_detials']['accommodation'])){
+
+    //         $accommodation_details                      = $this->getAccommodationDetailsArray($qu_details['category_detials']['accommodation']);
+    //         $accommodation_details['booking_detail_id'] = $booking_Details->id;
+    //         AccomodationDetail::create($accommodation_details);
+    //     }
+
+    //     if(isset($qu_details['category_detials']['transfer'])){
+            
+    //         $transfer_details                      = $this->getTransferDetailsArray($qu_details['category_detials']['transfer']);
+    //         $transfer_details['booking_detail_id'] = $booking_Details->id;
+    //         TransferDetail::create($transfer_details);
+    //     }
+
+    //     if(isset($qu_details['category_detials']['service_excursion'])){
+            
+    //         $service_excursion                      = $this->getServiceExcursionDetailsArray($qu_details['category_detials']['service_excursion']);
+    //         $service_excursion['booking_detail_id'] = $booking_Details->id;
+    //         ServiceExcursionDetail::create($service_excursion);
+    //     }
+
+    // }
+
 }
