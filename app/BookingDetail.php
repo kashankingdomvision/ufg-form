@@ -53,6 +53,12 @@ class BookingDetail extends Model
         return $this->hasOne(Category::class,'id','category_id');
     }
 
+    /* currently used for transfer */
+    public function getCategoryDetailFeilds()
+    {
+        return $this->hasMany(BookingCategoryDetail::class, 'booking_detail_id', 'id');   
+    }
+
     public function getSupplier()
     {
         return $this->hasOne(Supplier::class,'id','supplier_id');
