@@ -236,7 +236,7 @@
                                                     <td>{{ $booking_detail->getBooking->lead_passenger_name }}</td>
                                                     <td>{{ $booking_detail->getBooking->pax_no }}</td>
                                                     <td>{{ $booking_detail->getCategory->name }}</td>
-                                                    <td>{{ $booking_detail->product_id }}</td>
+                                                    <td>{{ $booking_detail->getProduct->name }}</td>
                                                     <td>
                                                         @if($booking_detail->status == 'active')
                                                             <h5><span class="badge badge-success">Booked</span></h5>
