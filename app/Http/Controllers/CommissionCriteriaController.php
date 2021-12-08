@@ -12,6 +12,7 @@ use App\CommissionGroup;
 use App\CommissionCriteria;
 use App\Brand;
 use App\Currency;
+use App\HolidayType;
 use App\Season;
 
 class CommissionCriteriaController extends Controller
@@ -57,17 +58,23 @@ class CommissionCriteriaController extends Controller
      */
     public function store(CommissionCriteriaRequest $request)
     {
-
         $commission_criterias = CommissionCriteria::where([
             'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'brand_id'            => $request->brand_id,
-            'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id,
-            'user_id'             => Auth::id()
         ])
         ->whereHas('seasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
+        })
+        ->whereHas('getCommissionGroups', function($query) use($request){
+            $query->whereIn('commission_group_id', $request->commission_group_id );
+        })
+        ->whereHas('getCurrencies', function($query) use($request){
+            $query->whereIn('currency_id', $request->currency_id );
+        })
+        ->whereHas('getBrands', function($query) use($request){
+            $query->whereIn('brand_id', $request->brand_id );
+        }) 
+        ->whereHas('getHolidayTypes', function($query) use($request){
+            $query->whereIn('holiday_type_id', $request->holiday_type_id );
         });
 
         if($commission_criterias->exists()){
@@ -77,14 +84,14 @@ class CommissionCriteriaController extends Controller
         $commission_criterias = CommissionCriteria::create([
             'commission_id'       => $request->commission_id,
             'percentage'          => $request->percentage,
-            'commission_group_id' => $request->commission_group_id,
-            'brand_id'            => $request->brand_id,
-            'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id,
             'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->seasons()->sync($request->season_id);
+        $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
+        $commission_criterias->getCurrencies()->sync($request->currency_id);
+        $commission_criterias->getBrands()->sync($request->brand_id);
+        $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
         
         return redirect()->route('commissions.commission-criteria.index')->with('success_message', 'Commission Criteria created successfully'); 
 
@@ -99,13 +106,15 @@ class CommissionCriteriaController extends Controller
     public function edit($id)
     {
     
+        $commission_criteria = CommissionCriteria::find(decrypt($id));
+
         $data['brands']               = Brand::orderBy('id','ASC')->get();
         $data['commission_types']     = Commission::orderBy('id','ASC')->get();
         $data['commission_groups']    = CommissionGroup::orderBy('id','ASC')->get();
         $data['currencies']           = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['booking_seasons']      = Season::all();
-
-        $data['commission_criteria']  = CommissionCriteria::find(decrypt($id));
+        $data['commission_criteria']  = $commission_criteria;
+        $data['holiday_types']        = HolidayType::whereIn('brand_id', $commission_criteria->getBrands()->pluck('brand_id')->toArray())->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')->get(['holiday_types.id','brands.name as brand_name','holiday_types.name']);
 
         return view('commission_criteria.edit', $data);
  
@@ -124,13 +133,22 @@ class CommissionCriteriaController extends Controller
     {
         $commission_criterias = CommissionCriteria::where([
             'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'brand_id'            => $request->brand_id,
-            'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id
+   
         ])
-        ->whereHas('seasons', function($query) use($request, $id){
+        ->whereHas('seasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
+        })
+        ->whereHas('getCommissionGroups', function($query) use($request){
+            $query->whereIn('commission_group_id', $request->commission_group_id );
+        })
+        ->whereHas('getCurrencies', function($query) use($request){
+            $query->whereIn('currency_id', $request->currency_id );
+        })
+        ->whereHas('getBrands', function($query) use($request){
+            $query->whereIn('brand_id', $request->brand_id );
+        }) 
+        ->whereHas('getHolidayTypes', function($query) use($request){
+            $query->whereIn('holiday_type_id', $request->holiday_type_id );
         })
         ->where('id', '!='  , decrypt($id));
 
@@ -142,14 +160,14 @@ class CommissionCriteriaController extends Controller
         $commission_criterias->update([
             'commission_id'       => $request->commission_id,
             'percentage'          => $request->percentage,
-            'commission_group_id' => $request->commission_group_id,
-            'brand_id'            => $request->brand_id,
-            'holiday_type_id'     => $request->holiday_type_id,
-            'currency_id'         => $request->currency_id,
             'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->seasons()->sync($request->season_id);
+        $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
+        $commission_criterias->getCurrencies()->sync($request->currency_id);
+        $commission_criterias->getBrands()->sync($request->brand_id);
+        $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
       
         return redirect()->route('commissions.commission-criteria.index')->with('success_message', 'Commission Criteria updated successfully'); 
     }

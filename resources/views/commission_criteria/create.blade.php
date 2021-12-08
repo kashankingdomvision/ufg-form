@@ -63,10 +63,10 @@
 
                   <div class="form-group">
                     <label>Commission Group <span style="color:red">*</span> </label>
-                    <select name="commission_group_id" id="commission_group_id" value="{{ old('commission_group_id') }}" class="form-control select2single commission-group-id  @error('commission_group_id') is-invalid @enderror" >
-                      <option value="">Select Commission Group</option>
+
+                    <select name="commission_group_id[]" class="form-control select2-multiple" data-placeholder="Select Commission Group" multiple>
                       @foreach ($commission_groups as $commission_group)
-                        <option value="{{ $commission_group->id }}" {{ old('commission_group_id') == $commission_group->id ? 'selected' : null }}> {{ $commission_group->name }}</option>
+                        <option value="{{ $commission_group->id }}" {{ in_array($commission_group->id, old('commission_group_id') ?? []) ? 'selected' : '' }}>{{$commission_group->name}} </option>
                       @endforeach
                     </select>
 
@@ -77,10 +77,9 @@
 
                   <div class="form-group">
                     <label>Brand <span style="color:red">*</span></label>
-                    <select name="brand_id" id="brand_id" class="form-control select2single getBrandtoHoliday brand-id @error('brand_id') is-invalid @enderror">
-                      <option value="" >Select Brand</option>
+                    <select name="brand_id[]" id="brand_id" class="form-control select2-multiple getMultipleBrandtoHoliday brand-id @error('brand_id') is-invalid @enderror" multiple>
                       @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : null }}> {{ $brand->name }} </option>
+                        <option value="{{ $brand->id }}" {{ in_array($brand->id, old('brand_id') ?? []) ? 'selected' : '' }} > {{ $brand->name }} </option>
                       @endforeach
                     </select>
                     @error('brand_id')
@@ -90,17 +89,16 @@
 
                   @if(old('brand_id'))
                     @php
-                      $holiday_types = App\Brand::where('id', old('brand_id'))->first()->getHolidayTypes;
+                      $holiday_types = App\HolidayType::whereIn('brand_id', old('brand_id'))->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')->get(['holiday_types.id','brands.name as brand_name','holiday_types.name']);
                     @endphp
                   @endif
 
                   <div class="form-group">
                     <label>Type Of Holiday <span style="color:red">*</span></label>
-                    <select name="holiday_type_id" id="holiday_type_id" value="{{ old('holiday_type_id') }}" class="form-control select2single appendHolidayType holiday-type-id @error('holiday_type_id') is-invalid @enderror">
-                      <option value="" >Select Type Of Holiday</option>
+                    <select name="holiday_type_id[]" id="holiday_type_id" class="form-control select2-multiple appendMultipleHolidayType holiday-type-id @error('holiday_type_id') is-invalid @enderror" multiple>
                       @if(old('brand_id') && !is_null($holiday_types))
                         @foreach ($holiday_types as $holiday_type)
-                          <option value="{{ $holiday_type->id }}" {{ old('holiday_type_id') == $holiday_type->id ? 'selected' : null }}>{{ $holiday_type->name }}</option>
+                          <option value="{{ $holiday_type->id }}" {{ in_array($holiday_type->id, old('holiday_type_id') ?? []) ? 'selected' : '' }}  >{{ $holiday_type->name }} ({{ $holiday_type->brand_name }})</option>
                         @endforeach
                       @endif
                     </select>
@@ -111,10 +109,9 @@
 
                   <div class="form-group">
                     <label>Booking Currency <span style="color:red">*</span></label>
-                    <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
-                      <option selected value="">Select Booking Currency </option>
+                    <select name="currency_id[]" id="currency_id" class="form-control select2-multiple booking-currency-id @error('currency_id') is-invalid @enderror" multiple>
                       @foreach ($currencies as $currency)
-                        <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ old('currency_id') == $currency->id ? 'selected' : null }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                        <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ in_array($currency->id, old('currency_id') ?? []) ? 'selected' : '' }} > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                       @endforeach
                     </select>
                     @error('currency_id')

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
 
+use App\Brand;
 use App\BookingType;
 use App\BookingMethod;
 use App\BookingDetail;
@@ -34,6 +35,19 @@ class ResponseController extends Controller
     public function getBrandToHoliday(Request $request)
     {    
         $holiday_types = HolidayType::where('brand_id',$request->brand_id)->get();
+        return response()->json($holiday_types);
+    }
+
+    public function getMultipleBrandToHoliday(Request $request)
+    {    
+        $holiday_types = HolidayType::whereIn('brand_id',$request->brand_ids)
+        ->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')
+        ->select([
+            'holiday_types.id',
+            'brands.name as brand_name',
+            'holiday_types.name',
+        ])->get();
+
         return response()->json($holiday_types);
     }
 
