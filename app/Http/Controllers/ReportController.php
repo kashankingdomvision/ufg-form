@@ -42,6 +42,7 @@ use App\Bank;
 use App\BookingRefundPayment;
 use App\BookingCreditNote;
 use App\BookingDetail;
+use App\BookingCategoryDetail;
 
 
 class ReportController extends Controller
@@ -672,6 +673,14 @@ class ReportController extends Controller
                 $query->where('status', $request->status);
             }
 
+            if($request->has('transfer_detail_feild') && !empty($request->transfer_detail_feild)){
+                $query->whereHas('getCategoryDetailFeilds', function($query) use($request){
+                    $query->where('key', $request->transfer_detail_feild );
+                    $query->where('value', 'like', '%' . $request->search . '%');
+
+                });
+            }
+
         }
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
@@ -679,6 +688,7 @@ class ReportController extends Controller
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
         $data['brands']          = Brand::all();
         $data['booking_seasons'] = Season::all();
+        $data['booking_category_details'] = BookingCategoryDetail::groupBy('key')->orderBy('key','ASC')->get();
     
         return view('reports.transfer_report', $data);
     }

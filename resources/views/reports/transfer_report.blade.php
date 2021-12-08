@@ -137,6 +137,27 @@
                                                 </div>
 
                                             </div>
+
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Transfer Details</label>
+                                                        <select class="form-control select2single transfer-detail-feild" name="transfer_detail_feild" bid="transfer_detail_feild" >
+                                                            <option value="">Select Feild</option>
+                                                            @foreach ($booking_category_details as $booking_category_detail)
+                                                                <option value="{{ $booking_category_detail->key }}" {{ (old('transfer_detail_feild') == $booking_category_detail->key)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->key) ? 'selected' : null) }} >{{ $booking_category_detail->key }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-2 {{ !request()->get('search') || !request()->get('transfer_detail_feild') ? 'd-none' : '' }}" id="search_transfer_detail">
+                                                    <div class="form-group">
+                                                        <label>Search Transfer Details</label>
+                                                        <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+                                                    </div>
+                                                </div>
+                                            </div>
                             
                                         </div>
                                     </div>
@@ -205,6 +226,7 @@
                                     <table id="example1" class="table table-hover">
                                         <thead>
                                             <tr>
+                                                <th></th>
                                                 <th>Booking Ref # </th>
                                                 <th>Season</th>
                                                 <th>Start Date of Service</th>
@@ -223,6 +245,13 @@
                                                 @foreach ($booking_details as $key => $booking_detail)
 
                                                 <tr>
+                                                    <td>
+                                                        @if($booking_detail->getCategoryDetailFeilds && $booking_detail->getCategoryDetailFeilds->count())
+                                                            <button class="btn btn-sm parent-row"  data-id="{{$booking_detail->id}}">
+                                                                <span class="fa fa-plus"></span>
+                                                            </button>
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         @if(isset($booking_detail->getBooking->quote_ref))
                                                             <a href="{{ route('bookings.show', encrypt($booking_detail->getBooking->id)) }}"> {{$booking_detail->getBooking->quote_ref}} </a>
@@ -244,6 +273,31 @@
                                                             <h5><span class="badge badge-danger">Cancelled</span></h5>
                                                         @endif
                                                     </td>
+
+                                                    <tbody class="child-row d-none" id="child-row-{{$booking_detail->id}}">
+                                                        @if($booking_detail->getCategoryDetailFeilds && $booking_detail->getCategoryDetailFeilds->count())
+                                                            <tr>
+                                                                <td colspan="9"></td>
+                                                                <th class="border-bottom">
+                                                                    <h5>
+                                                                        Transfer Details
+                                                                    </h5>
+                                                                </th>
+                                                                <td class="border-bottom"></td>
+                                                                <td class="border-bottom"></td>
+                                                            </tr>
+                                                            @foreach ($booking_detail->getCategoryDetailFeilds as $item)
+                                                                <tr>
+                                                                    <td colspan="9"></td>
+                                                                    <th>{{ $item->key }}</th>
+                                                                    <td>{{ $item->value }}</td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endif
+                                                    </tbody>
+
+
                                                 </tr>
                                                 
                                                 @endforeach

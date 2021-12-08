@@ -52994,6 +52994,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }); //ajax for references
     }
   });
+  $(document).on('change', '.transfer-detail-feild', function () {
+    var feild = $(this).val();
+
+    if (typeof feild === 'undefined' || feild == "") {
+      $('#search_transfer_detail').addClass('d-none');
+    } else {
+      $('#search_transfer_detail').removeClass('d-none');
+    }
+
+    console.log("working");
+  });
   $(document).on('click', '.clone_booking_finance', function () {
     if ($('.select2single').data('select2')) {
       $('.select2single').select2('destroy');
@@ -53124,8 +53135,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(data) {
         $("#overlay").removeClass('overlay').html('');
         setTimeout(function () {
-          alert(data.success_message);
-          window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
+          }
         }, 200);
       },
       error: function error(reject) {
