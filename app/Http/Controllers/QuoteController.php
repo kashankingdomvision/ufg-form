@@ -18,6 +18,7 @@ use App\BookingMethod;
 use App\BookingType;
 use App\BookingDetail;
 use App\BookingPaxDetail;
+use App\BookingCategoryDetail;
 use App\Currency;
 use App\Category;
 use App\Commission;
@@ -413,6 +414,18 @@ class QuoteController extends Controller
         return $data;
     }
 
+    public function getCloneQuoteCategoryDetailArray( $quoteD, $category_detail ){
+       
+        return [
+            'booking_id'         => $quoteD['booking_id'],
+            'booking_detail_id'  => $quoteD['id'],
+            'category_id'        => $quoteD['category_id'],
+            'type'               => $category_detail['type'],
+            'key'                => $category_detail['key'],
+            'value'              => $category_detail['value'],
+        ];
+    }
+
     public function update(QuoteRequest $request, $id)
     {
 
@@ -577,11 +590,15 @@ class QuoteController extends Controller
             $quoteDetail['actual_cost']                  = $quoteDetail['estimated_cost'];
             $quoteDetail['actual_cost_bc']               = $quoteDetail['estimated_cost_bc'];
             $quoteDetail['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
+            $bookingDetail = BookingDetail::create($quoteDetail);
 
-            // dd($quoteDetail['booking_detail_unique_ref_id']);
+            if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
+                foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
 
-
-            BookingDetail::create($quoteDetail);
+                    $getCloneQuoteCategoryDetailArray = $this->getCloneQuoteCategoryDetailArray($bookingDetail, $feilds);
+                    BookingCategoryDetail::create($getCloneQuoteCategoryDetailArray);
+                }
+            }
         }
 
         if($quote->getPaxDetail && $quote->pax_no > 1){
