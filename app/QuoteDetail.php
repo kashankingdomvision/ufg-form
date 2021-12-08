@@ -54,6 +54,12 @@ class QuoteDetail extends Model
     {
         return $this->hasOne(Category::class, 'id', 'category_id');
     }
+
+    public function getCategoryDetailFeilds()
+    {
+        return $this->hasMany(QuoteCategoryDetail::class, 'quote_detail_id', 'id');   
+    }
+
     
     public function getSupplier()
     {
