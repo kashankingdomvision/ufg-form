@@ -33,6 +33,7 @@ use App\BookingPaxDetail;
 use App\BookingCancellation;
 use App\BookingCancellationRefundPayment;
 use App\BookingDetailCancellation;
+use App\BookingCategoryDetail;
 use App\Currency;
 use App\Commission;
 use App\Country;
@@ -385,6 +386,25 @@ class BookingController extends Controller
         return view('bookings.edit',$data);
     }
 
+    public function getBookingCategoryDetailArray( $quoteD, $category_detail )
+    {
+        $data = [
+            'booking_id'         => $quoteD['booking_id'],
+            'booking_detail_id'  => $quoteD['id'],
+            'category_id'      => $quoteD['category_id'],
+            'type'             => $category_detail['type'],
+            'key'              => $category_detail['label'],
+        ];
+
+        if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
+            $data['value'] = json_encode($category_detail['userData']);
+        }else{
+            $data['value'] = $category_detail['userData'][0];
+        }
+
+        return $data;
+    }
+
     public function update(BookingRequest $request, $id)
     {
 
@@ -536,6 +556,18 @@ class BookingController extends Controller
                     }
                 }
 
+                if(isset($qu_details['category_details']) && !empty($qu_details['category_details'])){
+
+                    $category_details = json_decode($qu_details['category_details'], true);
+
+                    foreach ($category_details as $category_detail){
+                        if(isset($category_detail['userData'])){
+                            $getBookingCategoryDetailArray = $this->getBookingCategoryDetailArray($booking_Details, $category_detail);
+                            BookingCategoryDetail::create($getBookingCategoryDetailArray);
+                        }
+                    }
+                }
+
 
             }
         }
@@ -580,8 +612,7 @@ class BookingController extends Controller
         }
 
         // $quote_update_detail->delete(); 
-
-        return \Response::json(['success_message' => 'Booking Update Successfully'], 200);
+        return \Response::json(['status' => 200, 'success_message' => 'Booking Update Successfully'], 200);
     }
 
     public function show($id,$status = null)
