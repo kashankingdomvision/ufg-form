@@ -290,7 +290,16 @@
                                                                 <tr>
                                                                     <td colspan="9"></td>
                                                                     <th>{{ $item->key }}</th>
-                                                                    <td>{{ $item->value }}</td>
+                                                                    <td>
+                                                                        @if($item->type == 'checkbox-group')
+                                                                            @php
+                                                                                $values = json_decode($item->value, true)
+                                                                            @endphp
+                                                                            {{ implode(", ",$values ) }}
+                                                                        @else
+                                                                            {{ $item->value }}
+                                                                        @endif
+                                                                    </td>
                                                                     <td></td>
                                                                 </tr>
                                                             @endforeach
