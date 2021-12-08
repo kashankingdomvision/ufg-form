@@ -426,6 +426,18 @@ class QuoteController extends Controller
         ];
     }
 
+    public function getCloneQuoteCategoryDetailArray( $quoteD, $category_detail ){
+       
+        return [
+            'quote_id'           => $quoteD['quote_id'],
+            'quote_detail_id'    => $quoteD['id'],
+            'category_id'        => $quoteD['category_id'],
+            'type'               => $category_detail['type'],
+            'key'                => $category_detail['key'],
+            'value'              => $category_detail['value'],
+        ];
+    }
+
     public function update(QuoteRequest $request, $id)
     {
 
@@ -732,8 +744,19 @@ class QuoteController extends Controller
         foreach ($quote->getQuoteDetails as $qu_details) {
             $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id, $clone);
             $quoteDetail['quote_id'] = $clone->id;
+
+            $quoteDetail = QuoteDetail::create($quoteDetail);
+
+            if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
+                foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
+
+                    $getCloneQuoteCategoryDetailArray = $this->getCloneQuoteCategoryDetailArray($quoteDetail, $feilds);
+                    QuoteCategoryDetail::create($getCloneQuoteCategoryDetailArray);
+                }
+            }
+
        
-            QuoteDetail::create($quoteDetail);
+            
         }
 
         if($quote->getPaxDetail && $quote->pax_no >= 1){
