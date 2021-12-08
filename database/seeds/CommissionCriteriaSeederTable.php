@@ -17,10 +17,10 @@ class CommissionCriteriaSeederTable extends Seeder
             [
                 'commission_id'       => 1,
                 'percentage'          => 10,
-                'commission_group_id' => 1,
-                'brand_id'            => 1,
-                'holiday_type_id'     => 1,
-                'currency_id'         => 1,
+                // 'commission_group_id' => 1,
+                // 'brand_id'            => 1,
+                // 'holiday_type_id'     => 1,
+                // 'currency_id'         => 1,
                 'user_id'             => 1,
                 'created_at'          => now(),
                 'updated_at'          => now()
@@ -28,10 +28,10 @@ class CommissionCriteriaSeederTable extends Seeder
             [
                 'commission_id'       => 1,
                 'percentage'          => 20,
-                'commission_group_id' => 2,
-                'brand_id'            => 4,
-                'holiday_type_id'     => 23,
-                'currency_id'         => 1,
+                // 'commission_group_id' => 2,
+                // 'brand_id'            => 4,
+                // 'holiday_type_id'     => 23,
+                // 'currency_id'         => 1,
                 'user_id'             => 1,
                 'created_at'          => now(),
                 'updated_at'          => now()
