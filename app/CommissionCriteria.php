@@ -17,7 +17,7 @@ class CommissionCriteria extends Model
         'user_id'
     ]; 
 
-    public function seasons()
+    public function getSeasons()
     {
         return $this->belongsToMany(Season::class, 'commission_criteria_seasons', 'commission_criteria_id', 'season_id')->withTimestamps();
     }
@@ -28,23 +28,23 @@ class CommissionCriteria extends Model
 
     function getCommissionGroups() {
         return $this->belongsToMany(CommissionGroup::class, 'commission_criteria_groups', 'commission_criteria_id', 'commission_group_id')->withTimestamps();
-        // return $this->hasOne(CommissionGroup::class, 'id', 'commission_group_id');
     }
-
     
     function getCurrencies() {
         return $this->belongsToMany(Currency::class, 'commission_criteria_currencies', 'commission_criteria_id', 'currency_id')->withTimestamps();
-        // return $this->hasOne(Currency::class,'id', 'currency_id');
     }
-
+    
     function getBrands() {
         return $this->belongsToMany(Brand::class, 'commission_criteria_brands', 'commission_criteria_id', 'brand_id')->withTimestamps();
-        // return $this->hasOne(Brand::class,'id', 'brand_id');
     }
-
+    
     public function getHolidayTypes()
     {
         return $this->belongsToMany(HolidayType::class, 'commission_criteria_holiday_types', 'commission_criteria_id', 'holiday_type_id')->withTimestamps();
-        // return $this->hasOne(HolidayType::class, 'id', 'holiday_type_id');
     }
+    
+    // return $this->hasOne(Currency::class,'id', 'currency_id');
+    // return $this->hasOne(CommissionGroup::class, 'id', 'commission_group_id');
+    // return $this->hasOne(HolidayType::class, 'id', 'holiday_type_id');
+    // return $this->hasOne(Brand::class,'id', 'brand_id');
 }

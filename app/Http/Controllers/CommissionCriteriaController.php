@@ -61,7 +61,7 @@ class CommissionCriteriaController extends Controller
         $commission_criterias = CommissionCriteria::where([
             'commission_id'       => $request->commission_id,
         ])
-        ->whereHas('seasons', function($query) use($request){
+        ->whereHas('getSeasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
         })
         ->whereHas('getCommissionGroups', function($query) use($request){
@@ -87,7 +87,7 @@ class CommissionCriteriaController extends Controller
             'user_id'             => Auth::id()
         ]);
 
-        $commission_criterias->seasons()->sync($request->season_id);
+        $commission_criterias->getSeasons()->sync($request->season_id);
         $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
@@ -135,7 +135,7 @@ class CommissionCriteriaController extends Controller
             'commission_id'       => $request->commission_id,
    
         ])
-        ->whereHas('seasons', function($query) use($request){
+        ->whereHas('getSeasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
         })
         ->whereHas('getCommissionGroups', function($query) use($request){
@@ -163,7 +163,7 @@ class CommissionCriteriaController extends Controller
             'user_id'             => Auth::id()
         ]);
 
-        $commission_criterias->seasons()->sync($request->season_id);
+        $commission_criterias->getSeasons()->sync($request->season_id);
         $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
