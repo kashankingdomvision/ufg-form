@@ -1200,6 +1200,7 @@
                         <span class="badge badge-secondary badge-commission-percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                       </h5>
                     </label>
+
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
@@ -1210,14 +1211,14 @@
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Percentage</label>
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="number" step="any" name="commission_percentage" value="{{ \Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
+                          <div class="input-group-append">
+                            <div class="input-group-text">%</div>
+                          </div>
                         </div>
                       </div>
                     </div>
