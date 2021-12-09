@@ -199,6 +199,10 @@ class Quote extends Model
     	return $this->hasOne(Commission::class, 'id' ,'commission_id');
     }
 
+    public function getCommissionGroup(){
+    	return $this->hasOne(CommissionGroup::class, 'id' ,'commission_group_id');
+    }
+
     public function getNationality(){
     	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
     }
