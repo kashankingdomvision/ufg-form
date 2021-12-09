@@ -1192,7 +1192,14 @@
                   </div>
 
                   <div class="form-group row {{ ($quote->user_id != $quote->sale_person_id) ? 'd-none' : '' }}" id="potential_commission_feild">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Staff Commission</label>
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                      Staff Commission
+                      <h5>
+                        <span class="badge badge-secondary badge-commission-name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
+                        <span class="badge badge-secondary badge-commission-group-name">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span>
+                        <span class="badge badge-secondary badge-commission-percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
+                      </h5>
+                    </label>
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">
