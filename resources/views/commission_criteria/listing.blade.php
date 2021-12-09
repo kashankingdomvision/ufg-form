@@ -103,7 +103,7 @@
                         <td>{{ isset($commission_criteria->getBrand->name)    && !empty($commission_criteria->getBrand->name) ? $commission_criteria->getBrand->name : '' }}</td>
                         <td>{{ isset($commission_criteria->getHolidayType->name) && !empty($commission_criteria->getHolidayType->name) ? $commission_criteria->getHolidayType->name : '' }}</td>
                         <td>
-                          @foreach ($commission_criteria->seasons as $season)
+                          @foreach ($commission_criteria->getSeasons as $season)
                             <span class="badge badge-info">{{ $season->name }}</span>
                           @endforeach
                         </td>
