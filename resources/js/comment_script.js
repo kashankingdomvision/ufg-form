@@ -1084,3 +1084,24 @@ $(document).on('change', '.category-id', function() {
 // }, 800);
 
  // $('#update-booking :input').prop('disabled', false);
+
+
+     $(document).on('change', '.commission-id', function() {
+
+        let commission_id = $(this).val();
+        var options       = '';
+        var url           = BASEURL + 'get-commission-groups'
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'commission_id': commission_id },
+            success: function(response){
+                options += '<option value="">Select Commission Group</option>';
+                $.each(response, function(key, value) {
+                    options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
+                });
+
+                // $('.commission-group-id').html(options);
+            }
+        });
+    });
