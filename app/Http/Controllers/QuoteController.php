@@ -406,8 +406,11 @@ class QuoteController extends Controller
         ];
 
         if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
-            $data['value'] = json_encode($category_detail['userData']);
-        }else{
+
+            $data['multiple'] = isset($category_detail['multiple']) && !empty($category_detail['multiple']) ? 'true' : 'false';
+            $data['value']    = json_encode($category_detail['userData']);
+        }
+        else{
             $data['value'] = $category_detail['userData'][0];
         }
 
@@ -421,6 +424,7 @@ class QuoteController extends Controller
             'booking_detail_id'  => $quoteD['id'],
             'category_id'        => $quoteD['category_id'],
             'type'               => $category_detail['type'],
+            'multiple'           => $category_detail['multiple'],
             'key'                => $category_detail['key'],
             'value'              => $category_detail['value'],
         ];
@@ -433,6 +437,7 @@ class QuoteController extends Controller
             'quote_detail_id'    => $quoteD['id'],
             'category_id'        => $quoteD['category_id'],
             'type'               => $category_detail['type'],
+            'multiple'           => $category_detail['multiple'],
             'key'                => $category_detail['key'],
             'value'              => $category_detail['value'],
         ];
