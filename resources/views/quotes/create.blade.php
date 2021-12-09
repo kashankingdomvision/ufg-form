@@ -1027,6 +1027,17 @@
                   </div>
 
                   <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">Commission Percentage</label>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="number" step="any" name="commission_percentage" class="form-control commission-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
                     <div class="col-sm-3">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
