@@ -97,11 +97,35 @@
                           </div>
                         </td>
                         <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommission->name) ? $commission_criteria->getCommission->name : '' }}</td>
-                        <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommissionGroup->name) ? $commission_criteria->getCommissionGroup->name : '' }}</td>
+                        <td>
+                          @if($commission_criteria->getCommissionGroups && $commission_criteria->getCommissionGroups->count())
+                            @foreach ($commission_criteria->getCommissionGroups as $group)
+                              <span class="badge badge-info">{{ $group->name }}</span>
+                            @endforeach
+                          @endif
+                        </td>
                         <td>{{ $commission_criteria->percentage }} %</td>
-                        <td>{{ isset($commission_criteria->getCurrency->name) && !empty($commission_criteria->getCurrency->name) ? $commission_criteria->getCurrency->code.' - '.$commission_criteria->getCurrency->name : '' }}</td>
-                        <td>{{ isset($commission_criteria->getBrand->name)    && !empty($commission_criteria->getBrand->name) ? $commission_criteria->getBrand->name : '' }}</td>
-                        <td>{{ isset($commission_criteria->getHolidayType->name) && !empty($commission_criteria->getHolidayType->name) ? $commission_criteria->getHolidayType->name : '' }}</td>
+                        <td>
+                          @if($commission_criteria->getCurrencies && $commission_criteria->getCurrencies->count())
+                            @foreach ($commission_criteria->getCurrencies as $currency)
+                              <span class="badge badge-info">{{ $currency->code.' - '.$currency->name }}</span>
+                            @endforeach
+                          @endif
+                        </td>
+                        <td>
+                          @if($commission_criteria->getBrands && $commission_criteria->getBrands->count())
+                            @foreach ($commission_criteria->getBrands as $brand)
+                              <span class="badge badge-info">{{ $brand->name }}</span>
+                            @endforeach
+                          @endif
+                        </td>
+                        <td>
+                          @if($commission_criteria->getHolidayTypes && $commission_criteria->getHolidayTypes->count())
+                            @foreach ($commission_criteria->getHolidayTypes as $holiday_type)
+                              <span class="badge badge-info">{{ $holiday_type->name }}</span>
+                            @endforeach
+                          @endif
+                        </td>
                         <td>
                           @foreach ($commission_criteria->getSeasons as $season)
                             <span class="badge badge-info">{{ $season->name }}</span>
