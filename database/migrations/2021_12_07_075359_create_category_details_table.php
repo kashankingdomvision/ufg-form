@@ -19,6 +19,7 @@ class CreateCategoryDetailsTable extends Migration
             $table->unsignedBigInteger('quote_detail_id');
             $table->unsignedBigInteger('category_id');
             $table->string('type');
+            $table->enum('multiple', ['true' , 'false']);
             $table->string('key');
             $table->string('value');
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
