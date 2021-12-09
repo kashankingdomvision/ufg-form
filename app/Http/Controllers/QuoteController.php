@@ -324,6 +324,21 @@ class QuoteController extends Controller
         ];
     }
 
+    public function getPaxDetailsArray( $quote, $pax_data ){
+        return [
+            'quote_id'              => $quote->id,
+            'full_name'             => $pax_data['full_name'],
+            'email'                 => $pax_data['email_address'],
+            'contact'               => $pax_data['full_number'],
+            'date_of_birth'         => $pax_data['date_of_birth'],
+            'bedding_preference'    => $pax_data['bedding_preference'],
+            'dinning_preference'    => $pax_data['dinning_preference'],
+            'nationality_id'        => $pax_data['nationality_id'],
+            'resident_in'           => $pax_data['resident_in'],
+            'covid_vaccinated'      => $pax_data['covid_vaccinated'],
+        ];
+    }
+
     public function create()
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
@@ -443,18 +458,18 @@ class QuoteController extends Controller
 
     public function update(QuoteRequest $request, $id)
     {
-
-        // $category_details = json_decode($request->quote[1]['category_details'], true);
-        // dd($category_details);
         // dd($request->all());
 
+        /* check override update access */ 
         $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
         if(is_null($quote_update_detail)){
             return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
         }
 
-        $quote = Quote::findOrFail(decrypt($id));
-        $array =  $quote->toArray();
+        $quote          = Quote::findOrFail(decrypt($id));
+
+        /* quote log */ 
+        $array          = $quote->toArray();
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
 
@@ -464,33 +479,43 @@ class QuoteController extends Controller
             'data'       => $array,
             'log_no'     => $quote->getQuotelogs()->count(),
         ]);
+        /* quote log */ 
 
+        /* update quote table */ 
         $quote->update($this->quoteArray($request));
 
+        /* update quote detail table*/ 
         if($request->has('quote') && count($request->quote) > 0){
-            $quote->getQuoteDetails()->delete();
-            foreach ($request->quote as $qu_details) {
-                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
-                $quoteDetail['quote_id'] = $quote->id;
 
-                $qd = QuoteDetail::create($quoteDetail);
-                if(isset($qu_details['stored_text'])){
+            /* delete old quote details */ 
+            $quote->getQuoteDetails()->delete();
+
+            foreach ($request->quote as $quote_details) {
+                
+                $getQuoteDetailsArray = $this->getQuoteDetailsArray($quote_details, $quote->id, $quote);
+                $getQuoteDetailsArray['quote_id'] = $quote->id;
+
+                $new_quote_details = QuoteDetail::create($getQuoteDetailsArray);
+                
+                /* quote_detail_stored_texts values*/ 
+                if(isset($quote_details['stored_text'])){
                     QuoteDetailStoredText::create([
-                        'quote_detail_id'   => $qd->id,
-                        'stored_text'       => $qu_details['stored_text']['text'],
-                        'action_date'       => $qu_details['stored_text']['date']
+                        'quote_detail_id'   => $new_quote_details->id,
+                        'stored_text'       => $quote_details['stored_text']['text'],
+                        'action_date'       => $quote_details['stored_text']['date']
                     ]);
                 }
 
-                if(isset($qu_details['category_details']) && !empty($qu_details['category_details'])){
+                /* quote_category_details values*/ 
+                if(isset($quote_details['category_details']) && !empty($quote_details['category_details'])){
 
-                    $category_details = json_decode($qu_details['category_details'], true);
+                    $category_details = json_decode($quote_details['category_details'], true);
 
                     foreach ($category_details as $category_detail){
                         if(isset($category_detail['userData'])){
 
-                            $quoteCategoryDetail = $this->getQuoteCategoryDetailArray($qd, $category_detail);
-                            QuoteCategoryDetail::create($quoteCategoryDetail);
+                            $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($new_quote_details, $category_detail);
+                            QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
                         }
                     }
                 }
@@ -498,33 +523,27 @@ class QuoteController extends Controller
             }
         }
 
-        //pax data
-        if($request->has('pax')){
-           $quote->getPaxDetail()->delete();
+        /* update quote_pax_details values */
+        if($request->has('pax') && count($request->pax) > 0){
+
+            /* delete old pax details */
+            $quote->getPaxDetail()->delete();
+
             foreach ($request->pax as $pax_data) {
-                QuotePaxDetail::create([
-                    'quote_id'              => $quote->id,
-                    'full_name'             => $pax_data['full_name'],
-                    'email'                 => $pax_data['email_address'],
-                    'contact'               => $pax_data['full_number'],
-                    'date_of_birth'         => $pax_data['date_of_birth'],
-                    'bedding_preference'    => $pax_data['bedding_preference'],
-                    'dinning_preference'    => $pax_data['dinning_preference'],
-                    'nationality_id'        => $pax_data['nationality_id'],
-                    'resident_in'           => $pax_data['resident_in'],
-                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
-                ]);
+                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data);
+                QuotePaxDetail::create($getPaxDetailsArray);
             }
-       }
+        }
 
-       if(request()->quote_group != 0) {
+        /* update group_quote values */ 
+        if(request()->quote_group != 0) {
             $this->add_and_update_quote_group($quote);
-       } else {
-           $this->update_quote_group($quote);
-       }
-       $quote_update_detail->delete();
+        } else {
+            $this->update_quote_group($quote);
+        }
+        $quote_update_detail->delete();
 
-       return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
+        return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
     }
     
     public function quoteVersion($id, $type = null)
