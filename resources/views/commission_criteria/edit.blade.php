@@ -85,7 +85,7 @@
 
                   <div class="form-group">
                     <label>Brand <span style="color:red">*</span></label>
-                    <select name="brand_id[]" id="brand_id" class="form-control select2-multiple getMultipleBrandtoHoliday brand-id @error('brand_id') is-invalid @enderror" multiple>
+                    <select name="brand_id[]" id="brand_id" data-placeholder="Select Brand" class="form-control select2-multiple getMultipleBrandtoHoliday brand-id @error('brand_id') is-invalid @enderror" multiple>
                         @foreach ($brands as $brand)
                           <option value="{{ $brand->id }}" 
                             @if(old('commission_group_id'))
@@ -104,7 +104,7 @@
 
                   <div class="form-group">
                     <label>Type Of Holiday <span style="color:red">*</span></label>
-                    <select name="holiday_type_id[]" id="holiday_type_id" class="form-control select2-multiple appendMultipleHolidayType holiday-type-id @error('holiday_type_id') is-invalid @enderror" multiple>
+                    <select name="holiday_type_id[]" id="holiday_type_id" data-placeholder="Select Type Of Holiday" class="form-control select2-multiple appendMultipleHolidayType holiday-type-id @error('holiday_type_id') is-invalid @enderror" multiple>
                       @foreach ($holiday_types as $holiday_type)
                         <option value="{{ $holiday_type->id }}" 
                           @if(old('holiday_type_id'))
@@ -123,7 +123,7 @@
 
                   <div class="form-group">
                     <label>Booking Currency <span style="color:red">*</span></label>
-                    <select name="currency_id[]" id="currency_id" class="form-control select2-multiple booking-currency-id @error('currency_id') is-invalid @enderror" multiple>
+                    <select name="currency_id[]" id="currency_id" data-placeholder="Select Booking Currency" class="form-control select2-multiple booking-currency-id @error('currency_id') is-invalid @enderror" multiple>
                       @foreach ($currencies as $currency) 
                         <option value="{{ $currency->id }}"  data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" 
                           @if(old('currency_id'))
