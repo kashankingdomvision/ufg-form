@@ -52,6 +52,7 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->double('commission_amount')->nullable();
+            $table->double('commission_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
             $table->double('amount_per_person')->nullable();
