@@ -452,14 +452,19 @@ Route::group(['middleware' => ['auth']], function(){
     Route::prefix('json')->group(function () {
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
-        Route::get('get-commission',array('as'=>'get-commission','uses'=>'QuoteController@get_commission'));
+        
+        /* calculate commission routes */
+        Route::get('get-commission-criterias',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
+        Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@get_commissions'));
+        Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
+        /* calculate commission routes */
+
         Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
         Route::get('multiple/brand/to/holidays',array('as'=>'multiple.brand.holidays','uses'=>'ResponseController@getMultipleBrandToHoliday'));
 
         Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
         Route::get('country/to/location',array('as'=>'country.locations','uses'=>'ResponseController@getCountryToLocation'));
 
-        Route::get('get-commission-groups',array('as'=>'commission.groups','uses'=>'ResponseController@getCommissionGroups'));
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));

@@ -49860,13 +49860,13 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/php/ufg-form/public/");
-var FILE_MANAGER_URL = "".concat(window.location.origin, "/php/ufg-form/public/laravel-filemanager"); // window.axios = require('axios');
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
@@ -50046,12 +50046,42 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }).responseText);
   }
 
-  var commissionRate = getCommissionJson();
+  var commissionCriteriaRates = getCommissionCriteriaJson();
+
+  function getCommissionCriteriaJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-commission-criterias"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+
+  var commissions = getCommissionJson();
 
   function getCommissionJson() {
     return JSON.parse($.ajax({
       type: 'GET',
-      url: "".concat(BASEURL, "get-commission"),
+      url: "".concat(BASEURL, "get-commissions"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+
+  var commissionGroups = getCommissionGroupsJson();
+
+  function getCommissionGroupsJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-commission-groups"),
       dataType: 'json',
       global: false,
       async: false,
@@ -50081,6 +50111,21 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
   }
 
+  function getCommissionAndGroupName(commissionID, commissionGroupID) {
+    var commissionNameObject = {};
+    var commission_name = commissions.filter(function (elem) {
+      return elem.id == commissionID;
+    });
+    var commission_group_name = commissionGroups.filter(function (elem) {
+      return elem.id == commissionGroupID;
+    });
+    commissionNameObject = {
+      commissionName: commission_name.shift().name,
+      commissionGroupName: commission_group_name.shift().name
+    };
+    return commissionNameObject;
+  }
+
   function getRate(supplierCurrency, bookingCurrency, rateType) {
     var object = currencyConvert.filter(function (elem) {
       return elem.from == supplierCurrency && elem.to == bookingCurrency;
@@ -50090,7 +50135,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID) {
     var commissionPercentage = 0.00;
-    var object = commissionRate.filter(function (elem) {
+    var object = commissionCriteriaRates.filter(function (elem) {
       return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
     });
 
@@ -50099,6 +50144,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     return commissionPercentage;
+  }
+
+  function resetCommissionNameFeilds() {
+    $('.commission-name').text('');
+    $('.commission-group-name').text('');
+    $('.commission-percentage').text('');
   }
 
   function getCommissionRate() {
@@ -50126,8 +50177,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID) {
       var commissionPercentage = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
       calculatedCommisionAmount = parseFloat(netValue / 100) * parseFloat(commissionPercentage);
+      var commissionNames = getCommissionAndGroupName(commissionID, commissionGroupID);
+
+      if (parseFloat(commissionPercentage) > 0.00) {
+        $('.commission-name').text(commissionNames.commissionName);
+        $('.commission-group-name').text(commissionNames.commissionGroupName);
+        $('.commission-percentage').text("".concat(commissionPercentage, " %"));
+      } else {
+        resetCommissionNameFeilds();
+      }
     } else {
       calculatedCommisionAmount = 0.00;
+      resetCommissionNameFeilds();
     }
 
     $('.commission-amount').val(check(calculatedCommisionAmount));
@@ -50160,24 +50221,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       getQuoteRateTypeValues();
     }
-  });
-  $(document).on('change', '.commission-id', function () {
-    var commission_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'get-commission-groups';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'commission_id': commission_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Commission Group</option>';
-        $.each(response, function (key, value) {
-          options += '<option data-name="' + value.name + '" value="' + value.id + '">' + value.name + '</option>';
-        }); // $('.commission-group-id').html(options);
-      }
-    });
   });
   /* Hide Potentail Commission for another Behalf User */
 

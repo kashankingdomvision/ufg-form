@@ -1006,7 +1006,14 @@
                   </div>
 
                   <div class="form-group row" id="potential_commission_feild">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Staff Commission</label>
+                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                      Staff Commission
+                      <h5>
+                        <span class="badge badge-secondary commission-name"></span>
+                        <span class="badge badge-secondary commission-group-name"></span>
+                        <span class="badge badge-secondary commission-percentage"></span>
+                      </h5>
+                    </label>
                     <div class="col-sm-2">
                       <div class="form-group">
                         <div class="input-group">

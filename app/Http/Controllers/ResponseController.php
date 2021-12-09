@@ -24,7 +24,9 @@ use App\Supplier;
 use App\Template;
 use App\User;
 use App\StoreText;
+use App\Commission;
 use App\CommissionGroup;
+use App\CommissionCriteria;
 use App\SupplierRateSheet;
 use App\SupplierProduct;
 use App\Town;
@@ -32,6 +34,39 @@ use App\Location;
 
 class ResponseController extends Controller
 {
+
+    public function get_commissions(){
+        $commissions = Commission::all();
+        return $commissions;
+    }
+
+    public function get_commission_groups(){
+        $commission_groups = CommissionGroup::all();
+        return $commission_groups;
+    }
+
+    public function get_commission_criterias(){
+        $commission_criterias = CommissionCriteria::
+        leftJoin('commission_criteria_seasons', 'commission_criterias.id', '=', 'commission_criteria_seasons.commission_criteria_id')
+        ->leftJoin('commission_criteria_groups', 'commission_criterias.id', '=', 'commission_criteria_groups.commission_criteria_id')
+        ->leftJoin('commission_criteria_brands', 'commission_criterias.id', '=', 'commission_criteria_brands.commission_criteria_id')
+        ->leftJoin('commission_criteria_holiday_types', 'commission_criterias.id', '=', 'commission_criteria_holiday_types.commission_criteria_id')
+        ->leftJoin('commission_criteria_currencies', 'commission_criterias.id', '=', 'commission_criteria_currencies.commission_criteria_id')
+        ->orderBy('commission_criterias.id','ASC')
+        ->get([
+            'commission_criterias.commission_id',
+            'commission_criterias.percentage',
+            'commission_criteria_groups.commission_group_id',
+            'commission_criteria_brands.brand_id',
+            'commission_criteria_holiday_types.holiday_type_id',
+            'commission_criteria_currencies.currency_id',
+            'commission_criteria_seasons.season_id'
+        ]);
+
+        return $commission_criterias;
+    }
+
+
     public function getBrandToHoliday(Request $request)
     {    
         $holiday_types = HolidayType::where('brand_id',$request->brand_id)->get();
@@ -66,11 +101,11 @@ class ResponseController extends Controller
     }
  
  
-    public function getCommissionGroups(Request $request)
-    {    
-        $commission_groups = CommissionGroup::where('commission_id',$request->commission_id)->get();
-        return response()->json($commission_groups);
-    }
+    // public function getCommissionGroups(Request $request)
+    // {    
+    //     $commission_groups = CommissionGroup::where('commission_id',$request->commission_id)->get();
+    //     return response()->json($commission_groups);
+    // }
 
     
     public function addProductWithSupplierSync(ProductRequest $request)
