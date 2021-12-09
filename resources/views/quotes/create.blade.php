@@ -1009,9 +1009,9 @@
                     <label for="inputEmail3" class="col-sm-3 col-form-label">
                       Staff Commission
                       <h5>
-                        <span class="badge badge-secondary commission-name"></span>
-                        <span class="badge badge-secondary commission-group-name"></span>
-                        <span class="badge badge-secondary commission-percentage"></span>
+                        <span class="badge badge-secondary badge-commission-name"></span>
+                        <span class="badge badge-secondary badge-commission-group-name"></span>
+                        <span class="badge badge-secondary badge-commission-percentage"></span>
                       </h5>
                     </label>
                     <div class="col-sm-2">

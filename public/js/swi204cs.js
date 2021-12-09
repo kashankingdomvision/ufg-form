@@ -50147,9 +50147,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function resetCommissionNameFeilds() {
-    $('.commission-name').text('');
-    $('.commission-group-name').text('');
-    $('.commission-percentage').text('');
+    $('.badge-commission-name').text('');
+    $('.badge-commission-group-name').text('');
+    $('.badge-commission-percentage').text('');
   }
 
   function getCommissionRate() {
@@ -50180,9 +50180,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var commissionNames = getCommissionAndGroupName(commissionID, commissionGroupID);
 
       if (parseFloat(commissionPercentage) > 0.00) {
-        $('.commission-name').text(commissionNames.commissionName);
-        $('.commission-group-name').text(commissionNames.commissionGroupName);
-        $('.commission-percentage').text("".concat(commissionPercentage, " %"));
+        $('.badge-commission-name').text(commissionNames.commissionName);
+        $('.badge-commission-group-name').text(commissionNames.commissionGroupName);
+        $('.badge-commission-percentage').text("".concat(commissionPercentage, " %"));
       } else {
         resetCommissionNameFeilds();
       }
