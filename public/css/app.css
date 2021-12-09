@@ -4979,6 +4979,20 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   word-break: keep-all;
 }
 
+/* multiple select placeholder color */
+
+.select2-search__field::-moz-placeholder {
+  color: #c0c0c0;
+}
+
+.select2-search__field:-ms-input-placeholder {
+  color: #c0c0c0;
+}
+
+.select2-search__field::placeholder {
+  color: #c0c0c0;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Quote Managment
