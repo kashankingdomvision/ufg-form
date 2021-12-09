@@ -303,6 +303,7 @@ $(document).ready(function($) {
     function getCommissionRate(){
 
         var calculatedCommisionAmount = 0;
+        var commissionPercentage      = 0;
         var agency                    = $("input[name=agency]:checked").val();
         var agencyCommissionType      = $("input[name=agency_commission_type]:checked").val();
         var netValue                  = $('.total-markup-amount').val();
@@ -328,7 +329,7 @@ $(document).ready(function($) {
 
         if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID){
 
-            var commissionPercentage  = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
+            commissionPercentage      = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
             calculatedCommisionAmount = parseFloat(netValue / 100) * parseFloat(commissionPercentage);
 
             var commissionNames = getCommissionAndGroupName(commissionID, commissionGroupID);
@@ -345,6 +346,7 @@ $(document).ready(function($) {
             resetCommissionNameFeilds()
         }
 
+        $('.commission-percentage').val(check(commissionPercentage));
         $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 
