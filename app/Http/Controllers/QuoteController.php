@@ -324,12 +324,13 @@ class QuoteController extends Controller
         ];
     }
 
-    public function getPaxDetailsArray( $quote, $pax_data ){
-        return [
-            'quote_id'              => $quote->id,
+    public function getPaxDetailsArray( $object, $pax_data, $type ){
+
+        $data = [
+
             'full_name'             => $pax_data['full_name'],
             'email'                 => $pax_data['email_address'],
-            'contact'               => $pax_data['full_number'],
+            'contact'               => $pax_data['contact_number'],
             'date_of_birth'         => $pax_data['date_of_birth'],
             'bedding_preference'    => $pax_data['bedding_preference'],
             'dinning_preference'    => $pax_data['dinning_preference'],
@@ -337,6 +338,16 @@ class QuoteController extends Controller
             'resident_in'           => $pax_data['resident_in'],
             'covid_vaccinated'      => $pax_data['covid_vaccinated'],
         ];
+
+        if($type == 'quotes'){
+            $data['quote_id'] = $object->id;
+        }
+
+        if($type == 'bookings'){
+            $data['booking_id'] = $object->id;
+        }
+
+        return $data;
     }
 
     public function create()
@@ -530,7 +541,7 @@ class QuoteController extends Controller
             $quote->getPaxDetail()->delete();
 
             foreach ($request->pax as $pax_data) {
-                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data);
+                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data, 'quotes');
                 QuotePaxDetail::create($getPaxDetailsArray);
             }
         }
@@ -782,19 +793,10 @@ class QuoteController extends Controller
         }
 
         if($quote->getPaxDetail && $quote->pax_no >= 1){
-            foreach ($quote->getPaxDetail as $pax) {
-                QuotePaxDetail::create([
-                    'quote_id'              => $clone->id,
-                    'full_name'             => $pax['full_name'],
-                    'email'                 => $pax['email'],
-                    'contact'               => $pax['contact'],
-                    'date_of_birth'         => $pax['date_of_birth'],
-                    'bedding_preference'    => $pax['bedding_preference'],
-                    'dinning_preference'    => $pax['dinning_preference'],
-                    'nationality_id'        => $pax['nationality_id'],
-                    'resident_in'           => $pax['resident_in'],
-                    'covid_vaccinated'      => $pax['covid_vaccinated']
-                ]);
+            foreach ($quote->getPaxDetail as $pax_data) {
+
+                $getPaxDetailsArray = $this->getPaxDetailsArray($clone, $pax_data, 'quotes');
+                QuotePaxDetail::create($getPaxDetailsArray);
             }
         }
 
