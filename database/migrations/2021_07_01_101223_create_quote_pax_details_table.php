@@ -17,8 +17,8 @@ class CreateQuotePaxDetailsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
             $table->string('full_name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('contact')->nullable();
+            $table->string('email_address')->nullable();
+            $table->string('contact_number')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('bedding_preference')->nullable();
             $table->string('dinning_preference')->nullable();
