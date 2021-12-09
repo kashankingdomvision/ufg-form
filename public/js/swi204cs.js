@@ -49915,7 +49915,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
   $('.select2-multiple').select2({
     width: '100%',
-    theme: "classic"
+    theme: "classic",
+    templateResult: formatState,
+    templateSelection: formatState
   });
   $('.select2-single').select2({
     width: '90%',

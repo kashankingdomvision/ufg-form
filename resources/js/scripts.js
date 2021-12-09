@@ -83,6 +83,8 @@ $(document).ready(function($) {
     $('.select2-multiple').select2({
         width: '100%',
         theme: "classic",
+        templateResult: formatState,
+        templateSelection: formatState,
     });
 
     $('.select2-single').select2({
