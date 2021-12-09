@@ -46,6 +46,7 @@ class Booking extends Model
         'selling_price',
         'profit_percentage',
         'commission_amount',
+        'commission_percentage',
         'selling_currency_oc',
         'selling_price_ocr',
         'amount_per_person',
