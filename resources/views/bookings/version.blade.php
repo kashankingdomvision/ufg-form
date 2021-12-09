@@ -1432,7 +1432,15 @@
                 </div>
 
                 <div class="form-group row">
-                  <label for="inputEmail3" class="col-sm-3 col-form-label">Staff Commission</label>
+                  <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    Staff Commission
+                    <h5>
+                      <span class="badge badge-secondary badge-commission-name">{{ isset($booking['commission_id']) && $log->getQueryData($booking['commission_id'], 'Commission')->count() ? $log->getQueryData($booking['commission_id'], 'Commission')->first()->name : ''}}</span>
+                      <span class="badge badge-secondary badge-commission-group-name">{{ isset($booking['commission_group_id']) && $log->getQueryData($booking['commission_group_id'], 'CommissionGroup')->count() ? $log->getQueryData($booking['commission_group_id'], 'CommissionGroup')->first()->name : ''}}</span>
+                      <span class="badge badge-secondary badge-commission-percentage">{{ isset($booking['commission_percentage']) && !empty($booking['commission_percentage']) ? $booking['commission_percentage'].' %' : ''}}</span>
+                    </h5>
+                  </label>
+
                   <div class="col-sm-2">
                     <div class="form-group">
                       <div class="input-group">
@@ -1440,6 +1448,17 @@
                           <span class="input-group-text booking-currency-code">{{ ($log->getQueryData($booking['currency_id'], 'Currency')->first()) ? $log->getQueryData($booking['currency_id'], 'Currency')->first()->code : '' }}</span>
                         </div>
                         <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($booking['commission_amount']) }}" readonly>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="number" step="any" name="commission_percentage" value="{{ \Helper::number_format($booking['commission_percentage']) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
+                        <div class="input-group-append">
+                          <div class="input-group-text">%</div>
+                        </div>
                       </div>
                     </div>
                   </div>

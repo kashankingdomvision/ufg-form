@@ -192,6 +192,7 @@ class BookingController extends Controller
             'selling_price'                     =>  $request->total_selling_price??$request->selling_price,
             'profit_percentage'                 =>  $request->total_profit_percentage??$request->profit_percentage,
             'commission_amount'                 =>  $request->commission_amount??$request->commission_amount,
+            'commission_percentage'             =>  $request->commission_percentage??$request->commission_percentage,
             'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
