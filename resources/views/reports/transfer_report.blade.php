@@ -291,7 +291,7 @@
                                                                     <td colspan="9"></td>
                                                                     <th>{{ $item->key }}</th>
                                                                     <td>
-                                                                        @if($item->type == 'checkbox-group')
+                                                                        @if($item->type == 'checkbox-group' ||  ($item->type == 'select' && $item->multiple == 'true') )
                                                                             @php
                                                                                 $values = json_decode($item->value, true)
                                                                             @endphp
