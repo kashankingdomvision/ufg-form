@@ -12,6 +12,7 @@ class BookingCategoryDetail extends Model
         'booking_detail_id',
         'category_id',
         'type',
+        'multiple',
         'key',
         'value',
     ];

@@ -12,6 +12,7 @@ class QuoteCategoryDetail extends Model
         'quote_detail_id',
         'category_id',
         'type',
+        'multiple',
         'key',
         'value',
     ];
