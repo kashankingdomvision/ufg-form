@@ -147,7 +147,7 @@
                           @if(old('season_id'))
                           {{ in_array($booking_season->id, old('season_id') ?? []) ? 'selected' : '' }}
                           @else 
-                          {{ (in_array($booking_season->id, $commission_criteria->seasons()->pluck('season_id')->toArray()) )? 'selected' : NULL}} 
+                          {{ (in_array($booking_season->id, $commission_criteria->getSeasons()->pluck('season_id')->toArray()) )? 'selected' : NULL}} 
                           @endif
                         >{{$booking_season->name}} </option>
                       @endforeach
