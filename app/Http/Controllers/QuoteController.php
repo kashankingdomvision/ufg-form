@@ -184,10 +184,6 @@ class QuoteController extends Controller
         return CurrencyConversion::all();
     }
 
-    public function get_commission(){
-        return CommissionCriteria::leftJoin('commission_criteria_seasons', 'commission_criterias.id', '=', 'commission_criteria_seasons.commission_criteria_id')->get(['commission_criterias.commission_id','commission_criterias.percentage','commission_criterias.commission_group_id','commission_criterias.brand_id','commission_criterias.holiday_type_id','commission_criterias.currency_id','commission_criteria_seasons.season_id']);
-    }
-
     public function quoteArray($request, $type = null)
     {
         $data = [
