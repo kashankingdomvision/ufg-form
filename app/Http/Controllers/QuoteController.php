@@ -48,6 +48,7 @@ use App\User;
 
 class QuoteController extends Controller
 {
+    public $pagiantion = 10;
 
     public function compare_quote(Request $request)
     {
@@ -75,8 +76,6 @@ class QuoteController extends Controller
 
         return view('compare_quote.index', $data);
     }
-
-    public $pagiantion = 10;
 
     public function quote_document(Request $request, $id)
     {
@@ -276,6 +275,55 @@ class QuoteController extends Controller
         ];
     }
 
+    public function getQuoteCategoryDetailArray( $quoteD, $category_detail )
+    {
+
+        $data = [
+            'quote_id'         => $quoteD['quote_id'],
+            'quote_detail_id'  => $quoteD['id'],
+            'category_id'      => $quoteD['category_id'],
+            'type'             => $category_detail['type'],
+            'key'              => $category_detail['label'],
+        ];
+
+        if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
+
+            $data['multiple'] = isset($category_detail['multiple']) && !empty($category_detail['multiple']) ? 'true' : 'false';
+            $data['value']    = json_encode($category_detail['userData']);
+        }
+        else{
+            $data['value'] = $category_detail['userData'][0];
+        }
+
+        return $data;
+    }
+
+    public function getBookingQuoteCategoryDetailArray( $quoteD, $category_detail ){
+       
+        return [
+            'booking_id'         => $quoteD['booking_id'],
+            'booking_detail_id'  => $quoteD['id'],
+            'category_id'        => $quoteD['category_id'],
+            'type'               => $category_detail['type'],
+            'multiple'           => $category_detail['multiple'],
+            'key'                => $category_detail['key'],
+            'value'              => $category_detail['value'],
+        ];
+    }
+
+    public function getCloneQuoteCategoryDetailArray( $quoteD, $category_detail ){
+       
+        return [
+            'quote_id'           => $quoteD['quote_id'],
+            'quote_detail_id'    => $quoteD['id'],
+            'category_id'        => $quoteD['category_id'],
+            'type'               => $category_detail['type'],
+            'multiple'           => $category_detail['multiple'],
+            'key'                => $category_detail['key'],
+            'value'              => $category_detail['value'],
+        ];
+    }
+
     public function create()
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
@@ -391,54 +439,7 @@ class QuoteController extends Controller
         return view('quotes.edit',$data);
     }
 
-    public function getQuoteCategoryDetailArray( $quoteD, $category_detail )
-    {
 
-        $data = [
-            'quote_id'         => $quoteD['quote_id'],
-            'quote_detail_id'  => $quoteD['id'],
-            'category_id'      => $quoteD['category_id'],
-            'type'             => $category_detail['type'],
-            'key'              => $category_detail['label'],
-        ];
-
-        if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
-
-            $data['multiple'] = isset($category_detail['multiple']) && !empty($category_detail['multiple']) ? 'true' : 'false';
-            $data['value']    = json_encode($category_detail['userData']);
-        }
-        else{
-            $data['value'] = $category_detail['userData'][0];
-        }
-
-        return $data;
-    }
-
-    public function getBookingQuoteCategoryDetailArray( $quoteD, $category_detail ){
-       
-        return [
-            'booking_id'         => $quoteD['booking_id'],
-            'booking_detail_id'  => $quoteD['id'],
-            'category_id'        => $quoteD['category_id'],
-            'type'               => $category_detail['type'],
-            'multiple'           => $category_detail['multiple'],
-            'key'                => $category_detail['key'],
-            'value'              => $category_detail['value'],
-        ];
-    }
-
-    public function getCloneQuoteCategoryDetailArray( $quoteD, $category_detail ){
-       
-        return [
-            'quote_id'           => $quoteD['quote_id'],
-            'quote_detail_id'    => $quoteD['id'],
-            'category_id'        => $quoteD['category_id'],
-            'type'               => $category_detail['type'],
-            'multiple'           => $category_detail['multiple'],
-            'key'                => $category_detail['key'],
-            'value'              => $category_detail['value'],
-        ];
-    }
 
     public function update(QuoteRequest $request, $id)
     {
