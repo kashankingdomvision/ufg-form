@@ -698,9 +698,9 @@
                               <div class="col-sm-1 booking-category-detail-btn-parent justify-content-center {{ isset($booking_detail->getCategory->booking) && ($booking_detail->getCategory->booking == 0) ? 'd-none' : 'd-flex' }}">
                                 <div class="form-group ">
                                   <div class="modal-parent">
-                                    @include('partials.accomadation_modal')
-                                    @include('partials.transfer_modal')
-                                    @include('partials.service_excersion_modal')
+                                    {{-- @include('partials.accomadation_modal') --}}
+                                    {{-- @include('partials.transfer_modal') --}}
+                                    {{-- @include('partials.service_excersion_modal') --}}
                                   </div>
                                   <button type="button" data-id="{{ $booking_detail->id }}" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div>
