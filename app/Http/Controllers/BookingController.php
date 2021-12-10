@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Helper;
 
 use App\Airline;
-use App\AccomodationDetail;
+// use App\AccomodationDetail;
 use App\Brand;
 use App\Bank;
 use App\Booking;
@@ -585,8 +585,8 @@ class BookingController extends Controller
                 BookingPaxDetail::create([
                     'booking_id'            => $booking->id,
                     'full_name'             => $pax_data['full_name']??NULL,
-                    'email'                 => $pax_data['email_address']??NULL,
-                    'contact'               => $pax_data['full_number']??NULL,
+                    'email_address'         => $pax_data['email_address']??NULL,
+                    'contact_number'        => $pax_data['full_number']??NULL,
                     'date_of_birth'         => $pax_data['date_of_birth']??NULL,
                     'bedding_preference'    => $pax_data['bedding_preference']??NULL,
                     'dinning_preference'    => $pax_data['dinning_preference']??NULL,
