@@ -288,11 +288,13 @@ class QuoteController extends Controller
 
         if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
 
-            $data['multiple'] = isset($category_detail['multiple']) && !empty($category_detail['multiple']) ? 'true' : 'false';
+            $data['multiple'] = 'true';
             $data['value']    = json_encode($category_detail['userData']);
         }
         else{
-            $data['value'] = $category_detail['userData'][0];
+
+            $data['multiple'] = 'false';
+            $data['value']    = $category_detail['userData'][0];
         }
 
         return $data;
