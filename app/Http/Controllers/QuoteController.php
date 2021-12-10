@@ -329,8 +329,8 @@ class QuoteController extends Controller
         $data = [
 
             'full_name'             => $pax_data['full_name'],
-            'email'                 => $pax_data['email_address'],
-            'contact'               => $pax_data['contact_number'],
+            'email_address'         => $pax_data['email_address'],
+            'contact_number'        => $pax_data['full_number'],
             'date_of_birth'         => $pax_data['date_of_birth'],
             'bedding_preference'    => $pax_data['bedding_preference'],
             'dinning_preference'    => $pax_data['dinning_preference'],
@@ -407,8 +407,8 @@ class QuoteController extends Controller
                 QuotePaxDetail::create([
                     'quote_id'              => $quote->id,
                     'full_name'             => $pax_data['full_name'],
-                    'email'                 => $pax_data['email_address'],
-                    'contact'               => $pax_data['full_number'],
+                    'email_address'         => $pax_data['email_address'],
+                    'contact_number'        => $pax_data['full_number'],
                     'date_of_birth'         => $pax_data['date_of_birth'],
                     'bedding_preference'    => $pax_data['bedding_preference'],
                     'dinning_preference'    => $pax_data['dinning_preference'],
@@ -651,8 +651,8 @@ class QuoteController extends Controller
                 BookingPaxDetail::create([
                     'booking_id'            => $booking->id,
                     'full_name'             => $pax['full_name'],
-                    'email'                 => $pax['email'],
-                    'contact'               => $pax['contact'],
+                    'email_address'         => $pax['email_address'],
+                    'contact_number'        => $pax['full_number'],
                     'date_of_birth'         => $pax['date_of_birth'],
                     'bedding_preference'    => $pax['bedding_preference'],
                     'dinning_preference'    => $pax['dinning_preference'],
