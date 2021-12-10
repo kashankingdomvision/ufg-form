@@ -338,11 +338,6 @@ class BookingController extends Controller
 
     public function edit($id)
     {
-
-  
-
-
-
         $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['booking']          = $booking;
