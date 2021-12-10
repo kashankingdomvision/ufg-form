@@ -330,7 +330,6 @@ class QuoteController extends Controller
 
             'full_name'             => $pax_data['full_name'],
             'email_address'         => $pax_data['email_address'],
-            'contact_number'        => $pax_data['full_number'],
             'date_of_birth'         => $pax_data['date_of_birth'],
             'bedding_preference'    => $pax_data['bedding_preference'],
             'dinning_preference'    => $pax_data['dinning_preference'],
@@ -340,11 +339,21 @@ class QuoteController extends Controller
         ];
 
         if($type == 'quotes'){
-            $data['quote_id'] = $object->id;
+
+            $data['quote_id']       = $object->id;
+            $data['contact_number'] = $pax_data['full_number'];
+        }
+
+        if($type == 'clone'){
+
+            $data['quote_id']       = $object->id;
+            $data['contact_number'] = $pax_data['contact_number'];
         }
 
         if($type == 'bookings'){
-            $data['booking_id'] = $object->id;
+
+            $data['booking_id']     = $object->id;
+            $data['contact_number'] = $pax_data['contact_number'];
         }
 
         return $data;
@@ -404,18 +413,9 @@ class QuoteController extends Controller
        //pax data
         if($request->has('pax')){
             foreach ($request->pax as $pax_data) {
-                QuotePaxDetail::create([
-                    'quote_id'              => $quote->id,
-                    'full_name'             => $pax_data['full_name'],
-                    'email_address'         => $pax_data['email_address'],
-                    'contact_number'        => $pax_data['full_number'],
-                    'date_of_birth'         => $pax_data['date_of_birth'],
-                    'bedding_preference'    => $pax_data['bedding_preference'],
-                    'dinning_preference'    => $pax_data['dinning_preference'],
-                    'nationality_id'        => $pax_data['nationality_id'],
-                    'resident_in'           => $pax_data['resident_in'],
-                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
-                ]);
+
+                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data, 'quotes');
+                QuotePaxDetail::create($getPaxDetailsArray);
             }
         }
 
@@ -647,18 +647,10 @@ class QuoteController extends Controller
         }
 
         if($quote->getPaxDetail && $quote->pax_no > 1){
-            foreach ($quote->getPaxDetail as $pax) {
-                BookingPaxDetail::create([
-                    'booking_id'            => $booking->id,
-                    'full_name'             => $pax['full_name'],
-                    'email_address'         => $pax['email_address'],
-                    'contact_number'        => $pax['full_number'],
-                    'date_of_birth'         => $pax['date_of_birth'],
-                    'bedding_preference'    => $pax['bedding_preference'],
-                    'dinning_preference'    => $pax['dinning_preference'],
-                    'nationality_id'        => $pax['nationality_id'],
-                    'resident_in'           => $pax['resident_in'],
-                ]);
+            foreach ($quote->getPaxDetail as $pax_data) {
+
+                $getPaxDetailsArray = $this->getPaxDetailsArray($booking, $pax_data, 'bookings');
+                BookingPaxDetail::create($getPaxDetailsArray);
             }
         }
         $quote->update([
@@ -795,7 +787,7 @@ class QuoteController extends Controller
         if($quote->getPaxDetail && $quote->pax_no >= 1){
             foreach ($quote->getPaxDetail as $pax_data) {
 
-                $getPaxDetailsArray = $this->getPaxDetailsArray($clone, $pax_data, 'quotes');
+                $getPaxDetailsArray = $this->getPaxDetailsArray($clone, $pax_data, 'clone');
                 QuotePaxDetail::create($getPaxDetailsArray);
             }
         }
@@ -826,4 +818,30 @@ class QuoteController extends Controller
             ->get();
         return $array;
     }
+
+    // BookingPaxDetail::create([
+    //     'booking_id'            => $booking->id,
+    //     'full_name'             => $pax['full_name'],
+    //     'email_address'         => $pax['email_address'],
+    //     'contact_number'        => $pax['full_number'],
+    //     'date_of_birth'         => $pax['date_of_birth'],
+    //     'bedding_preference'    => $pax['bedding_preference'],
+    //     'dinning_preference'    => $pax['dinning_preference'],
+    //     'nationality_id'        => $pax['nationality_id'],
+    //     'resident_in'           => $pax['resident_in'],
+    // ]);
+
+    /* store quote*/
+    // QuotePaxDetail::create([
+    //     'quote_id'              => $quote->id,
+    //     'full_name'             => $pax_data['full_name'],
+    //     'email_address'         => $pax_data['email_address'],
+    //     'contact_number'        => $pax_data['full_number'],
+    //     'date_of_birth'         => $pax_data['date_of_birth'],
+    //     'bedding_preference'    => $pax_data['bedding_preference'],
+    //     'dinning_preference'    => $pax_data['dinning_preference'],
+    //     'nationality_id'        => $pax_data['nationality_id'],
+    //     'resident_in'           => $pax_data['resident_in'],
+    //     'covid_vaccinated'      => $pax_data['covid_vaccinated'],
+    // ]);
 }
