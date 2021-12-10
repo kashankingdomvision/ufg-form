@@ -452,12 +452,12 @@
                                         </div>
                                         <div class="col-md-3 mb-2">
                                             <label >Email Address</label> 
-                                            <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email }}" class="form-control" placeholder="Email Address" >
+                                            <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email_address }}" class="form-control" placeholder="Email Address" >
                                             <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                         </div>
                                         <div class="col-md-3 mb-2">
                                           <label >Contact Number</label> 
-                                          <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact }}" class="form-control phone phone{{ $count }}"  >
+                                          <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact_number }}" class="form-control phone phone{{ $count }}"  >
                                           <span class="text-danger error_msg{{ $count }}" role="alert" > </span>
                                           <span class="text-success valid_msg{{ $count }}" role="alert"></span>
                                         </div>
