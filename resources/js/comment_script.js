@@ -1,4 +1,15 @@
 
+
+    Toast.fire({
+        icon: 'success',
+        title: data.success_message
+    });
+
+    setTimeout(function(){
+        window.location.href = REDIRECT_BASEURL + "quotes/index";
+    }, 2200);
+
+    
 function calculateQuoteDetailsCalcualtionForBooking(key,changeFeild){
 
     var estimatedCost                            = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
