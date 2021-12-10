@@ -590,6 +590,8 @@ class BookingController extends Controller
                     'covid_vaccinated'      => $pax_data['covid_vaccinated'],
                 ]);
             }
+        }else{
+            $booking->getPaxDetail()->delete();
         }
 
         if($request->has('cancellation_refund') && count($request->cancellation_refund) > 0){
