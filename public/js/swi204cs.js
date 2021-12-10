@@ -51832,6 +51832,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         quote.attr('data-key', quoteKey);
         quote.removeClass("quote-0");
         quote.addClass("quote-".concat(quoteKey));
+        $("#quote_".concat(quoteKey, "_date_of_service")).val(todayDate());
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
@@ -51844,7 +51845,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.refundable-percentage-feild').addClass('d-none');
         $("".concat(quoteClass)).find('.category-id').val(category_id).change();
         $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-date-of-service').html(todayDate());
         $("".concat(quoteClass)).find('.fileManger').attr('data-input', "quote_".concat(quoteKey, "_image"));
         $("".concat(quoteClass)).find('.fileManger').attr('data-preview', "quote_".concat(quoteKey, "_holder"));
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
@@ -51935,6 +51937,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         quote.attr('data-key', quoteKey);
         quote.removeClass("quote-0");
         quote.addClass("quote-".concat(quoteKey));
+        $("#quote_".concat(quoteKey, "_date_of_service")).val(todayDate());
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
@@ -51947,7 +51950,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.refundable-percentage-feild').addClass('d-none');
         $("".concat(quoteClass)).find('.category-id').val(category_id).change();
         $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-date-of-service').html(todayDate());
         $("".concat(quoteClass)).find('.fileManger').attr('data-input', "quote_".concat(quoteKey, "_image"));
         $("".concat(quoteClass)).find('.fileManger').attr('data-preview', "quote_".concat(quoteKey, "_holder"));
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
@@ -52048,6 +52052,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
           });
         });
+        $("#quote_".concat(quoteKey, "_date_of_service")).val(todayDate());
         $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
         $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
         $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
@@ -52071,8 +52076,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.revert-booking-detail-cancellation').remove();
         $("".concat(quoteClass)).find('.category-id').val(category_id).change();
         $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-date-of-service').html(todayDate());
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
@@ -52168,6 +52174,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             return "quote_".concat(quoteLength, "_finance_", 0, "_").concat(name);
           });
         });
+        $("#quote_".concat(quoteKey, "_date_of_service")).val(todayDate());
         $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
         $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
         $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
@@ -52191,8 +52198,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.revert-booking-detail-cancellation').remove();
         $("".concat(quoteClass)).find('.category-id').val(category_id).change();
         $("".concat(quoteClass)).find('.badge-category-id').html(category_name);
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
-        $("".concat(quoteClass)).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+        $("".concat(quoteClass)).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+        $("".concat(quoteClass)).find('.badge-date-of-service').html(todayDate());
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));

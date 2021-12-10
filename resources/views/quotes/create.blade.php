@@ -446,7 +446,7 @@
                         <div class="card-header">
                           <h3 class="card-title card-title-style quote-title"></h3>
                           <h3 class="card-title card-title-style quote-title">
-                            <span class="badge badge-info badge-date-of-service"></span>
+                            <span class="badge badge-info badge-date-of-service">{{date('d/m/Y')}}</span>
                             <span class="badge badge-info badge-time-of-service"></span>
                             <span class="badge badge-info badge-category-id"></span>
                             <span class="badge badge-info badge-supplier-id"></span>
@@ -479,7 +479,7 @@
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Date of Service <span style="color:red">*</span></label>
-                                <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
+                                <input type="text" placeholder="DD/MM/YYYY" value="{{ date('d/m/Y') }}" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
