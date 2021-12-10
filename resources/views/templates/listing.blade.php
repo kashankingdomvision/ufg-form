@@ -155,7 +155,7 @@
 
 
                                         @if($private_templates && $private_templates->count())
-                                        <tr class="text-center"><td colspan="10"><h4>Private Template</h4></td></tr>
+                                            <tr class="text-center"><td colspan="10"><h4>Private Template</h4></td></tr>
                                             @foreach ($private_templates as $key => $template)
                                                 <tr>
                                                     <td>
