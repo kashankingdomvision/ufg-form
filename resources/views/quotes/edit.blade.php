@@ -1195,9 +1195,9 @@
                     <label for="inputEmail3" class="col-sm-3 col-form-label">
                       Staff Commission
                       <h5>
-                        <span class="badge badge-secondary badge-commission-name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
-                        <span class="badge badge-secondary badge-commission-group-name">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span>
-                        <span class="badge badge-secondary badge-commission-percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
+                        <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
+                        <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span>
+                        <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                       </h5>
                     </label>
 

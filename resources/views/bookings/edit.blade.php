@@ -1631,9 +1631,9 @@
                       <label for="inputEmail3" class="col-sm-3 col-form-label">
                         Staff Commission
                         <h5>
-                          <span class="badge badge-secondary badge-commission-name">{{ isset($booking->getCommission->name) && !empty($booking->getCommission->name) ? $booking->getCommission->name : ''}}</span>
-                          <span class="badge badge-secondary badge-commission-group-name">{{ isset($booking->getCommissionGroup->name) && !empty($booking->getCommissionGroup->name) ? $booking->getCommissionGroup->name : ''}}</span>
-                          <span class="badge badge-secondary badge-commission-percentage">{{ isset($booking->commission_percentage) && !empty($booking->commission_percentage) ? $booking->commission_percentage.' %' : ''}}</span>
+                          <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($booking->getCommission->name) && !empty($booking->getCommission->name) ? $booking->getCommission->name : ''}}</span>
+                          <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($booking->getCommissionGroup->name) && !empty($booking->getCommissionGroup->name) ? $booking->getCommissionGroup->name : ''}}</span>
+                          <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($booking->commission_percentage) && !empty($booking->commission_percentage) ? $booking->commission_percentage.' %' : ''}}</span>
                         </h5>
                       </label>
 
