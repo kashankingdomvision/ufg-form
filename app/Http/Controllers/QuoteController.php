@@ -535,7 +535,7 @@ class QuoteController extends Controller
         }
 
         /* update quote_pax_details values */
-        if($request->has('pax') && count($request->pax) > 0){
+        if($request->has('pax')){
 
             /* delete old pax details */
             $quote->getPaxDetail()->delete();
@@ -544,6 +544,8 @@ class QuoteController extends Controller
                 $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data, 'quotes');
                 QuotePaxDetail::create($getPaxDetailsArray);
             }
+        }else{
+            $quote->getPaxDetail()->delete();
         }
 
         /* update group_quote values */ 
@@ -646,13 +648,14 @@ class QuoteController extends Controller
             }
         }
 
-        if($quote->getPaxDetail && $quote->pax_no > 1){
+        if($quote->getPaxDetail->count()){
             foreach ($quote->getPaxDetail as $pax_data) {
 
                 $getPaxDetailsArray = $this->getPaxDetailsArray($booking, $pax_data, 'bookings');
                 BookingPaxDetail::create($getPaxDetailsArray);
             }
         }
+        
         $quote->update([
             'booking_status' => 'booked',
             'booking_date'   => Carbon::now()
