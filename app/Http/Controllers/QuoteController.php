@@ -215,7 +215,7 @@ class QuoteController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
-            'lead_passenger_covid_vaccinated'   =>  $request->lead_passenger_covid_vaccinated??NULL,
+            'lead_passenger_covid_vaccinated'   =>  isset($request->lead_passenger_covid_vaccinated) && !empty($request->lead_passenger_covid_vaccinated) ? $request->lead_passenger_covid_vaccinated : '0',
             'pax_no'                            =>  $request->pax_no??'0',
             'net_price'                         =>  $request->total_net_price??$request->net_price,
             'markup_amount'                     =>  $request->total_markup_amount??$request->markup_amount,

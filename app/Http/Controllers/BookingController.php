@@ -178,7 +178,7 @@ class BookingController extends Controller
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
             'lead_passenger_dinning_preference' =>  $request->lead_passenger_dinning_preference??NULL,
             'lead_passenger_bedding_preference' =>  $request->lead_passenger_bedding_preference??NULL,
-            'lead_passenger_covid_vaccinated'   =>  $request->lead_passenger_covid_vaccinated,
+            'lead_passenger_covid_vaccinated'   =>  isset($request->lead_passenger_covid_vaccinated) && !empty($request->lead_passenger_covid_vaccinated) ? $request->lead_passenger_covid_vaccinated : '0',
             'lead_passenger_resident'           =>  $request->lead_passenger_resident??NULL,
             'brand_id'                          =>  $request->brand_id,
             'holiday_type_id'                   =>  $request->holiday_type_id,
