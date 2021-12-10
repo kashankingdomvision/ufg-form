@@ -193,6 +193,10 @@
                                             @endforeach
                                         @endif
 
+                                        @if(!$private_templates->count() && !$templates->count())
+                                            <tr align="center"><td colspan="100%">No record found.</td></tr>
+                                        @endif
+
                                         </tbody>
                                       </table>
                                 </div>
