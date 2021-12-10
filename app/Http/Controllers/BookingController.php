@@ -291,51 +291,6 @@ class BookingController extends Controller
         ];
     }
 
-    public function getAccommodationDetailsArray($quoteD)
-    {
-        return [
-            "arrival_date"            => $quoteD['arrival_date']??NULL,
-            "no_of_nights"            => $quoteD['no_of_nights']??NULL,
-            "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
-            "room_types"              => $quoteD['room_types']??NULL,
-            "meal_plan"               => $quoteD['meal_plan']??NULL,
-            "refrence"                => $quoteD['refrence']??NULL,
-            'day_event'               => isset($quoteD['day_event']) ? $quoteD['day_event']: null,
-            'confirmed_with_supplier' => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : null , 
-        ];
-    }
-
-    public function getTransferDetailsArray($quoteD)
-    {
-        return [
-            "transfer_description"    => $quoteD['transfer_description']??NULL,
-            "quantity"                => $quoteD['quantity']??NULL,
-            "pickup_port"             => $quoteD['pickup_port']??NULL,
-            "pickup_accomodation"     => $quoteD['pickup_accomodation']??NULL,
-            "pickup_date"             => $quoteD['pickup_date']??NULL,
-            "pickup_time"             => $quoteD['pickup_time']??NULL,
-            "dropoff_port"            => $quoteD['dropoff_port']??NULL,
-            "dropoff_accomodation"    => $quoteD['dropoff_accomodation']??NULL,
-            "dropoff_date"            => $quoteD['dropoff_date']??NULL,
-            "dropoff_time"            => $quoteD['dropoff_time']??NULL,
-            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 , 
-        ];
-    }
-
-    public function getServiceExcursionDetailsArray($quoteD)
-    {
-        return [
-            'name'                     => $quoteD['name']??NULL,
-            'description'              => $quoteD['description']??NULL,               
-            'date'                     => $quoteD['date']??NULL,        
-            'time'                     => $quoteD['time']??NULL,
-            'quantity'                 => $quoteD['quantity']??NULL,          
-            'refrence'                 => $quoteD['refrence']??NULL,      
-            'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 ,    
-            'note'                     => $quoteD['note']??NULL,
-        ];
-    }
-
     public function edit($id)
     {
         $booking = Booking::findOrFail(decrypt($id));
@@ -892,6 +847,51 @@ class BookingController extends Controller
     //         ServiceExcursionDetail::create($service_excursion);
     //     }
 
+    // }
+
+    // public function getAccommodationDetailsArray($quoteD)
+    // {
+    //     return [
+    //         "arrival_date"            => $quoteD['arrival_date']??NULL,
+    //         "no_of_nights"            => $quoteD['no_of_nights']??NULL,
+    //         "no_of_rooms"             => $quoteD['no_of_rooms']??NULL,
+    //         "room_types"              => $quoteD['room_types']??NULL,
+    //         "meal_plan"               => $quoteD['meal_plan']??NULL,
+    //         "refrence"                => $quoteD['refrence']??NULL,
+    //         'day_event'               => isset($quoteD['day_event']) ? $quoteD['day_event']: null,
+    //         'confirmed_with_supplier' => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : null , 
+    //     ];
+    // }
+
+    // public function getTransferDetailsArray($quoteD)
+    // {
+    //     return [
+    //         "transfer_description"    => $quoteD['transfer_description']??NULL,
+    //         "quantity"                => $quoteD['quantity']??NULL,
+    //         "pickup_port"             => $quoteD['pickup_port']??NULL,
+    //         "pickup_accomodation"     => $quoteD['pickup_accomodation']??NULL,
+    //         "pickup_date"             => $quoteD['pickup_date']??NULL,
+    //         "pickup_time"             => $quoteD['pickup_time']??NULL,
+    //         "dropoff_port"            => $quoteD['dropoff_port']??NULL,
+    //         "dropoff_accomodation"    => $quoteD['dropoff_accomodation']??NULL,
+    //         "dropoff_date"            => $quoteD['dropoff_date']??NULL,
+    //         "dropoff_time"            => $quoteD['dropoff_time']??NULL,
+    //         'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 , 
+    //     ];
+    // }
+
+    // public function getServiceExcursionDetailsArray($quoteD)
+    // {
+    //     return [
+    //         'name'                     => $quoteD['name']??NULL,
+    //         'description'              => $quoteD['description']??NULL,               
+    //         'date'                     => $quoteD['date']??NULL,        
+    //         'time'                     => $quoteD['time']??NULL,
+    //         'quantity'                 => $quoteD['quantity']??NULL,          
+    //         'refrence'                 => $quoteD['refrence']??NULL,      
+    //         'confirmed_with_supplier'  => isset($quoteD['confirmed_with_supplier']) ? $quoteD['confirmed_with_supplier'] : 2 ,    
+    //         'note'                     => $quoteD['note']??NULL,
+    //     ];
     // }
 
 }
