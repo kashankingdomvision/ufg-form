@@ -34,7 +34,14 @@ class AlterTemplateDetailsTableForeginKeys extends Migration
     public function down()
     {
         Schema::table('template_details', function (Blueprint $table) {
-            $table->dropForeign(['quote_id','supplier_id','category_id','booked_by_id','booking_type_id','supervisor_id','booking_method_id','supplier_currency_id']);
+            $table->dropForeign([
+                'template_id',
+                'category_id',
+                'supplier_id',
+                'product_id',
+                'booking_type_id',
+                'supplier_currency_id',
+            ]);
         });
     }
 }
