@@ -322,9 +322,9 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     /*  Supplier Categories */
-    Route::resource('categories', 'CategoryController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('categories', 'CategoryController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /*  Supplier Categories */
     Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
