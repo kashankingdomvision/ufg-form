@@ -109,6 +109,20 @@
 
     var options = {
       disableFields: ['file','hidden','button'],
+      disabledAttrs: [
+        'className',
+        'description',
+        'maxlength',
+        'name',
+        'other',
+        'required',
+        'rows',
+        'step',
+        'style',
+        'access',
+        'accept',
+        'value'
+      ],
       typeUserAttrs: {
         autocomplete: {
           data: {
