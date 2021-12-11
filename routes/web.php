@@ -322,9 +322,9 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     /*  Supplier Categories */
-    Route::resource('categories', 'CategoryController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('categories', 'CategoryController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /*  Supplier Categories */
     Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
@@ -332,16 +332,17 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     
-    // Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
-    //     Route::get('index', array('as' => 'index', 'uses' => 'CategoryController@index'));
-    //     Route::get('create', array('as' => 'create', 'uses' => 'CategoryController@create'));
-    //     Route::post('store', array('as' => 'store', 'uses' => 'CategoryController@store'));
-    //     Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
+    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+        Route::get('index', array('as' => 'index', 'uses' => 'CategoryController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CategoryController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CategoryController@store'));
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'CategoryController@edit']);
+        Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
+        Route::delete('delete/{id}', ['as' => 'destroy', 'uses' => 'CategoryController@destroy']);
 
-
-    //     // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-    // 	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
-    // });
+        // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+    });
 
 
 
