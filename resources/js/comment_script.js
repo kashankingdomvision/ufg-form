@@ -1116,3 +1116,52 @@ $(document).on('change', '.category-id', function() {
             }
         });
     });
+
+
+// if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
+//     $('.paid-net-commission-on-departure').removeClass('d-none');
+//     getCalculatedTotalNetMarkup();
+//     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
+// }
+
+// var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+// var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+// var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+// var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+// var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
+// var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
+
+// var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
+// var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+// var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
+// var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
+
+// $(".total-net-price").val(check(estimatedCostInBookingCurrency));
+// $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
+// $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
+// $(".total-profit-percentage").val(check(calculatedProfitPercentage));
+// $(".total-markup-percent").val(check(calculatedmarkupPercentage));
+
+
+
+        // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
+        // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
+
+        // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
+
+        // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+
+        // $(this).closest('.quote').find('.refund_amount').val('0.00');
+
+        // var booking_detail_id = $(this).data('booking_detail_id');
+
+        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        // $('#total_deposit_amount').val(totalDepositAmount);
+
+        // jQuery('#refund_to_bank_modal').modal('show');
+        // $('#booking_detail_id').val(booking_detail_id);

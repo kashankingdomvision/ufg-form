@@ -13,13 +13,13 @@ import daterangepicker from 'daterangepicker';
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
 
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
+var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
+var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
+var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 
-var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
+// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 
 // window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -488,11 +488,6 @@ $(document).ready(function($) {
         
         getCalculatedTotalNetMarkup();
         getCommissionRate();
-        // if(agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
-        //     $('.paid-net-commission-on-departure').removeClass('d-none');
-        //     getCalculatedTotalNetMarkup();
-        //     // $(".agency-total-markup").val(check(markupAmountInBookingCurrency));
-        // }
     }
 
     $(document).on('change, click', '.agency-commission-type', function() {
@@ -556,28 +551,6 @@ $(document).ready(function($) {
         getCommissionRate();
         getBookingAmountPerPerson();
         getSellingPrice();
-        
-        // var estimatedCostInBookingCurrencyArray     = $('.estimated-cost-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var estimatedCostInBookingCurrency          = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-        // var markupAmountInBookingCurrencyArray      = $('.selling-price-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
-
-        // var markupAmountInBookingCurrency           = $('.markup-amount-in-booking-currency').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedMarkupAmountInBookingCurrency = markupAmountInBookingCurrency.reduce((a, b) => (a + b), 0);
-
-        // var markupPercentageArray                   = $('.markup-percentage').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedmarkupPercentage              = markupPercentageArray.reduce((a, b) => (a + b), 0);
-
-        // var profitPercentagetArray                  = $('.profit-percentage').map((i, e) => parseFloat(e.value)).get();
-        // var calculatedProfitPercentage              = profitPercentagetArray.reduce((a, b) => (a + b), 0);
-
-        // $(".total-net-price").val(check(estimatedCostInBookingCurrency));
-        // $(".total-selling-price").val(check(calculatedMarkupAmountInBookingCurrency));
-        // $(".total-markup-amount").val(check(calculatedMarkupAmountInBookingCurrency));
-        // $(".total-profit-percentage").val(check(calculatedProfitPercentage));
-        // $(".total-markup-percent").val(check(calculatedmarkupPercentage));
-
     }
 
     function getQuoteDetailsValues(key, changeFeild) {
@@ -649,7 +622,6 @@ $(document).ready(function($) {
         }
 
         getQuoteTotalValues();
-        // getSellingPrice();
     }
 
     function getQuoteRateTypeValues() {
@@ -693,7 +665,6 @@ $(document).ready(function($) {
         }
 
         getQuoteTotalValues();
-        // getSellingPrice();
     }
 
     function getQuoteSupplierCurrencyValues(supplierCurrency, key) {
@@ -813,7 +784,6 @@ $(document).ready(function($) {
         }
 
         getBookingTotalValues();
-        // getSellingPrice();
     }
 
     function getBookingSupplierCurrencyValues(supplierCurrency, key) {
@@ -868,7 +838,6 @@ $(document).ready(function($) {
         $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
 
         getBookingTotalValues();
-        // getSellingPrice();
     }
 
     function getQuoteDetailValuesForBooking(key, changeFeild) {
@@ -933,7 +902,6 @@ $(document).ready(function($) {
         }
 
         getBookingTotalValues();
-        // getSellingPrice();
     }
 
     function getBookingBookingCurrencyValues() {
@@ -1002,7 +970,6 @@ $(document).ready(function($) {
 
         getBookingSupplierCurrencyValues(code, quoteKey);
         getBookingTotalValues();
-        // getSellingPrice();
     });
 
     $(document).on('change', '.payment-method', function() {
@@ -1174,7 +1141,6 @@ $(document).ready(function($) {
             getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
 
             getBookingTotalValues();
-            // getSellingPrice();
         }
 
     });
@@ -1201,7 +1167,6 @@ $(document).ready(function($) {
             getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
 
             getBookingTotalValues();
-            // getSellingPrice();
         }
 
     });
@@ -1271,27 +1236,6 @@ $(document).ready(function($) {
         }
 
         reinitializedDynamicFeilds();
-
-
-        // $(this).closest('.quote').find('.refund-payment-section').removeAttr("hidden");
-        // // $(this).closest('.quote').find('.credit-note-hidden-section').attr("hidden",true);
-
-        // $(`#quote_${quoteKey}_credit_note_0_credit_note_amount`).val('');
-
-        // var totalDepositAmountArray = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-
-        // $(this).closest('.quote').find('.refund_amount').val('0.00');
-
-        // var booking_detail_id = $(this).data('booking_detail_id');
-
-        // var totalDepositAmountArray  = $(this).closest('.quote').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        // var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        // $('#total_deposit_amount').val(totalDepositAmount);
-
-        // jQuery('#refund_to_bank_modal').modal('show');
-        // $('#booking_detail_id').val(booking_detail_id);
-
     });
 
     $(document).on('click', '.credit-note', function() {
@@ -1381,7 +1325,6 @@ $(document).ready(function($) {
 
         getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
         getBookingTotalValues();
-        // getSellingPrice();
     });
 
     $(document).on('click', '.credit-note-hidden-btn', function() {
@@ -1402,8 +1345,6 @@ $(document).ready(function($) {
 
         getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
         getBookingTotalValues();
-        // getSellingPrice();
-
     });
 
     /*
@@ -2270,15 +2211,10 @@ $(document).ready(function($) {
                 });
             }
 
-
-
             $(document).on('click', '#add_more, #add_more_booking', function(e) {
                 jQuery('#new_service_modal').modal('show');
-
-
             });
 
-            // var quotee = '';
             $(document).on('click', '.add-new-service-below', function(e) {
           
                 var quote = $(this).closest('.quote').data('key');
@@ -2720,7 +2656,6 @@ $(document).ready(function($) {
 
                 getQuoteSupplierCurrencyValues(code, quoteKey);
                 getQuoteTotalValues();
-                // getSellingPrice();
             });
 
             $(document).on('change', '.booking-type-id', function() {
@@ -2755,7 +2690,6 @@ $(document).ready(function($) {
                 }
 
                 getCommissionRate();
-                // getSellingPrice();
             });
 
             $(document).on("keyup change", '.change-calculation', function(event) {
@@ -2991,10 +2925,7 @@ $(document).ready(function($) {
                     $(this).closest(".quote").remove();
 
                     getBookingTotalValues();
-                    // getSellingPrice();
                 }
-                // getQuoteTotalValues();
-                // getSellingPrice();
             });
 
             $(document).on('click', '.remove-quote-detail-service', function(e) {
@@ -3004,10 +2935,7 @@ $(document).ready(function($) {
                     $(this).closest(".quote").remove();
 
                     getQuoteTotalValues();
-                    // getSellingPrice();
                 }
-                // getQuoteTotalValues();
-                // getSellingPrice();
             });
 
 
@@ -3093,9 +3021,6 @@ $(document).ready(function($) {
                 });
 
             });
-
-
-
 
             $(".readonly").keypress(function(evt) {
                 evt.preventDefault();
