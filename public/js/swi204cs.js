@@ -50192,9 +50192,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       calculatedCommisionAmount = 0.00;
       resetCommissionNameFeilds();
-    }
+    } // $('.commission-percentage').val(check(commissionPercentage));
 
-    $('.commission-percentage').val(check(commissionPercentage));
+
     $('.commission-amount').val(check(calculatedCommisionAmount));
   }
 

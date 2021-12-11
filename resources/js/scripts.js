@@ -348,7 +348,7 @@ $(document).ready(function($) {
             resetCommissionNameFeilds()
         }
 
-        $('.commission-percentage').val(check(commissionPercentage));
+        // $('.commission-percentage').val(check(commissionPercentage));
         $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 
