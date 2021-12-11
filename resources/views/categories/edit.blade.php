@@ -177,9 +177,9 @@
           };
 
           $.ajax({
-            type: 'POST',
+            type: "POST",
             url: url,
-            data: data,
+            data: JSON.stringify(data),
             beforeSend: function() {
               $('input, select').removeClass('is-invalid');
               $('.text-danger').html('');
@@ -225,7 +225,66 @@
               }
               
             },
+            dataType: 'json',
+            headers: {
+                'Content-Type':'application/json'
+            }
           });
+
+
+          // $.ajax({
+          //   type: 'POST',
+          //   url: url,
+          //   data: data,
+          //   beforeSend: function() {
+          //     $('input, select').removeClass('is-invalid');
+          //     $('.text-danger').html('');
+          //     $("#overlay").addClass('overlay');
+          //     $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+          //   },
+          //   success: function(data) {
+          //     $("#overlay").removeClass('overlay').html('');
+              
+          //     setTimeout(function() {
+
+          //       if(data && data.status == true){
+          //         alert(data.success_message);
+          //         window.location.href = '{{route('categories.index')}}';
+          //       }
+          //     }, 200);
+          //   },
+          //   error: function(reject) {
+
+          //     if (reject.status === 422) {
+
+          //       var errors = $.parseJSON(reject.responseText);
+          //       var flag = true;
+
+          //       setTimeout(function() {
+
+          //         $("#overlay").removeClass('overlay').html('');
+
+          //         jQuery.each(errors.errors, function(index, value) {
+
+          //           index = index.replace(/\./g, '_');
+
+          //           $(`#${index}`).addClass('is-invalid');
+          //           $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+          //           if(flag){
+          //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+          //             flag = false;
+          //           }
+
+          //         });
+          //       }, 400);
+          //     }
+              
+          //   },
+          //   headers: {
+          //     'Content-Type':'application/json'
+          //   }
+          // });
 
         }
       };
