@@ -177,7 +177,7 @@
           };
 
           $.ajax({
-            type: 'POST',
+            type: 'PUT',
             url: url,
             data: data,
             beforeSend: function() {
