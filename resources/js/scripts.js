@@ -237,7 +237,7 @@ $(document).ready(function($) {
             return parseFloat(0).toFixed(2);
         }
 
-        return x.toFixed(2);
+        return parseFloat(x).toFixed(2);
     }
 
     function checkForInt(x) {
@@ -348,7 +348,7 @@ $(document).ready(function($) {
             resetCommissionNameFeilds()
         }
 
-        // $('.commission-percentage').val(check(commissionPercentage));
+        $('.commission-percentage').val(check(commissionPercentage));
         $('.commission-amount').val(check(calculatedCommisionAmount));
     }
 

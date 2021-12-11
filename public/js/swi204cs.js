@@ -50098,7 +50098,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return parseFloat(0).toFixed(2);
     }
 
-    return x.toFixed(2);
+    return parseFloat(x).toFixed(2);
   }
 
   function checkForInt(x) {
@@ -50192,9 +50192,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     } else {
       calculatedCommisionAmount = 0.00;
       resetCommissionNameFeilds();
-    } // $('.commission-percentage').val(check(commissionPercentage));
+    }
 
-
+    $('.commission-percentage').val(check(commissionPercentage));
     $('.commission-amount').val(check(calculatedCommisionAmount));
   }
 
