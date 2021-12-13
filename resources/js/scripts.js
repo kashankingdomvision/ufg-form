@@ -1408,13 +1408,14 @@ $(document).ready(function($) {
         var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
         var nowDate          = todayDate();
 
+        var category_enddateofservice = $(`#quote_${quoteKey}_category_id`).find(':selected').attr('data-enddateofservice');
+
         if(convertDate(EndDateOFService) < convertDate(nowDate)){
             alert('Please select valid Date, The date you select is already Passed.');
             $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('');
         }
-        
-        if(convertDate(EndDateOFService) < convertDate(DateOFService)){
+        if((convertDate(EndDateOFService) < convertDate(DateOFService)) && category_enddateofservice != 1){
     
             alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
             $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
@@ -1438,17 +1439,23 @@ $(document).ready(function($) {
         var EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
         var nowDate          = todayDate();
 
+        var category_enddateofservice = $(`#quote_${quoteKey}_category_id`).find(':selected').attr('data-enddateofservice');
+
         if(convertDate(DateOFService) < convertDate(nowDate)){
             alert('Please select valid Date, The date you select is already Passed.');
             $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('');
         }
-        
-        if(convertDate(EndDateOFService) < convertDate(DateOFService)){
-    
+
+        if(category_enddateofservice == 1){
+            $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", DateOFService);
+            EndDateOFService = $(`#quote_${quoteKey}_end_date_of_service`).val();
+        }
+
+        if((convertDate(EndDateOFService) < convertDate(DateOFService)) && category_enddateofservice != 1){
             alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
             $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
-            $(`#quote_${quoteKey}_number_of_nights`).val('');
+            $(`#quote_${quoteKey}_number_of_nights`).val('')
         } else {
 
             var number = convertDate(EndDateOFService) - convertDate(DateOFService);
@@ -1861,6 +1868,13 @@ $(document).ready(function($) {
                                 quote.find('.booking-category-detail-btn-parent').removeClass('d-flex');
                                 quote.find('.booking-category-detail-btn-parent').addClass('d-none');
                             }
+
+                            if(response.category.set_end_date_of_service == 1){
+                                var DateOFService = $(`#quote_${quoteKey}_date_of_service`).val();
+                                $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", DateOFService);
+                            }
+                            
+                            
                         }
                         
                         // reset product & supplier Sheet
@@ -2179,7 +2193,7 @@ $(document).ready(function($) {
                         quote.removeClass(`quote-0`);
                         quote.addClass(`quote-${quoteKey}`);
                    
-                        $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                        // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                         $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
@@ -2193,8 +2207,8 @@ $(document).ready(function($) {
                         $(`${quoteClass}`).find('.refundable-percentage-feild').addClass('d-none');
                         $(`${quoteClass}`).find('.category-id').val(category_id).change();
                         $(`${quoteClass}`).find('.badge-category-id').html(category_name);
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
-                        $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
 
                         $(`${quoteClass}`).find('.fileManger').attr('data-input', `quote_${quoteKey}_image` );
                         $(`${quoteClass}`).find('.fileManger').attr('data-preview', `quote_${quoteKey}_holder` );
@@ -2314,7 +2328,7 @@ $(document).ready(function($) {
                         quote.removeClass(`quote-0`);
                         quote.addClass(`quote-${quoteKey}`);
                    
-                        $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                        // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                         $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
                         $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
                         $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
@@ -2328,8 +2342,8 @@ $(document).ready(function($) {
                         $(`${quoteClass}`).find('.refundable-percentage-feild').addClass('d-none');
                         $(`${quoteClass}`).find('.category-id').val(category_id).change();
                         $(`${quoteClass}`).find('.badge-category-id').html(category_name);
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
-                        $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
 
                         $(`${quoteClass}`).find('.fileManger').attr('data-input', `quote_${quoteKey}_image` );
                         $(`${quoteClass}`).find('.fileManger').attr('data-preview', `quote_${quoteKey}_holder` );
@@ -2457,7 +2471,7 @@ $(document).ready(function($) {
                             });
                         });
 
-                        $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                        // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                         $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
                         $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
                         $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
@@ -2481,9 +2495,9 @@ $(document).ready(function($) {
                         $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
                         $(`${quoteClass}`).find('.category-id').val(category_id).change();
                         $(`${quoteClass}`).find('.badge-category-id').html(category_name);
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
-                        $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                         $(`${quoteClass}`).find('.badge-service-status').html('');
                         $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
 
@@ -2603,7 +2617,7 @@ $(document).ready(function($) {
                             });
                         });
 
-                        $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                        // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                         $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
                         $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
                         $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
@@ -2627,9 +2641,9 @@ $(document).ready(function($) {
                         $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
                         $(`${quoteClass}`).find('.category-id').val(category_id).change();
                         $(`${quoteClass}`).find('.badge-category-id').html(category_name);
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
-                        $(`${quoteClass}`).find('.badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
-                        $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                        $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                        // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                         $(`${quoteClass}`).find('.badge-service-status').html('');
                         $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
 
