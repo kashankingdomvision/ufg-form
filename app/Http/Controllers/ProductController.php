@@ -11,6 +11,7 @@ use App\Http\Helper;
 use App\Product;
 use App\Location;
 use App\Currency;
+use App\BookingType;
 
 class ProductController extends Controller
 {
@@ -40,8 +41,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $data['locations']  = Location::get();
-        $data['currencies'] = Currency::get();
+        $data['locations']      = Location::get();
+        $data['currencies']     = Currency::get();
+        $data['booking_types']  = BookingType::all();
 
         return view('products.create', $data);
     }
@@ -49,16 +51,17 @@ class ProductController extends Controller
     public function productsArray($request)
     {
         $data = [
-            'code'          => $request->code,
-            'name'          => $request->name,
-            'country_id'    => $request->country_id,
-            'location_id'   => $request->location_id,
-            'currency_id'   => $request->currency_id,
-            'duration'      => $request->duration,
-            'price'         => $request->price,
-            'description'   => $request->description,
-            'inclusions'    => $request->inclusions,
-            'packing_list'  => $request->packing_list,
+            'code'              => $request->code,
+            'name'              => $request->name,
+            'country_id'        => $request->country_id,
+            'location_id'       => $request->location_id,
+            'currency_id'       => $request->currency_id,
+            'booking_type_id'   => $request->booking_type_id,
+            'duration'          => $request->duration,
+            'price'             => $request->price,
+            'description'       => $request->description,
+            'inclusions'        => $request->inclusions,
+            'packing_list'      => $request->packing_list,
         ];
     
         return $data;
@@ -86,9 +89,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $data['product']    = Product::findOrFail(decrypt($id));
-        $data['locations']  = Location::get();
-        $data['currencies'] = Currency::get();
+        $data['product']       = Product::findOrFail(decrypt($id));
+        $data['locations']     = Location::get();
+        $data['currencies']    = Currency::get();
+        $data['booking_types'] = BookingType::all();
 
         return view('products.edit', $data);
     }

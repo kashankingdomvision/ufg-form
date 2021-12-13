@@ -12,6 +12,7 @@ class Product extends Model
         'country_id',
         'location_id',
         'currency_id',
+        'booking_type_id',
         'duration',
         'price',
         'description',
@@ -23,5 +24,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Supplier::class, 'supplier_products', 'product_id', 'supplier_id');
         // return $this->belongsToMany(Product::class, 'supplier_products', 'product_id', 'supplier_id');
+    }
+
+    function getBookingType() {
+        return $this->hasOne(BookingType::class, 'id', 'booking_type_id');
     }
 }

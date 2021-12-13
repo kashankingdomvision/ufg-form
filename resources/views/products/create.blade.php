@@ -76,6 +76,20 @@
                   </div>
 
                   <div class="form-group">
+                    <label>Payment Type </label>
+                    <select name="booking_type_id" class="form-control select2single booking-type-id">
+                      <option value="" >Select Payment Type</option>
+                      @foreach ($booking_types as $booking_type)
+                        <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" > {{$booking_type->name}} </option>
+                      @endforeach
+                    </select>
+
+                    @error('booking_type_id')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                  </div>
+
+                  <div class="form-group">
                     <label>Price </label>
                     <input type="text" name="price"  class="form-control @error('price') is-invalid @enderror" placeholder="Price" >
                     @error('price')
