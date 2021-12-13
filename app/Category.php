@@ -13,7 +13,8 @@ class Category extends Model
         'feilds',
         'quote',
         'booking',
-        'sort_order'
+        'sort_order',
+        'set_end_date_of_service',
     ];
 
     public function getSupplier()

@@ -85,6 +85,10 @@
                   <input type="hidden" name="booking" class="booking" value="{{$category->booking}}"><input id="booking"   type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->booking == 1) ? 'checked': '' }}><label for="booking" > &nbsp; Booking</label>
                 </div>
 
+                <div class="form-group">
+                  <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="{{$category->set_end_date_of_service}}"><input id="set_end_date_of_service" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->set_end_date_of_service == 1) ? 'checked': '' }}><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
+                </div>
+
                 <div id="build-wrap"></div>
               </div>
 
@@ -169,12 +173,13 @@
         },
         onSave: function (evt, formData) {
 
-          var categoryName = $('.name').val();
-          var id           = $('.id').val();
-          var quote        = $('.quote').val();
-          var booking      = $('.booking').val();
-          var sort_order   = $('.sort-order').val();
-          var url          = '{{route('categories.update' )}}';
+          var categoryName             = $('.name').val();
+          var id                       = $('.id').val();
+          var quote                    = $('.quote').val();
+          var booking                  = $('.booking').val();
+          var sort_order               = $('.sort-order').val();
+          var set_end_date_of_service  = $('.set_end_date_of_service').val();
+          var url                      = '{{route('categories.update' )}}';
 
           if(formData == '[]'){
             formData = '';
@@ -187,6 +192,7 @@
             quote      : quote,
             booking    : booking,
             sort_order : sort_order,
+            set_end_date_of_service : set_end_date_of_service,
             "_token"   : "{{ csrf_token() }}",
           };
 

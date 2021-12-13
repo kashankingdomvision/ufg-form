@@ -73,13 +73,16 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-
                 <div class="form-group">
                   <label>Appeared In <span style="color:red">*</span></label>
                   <br>
                   <input type="hidden" name="quote" class="quote" value="0"><input id="quote"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="quote"> &nbsp; Quote</label>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <input type="hidden" name="booking" class="booking" value="0"><input id="booking"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
+                </div>
+
+                <div class="form-group">
+                  <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="0"><input id="set_end_date_of_service"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
                 </div>
                 
                 <div id="build-wrap"></div>
@@ -164,11 +167,12 @@
       },
       onSave: function (evt, formData) {
 
-        var categoryName = $('.name').val();
-        var sort_order   = $('.sort-order').val();
-        var quote        = $('.quote').val();
-        var booking      = $('.booking').val();
-        var url          = '{{route('categories.store')}}';
+        var categoryName            = $('.name').val();
+        var sort_order              = $('.sort-order').val();
+        var quote                   = $('.quote').val();
+        var booking                 = $('.booking').val();
+        var set_end_date_of_service = $('.set_end_date_of_service').val();
+        var url                     = '{{route('categories.store')}}';
 
         if(formData == '[]'){
           formData = '';
@@ -180,6 +184,7 @@
           quote      : quote,
           booking    : booking,
           sort_order : sort_order,
+          set_end_date_of_service : set_end_date_of_service,
           "_token"   : "{{ csrf_token() }}",
         };
 
