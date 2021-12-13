@@ -207,6 +207,13 @@ class ResponseController extends Controller
         return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
     }
 
+    public function getProductBookingType(Request $request)
+    {
+        $product = Product::find($request->product_id);
+
+        return response()->json([ 'product' => $product ]);
+    }
+
     public function getLocationToSupplier(Request $request)
     {
         // $suppliers = Supplier::where('location_id', $request->suppplier_location_id)->where()->get();

@@ -484,6 +484,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
         Route::get('location/to/product',array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
+        
+        Route::get('get-product-booking-type',array('as'=>'get.product.booking.type','uses'=>'ResponseController@getProductBookingType'));
     });
 
 
