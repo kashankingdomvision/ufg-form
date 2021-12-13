@@ -254,7 +254,7 @@
                                                     </td>
                                                     <td>
                                                         @if(isset($booking_detail->getBooking->quote_ref))
-                                                            <a href="{{ route('bookings.show', encrypt($booking_detail->getBooking->id)) }}"> {{$booking_detail->getBooking->quote_ref}} </a>
+                                                            <a href="{{ route('bookings.show', encrypt($booking_detail->getBooking->id)) }}" target="_blank"> {{$booking_detail->getBooking->quote_ref}} </a>
                                                         @endif
                                                     </td>
                                                     <td>{{ $booking_detail->getBooking->getSeason->name }}</td>
