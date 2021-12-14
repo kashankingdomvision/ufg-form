@@ -169,4 +169,4 @@ INSERT INTO `products` (`id`, `code`, `name`, `country_id`, `location_id`, `curr
 (166, '', 'Zagreb to Zadar with a stop at Plitvice Lakes', NULL, 5, NULL, NULL, NULL, '', 'Entrance fee included', '', NULL, NULL);
 
 -- dummy data 
-INSERT INTO `products` (`id`, `code`, `name`, `country_id`, `location_id`, `currency_id`, `booking_type_id`, `duration`, `price`, `description`, `inclusions`, `packing_list`, `created_at`, `updated_at`) VALUES (NULL, 'PA', 'PIA Airline', NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `products` (`id`, `code`, `name`, `country_id`, `location_id`, `currency_id`, `booking_type_id`, `duration`, `price`, `description`, `inclusions`, `packing_list`, `created_at`, `updated_at`) VALUES (NULL, 'PA', 'PIA Airline', NULL, '1', NULL, '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
