@@ -20,7 +20,7 @@ class CreateBookingCategoryDetailsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->string('type');
             $table->enum('multiple', ['true' , 'false']);
-            $table->string('key');
+            $table->string('label');
             $table->string('value');
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');

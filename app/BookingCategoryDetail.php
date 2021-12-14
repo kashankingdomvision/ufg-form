@@ -13,7 +13,7 @@ class BookingCategoryDetail extends Model
         'category_id',
         'type',
         'multiple',
-        'key',
+        'label',
         'value',
     ];
 }

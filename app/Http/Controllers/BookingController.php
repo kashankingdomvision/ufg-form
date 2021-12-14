@@ -344,7 +344,7 @@ class BookingController extends Controller
             'booking_detail_id'  => $quoteD['id'],
             'category_id'      => $quoteD['category_id'],
             'type'             => $category_detail['type'],
-            'key'              => $category_detail['label'],
+            'label'            => $category_detail['label'],
         ];
 
         if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){

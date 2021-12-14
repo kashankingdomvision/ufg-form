@@ -688,7 +688,7 @@ class ReportController extends Controller
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
         $data['brands']          = Brand::all();
         $data['booking_seasons'] = Season::all();
-        $data['booking_category_details'] = BookingCategoryDetail::groupBy('key')->orderBy('key','ASC')->get();
+        $data['booking_category_details'] = BookingCategoryDetail::groupBy('label')->orderBy('label','ASC')->get();
     
         return view('reports.transfer_report', $data);
     }

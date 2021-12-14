@@ -283,7 +283,7 @@ class QuoteController extends Controller
             'quote_detail_id'  => $quoteD['id'],
             'category_id'      => $quoteD['category_id'],
             'type'             => $category_detail['type'],
-            'key'              => $category_detail['label'],
+            'label'            => $category_detail['label'],
         ];
 
         if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
@@ -308,7 +308,7 @@ class QuoteController extends Controller
             'category_id'        => $quoteD['category_id'],
             'type'               => $category_detail['type'],
             'multiple'           => $category_detail['multiple'],
-            'key'                => $category_detail['key'],
+            'label'              => $category_detail['label'],
             'value'              => $category_detail['value'],
         ];
     }
@@ -321,7 +321,7 @@ class QuoteController extends Controller
             'category_id'        => $quoteD['category_id'],
             'type'               => $category_detail['type'],
             'multiple'           => $category_detail['multiple'],
-            'key'                => $category_detail['key'],
+            'label'              => $category_detail['label'],
             'value'              => $category_detail['value'],
         ];
     }
