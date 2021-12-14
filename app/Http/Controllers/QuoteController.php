@@ -410,6 +410,20 @@ class QuoteController extends Controller
                     ]);
                 }
 
+                /* quote_category_details values*/ 
+                if(isset($qu_details['category_details']) && !empty($qu_details['category_details'])){
+
+                $category_details = json_decode($qu_details['category_details'], true);
+
+                foreach ($category_details as $category_detail){
+                    if(isset($category_detail['userData'])){
+
+                        $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($qd, $category_detail);
+                        QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
+                    }
+                }
+            }
+
             }
         }
        //pax data
