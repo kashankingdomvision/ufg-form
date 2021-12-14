@@ -131,11 +131,11 @@
           data: {
             label: 'Type',
             options: {
+              'none': 'None',
               'airport_codes': 'Airport Codes',
               'harbours': 'Harbours, Train and Points of Interest',
               'hotels': 'Hotels',
               'all': 'All',
-              'none': 'None'
             },
           }
         },
