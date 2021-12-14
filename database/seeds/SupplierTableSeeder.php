@@ -20,6 +20,24 @@ class SupplierTableSeeder extends Seeder
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/supplier_categories.sql');
         DB::unprepared($sql);
 
+
+        /* Dummy supplier for transfer */ 
+        $supplier = Supplier::create([
+            'name'         => 'Taimoor',
+            'country_id'   => 56,
+            'location_id'  => 1,
+        ]);
+
+        SupplierCategory::create([
+            'supplier_id' => $supplier->id,
+            'category_id' => 1,
+        ]);
+
+        SupplierProduct::create([
+            'supplier_id' => $supplier->id,
+            'product_id'  => 167,
+        ]);
+
         // $data = [
         //     [
         //         'currency_id'   => 1,
