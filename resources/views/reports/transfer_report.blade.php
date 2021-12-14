@@ -257,15 +257,15 @@
                                                             <a href="{{ route('bookings.show', encrypt($booking_detail->getBooking->id)) }}" target="_blank"> {{$booking_detail->getBooking->quote_ref}} </a>
                                                         @endif
                                                     </td>
-                                                    <td>{{ $booking_detail->getBooking->getSeason->name }}</td>
+                                                    <td>{{ isset($booking_detail->getBooking->getSeason->name) && !empty($booking_detail->getBooking->getSeason->name) ? $booking_detail->getBooking->getSeason->name : '' }}</td>
                                                     <td>{{ $booking_detail->date_of_service }}</td>
                                                     <td>{{ $booking_detail->end_date_of_service }}</td>
                                                     <td>{{ $booking_detail->time_of_service }}</td>
-                                                    <td>{{ $booking_detail->getSupplier->name }}</td>
-                                                    <td>{{ $booking_detail->getBooking->lead_passenger_name }}</td>
-                                                    <td>{{ $booking_detail->getBooking->pax_no }}</td>
-                                                    <td>{{ $booking_detail->getCategory->name }}</td>
-                                                    <td>{{ $booking_detail->getProduct->name }}</td>
+                                                    <td>{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : '' }}</td>
+                                                    <td>{{ isset($booking_detail->getBooking->lead_passenger_name) && !empty($booking_detail->getBooking->lead_passenger_name) ? : ''  }}</td>
+                                                    <td>{{ isset($booking_detail->getBooking->pax_no) && !empty($booking_detail->getBooking->pax_no) ? : ''  }}</td>
+                                                    <td>{{ isset($booking_detail->getCategory->name)  && !empty($booking_detail->getCategory->name) ? : ''  }}</td>
+                                                    <td>{{ isset($booking_detail->getProduct->name)   && !empty($booking_detail->getProduct->name) ? : ''  }}</td>
                                                     <td>
                                                         @if($booking_detail->status == 'active')
                                                             <h5><span class="badge badge-success">Booked</span></h5>
