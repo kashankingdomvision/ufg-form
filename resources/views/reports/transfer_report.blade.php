@@ -139,7 +139,7 @@
                                                 <select class="form-control select2single transfer-detail-feild" name="transfer_detail_feild" bid="transfer_detail_feild" >
                                                     <option value="">Select Feild</option>
                                                     @foreach ($booking_category_details as $booking_category_detail)
-                                                        <option value="{{ $booking_category_detail->key }}" {{ (old('transfer_detail_feild') == $booking_category_detail->key)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->key) ? 'selected' : null) }} >{{ $booking_category_detail->key }}</option>
+                                                        <option value="{{ $booking_category_detail->key }}" {{ (old('transfer_detail_feild') == $booking_category_detail->label)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->label) ? 'selected' : null) }} >{{ $booking_category_detail->label }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
