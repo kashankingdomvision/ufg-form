@@ -630,6 +630,45 @@ class ReportController extends Controller
         return view('reports.refund_by_credit_note', $data);
     }
 
+    public function category_details_filter(Request $request) {
+
+        // dd($request->all());
+
+        $type  = $request->type;
+        $label = $request->label;
+        $data  = $request->data;
+
+        $label_results = '';
+
+        $dataTypes = ['airport_codes', 'harbours', 'hotels', 'all'];
+
+
+        if($type == 'autocomplete' && in_array($data, $dataTypes)){
+
+            if($data == 'airport_codes'){
+                $label_results = DB::table('airport_codes as value')->get(['name as value', 'iata_code', 'country']);
+            }
+
+            if($data == 'harbours'){
+                $label_results = DB::table('harbours')->get(['port_id', 'name as value', 'country']);
+            }
+
+            if($data == 'hotels'){
+                $label_results = DB::table('hotels')->get(['accom_code', 'name as value', 'country','currency']);
+            }
+
+            if($data == 'all'){
+                $label_results = DB::table('hotels')->select('name as value')->union(DB::table('airport_codes')->select('name'))->union(DB::table('harbours')->select('name'))->get();
+            }
+
+        }else{
+
+            $label_results = BookingCategoryDetail::where('label', $request->label )->get(['value' , 'id']);
+        }
+    
+        return response()->json([ 'label_results' => $label_results ]);
+    }
+
     public function transfer_report(Request $request) {
 
         $query = BookingDetail::where('category_id',1);

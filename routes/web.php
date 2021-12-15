@@ -486,6 +486,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('location/to/product',array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
         
         Route::get('get-product-booking-type',array('as'=>'get.product.booking.type','uses'=>'ResponseController@getProductBookingType'));
+
+        
+        Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
     });
 
 

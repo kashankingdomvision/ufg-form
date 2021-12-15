@@ -132,25 +132,43 @@
 
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-2">
+                                    <div class="row custom-filter-row">
+                                        {{-- <div class="col-md-2" >
                                             <div class="form-group">
-                                                <label>Transfer Details</label>
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="w-100 bd-highlight"><label>Transfer Details</label></div>
+                                                </div>
                                                 <select class="form-control select2single transfer-detail-feild" name="transfer_detail_feild" bid="transfer_detail_feild" >
                                                     <option value="">Select Feild</option>
                                                     @foreach ($booking_category_details as $booking_category_detail)
-                                                        <option value="{{ $booking_category_detail->key }}" {{ (old('transfer_detail_feild') == $booking_category_detail->label)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->label) ? 'selected' : null) }} >{{ $booking_category_detail->label }}</option>
+                                                        <option value="{{ $booking_category_detail->label }}" data-name="{{$booking_category_detail->label}}" {{ (old('transfer_detail_feild') == $booking_category_detail->label)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->label) ? 'selected' : null) }} >{{ $booking_category_detail->label }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="col-md-2" id="more_filter">
+                                            <div class="form-group">
+                                                <div class="d-flex bd-highlight">
+                                                    <div class="w-100 bd-highlight"><label>More Filters</label></div>
+                                                </div>
+
+                                                <select class="form-control select2single transfer-detail-feild" name="transfer_detail_feild" bid="transfer_detail_feild" >
+                                                    <option value="">Select Feild</option>
+                                                    @foreach ($booking_category_details as $booking_category_detail)
+                                                        <option value="{{ $booking_category_detail->label }}" data-optionLable="{{$booking_category_detail->label}}" data-optionType="{{$booking_category_detail->type}}" data-optionData="{{$booking_category_detail->data}}" {{ (old('transfer_detail_feild') == $booking_category_detail->label)? 'selected': ((request()->get('transfer_detail_feild') == $booking_category_detail->label) ? 'selected' : null) }} >{{ $booking_category_detail->label }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
+                                   
 
-                                        <div class="col-md-2 {{ !request()->get('search') || !request()->get('transfer_detail_feild') ? 'd-none' : '' }}" id="search_transfer_detail">
+                                        {{-- <div class="col-md-2 {{ !request()->get('search') || !request()->get('transfer_detail_feild') ? 'd-none' : '' }}" id="search_transfer_detail">
                                             <div class="form-group">
                                                 <label>Search Transfer Details</label>
                                                 <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                    
                                     <div class="row mt-1">

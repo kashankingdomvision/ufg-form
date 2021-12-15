@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 
 import daterangepicker from 'daterangepicker';
+import { result } from 'lodash';
 
 // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
@@ -117,6 +118,15 @@ $(document).ready(function($) {
         $('.select2single').select2({
             width: '100%',
             theme: "bootstrap",
+            templateResult: formatState,
+            templateSelection: formatState,
+        });
+    }
+
+    function reinitializedMultiDynamicFeilds() {
+        $('.select2-multiple').select2({
+            width: '100%',
+            theme: "classic",
             templateResult: formatState,
             templateSelection: formatState,
         });
@@ -1882,7 +1892,7 @@ $(document).ready(function($) {
                         // quote.find('.view-supplier-rate').attr("href","");
                         // quote.find('.view-supplier-rate').html("");
                     }
-                })
+                });
 
             });
 
@@ -3803,6 +3813,46 @@ $(document).ready(function($) {
             });
 
 
+       
+            function createFilter(type,label,data){
+
+                if(label == null){
+                    $('.filter-col').remove();
+                    return;
+                }
+
+                var options;
+
+                $.ajax({
+                    type: "GET",
+                    url: `${BASEURL}category-details-filter`,
+                    data: { 'type': type, 'label': label, 'data': data },
+                    datatype: "json",
+                    async: false,
+                    success: function(response){
+
+                        var result = '';
+                        $.each(response.label_results, function(key, value) {
+                            result += `<option value="${value.id}"> ${value.value} </option>`;
+                        });
+
+                        options = result;
+                    }
+                });
+
+                var multipleSelect2HTML = 
+                `<div class="col-md-2 filter-col">
+                    <div class="d-flex bd-highlight">
+                        <div class="w-100 bd-highlight"><label>${label}</label></div>
+                        <div class="flex-shrink-1 bd-highlight" style="font-size: 11px;"><i class="fas fa-times text-danger border border-danger remove-col" style="padding: 4px; border-radius: 4px; cursor: pointer;"></i></div>
+                    </div>
+                    <select class="form-control select2-multiple" multiple name="columns[${label}][]">${options}</select>
+                </div>`;
+          
+                return multipleSelect2HTML;
+            }
+
+ 
             $(document).on('change', '.transfer-detail-feild', function() {
 
                 var feild = $(this).val();
@@ -3813,8 +3863,17 @@ $(document).ready(function($) {
                     $('#search_transfer_detail').removeClass('d-none');
                 }
 
-                console.log("working");
+                var type  = $(this).find(':selected').attr('data-optionType');
+                var label = $(this).find(':selected').attr('data-optionLable');
+                var data  = $(this).find(':selected').attr('data-optionData');
 
+                $(createFilter(type,label,data)).insertBefore("#more_filter");
+                reinitializedMultiDynamicFeilds();
+            });
+
+
+            $(document).on('click', '.remove-col', function() {
+                $(this).closest('.filter-col').remove();
             });
 
             $(document).on('click', '.clone_booking_finance', function() {
