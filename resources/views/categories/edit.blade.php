@@ -137,6 +137,7 @@
               data: {
                   label: 'Type',
                   options: {
+                      '': 'Select Type',
                       'none': 'None',
                       'airport_codes': 'Airport Codes',
                       'harbours': 'Harbours, Train and Points of Interest',
