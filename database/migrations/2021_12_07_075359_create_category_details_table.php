@@ -6,6 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCategoryDetailsTable extends Migration
 {
+// type
+// label
+// value
+// multiple
+// data
+// inline
+// min
+// max
+// subtype
+// toggle
     /**
      * Run the migrations.
      *
@@ -18,10 +28,19 @@ class CreateCategoryDetailsTable extends Migration
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('quote_detail_id');
             $table->unsignedBigInteger('category_id');
-            $table->string('type');
+
+            $table->string('type')->nullable();
+            $table->string('label')->nullable();
+            $table->string('value')->nullable();
             $table->enum('multiple', ['true' , 'false']);
-            $table->string('label');
-            $table->string('value');
+
+            $table->string('data')->nullable();
+            $table->enum('inline', ['true' , 'false']);
+            $table->mediumInteger('min')->nullable();
+            $table->mediumInteger('max')->nullable();
+            $table->string('subtype')->nullable();
+            $table->enum('toggle', ['true' , 'false']);
+            
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('quote_detail_id')->references('id')->on('quote_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');

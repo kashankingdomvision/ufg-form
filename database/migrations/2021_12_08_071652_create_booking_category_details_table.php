@@ -18,10 +18,19 @@ class CreateBookingCategoryDetailsTable extends Migration
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('booking_detail_id');
             $table->unsignedBigInteger('category_id');
-            $table->string('type');
+
+            $table->string('type')->nullable();
+            $table->string('label')->nullable();
+            $table->string('value')->nullable();
             $table->enum('multiple', ['true' , 'false']);
-            $table->string('label');
-            $table->string('value');
+
+            $table->string('data')->nullable();
+            $table->enum('inline', ['true' , 'false']);
+            $table->mediumInteger('min')->nullable();
+            $table->mediumInteger('max')->nullable();
+            $table->string('subtype')->nullable();
+            $table->enum('toggle', ['true' , 'false']);
+
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booking_detail_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');

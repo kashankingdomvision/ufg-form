@@ -284,17 +284,23 @@ class QuoteController extends Controller
             'category_id'      => $quoteD['category_id'],
             'type'             => $category_detail['type'],
             'label'            => $category_detail['label'],
+            'data'             => isset($category_detail['data']) ? $category_detail['data'] : NULL,
+            'inline'           => (isset($category_detail['inline']) && $category_detail['inline'] == true) ? 'true' : 'false',
+            'min'              => isset($category_detail['min']) ? $category_detail['min'] : NULL,
+            'max'              => isset($category_detail['max']) ? $category_detail['max'] : NULL,
+            'subtype'          => isset($category_detail['subtype']) ? $category_detail['subtype'] : NULL,
+            'toggle'           => (isset($category_detail['toggle']) && $category_detail['toggle'] == true) ? 'true' : 'false',
         ];
 
         if($category_detail['type'] == 'checkbox-group' || ( $category_detail['type'] == 'select' && $category_detail['multiple'] == true ) ){
 
-            $data['multiple'] = 'true';
             $data['value']    = json_encode($category_detail['userData']);
+            $data['multiple'] = 'true';
         }
         else{
 
-            $data['multiple'] = 'false';
             $data['value']    = $category_detail['userData'][0];
+            $data['multiple'] = 'false';
         }
 
         return $data;
@@ -307,8 +313,14 @@ class QuoteController extends Controller
             'booking_detail_id'  => $quoteD['id'],
             'category_id'        => $quoteD['category_id'],
             'type'               => $category_detail['type'],
-            'multiple'           => $category_detail['multiple'],
             'label'              => $category_detail['label'],
+            'data'               => isset($category_detail['data']) ? $category_detail['data'] : NULL,
+            'inline'             => (isset($category_detail['inline']) && $category_detail['inline'] == true) ? 'true' : 'false',
+            'min'                => isset($category_detail['min']) ? $category_detail['min'] : NULL,
+            'max'                => isset($category_detail['max']) ? $category_detail['max'] : NULL,
+            'subtype'            => isset($category_detail['subtype']) ? $category_detail['subtype'] : NULL,
+            'toggle'             => (isset($category_detail['toggle']) && $category_detail['toggle'] == true) ? 'true' : 'false',
+            'multiple'           => $category_detail['multiple'],
             'value'              => $category_detail['value'],
         ];
     }

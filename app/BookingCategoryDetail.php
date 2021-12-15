@@ -12,8 +12,14 @@ class BookingCategoryDetail extends Model
         'booking_detail_id',
         'category_id',
         'type',
-        'multiple',
         'label',
         'value',
+        'multiple',
+        'data',
+        'inline',
+        'min',
+        'max',
+        'subtype',
+        'toggle'
     ];
 }
