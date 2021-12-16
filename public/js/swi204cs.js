@@ -70322,12 +70322,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function createFilter(type, label, data) {
+    var options;
+
     if (label == null) {
       $('.filter-col').remove();
       return;
     }
 
-    var options;
     $.ajax({
       type: "GET",
       url: "".concat(BASEURL, "category-details-filter"),
@@ -70341,12 +70342,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(response) {
         var result = '';
         $.each(response.label_results, function (key, value) {
-          result += "<option value=\"".concat(value.id, "\"> ").concat(value.value, " </option>");
+          result += "<option value=\"".concat(value.value, "\"> ").concat(value.value, " </option>");
         });
         options = result;
       }
     });
-    var multipleSelect2HTML = "<div class=\"col-md-2 filter-col\">\n                    <div class=\"d-flex bd-highlight\">\n                        <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                        <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n                    </div>\n                    <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n                </div>");
+    var multipleSelect2HTML = "<div class=\"col-md-3 filter-col\">\n                    <div class=\"d-flex bd-highlight\">\n                        <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                        <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n                    </div>\n                    <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n                </div>");
     return multipleSelect2HTML;
   }
 

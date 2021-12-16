@@ -266,6 +266,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
 
         Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
+        Route::get('transfer-report-listing', array('as' => 'transfer.report.listing', 'uses' => 'ReportController@transfer_report_listing'));
 
         Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
 

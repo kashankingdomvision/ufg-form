@@ -630,36 +630,44 @@ class ReportController extends Controller
         return view('reports.refund_by_credit_note', $data);
     }
 
+    /* used in transfer report*/ 
+    public function get_autocomplete_data($data) {
+
+        $label_results = '';
+
+        if($data == 'airport_codes'){
+            $label_results = DB::table('airport_codes as value')->get(['id', 'name as value', 'iata_code', 'country']);
+        }
+
+        if($data == 'harbours'){
+            $label_results = DB::table('harbours')->get(['id', 'port_id', 'name as value', 'country']);
+        }
+
+        if($data == 'hotels'){
+            $label_results = DB::table('hotels')->get(['id', 'accom_code', 'name as value', 'country','currency']);
+        }
+
+        if($data == 'all'){
+            $label_results = DB::table('hotels')->select('name as value')->union(DB::table('airport_codes')->select('name'))->union(DB::table('harbours')->select('name'))->get();
+        }
+
+        return $label_results;
+    }
+
+    /* used in transfer report*/ 
     public function category_details_filter(Request $request) {
 
         // dd($request->all());
 
-        $type  = $request->type;
-        $label = $request->label;
-        $data  = $request->data;
-
+        $type          = $request->type;
+        $label         = $request->label;
+        $data          = $request->data;
+        $dataTypes     = ['airport_codes', 'harbours', 'hotels', 'all'];
         $label_results = '';
-
-        $dataTypes = ['airport_codes', 'harbours', 'hotels', 'all'];
-
 
         if($type == 'autocomplete' && in_array($data, $dataTypes)){
 
-            if($data == 'airport_codes'){
-                $label_results = DB::table('airport_codes as value')->get(['name as value', 'iata_code', 'country']);
-            }
-
-            if($data == 'harbours'){
-                $label_results = DB::table('harbours')->get(['port_id', 'name as value', 'country']);
-            }
-
-            if($data == 'hotels'){
-                $label_results = DB::table('hotels')->get(['accom_code', 'name as value', 'country','currency']);
-            }
-
-            if($data == 'all'){
-                $label_results = DB::table('hotels')->select('name as value')->union(DB::table('airport_codes')->select('name'))->union(DB::table('harbours')->select('name'))->get();
-            }
+            $label_results = $this->get_autocomplete_data($data);
 
         }else{
 
@@ -673,6 +681,24 @@ class ReportController extends Controller
 
         $query = BookingDetail::where('category_id',1);
 
+        $query->whereHas('getBooking', function($query) use($request){
+            $query->where('booking_status','confirmed' );
+        });
+
+        $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
+        $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+        $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
+        $data['brands']          = Brand::all();
+        $data['booking_seasons'] = Season::all();
+        $data['booking_category_details'] = BookingCategoryDetail::groupBy('label')->orderBy('label','ASC')->get();
+
+
+        return view('reports.transfer_report', $data);
+    }
+
+    public function transfer_report_listing(Request $request) {
+
+        $query = BookingDetail::where('category_id',1);
         $query->whereHas('getBooking', function($query) use($request){
             $query->where('booking_status','confirmed' );
         });
@@ -711,15 +737,15 @@ class ReportController extends Controller
             if($request->has('status') && !empty($request->status)){
                 $query->where('status', $request->status);
             }
-
-            if($request->has('transfer_detail_feild') && !empty($request->transfer_detail_feild)){
+      
+            if(request()->has('columns')){
                 $query->whereHas('getCategoryDetailFeilds', function($query) use($request){
-                    $query->where('key', $request->transfer_detail_feild );
-                    $query->where('value', 'like', '%' . $request->search . '%');
-
+                    $query->where([
+                        ['label', array_keys($request->columns)],
+                        ['value',  array_values($request->columns)],
+                    ]);
                 });
             }
-
         }
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
@@ -728,8 +754,8 @@ class ReportController extends Controller
         $data['brands']          = Brand::all();
         $data['booking_seasons'] = Season::all();
         $data['booking_category_details'] = BookingCategoryDetail::groupBy('label')->orderBy('label','ASC')->get();
-    
-        return view('reports.transfer_report', $data);
+
+        return view('reports.includes.transfer_report_listing', $data);
     }
 
     // *** REPORTS IN EXPORT *** //

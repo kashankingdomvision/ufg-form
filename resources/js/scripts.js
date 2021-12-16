@@ -3816,12 +3816,12 @@ $(document).ready(function($) {
        
             function createFilter(type,label,data){
 
+                var options;
+
                 if(label == null){
                     $('.filter-col').remove();
                     return;
                 }
-
-                var options;
 
                 $.ajax({
                     type: "GET",
@@ -3833,7 +3833,7 @@ $(document).ready(function($) {
 
                         var result = '';
                         $.each(response.label_results, function(key, value) {
-                            result += `<option value="${value.id}"> ${value.value} </option>`;
+                            result += `<option value="${value.value}"> ${value.value} </option>`;
                         });
 
                         options = result;
@@ -3841,7 +3841,7 @@ $(document).ready(function($) {
                 });
 
                 var multipleSelect2HTML = 
-                `<div class="col-md-2 filter-col">
+                `<div class="col-md-3 filter-col">
                     <div class="d-flex bd-highlight">
                         <div class="w-100 bd-highlight"><label>${label}</label></div>
                         <div class="flex-shrink-1 bd-highlight" style="font-size: 11px;"><i class="fas fa-times text-danger border border-danger remove-col" style="padding: 4px; border-radius: 4px; cursor: pointer;"></i></div>
