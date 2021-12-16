@@ -124,7 +124,6 @@
         'style',
         'access',
         'accept',
-        'value'
       ],
       typeUserAttrs: {
         autocomplete: {

@@ -129,7 +129,6 @@
           'style',
           'access',
           'accept',
-          'value'
         ],
         formData: presetData,
         typeUserAttrs: {
