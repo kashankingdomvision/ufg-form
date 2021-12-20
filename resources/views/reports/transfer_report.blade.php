@@ -262,6 +262,49 @@
 <script>
     $(document).ready(function() {
 
+        var colJson = {
+            'Zoho_Reference'        : true, 
+            'Quote_Ref_#'           : true, 
+            'Season'                : true,
+            'Lead_Passenger_Name'   : true,
+            'Pax_No.'               : true,
+            'Start_Date_of_Service' : true,
+            'End_Date_of_Service'   : true,
+            'Number_of_Nights'      : true,
+            'Time_of_Service'       : true,
+            'Category'              : true,
+            'Supplier_Location'     : true,
+            'Supplier'              : true,
+            'Product_Location'      : true,
+            'Product'               : true,
+            'Payment_Type'          : true,
+            'Supplier_Currency'     : true,
+            'Estimated_Cost'        : true,
+            'Actual_Cost'           : true,
+            'Markup_Amount'         : true,
+            'Markup_%'              : true,
+            'Selling_Price'         : true,
+            'Profit_%'              : true,
+            'Service_Details'       : true,
+            'Internal_Comments'     : true,
+            'Status'                : true,
+        };
+        console.log(colJson);
+
+        // $('th').each(function(e){
+        //     var _key = $(this).attr('data-column');
+
+        //     console.log(colJson);
+
+
+        //     if( colJson[_key] ) {
+        //         $('[data-column="'+ _key +'"]').removeClass('d-none');
+        //     }
+        //     else {
+        //         $('[data-column="'+ _key +'"]').addClass('d-none');
+        //     }
+        // });
+
         $(document).on('submit', '#filter', function(e){
 
             e.preventDefault();
