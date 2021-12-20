@@ -1176,6 +1176,7 @@
       if(fieldData[i].type === "autocomplete")
       {
         if(fieldData[i].data !== "none") {
+          fieldData[i].values = [];
           $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
             fieldData[i].values.push({
                 label: item.name,

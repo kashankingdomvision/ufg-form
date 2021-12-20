@@ -1369,6 +1369,9 @@
       {
         if(fieldData[i].data !== "none") {
           $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
+            if(fieldData[i].values.some(val => val.value == 'option-1')) {
+              fieldData[i].values = [];
+            }
             if(fieldData[i].values.some(val => val.label == item.name)) {
               return fieldData[i].values;
             }
