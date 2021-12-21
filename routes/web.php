@@ -240,6 +240,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
         Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
     	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+        Route::post('transfer-report-column', array('as' => 'transfer.report.column', 'uses' => 'UserController@transfer_report_column'));
     });
 
     Route::resource('roles', 'RoleController',['only' => [

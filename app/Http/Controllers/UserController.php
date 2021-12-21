@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 use App\Brand;
 use App\Currency;
 use App\Role;
@@ -160,5 +162,11 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success_message', 'User deleted successfully');
     }
     
-   
+    public function transfer_report_column(Request $request)
+    {
+        $column_preferences = json_encode($request->all());
+        User::where('id' , Auth::id())->update(['column_preferences' => $column_preferences ]);
+
+        return \Response::json(['status' => true, 'success_message' => 'Column Preferences Updated']);
+    }
 }

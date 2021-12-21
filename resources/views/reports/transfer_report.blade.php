@@ -227,11 +227,12 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">Transfer Report List</h3>
+                                    <a href="javascript:void(0)" class="btn btn-dark btn-sm float-right transfer-modal rounded"><i class="fas fa-edit"></i></a>
                                 {{-- <a href="">
                                     <button class="btn btn-dark btn-sm float-right">Export in Excel</button>
                                 </a> --}}
                             </div>
-                            <div class="card-body p-0">
+                            <div class="card-body p-0" id="card_body">
                                 <div class="table-responsive" id="table_parent">
                                     @include('reports.includes.transfer_report_listing', ['booking_details' => $booking_details ])
                                 </div>
@@ -255,55 +256,85 @@
         </section>
 
     </div>
-
+    @include('reports.includes.transfer_column_modal')
 @endsection
 
 @push('js')
 <script>
     $(document).ready(function() {
 
-        var colJson = {
-            'Zoho_Reference'        : true, 
-            'Quote_Ref_#'           : true, 
-            'Season'                : true,
-            'Lead_Passenger_Name'   : true,
-            'Pax_No.'               : true,
-            'Start_Date_of_Service' : true,
-            'End_Date_of_Service'   : true,
-            'Number_of_Nights'      : true,
-            'Time_of_Service'       : true,
-            'Category'              : true,
-            'Supplier_Location'     : true,
-            'Supplier'              : true,
-            'Product_Location'      : true,
-            'Product'               : true,
-            'Payment_Type'          : true,
-            'Supplier_Currency'     : true,
-            'Estimated_Cost'        : true,
-            'Actual_Cost'           : true,
-            'Markup_Amount'         : true,
-            'Markup_%'              : true,
-            'Selling_Price'         : true,
-            'Profit_%'              : true,
-            'Service_Details'       : true,
-            'Internal_Comments'     : true,
-            'Status'                : true,
-        };
-        console.log(colJson);
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        var col = {!! json_encode(Auth::user()->column_preferences, JSON_HEX_TAG) !!};
+        var colJson = JSON.parse(col);
 
-        // $('th').each(function(e){
-        //     var _key = $(this).attr('data-column');
+        Object.keys(colJson).forEach(function(key, val) {
+            $('#transfer_column_modal_body').append(`<div>
+                <input type="hidden" name="${key}" value="${ colJson[key] == 'true' ? 'true' : 'false' }"><input type="checkbox" id="${key}" ${ colJson[key] == 'true' ? 'checked' : ''}  >
+                <label for="${key}"> &nbsp; ${key.replace(/_/g," ")}</label>
+            </div>`);
+        });
 
-        //     console.log(colJson);
+        $('input[type=checkbox]').click(function(){
+            (this.checked) ? $(this).prev().val('true') :  $(this).prev().val('false');
+            // if(this.checked)
+            // {
+            //     $(this).prev().val('true');
+            // }
+            // else
+            // {
+            //     $(this).prev().val('false');
+            // }
+        });
 
+        $('th, td').each(function(e){
+            var _key = $(this).attr('data-column');
 
-        //     if( colJson[_key] ) {
-        //         $('[data-column="'+ _key +'"]').removeClass('d-none');
-        //     }
-        //     else {
-        //         $('[data-column="'+ _key +'"]').addClass('d-none');
-        //     }
-        // });
+            if( colJson[_key] == 'true' ) {
+                $(`[data-column="${_key}"]`).removeClass('d-none');
+            }
+            else {
+                $(`[data-column="${_key}"]`).addClass('d-none');
+            }
+        });
+
+        $(document).on('submit', '.transfer-column-form', function(e){
+            e.preventDefault();
+
+            disabledFeild(".transfer-column-form [name=_token]");
+
+            $.ajax({
+                type: "POST",
+                url:  $(this).attr('action'),
+                data: $(this).serialize(),
+                beforeSend: function() {
+                    $("#transfer_column_save_btn").find('span').addClass('spinner-border spinner-border-sm');
+                },
+                success: function (data) {
+                    $("#transfer_column_save_btn").find('span').removeClass('spinner-border spinner-border-sm');
+                    jQuery('.transfer-column-modal').modal('hide');
+
+                    setTimeout(function() {
+                        if(data && data.status == true){
+                            alert(data.success_message);
+                            location.reload();
+                        }
+                    }, 400);
+                 
+                },
+                error: function(reject) {
+                    $("#transfer_column_save_btn").find('span').removeClass('spinner-border spinner-border-sm');
+                },
+            });
+        });
+
+        function disabledFeild(p) {
+            $(p).attr("disabled", true);
+        }
 
         $(document).on('submit', '#filter', function(e){
 
@@ -311,16 +342,15 @@
             load_records()
         });
 
+        $(document).on('click', '.transfer-modal', function(e){
+            e.preventDefault();
+            jQuery('.transfer-column-modal').modal('show');
+        });
+
         function load_records(url){
     
             var form = $('#filter').serialize();
             var url  = `{{ route('reports.transfer.report.listing') }}?${form}`;
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             $.ajax({
                 type: "GET",
