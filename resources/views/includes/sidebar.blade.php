@@ -398,7 +398,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link {{ $route == 'supplier-bulk-payments.view' ? 'active' : '' }}">
+                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link d-inline-flex {{ $route == 'supplier-bulk-payments.view' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>View Supplier Bulk Payments</p>
                             </a>
@@ -419,7 +419,7 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.harbours.index') }}" class="nav-link {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('setting.harbours.index') }}" class="nav-link d-inline-flex {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train and Points of Interest</p>
                             </a>
@@ -787,7 +787,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.refund.by.credit.note.report') }}" class="nav-link {{ $route == 'reports.refund.by.credit.note.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.refund.by.credit.note.report') }}" class="nav-link d-inline-flex {{ $route == 'reports.refund.by.credit.note.report' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Refund By Credit Note Report</p>
                             </a>
