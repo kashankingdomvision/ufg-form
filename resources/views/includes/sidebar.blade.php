@@ -793,18 +793,31 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="#" class="nav-link">
+                            <a href="" class="nav-link">
                                 <i class=""></i>
                                 <p></p>
                             </a>
                         </li>
-                        <li class="#">
+                        <li class="">
                             <a href="" class="">
                                 <i class=""></i>
                                 <p></p>
                             </a>
                         </li>
                     </ul>
+                </li>
+
+                <li class="">
+                    <a href="" class="nav-link">
+                        <i class=""></i>
+                        <p></p>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="" class="">
+                        <i class=""></i>
+                        <p></p>
+                    </a>
                 </li>
 
             </ul>
