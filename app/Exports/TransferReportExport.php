@@ -49,6 +49,9 @@ class TransferReportExport implements FromCollection, WithHeadings, ShouldAutoSi
             'Status'                    => 'Status',
         ];
 
+        // for skipping one line
+        // $keyed[] = [' ' => ' '];
+
         foreach($data['booking_details'] as $booking_detail) {
             
             $keyed[] = [
@@ -106,7 +109,7 @@ class TransferReportExport implements FromCollection, WithHeadings, ShouldAutoSi
             {
                 /* Columns -- A1 TO Z1 -- BOLD & ALIGN CENTER  */
                 $event->getSheet()->getDelegate()->getStyle('A1:Z1')->applyFromArray($bold);
-                $event->getSheet()->getDelegate()->getStyle('A1:Z1')->applyFromArray($align_center);
+                // $event->getSheet()->getDelegate()->getStyle('A1:Z1')->applyFromArray($align_center);
             },
         ];
     }
