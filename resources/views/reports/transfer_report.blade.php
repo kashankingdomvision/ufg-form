@@ -270,31 +270,31 @@
         });
 
         var defaultColumnsPreferences = {
-            'Zoho_Reference'        : 'true', 
-            'Quote_Ref_#'           : 'true', 
-            'Season'                : 'true',
-            'Lead_Passenger_Name'   : 'true',
-            'Pax_No.'               : 'true',
-            'Start_Date_of_Service' : 'true',
-            'End_Date_of_Service'   : 'true',
-            'Number_of_Nights'      : 'true',
-            'Time_of_Service'       : 'true',
-            'Category'              : 'true',
-            'Supplier_Location'     : 'true',
-            'Supplier'              : 'true',
-            'Product_Location'      : 'true',
-            'Product'               : 'true',
-            'Payment_Type'          : 'true',
-            'Supplier_Currency'     : 'true',
-            'Estimated_Cost'        : 'true',
-            'Actual_Cost'           : 'true',
-            'Markup_Amount'         : 'true',
-            'Markup_%'              : 'true',
-            'Selling_Price'         : 'true',
-            'Profit_%'              : 'true',
-            'Service_Details'       : 'true',
-            'Internal_Comments'     : 'true',
-            'Status'                : 'true',
+            'Zoho_Reference'        : true, 
+            'Quote_Ref_#'           : true, 
+            'Season'                : true,
+            'Lead_Passenger_Name'   : true,
+            'Pax_No.'               : true,
+            'Start_Date_of_Service' : true,
+            'End_Date_of_Service'   : true,
+            'Number_of_Nights'      : true,
+            'Time_of_Service'       : true,
+            'Category'              : true,
+            'Supplier_Location'     : true,
+            'Supplier'              : true,
+            'Product_Location'      : true,
+            'Product'               : true,
+            'Payment_Type'          : true,
+            'Supplier_Currency'     : true,
+            'Estimated_Cost'        : true,
+            'Actual_Cost'           : true,
+            'Markup_Amount'         : true,
+            'Markup_%'              : true,
+            'Selling_Price'         : true,
+            'Profit_%'              : true,
+            'Service_Details'       : true,
+            'Internal_Comments'     : true,
+            'Status'                : true,
         };
         
         var col = {!! json_encode(Auth::user()->column_preferences, JSON_HEX_TAG) !!};
@@ -302,7 +302,7 @@
 
         Object.keys(colJson).forEach(function(key, val) {
             $('#transfer_column_modal_body').append(`<div>
-                <input type="hidden" name="${key}" value="${ colJson[key] == 'true' ? 'true' : 'false' }"><input type="checkbox" id="${key}" ${ colJson[key] == 'true' ? 'checked' : ''}  >
+                <input type="hidden" name="${key}" value="${ colJson[key] ? true : false }"><input type="checkbox" id="${key}" ${ colJson[key] ? 'checked' : ''}  >
                 <label for="${key}"> &nbsp; ${key.replace(/_/g," ")}</label>
             </div>`);
         });
@@ -314,7 +314,7 @@
         $('th, td').each(function(e){
             var _key = $(this).attr('data-column');
 
-            if( colJson[_key] == 'true' ) {
+            if(colJson[_key]) {
                 $(`[data-column="${_key}"]`).removeClass('d-none');
             }
             else {

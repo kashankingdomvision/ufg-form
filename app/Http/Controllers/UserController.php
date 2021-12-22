@@ -164,8 +164,11 @@ class UserController extends Controller
     
     public function transfer_report_column(Request $request)
     {
-        $column_preferences = json_encode($request->all());
-        User::where('id' , Auth::id())->update(['column_preferences' => $column_preferences ]);
+        $collection = collect($request->all())->map(function ($item, $key) {
+            return (boolean) json_decode(strtolower($item));
+        });
+        
+        User::where('id' , Auth::id())->update(['column_preferences' => json_encode($collection) ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Column Preferences Updated']);
     }
