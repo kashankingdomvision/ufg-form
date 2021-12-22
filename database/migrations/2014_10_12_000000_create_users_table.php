@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->rememberToken();
             $table->integer('is_login')->unsigned()->default(0);
+            $table->longText('column_preferences')->nullable();
             $table->timestamps();
             
         });
