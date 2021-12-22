@@ -71,9 +71,9 @@
                 <td data-column="Estimated_Cost">{{ \Helper::number_format($booking_detail->estimated_cost).' '.$booking_detail->getSupplierCurrency->code }}</td>
                 <td data-column="Actual_Cost">{{ \Helper::number_format($booking_detail->actual_cost).' '.$booking_detail->getSupplierCurrency->code }}</td>
                 <td data-column="Markup_Amount">{{ \Helper::number_format($booking_detail->markup_amount).' '.$booking_detail->getSupplierCurrency->code }}</td>
-                <td data-column="Markup_%">{{ \Helper::number_format($booking_detail->markup_percentage) }}</td>
+                <td data-column="Markup_%">{{ \Helper::number_format($booking_detail->markup_percentage).' %' }}</td>
                 <td data-column="Selling_Price">{{ \Helper::number_format($booking_detail->selling_price).' '.$booking_detail->getSupplierCurrency->code }}</td>
-                <td data-column="Profit_%">{{ \Helper::number_format($booking_detail->profit_percentage) }}</td>
+                <td data-column="Profit_%">{{ \Helper::number_format($booking_detail->profit_percentage).' %' }}</td>
                 {{-- <td>{{ \Helper::number_format($booking_detail->actual_cost_bc).' '.$booking_detail->getSupplierCurrency->code }}</td> --}}
                 {{-- <td>{{ \Helper::number_format($booking_detail->markup_amount_in_booking_currency).' '.$booking_detail->getSupplierCurrency->code }}</td> --}}
                 {{-- <td>{{ \Helper::number_format($booking_detail->selling_price_in_booking_currency).' '.$booking_detail->getSupplierCurrency->code }}</td> --}}
