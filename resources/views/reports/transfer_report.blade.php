@@ -268,9 +268,37 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        var defaultColumnsPreferences = {
+            'Zoho_Reference'        : 'true', 
+            'Quote_Ref_#'           : 'true', 
+            'Season'                : 'true',
+            'Lead_Passenger_Name'   : 'true',
+            'Pax_No.'               : 'true',
+            'Start_Date_of_Service' : 'true',
+            'End_Date_of_Service'   : 'true',
+            'Number_of_Nights'      : 'true',
+            'Time_of_Service'       : 'true',
+            'Category'              : 'true',
+            'Supplier_Location'     : 'true',
+            'Supplier'              : 'true',
+            'Product_Location'      : 'true',
+            'Product'               : 'true',
+            'Payment_Type'          : 'true',
+            'Supplier_Currency'     : 'true',
+            'Estimated_Cost'        : 'true',
+            'Actual_Cost'           : 'true',
+            'Markup_Amount'         : 'true',
+            'Markup_%'              : 'true',
+            'Selling_Price'         : 'true',
+            'Profit_%'              : 'true',
+            'Service_Details'       : 'true',
+            'Internal_Comments'     : 'true',
+            'Status'                : 'true',
+        };
         
         var col = {!! json_encode(Auth::user()->column_preferences, JSON_HEX_TAG) !!};
-        var colJson = JSON.parse(col);
+        var colJson = (col == null) ? defaultColumnsPreferences : JSON.parse(col);
 
         Object.keys(colJson).forEach(function(key, val) {
             $('#transfer_column_modal_body').append(`<div>
@@ -280,15 +308,7 @@
         });
 
         $('input[type=checkbox]').click(function(){
-            (this.checked) ? $(this).prev().val('true') :  $(this).prev().val('false');
-            // if(this.checked)
-            // {
-            //     $(this).prev().val('true');
-            // }
-            // else
-            // {
-            //     $(this).prev().val('false');
-            // }
+            (this.checked) ? $(this).prev().val('true') : $(this).prev().val('false');
         });
 
         $('th, td').each(function(e){
