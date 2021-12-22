@@ -161,11 +161,11 @@
                       <label>Markup Type</label>
                       <div>
                         <label class="radio-inline mr-1">
-                          <input type="radio" name="markup_type" value="itemised" class="rate-type" checked>
+                          <input type="radio" name="markup_type" value="itemised" class="rate-type">
                           <span>&nbsp;Itemised Markup </span>
                         </label>
                         <label class="radio-inline mr-1">
-                          <input type="radio" name="markup_type" value="whole" class="rate-type">
+                          <input type="radio" name="markup_type" value="whole" class="rate-type" checked>
                           <span>&nbsp;Whole Markup</span>
                         </label>
                       </div>
