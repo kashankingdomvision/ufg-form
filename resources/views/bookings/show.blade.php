@@ -691,8 +691,8 @@
                                     <label>Product </label>
                                     <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                       <option value="">Select Product</option>
-                                      @if(isset($booking_detail->getSupplier) && isset($booking_detail->product_location_id) && !empty($booking_detail->product_location_id))
-                                        @foreach ($booking_detail->getSupplier->getProductsWithLocation($booking_detail->product_location_id)->get() as $product)
+                                      @if(isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier))
+                                        @foreach ($booking_detail->getSupplier->getProducts()->get() as $product)
                                           <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                         @endforeach
                                       @endif
