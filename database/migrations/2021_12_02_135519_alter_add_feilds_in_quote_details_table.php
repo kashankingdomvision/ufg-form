@@ -15,9 +15,9 @@ class AlterAddFeildsInQuoteDetailsTable extends Migration
     {
         Schema::table('quote_details', function (Blueprint $table) {
             $table->unsignedBigInteger('supplier_location_id')->after('category_id')->nullable();
-            $table->unsignedBigInteger('product_location_id')->after('supplier_id')->nullable();
+            // $table->unsignedBigInteger('product_location_id')->after('supplier_id')->nullable();
             $table->foreign('supplier_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('product_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
+            // $table->foreign('product_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
