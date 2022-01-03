@@ -638,8 +638,8 @@
                                     <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product d-none"> ( Add New Product ) </a></label>
                                     <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
                                       <option value="">Select Product</option>
-                                      @if(isset($q_detail['supplier_id']) && isset($q_detail['product_location_id']) && !empty($q_detail['product_location_id']))
-                                        @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProductsWithLocation($q_detail['product_location_id'])->get() as  $product)
+                                      @if(isset($q_detail['supplier_id']) && !empty($q_detail['supplier_id']))
+                                        @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts()->get() as $product)
                                           <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                         @endforeach
                                       @endif

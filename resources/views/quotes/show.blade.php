@@ -688,8 +688,8 @@
                                   <label>Product </label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if(isset($q_detail->getSupplier) && isset($q_detail->product_location_id) && !empty($q_detail->product_location_id))
-                                      @foreach ($q_detail->getSupplier->getProductsWithLocation($q_detail->product_location_id)->get() as $product)
+                                    @if(isset($q_detail->getSupplier) && !empty($q_detail->getSupplier))
+                                      @foreach ($q_detail->getSupplier->getProducts()->get() as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
                                       @endforeach
                                     @endif
