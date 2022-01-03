@@ -94,8 +94,14 @@ class ResponseController extends Controller
     }
 
     public function getCountryToLocation(Request $request)
-    {    
-        $locations = Location::where('country_id',$request->country_id)->get();
+    {  
+        $locations = Location::whereIn('country_id',$request->country_ids)
+        ->leftJoin('countries', 'locations.country_id', '=', 'countries.id')
+        ->get([
+            'locations.id',
+            'countries.name as country_name',
+            'locations.name',
+        ]);
 
         return response()->json($locations);
     }

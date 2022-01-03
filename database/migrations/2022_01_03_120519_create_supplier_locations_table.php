@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterAddLocationFeildInSuppliersTable extends Migration
+class CreateSupplierLocationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class AlterAddLocationFeildInSuppliersTable extends Migration
      */
     public function up()
     {
-        Schema::table('suppliers', function (Blueprint $table) {
-            $table->unsignedBigInteger('country_id')->after('currency_id'); 
-            $table->unsignedBigInteger('location_id')->after('country_id'); 
+        Schema::create('supplier_locations', function (Blueprint $table) {
+            $table->primary(['supplier_id', 'location_id']);
+            $table->unsignedBigInteger('supplier_id');
+            $table->unsignedBigInteger('location_id');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -28,8 +29,6 @@ class AlterAddLocationFeildInSuppliersTable extends Migration
      */
     public function down()
     {
-        Schema::table('suppliers', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('supplier_locations');
     }
 }

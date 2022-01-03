@@ -26,7 +26,7 @@
                 <div class="card-header">
                   <h3 class="card-title">Supplier Form</h3>
                 </div>
-                <form method="POST" action="{{ route('suppliers.store') }}">
+                <form method="POST" action="{{ route('suppliers.store') }}" id="store_supplier">
                   @csrf
                   <div class="card-body">
 
@@ -90,10 +90,9 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Country <span style="color:red">*</span></label>
-                          <select name="country_id" class="form-control select2single getCountryToTown getCountryToLocation @error('country_id') is-invalid @enderror" >
-                            <option value="">Select Country</option>
+                          <select name="country_id[]" class="form-control select2-multiple getCountryToLocation @error('country_id') is-invalid @enderror" multiple="multiple">
                               @foreach ($countries as $country)
-                                <option value="{{$country->id}}" {{ (old('country_id') == $country->id) ? 'selected' : '' }}> {{$country->name}} </option>
+                                <option value="{{$country->id}}" {{ in_array($country->id, old('country_id') ?? []) ? 'selected' : '' }}> {{$country->name}} </option>
                               @endforeach
                           </select>
       
@@ -106,8 +105,7 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label>Location <span style="color:red">*</span></label>
-                          <select name="location_id" class="form-control select2single location-id appendCountryLocation @error('location_id') is-invalid @enderror" >
-                            <option value="">Select Location</option>
+                          <select name="location_id[]" class="form-control select2-multiple location-id appendCountryLocation @error('location_id') is-invalid @enderror" multiple="multiple">
                           </select>
       
                           @error('location_id')

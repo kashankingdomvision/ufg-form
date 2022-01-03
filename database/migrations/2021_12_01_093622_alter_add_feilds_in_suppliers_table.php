@@ -15,10 +15,10 @@ class AlterAddFeildsInSuppliersTable extends Migration
     {
         Schema::table('suppliers', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('group_owner_id')->after('location_id')->nullable(); 
-            $table->string('contact_person')->after('phone')->nullable(); 
-            $table->string('code')->after('group_owner_id')->nullable(); 
-            $table->double('commission_rate')->after('description')->nullable(); 
+            $table->unsignedBigInteger('group_owner_id')->after('name')->nullable(); 
+            $table->string('contact_person')->after('group_owner_id')->nullable(); 
+            $table->string('code')->after('contact_person')->nullable(); 
+            $table->double('commission_rate')->after('code')->nullable(); 
             
             $table->foreign('group_owner_id')->references('id')->on('group_owners')->onUpdate('cascade')->onDelete('cascade');
         });

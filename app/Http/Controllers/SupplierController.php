@@ -75,8 +75,6 @@ class SupplierController extends Controller
     {
         $data = [
             'currency_id'     => $request->currency, 
-            'country_id'      => $request->country_id, 
-            'location_id'     => $request->location_id, 
             'group_owner_id'  => $request->group_owner_id, 
             'name'            => $request->username, 
             'code'            => $request->code,
@@ -97,10 +95,14 @@ class SupplierController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // SupplierRequest
     public function store(SupplierRequest $request)
     {
+        dd($request->all());
+
         $supplier = Supplier::create($this->suppliersArray($request));
-        
+
         if($request->has('categories') && count($request->categories) > 0){
             foreach ($request->categories as $category) {
                 SupplierCategory::create([
@@ -118,6 +120,9 @@ class SupplierController extends Controller
                 ]);
             }
         }
+
+        $supplier->getCountries()->sync($request->country_id);
+        $supplier->getLocations()->sync($request->location_id);
         
         return redirect()->route('suppliers.index')->with('success_message', 'Supplier created successfully');
     }

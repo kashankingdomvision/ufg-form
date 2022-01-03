@@ -67096,6 +67096,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
 
 
@@ -68539,19 +68541,21 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // });
 
   $(document).on('change', '.getCountryToLocation', function () {
-    var country_id = $(this).val();
-    var options = '';
+    var country_ids = $(this).val();
     var url = BASEURL + 'country/to/location';
+    var options = '';
     $.ajax({
       type: 'get',
       url: url,
       data: {
-        'country_id': country_id
+        'country_ids': country_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendCountryLocation').html(options);
       },
       success: function success(response) {
-        options += '<option value="">Select Location</option>';
         $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.country_name, ") </option>");
         });
         $('.appendCountryLocation').html(options);
       }
@@ -70170,6 +70174,58 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
             });
           }, 200);
+        }
+      }
+    });
+  });
+  $("#store_supplier").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    console.log(_typeof($(this).serializeArray()));
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: $(this).serialize(),
+      dataType: 'json',
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+          }
+        }, 400);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            var flag = true;
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value); // if (flag) {
+              //     $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+              //     flag = false;
+              // }
+            });
+          }, 400);
         }
       }
     });

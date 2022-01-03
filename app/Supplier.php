@@ -8,9 +8,7 @@ class Supplier extends Model
 {
     protected $fillable = [
         'currency_id',
-        'country_id',
         'town_id',
-        'location_id',
         'group_owner_id',
         'code',
         'commission_rate',
@@ -42,6 +40,14 @@ class Supplier extends Model
     public function getCountry()
     {
         return $this->hasOne(Country::class, 'id', 'country_id');
+    }
+
+    function getCountries() {
+        return $this->belongsToMany(Country::class, 'supplier_countries', 'supplier_id', 'country_id');
+    }
+
+    function getLocations(){
+        return $this->belongsToMany(Location::class, 'supplier_locations', 'supplier_id', 'location_id');
     }
 
     public function getTown()
