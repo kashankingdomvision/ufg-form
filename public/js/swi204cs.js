@@ -67107,16 +67107,16 @@ __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-b
 
  // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-// var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
-// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
+
+var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 // var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 // var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
-
-var BASEURL = "".concat(window.location.origin, "/json/");
-var REDIRECT_BASEURL = "".concat(window.location.origin, "/");
-var FILE_MANAGER_URL = "".concat(window.location.origin, "/laravel-filemanager"); // window.axios = require('axios');
+// var BASEURL          = `${window.location.origin}/json/`;
+// var REDIRECT_BASEURL = `${window.location.origin}/`;
+// var FILE_MANAGER_URL = `${window.location.origin}/laravel-filemanager`;
+// window.axios = require('axios');
 // window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
@@ -68753,22 +68753,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug'); // var options           = '';
-    // set category name in car header
 
-    quote.find('.badge-category-id').html(category_name);
-    /* remove attribute when category selected */
-
-    $("#quote_".concat(quoteKey, "_supplier_location_id")).removeAttr('disabled');
-    /* reset location when category change*/
-
-    $("#quote_".concat(quoteKey, "_supplier_location_id")).val("").trigger('change'); // set supplier dropdown null when category become null
+    /* remove & reset supplier location attribute when category selected */
 
     if (typeof category_id === 'undefined' || category_id == "") {
       quote.find('.badge-category-id').html("");
-      $("#quote_".concat(quoteKey, "_supplier_location_id")).attr('disabled', 'disabled'); // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
-      // $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-
+      $("#quote_".concat(quoteKey, "_supplier_location_id")).val("").trigger('change');
+      $("#quote_".concat(quoteKey, "_supplier_location_id")).attr('disabled', 'disabled');
+      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
+      $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
+      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
+      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
       return;
+    } else {
+      $("#quote_".concat(quoteKey, "_supplier_location_id")).removeAttr('disabled');
+      $("#quote_".concat(quoteKey, "_supplier_location_id")).val("").trigger('change');
+      quote.find('.badge-category-id').html(category_name);
     } // set Payment type (Booking Type) refundable when category is fligt
 
 
@@ -68788,12 +68788,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         'model_name': model_name
       },
       success: function success(response) {
-        // set supplier dropdown
-        // options += "<option value=''>Select Supplier</option>";
-        // $.each(response.suppliers, function(key, value) {
-        //     options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-        // });
-        // $(`#quote_${quoteKey}_supplier_id`).html(options);
         // set category details feilds 
         if (typeof response.category_details != 'undefined') {
           quote.find('.category-details').val(response.category_details);
@@ -68821,11 +68815,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();
             $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", DateOFService);
           }
-        } // reset product & supplier Sheet
-        // $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-        // quote.find('.view-supplier-rate').attr("href","");
-        // quote.find('.view-supplier-rate').html("");
-
+        }
       }
     });
   });
@@ -68839,16 +68829,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     /* set supplier dropdown null when supplier location become null */
 
     if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
-      // quote.find('.badge-category-id').html("");
-      // $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").change();
+      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
+      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
+      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
       return;
-    } // $(`#quote_${quoteKey}_product_id`).val("").change();
-
-
-    $("#quote_".concat(quoteKey, "_product_location_id")).val("").change();
+    }
     /* get suppliers according to location */
+
 
     $.ajax({
       type: 'get',
@@ -68873,23 +68861,22 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var supplier_name = $(this).find(':selected').attr('data-name');
     var supplier_id = $(this).val();
     var season_id = $('.season-id').val();
+    var supplier_location_id = $('.supplier-location-id').val();
     var options = '';
-    /* set cart header */
-
-    quote.find('.badge-supplier-id').html(supplier_name);
-    $("#quote_".concat(quoteKey, "_product_location_id")).removeAttr('disabled');
-    /* reset location when supplier change*/
-
-    $("#quote_".concat(quoteKey, "_product_location_id")).val("").change();
-    /* unset card header & supplier currency */
+    /* set/unset card header, supplier currency & product */
 
     if (typeof supplier_id === 'undefined' || supplier_id == "") {
-      quote.find('.badge-supplier-id').html(""); // $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-
+      quote.find('.badge-supplier-id').html("");
+      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
+      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
       $("#quote_".concat(quoteKey, "_supplier_currency_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_location_id")).attr('disabled', 'disabled');
       return;
+    } else {
+      quote.find('.badge-supplier-id').html(supplier_name);
+      $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
     }
+    /* get supplier's rate sheet, supplier's product, supplier's currency */
+
 
     if (season_id != "" && supplier_id != "") {
       $.ajax({
@@ -68897,81 +68884,67 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         url: "".concat(BASEURL, "get-supplier-product-and-sheet"),
         data: {
           'supplier_id': supplier_id,
-          'season_id': season_id
+          'season_id': season_id,
+          'supplier_location_id': supplier_location_id
         },
         success: function success(response) {
           if (response && response.url != "") {
-            quote.find('.view-supplier-rate').attr("href", response.url);
-            quote.find('.view-supplier-rate').html("(View Rates)");
+            quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
           } else {
-            quote.find('.view-supplier-rate').attr("href", "");
-            quote.find('.view-supplier-rate').html("");
+            quote.find('.view-supplier-rate').attr("href", "").html("");
           }
           /* set product dropdown */
-          // if(response && response.products.length != 0){
-          //     options += "<option value=''>Select Product</option>";
-          //     $.each(response.products, function(key, value) {
-          //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-          //     });
-          //     $(`#quote_${quoteKey}_product_id`).html(options);
-          // }
 
+
+          if (response && response.products.length > 0) {
+            options += "<option value=''>Select Product</option>";
+            $.each(response.products, function (key, value) {
+              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+            });
+            $("#quote_".concat(quoteKey, "_product_id")).html(options);
+          }
           /* set supplier currency */
 
 
           if (response && response.supplier_currency != "") {
             $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier_currency).trigger('change');
           }
-          /* old work for fetching only supplier's sheet */
-          // if(response != ''){
-          //     quote.find('.view-supplier-rate').attr("href", response);
-          //     quote.find('.view-supplier-rate').html("(View Supplier Rates)");
-          // }else{
-          //     quote.find('.view-supplier-rate').attr("href","");
-          //     quote.find('.view-supplier-rate').html("");
-          // }
-
         }
       });
     } else {
-      quote.find('.view-supplier-rate').attr("href", "");
-      quote.find('.view-supplier-rate').html(""); // $(`#quote_${quoteKey}_product_id`).html("");
+      quote.find('.view-supplier-rate').attr("href", "").html("");
+      $("#quote_".concat(quoteKey, "_product_id")).html("");
     }
-  });
-  $(document).on('change', '.product-location-id', function () {
-    var quote = $(this).closest('.quote');
-    var quoteKey = quote.data('key');
-    var product_location_id = $("#quote_".concat(quoteKey, "_product_location_id")).val();
-    var supplier_id = $("#quote_".concat(quoteKey, "_supplier_id")).val();
-    var options = '';
-    $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
-    /* set product dropdown null when product location become null */
+  }); // $(document).on('change', '.product-location-id', function(){
+  //     var quote                 = $(this).closest('.quote');
+  //     var quoteKey              = quote.data('key');
+  //     var product_location_id   = $(`#quote_${quoteKey}_product_location_id`).val();
+  //     var supplier_id           = $(`#quote_${quoteKey}_supplier_id`).val();
+  //     var options               = '';
+  //     $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+  //     /* set product dropdown null when product location become null */
+  //     if(typeof product_location_id === 'undefined' || product_location_id == ""){
+  //         // quote.find('.badge-category-id').html("");
+  //         $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+  //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+  //         return;
+  //     }
+  //     $.ajax({
+  //         type: 'get',
+  //         url: `${BASEURL}location/to/product`,
+  //         data: { 'product_location_id': product_location_id, 'supplier_id' : supplier_id },
+  //         success: function(response) {
+  //             /* set supplier dropdown*/
+  //             options += "<option value=''>Select Product</option>";
+  //             $.each(response.products, function(key, value) {
+  //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //             });
+  //             $(`#quote_${quoteKey}_product_id`).html(options);
+  //         }
+  //     })
+  // });
 
-    if (typeof product_location_id === 'undefined' || product_location_id == "") {
-      // quote.find('.badge-category-id').html("");
-      $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
-      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
-      return;
-    }
-
-    $.ajax({
-      type: 'get',
-      url: "".concat(BASEURL, "location/to/product"),
-      data: {
-        'product_location_id': product_location_id,
-        'supplier_id': supplier_id
-      },
-      success: function success(response) {
-        /* set supplier dropdown*/
-        options += "<option value=''>Select Product</option>";
-        $.each(response.products, function (key, value) {
-          options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
-        });
-        $("#quote_".concat(quoteKey, "_product_id")).html(options);
-      }
-    });
-  });
   $(document).on('change', '.role', function () {
     var role = $(this).find('option:selected').data('role');
     var supervisor = $('#supervisor_feild');

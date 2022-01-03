@@ -175,8 +175,15 @@ class ResponseController extends Controller
             $response['url'] = url(Storage::url($supplier->file));
         }
 
+        $response['products'] = Product::whereHas('getSuppliers', function($query) use($request) {
+            $query->where([ 
+                'id'          => $request->supplier_id,
+                'location_id' => $request->supplier_location_id
+            ]);
+        })
+        ->get();
 
-        $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+        // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
         $response['supplier_currency'] = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->currency_id : '';
 
         return $response;
@@ -227,20 +234,20 @@ class ResponseController extends Controller
         return response()->json([ 'suppliers' => $suppliers ]);
     }
 
-    public function getLocationToProduct(Request $request)
-    {
-        $products = Product::whereHas('getSuppliers', function($query) use($request) {
-            $query->where('id', $request->supplier_id);
-        })
-        ->where('location_id', $request->product_location_id)
-        ->get();
+    // public function getLocationToProduct(Request $request)
+    // {
+    //     $products = Product::whereHas('getSuppliers', function($query) use($request) {
+    //         $query->where('id', $request->supplier_id);
+    //     })
+    //     ->where('location_id', $request->product_location_id)
+    //     ->get();
 
-        // $products = Supplier::find($request->supplier_id)->getProducts()
-        // ->where('location_id', $request->product_location_id)
-        // ->get();
+    //     // $products = Supplier::find($request->supplier_id)->getProducts()
+    //     // ->where('location_id', $request->product_location_id)
+    //     // ->get();
 
-        return response()->json([ 'products' => $products ]);
-    }
+    //     return response()->json([ 'products' => $products ]);
+    // }
     
     public function getSupplierToProductORCurrency(Request $request)
     {

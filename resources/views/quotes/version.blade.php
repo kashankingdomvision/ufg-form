@@ -620,7 +620,7 @@
                                   </div>
                                 </div> --}}
 
-                                <div class="col-sm-2">
+                                {{-- <div class="col-sm-2">
                                   <div class="form-group">
                                     <label>Product Location </label>
                                     <select name="quote[{{ $key }}][product_location_id]" data-name="product_location_id" id="quote_{{ $key }}_product_location_id" class="form-control product-location-id select2single @error('product_location_id') is-invalid @enderror">
@@ -631,7 +631,7 @@
                                     </select>
                                     <span class="text-danger" role="alert"></span>
                                   </div>
-                                </div>
+                                </div> --}}
 
                                 <div class="col-sm-3">
                                   <div class="form-group">
