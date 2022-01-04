@@ -67096,8 +67096,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 __webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
 
 
@@ -67225,6 +67223,21 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   function removeDisabledAttribute(p) {
     $(p).removeAttr("disabled");
+  }
+
+  function removeFormValidationStyles() {
+    $('input, select').removeClass('is-invalid');
+    $('.text-danger').html('');
+  }
+
+  function addFormLoadingStyles() {
+    $("#overlay").addClass('overlay');
+    $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+  }
+
+  function removeFormLoadingStyles() {
+    $("#overlay").removeClass('overlay');
+    $("#overlay").html('');
   }
 
   var curday = function curday(sp) {
@@ -70181,29 +70194,27 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $("#store_supplier").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
-    console.log(_typeof($(this).serializeArray()));
+    var formData = new FormData(this);
     /* Send the data using post */
 
     $.ajax({
       type: 'POST',
       url: url,
-      data: $(this).serialize(),
-      dataType: 'json',
-      contentType: false,
+      data: formData,
+      async: false,
       cache: false,
+      contentType: false,
       processData: false,
       beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
       success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
+        removeFormLoadingStyles();
         setTimeout(function () {
           if (data && data.status == 200) {
             alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+            window.location.href = "".concat(REDIRECT_BASEURL, "suppliers");
           }
         }, 400);
       },
@@ -70211,19 +70222,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         if (reject.status === 422) {
           var errors = $.parseJSON(reject.responseText);
           setTimeout(function () {
+            removeFormLoadingStyles();
             var flag = true;
-            $("#overlay").removeClass('overlay').html('');
             jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_'); // expand quote if feild has an error
-
-              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
-              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
-              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+              index = index.replace(/\./g, '_');
               $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value); // if (flag) {
-              //     $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-              //     flag = false;
-              // }
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+              if (flag) {
+                $('html, body').animate({
+                  scrollTop: $("#".concat(index)).offset().top
+                }, 1000);
+                flag = false;
+              }
             });
           }, 400);
         }

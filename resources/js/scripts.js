@@ -144,6 +144,22 @@ $(document).ready(function($) {
         $(p).removeAttr("disabled");
     }
 
+    
+    function removeFormValidationStyles(){
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+    }
+
+    function addFormLoadingStyles(){
+        $("#overlay").addClass('overlay');
+        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+    }
+
+    function removeFormLoadingStyles() {
+        $("#overlay").removeClass('overlay');
+        $("#overlay").html('');
+    }
+
     var curday = function(sp) {
         var today = new Date();
         var dd = today.getDate();
@@ -3676,41 +3692,36 @@ $(document).ready(function($) {
                 });
             });
 
-
             
             $("#store_supplier").submit(function(event) {
 
                 event.preventDefault();
-                var url = $(this).attr('action');
 
-                console.log(typeof $(this).serializeArray());
+                var url      = $(this).attr('action');
+                var formData = new FormData(this);
 
                 /* Send the data using post */
                 $.ajax({
                     type: 'POST',
                     url: url,
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    contentType: false,
+                    data: formData,
+                    async: false,
                     cache: false,
+                    contentType: false,
                     processData: false,
-                    beforeSend: function() {
-
-                        $('input, select').removeClass('is-invalid');
-                        $('.text-danger').html('');
-
-                        $("#overlay").addClass('overlay');
-                        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                    beforeSend: function(){
+                        removeFormValidationStyles();
+                        addFormLoadingStyles();
                     },
                     success: function(data) {
 
-                        $("#overlay").removeClass('overlay').html('');
+                        removeFormLoadingStyles();
 
                         setTimeout(function() {
 
                             if(data && data.status == 200){
                                 alert(data.success_message);
-                                window.location.href = `${REDIRECT_BASEURL}template/index`;
+                                window.location.href = `${REDIRECT_BASEURL}suppliers`;
                             }
                         }, 400);
                     },
@@ -3722,27 +3733,21 @@ $(document).ready(function($) {
                             
                             setTimeout(function() {
 
-                                var flag = true;
-
-                                $("#overlay").removeClass('overlay').html('');
+                                removeFormLoadingStyles();
+                                let flag = true;
 
                                 jQuery.each(errors.errors, function(index, value) {
 
                                     index = index.replace(/\./g, '_');
 
-                                    // expand quote if feild has an error
-                                    $(`#${index}`).closest('.quote').removeClass('collapsed-card');
-                                    $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
-                                    $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
-
                                     $(`#${index}`).addClass('is-invalid');
                                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
-                                    // if (flag) {
+                                    if(flag){
 
-                                    //     $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                    //     flag = false;
-                                    // }
+                                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                        flag = false;
+                                    }
 
                                 });
                             }, 400);
