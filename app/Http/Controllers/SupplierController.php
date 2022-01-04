@@ -99,7 +99,7 @@ class SupplierController extends Controller
     // SupplierRequest
     public function store(SupplierRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         $supplier = Supplier::create($this->suppliersArray($request));
 
@@ -123,8 +123,8 @@ class SupplierController extends Controller
 
         $supplier->getCountries()->sync($request->country_id);
         $supplier->getLocations()->sync($request->location_id);
-        
-        return redirect()->route('suppliers.index')->with('success_message', 'Supplier created successfully');
+
+        return response()->json(['status' => 200, 'success_message' => 'Supplier created successfully']);
     }
 
     /**
@@ -191,7 +191,10 @@ class SupplierController extends Controller
             }
         }
         
-        return redirect()->route('suppliers.index')->with('success_message', 'Supplier Updated Successfully.');
+        $supplier->getCountries()->sync($request->country_id);
+        $supplier->getLocations()->sync($request->location_id);
+        
+        return response()->json(['status' => 200, 'success_message' => 'Supplier Updated successfully']);
     }
 
     /**

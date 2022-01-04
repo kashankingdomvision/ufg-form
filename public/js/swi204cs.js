@@ -70241,6 +70241,57 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
+  $("#update_supplier").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formData = new FormData(this);
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      async: false,
+      cache: false,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(data) {
+        setTimeout(function () {
+          removeFormLoadingStyles();
+
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "suppliers");
+          }
+        }, 400);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          removeFormLoadingStyles();
+          setTimeout(function () {
+            var flag = true;
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+              if (flag) {
+                $('html, body').animate({
+                  scrollTop: $("#".concat(index)).offset().top
+                }, 1000);
+                flag = false;
+              }
+            });
+          }, 400);
+        }
+      }
+    });
+  });
   $('.search-reference').on('click', function () {
     var searchRef = $(this);
     var reference_no = $('.reference-name').val();
