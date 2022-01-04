@@ -1941,6 +1941,9 @@ $(document).ready(function($) {
                     type: 'get',
                     url: `${BASEURL}location/to/supplier`,
                     data: { 'suppplier_location_id': suppplier_location_id, 'category_id': category_id},
+                    beforeSend : function(){
+                        $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+                    },
                     success: function(response) {
 
                         /* set supplier dropdown*/
@@ -2006,6 +2009,8 @@ $(document).ready(function($) {
                                 });
 
                                 $(`#quote_${quoteKey}_product_id`).html(options);
+                            }else{
+                                $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
                             }
 
                             /* set supplier currency */

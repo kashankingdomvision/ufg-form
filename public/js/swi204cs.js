@@ -68862,6 +68862,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         'suppplier_location_id': suppplier_location_id,
         'category_id': category_id
       },
+      beforeSend: function beforeSend() {
+        $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
+      },
       success: function success(response) {
         /* set supplier dropdown*/
         options += "<option value=\"\">Select Supplier</option>";
@@ -68919,6 +68922,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
             });
             $("#quote_".concat(quoteKey, "_product_id")).html(options);
+          } else {
+            $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
           }
           /* set supplier currency */
 
