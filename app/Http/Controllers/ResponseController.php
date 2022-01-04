@@ -155,19 +155,6 @@ class ResponseController extends Controller
  
     }
     
-    
-    // public function getSupplierRateSheet(Request $request)
-    // {
-    //     $url = '';
-
-    //     $supplier = SupplierRateSheet::where([ "supplier_id" => $request->supplier_id, "season_id" => $request->season_id])->first();
-    //     if(!is_null($supplier)){
-    //         $url = url(Storage::url($supplier->file));
-    //     }
-
-    //     return $url;
-    // }
-
     public function getSupplierProductAndSheet(Request $request)
     {
         // dd($request->all());
@@ -180,16 +167,6 @@ class ResponseController extends Controller
         if(!is_null($supplier)){
             $response['url'] = url(Storage::url($supplier->file));
         }
-
-        // $response['products'] = Product::whereHas('getSuppliers', function($query) use($request) {
-        //     $query->where([ 
-        //         'id'          => $request->supplier_id,
-                
-        //     ]);
-        // })
-        // ->get();
-
-        // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
 
         $response['products'] = Supplier::whereHas('getCategories', function($query) use($request) {
             $query->where('id', $request->category_id);
@@ -484,11 +461,7 @@ class ResponseController extends Controller
     
     public function call_template($id)
     {
-
-        // dd(decrypt($id));
-
         $template = Template::find(decrypt($id));
-
         
         $data['template']         = $template;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
@@ -572,4 +545,26 @@ class ResponseController extends Controller
         $store = StoreText::where('slug', $slug)->firstOrFail()->description;
         return response()->json($store);
     }
+
+    // public function getSupplierRateSheet(Request $request)
+    // {
+    //     $url = '';
+
+    //     $supplier = SupplierRateSheet::where([ "supplier_id" => $request->supplier_id, "season_id" => $request->season_id])->first();
+    //     if(!is_null($supplier)){
+    //         $url = url(Storage::url($supplier->file));
+    //     }
+
+    //     return $url;
+    // }
+
+    // $response['products'] = Product::whereHas('getSuppliers', function($query) use($request) {
+    //     $query->where([ 
+    //         'id'          => $request->supplier_id,
+            
+    //     ]);
+    // })
+    // ->get();
+
+    // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
 }
