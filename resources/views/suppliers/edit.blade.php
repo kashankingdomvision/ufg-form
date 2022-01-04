@@ -104,7 +104,6 @@
                       <div class="form-group">
                         <label>Location <span style="color:red">*</span></label>
                         <select name="location_id[]" id="location_id"  class="form-control select2-multiple location-id appendCountryLocation" multiple="multiple">
-                          <option value="">Select Location</option>
                           @if(isset($supplier->getLocations) && $supplier->getLocations)
                             @foreach ($supplier->getLocations as $location )
                             <option value="{{ $location->id }}" {{ (in_array($location->id, $supplier->getLocations()->pluck('id')->toArray() )) ? 'selected' : NULL }}>{{ $location->name }} {{ isset($location->getCountry->name) && !empty($location->getCountry->name) ? '('.$location->getCountry->name.')' : '' }}</option>
