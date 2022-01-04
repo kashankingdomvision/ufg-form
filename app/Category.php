@@ -24,6 +24,9 @@ class Category extends Model
 
     public function getSupplierWithLocation($location_id)
     {
-        return $this->getSupplier()->where('location_id', $location_id);
+        return $this->getSupplier()->whereHas('getLocations', function($query) use ($location_id) {
+            $query->where('id', $location_id);
+        });
+
     }
 }
