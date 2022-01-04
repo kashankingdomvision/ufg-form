@@ -68881,7 +68881,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var supplier_name = $(this).find(':selected').attr('data-name');
     var supplier_id = $(this).val();
     var season_id = $('.season-id').val();
-    var supplier_location_id = $('.supplier-location-id').val();
+    var supplier_location_id = $("#quote_".concat(quoteKey, "_supplier_location_id")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
     var options = '';
     /* set/unset card header, supplier currency & product */
 
@@ -68905,7 +68906,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         data: {
           'supplier_id': supplier_id,
           'season_id': season_id,
-          'supplier_location_id': supplier_location_id
+          'supplier_location_id': supplier_location_id,
+          'category_id': category_id
         },
         success: function success(response) {
           if (response && response.url != "") {

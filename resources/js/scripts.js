@@ -1965,7 +1965,8 @@ $(document).ready(function($) {
                 var supplier_name        = $(this).find(':selected').attr('data-name');
                 var supplier_id          = $(this).val();
                 var season_id            = $('.season-id').val();
-                var supplier_location_id = $('.supplier-location-id').val();
+                var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+                var category_id          = $(`#quote_${quoteKey}_category_id`).val();
                 var options              = '';
 
                 /* set/unset card header, supplier currency & product */
@@ -1991,6 +1992,7 @@ $(document).ready(function($) {
                             'supplier_id': supplier_id,
                             'season_id': season_id,
                             'supplier_location_id': supplier_location_id,
+                            'category_id': category_id,
                         },
                         success: function(response) {
 

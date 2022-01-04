@@ -181,19 +181,27 @@ class ResponseController extends Controller
             $response['url'] = url(Storage::url($supplier->file));
         }
 
-        $response['products'] = Product::whereHas('getSuppliers', function($query) use($request) {
-            $query->where([ 
-                'id'          => $request->supplier_id,
-                'location_id' => $request->supplier_location_id
-            ]);
-        })
-        ->get();
+        // $response['products'] = Product::whereHas('getSuppliers', function($query) use($request) {
+        //     $query->where([ 
+        //         'id'          => $request->supplier_id,
+                
+        //     ]);
+        // })
+        // ->get();
 
         // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+
+        $response['products'] = Supplier::whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })
+        ->whereHas('getLocations', function($query) use($request) {
+            $query->where('id', $request->supplier_location_id);
+        })
+        ->find($request->supplier_id)->getProducts;
+
         $response['supplier_currency'] = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->currency_id : '';
 
         return $response;
-
     }
 
     public function getCategoryToSupplier(Request $request)
@@ -234,7 +242,9 @@ class ResponseController extends Controller
         $suppliers = Supplier::whereHas('getCategories', function($query) use($request) {
             $query->where('id', $request->category_id);
         })
-        ->where('location_id', $request->suppplier_location_id)
+        ->whereHas('getLocations', function($query) use($request) {
+            $query->where('id', $request->suppplier_location_id);
+        })
         ->get();
 
         return response()->json([ 'suppliers' => $suppliers ]);
