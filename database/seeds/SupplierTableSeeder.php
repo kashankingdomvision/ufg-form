@@ -4,6 +4,8 @@ use Illuminate\Database\Seeder;
 use App\Supplier;
 use App\SupplierCategory;
 use App\SupplierProduct;
+use App\SupplierCountry;
+use App\SupplierLocation;
 
 class SupplierTableSeeder extends Seeder
 {
@@ -20,12 +22,15 @@ class SupplierTableSeeder extends Seeder
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/supplier_categories.sql');
         DB::unprepared($sql);
 
+        $sql = file_get_contents(database_path() . '/seeds/sql_dump/supplier_countries.sql');
+        DB::unprepared($sql);
+
+        $sql = file_get_contents(database_path() . '/seeds/sql_dump/supplier_locations.sql');
+        DB::unprepared($sql);
 
         /* Dummy supplier for transfer */ 
         $supplier = Supplier::create([
-            'name'         => 'Taimoor',
-            'country_id'   => 56,
-            'location_id'  => 1,
+            'name'         => 'Taimoor'
         ]);
 
         SupplierCategory::create([
@@ -36,6 +41,16 @@ class SupplierTableSeeder extends Seeder
         SupplierProduct::create([
             'supplier_id' => $supplier->id,
             'product_id'  => 167,
+        ]);
+
+        SupplierCountry::create([
+            'supplier_id' => $supplier->id,
+            'country_id'  => 56,
+        ]);
+
+        SupplierLocation::create([
+            'supplier_id' => $supplier->id,
+            'location_id' => 1,
         ]);
 
         // $data = [
