@@ -1308,10 +1308,16 @@
 
 @push('js')
 
-<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-<script src="{{ asset('js/category/formRender.js') }}"></script>
 
 <script>
+window.onload = function() {
+    // if (window.jQuery) {  
+    //     // jQuery is loaded  
+    //     alert("Yeah!");
+    // } else {
+    //     // jQuery is not loaded
+    //     alert("Doesn't Work");
+    // }
 
   var quote  = '';
   var key  = '';
@@ -1414,7 +1420,7 @@
   });
 
   $(window).on('beforeunload', function() {
-
+    alert("Yeasssh!");
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1440,5 +1446,6 @@
     });
 
   });
+}
 </script>
 @endpush

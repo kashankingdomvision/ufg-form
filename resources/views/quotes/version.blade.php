@@ -1167,11 +1167,8 @@
 
 @push('js')
 
-<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-<script src="{{ asset('js/category/formRender.js') }}"></script>
-
 <script>
-
+window.onload = function() {
   var quote  = '';
   var key  = '';
   var formRenderID  = "#build-wrap"; 
@@ -1222,7 +1219,7 @@
 
   });
 
-
+}
 </script>
 
 @endpush

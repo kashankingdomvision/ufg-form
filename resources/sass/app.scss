@@ -1,9 +1,15 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
+@import url('https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
+@import url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+
+
 
 // Variables
 @import 'variables';
-$flagsImagePath: "~images/vendor/intl_tel_input/";
+
 @import '~intl-tel-input/build/css/intlTelInput.css';
 @import '~@sweetalert2/theme-bootstrap-4/bootstrap-4.scss';
 // Bootstrap
@@ -14,6 +20,7 @@ $flagsImagePath: "~images/vendor/intl_tel_input/";
 
 
 @import "~daterangepicker/daterangepicker.css";
+@import "../css/adminlte/adminlte.min.css";
 
 /**
  * -------------------------------------------------------------------------------------

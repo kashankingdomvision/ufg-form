@@ -67119,11 +67119,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
-// import $, { ajax, cssNumber, event } from 'jquery';
-// import {$,jQuery, cssNumber, event} from 'jquery';
-
-window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
-window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+__webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
 
 
 
@@ -67132,9 +67128,8 @@ window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
-__webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js"); // import { Alert } from 'bootstrap';
+ // import { Alert } from 'bootstrap';
 // import { isArguments } from 'lodash-es';
-
 
 var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
 var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
