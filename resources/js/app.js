@@ -11,7 +11,7 @@ import datepicker from 'bootstrap-datepicker';
 import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
-require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
+require('./laravel_filemanager/stand-alone-button');
 require('./summernote/summernote-bs4.min');
 require('./bootstrap/bootstrap.bundle.min');
 require('./adminlte/adminlte');

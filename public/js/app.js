@@ -67052,48 +67052,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./public/vendor/laravel-filemanager/js/stand-alone-button.js":
-/*!********************************************************************!*\
-  !*** ./public/vendor/laravel-filemanager/js/stand-alone-button.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-(function ($) {
-  $.fn.filemanager = function (type, options) {
-    type = type || 'file';
-    this.on('click', function (e) {
-      var route_prefix = options && options.prefix ? options.prefix : '/filemanager';
-      var target_input = $('#' + $(this).data('input'));
-      var target_preview = $('#' + $(this).data('preview'));
-      window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
-
-      window.SetUrl = function (items) {
-        var file_path = items.map(function (item) {
-          return item.url;
-        }).join(','); // set the value of the desired input to image url
-
-        target_input.val('').val(file_path).trigger('change'); // clear previous preview
-
-        target_preview.html(''); // set or change the preview image src
-
-        items.forEach(function (item) {
-          target_preview.append($('<img>').css('height', '10rem').attr('src', item.thumb_url).attr('class', 'img-fluid'), //  remove image work
-          $("<button type=\"button\" class=\"btn btn-sm remove-img\">X</button>").after('<img>'));
-        }); //  remove image work
-        // console.log("working right here");
-        // trigger change event
-
-        target_preview.trigger('change');
-      };
-
-      return false;
-    });
-  };
-})(jQuery);
-
-/***/ }),
-
 /***/ "./resources/js/adminlte/adminlte.js":
 /*!*******************************************!*\
   !*** ./resources/js/adminlte/adminlte.js ***!
@@ -70124,7 +70082,7 @@ window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
-__webpack_require__(/*! ../../public/vendor/laravel-filemanager/js/stand-alone-button */ "./public/vendor/laravel-filemanager/js/stand-alone-button.js");
+__webpack_require__(/*! ./laravel_filemanager/stand-alone-button */ "./resources/js/laravel_filemanager/stand-alone-button.js");
 
 __webpack_require__(/*! ./summernote/summernote-bs4.min */ "./resources/js/summernote/summernote-bs4.min.js");
 
@@ -79254,6 +79212,48 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
   });
 })();
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./resources/js/laravel_filemanager/stand-alone-button.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/laravel_filemanager/stand-alone-button.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function ($) {
+  $.fn.filemanager = function (type, options) {
+    type = type || 'file';
+    this.on('click', function (e) {
+      var route_prefix = options && options.prefix ? options.prefix : '/filemanager';
+      var target_input = $('#' + $(this).data('input'));
+      var target_preview = $('#' + $(this).data('preview'));
+      window.open(route_prefix + '?type=' + type, 'FileManager', 'width=900,height=600');
+
+      window.SetUrl = function (items) {
+        var file_path = items.map(function (item) {
+          return item.url;
+        }).join(','); // set the value of the desired input to image url
+
+        target_input.val('').val(file_path).trigger('change'); // clear previous preview
+
+        target_preview.html(''); // set or change the preview image src
+
+        items.forEach(function (item) {
+          target_preview.append($('<img>').css('height', '10rem').attr('src', item.thumb_url).attr('class', 'img-fluid'), //  remove image work
+          $("<button type=\"button\" class=\"btn btn-sm remove-img\">X</button>").after('<img>'));
+        }); //  remove image work
+        // console.log("working right here");
+        // trigger change event
+
+        target_preview.trigger('change');
+      };
+
+      return false;
+    });
+  };
+})(jQuery);
 
 /***/ }),
 
