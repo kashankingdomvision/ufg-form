@@ -29,8 +29,10 @@
     </div>
 </div>
 
+@push('js')
 <script>
-    $(window).on('load', function() {
+    window.onload = function(){
         $('#override_modal').modal('show');
-    });
+    }
 </script>
+@endpush
