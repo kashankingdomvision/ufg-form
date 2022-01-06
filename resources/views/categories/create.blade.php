@@ -96,14 +96,10 @@
     </section>
   </div>
 @endsection
-
 @push('js')
- 
-  <script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-  <script src="{{ asset('js/category/formRender.js') }}"></script>
-  <script src="{{ asset('js/category/formBuilder.js') }}"></script>
 
 <script>
+window.onload = function() {
 
   jQuery(function ($) {
     
@@ -257,5 +253,7 @@
     
   });
 
+} // end window onload
 </script>
+
 @endpush

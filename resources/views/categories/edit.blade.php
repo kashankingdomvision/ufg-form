@@ -102,13 +102,9 @@
 @endsection
 
 @push('js')
- 
-  <script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-  <script src="{{ asset('js/category/formRender.js') }}"></script>
-  <script src="{{ asset('js/category/formBuilder.js') }}"></script>
+<script>
 
-  <script>
-
+window.onload = function() {
   var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
 
   jQuery(function($) {
@@ -325,7 +321,7 @@
       
     });
 
+} // end window onload
 
-  </script>
-
+</script>
 @endpush
