@@ -70113,8 +70113,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
-// import $, { ajax, cssNumber, event } from 'jquery';
-// import {$,jQuery, cssNumber, event} from 'jquery';
 
 window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
@@ -70132,12 +70130,9 @@ __webpack_require__(/*! ./summernote/summernote-bs4.min */ "./resources/js/summe
 
 __webpack_require__(/*! ./bootstrap/bootstrap.bundle.min */ "./resources/js/bootstrap/bootstrap.bundle.min.js");
 
-__webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte.js"); // require('./quote_booking_managment/jquery-ui');
+__webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte.js");
 
-
-__webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js"); // import { Alert } from 'bootstrap';
-// import { isArguments } from 'lodash-es';
-
+__webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
 
 var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
 var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");

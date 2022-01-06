@@ -1,10 +1,3 @@
-
-
-
-// import $, { ajax, cssNumber, event } from 'jquery';
-
-// import {$,jQuery, cssNumber, event} from 'jquery';
-
 import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
@@ -18,16 +11,11 @@ import datepicker from 'bootstrap-datepicker';
 import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
-
 require('../../public/vendor/laravel-filemanager/js/stand-alone-button');
 require('./summernote/summernote-bs4.min');
 require('./bootstrap/bootstrap.bundle.min');
 require('./adminlte/adminlte');
-// require('./quote_booking_managment/jquery-ui');
 require('./intl_tel_input/utils');
-
-// import { Alert } from 'bootstrap';
-// import { isArguments } from 'lodash-es';
 
 var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
 var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
