@@ -70069,75 +70069,16 @@ __webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte
 
 __webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
 
+var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 var BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
 var REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
 var FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager"); // var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
 // var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
 // var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
-// var BASEURL          = `${window.location.origin}/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/laravel-filemanager`;
-// window.axios = require('axios');
-// window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-var CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  $(window).on('beforeunload', function () {
-    alert("sd");
-  });
-  $(window).on('unload', function () {
-    alert("ssd");
-  });
   callLaravelFileManger();
   datepickerReset();
-  $('.summernote').summernote({
-    height: 100,
-    //set editable area's height
-    placeholder: 'Enter Text Here..',
-    codemirror: {
-      // codemirror options
-      theme: 'monokai'
-    }
-  });
-
-  function calltextEditorSummerNote() {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    $('.summernote:last').summernote('destroy');
-    $('.note-editor:last').remove();
-    $('.summernote').summernote({
-      height: 100,
-      //set editable area's height
-      placeholder: 'Enter Text Here..',
-      codemirror: {
-        // codemirror options
-        theme: 'monokai'
-      }
-    }, 'code', val);
-  }
-
-  function setTextEditorValue(id, Text) {
-    // $(id).summernote('destroy');
-    // $('.note-editor:last').remove();
-    $(id).summernote('code', Text);
-  }
-
-  $(function () {
-    // make quote section sortable
-    $(".sortable").sortable();
-    $('.date-range-picker').daterangepicker({
-      autoUpdateInput: false,
-      locale: {
-        cancelLabel: 'Clear',
-        format: 'DD/MM/YYYY'
-      }
-    });
-    $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
-      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-    });
-    $('.date-range-picker').on('cancel.daterangepicker', function (ev, picker) {
-      $(this).val('');
-    });
-  });
   /*  ajaxSetup */
 
   $.ajaxSetup({
@@ -70177,6 +70118,49 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     templateResult: formatState,
     templateSelection: formatState
   });
+  $('.summernote').summernote({
+    height: 100,
+    //set editable area's height
+    placeholder: 'Enter Text Here..',
+    codemirror: {
+      // codemirror options
+      theme: 'monokai'
+    }
+  }); // make quote section sortable
+
+  $(".sortable").sortable();
+  $('.date-range-picker').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+      cancelLabel: 'Clear',
+      format: 'DD/MM/YYYY'
+    }
+  });
+  $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
+    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+  });
+  $('.date-range-picker').on('cancel.daterangepicker', function (ev, picker) {
+    $(this).val('');
+  });
+
+  function calltextEditorSummerNote() {
+    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    $('.summernote:last').summernote('destroy');
+    $('.note-editor:last').remove();
+    $('.summernote').summernote({
+      height: 100,
+      //set editable area's height
+      placeholder: 'Enter Text Here..',
+      codemirror: {
+        // codemirror options
+        theme: 'monokai'
+      }
+    }, 'code', val);
+  }
+
+  function setTextEditorValue(id, Text) {
+    $(id).summernote('code', Text);
+  }
 
   function callLaravelFileManger() {
     var route_prefix = FILE_MANAGER_URL;
@@ -70673,13 +70657,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   function getQuoteDetailsValues(key, changeFeild) {
-    var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
     var supplierCurrency = $("#quote_".concat(key, "_supplier_currency_id")).find(':selected').data('code');
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
     var rateType = $("input[name=rate_type]:checked").val();
-    var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+    var markupType = $("input[name=markup_type]:checked").val();
+    var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
     var markupPercentage = parseFloat($("#quote_".concat(key, "_markup_percentage")).val());
     var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val());
+    var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var calculatedSellingPrice = 0;
     var calculatedMarkupPercentage = 0;
     var calculatedMarkupAmount = 0;
@@ -70687,7 +70672,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var calculatedMarkupAmountInBookingCurrency = 0;
     var calculatedEstimatedCostInBookingCurrency = 0;
     var calculatedSellingPriceInBookingCurrency = 0;
-    var markupType = $("input[name=markup_type]:checked").val();
 
     if (changeFeild == 'estimated_cost') {
       // calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(estimatedCost)) / parseFloat(calculatedSellingPrice)) * 100;
