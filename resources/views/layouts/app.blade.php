@@ -21,8 +21,14 @@
         {{-- <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet"> --}}
         {{-- <script src="{{ asset('js/jquery.min.js') }}"></script> --}}
        
-
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <style>
+            .iti__flag {background-image: url("{{ asset('images/intl-tel-input/flags.png')}}") ;}
+            @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+                .iti__flag {background-image: url("{{ asset('images/intl-tel-input/flags@2x.png')}}") !important;}
+            }
+        </style>
+
         {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
 
         {{-- title end --}}
