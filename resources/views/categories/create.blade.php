@@ -97,7 +97,7 @@
   </div>
 @endsection
 @push('js')
-
+<script src="{{ asset('js/category_app.js') }}" ></script>
 <script>
 window.onload = function() {
 
