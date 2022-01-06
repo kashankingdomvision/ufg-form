@@ -1116,6 +1116,7 @@
 
 @push('js')
 
+<script src="{{ asset('js/quote_app.js') }}" ></script>
 <script>
 window.onload = function() {
   
