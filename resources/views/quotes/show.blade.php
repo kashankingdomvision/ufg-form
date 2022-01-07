@@ -1233,9 +1233,7 @@
 
 
 @push('js')
-
-<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-<script src="{{ asset('js/category/formRender.js') }}"></script>
+<script src="{{ asset('js/quote_app.js') }}" ></script>
 
 <script>
 
