@@ -7,6 +7,7 @@ use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use Illuminate\Support\Str;
 use App\Category;
+use App\QuoteDetail;
 
 class CategoryController extends Controller
 {
@@ -84,7 +85,25 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request)
     {
-        $category = Category::findOrFail(decrypt($request->id));
+        // dd($request->feilds);
+
+        $category  = Category::findOrFail(decrypt($request->id));
+        $jsonQuote = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get(['category_details','id']);
+
+        $jsonCategory = json_decode($request->feilds);
+        foreach ($jsonCategory as $key => $json) {
+            
+            $myJson[$key] = $json;
+            $jsonQ        = json_decode($jsonQuote[$key]['category_details']);
+
+            if( isset($jsonQ[$key]->userData) && $jsonQ[$key]->name == $jsonCategory[$key]->name  ) {
+                $myJson[$key]->userData = $jsonQ[$key]->userData;
+                continue;
+            }
+
+            $result = json_encode($myJson);
+            QuoteDetail::where('id', $jsonQuote[$key]['id'])->update([ 'category_details' => $result ]);
+        }
         
         $category->update([
             'name'                     => $request->name,
