@@ -9,11 +9,12 @@
         <div class="col-md-5">
          
             <div class="login-logo py-3 mt-5">
-                {{-- class="img-fluid"  --}}
-                <img src="{{ asset('img/logo1.png') }}" width="400px" height="110px" >
+                <a href="{{ route('dashboard.index') }}">
+                    <img src="{{ asset('images/logos/login_logo.png') }}" >
+                </a>
             </div>
 
-            <div class="card card-outline card-danger">
+            <div class="card card-outline card-color">
                 <div class="card-header">
                     <b>Login</b>
                 </div>
@@ -63,7 +64,7 @@
                             </div>
 
                             <div class="col-4">
-                                <button type="submit" class="btn btn-danger btn-block">Sign In</button>
+                                <button type="submit" class="btn sign-in-btn-color btn-block">Sign In</button>
                             </div>
 
                         </div>

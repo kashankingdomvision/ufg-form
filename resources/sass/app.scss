@@ -28,6 +28,55 @@
  * -------------------------------------------------------------------------------------
  */
 
+ @media (min-width: 992px){
+    .sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused, .sidebar-mini.sidebar-collapse .main-sidebar:hover {
+        width: 275px;
+    }
+}
+
+ .sign-in-btn-color, .sign-in-btn-color:hover{
+    color: #fff;
+    background-color: #1789a4;
+    border-color: #1789a4;
+    box-shadow: none;
+ }
+
+.card-color{
+    border-top: 3px solid #1789a4;
+}
+
+.brand-link .brand-image-xl {
+    line-height: .8;
+    max-height: 95px;
+    width: auto;
+}
+
+.brand-anchor-hr{
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid #4b545c;
+
+    
+}
+
+[class*=sidebar-dark] .brand-link{
+    border-bottom: none;
+}
+
+.brand-link .brand-image-xs {
+    float: left;
+    line-height: .8;
+    margin-top: -0.1rem;
+    max-height: 91px;
+    width: auto;
+}
+
+.layout-fixed .brand-link {
+    width: 250px;
+    height: 104px;
+}
+
 ::marker {
     content: none;
 }

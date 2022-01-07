@@ -70,47 +70,31 @@
         'setting.locations.edit',
     ];
 @endphp
+
+ <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
-    {{-- <a href="{{ route('dashboard.index') }}" class="brand-link d-xs-none ">
-        <img src="{{ asset('img/logo.png') }}" >
+    <!-- Brand Logo -->
+    <a href="{{ route('dashboard.index') }}" class="brand-link logo-switch brand-anchor">
+        <img src="{{ asset('images/logos/collapse_logo.png') }}" alt="Small" class="brand-image-xl logo-xs">
+        <img src="{{ asset('images/logos/logo.png') }}" alt="Large" class="brand-image-xs logo-xl" style="left: 16px">
     </a>
-    <a href="{{ route('dashboard.index') }}" class="brand-link d-md-none">
-        <img src="{{ asset('img/fav-icon.png') }}" >
-    </a> --}}
 
-
-    <li class="nav-item nav-sidebar flex-column ">
-        <a href="{{ route('dashboard.index') }}" class="nav-link  brand-link  {{ $route == 'dashboard.index' ? 'active' : '' }}">
-            <div class="d-flex">
-                <img src="{{ asset('img/fa.png') }}" class="ml-2" >
-                <p>
-                    <img src="{{ asset('img/logo.png') }}" width="205px">
-                </p>
-            </div>
-        </a>
-    </li>
-
-    {{-- <a href="/docs/3.0/index.html" class="brand-link logo-switch">
-        <img src="{{ asset('img/fav-icon.png') }}"  alt="AdminLTE Docs Logo Small" class="brand-image-xl logo-xs">
-        <img src="{{ asset('img/logo.png') }}"  style="width: 218px;" alt="AdminLTE Docs Logo Large" class="brand-image-xs logo-xl" style="left: 12px">
-    </a> --}}
-
+    <hr class="brand-anchor-hr">
+    <!-- Sidebar -->
     <div class="sidebar">
-        {{-- <!-- Sidebar user panel (optional) --> --}}
-        {{-- <div class="user-panel mt-1 pb-3 mb-3 d-flex text-white">
-            <div class="image">
-                Main Navigation
-                <img src="{{ asset('img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
-            </div>
-            <div class="info">
-                <a href="#" class="d-block">Welcome, {{ ucfirst(auth()->user()->name) }}</a>
-            </div>
-        </div> --}}
+      <!-- Sidebar user panel (optional) -->
+      {{-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Alexander Pierce</a>
+        </div>
+      </div> --}}
 
-
+  
         <nav>
-            <ul class="nav nav-pills nav-sidebar flex-column mt-1" data-widget="treeview" role="menu"
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
 
                 <li class="nav-item">
@@ -165,7 +149,7 @@
                         </li>
                         {{-- <li class="nav-item">
                             <a href="{{ route('quotes.view.trash') }}" class="nav-link {{ $route == 'quotes.view.trash' ? 'active' : '' }}">
-                                  <i class="fa fa-window-close nav-icon"></i>
+                                <i class="fa fa-window-close nav-icon"></i>
                                 <p>Cancel Quote</p>
                             </a>
                         </li> --}}
@@ -822,7 +806,8 @@
 
             </ul>
         </nav>
-
+      <!-- /.sidebar-menu -->
     </div>
-
+    <!-- /.sidebar -->
 </aside>
+
