@@ -31,9 +31,40 @@ use App\SupplierRateSheet;
 use App\SupplierProduct;
 use App\Town;
 use App\Location;
+use App\QuoteDetail;
 
 class ResponseController extends Controller
 {
+    public function removeFormBuidlerFeild(Request $request)
+    {
+        // dd($request->all());
+
+        $id           = decrypt($request->id);
+        $element_name = $request->element_name;
+        // dd($element_name);
+
+        $json_quotes = QuoteDetail::where('category_id', $id)->whereNotNull('category_details')->get(['category_details','id']);
+
+
+        foreach($json_quotes as $Qkey => $json_quote){
+
+            $category_details = json_decode($json_quote->category_details);
+
+            foreach($category_details as $key => $category_detail){
+ 
+
+                if(($category_detail->name == $element_name) && isset($category_detail->userData)){
+
+                    // return "a";
+
+                    return response()->json([ "status" => true, "success_message" => "You Can Not Remove this feild." ]);
+                }
+                // dd(isset($category_detail->userData));
+            }
+           
+        }
+        return response()->json([ 'status' => false, 'success_message' => 'Product Added Successfully.' ]);
+    }
 
     public function get_commissions(){
         $commissions = Commission::all();

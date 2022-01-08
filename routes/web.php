@@ -491,6 +491,9 @@ Route::group(['middleware' => ['auth']], function(){
 
         
         Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
+
+
+        Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
     });
 
 

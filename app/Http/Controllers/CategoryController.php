@@ -88,23 +88,7 @@ class CategoryController extends Controller
         // dd($request->feilds);
 
         $category  = Category::findOrFail(decrypt($request->id));
-        $jsonQuote = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get(['category_details','id']);
 
-        $jsonCategory = json_decode($request->feilds);
-        foreach ($jsonCategory as $key => $json) {
-            
-            $myJson[$key] = $json;
-            $jsonQ        = json_decode($jsonQuote[$key]['category_details']);
-
-            if( isset($jsonQ[$key]->userData) && $jsonQ[$key]->name == $jsonCategory[$key]->name  ) {
-                $myJson[$key]->userData = $jsonQ[$key]->userData;
-                continue;
-            }
-
-            $result = json_encode($myJson);
-            QuoteDetail::where('id', $jsonQuote[$key]['id'])->update([ 'category_details' => $result ]);
-        }
-        
         $category->update([
             'name'                     => $request->name,
             'slug'                     => Str::slug($request->name),
@@ -114,6 +98,35 @@ class CategoryController extends Controller
             'sort_order'               =>  $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
         ]);
+
+        
+
+        $json_quotes = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get(['category_details','id']);
+        // dd($jsonQuote);
+
+        $final_json_quotes = array();
+
+        foreach($json_quotes as $Qkey => $json_quote){
+            
+            $category_details = json_decode($json_quote->category_details);
+            $feilds           = json_decode($category->feilds);
+
+            foreach($feilds as $key => $feild){
+
+                if(isset($category_details[$key])){
+                    if($feild->name == $category_details[$key]->name) {
+                        $final_json_quotes[$key] = $category_details[$key];
+                    }
+                }else{
+
+                    $final_json_quotes[$key] = $feild;
+                }
+
+                QuoteDetail::where('id', $json_quote->id)->update([ 'category_details' => $final_json_quotes ]);
+            }
+        }
+
+        dd("done");
 
         return \Response::json(['status' => true, 'success_message' => 'Category updated successfully'], 200);
     }

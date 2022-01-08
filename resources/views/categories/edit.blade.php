@@ -108,11 +108,53 @@
 window.onload = function() {
   var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
 
+ 
+
+  $(document).on("click", ".del-button",function() {
+
+    var parentLI = $(this).closest('li');
+
+    var elementName = $(this).closest('li').find('.frm-holder .form-elements .name-wrap .input-wrap input[name=name]').val();
+    var id          = $('input[name=id]').val();
+
+    var data = {
+      'id'            : id,
+      'element_name'  : elementName,
+      "_token"        : "{{ csrf_token() }}",
+    };
+
+
+    $.ajax({
+      type: 'GET',
+      url: `${window.location.origin}/ufg-form/public/json/remove-form-buidler-feild`,
+      data: {
+        'id'            : id,
+        'element_name'  : elementName,
+        "_token"        : "{{ csrf_token() }}",
+      },
+      success: function(data){
+        if(data && data.status == true){
+          alert(data.success_message);
+          return;
+        }
+
+        parentLI.remove();
+      },
+      error: function(reject) {
+
+        if(reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+        }
+      },
+    });
+  });
+
   jQuery(function($) {
     
     var currFieldData;
     var fbTemplate = document.getElementById('build-wrap'),
       options = {
+        // fieldRemoveWarn: true,
         disableFields: ['file','hidden','button'],
         disabledAttrs: [
           'className',
@@ -199,8 +241,8 @@ window.onload = function() {
             beforeSend: function() {
               $('input, select').removeClass('is-invalid');
               $('.text-danger').html('');
-              $("#overlay").addClass('overlay');
-              $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+              // $("#overlay").addClass('overlay');
+              // $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
             },
             success: function(data) {
               $("#overlay").removeClass('overlay').html('');

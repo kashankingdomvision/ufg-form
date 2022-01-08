@@ -12555,7 +12555,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
       o.prototype = new Error(), o.prototype.code = 5, o.prototype.name = "InvalidCharacterError", e.exports = function (e) {
         for (var t, r, n = String(e), i = "", l = 0, a = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="; n.charAt(0 | l) || (a = "=", l % 1); i += a.charAt(63 & t >> 8 - l % 1 * 8)) {
-          if ((r = n.charCodeAt(l += .75)) > 255) throw new o();
+          if ((r = n.charCodeAt(l += 0.75)) > 255) throw new o();
           t = t << 8 | r;
         }
 
@@ -15557,7 +15557,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           C = r(b.controls);
       q.sortable({
         cursor: "move",
-        opacity: .9,
+        opacity: 0.9,
         revert: 150,
         beforeStop: function beforeStop(e, t) {
           return g.beforeStop.call(g, e, t);
@@ -15572,7 +15572,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         placeholder: "frmb-placeholder"
       }), e.allowStageSort || q.sortable("disable"), C.sortable({
         helper: "clone",
-        opacity: .9,
+        opacity: 0.9,
         connectWith: q,
         cancel: ".formbuilder-separator",
         cursor: "move",
