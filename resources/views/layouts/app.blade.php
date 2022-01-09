@@ -23,9 +23,9 @@
         @endguest
 
         @auth
+        <div class="wrapper">
+            @include('includes.navbar')
             @include('includes.sidebar')
-            <div class="wrapper">
-                @include('includes.navbar')
                 @yield('content')
             </div>
         @endauth
