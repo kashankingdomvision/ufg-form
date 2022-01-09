@@ -75,8 +75,11 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('dashboard.index') }}" class="brand-link logo-switch brand-anchor">
-        <img src="{{ asset('images/logos/collapse_logo.png') }}" alt="Small" class="brand-image-xl logo-xs">
-        <img src="{{ asset('images/logos/logo.png') }}" alt="Large" class="brand-image-xs logo-xl" style="left: 16px">
+        {{-- <img src="{{ asset('images/logos/collapse_logo.png') }}" alt="Small" class="brand-image-xl logo-xs"> --}}
+        {{-- <img src="{{ asset('images/logos/logo.png') }}" alt="Large" class="brand-image-xs logo-xl" style="left: 16px"> --}}
+
+        {!! file_get_contents(asset('images/logos/dashboard_logo.svg')) !!}
+        {!! file_get_contents(asset('images/logos/collapse_logo.svg')) !!}
     </a>
 
     <hr class="brand-anchor-hr">

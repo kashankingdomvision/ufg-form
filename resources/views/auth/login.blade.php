@@ -9,7 +9,8 @@
         <div class="col-md-5">
          
             <div class="login-logo py-3 mt-5">
-                <a href="{{ route('dashboard.index') }}">
+                <a href="{{ route('login') }}">
+                    {{-- {!! file_get_contents(asset('images/logos/login_logo.svg')) !!} --}}
                     <img src="{{ asset('images/logos/login_logo.png') }}" >
                 </a>
             </div>
