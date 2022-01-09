@@ -4095,7 +4095,9 @@
                                 const e = O("h3", d.a.get("warning")),
                                     t = O("p", d.a.get("fieldRemoveWarning"));
                                 g.confirm([e, t], () => g.removeField(l), i), a.addClass("deleting");
-                            } else g.removeField(l);
+                            } else { 
+                                // g.removeField(l);
+                            };
                         }),
                         q.on("click", ".style-wrap button", (e) => {
                             const t = r(e.target),
@@ -4126,7 +4128,7 @@
                                 s = m.a.opts.onAddOption({ selected: !1, label: "", value: "" }, { type: t, index: a.children().length, isMultiple: l });
                             a.append(Y(s, l));
                         }),
-                        q.on("mouseover mouseout", ".remove, .del-button", (e) => r(e.target).closest("li").toggleClass("delete")),
+                        q.on("mouseover mouseout", ".remove, .del-button", (e) => r(e.target).closest("li").toggleClass()),
                         D(),
                         e.disableInjectedStyle)
                     ) {

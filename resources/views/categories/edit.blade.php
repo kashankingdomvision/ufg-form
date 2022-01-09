@@ -147,6 +147,8 @@ window.onload = function() {
         }
       },
     });
+
+    
   });
 
   jQuery(function($) {
@@ -241,8 +243,8 @@ window.onload = function() {
             beforeSend: function() {
               $('input, select').removeClass('is-invalid');
               $('.text-danger').html('');
-              // $("#overlay").addClass('overlay');
-              // $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+              $("#overlay").addClass('overlay');
+              $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
             },
             success: function(data) {
               $("#overlay").removeClass('overlay').html('');

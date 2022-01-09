@@ -16435,7 +16435,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
           g.confirm([_e39, _t29], function () {
             return g.removeField(l);
           }, i), a.addClass("deleting");
-        } else g.removeField(l);
+        } else {// g.removeField(l);
+        }
+
+        ;
       }), q.on("click", ".style-wrap button", function (e) {
         var t = r(e.target),
             o = t.closest(".form-elements"),
@@ -16470,7 +16473,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
         });
         a.append(Y(s, l));
       }), q.on("mouseover mouseout", ".remove, .del-button", function (e) {
-        return r(e.target).closest("li").toggleClass("delete");
+        return r(e.target).closest("li").toggleClass();
       }), D(), e.disableInjectedStyle) {
         var _e40 = document.getElementsByClassName("formBuilder-injected-style");
 

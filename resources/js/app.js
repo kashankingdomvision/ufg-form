@@ -10,21 +10,14 @@ import datepicker from 'bootstrap-datepicker';
 import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
+require('./global_variables');
 require('./laravel_filemanager/stand-alone-button');
 require('./summernote/summernote-bs4.min');
 require('./bootstrap/bootstrap.bundle.min');
 require('./adminlte/adminlte');
 require('./intl_tel_input/utils');
 
-var CSRFTOKEN        = $('#csrf-token').attr('content');
 
-var BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-var REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-var FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
-
-// var BASEURL          = `${window.location.origin}/php/ufg-form/public/json/`;
-// var REDIRECT_BASEURL = `${window.location.origin}/php/ufg-form/public/`;
-// var FILE_MANAGER_URL = `${window.location.origin}/php/ufg-form/public/laravel-filemanager`;
 
 
 $(document).ready(function($) {

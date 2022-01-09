@@ -126,7 +126,7 @@ class CategoryController extends Controller
             }
         }
 
-        dd("done");
+        // dd("done");
 
         return \Response::json(['status' => true, 'success_message' => 'Category updated successfully'], 200);
     }
