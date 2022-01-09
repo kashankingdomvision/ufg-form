@@ -48,7 +48,11 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'bookings', 'as' => 'bookings.'], function () {
+    Route::group([
+        'prefix' => 'bookings',
+        'as'     => 'bookings.'
+    ], function () {
+
         // Route::get('view-seasons', array('as' => 'view.seasons', 'uses' => 'BookingController@view_seasons'));
         Route::get('index', array('as' => 'index', 'uses' => 'BookingController@index'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BookingController@edit'));
@@ -81,7 +85,10 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'quotes', 'as' => 'quotes.'], function () {
+    Route::group([
+        'prefix' => 'quotes',
+        'as'     => 'quotes.'
+    ], function () {
 
         /* crud routes */
         Route::get('index', array('as' => 'index', 'uses' => 'QuoteController@index'));
@@ -145,7 +152,11 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'store/text', 'as' => 'store.texts.'], function () {
+    Route::group([
+        'prefix' => 'store/text',
+        'as'     => 'store.texts.'
+    ], function () {
+
         Route::get('index', array('as' => 'index', 'uses' => 'StoreTextController@index'));
         Route::get('create', ['as' => 'create', 'uses' => 'StoreTextController@create']);
         Route::get('edit/{slug}', ['as' => 'edit', 'uses' => 'StoreTextController@edit']);
@@ -160,7 +171,10 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
+    Route::group([
+        'prefix' => 'customers',
+        'as'     => 'customers.'
+    ], function () {
 
         Route::get('index', array('as' => 'index', 'uses' => 'CustomerController@index'));
         Route::get('quote-listing/{email}', array('as' => 'quote.listing', 'uses' => 'CustomerController@quote_listing'));
@@ -176,7 +190,8 @@ Route::group(['middleware' => ['auth']], function(){
 	Route::group([
         'prefix' => 'template',
         'as' 	 => 'templates.'
-    ],function (){
+    ], function() {
+
         Route::get('index', ['as' => 'index', 'uses' => 'TemplateController@index']);
         Route::get('create', ['as' => 'create', 'uses' => 'TemplateController@create']);
         Route::post('store', ['as' => 'store', 'uses' => 'TemplateController@store']);
@@ -190,7 +205,10 @@ Route::group(['middleware' => ['auth']], function(){
 
    /* Supplier Bulk Payments */
 
-    Route::group(['prefix' => 'supplier-bulk-payments', 'as' => 'supplier-bulk-payments.'], function () {
+    Route::group([
+        'prefix' => 'supplier-bulk-payments',
+        'as'     => 'supplier-bulk-payments.'
+    ], function () {
 
         /* Add Supplier Bulk Payment */
         Route::get('index', array('as' => 'index', 'uses' => 'SupplierBulkPaymentController@index'));
@@ -208,7 +226,10 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'commissions', 'as' => 'commissions.'], function () {
+    Route::group([
+        'prefix' => 'commissions',
+        'as'     => 'commissions.'
+    ], function () {
 
         /* Commsisions */
         Route::resource('commission', 'CommissionController',['only' => [
@@ -233,7 +254,11 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
+    Route::group([
+        'prefix' => 'users',
+        'as'     => 'users.'
+    ], function () {
+        
         Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'UserController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
@@ -253,7 +278,11 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+    Route::group([
+        'prefix' => 'reports',
+        'as'     => 'reports.'
+    ], function () {
+
         Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
         Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
         Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
@@ -334,7 +363,11 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     
-    Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+    Route::group([
+        'prefix' => 'categories',
+        'as'     => 'categories.'
+    ], function () {
+        
         Route::get('index', array('as' => 'index', 'uses' => 'CategoryController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'CategoryController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'CategoryController@store'));
@@ -354,7 +387,11 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group(['prefix' => 'wallets', 'as' => 'wallets.'], function () {
+    Route::group([
+        'prefix' => 'wallets',
+        'as'     => 'wallets.'
+    ], function () {
+
         Route::get('index', array('as' => 'index', 'uses' => 'WalletController@index'));
         Route::get('get-supplier-wallet-amount/{supplier_id}', array('as' => 'get-supplier-wallet-amount', 'uses' => 'WalletController@get_supplier_wallet_amount'));
     });
@@ -366,7 +403,10 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group([ 'prefix' => 'setting', 'as' => 'setting.'],function (){
+    Route::group([
+        'prefix' => 'setting',
+        'as'     => 'setting.'
+    ],function (){
 
         /* Harbours, Train and Points of Interest */
 		Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
@@ -453,6 +493,7 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
     Route::prefix('json')->group(function () {
+
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
         
