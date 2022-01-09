@@ -120,6 +120,7 @@ window.onload = function() {
         'style',
         'access',
         'accept',
+        'value',
       ],
       typeUserAttrs: {
         autocomplete: {
