@@ -1128,7 +1128,15 @@ window.onload = function() {
   var key  = '';
   var formRenderID  = ".build-wrap"; 
   
-  $(document).on('click', '.category-detail-feilds-submit', function() {
+  // $(document).on('click', '.category-detail-feilds-submit', function() {
+  //   var data = JSON.stringify($(formRenderID).formRender("userData"));
+  //   $(`#quote_${key}_category_details`).val(data);
+  // });
+
+  $(document).on("input", ".rendered-form-parent .form-control",function() {
+
+    var quote                 = jQuery(this).closest('.quote');
+    var key                   = quote.data('key');
     var data = JSON.stringify($(formRenderID).formRender("userData"));
     $(`#quote_${key}_category_details`).val(data);
   });

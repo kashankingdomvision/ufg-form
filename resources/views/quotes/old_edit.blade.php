@@ -724,16 +724,12 @@
                               </div>
 
                               {{-- d-none --}}
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Category Details</label>
                                   <input type="text" name="quote[{{ $key }}][category_details]" value="@if(isset($q_detail->getCategory->quote) && isset($q_detail->getCategory->quote) == 1)@if(empty($q_detail->category_details) || is_null($q_detail->category_details)){{ $q_detail->getCategory->feilds }}@else{{$q_detail->category_details}}@endif @endif" id="quote_{{ $key }}_category_details" class="form-control category-details">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
-                              </div>
-
-                              <div class="build-wrap-parent">
-                                <div class="build-wrap"></div>
                               </div>
 
                               {{-- <div class="col-sm-2">
@@ -1314,23 +1310,40 @@
 <script src="{{ asset('js/quote_app.js') }}" ></script>
 
 <script>
-// window.onload = function() {
-jQuery(function($) {
-  $(document).on("input, click", ".rendered-form-parent .rendered-form-child .form-control, .formbuilder-autocomplete-list",function(e) {
- 
-    var quote = jQuery(this).closest('.quote');
-    var key   = quote.data('key');
-    var data  = JSON.stringify($(formRenderID).formRender("userData"));
+window.onload = function() {
+    // if (window.jQuery) {  
+    //     // jQuery is loaded  
+    //     alert("Yeah!");
+    // } else {
+    //     // jQuery is not loaded
+    //     alert("Doesn't Work");
+    // }
+
+  var quote  = '';
+  var key  = '';
+  var formRenderID  = "#build-wrap"; 
+  
+  $(document).on('click', '.category-detail-feilds-submit', function() {
+    var data = JSON.stringify($(formRenderID).formRender("userData"));
     $(`#quote_${key}_category_details`).val(data);
   });
 
-  $(".quote").each(function( index ) {
+  $(document).on('click', '.add-category-detail', function() {
 
-    var quote       = jQuery(this).closest('.quote');
-    var key         = quote.data('key');
-    var fields_data = $(`#quote_${key}_category_details`).val();
+    quote                 = jQuery(this).closest('.quote');
+    key                   = quote.data('key');
+    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
+    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
+    var category_id       = $(`#quote_${key}_category_id`).val();
+    var booking_detail_id = $(this).attr('data-id');
+    var url               = '{{route('bookings.category.detail.feilds')}}';
+    var modal             = jQuery('.category-detail-feilds');
+    var fields_data       = $(`#quote_${key}_category_details`).val();
 
-    var formRenderID  = ".build-wrap"; 
+    if(typeof type === 'undefined') {
+      alert("Please Select Category first");
+      return;
+    }
 
     var airport_codes;
     var harbours;
@@ -1384,56 +1397,6 @@ jQuery(function($) {
 
     jQuery(function($) {
       var formRenderOptions = {
-        formData: fields_data,
-        layoutTemplates: {
-          default: function(field, label, help, data) {
-            let parentHtml = '<div>';
-            let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-            return result;
-          }
-        }
-      }
-
-      $(formRenderID).html("");
-      $(formRenderID).formRender(formRenderOptions);
-
-      if(fields_data == ""){
-        $(formRenderID).html("No Form Data.");
-      }
-    });
-    
-  });
-
-  var quote  = '';
-  var key  = '';
-  var formRenderID  = "#build-wrap"; 
-  var fields_data       = $(`#quote_${key}_category_details`).val();
-  
-  $(document).on('click', '.category-detail-feilds-submit', function() {
-    var data = JSON.stringify($(formRenderID).formRender("userData"));
-    $(`#quote_${key}_category_details`).val(data);
-  });
-
-  $(document).on('click', '.add-category-detail', function() {
-
-    quote                 = jQuery(this).closest('.quote');
-    key                   = quote.data('key');
-    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
-    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
-    var category_id       = $(`#quote_${key}_category_id`).val();
-    var booking_detail_id = $(this).attr('data-id');
-    var url               = '{{route('bookings.category.detail.feilds')}}';
-    var modal             = jQuery('.category-detail-feilds');
-    var fields_data       = $(`#quote_${key}_category_details`).val();
-
-    if(typeof type === 'undefined') {
-      alert("Please Select Category first");
-      return;
-    }
-
-    jQuery(function($) {
-      console.log(fields_data);
-      var formRenderOptions = {
         formData: fields_data 
       }
 
@@ -1483,6 +1446,6 @@ jQuery(function($) {
     });
 
   });
-});
+}
 </script>
 @endpush
