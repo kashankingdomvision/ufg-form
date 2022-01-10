@@ -1847,6 +1847,10 @@ $(document).ready(function($) {
                 var category_id       = $(this).val();
                 var category_name     = $(this).find(':selected').attr('data-name');
                 var category_slug     = $(this).find(':selected').attr('data-slug');
+
+                var fields_data       = "";
+                var formRenderID      = ".build-wrap"; 
+
                 // var options           = '';
           
                 /* remove & reset supplier location attribute when category selected */
@@ -1879,6 +1883,7 @@ $(document).ready(function($) {
                     $(`#quote_${quoteKey}_booking_type_id`).val('').change();
                 }
 
+
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}category/to/supplier`,
@@ -1887,18 +1892,41 @@ $(document).ready(function($) {
            
                         // set category details feilds 
                         if(typeof response.category_details != 'undefined') {
-                            quote.find('.category-details').val(response.category_details);
+
+
+                            fields_data = `${response.category_details}`;
+
+                            quote.find('.category-details').val(fields_data);
+
+                            jQuery(function($) {
+
+                                var formRenderOptions = {
+                                  formData: fields_data,
+                                  layoutTemplates: {
+                                    default: function(field, label, help, data) {
+                                      let parentHtml = '<div>';
+                                      let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
+                                      return result;
+                                    }
+                                  }
+                                }
+                          
+                                $(formRenderID).html("");
+                                $(formRenderID).formRender(formRenderOptions);
+                          
+                                if(fields_data == ""){
+                                  $(formRenderID).html("No Form Data.");
+                                }
+                              });
                         }
 
                         // Hide & Show Category details btn according to status
                         if((response.category != "") && (typeof response.category !== 'undefined')){
 
                             if(response.category.quote == 1){
-                                quote.find('.quote-category-detail-btn-parent').removeClass('d-none');
-                                quote.find('.quote-category-detail-btn-parent').addClass('d-flex');
+                                quote.find('.build-wrap-parent').removeClass('d-none').addClass('d-flex');
                             }else{
-                                quote.find('.quote-category-detail-btn-parent').removeClass('d-flex');
-                                quote.find('.quote-category-detail-btn-parent').addClass('d-none');
+                                quote.find('.build-wrap-parent').removeClass('d-flex').addClass('d-none');
                             }
 
                             if(response.category.booking == 1){
@@ -1916,6 +1944,9 @@ $(document).ready(function($) {
                             
                             
                         }
+
+
+                
                     }
                 });
 

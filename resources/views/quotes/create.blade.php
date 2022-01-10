@@ -590,7 +590,11 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-none">
+                            <div class="build-wrap-parent">
+                              <div class="build-wrap"></div>
+                            </div>
+                    
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Category Details</label>
                                 <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -1122,7 +1126,7 @@ window.onload = function() {
   
   var quote  = '';
   var key  = '';
-  var formRenderID  = "#build-wrap"; 
+  var formRenderID  = ".build-wrap"; 
   
   $(document).on('click', '.category-detail-feilds-submit', function() {
     var data = JSON.stringify($(formRenderID).formRender("userData"));

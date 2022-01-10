@@ -28,7 +28,17 @@
  * -------------------------------------------------------------------------------------
  */
 
- @media (min-width: 992px){
+.rendered-form-parent {
+    display: inline-flex;  
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.rendered-form-child {
+    width: 250px;
+}
+
+@media (min-width: 992px){
     .sidebar-mini.sidebar-collapse .main-sidebar.sidebar-focused, .sidebar-mini.sidebar-collapse .main-sidebar:hover {
         width: 275px;
     }

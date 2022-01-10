@@ -2727,7 +2727,7 @@
                         "function" != typeof Element.prototype.appendFormFields &&
                             (Element.prototype.appendFormFields = function (e) {
                                 Array.isArray(e) || (e = [e]);
-                                const t = s.f.markup("div", e, { className: "rendered-form" });
+                                const t = s.f.markup("div", e, { className: "rendered-form rendered-form-parent" });
                                 this.appendChild(t),
                                     e.forEach((e) => {
                                         const [n] = e.className.match(/row-([^\s]+)/) || [];
