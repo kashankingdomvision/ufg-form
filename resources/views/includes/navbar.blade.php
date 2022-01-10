@@ -20,6 +20,7 @@
           <a href="{{ route('users.edit', [encrypt(Auth::id()), 'profile']) }}" class="dropdown-item">
             <i class="fas fa-user-edit mr-2"></i>Edit Profile
           </a>   
+          <div class="dropdown-divider"></div>
           <form id="frm-logout" action="{{ route('logout') }}" method="POST" >
             @csrf
             <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
@@ -32,7 +33,6 @@
             {{-- <span class="float-right text-muted text-sm">2 days</span> --}}
           {{-- </a> --}}
 
-        <div class="dropdown-divider"></div>
       </div>
     </li>
 
