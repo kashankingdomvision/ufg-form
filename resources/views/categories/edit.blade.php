@@ -108,13 +108,10 @@
 window.onload = function() {
   var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
 
- 
-
   $(document).on("click", ".del-button",function() {
 
-    var parentLI = $(this).closest('li');
-
-    var elementName = $(this).closest('li').find('.frm-holder .form-elements .name-wrap .input-wrap input[name=name]').val();
+    var parentLI    = $(this).closest('li');
+    var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
     var id          = $('input[name=id]').val();
 
     var data = {
@@ -122,7 +119,6 @@ window.onload = function() {
       'element_name'  : elementName,
       "_token"        : "{{ csrf_token() }}",
     };
-
 
     $.ajax({
       type: 'GET',
@@ -147,7 +143,6 @@ window.onload = function() {
         }
       },
     });
-
     
   });
 
