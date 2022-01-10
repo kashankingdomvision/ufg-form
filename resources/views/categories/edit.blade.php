@@ -152,6 +152,7 @@ window.onload = function() {
     var fbTemplate = document.getElementById('build-wrap'),
       options = {
         // fieldRemoveWarn: true,
+        // disabledActionButtons: ['clear','data'],
         disableFields: ['file','hidden','button'],
         disabledAttrs: [
           'className',

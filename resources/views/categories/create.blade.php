@@ -107,6 +107,7 @@ window.onload = function() {
     var currFieldData;
 
     var options = {
+      // disabledActionButtons: ['clear','data'],
       disableFields: ['file','hidden','button'],
       disabledAttrs: [
         'className',
