@@ -37,7 +37,7 @@ class Booking extends Model
         'lead_passenger_contact',
         'lead_passenger_dbo',
         'lead_passsenger_nationailty_id',
-        'lead_passenger_dinning_preference',
+        'lead_passenger_dietary_preferences',
         'lead_passenger_bedding_preference',
         'lead_passenger_covid_vaccinated',
         'lead_passenger_resident',

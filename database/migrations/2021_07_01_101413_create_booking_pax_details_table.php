@@ -21,7 +21,7 @@ class CreateBookingPaxDetailsTable extends Migration
             $table->string('contact_number')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('bedding_preference')->nullable();
-            $table->string('dinning_preference')->nullable();
+            $table->string('dietary_preferences')->nullable();
             $table->enum('covid_vaccinated',[0, 1, 2])->default(0);
             $table->timestamps();
             

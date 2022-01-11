@@ -15,7 +15,7 @@ class BookingPaxDetail extends Model
         'contact_number',
         'date_of_birth',
         'bedding_preference',
-        'dinning_preference',
+        'dietary_preferences',
         'covid_vaccinated'
     ];
 }
