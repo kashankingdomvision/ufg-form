@@ -3944,7 +3944,7 @@ $(document).ready(function($) {
                                             }
 
                                             if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
-                                                $('#dinning_preference').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                                                $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
                                             }
 
                                             if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
@@ -3960,7 +3960,7 @@ $(document).ready(function($) {
                                                     $('input[name="pax[' + $_count + '][contact_number]"]').val($_value.passenger_contact);
                                                     $('input[name="pax[' + $_count + '][date_of_birth]"]').val($_value.passenger_dbo);
                                                     $('input[name="pax[' + $_count + '][bedding_preference]"]').val($_value.bedding_prefrences);
-                                                    $('input[name="pax[' + $_count + '][dinning_preference]"]').val($_value.dinning_prefrences);
+                                                    $('input[name="pax[' + $_count + '][dietary_preferences]"]').val($_value.dinning_prefrences);
                                                 });
                                             }
 
@@ -5038,8 +5038,8 @@ $(document).ready(function($) {
                     </div>
 
                     <div class="col-md-3 mb-2">
-                        <label>Dinning Preference </label>
-                        <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="Dinning Preferences" >
+                        <label>Dietary Preferences </label>
+                        <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
                     </div>
 
                     <div class="col-sm-3">
@@ -5135,8 +5135,8 @@ $(document).ready(function($) {
                                 </div>
 
                                 <div class="col-md-3 mb-2">
-                                    <label>Dinning Preference</label>
-                                    <input type="text" name="pax[${count}][dinning_preference]" class="form-control" placeholder="DINNING PREFERENCES" >
+                                    <label>Dietary Preferences</label>
+                                    <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
                                 </div>
 
                                 <div class="col-sm-3">
