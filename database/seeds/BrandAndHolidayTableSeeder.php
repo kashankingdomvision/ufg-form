@@ -15,20 +15,26 @@ class BrandAndHolidayTableSeeder extends Seeder
     public function getArray()
     {
         return [
-            'Unforgettable Cruise' => [
-                    'UCruises: Bali',
-                    'UCruises: Barbados & Grenadines',
-                    'UCruises: Cape Verde',
-                    'UCruises: Costa Rica & Panama',
-                    'UCruises: Croatia',
-                    'UCruises: Cuba',
-                    'UCruises: Egypt',
-                    'UCruises: Greece',
-                    'UCruises: Iceland',
-                    'UCruises: Maldives',
-                    'UCruises: Mekong',
-                    'UCruises: Seychelles',
-                    'UCruises: Spain & Portugal',
+            // 'Unforgettable Cruise' => [
+            //         'UCruises: Bali',
+            //         'UCruises: Barbados & Grenadines',
+            //         'UCruises: Cape Verde',
+            //         'UCruises: Costa Rica & Panama',
+            //         'UCruises: Croatia',
+            //         'UCruises: Cuba',
+            //         'UCruises: Egypt',
+            //         'UCruises: Greece',
+            //         'UCruises: Iceland',
+            //         'UCruises: Maldives',
+            //         'UCruises: Mekong',
+            //         'UCruises: Seychelles',
+            //         'UCruises: Spain & Portugal',
+            // ],
+            'Cruise Croatia' => [
+               'Cruise',
+               'Gulet Charter',
+               'Yacht Charter',
+               'Cruise and stay',
             ],
             'Unforgettable Croatia' => [
                 'UCroatia: Activity Holiday',
@@ -55,12 +61,19 @@ class BrandAndHolidayTableSeeder extends Seeder
     {
         $about = null;
         switch ($value) {
-            case 'Unforgettable Cruise':
+            // case 'Unforgettable Cruise':
+            //     $about  = ' 
+            //     <h4>Unforgettable Cruise </h4>
+            //         <p>
+            //         Founded in 2015 and through a mixture of hard work, determination and a bit of good fortune, we’ve became experts on small ship cruising after launching our sister brand, Unforgettable Croatia. With offices in London and San Francisco, we are now proud to be one of the largest small ship cruise companies in the Adriatic with several thousand guests travelling with us each year.
+            //         As a team of people who know a lot about creating unique travel experiences and small ship cruising, we have expanded our portfolio of hand-picked small vessels to other truly spectacular destinations around the world. Our motto could not be more fitting – Small Ships, Big Experiences.
+            //         </p>';
+            //     break;
+            case 'Cruise Croatia':
                 $about  = ' 
-                <h4>Unforgettable Cruise </h4>
+                <h4>Cruise Croatia </h4>
                     <p>
-                    Founded in 2015 and through a mixture of hard work, determination and a bit of good fortune, we’ve became experts on small ship cruising after launching our sister brand, Unforgettable Croatia. With offices in London and San Francisco, we are now proud to be one of the largest small ship cruise companies in the Adriatic with several thousand guests travelling with us each year.
-                    As a team of people who know a lot about creating unique travel experiences and small ship cruising, we have expanded our portfolio of hand-picked small vessels to other truly spectacular destinations around the world. Our motto could not be more fitting – Small Ships, Big Experiences.
+                    Cruise Croatia is a privately-owned UK company specialising in crafting and selling cruise and sailing trips to Croatia, with offices in London, Split, San Francisco and Melbourne. All personal information that is provided to us or gathered by us is managed and controlled by Cruise Croatia, which is registered at 86-90 Paul Street, London EC2A 4NE.
                     </p>';
                 break;
             case 'Unforgettable Croatia':
