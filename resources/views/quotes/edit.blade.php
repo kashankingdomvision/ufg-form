@@ -167,9 +167,9 @@
 
                   <div class="row mb-2">
                     <div class="col-sm-6">
-                      <label>Quote Title <span style="color:red">*</span></label>
+                      <label>Booking Details <span style="color:red">*</span></label>
                       <div class="form-group">
-                        <input type="text" name="quote_title" id="quote_title" class="form-control" value="{{ $quote->quote_title }}" placeholder="Enter Quote Title">
+                        <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $quote->booking_details }}" placeholder="Enter Booking Details">
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
@@ -1355,52 +1355,59 @@ jQuery(function($) {
       return (data === "airport_codes") ? airport_codes : (data === "harbours") ? harbours : (data === "hotels") ? hotels : all;
     }
 
-    var fieldData = JSON.parse(fields_data);
-    for(var i = 0; i < fieldData.length; i++)
-    {
-      if(fieldData[i].type === "autocomplete")
-      {
-        if(fieldData[i].data !== "none") {
-          $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
-            if(fieldData[i].values.some(val => val.value == 'option-1')) {
-              fieldData[i].values = [];
-            }
-            if(fieldData[i].values.some(val => val.label == item.name)) {
-              return fieldData[i].values;
-            }
-            else
-            {
-              fieldData[i].values.push({
-                label: item.name,
-                value:  item.name,
-                selected: false
-              });
-            }
-          });
-        }
-      }
-    }
-    fields_data = JSON.stringify(fieldData);
+    // var fieldData = JSON.parse(fields_data);
 
-    jQuery(function($) {
-      var formRenderOptions = {
-        formData: fields_data,
-        layoutTemplates: {
-          default: function(field, label, help, data) {
-            let parentHtml = '<div>';
-            let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-            return result;
-          }
-        }
-      }
+    // if(fields_data){
+    //   console.log("fields_data");
+    // }
 
-      $(formRenderID).html("");
-      $(formRenderID).formRender(formRenderOptions);
+    // console.log(fields_data);
 
-      if(fields_data == ""){
-        $(formRenderID).html("No Form Data.");
-      }
-    });
+    // for(var i = 0; i < fieldData.length; i++)
+    // {
+    //   if(fieldData[i].type === "autocomplete")
+    //   {
+    //     if(fieldData[i].data !== "none") {
+    //       $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
+    //         if(fieldData[i].values.some(val => val.value == 'option-1')) {
+    //           fieldData[i].values = [];
+    //         }
+    //         if(fieldData[i].values.some(val => val.label == item.name)) {
+    //           return fieldData[i].values;
+    //         }
+    //         else
+    //         {
+    //           fieldData[i].values.push({
+    //             label: item.name,
+    //             value:  item.name,
+    //             selected: false
+    //           });
+    //         }
+    //       });
+    //     }
+    //   }
+    // }
+    // fields_data = JSON.stringify(fieldData);
+
+    // jQuery(function($) {
+    //   var formRenderOptions = {
+    //     formData: fields_data,
+    //     layoutTemplates: {
+    //       default: function(field, label, help, data) {
+    //         let parentHtml = '<div>';
+    //         let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
+    //         return result;
+    //       }
+    //     }
+    //   }
+
+    //   $(formRenderID).html("");
+    //   $(formRenderID).formRender(formRenderOptions);
+
+    //   if(fields_data == ""){
+    //     $(formRenderID).html("No Form Data.");
+    //   }
+    // });
     
   });
 

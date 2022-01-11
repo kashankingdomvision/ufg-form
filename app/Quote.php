@@ -12,7 +12,8 @@ class Quote extends Model
 {
     use SoftDeletes;
     protected $fillable = [ 
-        'quote_title',
+        
+        'booking_details',
         'commission_id',
         'commission_group_id',
         'user_id',

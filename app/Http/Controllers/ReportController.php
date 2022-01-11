@@ -880,9 +880,9 @@ class ReportController extends Controller
             }
 
             //- Booking Information
-            $BI_columns                            = array('quote_title','rate_type','ref_no','quote_ref','tas_ref','markup_type','user_id','brand_id','holiday_type_id','season_id','currency_id','agency','pax_no');
+            $BI_columns                            = array('booking_details','rate_type','ref_no','quote_ref','tas_ref','markup_type','user_id','brand_id','holiday_type_id','season_id','currency_id','agency','pax_no');
             $quote_values                          = $this->get_quote_value($passedParams, $BI_columns);
-            $BI_quote_values['Quote Title']        = $quote_values['quote_title'];
+            $BI_quote_values['Quote Title']        = $quote_values['booking_details'];
             $BI_quote_values['Sales Person']       = $this->get_quote_ids_value_array($quote_values['user_id'] , 'User', 'name');
             $BI_quote_values['Currency Rate Type'] = $quote_values['rate_type'];
             $BI_quote_values['Zoho Reference']     = $quote_values['ref_no'];

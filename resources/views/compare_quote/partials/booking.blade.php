@@ -40,22 +40,22 @@
 
                 @if(isset($quote_ref_one))
                     <div class="col col-style">
-                        {{ !empty($quote_ref_one->quote_title) ? $quote_ref_one->quote_title : '-' }}
+                        {{ !empty($quote_ref_one->booking_details) ? $quote_ref_one->booking_details : '-' }}
                     </div>
                 @endif
                 @if(isset($quote_ref_two))
                     <div class="col col-style">
-                        {{ !empty($quote_ref_two->quote_title) ? $quote_ref_two->quote_title : '-' }}
+                        {{ !empty($quote_ref_two->booking_details) ? $quote_ref_two->booking_details : '-' }}
                     </div>
                 @endif
                 @if(isset($quote_ref_three))
                     <div class="col col-style">
-                        {{ !empty($quote_ref_three->quote_title) ? $quote_ref_three->quote_title : '-' }}
+                        {{ !empty($quote_ref_three->booking_details) ? $quote_ref_three->booking_details : '-' }}
                     </div>
                 @endif
                 @if(isset($quote_ref_four))
                     <div class="col col-style">
-                        {{ !empty($quote_ref_four->quote_title) ? $quote_ref_four->quote_title : '-' }}
+                        {{ !empty($quote_ref_four->booking_details) ? $quote_ref_four->booking_details : '-' }}
                     </div>
                 @endif
 

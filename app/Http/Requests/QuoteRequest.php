@@ -25,7 +25,7 @@ class QuoteRequest extends FormRequest
     {
         return [
 
-            'quote_title'                               => 'required',
+            'booking_details'                           => 'required',
             'ref_no'                                    => 'required',
             'quote_no'                                  => 'required',
             'rate_type'                                 => 'required',
@@ -86,7 +86,8 @@ class QuoteRequest extends FormRequest
     public function attributes()
     {
         return [
-            'quote_title'                               => 'Quote Title',
+            
+            'booking_details'                           => 'Booking Details',
             'ref_no'                                    => 'Zoho Reference',
             'quote_no'                                  => 'Quote Reference',
             'rate_type'                                 => 'Currency Rate Type',

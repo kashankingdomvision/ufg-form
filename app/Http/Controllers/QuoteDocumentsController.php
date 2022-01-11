@@ -39,7 +39,7 @@ class QuoteDocumentsController extends Controller
         $endDate        = $quote->getQuoteDetails()->max('date_of_service');
         $data['quote_details']  = $quoteDetails;
         $data['created_at']     =  $quote->doc_formated_created_at;
-        $data['title']          =  $quote->quote_title;
+        $data['title']          =  $quote->booking_details;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
         $data['startdate']      =  date('l, d M Y', strtotime($startDate));
@@ -66,7 +66,7 @@ class QuoteDocumentsController extends Controller
         $endDate        = $quote->getQuoteDetails()->max('date_of_service');
         $data['quote_details']  = $quoteDetails;
         $data['created_at']     =  $quote->doc_formated_created_at;
-        $data['title']          =  $quote->quote_title;
+        $data['title']          =  $quote->booking_details;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
         $data['startdate']      =  date('l, d M Y', strtotime($startDate));

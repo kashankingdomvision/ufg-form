@@ -83,7 +83,7 @@ class QuoteController extends Controller
         $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
         $data['quote_details']  = $quoteDetails;
         $data['created_at']     =  $quote->doc_formated_created_at;
-        $data['title']          =  $quote->quote_title;
+        $data['title']          =  $quote->booking_details;
         $data['person_name']    =  $quote->getSalePerson->name;
         $data['brand_about']    =  $quote->getBrand->about_us;
         $pdf = PDF::loadView('quote_documents.pdf', $data);
@@ -186,7 +186,8 @@ class QuoteController extends Controller
     public function quoteArray($request, $type = null)
     {
         $data = [
-            'quote_title'                       =>  $request->quote_title,
+
+            'booking_details'                   =>  $request->booking_details,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
@@ -423,18 +424,18 @@ class QuoteController extends Controller
                 }
 
                 /* quote_category_details values*/ 
-                if(isset($qu_details['category_details']) && !empty($qu_details['category_details'])){
+                if(isset($qu_details['category_details']) && !is_null($qu_details['category_details'])){
 
-                $category_details = json_decode($qu_details['category_details'], true);
+                    $category_details = json_decode($qu_details['category_details'], true);
 
-                foreach ($category_details as $category_detail){
-                    if(isset($category_detail['userData'])){
+                    foreach ($category_details as $category_detail){
+                        if(isset($category_detail['userData'])){
 
-                        $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($qd, $category_detail);
-                        QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
+                            $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($qd, $category_detail);
+                            QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
+                        }
                     }
                 }
-            }
 
             }
         }
@@ -651,7 +652,7 @@ class QuoteController extends Controller
         $quote = Quote::findORFail(decrypt($id));
         $getQuote = $this->quoteArray($quote, 'booking');
         $getQuote['quote_id']       = $quote->id;
-        $getQuote['booking_title']  = $quote->quote_title;
+        $getQuote['booking_title']  = $quote->booking_details;
         $getQuote['booking_status'] = 'confirmed';
         $getQuote['booking_date']   = Carbon::now();
         $booking = Booking::create($getQuote);

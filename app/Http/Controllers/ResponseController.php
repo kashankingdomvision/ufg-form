@@ -225,12 +225,15 @@ class ResponseController extends Controller
         $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
         $category       = Category::where('id', $request->category_id)->first();
 
-        if(is_null($booking_detail)){
-            $category_details = $category->feilds;
+        if(!is_null($booking_detail)){
+            $category_details = $booking_detail->category_details;
+        }
+        else if(is_null($booking_detail) && !is_null($category->feilds)){
 
+            $category_details = $category->feilds;
         }else{
 
-            $category_details = $booking_detail->category_details;
+            $category_details = "";
         }
 
         return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
