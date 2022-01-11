@@ -14,6 +14,7 @@ class Quote extends Model
     protected $fillable = [ 
         
         'booking_details',
+        'reason_for_trip',
         'commission_id',
         'commission_group_id',
         'user_id',

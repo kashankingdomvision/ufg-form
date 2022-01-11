@@ -166,10 +166,19 @@
                     </div> --}}
 
                   <div class="row mb-2">
+
                     <div class="col-sm-6">
                       <label>Booking Details <span style="color:red">*</span></label>
                       <div class="form-group">
                         <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $quote->booking_details }}" placeholder="Enter Booking Details">
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <label>Reason for Trip <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" value="{{ $quote->reason_for_trip }}" placeholder="Enter Reason for Trip">
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>

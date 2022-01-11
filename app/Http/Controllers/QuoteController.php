@@ -188,6 +188,7 @@ class QuoteController extends Controller
         $data = [
 
             'booking_details'                   =>  $request->booking_details,
+            'reason_for_trip'                   =>  $request->reason_for_trip,
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,

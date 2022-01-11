@@ -26,6 +26,7 @@ class QuoteRequest extends FormRequest
         return [
 
             'booking_details'                           => 'required',
+            'reason_for_trip'                           => 'required',
             'ref_no'                                    => 'required',
             'quote_no'                                  => 'required',
             'rate_type'                                 => 'required',
@@ -88,6 +89,7 @@ class QuoteRequest extends FormRequest
         return [
             
             'booking_details'                           => 'Booking Details',
+            'reason_for_trip'                           => 'Reason for Trip',
             'ref_no'                                    => 'Zoho Reference',
             'quote_no'                                  => 'Quote Reference',
             'rate_type'                                 => 'Currency Rate Type',
