@@ -9,6 +9,7 @@ use Auth;
 class Booking extends Model
 {
     protected $fillable = [ 
+
         'quote_id',
         'user_id',
         'commission_id',
@@ -19,6 +20,7 @@ class Booking extends Model
         'holiday_type_id',
         'sale_person_id',
         'booking_details',
+        'reason_for_trip',
         'ref_name',
         'ref_no',
         'quote_ref',

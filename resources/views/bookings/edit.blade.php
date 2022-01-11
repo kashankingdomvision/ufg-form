@@ -158,6 +158,14 @@
                     </div>
 
                     <div class="col-sm-6">
+                      <label>Reason for Trip <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" value="{{ $booking->reason_for_trip }}" placeholder="Enter Reason for Trip">
+                        <span class="text-danger" role="alert"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
                       <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                         <div>

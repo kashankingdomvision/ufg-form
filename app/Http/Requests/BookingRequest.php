@@ -25,7 +25,9 @@ class BookingRequest extends FormRequest
     {
     
         return [
+
             'booking_details'                                 => 'required',
+            'reason_for_trip'                                 => 'required',
             'ref_no'                                          => 'required',
             'quote_no'                                        => 'required',
             'rate_type'                                       => 'required',
@@ -108,7 +110,9 @@ class BookingRequest extends FormRequest
     public function attributes()
     {
         return [
+
             'booking_details'                                  => 'Booking Details',
+            'reason_for_trip'                                  => 'Reason for Trip',
             'agency'                                           => 'Agency',
             'agency_name.required_if'                          => 'Agency Name',
             'agency_contact.required_if'                       => 'Agency Contact',
