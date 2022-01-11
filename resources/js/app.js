@@ -5042,6 +5042,11 @@ $(document).ready(function($) {
                         <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
                     </div>
 
+                    <div class="col-md-3 mb-2">
+                        <label>Medical Requirements</label>
+                        <input type="text" name="pax[${count}][medical_requirement]" class="form-control" placeholder="Medical Requirements">
+                    </div>
+
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label>Up To Date Covid Vaccination Status </label>
@@ -5137,6 +5142,11 @@ $(document).ready(function($) {
                                 <div class="col-md-3 mb-2">
                                     <label>Dietary Preferences</label>
                                     <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
+                                </div>
+
+                                <div class="col-md-3 mb-2">
+                                    <label>Medical Requirements</label>
+                                    <input type="text" name="pax[${count}][medical_requirement]" class="form-control" placeholder="Medical Requirements">
                                 </div>
 
                                 <div class="col-sm-3">

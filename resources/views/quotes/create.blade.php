@@ -374,6 +374,14 @@
 
                         <div class="col-sm-3">
                           <div class="form-group">
+                            <label>Medical Requirements</label>
+                            <input type="text" name="lead_passenger_medical_requirement" id="lead_passenger_medical_requirement" class="form-control" placeholder="Medical Requirements" >
+                            <span class="text-danger" role="alert"></span>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
                             <label>Up To Date Covid Vaccination Status</label>
                             <div>
                               <label class="radio-inline">

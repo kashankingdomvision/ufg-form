@@ -383,6 +383,14 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
+                              <label>Medical Requirements</label>
+                              <input type="text" value="{{ $quote->lead_passenger_medical_requirement }}" name="lead_passenger_medical_requirement" id="lead_passenger_medical_requirement" class="form-control" placeholder="Medical Requirements">
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
                               <label>Up To Date Covid Vaccination Status </label>
                               <div>
                                 <label class="radio-inline">
@@ -474,6 +482,12 @@
                                       <div class="col-md-3 mb-2">
                                         <label>Dietary Preferences</label>
                                         <input type="text" name="pax[{{$count}}][dietary_preferences]" value="{{ $pax->dietary_preferences }}" class="form-control" placeholder="Dietary Preferences" >
+                                        <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                      </div>
+
+                                      <div class="col-md-3 mb-2">
+                                        <label>Medical Requirements</label>
+                                        <input type="text" name="pax[{{$count}}][medical_requirement]" value="{{ $pax->medical_requirement }}" class="form-control" placeholder="Medical Requirements" >
                                         <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
                                       </div>
 
