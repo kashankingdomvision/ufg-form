@@ -67,9 +67,9 @@
                 <div class="row mb-2">
 
                   <div class="col-sm-6">
-                    <label>Booking Title <span style="color:red">*</span></label>
+                    <label>Booking Details <span style="color:red">*</span></label>
                     <div class="form-group">
-                      <input type="text" name="booking_title" id="booking_title" class="form-control" value="{{ isset($booking['booking_title']) & !empty($booking['booking_title']) ? $booking['booking_title'] : '' }}" placeholder="Enter Booking Title">
+                      <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ isset($booking['booking_details']) & !empty($booking['booking_details']) ? $booking['booking_details'] : '' }}" placeholder="Enter Booking Details">
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>

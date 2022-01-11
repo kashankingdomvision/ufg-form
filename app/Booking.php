@@ -18,7 +18,7 @@ class Booking extends Model
         'currency_id',
         'holiday_type_id',
         'sale_person_id',
-        'booking_title',
+        'booking_details',
         'ref_name',
         'ref_no',
         'quote_ref',

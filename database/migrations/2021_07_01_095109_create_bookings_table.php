@@ -24,7 +24,7 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
             $table->unsignedBigInteger('commission_group_id');
-            $table->string('booking_title');
+            $table->string('booking_details');
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
