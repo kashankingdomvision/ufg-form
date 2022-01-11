@@ -101,8 +101,9 @@
                     </div>
                   </div> --}}
 
-                  <div class="row">
 
+
+                  <div class="row">
                     <div class="col-sm-6">
                       <label>Booking Details <span style="color:red">*</span></label>
                       <div class="form-group">
@@ -120,24 +121,8 @@
                     </div>
                   </div>
 
-                  <div class="row mb-2">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} >
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div class="col-sm-6">
+                  <div class="row">
+                    <div class="col-sm-4">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group">
@@ -149,14 +134,8 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ old('quote_no')??$quote['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
-                        <span class="text-danger" role="alert"></span>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
+
+                    <div class="col-sm-4">
                       <div class="form-group">
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                         <input type="text" name="tas_ref" class="form-control" value="{{ isset($quote['tas_ref']) & !empty($quote['tas_ref']) ? $quote['tas_ref'] : '' }}"  placeholder="TAS Reference Number" >
@@ -164,22 +143,46 @@
                       </div>
                     </div>
 
+                    <div class="col-sm-4">
+                      <label>Markup Type <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'itemised')? 'checked': NULL }} value="itemised" class="markup-type">
+                          <span>&nbsp;Itemised Markup </span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'whole')? 'checked': NULL }} value="whole" class="markup-type">
+                          <span>&nbsp;Whole Markup</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
-                        <label>Markup Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'itemised')? 'checked': NULL }} value="itemised" class="markup-type">
-                            <span>&nbsp;Itemised Markup </span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" {{ ($quote['markup_type'] == 'whole')? 'checked': NULL }} value="whole" class="markup-type">
-                            <span>&nbsp;Whole Markup</span>
-                          </label>
-                        </div>
+                        <label>Quote Reference <span style="color:red">*</span></label>
+                        <input type="text" value="{{ old('quote_no')??$quote['quote_ref'] }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
+                    <div class="col-md-6">
+                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+                      <div class="form-group">
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote['rate_type'] == 'live')? 'checked': NULL }}  >
+                          <span>&nbsp;Live Rate</span>
+                        </label>
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote['rate_type'] == 'manual')? 'checked': NULL }} >
+                          <span>&nbsp;Manual Rate</span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>

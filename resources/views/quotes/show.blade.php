@@ -85,64 +85,37 @@
               </div>
 
               <form id="versions" method="POST" class="update-quote versions" action="{{ route('quotes.update', encrypt($quote->id)) }}">
+                @csrf @method('put')
                 <div class="card-body">
-                  @csrf @method('put')
 
-                      <!-- For Commission Calculation -->
-                      <div class="row d-none">
-                        <div class="col-sm-6"> 
-                          <label>Commission <span style="color:red">*</span></label>
-                          <div class="form-group">
-                            <input type="text" value="{{ isset(Auth::user()->commission_id) && !empty(Auth::user()->commission_id) ? Auth::user()->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
-                          </div>
-                        </div>
-    
-                        <div class="col-sm-6"> 
-                          <label>Commission Group <span style="color:red">*</span></label>
-                          <div class="form-group">
-                            <input type="text" value="{{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) ? Auth::user()->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
-                          </div>
-                        </div>
+                  <!-- For Commission Calculation -->
+                  <div class="row d-none">
+                    <div class="col-sm-6"> 
+                      <label>Commission <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" value="{{ isset(Auth::user()->commission_id) && !empty(Auth::user()->commission_id) ? Auth::user()->commission_id : '' }}" name="commission_id" id="commission_id" class="form-control commission-id">
                       </div>
-                      <!-- For Commission Calculation -->
+                    </div>
 
-                      <div class="row d-none">
-                        <div class="col-sm-2">
-                          <div class="form-group">
-                            <label>Quote Detail Model Name</label>
-                            <input type="text" value="QuoteDetail" name="model_name" id="model_name" class="form-control model-name">
-                          </div>
-                        </div>
+                    <div class="col-sm-6"> 
+                      <label>Commission Group <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <input type="text" value="{{ isset(Auth::user()->commission_group_id) && !empty(Auth::user()->commission_group_id) ? Auth::user()->commission_group_id : '' }}" name="commission_group_id" id="commission_group_id" class="form-control commission-group-id">
                       </div>
-  
-                      {{-- <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Commission Type <span style="color:red">*</span></label>
-                          <select name="commission_id" id="commission_id" class="form-control  select2single commission-id">
-                            <option selected value="" >Select Commission Type </option>
-                            @foreach ($commission_types as $commission_type)
-                              <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} </option>
-                            @endforeach
-                          </select>
-                          <span class="text-danger" role="alert"></span>
-                        </div>
-                      </div> --}}
-  
-                      {{-- <div class="col-sm-6">
-                        <div class="form-group">
-                          <label>Commission Group <span style="color:red">*</span></label>
-                          <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id">
-                            <option value="">Select Commission Group</option>
-                            @foreach ($quote->getCommission->getCommissionGroups as $commission_group)
-                              <option value="{{ $commission_group->id }}" {{  (old('commission_group_id') == $commission_group->id)? "selected" : ($quote->commission_group_id == $commission_group->id ? 'selected' : '') }} >{{ $commission_group->name }}</option>
-                            @endforeach
-                          </select>
-                          <span class="text-danger" role="alert"></span>
-                        </div>
-                      </div> --}}
-                
-                  <div class="row mb-2">
+                    </div>
+                  </div>
+                  <!-- For Commission Calculation -->
 
+                  <div class="row d-none">
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                        <label>Quote Detail Model Name</label>
+                        <input type="text" value="QuoteDetail" name="model_name" id="model_name" class="form-control model-name">
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div class="row">
                     <div class="col-sm-6"> 
                       <label>Booking Details <span style="color:red">*</span></label>
                       <div class="form-group">
@@ -158,25 +131,10 @@
                         <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
+                  </div>
 
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($quote->rate_type == 'manual')? 'checked': NULL }}>
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="col-sm-6">
+                  <div class="row">
+                    <div class="col-sm-4">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group ">
@@ -189,13 +147,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label>Quote Reference <span style="color:red">*</span></label>
-                        <input type="text" value="{{ $quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <div class="form-group">
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                         <input type="text" name="tas_ref" class="form-control" value="{{ $quote->tas_ref }}"  placeholder="TAS Reference Number" readonly>
@@ -203,9 +155,7 @@
                       </div>
                     </div>
 
-  
-
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                       <div class="form-group">
                         <label>Markup Type <span style="color:red">*</span></label>
                         <div>
@@ -220,7 +170,34 @@
                         </div>
                       </div>
                     </div>
+                  </div>
 
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Quote Reference <span style="color:red">*</span></label>
+                        <input type="text" value="{{ $quote->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <label>Currency Rate Type <span style="color:red">*</span></label>
+                      <div class="form-group">
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
+                          <span>&nbsp;Live Rate</span>
+                        </label>
+
+                        <label class="radio-inline mr-1">
+                          <input type="radio" name="rate_type" class="rate-type" value="manual" {{ ($quote->rate_type == 'manual')? 'checked': NULL }}>
+                          <span>&nbsp;Manual Rate</span>
+                        </label>
+                      </div>
+                    </div>
+                    
+                  </div>
+            
+                  <div class="row">
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Sales Person <span style="color:red">*</span></label>
@@ -1293,4 +1270,30 @@
 
 
 </script>
+
+{{-- <div class="col-sm-6">
+<div class="form-group">
+  <label>Commission Type <span style="color:red">*</span></label>
+  <select name="commission_id" id="commission_id" class="form-control  select2single commission-id">
+    <option selected value="" >Select Commission Type </option>
+    @foreach ($commission_types as $commission_type)
+      <option value="{{ $commission_type->id }}" {{  $commission_type->id == $quote->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} </option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div>
+</div> --}}
+
+{{-- <div class="col-sm-6">
+<div class="form-group">
+  <label>Commission Group <span style="color:red">*</span></label>
+  <select name="commission_group_id" id="commission_group_id" class="form-control select2single commission-group-id">
+    <option value="">Select Commission Group</option>
+    @foreach ($quote->getCommission->getCommissionGroups as $commission_group)
+      <option value="{{ $commission_group->id }}" {{  (old('commission_group_id') == $commission_group->id)? "selected" : ($quote->commission_group_id == $commission_group->id ? 'selected' : '') }} >{{ $commission_group->name }}</option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div>
+</div> --}}
 @endpush
