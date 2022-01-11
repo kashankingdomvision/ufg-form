@@ -369,8 +369,8 @@
                         </div>
                         <div class="col-sm-3">
                           <div class="form-group">
-                            <label>Dinning Preferences</label>
-                            <input type="text" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                            <label>Dietary Preferences</label>
+                            <input type="text" name="lead_passenger_dietary_preferences" id="lead_passenger_dietary_preferences" class="form-control" placeholder="Dietary Preferences" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
