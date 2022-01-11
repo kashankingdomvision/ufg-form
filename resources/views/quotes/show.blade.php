@@ -390,16 +390,16 @@
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Dinning Preferences </label>
-                              <input type="text" value="{{ $quote->lead_passenger_dinning_preference }}" name="lead_passenger_dinning_preference" id="lead_passenger_dinning_preference" class="form-control" placeholder="Dinning Preferences" >
+                              <label>Bedding Preferences </label>
+                              <input type="text" value="{{ $quote->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
 
                           <div class="col-sm-3">
                             <div class="form-group">
-                              <label>Bedding Preferences </label>
-                              <input type="text" value="{{ $quote->lead_passenger_bedding_preference }}" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
+                              <label>Dietary Preferences </label>
+                              <input type="text" value="{{ $quote->lead_passenger_dietary_preferences }}" name="lead_passenger_dietary_preferences" id="lead_passenger_dietary_preferences" class="form-control" placeholder="Dietary Preferences" >
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
