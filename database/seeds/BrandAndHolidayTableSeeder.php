@@ -31,10 +31,10 @@ class BrandAndHolidayTableSeeder extends Seeder
             //         'UCruises: Spain & Portugal',
             // ],
             'Cruise Croatia' => [
-               'Cruise',
-               'Gulet Charter',
-               'Yacht Charter',
-               'Cruise and stay',
+               'Cruise Croatia'
+            //    'Gulet Charter',
+            //    'Yacht Charter',
+            //    'Cruise and stay',
             ],
             'Unforgettable Croatia' => [
                 'UCroatia: Activity Holiday',
