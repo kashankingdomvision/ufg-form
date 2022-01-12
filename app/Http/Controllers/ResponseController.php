@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
+use App\Http\Helper;
 
 use App\Brand;
 use App\BookingType;
@@ -230,13 +231,39 @@ class ResponseController extends Controller
         }
         else if(is_null($booking_detail) && !is_null($category->feilds)){
 
-            $category_details = $category->feilds;
+            $final_json_quotes = array();
+            $feilds            = json_decode($category->feilds);
+
+            foreach($feilds as $key => $feild){
+
+                $final_json_quotes[$key] = $feild;
+
+                if($feild->type == "autocomplete"){
+                    if($feild->data != "none"){
+                        $feild->values = Helper::get_autocomplete_type_records($feild->data); 
+                    }
+                }
+            }
+
+            $category_details = json_encode($final_json_quotes);
+            
         }else{
 
             $category_details = "";
         }
 
-        return response()->json([ 'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
+        // $array = [];
+        // $array['airport_codes'] = DB::table('airport_codes')->get();
+        // $array['harbours'] = DB::table('harbours')->get();
+        // $array['hotels'] = DB::table('hotels')->get();
+        // $array['all'] = DB::table('hotels')
+        //     ->select('name')
+        //     ->union(DB::table('airport_codes')->select('name'))
+        //     ->union(DB::table('harbours')->select('name'))
+        //     ->get();
+        // return $array;
+
+        return response()->json([  'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
     }
 
     public function getProductBookingType(Request $request)

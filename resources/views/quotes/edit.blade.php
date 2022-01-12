@@ -759,8 +759,8 @@
                                 </div>
                               </div>
 
-                              <div class="build-wrap-parent">
-                                <div class="build-wrap"></div>
+                              <div class="build-wrap-parent-{{ $key }}">
+                                <div class="build-wrap-{{ $key }}"></div>
                               </div>
 
                               {{-- <div class="col-sm-2">
@@ -1343,98 +1343,40 @@
 <script>
 // window.onload = function() {
 jQuery(function($) {
-  $(document).on("input, click", ".rendered-form-parent .rendered-form-child .form-control, .formbuilder-autocomplete-list",function(e) {
- 
-    var quote = jQuery(this).closest('.quote');
-    var key   = quote.data('key');
-    var data  = JSON.stringify($(formRenderID).formRender("userData"));
-    $(`#quote_${key}_category_details`).val(data);
+  $(document).on("input", ".rendered-form-parent .rendered-form-child .form-control",function(e) {
+    
+    var quote        = jQuery(this).closest('.quote');
+    var key          = quote.data('key');
+    var formRenderID = `.build-wrap-${key}`
+
+    var q = jQuery(formRenderID).formRender("userData");
+    console.log(q);
+
   });
 
   $(".quote").each(function( index ) {
 
-    var quote       = jQuery(this).closest('.quote');
-    var key         = quote.data('key');
-    var fields_data = $(`#quote_${key}_category_details`).val();
+    var fields_data  = $(`#quote_${index}_category_details`).val();
+    var formRenderID = `.build-wrap-${index}`; 
 
-    var formRenderID  = ".build-wrap"; 
+    jQuery(function($) {
+      var formRenderOptions = {
+        formData: fields_data,
+        layoutTemplates: {
+          default: function(field, label, help, data) {
+            let parentHtml = '<div>';
+            let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
+            return result;
+          }
+        }
+      }
 
-    var airport_codes;
-    var harbours;
-    var hotels;
-    var all;
+      $(formRenderID).formRender(formRenderOptions);
 
-    $.ajax({
-      type: "GET",
-      url: '{{ route("quotes.get_autocomplete_data") }}',
-      datatype: "json",
-      async: false,
-      success: function(data){
-        airport_codes = data.airport_codes;
-        harbours = data.harbours;
-        hotels = data.hotels;
-        all = data.all;
+      if(fields_data == ""){
+        $(formRenderID).html("No Form Data.");
       }
     });
-
-    function get_table(data)
-    {
-      return (data === "airport_codes") ? airport_codes : (data === "harbours") ? harbours : (data === "hotels") ? hotels : all;
-    }
-
-    // var fieldData = JSON.parse(fields_data);
-
-    // if(fields_data){
-    //   console.log("fields_data");
-    // }
-
-    // console.log(fields_data);
-
-    // for(var i = 0; i < fieldData.length; i++)
-    // {
-    //   if(fieldData[i].type === "autocomplete")
-    //   {
-    //     if(fieldData[i].data !== "none") {
-    //       $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
-    //         if(fieldData[i].values.some(val => val.value == 'option-1')) {
-    //           fieldData[i].values = [];
-    //         }
-    //         if(fieldData[i].values.some(val => val.label == item.name)) {
-    //           return fieldData[i].values;
-    //         }
-    //         else
-    //         {
-    //           fieldData[i].values.push({
-    //             label: item.name,
-    //             value:  item.name,
-    //             selected: false
-    //           });
-    //         }
-    //       });
-    //     }
-    //   }
-    // }
-    // fields_data = JSON.stringify(fieldData);
-
-    // jQuery(function($) {
-    //   var formRenderOptions = {
-    //     formData: fields_data,
-    //     layoutTemplates: {
-    //       default: function(field, label, help, data) {
-    //         let parentHtml = '<div>';
-    //         let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-    //         return result;
-    //       }
-    //     }
-    //   }
-
-    //   $(formRenderID).html("");
-    //   $(formRenderID).formRender(formRenderOptions);
-
-    //   if(fields_data == ""){
-    //     $(formRenderID).html("No Form Data.");
-    //   }
-    // });
     
   });
 

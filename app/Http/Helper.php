@@ -21,6 +21,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 class Helper
 {
+
+	public static function get_autocomplete_type_records($autocomplete_type){
+
+		$x = collect(DB::table($autocomplete_type)->get())->map(function ($item, $key) {
+			return (object) [
+				'label'    => $item->name,
+				'value'    => $item->name,
+				'selected' => false
+			];
+		});
+
+		return $x;
+    }
+
     public static function number_format($number){
 		return str_replace( ',', '', number_format($number,2));
     }
