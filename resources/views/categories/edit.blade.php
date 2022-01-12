@@ -166,7 +166,7 @@ window.onload = function() {
           'style',
           'access',
           'accept',
-          'value',
+          // 'value',
         ],
         formData: presetData,
         typeUserAttrs: {
