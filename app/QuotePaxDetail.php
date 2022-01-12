@@ -7,16 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class QuotePaxDetail extends Model
 {
     protected $fillable = [
-        'nationality_id',
+
         'quote_id',
         'full_name',
         'email_address',
         'contact_number',
         'date_of_birth',
+        'nationality_id',
+        'resident_in',
         'bedding_preference',
         'dietary_preferences',
+        'medical_requirement',
         'covid_vaccinated',
-        'resident_in',
     ];
 
     public function getPassengerNationality()

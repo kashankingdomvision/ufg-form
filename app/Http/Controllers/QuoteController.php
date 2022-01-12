@@ -353,6 +353,7 @@ class QuoteController extends Controller
             'nationality_id'        => $pax_data['nationality_id'],
             'resident_in'           => $pax_data['resident_in'],
             'covid_vaccinated'      => isset($pax_data['covid_vaccinated']) && !empty($pax_data['covid_vaccinated']) ? $pax_data['covid_vaccinated'] : '0',
+            'medical_requirement'   => $pax_data['medical_requirement'],
         ];
 
         if($type == 'quotes'){
