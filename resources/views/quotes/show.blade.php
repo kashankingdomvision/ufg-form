@@ -184,7 +184,10 @@
                       <label>Currency Rate Type <span style="color:red">*</span></label>
                       <div class="form-group">
                         <label class="radio-inline mr-1">
-                          <input type="radio" name="rate_type" class="rate-type" value="live" {{ ($quote->rate_type == 'live')? 'checked': NULL }}>
+                          <input type="radio" name="rate_type" class="rate-type" value="live"
+                          {{ ($quote->rate_type == 'live')? 'checked': '' }}
+                          {{ (Auth::user()->id != 1) ? 'disabled' : '' }}
+                          >
                           <span>&nbsp;Live Rate</span>
                         </label>
 
