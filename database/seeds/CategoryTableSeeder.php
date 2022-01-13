@@ -13,6 +13,7 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
+        // $categories = ['Transfer', 'Accommodation', 'Tours', 'Cruise', 'Taxes', 'Service Excursion','Ferry / Catamaran','Train', 'Flights','Misc.','Airline'];
         $categories = ['Transfer', 'Accommodation', 'Tours', 'Cruise', 'Taxes', 'Ferry / Catamaran','Train', 'Flights','Misc.'];
         foreach ($categories as $key => $category) {
             $category = Category::create([
