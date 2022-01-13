@@ -68,6 +68,7 @@
                         <input type="checkbox" class="parent">
                       </div>
                     </th>
+                    <th>Category</th>
                     <th>Product Code</th>
                     <th>Product Name</th>
                     <th>Action</th>
@@ -82,6 +83,7 @@
                         <input type="checkbox" class="child" value="{{$product->id}}" >
                       </div>
                     </td>
+                    <td>{{ isset($product->getCategory->name) && !empty($product->getCategory->name) ? $product->getCategory->name : '' }}</td>
                     <td>{{ $product->code }}</td>
                     <td>{{ $product->name }}</td>
                     <td class="d-flex">

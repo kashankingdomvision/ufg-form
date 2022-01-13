@@ -12,6 +12,7 @@ use App\Product;
 use App\Location;
 use App\Currency;
 use App\BookingType;
+use App\Category;
 
 class ProductController extends Controller
 {
@@ -44,6 +45,7 @@ class ProductController extends Controller
         $data['locations']      = Location::get();
         $data['currencies']     = Currency::get();
         $data['booking_types']  = BookingType::all();
+        $data['categories']     = Category::orderby('sort_order', 'ASC')->get();
 
         return view('products.create', $data);
     }
@@ -53,6 +55,7 @@ class ProductController extends Controller
         $data = [
             'code'              => $request->code,
             'name'              => $request->name,
+            'category_id'       => $request->category_id,
             'country_id'        => $request->country_id,
             'location_id'       => $request->location_id,
             'currency_id'       => $request->currency_id,
@@ -75,6 +78,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+        // dd($request->all());
 
         Product::create($this->productsArray($request));
         
@@ -93,6 +97,7 @@ class ProductController extends Controller
         $data['locations']     = Location::get();
         $data['currencies']    = Currency::get();
         $data['booking_types'] = BookingType::all();
+        $data['categories']    = Category::orderby('sort_order', 'ASC')->get();
 
         return view('products.edit', $data);
     }

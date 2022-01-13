@@ -9,6 +9,7 @@ class Product extends Model
     protected $fillable = [
         'code',
         'name',
+        'category_id',
         'country_id',
         'location_id',
         'currency_id',
@@ -24,6 +25,11 @@ class Product extends Model
     {
         return $this->belongsToMany(Supplier::class, 'supplier_products', 'product_id', 'supplier_id');
         // return $this->belongsToMany(Product::class, 'supplier_products', 'product_id', 'supplier_id');
+    }
+
+    public function getCategory()
+    {
+        return $this->hasOne(Category::class, 'id', 'category_id');
     }
 
     function getBookingType() {

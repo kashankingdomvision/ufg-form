@@ -26,7 +26,9 @@ class ProductRequest extends FormRequest
         return [
             'name'          => 'required|string|unique:products',
             'code'          => 'required|string|unique:products',
-            'location_id'   => 'required',
+            'category_id'   => 'required',
+            
+            // 'location_id'   => 'required',
         ];
     }
     
@@ -35,7 +37,9 @@ class ProductRequest extends FormRequest
         return [
             'name'          => 'Product Name',
             'code'          => 'Product Code',
-            'location_id'   => 'Location',
+            'category_id'   => 'Category',
+            
+            // 'location_id'   => 'Location',
         ];
     }
 }

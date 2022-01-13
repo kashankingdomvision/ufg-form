@@ -45,8 +45,23 @@
                     @enderror
                   </div>
 
-                  
                   <div class="form-group">
+                    <label>Category <span style="color:red">*</span></label>
+                    <select name="category_id" id="category_id" class="form-control select2single @error('category_id') is-invalid @enderror">
+                      <option value="">Select Category</option>
+                      @foreach ($categories as $category)
+                        <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" {{ ($product->category_id == $category->id)? 'selected' : ''}}> {{ $category->name }} </option>
+                      @endforeach
+                    </select>
+
+                    @error('category_id')
+                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                    <span class="text-danger" role="alert"></span>
+                  </div>
+
+                  
+                  {{-- <div class="form-group">
                     <label>Product Location <span style="color:red">*</span></label>
                     <select name="location_id" class="form-control select2single @error('location_id') is-invalid @enderror" >
                       <option value="">Select Location</option>
@@ -58,7 +73,7 @@
                     @error('location_id')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                  </div> 
+                  </div>  --}}
 
                   <div class="form-group">
                     <label>Duration </label>
