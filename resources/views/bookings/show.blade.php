@@ -207,7 +207,10 @@
                         <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                         <div class="form-group">
                           <label class="radio-inline mr-1">
-                              <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"  {{ ($booking->rate_type == 'live')? 'checked': NULL }} >
+                              <input type="radio" name="rate_type" data-status="booking" class="rate-type" value="live"
+                              {{ ($booking->rate_type == 'live') ? 'checked': '' }}
+                              {{ (Auth::user()->id != 1) ? 'disabled' : '' }}
+                              >
                               <span>&nbsp;Live Rate</span>
                           </label>
                         
