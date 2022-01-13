@@ -81,6 +81,34 @@
                   <input type="hidden" name="booking" class="booking" value="0"><input id="booking"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
                 </div>
 
+                <div class="form-row">
+
+                  <div class="col-md-12">
+                    <label>Hide/Show Time Feild <span style="color:red">*</span></label>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="show_tf" value="0" class="show-tf" checked>
+                        <span>&nbsp;Hide</span>
+                      </label>
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="show_tf" value="1" class="show-tf">
+                        <span>&nbsp;Show</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  {{-- <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="name" id="name" class="form-control name" placeholder="Label Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div> --}}
+                </div>
+
                 <div class="form-group">
                   <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="0"><input id="set_end_date_of_service"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
                 </div>
@@ -169,6 +197,7 @@ window.onload = function() {
         var quote                   = $('.quote').val();
         var booking                 = $('.booking').val();
         var set_end_date_of_service = $('.set_end_date_of_service').val();
+        var show_tf                 = $("input[name=show_tf]:checked").val();
         var url                     = '{{route('categories.store')}}';
 
         if(formData == '[]'){
@@ -182,6 +211,7 @@ window.onload = function() {
           booking    : booking,
           sort_order : sort_order,
           set_end_date_of_service : set_end_date_of_service,
+          show_tf : show_tf,
           "_token"   : "{{ csrf_token() }}",
         };
 

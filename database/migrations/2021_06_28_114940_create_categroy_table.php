@@ -22,6 +22,8 @@ class CreateCategroyTable extends Migration
             $table->enum('booking', [0, 1])->default(0)->nullable();
             $table->enum('quote', [0, 1])->default(0)->nullable();
             $table->enum('set_end_date_of_service', [0, 1])->default(0);
+            $table->enum('show_tf', [0, 1])->default(0);
+            $table->string('label_tf');
             $table->timestamps();
         });
     }

@@ -1923,6 +1923,15 @@ $(document).ready(function($) {
                         // Hide & Show Category details btn according to status
                         if((response.category != "") && (typeof response.category !== 'undefined')){
 
+                            if(response.category.show_tf == 1){
+
+                                $('.show-tf').removeClass('d-none');
+                                quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_tf);
+                            }
+                            else{
+                                $('.show-tf').addClass('d-none');
+                            }
+
                             if(response.category.quote == 1){
                                 quote.find('.build-wrap-parent').removeClass('d-none').addClass('d-flex');
                             }else{

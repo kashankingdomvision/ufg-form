@@ -57,6 +57,7 @@ class CategoryController extends Controller
             'booking'                  => $request->booking,
             'sort_order'               => $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
+            'show_tf'                  => $request->show_tf,
         ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
@@ -97,6 +98,7 @@ class CategoryController extends Controller
             'booking'                  => $request->booking,
             'sort_order'               =>  $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
+            'show_tf'                  => $request->show_tf,
         ]);
 
         

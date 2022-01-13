@@ -15,6 +15,7 @@ class Category extends Model
         'booking',
         'sort_order',
         'set_end_date_of_service',
+        'show_tf',
     ];
 
     public function getSupplier()
