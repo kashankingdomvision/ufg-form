@@ -333,6 +333,5 @@ INSERT INTO `supplier_categories` (`supplier_id`, `category_id`) VALUES
 (332, 4),
 (333, 4),
 (334, 4),
-(335, 7),
-(336, 7),
-(337, 11);
+(335, 6),
+(336, 6);
