@@ -24,8 +24,9 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => 'required|string|unique:categories',
-            'sort_order' => 'required|integer'
+            'label_of_time' => 'required_if:show_tf,1',
+            'name'          => 'required|string|unique:categories',
+            'sort_order'    => 'required|integer'
             // 'sort_order' => 'required|string|unique:categories'
         ];
     }
@@ -33,8 +34,16 @@ class CategoryRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => 'Category name',
-            'sort_order' => 'Sort Order',
+            'label_of_time' => 'Label of Time Feild',
+            'name'          => 'Category name',
+            'sort_order'    => 'Sort Order',
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'label_of_time.required_if' => 'The Label of Time Feild field is required.',
         ];
     }
 }

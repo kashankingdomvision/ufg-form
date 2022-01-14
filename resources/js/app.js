@@ -1867,6 +1867,8 @@ $(document).ready(function($) {
                     $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
                     $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
                     
+                    $('.show-tf').addClass('d-none');
+
                     return;
                 }else{
     
@@ -1889,7 +1891,7 @@ $(document).ready(function($) {
                     url: `${BASEURL}category/to/supplier`,
                     data: { 'category_id': category_id, 'detail_id': detail_id, 'model_name': model_name },
                     success: function(response) {
-           
+
                         // set category details feilds 
                         if(typeof response.category_details != 'undefined') {
 
@@ -1926,7 +1928,7 @@ $(document).ready(function($) {
                             if(response.category.show_tf == 1){
 
                                 $('.show-tf').removeClass('d-none');
-                                quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_tf);
+                                quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_of_time);
                             }
                             else{
                                 $('.show-tf').addClass('d-none');

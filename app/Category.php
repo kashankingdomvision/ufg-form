@@ -16,6 +16,7 @@ class Category extends Model
         'sort_order',
         'set_end_date_of_service',
         'show_tf',
+        'label_of_time',
     ];
 
     public function getSupplier()

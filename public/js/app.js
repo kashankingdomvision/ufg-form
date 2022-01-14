@@ -71783,6 +71783,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
       $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
+      $('.show-tf').addClass('d-none');
       return;
     } else {
       $("#quote_".concat(quoteKey, "_supplier_location_id")).removeAttr('disabled');
@@ -71835,7 +71836,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         if (response.category != "" && typeof response.category !== 'undefined') {
           if (response.category.show_tf == 1) {
             $('.show-tf').removeClass('d-none');
-            quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_tf);
+            quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_of_time);
           } else {
             $('.show-tf').addClass('d-none');
           }

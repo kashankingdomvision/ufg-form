@@ -85,6 +85,33 @@
                   <input type="hidden" name="booking" class="booking" value="{{$category->booking}}"><input id="booking"   type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->booking == 1) ? 'checked': '' }}><label for="booking" > &nbsp; Booking</label>
                 </div>
 
+                <div class="form-row">
+                  <div class="col-md-12">
+                    <label>Hide/Show Time Feild <span style="color:red">*</span></label>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="show_tf" value="0" class="show-tf" {{ ($category->show_tf == 0) ? 'checked' : '' }}>
+                        <span>&nbsp;Hide</span>
+                      </label>
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="show_tf" value="1" class="show-tf" {{ ($category->show_tf == 1) ? 'checked' : '' }}>
+                        <span>&nbsp;Show</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4 label-of-time-col {{ $category->show_tf == 1 ? '' : 'd-none' }} ">
+                    <div class="form-group">
+                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="label_of_time" id="label_of_time" value="{{ $category->label_of_time }}" class="form-control label-of-time" placeholder="Label Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="form-group">
                   <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="{{$category->set_end_date_of_service}}"><input id="set_end_date_of_service" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->set_end_date_of_service == 1) ? 'checked': '' }}><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
                 </div>
@@ -107,6 +134,17 @@
 
 window.onload = function() {
   var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
+
+  $(document).on('change', '.show-tf', function(){
+
+    var value = $(this).val();
+
+    if(value == 1){
+      $('.label-of-time-col').removeClass('d-none');
+    }else{
+      $('.label-of-time-col').addClass('d-none');
+    }
+  });
 
   $(document).on("click", ".del-button",function() {
 
@@ -216,6 +254,7 @@ window.onload = function() {
           var booking                  = $('.booking').val();
           var sort_order               = $('.sort-order').val();
           var set_end_date_of_service  = $('.set_end_date_of_service').val();
+          var show_tf                  = $("input[name=show_tf]:checked").val();
           var url                      = '{{route('categories.update' )}}';
 
           if(formData == '[]'){
@@ -230,6 +269,7 @@ window.onload = function() {
             booking    : booking,
             sort_order : sort_order,
             set_end_date_of_service : set_end_date_of_service,
+            show_tf : show_tf,
             "_token"   : "{{ csrf_token() }}",
           };
 

@@ -82,12 +82,11 @@
                 </div>
 
                 <div class="form-row">
-
                   <div class="col-md-12">
                     <label>Hide/Show Time Feild <span style="color:red">*</span></label>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label class="radio-inline mr-1">
                         <input type="radio" name="show_tf" value="0" class="show-tf" checked>
@@ -100,13 +99,13 @@
                     </div>
                   </div>
 
-                  {{-- <div class="col-md-4">
+                  <div class="col-md-4 label-of-time-col d-none">
                     <div class="form-group">
                       <label>Set Label of Time Feild <span style="color:red">*</span></label>
-                      <input type="text" name="name" id="name" class="form-control name" placeholder="Label Name" >
+                      <input type="text" name="label_of_time" id="label_of_time" class="form-control label-of-time" placeholder="Label Name" >
                       <span class="text-danger" role="alert"></span>
                     </div>
-                  </div> --}}
+                  </div>
                 </div>
 
                 <div class="form-group">
@@ -128,6 +127,18 @@
 <script src="{{ asset('js/category_app.js') }}" ></script>
 <script>
 window.onload = function() {
+
+
+  $(document).on('change', '.show-tf', function(){
+
+    var value = $(this).val();
+
+    if(value == 1){
+      $('.label-of-time-col').removeClass('d-none');
+    }else{
+      $('.label-of-time-col').addClass('d-none');
+    }
+  });
 
   jQuery(function ($) {
     

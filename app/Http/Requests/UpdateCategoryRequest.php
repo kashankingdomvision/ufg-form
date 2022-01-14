@@ -26,8 +26,9 @@ class UpdateCategoryRequest extends FormRequest
     {
         // dd($this->all());
         return [
-            'name'        => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],
-            'sort_order'  => 'required|integer'
+            'label_of_time' => 'required_if:show_tf,1',
+            'name'          => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],
+            'sort_order'    => 'required|integer'
             // 'sort_order'  => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],
         ];
 
@@ -36,8 +37,16 @@ class UpdateCategoryRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'       => 'Category name',
-            'sort_order' => 'Sort Order',
+            'label_of_time' => 'Label of Time Feild',
+            'name'          => 'Category name',
+            'sort_order'    => 'Sort Order',
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'label_of_time.required_if' => 'The Label of Time Feild field is required.',
         ];
     }
 }

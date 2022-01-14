@@ -58,6 +58,7 @@ class CategoryController extends Controller
             'sort_order'               => $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
             'show_tf'                  => $request->show_tf,
+            'label_of_time'            => $request->label_of_time,
         ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
@@ -86,7 +87,7 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request)
     {
-        // dd($request->feilds);
+        // dd($request->all());
 
         $category  = Category::findOrFail(decrypt($request->id));
 
@@ -96,9 +97,10 @@ class CategoryController extends Controller
             'feilds'                   => $request->feilds,
             'quote'                    => $request->quote,
             'booking'                  => $request->booking,
-            'sort_order'               =>  $request->sort_order,
+            'sort_order'               => $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
             'show_tf'                  => $request->show_tf,
+            'label_of_time'            => $request->label_of_time,
         ]);
 
         
