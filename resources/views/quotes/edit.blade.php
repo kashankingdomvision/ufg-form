@@ -680,9 +680,9 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 show-tf {{ isset($q_detail->getCategory->show_tf) && ($q_detail->getCategory->show_tf == 0) ? 'd-none' : '' }}">
                                 <div class="form-group">
-                                  <label>Time of Service</label>
+                                  <label class="label-of-time-label">{{ isset($q_detail->getCategory->label_of_time) && !empty($q_detail->getCategory->label_of_time) ? $q_detail->getCategory->label_of_time : '' }}</label>
                                   <input type="time" value="{{ $q_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
                                 </div>
                               </div>

@@ -519,8 +519,7 @@
   
                             <div class="col-sm-2 d-none show-tf">
                               <div class="form-group">
-                                <label class="show-tf-label">Time of Service</label>
-                                <input type="hidden" name="quote[0][show_tf_label]" data-name="show_tf_label" id="quote_0_show_tf_label" class="form-control show-tf-label">
+                                <label class="label-of-time-label"></label>
                                 <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
                               </div>
                             </div>

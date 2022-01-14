@@ -71836,7 +71836,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         if (response.category != "" && typeof response.category !== 'undefined') {
           if (response.category.show_tf == 1) {
             $('.show-tf').removeClass('d-none');
-            quote.find('.show-tf .form-group .show-tf-label').html(response.category.label_of_time);
+            quote.find('.show-tf .form-group .label-of-time-label').html(response.category.label_of_time);
           } else {
             $('.show-tf').addClass('d-none');
           }
