@@ -1357,31 +1357,31 @@ jQuery(function($) {
 
   });
 
-  $(".quote").each(function( index ) {
+  // $(".quote").each(function( index ) {
 
-    var fields_data  = $(`#quote_${index}_category_details`).val();
-    var formRenderID = `.build-wrap-${index}`; 
+  //   var fields_data  = $(`#quote_${index}_category_details`).val();
+  //   var formRenderID = `.build-wrap-${index}`; 
 
-    jQuery(function($) {
-      var formRenderOptions = {
-        formData: fields_data,
-        layoutTemplates: {
-          default: function(field, label, help, data) {
-            let parentHtml = '<div>';
-            let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-            return result;
-          }
-        }
-      }
+  //   jQuery(function($) {
+  //     var formRenderOptions = {
+  //       formData: fields_data,
+  //       layoutTemplates: {
+  //         default: function(field, label, help, data) {
+  //           let parentHtml = '<div>';
+  //           let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
+  //           return result;
+  //         }
+  //       }
+  //     }
 
-      $(formRenderID).formRender(formRenderOptions);
+  //     $(formRenderID).formRender(formRenderOptions);
 
-      if(fields_data == ""){
-        $(formRenderID).html("No Form Data.");
-      }
-    });
+  //     if(fields_data == ""){
+  //       $(formRenderID).html("No Form Data.");
+  //     }
+  //   });
     
-  });
+  // });
 
   var quote  = '';
   var key  = '';
