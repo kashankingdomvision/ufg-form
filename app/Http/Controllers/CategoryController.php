@@ -45,6 +45,8 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     // CategoryRequest
     public function store(CategoryRequest $request)
     {
         // dd($request->all());

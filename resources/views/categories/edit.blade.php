@@ -254,6 +254,7 @@ window.onload = function() {
           var booking                  = $('.booking').val();
           var sort_order               = $('.sort-order').val();
           var set_end_date_of_service  = $('.set_end_date_of_service').val();
+          var label_of_time            = $(".label-of-time").val();
           var show_tf                  = $("input[name=show_tf]:checked").val();
           var url                      = '{{route('categories.update' )}}';
 
@@ -270,6 +271,7 @@ window.onload = function() {
             sort_order : sort_order,
             set_end_date_of_service : set_end_date_of_service,
             show_tf : show_tf,
+            label_of_time : label_of_time,
             "_token"   : "{{ csrf_token() }}",
           };
 
