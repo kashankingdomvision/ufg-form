@@ -252,6 +252,9 @@ class ResponseController extends Controller
             $category_details = "";
         }
 
+        /* Returning category related products*/ 
+        $products = Category::find($request->category_id)->getProducts;
+
         // $array = [];
         // $array['airport_codes'] = DB::table('airport_codes')->get();
         // $array['harbours'] = DB::table('harbours')->get();
@@ -263,7 +266,12 @@ class ResponseController extends Controller
         //     ->get();
         // return $array;
 
-        return response()->json([  'suppliers' => $supplier, 'category_details' => $category_details, 'category' => $category ]);
+        return response()->json([
+            'suppliers'        => $supplier,
+            'category_details' => $category_details,
+            'category'         => $category,
+            'products'         => $products,
+        ]);
     }
 
     public function getProductBookingType(Request $request)

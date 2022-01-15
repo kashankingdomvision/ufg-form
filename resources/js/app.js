@@ -1850,6 +1850,9 @@ $(document).ready(function($) {
 
                 var fields_data       = "";
                 var formRenderID      = ".build-wrap"; 
+                
+                var options = ''; 
+                
 
                 // var options           = '';
           
@@ -1874,6 +1877,8 @@ $(document).ready(function($) {
     
                     $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
                     $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
+
+                    $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
                     quote.find('.badge-category-id').html(category_name);
                 }
 
@@ -1952,6 +1957,19 @@ $(document).ready(function($) {
                                 var DateOFService = $(`#quote_${quoteKey}_date_of_service`).val();
                                 $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", DateOFService);
                             }
+
+                            /* set product dropdown */
+                            if(response && response.products.length > 0){
+
+                                options += "<option value=''>Select Product</option>";
+                                $.each(response.products, function(key, value) {
+                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                });
+
+                                $(`#quote_${quoteKey}_product_id`).html(options);
+                            }else{
+                                $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                            }
                             
                             
                         }
@@ -2024,14 +2042,14 @@ $(document).ready(function($) {
                 if(typeof supplier_id === 'undefined' || supplier_id == "") {
                     quote.find('.badge-supplier-id').html("");
 
-                    $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-                    $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+                    // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+                    // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
 
                     $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
                     return;
                 }else{
                     quote.find('.badge-supplier-id').html(supplier_name);
-                    $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+                    // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
                 }
 
                 /* get supplier's rate sheet, supplier's product, supplier's currency */
@@ -2053,18 +2071,18 @@ $(document).ready(function($) {
                                 quote.find('.view-supplier-rate').attr("href","").html("");
                             }
 
-                            /* set product dropdown */
-                            if(response && response.products.length > 0){
+                            // /* set product dropdown */
+                            // if(response && response.products.length > 0){
                             
-                                options += "<option value=''>Select Product</option>";
-                                $.each(response.products, function(key, value) {
-                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-                                });
+                            //     options += "<option value=''>Select Product</option>";
+                            //     $.each(response.products, function(key, value) {
+                            //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                            //     });
 
-                                $(`#quote_${quoteKey}_product_id`).html(options);
-                            }else{
-                                $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-                            }
+                            //     $(`#quote_${quoteKey}_product_id`).html(options);
+                            // }else{
+                            //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                            // }
 
                             /* set supplier currency */
                             if(response && response.supplier_currency != ""){

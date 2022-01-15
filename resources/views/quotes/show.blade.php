@@ -686,7 +686,8 @@
                                 </div>
                               </div> --}}
                               
-                              <div class="col-sm-3">
+                              {{-- product related to supplier --}}
+                              {{-- <div class="col-sm-3">
                                 <div class="form-group">
                                   <label>Product </label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
@@ -699,7 +700,23 @@
                                   </select>
                                   <span class="text-danger" role="alert"></span>
                                 </div>
+                              </div> --}}
+
+                              <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
+                                    @if( isset($q_detail->getCategory) && !empty($q_detail->getCategory) )
+                                      @foreach ($q_detail->getCategory->getProducts as $product)
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
                               </div>
+
 
                               <div class="col-sm-1 justify-content-center quote-category-detail-btn-parent {{ isset($q_detail->getCategory->quote) && ($q_detail->getCategory->quote == 0) ? 'd-none' : 'd-flex' }}">
                                 <div class="form-group ">

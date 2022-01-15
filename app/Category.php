@@ -19,6 +19,12 @@ class Category extends Model
         'label_of_time',
     ];
 
+    
+    public function getProducts()
+    {
+        return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
     public function getSupplier()
     {
         return $this->belongsToMany(Supplier::class,'supplier_categories','category_id', 'supplier_id');
