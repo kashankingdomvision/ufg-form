@@ -18,27 +18,27 @@ class ProductTableSeeder extends Seeder
         $sql = file_get_contents(database_path() . '/seeds/sql_dump/products.sql');
         DB::unprepared($sql);
 
+        // create product for transer (category)
+        $products = [ 
+            [
+                'code'             => 'PA',
+                'name'             => 'PIA Airline',
+                'category_id'      => 1,
+                'country_id'       => NULL,
+                'location_id'      => 1,
+                'currency_id'      => NULL,
+                'booking_type_id'  => 1,
+                'duration'         => NULL,
+                'price'            => NULL,
+                'description'      => NULL,
+                'inclusions'       => NULL,
+                'packing_list'     => NULL,
+                'created_at'       => now(),
+                'updated_at'       => now(),
+            ]
+        ];
 
-
-        // $data = [ 
-        //     [   
-        //         'code'        => 'PC-0001',
-        //         'name'        => Str::random(4),
-        //         'description' => Str::random(55),
-        //         'created_at'  => now(),
-        //         'updated_at'  => now()
-        //     ],
-        //     [   
-        //         'code'        => 'PC-0002',
-        //         'name'        => Str::random(4),
-        //         'description' => Str::random(55),
-        //         'created_at'  => now(),
-        //         'updated_at'  => now()
-        //     ],
-        // ];
-        
-        // Product::insert($data);
+        Product::insert($products);
     }
-    
    
 }

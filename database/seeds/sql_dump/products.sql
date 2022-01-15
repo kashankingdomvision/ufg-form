@@ -167,5 +167,4 @@ INSERT INTO `products` (`id`, `code`, `name`, `category_id`, `country_id`, `loca
 (163, '', 'Zagreb to Split Private Transfer with a Stop at Plitvice Lakes', 3, NULL, 5, NULL, NULL, NULL, NULL, '', 'Includes a 4 hour stop and free time to explore lakes at leisure. Including NP tickets', '', NULL, NULL),
 (164, '', 'Zagreb to Split Private Transfer with Plitvice Lakes Guided Tour', 3, NULL, 5, NULL, NULL, NULL, NULL, '', 'Includes a 3 hour guided tour with a local guide and tikets', '', NULL, NULL),
 (165, '', 'Zagreb to Split Private Transfer with Plitvice Lakes Guided Tour', 3, NULL, 5, NULL, NULL, NULL, NULL, '', 'Price includes the transfer & guide, tickets are extra cost', '', NULL, NULL),
-(166, '', 'Zagreb to Zadar with a stop at Plitvice Lakes', 3, NULL, 5, NULL, NULL, NULL, NULL, '', 'Entrance fee included', '', NULL, NULL),
-(167, 'PA', 'PIA Airline', 1, NULL, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(166, '', 'Zagreb to Zadar with a stop at Plitvice Lakes', 3, NULL, 5, NULL, NULL, NULL, NULL, '', 'Entrance fee included', '', NULL, NULL);
