@@ -2231,6 +2231,10 @@ $(document).ready(function($) {
                             $('.select2single').select2('destroy');
                         }
 
+                        if ($('.select2-multiple').data('select2')) {
+                            $('.select2-multiple').select2('destroy');
+                        }
+
                         var quote = $(".quote").eq(0).clone()
                             .find("input").val("").each(function() {
                                 this.name = this.name.replace(/\[(\d+)\]/, function() {
@@ -2312,6 +2316,7 @@ $(document).ready(function($) {
 
                         reinitializedSummerNote(`${quoteClass}`);
                         reinitializedDynamicFeilds();
+                        reinitializedMultiDynamicFeilds();
 
                         $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
                         $('.parent-spinner').removeClass('spinner-border');

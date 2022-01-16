@@ -413,6 +413,9 @@ class QuoteController extends Controller
     // Request
     public function store(Request $request)
     {
+
+        // dd($request->all());
+
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
@@ -420,6 +423,17 @@ class QuoteController extends Controller
                 $quoteDetail['quote_id'] = $quote->id;
 
                 $qd = QuoteDetail::create($quoteDetail);
+
+                $countries = collect($qu_details['country_ids'])->map(function ($item, $key) use ($quote,$qd) {
+                    return [
+                        'quote_id'        => $quote->id,
+                        'quote_detail_id' => $qd->id,
+                        'country_id'      => $item,
+                    ];
+                });
+
+                $qd->getBDCountries()->sync($countries);
+
                 if(isset($qu_details['stored_text'])){
                     QuoteDetailStoredText::create([
                         'quote_detail_id' => $qd->id,
@@ -500,8 +514,9 @@ class QuoteController extends Controller
     }
 
 
-
-    public function update(QuoteRequest $request, $id)
+    // QuoteRequest
+    // Request
+    public function update(Request $request, $id)
     {
         // dd($request->all());
 
@@ -541,6 +556,17 @@ class QuoteController extends Controller
                 $getQuoteDetailsArray['quote_id'] = $quote->id;
 
                 $new_quote_details = QuoteDetail::create($getQuoteDetailsArray);
+
+                $countries = collect($quote_details['country_ids'])->map(function ($item, $key) use ($quote,$new_quote_details) {
+                    return [
+                        'quote_id'        => $quote->id,
+                        'quote_detail_id' => $new_quote_details->id,
+                        'country_id'      => $item,
+                    ];
+                });
+
+                
+                $new_quote_details->getBDCountries()->sync($countries);
                 
                 /* quote_detail_stored_texts values*/ 
                 if(isset($quote_details['stored_text'])){

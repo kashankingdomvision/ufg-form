@@ -45,6 +45,14 @@ class QuoteDetail extends Model
         'category_details',
     ];
     
+
+    public function getBDCountries()
+    {
+        return $this->belongsToMany(Country::class, 'quote_detail_countries', 'quote_detail_id', 'country_id')
+        ->withPivot('quote_id');
+        // ->withTimestamps();
+    }
+
     public function getChildQuote()
     {
         // dd('wqw');
