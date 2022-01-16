@@ -771,6 +771,22 @@
                                   <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
+                                    @if( isset($booking_detail->getCategory) && !empty($booking_detail->getCategory) )
+                                      @foreach ($booking_detail->getCategory->getProducts as $product)
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }}</option>
+                                      @endforeach
+                                    @endif
+                                  </select>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              {{-- product related to supplier --}}
+                              {{-- <div class="col-sm-3">
+                                <div class="form-group">
+                                  <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                  <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
+                                    <option value="">Select Product</option>
                                     @if(isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier))
                                       @foreach ($booking_detail->getSupplier->getProducts()->get() as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}>{{ $product->name }}</option>
@@ -779,7 +795,7 @@
                                   </select>
                                   <span class="text-danger" role="alert"></span>
                                 </div>
-                              </div>
+                              </div> --}}
 
                               <div class="col-sm-2">
                                 <div class="form-group">

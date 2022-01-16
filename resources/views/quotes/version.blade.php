@@ -679,7 +679,7 @@
                                   </div>
                                 </div> --}}
 
-                                {{-- product related to supplier --}}
+                           
                                 <div class="col-sm-3">
                                   <div class="form-group">
                                     <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product d-none"> ( Add New Product ) </a></label>
