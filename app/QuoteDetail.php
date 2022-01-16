@@ -10,7 +10,7 @@ class QuoteDetail extends Model
         
         'quote_id',
         'category_id',
-        'supplier_location_id',
+        // 'supplier_location_id',
         'supplier_id',
         // 'product_location_id',
         'product_id',

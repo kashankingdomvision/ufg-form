@@ -576,7 +576,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier Location <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_location_id]" data-name="supplier_location_id" id="quote_{{ $key }}_supplier_location_id" class="form-control supplier-location-id select2single">
@@ -587,7 +587,7 @@
                                 </select>
                                 <span class="text-danger" role="alert"></span>
                               </div>
-                            </div>
+                            </div> --}}
 
                             @php
                               $supplier_url = \Helper::getSupplierRateSheetUrl($booking_detail['supplier_id'], $booking['season_id']);

@@ -12,7 +12,7 @@ class BookingDetail extends Model
         'booking_id',
         'booking_detail_unique_ref_id',
         'category_id',
-        'supplier_location_id',
+        // 'supplier_location_id',
         'supplier_id',
         'product_location_id',
         'product_id',

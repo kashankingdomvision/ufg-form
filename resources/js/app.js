@@ -1861,8 +1861,8 @@ $(document).ready(function($) {
 
                     quote.find('.badge-category-id').html("");
 
-                    $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
-                    $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
+                    // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
+                    // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
 
                     $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
                     $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
@@ -1875,8 +1875,8 @@ $(document).ready(function($) {
                     return;
                 }else{
     
-                    $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
-                    $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
+                    // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
+                    // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
 
                     $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
                     quote.find('.badge-category-id').html(category_name);
