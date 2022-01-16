@@ -94,7 +94,7 @@
                     <select name="booking_type_id" class="form-control select2single booking-type-id">
                       <option value="" >Select Payment Type</option>
                       @foreach ($booking_types as $booking_type)
-                        <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" > {{$booking_type->name}} </option>
+                        <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ ($booking_type->id == 1 || $booking_type->slug == 'refundable') ? 'selected' : '' }}> {{$booking_type->name}} </option>
                       @endforeach
                     </select>
 
