@@ -812,7 +812,7 @@
                                     <option value="">Select Product</option>
                                     @if( isset($q_detail->getCategory) && !empty($q_detail->getCategory) )
                                       @foreach ($q_detail->getCategory->getProducts as $product)
-                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }}</option>
+                                        <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }} - {{ $product->code }}</option>
                                       @endforeach
                                     @endif
                                   </select>

@@ -719,7 +719,7 @@
                                       <option value="">Select Product</option>
                                       @if( isset($booking_detail->getCategory) && !empty($booking_detail->getCategory) )
                                         @foreach ($booking_detail->getCategory->getProducts as $product)
-                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }}</option>
+                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }} - {{ $product->code }}</option>
                                         @endforeach
                                       @endif
                                     </select>

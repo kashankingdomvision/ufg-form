@@ -1766,7 +1766,7 @@ $(document).ready(function($) {
                                 
                                     options += "<option value=''>Select Product</option>";
                                     $.each(data.products, function(key, value) {
-                                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
                                     });
     
                                     $(`#quote_${quoteKeyForProduct}_product_id`).html(options);
@@ -1963,7 +1963,7 @@ $(document).ready(function($) {
 
                                 options += "<option value=''>Select Product</option>";
                                 $.each(response.products, function(key, value) {
-                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
                                 });
 
                                 $(`#quote_${quoteKey}_product_id`).html(options);

@@ -71684,7 +71684,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             if (data.products.length != 0) {
               options += "<option value=''>Select Product</option>";
               $.each(data.products, function (key, value) {
-                options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+                options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
               });
               $("#quote_".concat(quoteKeyForProduct, "_product_id")).html(options);
             }
@@ -71754,9 +71754,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     /* remove & reset supplier location attribute when category selected */
 
     if (typeof category_id === 'undefined' || category_id == "") {
-      quote.find('.badge-category-id').html("");
-      $("#quote_".concat(quoteKey, "_supplier_location_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_supplier_location_id")).attr('disabled', 'disabled');
+      quote.find('.badge-category-id').html(""); // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
+      // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
+
       $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
       $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
@@ -71764,8 +71764,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('.show-tf').addClass('d-none');
       return;
     } else {
-      $("#quote_".concat(quoteKey, "_supplier_location_id")).removeAttr('disabled');
-      $("#quote_".concat(quoteKey, "_supplier_location_id")).val("").trigger('change');
+      // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
+      // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
       quote.find('.badge-category-id').html(category_name);
     } // set Payment type (Booking Type) refundable when category is fligt
@@ -71844,7 +71844,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           if (response && response.products.length > 0) {
             options += "<option value=''>Select Product</option>";
             $.each(response.products, function (key, value) {
-              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
             });
             $("#quote_".concat(quoteKey, "_product_id")).html(options);
           } else {

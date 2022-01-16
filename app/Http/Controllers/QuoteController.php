@@ -409,7 +409,9 @@ class QuoteController extends Controller
         return view('quotes.create', $data);
     }
 
-    public function store(QuoteRequest $request)
+    // QuoteRequest
+    // Request
+    public function store(Request $request)
     {
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){

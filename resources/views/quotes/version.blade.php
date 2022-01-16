@@ -687,7 +687,7 @@
                                       <option value="">Select Product</option>
                                       @if(isset($q_detail['category_id']) && !empty($q_detail['category_id']))
                                         @foreach ($log->getQueryData($q_detail['category_id'], 'Category')->first()->getProducts()->get() as $product)
-                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id) ? 'selected' : '' }}>{{ $product->name }}</option>
+                                          <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id) ? 'selected' : '' }}>{{ $product->name }} - {{ $product->code }}</option>
                                         @endforeach
                                       @endif
                                     </select>
