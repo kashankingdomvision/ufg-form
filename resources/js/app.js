@@ -25,9 +25,6 @@ require('./intl_tel_input/utils');
 
 $(document).ready(function($) {
 
-
-    console.log(window.BASEURL);
-
     callLaravelFileManger();
     datepickerReset();
 
@@ -2197,12 +2194,12 @@ $(document).ready(function($) {
              * -------------------------------------------------------------------------------------
              */
 
-            $('#seasons').keyup(function() {
-                var val = $(this).val();
-                if (val.length == 4) {
-                    $(this).val(val + '-');
-                }
-            });
+            // $('#seasons').keyup(function() {
+            //     var val = $(this).val();
+            //     if (val.length == 4) {
+            //         $(this).val(val + '-');
+            //     }
+            // });
 
 
             /**

@@ -70098,7 +70098,6 @@ __webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte
 __webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  console.log(window.BASEURL);
   callLaravelFileManger();
   datepickerReset();
   /*  ajaxSetup */
@@ -72049,14 +72048,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
    *                                Season Manangement
    * -------------------------------------------------------------------------------------
    */
+  // $('#seasons').keyup(function() {
+  //     var val = $(this).val();
+  //     if (val.length == 4) {
+  //         $(this).val(val + '-');
+  //     }
+  // });
 
-  $('#seasons').keyup(function () {
-    var val = $(this).val();
-
-    if (val.length == 4) {
-      $(this).val(val + '-');
-    }
-  });
   /**
    * -------------------------------------------------------------------------------------
    *                                Quote Manangement
