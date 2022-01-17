@@ -70080,9 +70080,7 @@ window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
-
-
-__webpack_require__(/*! ./global_variables */ "./resources/js/global_variables.js");
+ // require('./global_variables');
 
 __webpack_require__(/*! ./laravel_filemanager/stand-alone-button */ "./resources/js/laravel_filemanager/stand-alone-button.js");
 
@@ -70094,7 +70092,12 @@ __webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte
 
 __webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
 
+window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
+window.CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
+  console.log(window.BASEURL);
   callLaravelFileManger();
   datepickerReset();
   /*  ajaxSetup */
@@ -77436,20 +77439,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
   });
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
-
-/***/ }),
-
-/***/ "./resources/js/global_variables.js":
-/*!******************************************!*\
-  !*** ./resources/js/global_variables.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
-window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
-window.CSRFTOKEN = $('#csrf-token').attr('content');
 
 /***/ }),
 
