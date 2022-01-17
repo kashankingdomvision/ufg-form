@@ -53,6 +53,11 @@ class QuoteDetail extends Model
         // ->withTimestamps();
     }
 
+    public function getSuppliers()
+    {
+        return $this->belongsToMany(Supplier::class, 'id', 'supplier_id');
+    }
+
     public function getChildQuote()
     {
         // dd('wqw');

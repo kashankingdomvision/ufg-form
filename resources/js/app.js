@@ -1830,10 +1830,41 @@ $(document).ready(function($) {
                             $(`#quote_${quoteKey}_booking_type_id`).val(response.product.booking_type_id).change();
                         }
                     }
-                })
+                });
 
                 quote.find('.badge-product-id').html(product_name);
                 quote.find('.badge-product-id').removeClass('d-none');
+            });
+
+            $(document).on('change', '.supplier-country-id', function(){
+
+                var country_ids = $(this).val();
+                var url         = BASEURL + 'country/to/supplier';
+                var options     = '';
+        
+                $.ajax({
+                    type: 'get',
+                    url: url,
+                    data: { 'country_ids': country_ids },
+                    beforeSend: function() {
+                        $('.supplier-id').html(options);
+                    },
+                    success: function(response) {
+
+                        if(response && response.suppliers.length > 0){
+
+                            options += "<option value=''>Select Supplier</option>";
+
+                            $.each(response.suppliers, function(key, value) {
+                                options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                            });
+            
+                            $('.supplier-id').html(options);
+                        }
+        
+                    }
+                });
+
             });
 
             $(document).on('change', '.category-id', function() {
@@ -2027,75 +2058,75 @@ $(document).ready(function($) {
 
             });
 
-            $(document).on('change', '.supplier-id', function() {
+            // $(document).on('change', '.supplier-id', function() {
 
-                var quote                = $(this).closest('.quote');
-                var quoteKey             = quote.data('key');
-                var supplier_name        = $(this).find(':selected').attr('data-name');
-                var supplier_id          = $(this).val();
-                var season_id            = $('.season-id').val();
-                var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
-                var category_id          = $(`#quote_${quoteKey}_category_id`).val();
-                var options              = '';
+            //     var quote                = $(this).closest('.quote');
+            //     var quoteKey             = quote.data('key');
+            //     var supplier_name        = $(this).find(':selected').attr('data-name');
+            //     var supplier_id          = $(this).val();
+            //     var season_id            = $('.season-id').val();
+            //     var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+            //     var category_id          = $(`#quote_${quoteKey}_category_id`).val();
+            //     var options              = '';
 
-                /* set/unset card header, supplier currency & product */
-                if(typeof supplier_id === 'undefined' || supplier_id == "") {
-                    quote.find('.badge-supplier-id').html("");
+            //     /* set/unset card header, supplier currency & product */
+            //     if(typeof supplier_id === 'undefined' || supplier_id == "") {
+            //         quote.find('.badge-supplier-id').html("");
 
-                    // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-                    // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+            //         // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+            //         // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
 
-                    $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
-                    return;
-                }else{
-                    quote.find('.badge-supplier-id').html(supplier_name);
-                    // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
-                }
+            //         $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
+            //         return;
+            //     }else{
+            //         quote.find('.badge-supplier-id').html(supplier_name);
+            //         // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+            //     }
 
-                /* get supplier's rate sheet, supplier's product, supplier's currency */
-                if(season_id != "" && supplier_id != ""){
-                    $.ajax({
-                        type: 'get',
-                        url: `${BASEURL}get-supplier-product-and-sheet`,
-                        data: { 
-                            'supplier_id': supplier_id,
-                            'season_id': season_id,
-                            'supplier_location_id': supplier_location_id,
-                            'category_id': category_id,
-                        },
-                        success: function(response) {
+            //     /* get supplier's rate sheet, supplier's product, supplier's currency */
+            //     if(season_id != "" && supplier_id != ""){
+            //         $.ajax({
+            //             type: 'get',
+            //             url: `${BASEURL}get-supplier-product-and-sheet`,
+            //             data: { 
+            //                 'supplier_id': supplier_id,
+            //                 'season_id': season_id,
+            //                 'supplier_location_id': supplier_location_id,
+            //                 'category_id': category_id,
+            //             },
+            //             success: function(response) {
 
-                            if(response && response.url != ""){
-                                quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
-                            }else{
-                                quote.find('.view-supplier-rate').attr("href","").html("");
-                            }
+            //                 if(response && response.url != ""){
+            //                     quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
+            //                 }else{
+            //                     quote.find('.view-supplier-rate').attr("href","").html("");
+            //                 }
 
-                            // /* set product dropdown */
-                            // if(response && response.products.length > 0){
+            //                 // /* set product dropdown */
+            //                 // if(response && response.products.length > 0){
                             
-                            //     options += "<option value=''>Select Product</option>";
-                            //     $.each(response.products, function(key, value) {
-                            //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-                            //     });
+            //                 //     options += "<option value=''>Select Product</option>";
+            //                 //     $.each(response.products, function(key, value) {
+            //                 //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+            //                 //     });
 
-                            //     $(`#quote_${quoteKey}_product_id`).html(options);
-                            // }else{
-                            //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-                            // }
+            //                 //     $(`#quote_${quoteKey}_product_id`).html(options);
+            //                 // }else{
+            //                 //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+            //                 // }
 
-                            /* set supplier currency */
-                            if(response && response.supplier_currency != ""){
-                                $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
-                            }
+            //                 /* set supplier currency */
+            //                 if(response && response.supplier_currency != ""){
+            //                     $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
+            //                 }
 
-                        }
-                    });
-                }else{
-                    quote.find('.view-supplier-rate').attr("href","").html("");
-                    $(`#quote_${quoteKey}_product_id`).html("");
-                }
-            });
+            //             }
+            //         });
+            //     }else{
+            //         quote.find('.view-supplier-rate').attr("href","").html("");
+            //         $(`#quote_${quoteKey}_product_id`).html("");
+            //     }
+            // });
 
             // $(document).on('change', '.product-location-id', function(){
                 

@@ -556,6 +556,17 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div> --}}
+
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Supplier Country </label>
+                                <select name="quote[0][country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
+                                  @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                            </div>
   
                             <div class="col-sm-3">
                               <div class="form-group">
@@ -563,21 +574,10 @@
                                   Supplier <span style="color:red">*</span>
                                   <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                                 </label>
-                                <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single" disabled>
+                                <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single">
                                   <option selected value="">Select Supplier</option>
                                 </select>
                                 <span class="text-danger" role="alert"></span>
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <div class="form-group">
-                                <label>Supplier Country </label>
-                                <select name="quote[0][country_ids][]" class="form-control select2-multiple" data-placeholder="Select Supplier Country" multiple>
-                                  @foreach ($countries as $country)
-                                    <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
-                                  @endforeach
-                                </select>
                               </div>
                             </div>
   

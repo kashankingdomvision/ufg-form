@@ -745,6 +745,11 @@
                                 $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
+
+                                $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                                  $query->whereIn('id', $q_detail->getBDCountries()->pluck('country_id')->toArray());
+                                })->get();
+
                               @endphp
 
                               <div class="col-sm-3">
@@ -755,11 +760,17 @@
                                   </label>
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                       <option value="">Select Supplier</option>
-                                      @if(isset($q_detail->getCategory) && isset($q_detail->supplier_location_id) && !empty($q_detail->supplier_location_id))
+                                      @if(isset($suppliers) && !empty($suppliers))
+                                        @foreach ($suppliers as $supplier )
+                                          <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id) ? 'selected' : NULL}}  >{{ $supplier->name }}</option>
+                                        @endforeach
+                                      @endif 
+
+                                      {{-- @if(isset($q_detail->getCategory) && isset($q_detail->supplier_location_id) && !empty($q_detail->supplier_location_id))
                                         @foreach ($q_detail->getCategory->getSupplierWithLocation($q_detail->supplier_location_id)->get() as $supplier )
                                           <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($q_detail->supplier_id == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                         @endforeach
-                                      @endif
+                                      @endif --}}
                                   </select>
                                   <span class="text-danger" role="alert"></span>
                                 </div>

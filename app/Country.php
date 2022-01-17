@@ -22,4 +22,8 @@ class Country extends Model
         return $this->hasMany(Location::class, 'country_id', 'id');
     }
  
+    public function getSuppliers()
+    {
+        return $this->belongsToMany(Supplier::class, 'supplier_countries', 'country_id', 'supplier_id');
+    }
 }

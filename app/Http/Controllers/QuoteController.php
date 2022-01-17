@@ -411,7 +411,7 @@ class QuoteController extends Controller
 
     // QuoteRequest
     // Request
-    public function store(Request $request)
+    public function store(QuoteRequest $request)
     {
 
         // dd($request->all());

@@ -213,6 +213,15 @@ class ResponseController extends Controller
         return $response;
     }
 
+    public function getCountryToSupplier(Request $request)
+    {
+        $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
+            $query->whereIn('id', $request->country_ids);
+        })->get();
+
+        return response()->json([ 'suppliers' => $suppliers ]);
+    }
+
     public function getCategoryToSupplier(Request $request)
     {
         $category_details = '';
