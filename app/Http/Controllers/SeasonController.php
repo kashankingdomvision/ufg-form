@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\SeasonRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
+
 use App\Season;
+use App\Supplier;
 
 class SeasonController extends Controller
 {
@@ -44,9 +47,36 @@ class SeasonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    // SeasonRequest
+    // Request
     public function store(SeasonRequest $request)
     {
-        Season::create($request->all());
+        // $start_date = "2022-01-02";
+        // $end_date = "2022-01-30";
+
+        $start_date = $request->start_date;
+        $end_date   = $request->end_date;
+
+        $season = Season::whereDate('start_date', '<=', $start_date)->whereDate('end_date', '>=', $end_date);
+
+        if($season->exists()){
+            throw ValidationException::withMessages([ 
+                'start_date' => 'The Season date range already been taken.'
+            ]);
+        }
+
+        if($request->default == 1){
+            Season::query()->update([ 'default' => 0 ]);
+        }
+  
+        Season::create([
+            'name'        => $request->name,
+            'start_date'  => $request->start_date,
+            'end_date'    => $request->end_date,
+            'default'     => $request->default
+        ]);
+
         return redirect()->route('seasons.index')->with('success_message', 'Season created successfully');
     }
 

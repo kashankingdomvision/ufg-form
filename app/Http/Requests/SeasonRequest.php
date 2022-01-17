@@ -24,7 +24,7 @@ class SeasonRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => 'required|string',
+            'name'          => 'required|unique:seasons',
             'start_date'    => 'required|date',
             'end_date'      => 'required|date',
             'default'       => 'required',

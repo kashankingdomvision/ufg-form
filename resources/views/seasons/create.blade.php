@@ -38,7 +38,7 @@
 
                   <div class="form-group">
                     <label>Season <span style="color:red">*</span></label>
-                    <input type="text" name="name" id="seasons" class="form-control @error('name') is-invalid @enderror" maxlength="9" autocomplete="off" pattern="^-?\d{4}-\d{4}$" placeholder="Enter the season name into years (2021-2023)" value="{{ old('name') }}" required>
+                    <input type="text" name="name" id="seasons" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Enter the Season" >
                     
                     @error('name')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
