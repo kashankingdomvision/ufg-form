@@ -1841,6 +1841,8 @@ $(document).ready(function($) {
                 var country_ids = $(this).val();
                 var url         = BASEURL + 'country/to/supplier';
                 var options     = '';
+
+                console.log(url);
         
                 $.ajax({
                     type: 'get',
