@@ -11,17 +11,17 @@ import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
 // require('./global_variables');
-require('./laravel_filemanager/stand-alone-button');
-require('./summernote/summernote-bs4.min');
-require('./bootstrap/bootstrap.bundle.min');
-require('./adminlte/adminlte');
-require('./intl_tel_input/utils');
 
 window.BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
 window.REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
 window.FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
 window.CSRFTOKEN        = $('#csrf-token').attr('content');
 
+require('./laravel_filemanager/stand-alone-button');
+require('./summernote/summernote-bs4.min');
+require('./bootstrap/bootstrap.bundle.min');
+require('./adminlte/adminlte');
+require('./intl_tel_input/utils');
 
 $(document).ready(function($) {
 

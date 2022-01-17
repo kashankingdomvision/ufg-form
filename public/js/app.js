@@ -70082,6 +70082,11 @@ window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
  // require('./global_variables');
 
+window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
+window.CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+
 __webpack_require__(/*! ./laravel_filemanager/stand-alone-button */ "./resources/js/laravel_filemanager/stand-alone-button.js");
 
 __webpack_require__(/*! ./summernote/summernote-bs4.min */ "./resources/js/summernote/summernote-bs4.min.js");
@@ -70092,10 +70097,6 @@ __webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte
 
 __webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
 
-window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
-window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
-window.CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   console.log(window.BASEURL);
   callLaravelFileManger();
