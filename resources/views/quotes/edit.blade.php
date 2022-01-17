@@ -731,7 +731,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Supplier Country </label>
-                                  <select name="quote[{{ $key }}][country_ids][]" class="form-control select2-multiple" data-placeholder="Select Supplier Country" multiple>
+                                  <select name="quote[{{ $key }}][country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                     @foreach ($countries as $country)
                                       <option value="{{ $country->id }}" 
                                         {{ (in_array($country->id, $q_detail->getBDCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}} 
