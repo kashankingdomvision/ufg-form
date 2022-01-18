@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\SeasonRequest;
+use App\Http\Requests\UpdateSeasonRequest;
 use Illuminate\Support\Carbon;
 use Illuminate\Validation\ValidationException;
 
@@ -67,7 +68,7 @@ class SeasonController extends Controller
         }
 
         if($request->default == 1){
-            Season::query()->update([ 'default' => 0 ]);
+            Season::query()->update([ 'default' => '0' ]);
         }
   
         Season::create([
@@ -99,10 +100,31 @@ class SeasonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(SeasonRequest $request, $id)
+    public function update(UpdateSeasonRequest $request, $id)
     {
-        $season = Season::findOrFail(decrypt($id));
-        $season->update($request->all());
+
+        $start_date = $request->start_date;
+        $end_date   = $request->end_date;
+
+        $season = Season::whereDate('start_date', '<=', $start_date)->whereDate('end_date', '>=', $end_date)->where('id' , '!=' , decrypt($id));
+
+        if($season->exists()){
+            throw ValidationException::withMessages([ 
+                'start_date' => 'The Season date range already been taken.'
+            ]);
+        }
+
+        if($request->default == 1){
+            Season::query()->update([ 'default' => '0' ]);
+        }
+
+        Season::find(decrypt($id))->update([
+            'name'        => $request->name,
+            'start_date'  => $request->start_date,
+            'end_date'    => $request->end_date,
+            'default'     => $request->default
+        ]);
+
         return redirect()->route('seasons.index')->with('success_message', 'Season updated successfully');
     }
 
