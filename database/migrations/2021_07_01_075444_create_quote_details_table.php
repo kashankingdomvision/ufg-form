@@ -21,6 +21,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->time('time_of_service')->nullable();
             $table->integer('number_of_nights')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
+            $table->string('supplier_country_ids')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
             // $table->string('product_id')->nullable();

@@ -19,6 +19,7 @@ use App\BookingType;
 use App\BookingDetail;
 use App\BookingPaxDetail;
 use App\BookingCategoryDetail;
+use App\BookingDetailCountry;
 use App\Currency;
 use App\Category;
 use App\Commission;
@@ -39,6 +40,7 @@ use App\QuotePaxDetail;
 use App\QuoteLog;
 use App\QuoteDetailStoredText;
 use App\QuoteCategoryDetail;
+use App\QuoteDetailCountry;
 use App\ReferenceCredential;
 use App\Season;
 use App\Supplier;
@@ -240,12 +242,13 @@ class QuoteController extends Controller
         return $data;
     }
 
-    public function getQuoteDetailsArray($quoteD, $id, $quote )
+    public function getQuoteDetailsArray($quoteD, $quote, $type)
     {
 
-        return [
+        $data = [
             'category_id'           => $quoteD['category_id'],
             // 'supplier_location_id'  => $quoteD['supplier_location_id'],
+            // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
             'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
             // 'product_location_id'   => $quoteD['product_location_id'],
@@ -276,6 +279,18 @@ class QuoteController extends Controller
             'image'                 => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
             // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
         ];
+
+        if($type == 'quote_details'){
+
+            $data['supplier_country_ids'] = (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
+        }
+
+        if($type == 'booking_details'){
+
+            $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? $quoteD['supplier_country_ids'] : NULL ;
+        }
+
+        return $data;
     }
 
     public function getQuoteCategoryDetailArray( $quoteD, $category_detail )
@@ -419,20 +434,22 @@ class QuoteController extends Controller
         $quote =  Quote::create($this->quoteArray($request));
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $qu_details) {
-                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
+                $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote, 'quote_details');
                 $quoteDetail['quote_id'] = $quote->id;
 
                 $qd = QuoteDetail::create($quoteDetail);
 
-                $countries = collect($qu_details['country_ids'])->map(function ($item, $key) use ($quote,$qd) {
-                    return [
-                        'quote_id'        => $quote->id,
-                        'quote_detail_id' => $qd->id,
-                        'country_id'      => $item,
-                    ];
-                });
+                if(isset($qu_details['supplier_country_ids']) && !empty($qu_details['supplier_country_ids'])){
 
-                $qd->getBDCountries()->sync($countries);
+                    foreach($qu_details['supplier_country_ids'] as $key => $id){
+
+                        QuoteDetailCountry::create([
+                            'quote_id'        => $quote->id,
+                            'quote_detail_id' => $qd->id,
+                            'country_id'      => $id
+                        ]);
+                    }
+                }
 
                 if(isset($qu_details['stored_text'])){
                     QuoteDetailStoredText::create([
@@ -552,21 +569,21 @@ class QuoteController extends Controller
 
             foreach ($request->quote as $quote_details) {
                 
-                $getQuoteDetailsArray = $this->getQuoteDetailsArray($quote_details, $quote->id, $quote);
+                $getQuoteDetailsArray = $this->getQuoteDetailsArray($quote_details, $quote, 'quote_details');
                 $getQuoteDetailsArray['quote_id'] = $quote->id;
 
                 $new_quote_details = QuoteDetail::create($getQuoteDetailsArray);
 
-                $countries = collect($quote_details['country_ids'])->map(function ($item, $key) use ($quote,$new_quote_details) {
-                    return [
-                        'quote_id'        => $quote->id,
-                        'quote_detail_id' => $new_quote_details->id,
-                        'country_id'      => $item,
-                    ];
-                });
+                if( isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids']) ){
 
-                
-                $new_quote_details->getBDCountries()->sync($countries);
+                    foreach($quote_details['supplier_country_ids'] as $key => $id){
+                        QuoteDetailCountry::create([
+                            'quote_id'        => $quote->id,
+                            'quote_detail_id' => $new_quote_details->id,
+                            'country_id'      => $id
+                        ]);
+                    }
+                }
                 
                 /* quote_detail_stored_texts values*/ 
                 if(isset($quote_details['stored_text'])){
@@ -690,7 +707,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote->id, $quote);
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote, 'booking_details');
 
             $quoteDetail['booking_id']                   = $booking->id;
             $quoteDetail['outstanding_amount_left']      = $quoteDetail['estimated_cost'];
@@ -698,6 +715,18 @@ class QuoteController extends Controller
             $quoteDetail['actual_cost_bc']               = $quoteDetail['estimated_cost_bc'];
             $quoteDetail['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
             $bookingDetail = BookingDetail::create($quoteDetail);
+
+            if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
+                foreach ($qu_details->getQuoteDetailCountries as $detail) {
+
+                    BookingDetailCountry::create([
+
+                        'booking_id'        => $booking->id,
+                        'booking_detail_id' => $bookingDetail->id,
+                        'country_id'        => $detail->country_id
+                    ]);
+                }
+            }
 
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
@@ -830,7 +859,7 @@ class QuoteController extends Controller
         $getQuote   = $this->quoteArray($quote,'clone');
         $clone      = Quote::create($getQuote);
         foreach ($quote->getQuoteDetails as $qu_details) {
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone->id, $clone);
+            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone, 'quote_details');
             $quoteDetail['quote_id'] = $clone->id;
 
             $quoteDetail = QuoteDetail::create($quoteDetail);
@@ -843,7 +872,17 @@ class QuoteController extends Controller
                 }
             }
 
-       
+            if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
+                foreach ($qu_details->getQuoteDetailCountries as $detail) {
+
+                    QuoteDetailCountry::create([
+
+                        'quote_id'        => $clone->id,
+                        'quote_detail_id' => $quoteDetail->id,
+                        'country_id'      => $detail->country_id
+                    ]);
+                }
+            }
             
         }
 

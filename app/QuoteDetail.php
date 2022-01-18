@@ -11,6 +11,7 @@ class QuoteDetail extends Model
         'quote_id',
         'category_id',
         // 'supplier_location_id',
+        'supplier_country_ids',
         'supplier_id',
         // 'product_location_id',
         'product_id',
@@ -46,11 +47,9 @@ class QuoteDetail extends Model
     ];
     
 
-    public function getBDCountries()
+    public function getQuoteDetailCountries()
     {
-        return $this->belongsToMany(Country::class, 'quote_detail_countries', 'quote_detail_id', 'country_id')
-        ->withPivot('quote_id');
-        // ->withTimestamps();
+        return $this->hasMany(QuoteDetailCountry::class, 'quote_detail_id','id');
     }
 
     public function getSuppliers()

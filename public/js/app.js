@@ -71554,14 +71554,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // });
 
   $(document).on('change', '.getCountryToLocation', function () {
-    var country_ids = $(this).val();
+    var supplier_country_ids = $(this).val();
     var url = BASEURL + 'country/to/location';
     var options = '';
     $.ajax({
       type: 'get',
       url: url,
       data: {
-        'country_ids': country_ids
+        'supplier_country_ids': supplier_country_ids
       },
       beforeSend: function beforeSend() {
         $('.appendCountryLocation').html(options);
@@ -71763,17 +71763,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find('.badge-product-id').removeClass('d-none');
   });
   $(document).on('change', '.supplier-country-id', function () {
-    var country_ids = $(this).val();
+    var supplier_country_ids = $(this).val();
     var url = BASEURL + 'country/to/supplier';
     var options = '';
     var selectOption = "<option value=''>Select Supplier</option>";
 
-    if (country_ids && country_ids.length > 0) {
+    if (supplier_country_ids && supplier_country_ids.length > 0) {
       $.ajax({
         type: 'get',
         url: url,
         data: {
-          'country_ids': country_ids
+          'supplier_country_ids': supplier_country_ids
         },
         beforeSend: function beforeSend() {
           $('.supplier-id').html(options);

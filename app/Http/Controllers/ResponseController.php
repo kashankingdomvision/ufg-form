@@ -127,7 +127,7 @@ class ResponseController extends Controller
 
     public function getCountryToLocation(Request $request)
     {  
-        $locations = Location::whereIn('country_id',$request->country_ids)
+        $locations = Location::whereIn('country_id',$request->supplier_country_ids)
         ->leftJoin('countries', 'locations.country_id', '=', 'countries.id')
         ->get([
             'locations.id',
@@ -216,7 +216,7 @@ class ResponseController extends Controller
     public function getCountryToSupplier(Request $request)
     {
         $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
-            $query->whereIn('id', $request->country_ids);
+            $query->whereIn('id', $request->supplier_country_ids);
         })->get();
 
         return response()->json([ 'suppliers' => $suppliers ]);

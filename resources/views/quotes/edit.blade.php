@@ -731,10 +731,10 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Supplier Country </label>
-                                  <select name="quote[{{ $key }}][country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
+                                  <select name="quote[{{ $key }}][supplier_country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                     @foreach ($countries as $country)
                                       <option value="{{ $country->id }}" 
-                                        {{ (in_array($country->id, $q_detail->getBDCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}} 
+                                        {{ (in_array($country->id, $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}} 
                                         >{{ $country->name }} - {{ $country->code}}</option>
                                     @endforeach
                                   </select>
@@ -747,7 +747,7 @@
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
                                 $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
-                                  $query->whereIn('id', $q_detail->getBDCountries()->pluck('country_id')->toArray());
+                                  $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
                                 })->get();
 
                               @endphp

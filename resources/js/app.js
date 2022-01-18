@@ -1569,14 +1569,14 @@ $(document).ready(function($) {
 
     $(document).on('change', '.getCountryToLocation', function() {
         
-        var country_ids = $(this).val();
+        var supplier_country_ids = $(this).val();
         var url         = BASEURL + 'country/to/location';
         var options     = '';
 
         $.ajax({
             type: 'get',
             url: url,
-            data: { 'country_ids': country_ids },
+            data: { 'supplier_country_ids': supplier_country_ids },
             beforeSend: function() {
                 $('.appendCountryLocation').html(options);
             },
@@ -1835,17 +1835,17 @@ $(document).ready(function($) {
 
             $(document).on('change', '.supplier-country-id', function(){
 
-                var country_ids   = $(this).val();
+                var supplier_country_ids   = $(this).val();
                 var url           = BASEURL + 'country/to/supplier';
                 var options       = '';
                 var selectOption  = "<option value=''>Select Supplier</option>";
 
-                if(country_ids && country_ids.length > 0){
+                if(supplier_country_ids && supplier_country_ids.length > 0){
               
                     $.ajax({
                         type: 'get',
                         url: url,
-                        data: { 'country_ids': country_ids },
+                        data: { 'supplier_country_ids': supplier_country_ids },
                         beforeSend: function() {
                             $('.supplier-id').html(options);
                         },
