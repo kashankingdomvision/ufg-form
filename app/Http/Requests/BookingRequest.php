@@ -50,6 +50,7 @@ class BookingRequest extends FormRequest
             'quote.*.date_of_service'                         => 'required',
             'quote.*.end_date_of_service'                     => 'required',
             'quote.*.category_id'                             => 'required',
+            'quote.*.supplier_country_ids'                    => 'required|array',
             // 'quote.*.supplier_location_id'                    => 'required',
             'quote.*.supplier_id'                             => 'required',
             'quote.*.refundable_percentage'                   => 'required_if:quote.*.booking_type_id,2',
@@ -91,6 +92,7 @@ class BookingRequest extends FormRequest
             'quote.*.date_of_service'                                       => 'The Start Date of Service field is required.',
             'quote.*.end_date_of_service'                                   => 'The End Date of Service field is required.',
             'quote.*.category_id.required'                                  => 'The Category field is required.',
+            'quote.*.supplier_country_ids'                                  => 'The Supplier Country field is required.',
             'quote.*.supplier_id.required'                                  => 'The Supplier field is required.',
             
             /* Refund - By Bank  */
@@ -136,6 +138,7 @@ class BookingRequest extends FormRequest
             'quote.*.selling_price_in_booking_currency'        => 'Selling price booking',
             'quote.*.markup_amount_in_booking_currency'        => 'Markup amount booking',
             'quote.*.category_id'                              => 'Category',
+            'quote.*.supplier_country_ids'                     => 'Supplier Country',
             // 'quote.*.supplier_location_id'                     => 'Supplier Location',
             'quote.*.supplier_id'                              => 'Supplier',
             'quote.*.product_id'                               => 'Product',

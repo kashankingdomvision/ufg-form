@@ -49,6 +49,7 @@ class QuoteRequest extends FormRequest
             'quote.*.date_of_service'                   => 'required',
             'quote.*.end_date_of_service'               => 'required',
             'quote.*.category_id'                       => 'required',
+            'quote.*.supplier_country_ids'              => 'required|array',
             // 'quote.*.supplier_location_id'              => 'required',
             'quote.*.supplier_id'                       => 'required',
             'quote.*.refundable_percentage'             => 'required_if:quote.*.booking_type_id,2',
@@ -81,6 +82,7 @@ class QuoteRequest extends FormRequest
             'quote.*.category_id.required'                  => 'The Category field is required.',
             'quote.*.supplier_id.required'                  => 'The Supplier field is required.',
             'quote.*.refundable_percentage.required_if'     => 'The Refundable % field is required.',
+            'quote.*.supplier_country_ids'                  => 'The Supplier Country field is required.',
         ];
     }
     
@@ -115,6 +117,7 @@ class QuoteRequest extends FormRequest
             'quote.*.date_of_service'                   => 'Start Date of Service',
             'quote.*.end_date_of_service'               => 'End Date of Service',
             'quote.*.category_id'                       => 'Category',
+            'quote.*.supplier_country_ids'              => 'Supplier Country',
             // 'quote.*.supplier_location_id'              => 'Supplier Location',
             'quote.*.supplier_id'                       => 'Supplier',
             // 'quote.*.booking_due_date'                  => 'Booking Due Date',

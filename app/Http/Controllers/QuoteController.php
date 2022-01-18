@@ -533,7 +533,7 @@ class QuoteController extends Controller
 
     // QuoteRequest
     // Request
-    public function update(Request $request, $id)
+    public function update(QuoteRequest $request, $id)
     {
         // dd($request->all());
 
