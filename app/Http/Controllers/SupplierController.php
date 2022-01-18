@@ -112,14 +112,14 @@ class SupplierController extends Controller
             }
         }
     
-        if($request->has('products') && count($request->products) > 0){
-            foreach ($request->products as $product) {
-                SupplierProduct::create([
-                    'supplier_id' => $supplier->id,
-                    'product_id' => $product
-                ]);
-            }
-        }
+        // if($request->has('products') && count($request->products) > 0){
+        //     foreach ($request->products as $product) {
+        //         SupplierProduct::create([
+        //             'supplier_id' => $supplier->id,
+        //             'product_id' => $product
+        //         ]);
+        //     }
+        // }
 
         $supplier->getCountries()->sync($request->country_id);
         $supplier->getLocations()->sync($request->location_id);

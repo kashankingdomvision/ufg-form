@@ -150,7 +150,7 @@
                     @enderror
                   </div>
     
-                  <div class="form-group">
+                  {{-- <div class="form-group">
                     <label for="inputEmail3" class=""> Products </label>
                     <select name="products[]" class="form-control select2-multiple @error('products') is-invalid @enderror" multiple >
                       @foreach ($products as $product)
@@ -161,7 +161,7 @@
                     @error('products')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                  </div>
+                  </div> --}}
     
                   <div class="form-group">
                     <label for="inputEmail3" class="">Currency</label>
