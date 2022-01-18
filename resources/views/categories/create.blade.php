@@ -106,6 +106,20 @@
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
+
+                  <div class="col-md-4 second-label-of-time-col d-none">
+                    <div class="form-group">
+                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="label_of_time" id="label_of_time"  class="form-control label-of-time" placeholder="Label Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-1 h-50 add-parent align-text-bottom d-none">
+
+                    <button type="button" class="add btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                  </div>
+
                 </div>
 
                 <div class="form-group">
@@ -128,6 +142,13 @@
 <script>
 window.onload = function() {
 
+  $(document).on('click', '.add', function(){
+
+ 
+    $('.second-label-of-time-col').removeClass('d-none');
+ 
+});
+
 
   $(document).on('change', '.show-tf', function(){
 
@@ -135,6 +156,8 @@ window.onload = function() {
 
     if(value == 1){
       $('.label-of-time-col').removeClass('d-none');
+      $('.add-parent').removeClass('d-none');
+
     }else{
       $('.label-of-time-col').addClass('d-none');
     }

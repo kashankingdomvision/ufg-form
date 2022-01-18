@@ -63,6 +63,8 @@
 
               <div class="card-body">
                 <input type="hidden" name="id" value="{{ encrypt($category->id) }}" class="form-control id">
+                <input type="hidden" name="category_id" value="{{ $category->id }}" class="form-control category-id">
+                <input type="hidden" name="category_slug" value="{{ $category->slug }}" class="form-control category-slug">
 
                 <div class="form-group">
                   <label>Category Name <span style="color:red">*</span></label>
@@ -110,6 +112,17 @@
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
+
+
+
+                  <div class="col-md-4 second-label-of-time-col {{ $category->show_tf == 1 ? '' : 'd-none' }} ">
+                    <div class="form-group">
+                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="label_of_time" id="label_of_time" value="{{ $category->label_of_time }}" class="form-control label-of-time" placeholder="Label Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
                 </div>
 
                 <div class="form-group">
@@ -137,13 +150,20 @@ window.onload = function() {
 
   $(document).on('change', '.show-tf', function(){
 
-    var value = $(this).val();
+    var value         = $(this).val();
+    var category_id   = $('.category-id').val();
+    var category_slug = $('.category-slug').val();
 
     if(value == 1){
       $('.label-of-time-col').removeClass('d-none');
     }else{
       $('.label-of-time-col').addClass('d-none');
     }
+
+    if(category_id == 8 || category_slug == 'flights'){
+      $('.second-label-of-time-col').removeClass('d-none');
+    }
+
   });
 
   $(document).on("click", ".del-button",function() {
