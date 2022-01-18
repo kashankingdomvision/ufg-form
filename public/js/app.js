@@ -70080,12 +70080,9 @@ window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 
 
 
- // require('./global_variables');
 
-window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
-window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
-window.CSRFTOKEN = jquery__WEBPACK_IMPORTED_MODULE_0___default()('#csrf-token').attr('content');
+
+__webpack_require__(/*! ./global_variables */ "./resources/js/global_variables.js");
 
 __webpack_require__(/*! ./laravel_filemanager/stand-alone-button */ "./resources/js/laravel_filemanager/stand-alone-button.js");
 
@@ -71769,26 +71766,35 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var country_ids = $(this).val();
     var url = BASEURL + 'country/to/supplier';
     var options = '';
-    console.log(url);
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'country_ids': country_ids
-      },
-      beforeSend: function beforeSend() {
-        $('.supplier-id').html(options);
-      },
-      success: function success(response) {
-        if (response && response.suppliers.length > 0) {
-          options += "<option value=''>Select Supplier</option>";
-          $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-          });
+    var selectOption = "<option value=''>Select Supplier</option>";
+
+    if (country_ids && country_ids.length > 0) {
+      $.ajax({
+        type: 'get',
+        url: url,
+        data: {
+          'country_ids': country_ids
+        },
+        beforeSend: function beforeSend() {
+          $('.supplier-id').html(options);
+        },
+        success: function success(response) {
+          if (response && response.suppliers.length > 0) {
+            options += selectOption;
+            $.each(response.suppliers, function (key, value) {
+              options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            });
+          } else {
+            options = selectOption;
+          }
+
           $('.supplier-id').html(options);
         }
-      }
-    });
+      });
+    } else {
+      options = selectOption;
+      $('.supplier-id').html(options);
+    }
   });
   $(document).on('change', '.category-id', function () {
     var quote = $(this).closest('.quote');
@@ -72158,6 +72164,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
         $("".concat(quoteClass)).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -72263,6 +72270,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
         $("".concat(quoteClass)).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -77438,6 +77446,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
   });
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+
+/***/ }),
+
+/***/ "./resources/js/global_variables.js":
+/*!******************************************!*\
+  !*** ./resources/js/global_variables.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
+window.CSRFTOKEN = $('#csrf-token').attr('content');
 
 /***/ }),
 

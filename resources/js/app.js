@@ -10,13 +10,7 @@ import datepicker from 'bootstrap-datepicker';
 import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
-// require('./global_variables');
-
-window.BASEURL          = `${window.location.origin}/ufg-form/public/json/`;
-window.REDIRECT_BASEURL = `${window.location.origin}/ufg-form/public/`;
-window.FILE_MANAGER_URL = `${window.location.origin}/ufg-form/public/laravel-filemanager`;
-window.CSRFTOKEN        = $('#csrf-token').attr('content');
-
+require('./global_variables');
 require('./laravel_filemanager/stand-alone-button');
 require('./summernote/summernote-bs4.min');
 require('./bootstrap/bootstrap.bundle.min');
@@ -1841,35 +1835,44 @@ $(document).ready(function($) {
 
             $(document).on('change', '.supplier-country-id', function(){
 
-                var country_ids = $(this).val();
-                var url         = BASEURL + 'country/to/supplier';
-                var options     = '';
+                var country_ids   = $(this).val();
+                var url           = BASEURL + 'country/to/supplier';
+                var options       = '';
+                var selectOption  = "<option value=''>Select Supplier</option>";
 
-                console.log(url);
-        
-                $.ajax({
-                    type: 'get',
-                    url: url,
-                    data: { 'country_ids': country_ids },
-                    beforeSend: function() {
-                        $('.supplier-id').html(options);
-                    },
-                    success: function(response) {
+                if(country_ids && country_ids.length > 0){
+              
+                    $.ajax({
+                        type: 'get',
+                        url: url,
+                        data: { 'country_ids': country_ids },
+                        beforeSend: function() {
+                            $('.supplier-id').html(options);
+                        },
+                        success: function(response) {
 
-                        if(response && response.suppliers.length > 0){
+                            if(response && response.suppliers.length > 0){
 
-                            options += "<option value=''>Select Supplier</option>";
+                                options += selectOption;
 
-                            $.each(response.suppliers, function(key, value) {
-                                options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                            });
+                                $.each(response.suppliers, function(key, value) {
+                                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                                });
+                                
+                            }else{
+                                options = selectOption;
+                            }
             
+
                             $('.supplier-id').html(options);
                         }
-        
-                    }
-                });
+                    });
+                }else{
+                    options = selectOption;
+                    $('.supplier-id').html(options);
+                }
 
+                
             });
 
             $(document).on('change', '.category-id', function() {
@@ -2332,6 +2335,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
                         // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+                        $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
                         $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
@@ -2468,6 +2472,7 @@ $(document).ready(function($) {
                         $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00'); 
                         // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+                        $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                         $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                         $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
                         $(`${quoteClass}`).find('.card-header .card-tools .remove').addClass('remove-quote-detail-service');
