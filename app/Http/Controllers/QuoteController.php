@@ -282,7 +282,7 @@ class QuoteController extends Controller
 
         if($type == 'quote_details'){
 
-            $data['supplier_country_ids'] = (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
+            $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
         }
 
         if($type == 'booking_details'){

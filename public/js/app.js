@@ -72310,6 +72310,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $('.select2single').select2('destroy');
         }
 
+        if ($('.select2-multiple').data('select2')) {
+          $('.select2-multiple').select2('destroy');
+        }
+
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -72411,6 +72415,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedDynamicFeilds();
+        reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
@@ -72429,6 +72434,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       setTimeout(function () {
         if ($('.select2single').data('select2')) {
           $('.select2single').select2('destroy');
+        }
+
+        if ($('.select2-multiple').data('select2')) {
+          $('.select2-multiple').select2('destroy');
         }
 
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
@@ -72533,6 +72542,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedDynamicFeilds();
+        reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);

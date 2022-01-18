@@ -589,10 +589,27 @@
                               </div>
                             </div> --}}
 
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Supplier Country </label>
+                                <select name="quote[{{ $key }}][supplier_country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
+                                  @foreach ($countries as $country)
+                                    <option value="{{ $country->id }}" 
+                                      {{ in_array($country->id, json_decode($booking_detail['supplier_country_ids'])) ? 'selected' : NULL}} 
+                                      >{{ $country->name }} - {{ $country->code}}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                            </div>
+
                             @php
                               $supplier_url = \Helper::getSupplierRateSheetUrl($booking_detail['supplier_id'], $booking['season_id']);
                               $url          = !empty($supplier_url) ? $supplier_url : '';
                               $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
+
+                              $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
+                                  $query->whereIn('id', json_decode($booking_detail['supplier_country_ids']));
+                                })->get();
                             @endphp
 
                             <div class="col-sm-3">
@@ -604,11 +621,18 @@
 
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id @error('supplier_id') is-invalid @enderror">
                                     <option value="">Select Supplier</option>
-                                    @if(isset($booking_detail['category_id']) && isset($booking_detail['supplier_location_id']) && !empty($booking_detail['supplier_location_id']))
+                                    {{-- @if(isset($booking_detail['category_id']) && isset($booking_detail['supplier_location_id']) && !empty($booking_detail['supplier_location_id']))
                                       @foreach ($log->getQueryData($booking_detail['category_id'], 'Category')->first()->getSupplierWithLocation($booking_detail['supplier_location_id'])->get() as $supplier )
                                       <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($booking_detail['supplier_id'] == $supplier->id)? 'selected' : NULL}}  >{{ $supplier->name }}</option>
                                       @endforeach
-                                    @endif
+                                    @endif --}}
+
+                                    @if(isset($suppliers) && !empty($suppliers))
+                                      @foreach ($suppliers as $supplier )
+                                        <option value="{{ $supplier->id }}" data-name="{{ $supplier->name }}" {{ ($booking_detail['supplier_id'] == $supplier->id) ? 'selected' : NULL}}  >{{ $supplier->name }}</option>
+                                      @endforeach
+                                    @endif 
+
                                   </select>
                                   @error('supplier_id')
                                     <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

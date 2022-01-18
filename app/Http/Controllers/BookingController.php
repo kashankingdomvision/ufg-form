@@ -34,6 +34,7 @@ use App\BookingCancellation;
 use App\BookingCancellationRefundPayment;
 use App\BookingDetailCancellation;
 use App\BookingCategoryDetail;
+use App\BookingDetailCountry;
 use App\Currency;
 use App\Commission;
 use App\Country;
@@ -208,6 +209,7 @@ class BookingController extends Controller
     {
         return [
             'category_id'             => $quoteD['category_id'],
+            'supplier_country_ids'    => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
             // 'supplier_location_id'    => $quoteD['supplier_location_id'],
             'supplier_id'             => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'              => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
@@ -368,10 +370,10 @@ class BookingController extends Controller
         // dd($request->all());
 
         // check update access
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
-        if(!$quote_update_detail->exists()) {
-            return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
-        }
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
+        // if(!$quote_update_detail->exists()) {
+        //     return \Response::json(['status' => false,'overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
+        // }
         
         //- check update access
 
@@ -420,6 +422,18 @@ class BookingController extends Controller
                         'booking_detail_id' => $booking_Details->id,
                         'cancelled_by_id'   => $qu_details['created_by']
                     ]);
+                }
+
+                if(isset($qu_details['supplier_country_ids']) && !empty($qu_details['supplier_country_ids'])){
+
+                    foreach($qu_details['supplier_country_ids'] as $key => $id){
+
+                        BookingDetailCountry::create([
+                            'booking_id'        => $booking->id,
+                            'booking_detail_id' => $booking_Details->id,
+                            'country_id'        => $id
+                        ]);
+                    }
                 }
 
 

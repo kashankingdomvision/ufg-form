@@ -2524,6 +2524,10 @@ $(document).ready(function($) {
                         if ($('.select2single').data('select2')) {
                             $('.select2single').select2('destroy');
                         }
+
+                        if ($('.select2-multiple').data('select2')) {
+                            $('.select2-multiple').select2('destroy');
+                        }
         
                         var quote = $(".quote").eq(0).clone()
                             .find("input").val("").each(function() {
@@ -2641,6 +2645,7 @@ $(document).ready(function($) {
 
                         datepickerReset(1,`${quoteClass}`);
                         reinitializedDynamicFeilds();
+                        reinitializedMultiDynamicFeilds();
 
                         $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                         $('.parent-spinner').removeClass('spinner-border');
@@ -2667,6 +2672,10 @@ $(document).ready(function($) {
 
                         if ($('.select2single').data('select2')) {
                             $('.select2single').select2('destroy');
+                        }
+
+                        if ($('.select2-multiple').data('select2')) {
+                            $('.select2-multiple').select2('destroy');
                         }
         
                         var quote = $(".quote").eq(0).clone()
@@ -2787,6 +2796,7 @@ $(document).ready(function($) {
 
                         datepickerReset(1,`${quoteClass}`);
                         reinitializedDynamicFeilds();
+                        reinitializedMultiDynamicFeilds();
 
                         $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                         $('.parent-spinner').removeClass('spinner-border');

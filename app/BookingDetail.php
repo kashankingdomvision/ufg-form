@@ -49,6 +49,11 @@ class BookingDetail extends Model
         'category_details'
     ];
 
+    public function getBookingDetailCountries()
+    {
+        return $this->hasMany(BookingDetailCountry::class, 'booking_detail_id','id');
+    }
+
     public function getCategory()
     {
         return $this->hasOne(Category::class,'id','category_id');
