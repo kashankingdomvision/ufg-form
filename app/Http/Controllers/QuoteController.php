@@ -521,10 +521,10 @@ class QuoteController extends Controller
         // dd($request->all());
 
         /* check override update access */ 
-        $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
-        if(is_null($quote_update_detail)){
-            return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
-        }
+        // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id',Auth::id())->where('status','quotes')->first();
+        // if(is_null($quote_update_detail)){
+        //     return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
+        // }
 
         $quote          = Quote::findOrFail(decrypt($id));
 
@@ -614,7 +614,7 @@ class QuoteController extends Controller
         } else {
             $this->update_quote_group($quote);
         }
-        $quote_update_detail->delete();
+        // $quote_update_detail->delete();
 
         return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
     }
