@@ -27,6 +27,7 @@ class BookingDetail extends Model
         'end_date_of_service',
         'number_of_nights',
         'time_of_service',
+        'second_time_of_service', 
         'booking_date',
         'booking_due_date',
         'service_details',

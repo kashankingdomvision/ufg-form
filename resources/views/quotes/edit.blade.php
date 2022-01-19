@@ -687,6 +687,13 @@
                                 </div>
                               </div>
 
+                              <div class="col-sm-2 {{ isset($q_detail->getCategory->second_tf) && ($q_detail->getCategory->second_tf == 0) ? 'd-none' : '' }} second-tf">
+                                <div class="form-group">
+                                  <label class="second-label-of-time">{{ isset($q_detail->getCategory->second_label_of_time) && !empty($q_detail->getCategory->second_label_of_time) ? $q_detail->getCategory->second_label_of_time : '' }}</label>
+                                  <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $q_detail->second_time_of_service }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
+                                </div>
+                              </div>
+
                               <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Quote Detail ID</label>

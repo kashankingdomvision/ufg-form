@@ -39,6 +39,7 @@ class QuoteDetail extends Model
         'markup_amount_in_booking_currency',
         'added_in_sage', 
         'time_of_service', 
+        'second_time_of_service', 
         'amount_per_person',
         'booking_type_id',
         'parent_id',

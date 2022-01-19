@@ -32,6 +32,7 @@ class CreateBookingDetailsTable extends Migration
             $table->date('end_date_of_service')->nullable();
             $table->integer('number_of_nights')->nullable();
             $table->time('time_of_service')->nullable();
+            $table->time('second_time_of_service')->nullable();
             $table->date('booking_date')->nullable();
             $table->date('booking_due_date')->nullable();
             $table->text('service_details')->nullable();

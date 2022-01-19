@@ -244,40 +244,31 @@ class QuoteController extends Controller
 
     public function getQuoteDetailsArray($quoteD, $quote, $type)
     {
-
         $data = [
-            'category_id'           => $quoteD['category_id'],
-            // 'supplier_location_id'  => $quoteD['supplier_location_id'],
-            // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
-            'supplier_id'           => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
-            'product_id'            => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-            // 'product_location_id'   => $quoteD['product_location_id'],
-            // 'booking_method_id'     => $quoteD['booking_method_id'],
-            // 'booked_by_id'          => $quoteD['booked_by_id'],
-            // 'supervisor_id'         => $quoteD['supervisor_id'],
-            'date_of_service'       => $quoteD['date_of_service'],
-            'end_date_of_service'   => $quoteD['end_date_of_service'],
-            'number_of_nights'      => $quoteD['number_of_nights'],
-            'time_of_service'       => $quoteD['time_of_service'],
-            // 'booking_date'          => $quoteD['booking_date'],
-            // 'booking_due_date'      => $quoteD['booking_due_date'],
-            'service_details'       => $quoteD['service_details'],
-            // 'booking_reference'     => $quoteD['booking_reference'],
-            'booking_type_id'       => $quoteD['booking_type_id']??$quoteD['booking_type_id'],
-            'refundable_percentage' => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
-            'supplier_currency_id'  => $quoteD['supplier_currency_id'],
-            'comments'              => $quoteD['comments'],
-            'estimated_cost'        => $quoteD['estimated_cost'],
-            'markup_amount'         => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount'] : NULL,
-            'markup_percentage'     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_percentage'] : NULL,
-            'selling_price'         => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
-            'profit_percentage'     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
-            'estimated_cost_bc'     => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
-            'selling_price_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
-            'markup_amount_in_booking_currency'      => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
-            'category_details'      => $quoteD['category_details']??$quoteD['category_details'],
-            'image'                 => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
-            // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
+            
+            'category_id'                       => $quoteD['category_id'],
+            'supplier_id'                       => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
+            'product_id'                        => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
+            'date_of_service'                   => $quoteD['date_of_service'],
+            'end_date_of_service'               => $quoteD['end_date_of_service'],
+            'number_of_nights'                  => $quoteD['number_of_nights'],
+            'time_of_service'                   => $quoteD['time_of_service'],
+            'second_time_of_service'            => $quoteD['second_time_of_service'],
+            'service_details'                   => $quoteD['service_details'],
+            'booking_type_id'                   => $quoteD['booking_type_id']??$quoteD['booking_type_id'],
+            'refundable_percentage'             => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
+            'supplier_currency_id'              => $quoteD['supplier_currency_id'],
+            'comments'                          => $quoteD['comments'],
+            'estimated_cost'                    => $quoteD['estimated_cost'],
+            'markup_amount'                     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount'] : NULL,
+            'markup_percentage'                 => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_percentage'] : NULL,
+            'selling_price'                     => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price'] : NULL,
+            'profit_percentage'                 => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['profit_percentage'] : NULL,
+            'estimated_cost_bc'                 => $quoteD['estimated_cost_in_booking_currency']??$quoteD['estimated_cost_bc'],
+            'selling_price_in_booking_currency' => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
+            'markup_amount_in_booking_currency' => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
+            'category_details'                  => $quoteD['category_details']??$quoteD['category_details'],
+            'image'                             => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
         ];
 
         if($type == 'quote_details'){
@@ -946,4 +937,15 @@ class QuoteController extends Controller
     //     'resident_in'           => $pax_data['resident_in'],
     //     'covid_vaccinated'      => $pax_data['covid_vaccinated'],
     // ]);
+
+    // 'booking_reference'     => $quoteD['booking_reference'],
+    // 'booking_date'          => $quoteD['booking_date'],
+    // 'booking_due_date'      => $quoteD['booking_due_date'],
+    // 'product_location_id'   => $quoteD['product_location_id'],
+    // 'booking_method_id'     => $quoteD['booking_method_id'],
+    // 'booked_by_id'          => $quoteD['booked_by_id'],
+    // 'supervisor_id'         => $quoteD['supervisor_id'],
+    // 'supplier_location_id'  => $quoteD['supplier_location_id'],
+    // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
+    // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
 }

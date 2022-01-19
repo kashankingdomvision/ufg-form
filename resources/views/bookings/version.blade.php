@@ -561,6 +561,13 @@
                               </div>
                             </div>
 
+                            <div class="col-sm-2 {{ isset($log->getQueryData($booking_detail['category_id'], 'Category')->first()->second_tf) && ($log->getQueryData($booking_detail['category_id'], 'Category')->first()->second_tf == 0) ? 'd-none' : '' }} second-tf">
+                              <div class="form-group">
+                                <label class="second-label-of-time">{{ isset($log->getQueryData($booking_detail['category_id'], 'Category')->first()->label_of_time) && !empty($log->getQueryData($booking_detail['category_id'], 'Category')->first()->second_label_of_time) ? $log->getQueryData($booking_detail['category_id'], 'Category')->first()->second_label_of_time : '' }}</label>
+                                <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $booking_detail['second_time_of_service'] }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
+                              </div>
+                            </div>
+
                             <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Category</label>

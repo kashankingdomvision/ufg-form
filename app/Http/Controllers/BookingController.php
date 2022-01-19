@@ -207,42 +207,44 @@ class BookingController extends Controller
 
     public function getBookingDetailsArray($quoteD)
     {
-        return [
-            'category_id'             => $quoteD['category_id'],
-            'supplier_country_ids'    => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
-            // 'supplier_location_id'    => $quoteD['supplier_location_id'],
-            'supplier_id'             => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
-            'product_id'              => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
-            // 'product_location_id'     => $quoteD['product_location_id'],
-            'booking_detail_unique_ref_id' => isset($quoteD['booking_detail_unique_ref_id']) && !empty($quoteD['booking_detail_unique_ref_id']) ? $quoteD['booking_detail_unique_ref_id'] : Helper::getBDUniqueRefID(), 
-            'booking_method_id'       => $quoteD['booking_method_id'],
-            'booked_by_id'            => $quoteD['booked_by_id'],
-            'supervisor_id'           => $quoteD['supervisor_id'],
-            'date_of_service'         => $quoteD['date_of_service'],
-            'end_date_of_service'     => $quoteD['end_date_of_service'],
-            'number_of_nights'        => $quoteD['number_of_nights'],
-            'time_of_service'         => $quoteD['time_of_service'],
-            'booking_date'            => $quoteD['booking_date'],
-            'booking_due_date'        => $quoteD['booking_due_date'],
-            'service_details'         => $quoteD['service_details'],
-            'booking_reference'       => $quoteD['booking_reference'],
-            'booking_type_id'         => $quoteD['booking_type_id'],
-            'refundable_percentage'   => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
-            'supplier_currency_id'    => $quoteD['supplier_currency_id'],
-            'comments'                => $quoteD['comments'],
-            'estimated_cost'          => $quoteD['estimated_cost'],
-            'actual_cost'             => $quoteD['actual_cost'],
-            'markup_amount'           => $quoteD['markup_amount'],
-            'markup_percentage'       => $quoteD['markup_percentage'],
-            'selling_price'           => $quoteD['selling_price'],
-            'profit_percentage'       => $quoteD['profit_percentage'],
-            'actual_cost_bc'          => $quoteD['actual_cost_in_booking_currency'],
-            'selling_price_in_booking_currency'        => $quoteD['selling_price_in_booking_currency'],
-            'markup_amount_in_booking_currency'        => $quoteD['markup_amount_in_booking_currency'],
-            'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : 0,
-            'outstanding_amount_left' => $quoteD['outstanding_amount_left'],
-            'category_details'        => $quoteD['category_details'],
+        $data = [
+
+            'category_id'                       => $quoteD['category_id'],
+            'supplier_country_ids'              => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
+            'supplier_id'                       => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
+            'product_id'                        => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
+            'booking_detail_unique_ref_id'      => isset($quoteD['booking_detail_unique_ref_id']) && !empty($quoteD['booking_detail_unique_ref_id']) ? $quoteD['booking_detail_unique_ref_id'] : Helper::getBDUniqueRefID(), 
+            'booking_method_id'                 => $quoteD['booking_method_id'],
+            'booked_by_id'                      => $quoteD['booked_by_id'],
+            'supervisor_id'                     => $quoteD['supervisor_id'],
+            'date_of_service'                   => $quoteD['date_of_service'],
+            'end_date_of_service'               => $quoteD['end_date_of_service'],
+            'number_of_nights'                  => $quoteD['number_of_nights'],
+            'time_of_service'                   => $quoteD['time_of_service'],
+            'second_time_of_service'            => $quoteD['second_time_of_service'],
+            'booking_date'                      => $quoteD['booking_date'],
+            'booking_due_date'                  => $quoteD['booking_due_date'],
+            'service_details'                   => $quoteD['service_details'],
+            'booking_reference'                 => $quoteD['booking_reference'],
+            'booking_type_id'                   => $quoteD['booking_type_id'],
+            'refundable_percentage'             => (!is_null($quoteD['booking_type_id']) && $quoteD['booking_type_id'] == 2) ? $quoteD['refundable_percentage'] : NULL,
+            'supplier_currency_id'              => $quoteD['supplier_currency_id'],
+            'comments'                          => $quoteD['comments'],
+            'estimated_cost'                    => $quoteD['estimated_cost'],
+            'actual_cost'                       => $quoteD['actual_cost'],
+            'markup_amount'                     => $quoteD['markup_amount'],
+            'markup_percentage'                 => $quoteD['markup_percentage'],
+            'selling_price'                     => $quoteD['selling_price'],
+            'profit_percentage'                 => $quoteD['profit_percentage'],
+            'actual_cost_bc'                    => $quoteD['actual_cost_in_booking_currency'],
+            'selling_price_in_booking_currency' => $quoteD['selling_price_in_booking_currency'],
+            'markup_amount_in_booking_currency' => $quoteD['markup_amount_in_booking_currency'],
+            'added_in_sage'                     => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : 0,
+            'outstanding_amount_left'           => $quoteD['outstanding_amount_left'],
+            'category_details'                  => $quoteD['category_details'],
         ];
+
+        return $data;
     }
 
     public function getFinanceBookingDetailsArray($quoteD)
@@ -913,4 +915,6 @@ class BookingController extends Controller
     //     ];
     // }
 
+    // 'product_location_id'     => $quoteD['product_location_id'],
+    // 'supplier_location_id'    => $quoteD['supplier_location_id'],
 }
