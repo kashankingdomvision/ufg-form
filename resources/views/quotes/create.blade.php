@@ -524,6 +524,13 @@
                               </div>
                             </div>
 
+                            <div class="col-sm-2 d-none second-tf">
+                              <div class="form-group">
+                                <label class="second-label-of-time"></label>
+                                <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
+                              </div>
+                            </div>
+
                             <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Quote Detail ID</label>

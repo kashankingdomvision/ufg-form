@@ -17,6 +17,8 @@ class Category extends Model
         'set_end_date_of_service',
         'show_tf',
         'label_of_time',
+        'second_tf',
+        'second_label_of_time',
     ];
 
     

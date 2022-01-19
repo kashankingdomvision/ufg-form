@@ -71877,6 +71877,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             $('.show-tf').addClass('d-none');
           }
 
+          if (response.category.second_tf == 1) {
+            $('.second-tf').removeClass('d-none');
+            quote.find('.second-tf .form-group .second-label-of-time').html(response.category.second_label_of_time);
+          } else {
+            $('.second-tf').addClass('d-none');
+          }
+
           if (response.category.quote == 1) {
             quote.find('.build-wrap-parent').removeClass('d-none').addClass('d-flex');
           } else {

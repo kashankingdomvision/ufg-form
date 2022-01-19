@@ -81,9 +81,9 @@
                   <input type="hidden" name="booking" class="booking" value="0"><input id="booking"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="booking"> &nbsp; Booking</label>
                 </div>
 
-                <div class="form-row">
+                <div class="form-row parent">
                   <div class="col-md-12">
-                    <label>Hide/Show Time Feild <span style="color:red">*</span></label>
+                    <label>Hide/Show First Time Feild <span style="color:red">*</span></label>
                   </div>
 
                   <div class="col-md-3">
@@ -101,25 +101,38 @@
 
                   <div class="col-md-4 label-of-time-col d-none">
                     <div class="form-group">
-                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
-                      <input type="text" name="label_of_time" id="label_of_time" class="form-control label-of-time" placeholder="Label Name" >
+                      <label>Set First Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="label_of_time" id="label_of_time" class="form-control label-of-time" placeholder="First Label Name" >
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-4 second-label-of-time-col d-none">
+                <div class="form-row parent">
+                  <div class="col-md-12">
+                    <label>Hide/Show Second Time Feild <span style="color:red">*</span></label>
+                  </div>
+
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label>Set Label of Time Feild <span style="color:red">*</span></label>
-                      <input type="text" name="label_of_time" id="label_of_time"  class="form-control label-of-time" placeholder="Label Name" >
-                      <span class="text-danger" role="alert"></span>
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="second_tf" value="0" class="show-tf" checked>
+                        <span>&nbsp;Hide</span>
+                      </label>
+                      <label class="radio-inline mr-1">
+                        <input type="radio" name="second_tf" value="1" class="show-tf">
+                        <span>&nbsp;Show</span>
+                      </label>
                     </div>
                   </div>
 
-                  <div class="col-md-1 h-50 add-parent align-text-bottom d-none">
-
-                    <button type="button" class="add btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                  <div class="col-md-4 label-of-time-col d-none">
+                    <div class="form-group">
+                      <label>Set Second Label of Time Feild <span style="color:red">*</span></label>
+                      <input type="text" name="second_label_of_time" id="second_label_of_time" class="form-control second-label-of-time" placeholder="Second Label Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
                   </div>
-
                 </div>
 
                 <div class="form-group">
@@ -142,24 +155,17 @@
 <script>
 window.onload = function() {
 
-  $(document).on('click', '.add', function(){
-
- 
-    $('.second-label-of-time-col').removeClass('d-none');
- 
-});
-
-
   $(document).on('change', '.show-tf', function(){
 
     var value = $(this).val();
 
     if(value == 1){
-      $('.label-of-time-col').removeClass('d-none');
-      $('.add-parent').removeClass('d-none');
+
+      $(this).closest('.parent').find('.label-of-time-col').removeClass('d-none');
 
     }else{
-      $('.label-of-time-col').addClass('d-none');
+
+      $(this).closest('.parent').find('.label-of-time-col').addClass('d-none');
     }
   });
 
@@ -233,6 +239,9 @@ window.onload = function() {
         var set_end_date_of_service = $('.set_end_date_of_service').val();
         var show_tf                 = $("input[name=show_tf]:checked").val();
         var label_of_time           = $(".label-of-time").val();
+        var second_tf               = $("input[name=second_tf]:checked").val();
+        var second_label_of_time    = $(".second-label-of-time").val();
+        
         var url                     = '{{route('categories.store')}}';
 
         if(formData == '[]'){
@@ -248,6 +257,8 @@ window.onload = function() {
           set_end_date_of_service : set_end_date_of_service,
           show_tf : show_tf,
           label_of_time : label_of_time,
+          second_tf : second_tf,
+          second_label_of_time : second_label_of_time,
           "_token"   : "{{ csrf_token() }}",
         };
 

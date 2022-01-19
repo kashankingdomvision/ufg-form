@@ -36,7 +36,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-          return view('categories.create');
+        return view('categories.create');
     }
 
     /**
@@ -46,8 +46,9 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     // CategoryRequest
-    public function store(CategoryRequest $request)
+    // CategoryRequest
+    // Request
+    public function store(Request $request)
     {
         // dd($request->all());
 
@@ -60,7 +61,9 @@ class CategoryController extends Controller
             'sort_order'               => $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
             'show_tf'                  => $request->show_tf,
-            'label_of_time'            => $request->label_of_time,
+            'label_of_time'            => ($request->show_tf == 1 ? $request->label_of_time : NULL),
+            'second_tf'                => $request->second_tf,
+            'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
         ]);
 
         return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
@@ -89,8 +92,6 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request)
     {
-        // dd($request->all());
-
         $category  = Category::findOrFail(decrypt($request->id));
 
         $category->update([
@@ -102,7 +103,9 @@ class CategoryController extends Controller
             'sort_order'               => $request->sort_order,
             'set_end_date_of_service'  => $request->set_end_date_of_service,
             'show_tf'                  => $request->show_tf,
-            'label_of_time'            => $request->label_of_time,
+            'label_of_time'            => ($request->show_tf == 1 ? $request->label_of_time : NULL),
+            'second_tf'                => $request->second_tf,
+            'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
         ]);
 
         

@@ -23,7 +23,11 @@ class CreateCategroyTable extends Migration
             $table->enum('quote', [0, 1])->default(0)->nullable();
             $table->enum('set_end_date_of_service', [0, 1])->default(0);
             $table->enum('show_tf', [0, 1])->default(0);
-            $table->string('label_of_time');
+            $table->string('label_of_time')->nullable();
+
+            $table->enum('second_tf', [0, 1])->default(0);
+            $table->string('second_label_of_time')->nullable();
+
             $table->timestamps();
         });
     }
