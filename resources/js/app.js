@@ -1890,7 +1890,7 @@ $(document).ready(function($) {
             }
 
             $(document).on('keyup', '.cfrow', function(e) {
-                
+
                 var quote            = $(this).closest('.quote');
                 var quoteKey         = quote.data('key');
                 var formData         = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
@@ -1903,6 +1903,32 @@ $(document).ready(function($) {
 
                 console.log(JSON.stringify(formData));
             });
+
+            $(document).on('change', '.select-box', function(e) {
+
+                var quote       = $(this).closest('.quote');
+                var quoteKey    = quote.data('key');
+                var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                var feildIndex  = $(this).parents('.feild-col').index();
+                var optionIndex = $(this).find(":selected").index();
+                // formData[feildIndex].values[optionIndex].selected = true;
+
+                var formData = formData.map(function(obj) {
+                    if(obj.type == 'select' || obj.type == 'autocomplete'){
+                        obj.values.map(function(obj) {
+                            obj.selected = false;
+                            return obj;
+                        });
+                    }
+                    return obj;
+                });
+
+                formData[feildIndex].values[optionIndex].selected = true;
+        
+                quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
+            });
+
+    
 
             function createElm(insElment, obj, quote) {
                 let tagName = '';
@@ -1918,6 +1944,9 @@ $(document).ready(function($) {
                 // Dropdown Select
                 else if( obj.type == 'select' )
                     tagName = obj.type;
+
+                else if( obj.type == 'autocomplete' )
+                tagName = 'select';
             
                 if( tagName == '' )
                     return;
@@ -1933,6 +1962,10 @@ $(document).ready(function($) {
             
                 if( obj.className != undefined )
                     elm.setAttribute('class', obj.className + ' cfrow');
+
+                if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete'){
+                    elm.setAttribute('class', obj.className + ' select2single select-box');
+                }
             
                 if( obj.required != undefined && obj.required )
                     elm.setAttribute('required', true);
@@ -1943,21 +1976,28 @@ $(document).ready(function($) {
                 }
             
                 // add options to selectbox
-                else if( obj.type == 'select' ) {
+                else if( obj.type == 'select' || obj.type == 'autocomplete' ) {
                     //Create and append the options
                     for (let i = 0; i < obj.values.length; i++) {
-                        let option = document.createElement("option");
+                        let option   = document.createElement("option");
                         option.value = obj.values[i].label;
-                        option.text = obj.values[i].value;
-                        elm.appendChild(option);
+                        option.text  = obj.values[i].value;
 
+                        if(obj.values[i].selected){
+                            option.setAttribute('selected','selected');
+                        }
+
+                        elm.appendChild(option);
                     }
+
+                    reinitializedDynamicFeilds();
                 }
 
                 let div = createDivElm(elm, obj);
-                
                 quote.find('.fb-render').append(div);
                 
+                reinitializedDynamicFeilds();
+
                 // insElment.appendChild(div);
                 // $(div).insertAfter(quote.find('.product-id-col'));
             }

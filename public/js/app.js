@@ -71817,13 +71817,33 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
     console.log(JSON.stringify(formData));
   });
+  $(document).on('change', '.select-box', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
+    var feildIndex = $(this).parents('.feild-col').index();
+    var optionIndex = $(this).find(":selected").index(); // formData[feildIndex].values[optionIndex].selected = true;
+
+    var formData = formData.map(function (obj) {
+      if (obj.type == 'select' || obj.type == 'autocomplete') {
+        obj.values.map(function (obj) {
+          obj.selected = false;
+          return obj;
+        });
+      }
+
+      return obj;
+    });
+    formData[feildIndex].values[optionIndex].selected = true;
+    quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+  });
 
   function createElm(insElment, obj, quote) {
     var tagName = ''; // input text
 
     if (obj.type == 'text') tagName = 'input'; // Textarea
     else if (obj.type == 'textarea') tagName = obj.type; // Dropdown Select
-    else if (obj.type == 'select') tagName = obj.type;
+    else if (obj.type == 'select') tagName = obj.type;else if (obj.type == 'autocomplete') tagName = 'select';
     if (tagName == '') return;
     var elm = document.createElement(tagName); // Set attributes
 
@@ -71831,23 +71851,36 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     elm.setAttribute('name', obj.name);
     if (obj.placeholder != undefined) elm.setAttribute('placeholder', obj.placeholder);
     if (obj.className != undefined) elm.setAttribute('class', obj.className + ' cfrow');
+
+    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete') {
+      elm.setAttribute('class', obj.className + ' select2single select-box');
+    }
+
     if (obj.required != undefined && obj.required) elm.setAttribute('required', true); // set value to text and textarea
 
     if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
       elm.setAttribute('value', obj.value);
     } // add options to selectbox
-    else if (obj.type == 'select') {
+    else if (obj.type == 'select' || obj.type == 'autocomplete') {
       //Create and append the options
       for (var i = 0; i < obj.values.length; i++) {
         var option = document.createElement("option");
         option.value = obj.values[i].label;
         option.text = obj.values[i].value;
+
+        if (obj.values[i].selected) {
+          option.setAttribute('selected', 'selected');
+        }
+
         elm.appendChild(option);
       }
+
+      reinitializedDynamicFeilds();
     }
 
     var div = createDivElm(elm, obj);
-    quote.find('.fb-render').append(div); // insElment.appendChild(div);
+    quote.find('.fb-render').append(div);
+    reinitializedDynamicFeilds(); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 
