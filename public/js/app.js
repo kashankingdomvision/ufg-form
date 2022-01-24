@@ -71796,6 +71796,80 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $('.supplier-id').html(options);
     }
   });
+
+  if (location.href.substring(0, location.href.lastIndexOf('/')) == 'http://localhost/ufg-form/public/quotes/edit' || location.href.substring(0, location.href.lastIndexOf('/')) == 'https://booking.unforgettabletravel.com/ufg-form/public/quotes/edit') {
+    $(".quote").each(function () {
+      var quote = $(this).closest('.quote');
+      var quoteKey = quote.data('key');
+      var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
+      var fbRender = document.getElementsByClassName('fb-render');
+      createAllElm(fbRender, formData, quote);
+    });
+  }
+
+  $(document).on('keyup', '.cfrow', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
+    var feildIndex = $(this).parents('.feild-col').index();
+    formData[feildIndex].userData = [$(this).val()];
+    formData[feildIndex].value = $(this).val();
+    quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+    console.log(JSON.stringify(formData));
+  });
+
+  function createElm(insElment, obj, quote) {
+    var tagName = ''; // input text
+
+    if (obj.type == 'text') tagName = 'input'; // Textarea
+    else if (obj.type == 'textarea') tagName = obj.type; // Dropdown Select
+    else if (obj.type == 'select') tagName = obj.type;
+    if (tagName == '') return;
+    var elm = document.createElement(tagName); // Set attributes
+
+    elm.setAttribute('type', 'text');
+    elm.setAttribute('name', obj.name);
+    if (obj.placeholder != undefined) elm.setAttribute('placeholder', obj.placeholder);
+    if (obj.className != undefined) elm.setAttribute('class', obj.className + ' cfrow');
+    if (obj.required != undefined && obj.required) elm.setAttribute('required', true); // set value to text and textarea
+
+    if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
+      elm.setAttribute('value', obj.value);
+    } // add options to selectbox
+    else if (obj.type == 'select') {
+      //Create and append the options
+      for (var i = 0; i < obj.values.length; i++) {
+        var option = document.createElement("option");
+        option.value = obj.values[i].label;
+        option.text = obj.values[i].value;
+        elm.appendChild(option);
+      }
+    }
+
+    var div = createDivElm(elm, obj);
+    quote.find('.fb-render').append(div); // insElment.appendChild(div);
+    // $(div).insertAfter(quote.find('.product-id-col'));
+  }
+
+  function createDivElm(elem, obj) {
+    var div = document.createElement('div');
+    div.setAttribute('class', 'col-md-2 feild-col');
+    var formGroup = document.createElement('div');
+    formGroup.setAttribute('class', 'form-group');
+    var label = document.createElement('label');
+    label.innerHTML = obj.label;
+    formGroup.appendChild(label);
+    formGroup.appendChild(elem);
+    div.appendChild(formGroup);
+    return div;
+  }
+
+  function createAllElm(insElment, obj, location) {
+    obj.forEach(function (value, index) {
+      createElm(insElment, value, location);
+    });
+  }
+
   $(document).on('change', '.category-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -71804,9 +71878,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
-    var fields_data = "";
+    var formData = "";
     var formRenderID = ".build-wrap";
-    var options = ''; // var options           = '';
+    var fbRender = document.getElementById('fb-render');
+    var options = '';
+    quote.find('.feild-col').remove(); // var options           = '';
 
     /* remove & reset supplier location attribute when category selected */
 
@@ -71846,26 +71922,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(response) {
         // set category details feilds 
         if (typeof response.category_details != 'undefined') {
-          fields_data = "".concat(response.category_details);
-          quote.find('.category-details').val(fields_data);
-          jQuery(function ($) {
-            var formRenderOptions = {
-              formData: fields_data,
-              layoutTemplates: {
-                "default": function _default(field, label, help, data) {
-                  var parentHtml = '<div>';
-                  var result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-                  return result;
-                }
-              }
-            };
-            $(formRenderID).html("");
-            $(formRenderID).formRender(formRenderOptions);
-
-            if (fields_data == "") {
-              $(formRenderID).html("No Form Data.");
-            }
-          });
+          formData = "".concat(response.category_details);
+          quote.find('.category-details').val(formData);
+          createAllElm(fbRender, JSON.parse(formData), quote);
         } // Hide & Show Category details btn according to status
 
 

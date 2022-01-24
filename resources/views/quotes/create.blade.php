@@ -551,6 +551,16 @@
                               </div>
                             </div>
 
+                            <div class="col-sm-2">
+                              <div class="form-group">
+                                <label>Category Details</label>
+                                <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="fb-render col-12 row"></div>
+
                             {{-- <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Supplier Location <span style="color:red">*</span></label>
@@ -625,17 +635,7 @@
                               </div>
                             </div>
 
-                            <div class="build-wrap-parent">
-                              <div class="build-wrap"></div>
-                            </div>
-                    
-                            <div class="col-sm-2 d-none">
-                              <div class="form-group">
-                                <label>Category Details</label>
-                                <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
-                                <span class="text-danger" role="alert"></span>
-                              </div>
-                            </div>
+         
 
                             {{-- <div class="col-sm-2">
                               <div class="form-group">

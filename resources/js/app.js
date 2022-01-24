@@ -1875,6 +1875,119 @@ $(document).ready(function($) {
                 
             });
 
+            
+            if(location.href.substring(0, location.href.lastIndexOf('/')) == 'http://localhost/ufg-form/public/quotes/edit' || location.href.substring(0, location.href.lastIndexOf('/')) == 'https://booking.unforgettabletravel.com/ufg-form/public/quotes/edit'){
+         
+                $(".quote").each(function(){
+    
+                    var quote    = $(this).closest('.quote');
+                    var quoteKey = quote.data('key');
+                    var formData = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                    var fbRender = document.getElementsByClassName('fb-render');
+
+                    createAllElm( fbRender, formData, quote );
+                });
+            }
+
+            $(document).on('keyup', '.cfrow', function(e) {
+                
+                var quote            = $(this).closest('.quote');
+                var quoteKey         = quote.data('key');
+                var formData         = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                var feildIndex       = $(this).parents('.feild-col').index();
+
+                formData[feildIndex].userData = [$(this).val()];
+                formData[feildIndex].value    = $(this).val();
+
+                quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
+
+                console.log(JSON.stringify(formData));
+            });
+
+            function createElm(insElment, obj, quote) {
+                let tagName = '';
+                
+                // input text
+                if( obj.type == 'text' )
+                    tagName = 'input';
+                
+                // Textarea
+                else if( obj.type == 'textarea' )
+                    tagName = obj.type;
+            
+                // Dropdown Select
+                else if( obj.type == 'select' )
+                    tagName = obj.type;
+            
+                if( tagName == '' )
+                    return;
+            
+                let elm = document.createElement(tagName);
+            
+                // Set attributes
+                elm.setAttribute('type', 'text');
+                elm.setAttribute('name', obj.name);
+            
+                if( obj.placeholder != undefined )
+                    elm.setAttribute('placeholder', obj.placeholder);
+            
+                if( obj.className != undefined )
+                    elm.setAttribute('class', obj.className + ' cfrow');
+            
+                if( obj.required != undefined && obj.required )
+                    elm.setAttribute('required', true);
+            
+                // set value to text and textarea
+                if( obj.value != undefined && ['text', 'textarea'].includes(obj.type) ) {
+                    elm.setAttribute('value', obj.value);
+                }
+            
+                // add options to selectbox
+                else if( obj.type == 'select' ) {
+                    //Create and append the options
+                    for (let i = 0; i < obj.values.length; i++) {
+                        let option = document.createElement("option");
+                        option.value = obj.values[i].label;
+                        option.text = obj.values[i].value;
+                        elm.appendChild(option);
+
+                    }
+                }
+
+                let div = createDivElm(elm, obj);
+                
+                quote.find('.fb-render').append(div);
+                
+                // insElment.appendChild(div);
+                // $(div).insertAfter(quote.find('.product-id-col'));
+            }
+
+            function createDivElm(elem, obj) {
+
+
+                let div = document.createElement('div');
+                div.setAttribute('class', 'col-md-2 feild-col');
+
+                let formGroup = document.createElement('div');
+                formGroup.setAttribute('class', 'form-group');
+
+                let label = document.createElement('label');
+                label.innerHTML = obj.label;
+
+                formGroup.appendChild(label);
+                formGroup.appendChild(elem);
+                div.appendChild(formGroup);
+
+                return div;
+            }
+
+            function createAllElm(insElment, obj, location) {
+
+                obj.forEach(function(value, index) {
+                    createElm(insElment, value, location);
+                });
+            }
+
             $(document).on('change', '.category-id', function() {
 
                 var quote             = $(this).closest('.quote');
@@ -1887,11 +2000,14 @@ $(document).ready(function($) {
                 var category_name     = $(this).find(':selected').attr('data-name');
                 var category_slug     = $(this).find(':selected').attr('data-slug');
 
-                var fields_data       = "";
+                var formData          = "";
                 var formRenderID      = ".build-wrap"; 
+
+                var fbRender = document.getElementById('fb-render');
                 
                 var options = ''; 
                 
+                quote.find('.feild-col').remove();
 
                 // var options           = '';
           
@@ -1940,30 +2056,11 @@ $(document).ready(function($) {
                         if(typeof response.category_details != 'undefined') {
 
 
-                            fields_data = `${response.category_details}`;
+                            formData = `${response.category_details}`;
 
-                            quote.find('.category-details').val(fields_data);
+                            quote.find('.category-details').val(formData);
 
-                            jQuery(function($) {
-
-                                var formRenderOptions = {
-                                  formData: fields_data,
-                                  layoutTemplates: {
-                                    default: function(field, label, help, data) {
-                                      let parentHtml = '<div>';
-                                      let result = $(parentHtml).addClass('col rendered-form-child').append(label, field);
-                                      return result;
-                                    }
-                                  }
-                                }
-                          
-                                $(formRenderID).html("");
-                                $(formRenderID).formRender(formRenderOptions);
-                          
-                                if(fields_data == ""){
-                                  $(formRenderID).html("No Form Data.");
-                                }
-                              });
+                            createAllElm( fbRender, JSON.parse(formData),  quote);
                         }
 
                         // Hide & Show Category details btn according to status
