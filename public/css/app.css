@@ -5156,6 +5156,14 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   color: #c0c0c0;
 }
 
+/* used in all select options images*/
+
+.option-flag-image {
+  vertical-align: middle;
+  border-style: none;
+  padding-bottom: 4px;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Quote Managment
