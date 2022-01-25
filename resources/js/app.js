@@ -68,7 +68,7 @@ $(document).ready(function($) {
     });
 
     $('.summernote').summernote({
-        height: 100,   //set editable area's height
+        height: 70,   //set editable area's height
         placeholder: 'Enter Text Here..',
         codemirror: { // codemirror options
             theme: 'monokai'
@@ -1882,10 +1882,12 @@ $(document).ready(function($) {
     
                     var quote    = $(this).closest('.quote');
                     var quoteKey = quote.data('key');
-                    var formData = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                    var formData = $(`#quote_${quoteKey}_category_details`).val();
                     var fbRender = document.getElementsByClassName('fb-render');
 
-                    createAllElm( fbRender, formData, quote );
+                    if(formData != ""){
+                        createAllElm( fbRender, JSON.parse(formData), quote );
+                    }
                 });
             }
 
