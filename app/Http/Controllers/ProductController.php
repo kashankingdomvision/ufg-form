@@ -63,8 +63,8 @@ class ProductController extends Controller
             'duration'          => $request->duration,
             'price'             => $request->price,
             'description'       => $request->description,
-            'inclusions'        => $request->inclusions,
-            'packing_list'      => $request->packing_list,
+            // 'inclusions'        => $request->inclusions,
+            // 'packing_list'      => $request->packing_list,
         ];
     
         return $data;

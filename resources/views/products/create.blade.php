@@ -119,7 +119,7 @@
                     @enderror
                   </div>
 
-                  <div class="form-group">
+                  {{-- <div class="form-group">
                     <label>Inclusions</label>
                     <textarea name="inclusions" class="form-control summernote">{{ old('inclusions') }}</textarea>
                     @error('inclusions')
@@ -133,7 +133,7 @@
                     @error('packing_list')
                       <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
-                  </div>
+                  </div> --}}
                 
                 </div>
                 <div class="card-footer">

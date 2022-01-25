@@ -17,8 +17,8 @@ class Product extends Model
         'duration',
         'price',
         'description',
-        'inclusions',
-        'packing_list'
+        // 'inclusions',
+        // 'packing_list'
     ];
     
     public function getSuppliers()
