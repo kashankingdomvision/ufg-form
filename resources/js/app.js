@@ -1809,7 +1809,12 @@ $(document).ready(function($) {
                 var quoteKey     = quote.data('key');
                 var product_name = $(this).find(':selected').attr('data-name');
                 var product_id   = $(this).val();
-                    
+
+                var detail_id         = $(`#quote_${quoteKey}_detail_id`).val();
+                var model_name        = $(`#model_name`).val();
+ 
+                var formData = '';
+
                 if(typeof product_name === 'undefined' || product_name == '') {
                     quote.find('.badge-product-id').html('');
                     $(`#quote_${quoteKey}_booking_type_id`).val("").change();
@@ -1819,13 +1824,26 @@ $(document).ready(function($) {
                 $.ajax({
                     type: 'get',
                     url: `${BASEURL}get-product-booking-type`,
-                    data: { 'product_id': product_id },
+                    data: { 
+                        'product_id': product_id,
+                        'detail_id': detail_id,
+                        'model_name': model_name 
+                    },
                     success: function(response) {
 
                         // set category details feilds 
                         if(response.product != null && response.product.booking_type_id != null) {
                             $(`#quote_${quoteKey}_booking_type_id`).val(response.product.booking_type_id).change();
                         }
+
+                        formData = `${response.product_details}`;
+
+                        if(formData != ""){
+
+                            quote.find('.product-details').val(formData);
+                            // createAllElm( '.product-details-render', JSON.parse(formData),  quote);
+                        }
+
                     }
                 });
 

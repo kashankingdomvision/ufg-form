@@ -285,9 +285,32 @@ class ResponseController extends Controller
 
     public function getProductBookingType(Request $request)
     {
+        // dd($request->all());
+
+        $product_details = '';
+        $model_name       = 'App\\'.$request->model_name;
+
         $product = Product::find($request->product_id);
 
-        return response()->json([ 'product' => $product ]);
+        $booking_detail = $model_name::where('product_id', $request->product_id)->where('id', $request->detail_id)->first('product_details');
+
+        if(!is_null($booking_detail)){
+
+            $product_details = $booking_detail->product_details;
+
+        } else if(is_null($booking_detail) && !is_null($product->feilds)){
+
+            $product_details = $product->feilds;
+            
+        }else{
+
+            $product_details = "";
+        }
+
+        return response()->json([
+            'product'         => $product,
+            'product_details' => $product_details,
+        ]);
     }
 
     public function getLocationToSupplier(Request $request)
