@@ -551,7 +551,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-none">
+                            <div class="col-sm-2">
                               <div class="form-group">
                                 <label>Category Details</label>
                                 <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -559,20 +559,7 @@
                               </div>
                             </div>
 
-                            <div class="fb-render col-12 row"></div>
-
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Supplier Location <span style="color:red">*</span></label>
-                                <select name="quote[0][supplier_location_id]" data-name="supplier_location_id" id="quote_0_supplier_location_id" class="form-control supplier-location-id select2single" disabled>
-                                  <option value="">Select Location</option>
-                                  @foreach ($locations as $location)
-                                    <option value="{{ $location->id }}" > {{ $location->name }} </option>
-                                  @endforeach
-                                </select>
-                                <span class="text-danger" role="alert"></span>
-                              </div>
-                            </div> --}}
+                            <div class="category-details-render col-12 row"></div>
 
                             <div class="col-md-3">
                               <div class="form-group">
@@ -598,26 +585,6 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-  
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Product</label>
-                                <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
-                              </div>
-                            </div> --}}
-
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Product Location </label>
-                                <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single" disabled>
-                                  <option value="">Select Location</option>
-                                  @foreach ($locations as $location)
-                                    <option value="{{ $location->id }}" > {{ $location->name }} </option>
-                                  @endforeach
-                                </select>
-                                <span class="text-danger" role="alert"></span>
-                              </div>
-                            </div> --}}
 
                             <div class="col-sm-3">
                               <div class="form-group">
@@ -628,83 +595,16 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
-  
-                            {{-- <div class="col-sm-1 justify-content-center quote-category-detail-btn-parent d-none">
-                              <div class="form-group ">
-                                <button type="button" data-id="" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                              </div>
-                            </div> --}}
 
-         
-
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Supervisor</label>
-                                <select name="quote[0][supervisor_id]" data-name="supervisor_id" id="quote_0_supervisor_id" class="form-control select2single supervisor-id @error('supervisor_id') is-invalid @enderror">
-                                  <option selected value="">Select Supervisor</option>
-                                  @foreach ($supervisors as $supervisor)
-                                    <option value="{{ $supervisor->id }}" {{ old('category_id') == $supervisor->id  ? "selected" : "" }}> {{ $supervisor->name }} </option>
-                                  @endforeach
-                                </select>
-  
-                                @error('supervisor_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                              </div>
-                            </div> --}}
-  
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Booking Date</label>
-                                <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_date]" data-name="booking_date" id="quote_0_booking_date"  class="form-control booking-date datepicker  bookingDate" autocomplete="off" >
-                              </div>
-                            </div>
-  
                             <div class="col-sm-2">
                               <div class="form-group">
-                                <label>Booking Due Date <span style="color:red">*</span></label>
-                                <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" autocomplete="off">
+                                <label>Product Details</label>
+                                <input type="text" name="quote[0][product_details]" value="" id="quote_0_product_details" class="form-control product-details">
                                 <span class="text-danger" role="alert"></span>
                               </div>
-                            </div> --}}
-  
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Booking Reference</label>
-                                <input type="text" name="quote[0][booking_reference]" data-name="booking_refrence" id="quote_0_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
-                              </div>
-                            </div> --}}
-  
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Booking Method</label>
-                                <select name="quote[0][booking_method_id]" data-name="booking_method_id" id="quote_0_booking_method_id" class="form-control select2single booking-method-id @error('booking_method_id') is-invalid @enderror">
-                                  <option selected value="">Select Booking Method</option>
-                                  @foreach ($booking_methods as $booking_method)
-                                    <option value="{{ $booking_method->id }}" {{ old('booking_method_id') == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
-                                  @endforeach
-                                </select>
-  
-                                @error('booking_method_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                              </div>
-                            </div> --}}
-  
-                            {{-- <div class="col-sm-2">
-                              <div class="form-group">
-                                <label>Booked By</label>
-                                <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control select2single booked-by-id @error('booked_by_id') is-invalid @enderror">
-                                  <option selected value="">Select Booked By</option>
-                                  @foreach ($booked_by as $booked_by)
-                                    <option value="{{ $booked_by->id }}" > {{ $booked_by->name }} </option>
-                                  @endforeach
-                                </select>
-                                @error('booked_by_id')
-                                  <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                @enderror
-                              </div>
-                            </div> --}}
+                            </div>
+
+                            <div class="product-details-render col-12 row"></div>
   
                             <div class="col-sm-2">
                               <div class="form-group">
@@ -1261,3 +1161,115 @@ window.onload = function() {
 }
 </script>
 @endpush
+
+{{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Supplier Location <span style="color:red">*</span></label>
+        <select name="quote[0][supplier_location_id]" data-name="supplier_location_id" id="quote_0_supplier_location_id" class="form-control supplier-location-id select2single" disabled>
+          <option value="">Select Location</option>
+          @foreach ($locations as $location)
+            <option value="{{ $location->id }}" > {{ $location->name }} </option>
+          @endforeach
+        </select>
+        <span class="text-danger" role="alert"></span>
+      </div>
+    </div> --}}
+
+                {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Product</label>
+        <input type="text" name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control product-id" placeholder="Enter Product">
+      </div>
+    </div> --}}
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Product Location </label>
+        <select name="quote[0][product_location_id]" data-name="product_location_id" id="quote_0_product_location_id" class="form-control product-location-id select2single" disabled>
+          <option value="">Select Location</option>
+          @foreach ($locations as $location)
+            <option value="{{ $location->id }}" > {{ $location->name }} </option>
+          @endforeach
+        </select>
+        <span class="text-danger" role="alert"></span>
+      </div>
+    </div> --}}
+
+
+    
+    {{-- <div class="col-sm-1 justify-content-center quote-category-detail-btn-parent d-none">
+      <div class="form-group ">
+        <button type="button" data-id="" class="add-category-detail btn btn-dark float-right mt-1"><i class="fa fa-plus" aria-hidden="true"></i></button>
+      </div>
+    </div> --}}
+
+
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Supervisor</label>
+        <select name="quote[0][supervisor_id]" data-name="supervisor_id" id="quote_0_supervisor_id" class="form-control select2single supervisor-id @error('supervisor_id') is-invalid @enderror">
+          <option selected value="">Select Supervisor</option>
+          @foreach ($supervisors as $supervisor)
+            <option value="{{ $supervisor->id }}" {{ old('category_id') == $supervisor->id  ? "selected" : "" }}> {{ $supervisor->name }} </option>
+          @endforeach
+        </select>
+
+        @error('supervisor_id')
+          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+      </div>
+    </div> --}}
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Booking Date</label>
+        <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_date]" data-name="booking_date" id="quote_0_booking_date"  class="form-control booking-date datepicker  bookingDate" autocomplete="off" >
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="form-group">
+        <label>Booking Due Date <span style="color:red">*</span></label>
+        <input placeholder="DD/MM/YYYY" type="text" name="quote[0][booking_due_date]" data-name="booking_due_date" id="quote_0_booking_due_date" class="form-control booking-due-date datepicker checkDates bookingDueDate" autocomplete="off">
+        <span class="text-danger" role="alert"></span>
+      </div>
+    </div> --}}
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Booking Reference</label>
+        <input type="text" name="quote[0][booking_reference]" data-name="booking_refrence" id="quote_0_booking_refrence" class="form-control booking-reference" placeholder="Enter Booking Reference">
+      </div>
+    </div> --}}
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Booking Method</label>
+        <select name="quote[0][booking_method_id]" data-name="booking_method_id" id="quote_0_booking_method_id" class="form-control select2single booking-method-id @error('booking_method_id') is-invalid @enderror">
+          <option selected value="">Select Booking Method</option>
+          @foreach ($booking_methods as $booking_method)
+            <option value="{{ $booking_method->id }}" {{ old('booking_method_id') == $booking_method->id  ? "selected" : "" }}> {{ $booking_method->name }} </option>
+          @endforeach
+        </select>
+
+        @error('booking_method_id')
+          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+      </div>
+    </div> --}}
+
+    {{-- <div class="col-sm-2">
+      <div class="form-group">
+        <label>Booked By</label>
+        <select name="quote[0][booked_by_id]" data-name="booked_by_id" id="quote_0_booked_by_id" class="form-control select2single booked-by-id @error('booked_by_id') is-invalid @enderror">
+          <option selected value="">Select Booked By</option>
+          @foreach ($booked_by as $booked_by)
+            <option value="{{ $booked_by->id }}" > {{ $booked_by->name }} </option>
+          @endforeach
+        </select>
+        @error('booked_by_id')
+          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+        @enderror
+      </div>
+    </div> --}}

@@ -71763,10 +71763,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $("#quote_".concat(quoteKey, "_booking_type_id")).val(response.product.booking_type_id).change();
         }
 
-        formData = "".concat(response.product_details);
-
-        if (formData != "") {
-          quote.find('.product-details').val(formData); // createAllElm( '.product-details-render', JSON.parse(formData),  quote);
+        if (response.product_details != '' && response.product_details != 'undefined') {
+          $("#quote_".concat(quoteKey, "_product_details")).val(response.product_details);
+          createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(response.product_details));
         }
       }
     });
@@ -71821,7 +71820,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   }
 
-  $(document).on('keyup', '.cfrow', function (e) {
+  $(document).on('keyup', '.cat-details-feild', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
@@ -71831,7 +71830,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
     console.log(JSON.stringify(formData));
   });
-  $(document).on('change', '.select-box', function (e) {
+  $(document).on('change', '.cat-details-select', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
@@ -71851,8 +71850,38 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
   });
+  $(document).on('keyup', '.prod-details-feild', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_product_details")).val());
+    var feildIndex = $(this).parents('.feild-col').index();
+    formData[feildIndex].userData = [$(this).val()];
+    formData[feildIndex].value = $(this).val();
+    quote.find("#quote_".concat(quoteKey, "_product_details")).val(JSON.stringify(formData));
+    console.log(JSON.stringify(formData));
+  });
+  $(document).on('change', '.prod-details-select', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_product_details")).val());
+    var feildIndex = $(this).parents('.feild-col').index();
+    var optionIndex = $(this).find(":selected").index(); // formData[feildIndex].values[optionIndex].selected = true;
 
-  function createElm(insElment, obj, quote) {
+    var formData = formData.map(function (obj) {
+      if (obj.type == 'select' || obj.type == 'autocomplete') {
+        obj.values.map(function (obj) {
+          obj.selected = false;
+          return obj;
+        });
+      }
+
+      return obj;
+    });
+    formData[feildIndex].values[optionIndex].selected = true;
+    quote.find("#quote_".concat(quoteKey, "_product_details")).val(JSON.stringify(formData));
+  });
+
+  function createElm(quote, selector, type, obj) {
     var tagName = ''; // input text
 
     if (obj.type == 'text') tagName = 'input'; // Textarea
@@ -71863,14 +71892,31 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     elm.setAttribute('type', 'text');
     elm.setAttribute('name', obj.name);
-    if (obj.placeholder != undefined) elm.setAttribute('placeholder', obj.placeholder);
-    if (obj.className != undefined) elm.setAttribute('class', obj.className + ' cfrow');
 
-    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete') {
-      elm.setAttribute('class', obj.className + ' select2single select-box');
+    if (obj.placeholder != undefined) {
+      elm.setAttribute('placeholder', obj.placeholder);
     }
 
-    if (obj.required != undefined && obj.required) elm.setAttribute('required', true); // set value to text and textarea
+    if (obj.className != undefined && type == 'category_details') {
+      elm.setAttribute('class', obj.className + ' cat-details-feild');
+    }
+
+    if (obj.className != undefined && type == 'product_details') {
+      elm.setAttribute('class', obj.className + ' prod-details-feild');
+    }
+
+    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details') {
+      elm.setAttribute('class', obj.className + ' select2single cat-details-select');
+    }
+
+    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details') {
+      elm.setAttribute('class', obj.className + ' select2single prod-details-select');
+    }
+
+    if (obj.required != undefined && obj.required) {
+      elm.setAttribute('required', true);
+    } // set value to text and textarea
+
 
     if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
       elm.setAttribute('value', obj.value);
@@ -71888,17 +71934,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         elm.appendChild(option);
       }
-
-      reinitializedDynamicFeilds();
     }
 
-    var div = createDivElm(elm, obj);
-    quote.find('.fb-render').append(div);
+    var div = createParentDivOfElm(elm, obj);
+    quote.find(selector).append(div); // initialize feild select
+
     reinitializedDynamicFeilds(); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 
-  function createDivElm(elem, obj) {
+  function createParentDivOfElm(elem, obj) {
     var div = document.createElement('div');
     div.setAttribute('class', 'col-md-2 feild-col');
     var formGroup = document.createElement('div');
@@ -71911,9 +71956,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return div;
   }
 
-  function createAllElm(insElment, obj, location) {
-    obj.forEach(function (value, index) {
-      createElm(insElment, value, location);
+  function createAllElm(location, selector, type, obj) {
+    obj.forEach(function (item) {
+      createElm(location, selector, type, item);
     });
   }
 
@@ -71925,12 +71970,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
-    var formData = "";
-    var formRenderID = ".build-wrap";
-    var fbRender = document.getElementById('fb-render');
     var options = '';
-    quote.find('.feild-col').remove(); // var options           = '';
+    var formData = ''; // remove already appended feild
 
+    quote.find('.feild-col').remove();
     /* remove & reset supplier location attribute when category selected */
 
     if (typeof category_id === 'undefined' || category_id == "") {
@@ -71967,14 +72010,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         'model_name': model_name
       },
       success: function success(response) {
-        // set category details feilds 
-        if (typeof response.category_details != 'undefined') {
-          formData = "".concat(response.category_details);
-
-          if (formData != "") {
-            quote.find('.category-details').val(formData);
-            createAllElm(fbRender, JSON.parse(formData), quote);
-          }
+        if (response.category_details != '' && response.category_details != 'undefined') {
+          $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details);
+          createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
         } // Hide & Show Category details btn according to status
 
 
