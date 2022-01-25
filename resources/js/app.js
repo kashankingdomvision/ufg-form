@@ -2098,9 +2098,10 @@ $(document).ready(function($) {
 
                             formData = `${response.category_details}`;
 
-                            quote.find('.category-details').val(formData);
-
-                            createAllElm( fbRender, JSON.parse(formData),  quote);
+                            if(formData != ""){
+                                quote.find('.category-details').val(formData);
+                                createAllElm( fbRender, JSON.parse(formData),  quote);
+                            }
                         }
 
                         // Hide & Show Category details btn according to status

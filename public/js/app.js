@@ -71956,8 +71956,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // set category details feilds 
         if (typeof response.category_details != 'undefined') {
           formData = "".concat(response.category_details);
-          quote.find('.category-details').val(formData);
-          createAllElm(fbRender, JSON.parse(formData), quote);
+
+          if (formData != "") {
+            quote.find('.category-details').val(formData);
+            createAllElm(fbRender, JSON.parse(formData), quote);
+          }
         } // Hide & Show Category details btn according to status
 
 
