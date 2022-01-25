@@ -17,6 +17,7 @@ class Product extends Model
         'duration',
         'price',
         'description',
+        'feilds',
         // 'inclusions',
         // 'packing_list'
     ];

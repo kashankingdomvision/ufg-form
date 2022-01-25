@@ -348,9 +348,32 @@ Route::group(['middleware' => ['auth']], function(){
     ]]);
 
     /*  Supplier Product */
-    Route::resource('products', 'ProductController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+
+    
+    Route::group([
+        'prefix' => 'products',
+        'as'     => 'products.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'ProductController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'ProductController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'ProductController@store'));
+        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductController@edit']);
+        Route::post('update', array('as' => 'update', 'uses' => 'ProductController@update'));
+        Route::delete('delete/{id}', ['as' => 'destroy', 'uses' => 'ProductController@destroy']);
+
+        // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+    });
+
+
+    // Route::get('index', array('as' => 'products.index', 'uses' => 'ProductController@index'));
+    // Route::get('edit/{id}', ['as' => 'products.edit', 'uses' => 'ProductController@edit']);
+    // Route::post('update', array('as' => 'products.update', 'uses' => 'ProductController@update'));
+
+    // Route::resource('products', 'ProductController',['only' => [
+    //     'index','create', 'store',  'destroy'
+    // ]]);
 
     /*  Supplier Categories */
     // Route::resource('categories', 'CategoryController',['only' => [

@@ -25,122 +25,90 @@
               <div class="card-header">
                 <h3 class="card-title text-center">Product Form</h3>
               </div>
-              <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
-                @csrf
-                <div class="card-body">
-                  <div class="form-group">
-                    <label>Product Code <span style="color:red">*</span></label>
-                    <input type="text" name="code" value="{{ !empty(\Helper::getProductCode()) ? \Helper::getProductCode() : '' }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" >
-                    @error('code')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
-                  <div class="form-group">
-                    <label>Product Name <span style="color:red">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Product Name" >
-                    @error('name')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
+              <div class="card-body">
+                <form method="POST" action="{{ route('products.store') }}" id="store_product" enctype="multipart/form-data">
+                  @csrf
 
-                  <div class="form-group">
-                    <label>Category <span style="color:red">*</span></label>
-                    <select name="category_id" id="category_id" class="form-control select2single @error('category_id') is-invalid @enderror">
-                      <option value="">Select Category</option>
-                      @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}"> {{ $category->name }} </option>
-                      @endforeach
-                    </select>
-                    @error('category_id')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                    <span class="text-danger" role="alert"></span>
-                  </div>
+                    <div class="form-group">
+                      <label>Product Code <span style="color:red">*</span></label>
+                      <input type="text" name="code" id="code" value="{{ !empty(\Helper::getProductCode()) ? \Helper::getProductCode() : '' }}" class="form-control @error('code') is-invalid @enderror" placeholder="Product Code" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
 
-                  {{-- <div class="form-group">
-                    <label>Product Location <span style="color:red">*</span></label>
-                    <select name="location_id" class="form-control select2single @error('location_id') is-invalid @enderror" >
-                      <option value="">Select Location</option>
-                      @foreach ($locations as $location)
-                        <option value="{{ $location->id }}" {{ ($location->id == old('location_id')) ? 'selected' : ''}} > {{ $location->name }} {{ isset($location->getCountry->name) && !empty($location->getCountry->name) ? ' ('.$location->getCountry->name.')' : '' }}</option>
-                      @endforeach
-                    </select>
+                    <div class="form-group">
+                      <label>Product Name <span style="color:red">*</span></label>
+                      <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="Product Name" >
+                      <span class="text-danger" role="alert"></span>
+                    </div>
 
-                    @error('location_id')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>  --}}
+                    <div class="form-group">
+                      <label>Category <span style="color:red">*</span></label>
+                      <select name="category_id" id="category_id" class="form-control select2single @error('category_id') is-invalid @enderror">
+                        <option value="">Select Category</option>
+                        @foreach ($categories as $category)
+                          <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}"> {{ $category->name }} </option>
+                        @endforeach
+                      </select>
+                      @error('category_id')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                      <span class="text-danger" role="alert"></span>
+                    </div>
 
-                  <div class="form-group">
-                    <label>Duration </label>
-                    <input type="text" name="duration"  class="form-control @error('duration') is-invalid @enderror" placeholder="Duration" >
-                    @error('duration')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
 
-                  <div class="form-group">
-                    <label for="inputEmail3" class="">Currency</label>
-                    <select name="currency_id" class="form-control select2single" >
-                      <option value="">Select Currency</option>
-                      @foreach ($currencies as $currency)
-                        <option value="{{$currency->id}}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ (old("currency") == $currency->id ? "selected" : "") }} >&nbsp; {{$currency->code}} - {{$currency->name}}</option>
-                      @endforeach
-                    </select>
-                  </div>
+                    <div class="form-group">
+                      <label>Duration </label>
+                      <input type="text" name="duration"  class="form-control @error('duration') is-invalid @enderror" placeholder="Duration" >
+                      @error('duration')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
 
-                  <div class="form-group">
-                    <label>Payment Type </label>
-                    <select name="booking_type_id" class="form-control select2single booking-type-id">
-                      <option value="" >Select Payment Type</option>
-                      @foreach ($booking_types as $booking_type)
-                        <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ ($booking_type->id == 1 || $booking_type->slug == 'refundable') ? 'selected' : '' }}> {{$booking_type->name}} </option>
-                      @endforeach
-                    </select>
+                    <div class="form-group">
+                      <label for="inputEmail3" class="">Currency</label>
+                      <select name="currency_id" class="form-control select2single" >
+                        <option value="">Select Currency</option>
+                        @foreach ($currencies as $currency)
+                          <option value="{{$currency->id}}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}"  {{ (old("currency") == $currency->id ? "selected" : "") }} >&nbsp; {{$currency->code}} - {{$currency->name}}</option>
+                        @endforeach
+                      </select>
+                    </div>
 
-                    @error('booking_type_id')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
+                    <div class="form-group">
+                      <label>Payment Type </label>
+                      <select name="booking_type_id" class="form-control select2single booking-type-id">
+                        <option value="" >Select Payment Type</option>
+                        @foreach ($booking_types as $booking_type)
+                          <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" {{ ($booking_type->id == 1 || $booking_type->slug == 'refundable') ? 'selected' : '' }}> {{$booking_type->name}} </option>
+                        @endforeach
+                      </select>
 
-                  <div class="form-group">
-                    <label>Price </label>
-                    <input type="text" name="price"  class="form-control @error('price') is-invalid @enderror" placeholder="Price" >
-                    @error('price')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
+                      @error('booking_type_id')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
 
-                  <div class="form-group">
-                    <label>Description</label>
-                    <textarea name="description"  class="form-control summernote">{{ old('description') }}</textarea>
-                    @error('description')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
+                    <div class="form-group">
+                      <label>Price </label>
+                      <input type="text" name="price"  class="form-control @error('price') is-invalid @enderror" placeholder="Price" >
+                      @error('price')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
 
-                  {{-- <div class="form-group">
-                    <label>Inclusions</label>
-                    <textarea name="inclusions" class="form-control summernote">{{ old('inclusions') }}</textarea>
-                    @error('inclusions')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
-                  
-                  <div class="form-group">
-                    <label>Packing List</label>
-                    <textarea name="packing_list" class="form-control summernote">{{ old('packing_list') }}</textarea>
-                    @error('packing_list')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div> --}}
-                
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary float-right">Submit</button>
-                  <a href="{{ route('products.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
-                </div>
-              </form>
+                    <div class="form-group">
+                      <label>Description</label>
+                      <textarea name="description"  class="form-control summernote">{{ old('description') }}</textarea>
+                      @error('description')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                      @enderror
+                    </div>
+
+     
+                </form>
+
+                <div id="build-wrap"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -148,3 +116,150 @@
     </section>
   </div>
 @endsection
+@push('js')
+<script src="{{ asset('js/product_app.js') }}" ></script>
+<script>
+
+window.onload = function(){
+
+
+
+  var url = $('#store_product').attr('action');
+
+
+  jQuery(function ($) {
+    
+    var fbTemplate = document.getElementById("build-wrap");
+    var currFieldData;
+
+    var options = {
+      // disabledActionButtons: ['clear','data'],
+      disableFields: ['file','hidden','button'],
+      disabledAttrs: [
+        'className',
+        'description',
+        'maxlength',
+        'name',
+        'other',
+        'required',
+        'rows',
+        'step',
+        'style',
+        'access',
+        'accept',
+        // 'value',
+      ],
+      onSave: function (evt, formData) {
+
+        var storeProduct = new FormData($('#store_product')[0]);
+
+        if(formData == '[]'){
+          formData = '';
+        }
+
+        storeProduct.append('feilds', formData);
+
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: storeProduct,
+          processData: false,
+          contentType: false,
+          cache: false,
+          beforeSend: function() {
+            $('input, select').removeClass('is-invalid');
+            $('.text-danger').html('');
+            $("#overlay").addClass('overlay');
+            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+          },
+          success: function(data) {
+
+            $("#overlay").removeClass('overlay').html('');
+            
+            setTimeout(function() {
+
+              if(data && data.status == true){
+                alert(data.success_message);
+                window.location.href = '{{route('products.index')}}';
+              }
+            }, 200);
+            
+          },
+          error: function(reject) {
+
+            if (reject.status === 422) {
+
+              var errors = $.parseJSON(reject.responseText);
+              var flag = true;
+
+              setTimeout(function() {
+
+                $("#overlay").removeClass('overlay').html('');
+
+                jQuery.each(errors.errors, function(index, value) {
+
+                  index = index.replace(/\./g, '_');
+
+                  $(`#${index}`).addClass('is-invalid');
+                  $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                  if(flag){
+                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                    flag = false;
+                  }
+
+                });
+              }, 400);
+            }
+
+
+          }
+        });
+      }
+    };
+
+    $(fbTemplate).formBuilder(options);    
+    
+  });
+
+} 
+</script>
+@endpush
+
+{{-- <div class="form-group">
+  <label>Inclusions</label>
+  <textarea name="inclusions" class="form-control summernote">{{ old('inclusions') }}</textarea>
+  @error('inclusions')
+    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+  @enderror
+</div>
+
+<div class="form-group">
+  <label>Packing List</label>
+  <textarea name="packing_list" class="form-control summernote">{{ old('packing_list') }}</textarea>
+  @error('packing_list')
+    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+  @enderror
+</div> --}}
+
+
+
+{{-- <div class="card-footer">
+<button type="submit" class="btn btn-primary float-right">Submit</button>
+<a href="{{ route('products.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+</div> --}}
+
+
+{{-- <div class="form-group">
+  <label>Product Location <span style="color:red">*</span></label>
+  <select name="location_id" class="form-control select2single @error('location_id') is-invalid @enderror" >
+    <option value="">Select Location</option>
+    @foreach ($locations as $location)
+      <option value="{{ $location->id }}" {{ ($location->id == old('location_id')) ? 'selected' : ''}} > {{ $location->name }} {{ isset($location->getCountry->name) && !empty($location->getCountry->name) ? ' ('.$location->getCountry->name.')' : '' }}</option>
+    @endforeach
+  </select>
+
+  @error('location_id')
+    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+  @enderror
+</div>  --}}

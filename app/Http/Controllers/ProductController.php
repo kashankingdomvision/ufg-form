@@ -63,6 +63,7 @@ class ProductController extends Controller
             'duration'          => $request->duration,
             'price'             => $request->price,
             'description'       => $request->description,
+            'feilds'            => $request->feilds,
             // 'inclusions'        => $request->inclusions,
             // 'packing_list'      => $request->packing_list,
         ];
@@ -76,7 +77,10 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+
+    // ProductRequest
+    // Request
+    public function store(Request $request)
     {
         // dd($request->all());
 
@@ -109,9 +113,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, $id)
+
+    //  UpdateProductRequest
+    public function update(Request $request)
     {
-        Product::findOrFail(decrypt($id))->update($this->productsArray($request));
+        Product::findOrFail(decrypt($request->id))->update($this->productsArray($request));
 
         return redirect()->route('products.index')->with('success_message', 'Product update successfully');
     }

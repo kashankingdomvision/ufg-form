@@ -16,3 +16,4 @@ mix.sass('resources/sass/app.scss', 'public/css');
 mix.js('resources/js/app.js', 'public/js/app.js')
    .js('resources/js/category_app.js', 'public/js/category_app.js')
    .js('resources/js/quote_app.js', 'public/js/quote_app.js')
+   .js('resources/js/product_app.js', 'public/js/product_app.js')
