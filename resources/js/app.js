@@ -1813,6 +1813,8 @@ $(document).ready(function($) {
                 var detail_id         = $(`#quote_${quoteKey}_detail_id`).val();
                 var model_name        = $(`#model_name`).val();
  
+                quote.find('.prod-feild-col').remove();
+
                 var formData = '';
 
                 if(typeof product_name === 'undefined' || product_name == '') {
@@ -1916,7 +1918,7 @@ $(document).ready(function($) {
                 var quote            = $(this).closest('.quote');
                 var quoteKey         = quote.data('key');
                 var formData         = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
-                var feildIndex       = $(this).parents('.feild-col').index();
+                var feildIndex       = $(this).parents('.cat-feild-col').index();
 
                 formData[feildIndex].userData = [$(this).val()];
                 formData[feildIndex].value    = $(this).val();
@@ -1931,7 +1933,7 @@ $(document).ready(function($) {
                 var quote       = $(this).closest('.quote');
                 var quoteKey    = quote.data('key');
                 var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
-                var feildIndex  = $(this).parents('.feild-col').index();
+                var feildIndex  = $(this).parents('.cat-feild-col').index();
                 var optionIndex = $(this).find(":selected").index();
                 // formData[feildIndex].values[optionIndex].selected = true;
 
@@ -1955,7 +1957,7 @@ $(document).ready(function($) {
                 var quote            = $(this).closest('.quote');
                 var quoteKey         = quote.data('key');
                 var formData         = JSON.parse($(`#quote_${quoteKey}_product_details`).val());
-                var feildIndex       = $(this).parents('.feild-col').index();
+                var feildIndex       = $(this).parents('.prod-feild-col').index();
 
                 formData[feildIndex].userData = [$(this).val()];
                 formData[feildIndex].value    = $(this).val();
@@ -1970,7 +1972,7 @@ $(document).ready(function($) {
                 var quote       = $(this).closest('.quote');
                 var quoteKey    = quote.data('key');
                 var formData    = JSON.parse($(`#quote_${quoteKey}_product_details`).val());
-                var feildIndex  = $(this).parents('.feild-col').index();
+                var feildIndex  = $(this).parents('.prod-feild-col').index();
                 var optionIndex = $(this).find(":selected").index();
                 // formData[feildIndex].values[optionIndex].selected = true;
 
@@ -2063,7 +2065,7 @@ $(document).ready(function($) {
                     }
                 }
 
-                let div = createParentDivOfElm(elm, obj);
+                let div = createParentDivOfElm(elm, type, obj);
 
                 quote.find(selector).append(div);
                 
@@ -2074,10 +2076,18 @@ $(document).ready(function($) {
                 // $(div).insertAfter(quote.find('.product-id-col'));
             }
 
-            function createParentDivOfElm(elem, obj) {
+            function createParentDivOfElm(elem, type, obj) {
 
                 var div = document.createElement('div');
-                div.setAttribute('class', 'col-md-2 feild-col');
+
+                if(type == 'category_details'){
+                    div.setAttribute('class', 'col-md-2 cat-feild-col');
+                }
+
+                if(type == 'product_details'){
+                    div.setAttribute('class', 'col-md-2 prod-feild-col');
+                }
+
 
                 var formGroup = document.createElement('div');
                 formGroup.setAttribute('class', 'form-group');
@@ -2114,7 +2124,7 @@ $(document).ready(function($) {
                 var formData          = '';
                 
                 // remove already appended feild
-                quote.find('.feild-col').remove();
+                quote.find('.cat-feild-col').remove();
 
                 /* remove & reset supplier location attribute when category selected */
                 if(typeof category_id === 'undefined' || category_id == ""){
