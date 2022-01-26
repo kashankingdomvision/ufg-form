@@ -686,16 +686,16 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 d-none">
+                              <div class="col-sm-2 ">
                                 <div class="form-group">
                                   <label>Category Details</label>
                                   {{-- <input type="text" name="quote[{{ $key }}][category_details]" value="@if(isset($q_detail->getCategory->quote) && isset($q_detail->getCategory->quote) == 1)@if(empty($q_detail->category_details) || is_null($q_detail->category_details)){{ $q_detail->getCategory->feilds }}@else{{$q_detail->category_details}}@endif @endif" id="quote_{{ $key }}_category_details" class="form-control category-details"> --}}
-                                  <input type="text" name="quote[{{ $key }}][category_details]" value="{{ is_null($q_detail->getCategory->feilds) ? $q_detail->category_details : '' }}" id="quote_{{ $key }}_category_details" class="form-control category-details">
+                                  <input type="text" name="quote[{{ $key }}][category_details]" value="{{ $q_detail->category_details }}" id="quote_{{ $key }}_category_details" class="form-control category-details">
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
 
-                              <div class="fb-render col-12 row"></div>
+                              <div class="category-details-render col-12 row"></div>
 
                               <div class="col-md-3">
                                 <div class="form-group">
@@ -742,13 +742,10 @@
                                 </div>
                               </div>
 
-                              
-                         
 
-
-                              <div class="build-wrap-parent-{{ $key }}">
+                              {{-- <div class="build-wrap-parent-{{ $key }}">
                                 <div class="build-wrap-{{ $key }}"></div>
-                              </div>
+                              </div> --}}
 
 
                               <div class="col-sm-3">
@@ -766,7 +763,15 @@
                                 </div>
                               </div>
 
-                         
+                              <div class="col-sm-2">
+                                <div class="form-group">
+                                  <label>Product Details</label>
+                                  <input type="text" name="quote[{{ $key }}][product_details]" value="{{ $q_detail->product_details }}" id="quote_{{ $key }}_product_details" class="form-control product-details">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+  
+                              <div class="product-details-render col-12 row"></div>
 
                               <div class="col-sm-2">
                                 <div class="form-group">

@@ -268,6 +268,7 @@ class QuoteController extends Controller
             'selling_price_in_booking_currency' => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['selling_price_in_booking_currency'] : NULL,
             'markup_amount_in_booking_currency' => isset($quote->markup_type) && $quote->markup_type == 'itemised' ? $quoteD['markup_amount_in_booking_currency'] : NULL,
             'category_details'                  => $quoteD['category_details']??$quoteD['category_details'],
+            'product_details'                   => $quoteD['product_details']??$quoteD['product_details'],
             'image'                             => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
         ];
 

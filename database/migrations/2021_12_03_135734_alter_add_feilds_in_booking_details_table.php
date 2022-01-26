@@ -14,6 +14,8 @@ class AlterAddFeildsInBookingDetailsTable extends Migration
     public function up()
     {
         Schema::table('booking_details', function (Blueprint $table) {
+
+            $table->longText('product_details')->nullable();
             // $table->unsignedBigInteger('supplier_location_id')->after('category_id')->nullable();
             // $table->unsignedBigInteger('product_location_id')->after('supplier_id')->nullable();
             // $table->foreign('supplier_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');

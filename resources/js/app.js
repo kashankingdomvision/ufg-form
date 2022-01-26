@@ -1891,19 +1891,23 @@ $(document).ready(function($) {
                 
             });
 
-            
             if(location.href.substring(0, location.href.lastIndexOf('/')) == 'http://localhost/ufg-form/public/quotes/edit' || location.href.substring(0, location.href.lastIndexOf('/')) == 'https://booking.unforgettabletravel.com/ufg-form/public/quotes/edit'){
          
                 $(".quote").each(function(){
-    
-                    var quote    = $(this).closest('.quote');
-                    var quoteKey = quote.data('key');
-                    var formData = $(`#quote_${quoteKey}_category_details`).val();
-                    var fbRender = document.getElementsByClassName('fb-render');
+                   
+                    var quote            = $(this);
+                    var quoteKey         = quote.attr('data-key');
+                    var categoryFormData = $(`#quote_${quoteKey}_category_details`).val();
+                    var productFormData  = $(`#quote_${quoteKey}_product_details`).val();
 
-                    if(formData != ""){
-                        createAllElm( fbRender, JSON.parse(formData), quote );
+                    if(categoryFormData != '' && categoryFormData != 'undefined'){
+                        createAllElm( quote, '.category-details-render', 'category_details', JSON.parse(categoryFormData));
                     }
+
+                    if(productFormData != '' && productFormData != 'undefined'){
+                        createAllElm( quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
+                    }
+
                 });
             }
 

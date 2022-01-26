@@ -48,6 +48,7 @@ class CreateQuoteDetailsTable extends Migration
             $table->text('comments')->nullable();
             $table->string('image')->nullable();
             $table->longText('category_details')->nullable();
+            $table->longText('product_details')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
             

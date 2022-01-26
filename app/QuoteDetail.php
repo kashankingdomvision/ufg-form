@@ -45,6 +45,7 @@ class QuoteDetail extends Model
         'parent_id',
         'image',
         'category_details',
+        'product_details',
     ];
     
 
