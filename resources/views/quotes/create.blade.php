@@ -551,7 +551,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Category Details</label>
                                 <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -596,7 +596,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 d-none">
                               <div class="form-group">
                                 <label>Product Details</label>
                                 <input type="text" name="quote[0][product_details]" value="" id="quote_0_product_details" class="form-control product-details">
