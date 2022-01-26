@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Helper;
+
 use Illuminate\Support\Str;
+
 use App\Category;
 use App\QuoteDetail;
 
@@ -90,6 +93,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    // UpdateCategoryRequest
+    // Request
     public function update(UpdateCategoryRequest $request)
     {
         $category  = Category::findOrFail(decrypt($request->id));
@@ -108,36 +114,40 @@ class CategoryController extends Controller
             'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
         ]);
 
+        $json_quotes = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get([ 'id', 'category_details']);
+
+        if($json_quotes->count() > 0){
+
+            $final_json_quotes = array();
+
+            foreach($json_quotes as $Qkey => $json_quote){
+                
+                $category_details = json_decode($json_quote->category_details);
+                $feilds           = json_decode($category->feilds);
+    
+                foreach($feilds as $key => $feild){
+    
+                    if(isset($category_details[$key])){
+                        if($feild->name == $category_details[$key]->name) {
+                            $final_json_quotes[$key] = $category_details[$key];
+                        }
+                    }else{
+
+                        if($feild->type == "autocomplete"){
+                            if($feild->data != "none"){
+                                $feild->values = Helper::get_autocomplete_type_records($feild->data); 
+                            }
+                        }
         
-
-        $json_quotes = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get(['category_details','id']);
-        // dd($jsonQuote);
-
-        $final_json_quotes = array();
-
-        foreach($json_quotes as $Qkey => $json_quote){
-            
-            $category_details = json_decode($json_quote->category_details);
-            $feilds           = json_decode($category->feilds);
-
-            foreach($feilds as $key => $feild){
-
-                if(isset($category_details[$key])){
-                    if($feild->name == $category_details[$key]->name) {
-                        $final_json_quotes[$key] = $category_details[$key];
+                        $final_json_quotes[$key] = $feild;
                     }
-                }else{
-
-                    $final_json_quotes[$key] = $feild;
+    
+                    QuoteDetail::where('id', $json_quote->id)->update([ 'category_details' => $final_json_quotes ]);
                 }
-
-                QuoteDetail::where('id', $json_quote->id)->update([ 'category_details' => $final_json_quotes ]);
             }
         }
 
-        // dd("done");
-
-        return \Response::json(['status' => true, 'success_message' => 'Category updated successfully'], 200);
+        return response()->json([ 'status' => true, 'success_message' => 'Category updated successfully']);
     }
 
     /**
