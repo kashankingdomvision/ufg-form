@@ -172,7 +172,7 @@ window.onload = function() {
   jQuery(function ($) {
     
     var fbTemplate = document.getElementById("build-wrap");
-    var currFieldData;
+    var currentFieldData;
 
     var options = {
       // disabledActionButtons: ['clear','data'],
@@ -208,29 +208,28 @@ window.onload = function() {
         },
       },
       onAddField: function(fieldId, fieldData) {
-        getFieldData(fieldData);
+        setFieldData(fieldData);
       },
-      onOpenFieldEdit: function(field, fieldData) {
-        if(currFieldData.type == "autocomplete")
-        {
-          var currFieldId = document.querySelectorAll(`#`+field.id+` SELECT`)[0].id;
+      onOpenFieldEdit: function(field) {
+        if(currentFieldData.type == "autocomplete"){
 
-          var elem = document.querySelector(`#`+field.id+` .field-options`);
-          elem.classList.add("d-none");
+          /* By default hide options & remove child li */ 
+          hideAndRemoveChildLIOptions(field.id);
 
-          emptyLi(`#`+field.id+` .sortable-options LI`);
+          let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
+          $(selector).on('change', function(){
+ 
+            if($(this).val() === "none"){
 
-          $('#'+currFieldId).on('change', function()
-          {
-            if($(this).val() === "none")
-            {
-              elem.classList.remove("d-none");
+              /* display options li */ 
+              showOptions(field.id);
             } else {
-              elem.classList.add("d-none");
-              emptyLi(`#`+field.id+` .sortable-options LI`);
+              hideAndRemoveChildLIOptions(field.id);
             }
           });
-        }
+
+        } /* end if condition*/
+        
       },
       onSave: function (evt, formData) {
 
@@ -319,19 +318,19 @@ window.onload = function() {
 
     $(fbTemplate).formBuilder(options);    
 
-    function emptyLi(fvalue)
-    {
-      const elemLi = document.querySelectorAll(fvalue);
-      for (const remElemLi of elemLi) {
-        remElemLi.parentNode.removeChild(remElemLi);
-      }
+    function setFieldData(fieldData){
+      currentFieldData = fieldData;
     }
     
-    function getFieldData(fieldData)
-    {
-      currFieldData = fieldData;
+    function hideAndRemoveChildLIOptions(fieldID){
+      $(`#${fieldID} .field-options`).addClass("d-none");
+      $(`#${fieldID} .sortable-options li`).remove();
     }
-    
+
+    function showOptions(fieldID){
+      $(`#${fieldID} .field-options`).removeClass("d-none");
+    }
+
   });
 
 } // end window onload
