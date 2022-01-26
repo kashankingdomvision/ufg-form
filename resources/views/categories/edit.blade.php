@@ -244,11 +244,13 @@ window.onload = function() {
           autocomplete: {
               data: {
                   label: 'Type',
+                  /* options keys should be related table name */ 
                   options: {
                     'airport_codes': 'Airport Codes',
                     'harbours': 'Harbours, Train and Points of Interest',
                     'hotels': 'Hotels',
                     'all': 'All',
+                    'group_owners': 'Group Owner',
                     'none': 'None',
                   },
               },
