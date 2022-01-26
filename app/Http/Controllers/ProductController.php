@@ -80,13 +80,15 @@ class ProductController extends Controller
 
     // ProductRequest
     // Request
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         // dd($request->all());
 
         Product::create($this->productsArray($request));
+
+        return response()->json([ 'status' => true, 'success_message' => 'Product created successfully' ]);
         
-        return redirect()->route('products.index')->with('success_message', 'Product created successfully');
+        // return redirect()->route('products.index')->with('success_message', 'Product created successfully');
     }
 
     /**
@@ -115,11 +117,12 @@ class ProductController extends Controller
      */
 
     //  UpdateProductRequest
-    public function update(Request $request)
+    public function update(UpdateProductRequest $request)
     {
         Product::findOrFail(decrypt($request->id))->update($this->productsArray($request));
 
-        return redirect()->route('products.index')->with('success_message', 'Product update successfully');
+        return response()->json([ 'status' => true, 'success_message' => 'Product update successfully' ]);
+        // return redirect()->route('products.index')->with('success_message', 'Product update successfully');
     }
 
     /**
