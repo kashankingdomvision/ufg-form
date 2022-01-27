@@ -33,10 +33,6 @@
               <form method="POST" id="update_category" action="{{ route('categories.update') }}">
                 @csrf
 
-                <input type="hidden" name="id" value="{{ encrypt($category->id) }}" class="form-control id">
-                <input type="hidden" name="category_id" value="{{ $category->id }}" class="form-control category-id">
-                <input type="hidden" name="category_slug" value="{{ $category->slug }}" class="form-control category-slug">
-
                 <div class="form-group">
                   <label>Category Name <span style="color:red">*</span></label>
                   <input type="text" name="name" id="name" value="{{$category->name}}" class="form-control name" placeholder="Category Name" >

@@ -28,7 +28,6 @@ class UpdateCategoryRequest extends FormRequest
             'label_of_time' => 'required_if:show_tf,1',
             'name'          => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],
             'sort_order'    => 'required|integer'
-            // 'sort_order'  => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],
         ];
 
     }
