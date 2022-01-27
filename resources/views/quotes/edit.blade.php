@@ -626,44 +626,6 @@
 
                             <div class="row">
 
-                              <div class="col-sm-2">
-                                <div class="form-group">
-                                  <label>Date of Service <span style="color:red">*</span></label>
-                                  <input type="text" value="{{ $q_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
-                                  <span class="text-danger" role="alert"></span>
-                                </div>
-                              </div>
-
-                              <div class="col-sm-2">
-                                <div class="form-group">
-                                  <label>End Date of Service <span style="color:red">*</span></label>
-                                  <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
-                                  <span class="text-danger" role="alert"></span>
-                                </div>
-                              </div>
-
-                              <div class="col-sm-2">
-                                <div class="form-group">
-                                  <label>Number of Nights</label>
-                                  <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
-                                  <span class="text-danger" role="alert"></span>
-                                </div>
-                              </div>
-
-                              <div class="col-sm-2 show-tf {{ isset($q_detail->getCategory->show_tf) && ($q_detail->getCategory->show_tf == 0) ? 'd-none' : '' }}">
-                                <div class="form-group">
-                                  <label class="label-of-time-label">{{ isset($q_detail->getCategory->label_of_time) && !empty($q_detail->getCategory->label_of_time) ? $q_detail->getCategory->label_of_time : '' }}</label>
-                                  <input type="time" value="{{ $q_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
-                                </div>
-                              </div>
-
-                              <div class="col-sm-2 {{ isset($q_detail->getCategory->second_tf) && ($q_detail->getCategory->second_tf == 0) ? 'd-none' : '' }} second-tf">
-                                <div class="form-group">
-                                  <label class="second-label-of-time">{{ isset($q_detail->getCategory->second_label_of_time) && !empty($q_detail->getCategory->second_label_of_time) ? $q_detail->getCategory->second_label_of_time : '' }}</label>
-                                  <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $q_detail->second_time_of_service }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
-                                </div>
-                              </div>
-
                               <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Quote Detail ID</label>
@@ -671,7 +633,45 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Date of Service <span style="color:red">*</span></label>
+                                  <input type="text" value="{{ $q_detail->date_of_service }}" name="quote[{{ $key }}][date_of_service]" data-name="date_of_service" id="quote_{{ $key }}_date_of_service" class="form-control date-of-service datepicker checkDates bookingDateOfService"  placeholder="Date of Service" autocomplete="off">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>End Date of Service <span style="color:red">*</span></label>
+                                  <input type="text" placeholder="DD/MM/YYYY" value="{{ $q_detail->end_date_of_service }}" name="quote[{{ $key }}][end_date_of_service]" data-name="end_date_of_service" id="quote_{{ $key }}_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col">
+                                <div class="form-group">
+                                  <label>Number of Nights</label>
+                                  <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
+                                  <span class="text-danger" role="alert"></span>
+                                </div>
+                              </div>
+
+                              <div class="col show-tf {{ isset($q_detail->getCategory->show_tf) && ($q_detail->getCategory->show_tf == 0) ? 'd-none' : '' }}">
+                                <div class="form-group">
+                                  <label class="label-of-time-label">{{ isset($q_detail->getCategory->label_of_time) && !empty($q_detail->getCategory->label_of_time) ? $q_detail->getCategory->label_of_time : '' }}</label>
+                                  <input type="time" value="{{ $q_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
+                                </div>
+                              </div>
+
+                              <div class="col {{ isset($q_detail->getCategory->second_tf) && ($q_detail->getCategory->second_tf == 0) ? 'd-none' : '' }} second-tf">
+                                <div class="form-group">
+                                  <label class="second-label-of-time">{{ isset($q_detail->getCategory->second_label_of_time) && !empty($q_detail->getCategory->second_label_of_time) ? $q_detail->getCategory->second_label_of_time : '' }}</label>
+                                  <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $q_detail->second_time_of_service }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
+                                </div>
+                              </div>
+
+                              <div class="col">
                                 <div class="form-group">
                                   <label>Category <span style="color:red">*</span></label>
 
@@ -694,10 +694,14 @@
                                   <span class="text-danger" role="alert"></span>
                                 </div>
                               </div>
+                            </div>
 
+                            <div class="row">
                               <div class="category-details-render col-12 row"></div>
+                            </div>
 
-                              <div class="col-md-3">
+                            <div class="row">
+                              <div class="col">
                                 <div class="form-group">
                                   <label>Supplier Country <span style="color:red">*</span></label>
                                   <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
@@ -722,7 +726,7 @@
 
                               @endphp
 
-                              <div class="col-sm-3">
+                              <div class="col">
                                 <div class="form-group">
                                   <label>
                                     Supplier <span style="color:red">*</span>
@@ -742,13 +746,7 @@
                                 </div>
                               </div>
 
-
-                              {{-- <div class="build-wrap-parent-{{ $key }}">
-                                <div class="build-wrap-{{ $key }}"></div>
-                              </div> --}}
-
-
-                              <div class="col-sm-3">
+                              <div class="col">
                                 <div class="form-group">
                                   <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
@@ -772,8 +770,10 @@
                               </div>
   
                               <div class="product-details-render col-12 row"></div>
+                            </div>
 
-                              <div class="col-sm-2">
+                            <div class="row">
+                              <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Payment Type</label>
                                   <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type_id" id="quote_{{ $key }}_booking_type_id" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">
@@ -789,7 +789,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 refundable-percentage-feild {{ isset($q_detail->booking_type_id) && !empty($q_detail->booking_type_id) && $q_detail->booking_type_id == 2 ? '' : 'd-none'  }}">
+                              <div class="col-md-3 refundable-percentage-feild {{ isset($q_detail->booking_type_id) && !empty($q_detail->booking_type_id) && $q_detail->booking_type_id == 2 ? '' : 'd-none'  }}">
                                 <div class="form-group">
                                   <label>Refundable % <span style="color:red">*</span></label>
                                   <input type="number" name="quote[{{ $key }}][refundable_percentage]" value="{{ $q_detail->refundable_percentage }}" data-name="refundable_percentage" id="quote_{{ $key }}_refundable_percentage" class="form-control refundable-percentage" placeholder="Refundable %">
@@ -797,7 +797,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-md-3">
                                 <div class="form-group">
                                   <label> Supplier Currency <span style="color: red">*</span></label>
                                   <select name="quote[{{ $key }}][supplier_currency_id]" data-name="supplier_currency_id" id="quote_{{ $key }}_supplier_currency_id" class="form-control select2single   supplier-currency-id @error('currency_id') is-invalid @enderror">
@@ -811,7 +811,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Estimated Cost <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -823,7 +823,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup Amount <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -835,7 +835,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -847,7 +847,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Selling Price <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -859,7 +859,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Profit % <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -874,7 +874,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3">
+                              <div class="col-md-4">
                                 <div class="form-group">
                                   <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -886,7 +886,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-4 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -898,7 +898,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-3 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
+                              <div class="col-md-4 whole-markup-feilds {{ $quote->markup_type == 'whole' ? 'd-none' : '' }}">
                                 <div class="form-group">
                                   <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
@@ -911,14 +911,14 @@
                               </div>
 
 
-                              <div class="col-sm-3">
+                              <div class="col-md-4">
                                 <div class="form-group">
                                   <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                                   <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-md-4">
                                 <label>Add Stored Text</label>
                                 <div class="form-group">
                                   <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
@@ -945,7 +945,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-6 agencyField {{ ($quote->agency == 0) ? 'd-none': '' }}">
+                  <div class="col-md-9 mb-1 agencyField {{ ($quote->agency == 0) ? 'd-none': '' }}">
                     <div class="form-group">
                       <label>Agency Commission Type <span style="color:red">*</span></label>
                       <div>
@@ -963,8 +963,8 @@
                   </div>
 
                   <div class="form-group row mt-1">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-sm-4 col-form-label">Total Net Price</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -977,10 +977,8 @@
                   </div>
 
                   <div class="form-group row">
-
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount (Gross Margin)</label>
-
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-sm-4 col-form-label">Total Markup Amount (Gross Margin)</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -991,7 +989,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="number" value="{{ \Helper::number_format($quote->markup_percentage) }}"  step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
@@ -1005,8 +1003,8 @@
 
                   <div class="paid-net-commission-on-departure {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' || $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? '' : 'd-none' }} ">
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
-                      <div class="col-sm-2">
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Agency Commission</label>
+                      <div class="col-md-3">
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -1019,8 +1017,8 @@
                     </div>
   
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Net Margin</label>
-                      <div class="col-sm-2">
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Net Margin</label>
+                      <div class="col-md-3">
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">
@@ -1034,10 +1032,8 @@
                   </div>
 
                   <div class="form-group row">
-
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Selling Price</label>
-
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Selling Price</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -1047,12 +1043,11 @@
                         </div>
                       </div>
                     </div>
-
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Profit Percentage</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Profit Percentage</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="number" value="{{ \Helper::number_format($quote->profit_percentage) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
@@ -1065,8 +1060,8 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -1079,7 +1074,7 @@
                   </div>
 
                   <div class="form-group row {{ ($quote->user_id != $quote->sale_person_id) ? 'd-none' : '' }}" id="potential_commission_feild">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">
                       Staff Commission
                       <h5>
                         <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
@@ -1088,7 +1083,7 @@
                       </h5>
                     </label>
 
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -1099,7 +1094,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-2 d-none">
+                    <div class="col-md-2 d-none">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="number" step="any" name="commission_percentage" value="{{ \Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
@@ -1112,7 +1107,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <div class="col-sm-3">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
                         <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror" style="width: 68%;">
@@ -1128,7 +1123,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label></label>
                         <div class="input-group">
@@ -1141,24 +1136,18 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-sm-3 ">
+                  <div class="form-group row">
+                      <div class="col-md-4">
                         <label for="group_quote" class="col-form-label">Add into Group</label>
                       </div>
-                      <div class="col-md-9">
-                        <div class="row">
-                          <div class="col-sm-3 relevant-quote">
-                            <select name="quote_group" class="form-control select2-single" id="group_quote">
-                              <option value="0">Select Group</option>
-                              @foreach ($groups as $group)
-                                <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
-                              @endforeach
-                            </select>
-                          </div>
-                        </div>
+                      <div class="col-md-3 relevant-quote">
+                        <select name="quote_group" class="form-control select2-single" id="group_quote">
+                          <option value="0">Select Group</option>
+                          @foreach ($groups as $group)
+                            <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
+                          @endforeach
+                        </select>
                       </div>
-                    </div>
                   </div>
                 </div>
                 @if($quote->booking_status == 'quote')
