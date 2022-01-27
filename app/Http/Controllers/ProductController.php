@@ -117,6 +117,7 @@ class ProductController extends Controller
      */
 
     //  UpdateProductRequest
+    // Request
     public function update(UpdateProductRequest $request)
     {
         Product::findOrFail(decrypt($request->id))->update($this->productsArray($request));
