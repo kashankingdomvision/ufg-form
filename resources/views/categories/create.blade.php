@@ -214,7 +214,7 @@ window.onload = function() {
         if(currentFieldData.type == "autocomplete"){
 
           /* By default hide options & remove child li */ 
-          hideAndRemoveChildLIOptions(field.id);
+          hideOptionsAndRemoveChildLI(field.id);
 
           let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
           $(selector).on('change', function(){
@@ -224,7 +224,7 @@ window.onload = function() {
               /* display options li */ 
               showOptions(field.id);
             } else {
-              hideAndRemoveChildLIOptions(field.id);
+              hideOptionsAndRemoveChildLI(field.id);
             }
           });
 
@@ -322,7 +322,7 @@ window.onload = function() {
       currentFieldData = fieldData;
     }
     
-    function hideAndRemoveChildLIOptions(fieldID){
+    function hideOptionsAndRemoveChildLI(fieldID){
       $(`#${fieldID} .field-options`).addClass("d-none");
       $(`#${fieldID} .sortable-options li`).remove();
     }
