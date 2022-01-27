@@ -116,7 +116,7 @@ class CategoryController extends Controller
 
         $json_quotes = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get([ 'id', 'category_details']);
 
-        if($json_quotes->count() > 0){
+        if($json_quotes->count() > 0 && !is_null($category->feilds)){
 
             $final_json_quotes = array();
 
