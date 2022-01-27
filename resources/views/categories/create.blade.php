@@ -148,8 +148,8 @@ window.onload = function() {
   jQuery(function ($) {
 
     var formBuilderDiv   = document.getElementById("form-builder-div");
-    var url              = $('#store_category').attr('action');
-    var storeCategory    = new FormData($('#store_category')[0]);
+    var url              = '';
+    var storeCategory    = '';
     var currentFieldData = '';
     var formData         = '';
 
@@ -212,7 +212,9 @@ window.onload = function() {
       },
       onSave: function (evt, formData) {
         
-        formData = (formData == '[]') ? '' : formData;
+        url           = $('#store_category').attr('action');
+        storeCategory = new FormData($('#store_category')[0]);
+        formData      = (formData == '[]') ? '' : formData;
         storeCategory.append('feilds', formData);
 
         $.ajax({
@@ -267,9 +269,10 @@ window.onload = function() {
             }
             
           },
-        });
+        }); /* end ajax*/
+
       }
-    };
+    }; /* options */
 
     $(formBuilderDiv).formBuilder(options);    
 

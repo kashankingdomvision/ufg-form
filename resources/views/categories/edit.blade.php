@@ -315,9 +315,10 @@ window.onload = function() {
             }
             
           },
-        });
+        }); /* end ajax*/
+        
       }
-    };
+    };  /* options */
 
     $(formBuilderDiv).formBuilder(options);    
 
