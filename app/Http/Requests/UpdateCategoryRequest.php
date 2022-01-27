@@ -24,7 +24,6 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this->all());
         return [
             'label_of_time' => 'required_if:show_tf,1',
             'name'          => ['required', Rule::unique('categories')->ignore(decrypt($this->id))],

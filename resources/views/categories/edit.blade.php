@@ -2,66 +2,37 @@
 @section('title','Edit Category')
 @section('content')
 
-  <div class="content-wrapper">
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row">
+<div class="content-wrapper">
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+            <h4>Edit Category</h4>
+          </div>
           <div class="col-sm-6">
-              <h4>Edit Category</h4>
-            </div>
-            <div class="col-sm-6">
-              <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a>Home</a></li>
-                <li class="breadcrumb-item"><a>Supplier Management</a></li>
-              </ol>
-          </div>
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a>Home</a></li>
+              <li class="breadcrumb-item"><a>Supplier Management</a></li>
+            </ol>
         </div>
       </div>
-    </section>
-    {{-- <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="offset-md-2 col-md-8">
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title text-center">Category Form</h3>
-              </div>
-              <form method="POST" action="{{ route('categories.update', encrypt($category->id)) }}" >
-                @method('put') @csrf 
-                <div class="card-body">
-                  <div class="form-group">
-                    <label>Category Name <span style="color:red">*</span></label>
-                    <input type="text" name="name" value="{{ old('name')??$category->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Category Name" required>
-                    @error('name')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
-                  </div>
-                </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary float-right">Submit</button>
-                  <a href="{{ route('categories.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+    </div>
+  </section>
+  
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
 
-                </div>
-              </form>
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title text-center">Category Form</h3>
             </div>
-          </div>
-        </div>
-      </div>
-    </section> --}}
 
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="offset-md-2 col-md-8">
+            <div class="card-body">
+              <form method="POST" id="update_category" action="{{ route('categories.update') }}">
+                @csrf
 
-            <div class="card card-secondary">
-              <div class="card-header">
-                <h3 class="card-title text-center">Category Form</h3>
-              </div>
-
-              {{-- {{ dd($category->feilds) }} --}}
-
-              <div class="card-body">
                 <input type="hidden" name="id" value="{{ encrypt($category->id) }}" class="form-control id">
                 <input type="hidden" name="category_id" value="{{ $category->id }}" class="form-control category-id">
                 <input type="hidden" name="category_slug" value="{{ $category->slug }}" class="form-control category-slug">
@@ -72,7 +43,6 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                
                 <div class="form-group">
                   <label>Sort Order <span style="color:red">*</span></label>
                   <input type="number" name="sort_order" value="{{$category->sort_order}}" id="sort_order" class="form-control sort-order" placeholder="Sort Order" >
@@ -145,17 +115,18 @@
                 <div class="form-group">
                   <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="{{$category->set_end_date_of_service}}"><input id="set_end_date_of_service" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->set_end_date_of_service == 1) ? 'checked': '' }}><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
                 </div>
+              </form>
 
-                <div id="build-wrap"></div>
-              </div>
-
-              <div id="overlay" class=""></div>
+              <div id="form-builder-div"></div>
             </div>
+
+            <div id="overlay" class=""></div>
           </div>
         </div>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+</div>
 @endsection
 
 @push('js')
@@ -217,234 +188,184 @@ window.onload = function() {
     
   });
 
-  jQuery(function($) {
-    
-    var currFieldData;
-    var fbTemplate = document.getElementById('build-wrap'),
-      options = {
-        // fieldRemoveWarn: true,
-        // disabledActionButtons: ['clear','data'],
-        disableFields: ['file','hidden','button'],
-        disabledAttrs: [
-          'className',
-          'description',
-          'maxlength',
-          'name',
-          'other',
-          'required',
-          'rows',
-          'step',
-          'style',
-          'access',
-          'accept',
-          // 'value',
-        ],
-        formData: presetData,
-        typeUserAttrs: {
-          autocomplete: {
-              data: {
-                  label: 'Type',
-                  /* options keys should be related table name */ 
-                  options: {
-                    'airport_codes' : 'Airport Codes',
-                    'harbours'      : 'Harbours, Train and Points of Interest',
-                    'hotels'        : 'Hotels',
-                    'all'           : 'All',
-                    'group_owners'  : 'Group Owner',
-                    'none'          : 'None',
-                  },
-              },
+
+  /* formbuilder function */
+  jQuery(function ($) {
+
+    var formBuilderDiv    = document.getElementById("form-builder-div");
+    var url               = '';
+    var updateCategory    = '';
+    var currentFieldData  = '';
+    var formData          = '';
+
+    var options = {
+      // disabledActionButtons: ['clear','data'],
+      disableFields: ['file','hidden','button'],
+      disabledAttrs: [
+        'className',
+        'description',
+        'maxlength',
+        'name',
+        'other',
+        'required',
+        'rows',
+        'step',
+        'style',
+        'access',
+        'accept',
+        // 'value',
+      ],
+      formData: presetData,
+      typeUserAttrs: {
+        autocomplete: {
+          data: {
+            label: 'Type',
+            /* options keys should be related table name */ 
+            options: {
+              'airport_codes' : 'Airport Codes',
+              'harbours'      : 'Harbours, Train and Points of Interest',
+              'hotels'        : 'Hotels',
+              'all'           : 'All',
+              'group_owners'  : 'Group Owner',
+              'none'          : 'None',
+            },
           }
         },
-        onAddField: function(fieldId, fieldData) {
-          getFieldData(fieldData);
-        },
-        onOpenFieldEdit: function(field, fieldData) {
-          if(currFieldData.type == "autocomplete")
-          {
-            var currFieldId = document.querySelectorAll(`#`+field.id+` SELECT`)[0].id;
+      },
+      onAddField: function(fieldId, fieldData) {
+        setFieldData(fieldData);
+      },
+      onOpenFieldEdit: function(field) {
+        if(currentFieldData.type == "autocomplete"){
 
-            var elem = document.querySelector(`#`+field.id+` .field-options`);
-            elem.classList.add("d-none");
+          /* By default hide options & remove child li */ 
+          hideOptionsAndRemoveChildLI(field.id);
 
-            emptyLi(`#`+field.id+` .sortable-options LI`);
+          let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
+          $(selector).on('change', function(){
 
-            $('#'+currFieldId).on('change', function()
-            {
-              if($(this).val() === "none")
-              {
-                elem.classList.remove("d-none");
-              } else {
-                elem.classList.add("d-none");
-                emptyLi(`#`+field.id+` .sortable-options LI`);
-              }
-            });
-          }
-        },
-        onSave: function (evt, formData) {
+            if($(this).val() === "none"){
 
-          var categoryName             = $('.name').val();
-          var id                       = $('.id').val();
-          var quote                    = $('.quote').val();
-          var booking                  = $('.booking').val();
-          var sort_order               = $('.sort-order').val();
-          var set_end_date_of_service  = $('.set_end_date_of_service').val();
-          var show_tf                 = $("input[name=show_tf]:checked").val();
-          var label_of_time           = $(".label-of-time").val();
-          var second_tf               = $("input[name=second_tf]:checked").val();
-          var second_label_of_time    = $(".second-label-of-time").val();
-          var url                      = '{{route('categories.update' )}}';
-
-          if(formData == '[]'){
-            formData = '';
-          }
-
-          var data = {
-            id         : id,
-            name       : categoryName,
-            feilds     : formData,
-            quote      : quote,
-            booking    : booking,
-            sort_order : sort_order,
-            set_end_date_of_service : set_end_date_of_service,
-            show_tf : show_tf,
-            label_of_time : label_of_time,
-            second_tf : second_tf,
-            second_label_of_time : second_label_of_time,
-            "_token"   : "{{ csrf_token() }}",
-          };
-
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: JSON.stringify(data),
-            beforeSend: function() {
-              $('input, select').removeClass('is-invalid');
-              $('.text-danger').html('');
-              $("#overlay").addClass('overlay');
-              $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-            },
-            success: function(data) {
-              $("#overlay").removeClass('overlay').html('');
-
-              setTimeout(function() {
-
-                if(data && data.status == true){
-                  alert(data.success_message);
-                  window.location.href = '{{route('categories.index')}}';
-                }
-              }, 200);
-            },
-            error: function(reject) {
-
-              if (reject.status === 422) {
-
-                var errors = $.parseJSON(reject.responseText);
-                var flag = true;
-
-                setTimeout(function() {
-
-                  $("#overlay").removeClass('overlay').html('');
-
-                  jQuery.each(errors.errors, function(index, value) {
-
-                    index = index.replace(/\./g, '_');
-
-                    $(`#${index}`).addClass('is-invalid');
-                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                    if(flag){
-                      $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                      flag = false;
-                    }
-
-                  });
-                }, 400);
-              }
-              
-            },
-            dataType: 'json',
-            headers: {
-                'Content-Type':'application/json'
+              /* display options li */ 
+              showOptions(field.id);
+            } else {
+              hideOptionsAndRemoveChildLI(field.id);
             }
           });
 
+        } /* end if condition*/
+        
+      },
+      onSave: function (evt, formData) {
 
-          // $.ajax({
-          //   type: 'POST',
-          //   url: url,
-          //   data: data,
-          //   beforeSend: function() {
-          //     $('input, select').removeClass('is-invalid');
-          //     $('.text-danger').html('');
-          //     $("#overlay").addClass('overlay');
-          //     $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-          //   },
-          //   success: function(data) {
-          //     $("#overlay").removeClass('overlay').html('');
-              
-          //     setTimeout(function() {
+        url            = $('#update_category').attr('action');
+        updateCategory = new FormData($('#update_category')[0]);
+        formData       = (formData == '[]') ? '' : formData;
+        updateCategory.append('feilds', formData);
 
-          //       if(data && data.status == true){
-          //         alert(data.success_message);
-          //         window.location.href = '{{route('categories.index')}}';
-          //       }
-          //     }, 200);
-          //   },
-          //   error: function(reject) {
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: updateCategory,
+          processData: false,
+          contentType: false,
+          cache: false,
+          beforeSend: function() {
+            $('input, select').removeClass('is-invalid');
+            $('.text-danger').html('');
+            $("#overlay").addClass('overlay');
+            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+          },
+          success: function(data) {
+            $("#overlay").removeClass('overlay').html('');
+            
+            setTimeout(function() {
 
-          //     if (reject.status === 422) {
+              if(data && data.status == true){
+                alert(data.success_message);
+                window.location.href = '{{route('categories.index')}}';
+              }
+            }, 200);
+          },
+          error: function(reject) {
 
-          //       var errors = $.parseJSON(reject.responseText);
-          //       var flag = true;
+            if (reject.status === 422) {
 
-          //       setTimeout(function() {
+              var errors = $.parseJSON(reject.responseText);
+              var flag = true;
 
-          //         $("#overlay").removeClass('overlay').html('');
+              setTimeout(function() {
 
-          //         jQuery.each(errors.errors, function(index, value) {
+                $("#overlay").removeClass('overlay').html('');
 
-          //           index = index.replace(/\./g, '_');
+                jQuery.each(errors.errors, function(index, value) {
 
-          //           $(`#${index}`).addClass('is-invalid');
-          //           $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                  index = index.replace(/\./g, '_');
 
-          //           if(flag){
-          //             $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-          //             flag = false;
-          //           }
+                  $(`#${index}`).addClass('is-invalid');
+                  $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
-          //         });
-          //       }, 400);
-          //     }
-              
-          //   },
-          //   headers: {
-          //     'Content-Type':'application/json'
-          //   }
-          // });
+                  if(flag){
+                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                    flag = false;
+                  }
 
-        }
-      };
-
-      $(fbTemplate).formBuilder(options);
-
-      function emptyLi(fvalue)
-      {
-        const elemLi = document.querySelectorAll(fvalue);
-        for (const remElemLi of elemLi) {
-          remElemLi.parentNode.removeChild(remElemLi);
-        }
+                });
+              }, 400);
+            }
+            
+          },
+        });
       }
-      
-      function getFieldData(fieldData)
-      {
-        currFieldData = fieldData;
-      }
-      
-    });
+    };
 
-} // end window onload
+    $(formBuilderDiv).formBuilder(options);    
 
+    function setFieldData(fieldData){
+      currentFieldData = fieldData;
+    }
+
+    function hideOptionsAndRemoveChildLI(fieldID){
+      $(`#${fieldID} .field-options`).addClass("d-none");
+      $(`#${fieldID} .sortable-options li`).remove();
+    }
+
+    function showOptions(fieldID){
+      $(`#${fieldID} .field-options`).removeClass("d-none");
+    }
+
+  });
+}
 </script>
 @endpush
+
+{{-- <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="offset-md-2 col-md-8">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title text-center">Category Form</h3>
+            </div>
+            <form method="POST" action="{{ route('categories.update', encrypt($category->id)) }}" >
+              @method('put') @csrf 
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Category Name <span style="color:red">*</span></label>
+                  <input type="text" name="name" value="{{ old('name')??$category->name }}" class="form-control @error('name') is-invalid @enderror" placeholder="Category Name" required>
+                  @error('name')
+                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                  @enderror
+                </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" class="btn btn-primary float-right">Submit</button>
+                <a href="{{ route('categories.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> --}}
