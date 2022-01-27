@@ -51,7 +51,7 @@ class CategoryController extends Controller
 
     // CategoryRequest
     // Request
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         // dd($request->all());
 
@@ -69,9 +69,7 @@ class CategoryController extends Controller
             'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
         ]);
 
-        return \Response::json(['status' => true, 'success_message' => 'Category created successfully'], 200);
-
-        return redirect()->route('categories.index')->with('success_message', 'Category created successfully'); 
+        return response()->json(['status' => true, 'success_message' => 'Category created successfully']);
     }
 
     /**
@@ -98,7 +96,7 @@ class CategoryController extends Controller
     // Request
     public function update(UpdateCategoryRequest $request)
     {
-        $category  = Category::findOrFail(decrypt($request->id));
+        $category = Category::findOrFail(decrypt($request->id));
 
         $category->update([
             'name'                     => $request->name,
@@ -147,7 +145,7 @@ class CategoryController extends Controller
             }
         }
 
-        return response()->json([ 'status' => true, 'success_message' => 'Category updated successfully']);
+        return response()->json(['status' => true, 'success_message' => 'Category updated successfully']);
     }
 
     /**
