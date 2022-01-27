@@ -125,7 +125,7 @@
                   </div>
 
                   <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="form-group">
                         <div class="input-group">
@@ -138,7 +138,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                         <input type="text" id="tas_ref" name="tas_ref" class="form-control" value="{{ isset($tas_ref) & !empty($tas_ref) ? $tas_ref : '' }}"  placeholder="TAS Reference Number" >
@@ -146,7 +146,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-md-4">
                       <label>Markup Type <span style="color:red">*</span></label>
                       <div class="form-group">
                         <label class="radio-inline mr-1">
@@ -334,7 +334,7 @@
                         </div>
                       </div>
                       <div class="row PassengerField">
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Nationality (Passport)</label>
                             <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
@@ -347,7 +347,7 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Resident In</label>
                             <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
@@ -360,14 +360,14 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Bedding Preferences</label>
                             <input type="text" name="lead_passenger_bedding_preference" id="lead_passenger_bedding_preference" class="form-control " placeholder="Bedding Preferences" id="bedding_preference" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Dietary Preferences</label>
                             <input type="text" name="lead_passenger_dietary_preferences" id="lead_passenger_dietary_preferences" class="form-control" placeholder="Dietary Preferences" >
@@ -375,7 +375,7 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Medical Requirements</label>
                             <input type="text" name="lead_passenger_medical_requirement" id="lead_passenger_medical_requirement" class="form-control" placeholder="Medical Requirements" >
@@ -383,7 +383,7 @@
                           </div>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-md-3">
                           <div class="form-group">
                             <label>Up To Date Covid Vaccination Status</label>
                             <div>
@@ -491,8 +491,14 @@
                           </div>
   
                           <div class="row">
-  
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 d-none">
+                              <div class="form-group">
+                                <label>Quote Detail ID</label>
+                                <input type="text" value="" name="quote[0][detail_id]"  id="quote_0_detail_id"  class="form-control detail-id">
+                              </div>
+                            </div>
+
+                            <div class="col">
                               <div class="form-group">
                                 <label>Date of Service <span style="color:red">*</span></label>
                                 <input type="text" placeholder="DD/MM/YYYY" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
@@ -500,7 +506,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            <div class="col">
                               <div class="form-group">
                                 <label>End Date of Service <span style="color:red">*</span></label>
                                 <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
@@ -508,8 +514,7 @@
                               </div>
                             </div>
   
-  
-                            <div class="col-sm-2">
+                            <div class="col">
                               <div class="form-group">
                                 <label>Number of Nights</label>
                                 <input type="text" name="quote[0][number_of_nights]" id="quote_0_number_of_nights" class="form-control number-of-nights" readonly>
@@ -517,28 +522,21 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 d-none show-tf">
+                            <div class="col d-none show-tf">
                               <div class="form-group">
                                 <label class="label-of-time-label"></label>
                                 <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-none second-tf">
+                            <div class="col d-none second-tf">
                               <div class="form-group">
                                 <label class="second-label-of-time"></label>
                                 <input type="time" name="quote[0][second_time_of_service]" data-name="second_time_of_service" id="quote_0_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
                               </div>
                             </div>
-
-                            <div class="col-sm-2 d-none">
-                              <div class="form-group">
-                                <label>Quote Detail ID</label>
-                                <input type="text" value="" name="quote[0][detail_id]"  id="quote_0_detail_id"  class="form-control detail-id">
-                              </div>
-                            </div>
   
-                            <div class="col-sm-2">
+                            <div class="col">
                               <div class="form-group">
                                 <label>Category <span style="color:red">*</span></label>
                                 <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
@@ -558,10 +556,14 @@
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
+                          </div>
 
+                          <div class="row">
                             <div class="category-details-render col-12 row"></div>
+                          </div>
 
-                            <div class="col-md-3">
+                          <div class="row">
+                            <div class="col">
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[0][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_0_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
@@ -573,7 +575,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-3">
+                            <div class="col">
                               <div class="form-group">
                                 <label>
                                   Supplier <span style="color:red">*</span>
@@ -586,7 +588,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col">
                               <div class="form-group">
                                 <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
                                 <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
@@ -605,8 +607,11 @@
                             </div>
 
                             <div class="product-details-render col-12 row"></div>
-  
-                            <div class="col-sm-2">
+                          </div>
+
+                          <div class="row">
+
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Payment Type </label>
                                 <select name="quote[0][booking_type_id]" data-name="booking_type_id" id="quote_0_booking_type_id" class="form-control select2single booking-type-id">
@@ -622,7 +627,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 refundable-percentage-feild d-none">
+                            <div class="col-md-3 refundable-percentage-feild d-none">
                               <div class="form-group">
                                 <label>Refundable % <span style="color:red">*</span></label>
                                 <input type="number" name="quote[0][refundable_percentage]" data-name="refundable_percentage" id="quote_0_refundable_percentage" class="form-control refundable-percentage" placeholder="Refundable %">
@@ -630,7 +635,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Supplier Currency <span style="color: red">*</span></label>
                                 <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
@@ -643,7 +648,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Estimated Cost <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -655,7 +660,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 whole-markup-feilds">
+                            <div class="col-md-3 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Markup Amount <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -667,7 +672,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 whole-markup-feilds">
+                            <div class="col-md-3 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Markup % <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -679,7 +684,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 whole-markup-feilds">
+                            <div class="col-md-3 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Selling Price <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -693,7 +698,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-2 whole-markup-feilds">
+                            <div class="col-md-3 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Profit % <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -710,7 +715,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-3">
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -722,7 +727,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-3 whole-markup-feilds">
+                            <div class="col-md-4 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -734,7 +739,7 @@
                               </div>
                             </div>
   
-                            <div class="col-sm-3 whole-markup-feilds">
+                            <div class="col-md-4 whole-markup-feilds">
                               <div class="form-group">
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -761,14 +766,14 @@
                               </div>
                             @endif --}}
   
-                            <div class="col-sm-3">
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
                                 <textarea name="quote[0][comments]" data-name="comments" id="quote_0_comments" class="form-control comments" rows="2" placeholder="Enter Comments"></textarea>
                               </div>
                             </div>
   
-                            <div class="col-sm-2">
+                            <div class="col-md-3">
                               <label>Add Stored Text</label>
                               <div class="form-group">
                                 <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
@@ -810,7 +815,7 @@
                     </div>
                   </div> -->
 
-                  <div class="col-sm-6 agencyField d-none">
+                  <div class="col-md-9 mb-1 agencyField d-none">
                     <div class="form-group">
                       <label>Agency Commission Type <span style="color:red">*</span></label>
                       <div>
@@ -828,8 +833,8 @@
                   </div>
 
                   <div class="form-group row mt-1">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Net Price</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Net Price</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -842,10 +847,8 @@
                   </div>
 
                   <div class="form-group row">
-
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Markup Amount (Gross Margin)</label>
-
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Markup Amount (Gross Margin)</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -856,7 +859,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           {{-- <div class="input-group-prepend">
@@ -873,7 +876,7 @@
 
                   <div class="paid-net-commission-on-departure d-none">
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Agency Commission</label>
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
@@ -887,7 +890,7 @@
                     </div>
   
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Net Margin</label>
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Net Margin</label>
                       <div class="col-sm-2">
                         <div class="form-group">
                           <div class="input-group">
@@ -902,8 +905,8 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Selling Price</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Selling Price</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -917,8 +920,8 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Total Profit Percentage</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Total Profit Percentage</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <input type="number" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
@@ -931,8 +934,8 @@
                   </div>
 
                   <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">Booking Amount Per Person</label>
-                    <div class="col-sm-2">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person</label>
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -945,7 +948,7 @@
                   </div>
 
                   <div class="form-group row" id="potential_commission_feild">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label for="inputEmail3" class="col-md-4 col-form-label">
                       Staff Commission
                       <h5>
                         <span class="badge badge-secondary badge-commission-name" title="Commission Name"></span>
@@ -953,7 +956,7 @@
                         <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage"></span>
                       </h5>
                     </label>
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -977,7 +980,7 @@
                   </div>
 
                   <div class="form-group row">
-                    <div class="col-sm-3">
+                    <div class="col-md-4">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
                         <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
@@ -993,7 +996,7 @@
                       </div>
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <label></label>
                         <div class="input-group">
@@ -1008,23 +1011,17 @@
 
                   </div>
 
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-sm-3 ">
-                          <label for="group_quote" class="col-form-label">Add into Group</label>
-                      </div>
-                      <div class="col-md-9">
-                        <div class="row">
-                          <div class="col-sm-3 relevant-quote">
-                              <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
-                                <option value="" selected >Select Group</option>
-                                @foreach($groups as $group)
-                                  <option value="{{ $group->id }}"> {{ $group->name }}</option>
-                                @endforeach
-                              </select>
-                          </div>
-                        </div>
-                      </div>
+                  <div class="form-group row">
+                    <div class="col-md-4">
+                      <label for="group_quote" class="col-form-label">Add into Group</label>
+                    </div>
+                    <div class="col-md-3 relevant-quote">
+                      <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
+                        <option value="" selected >Select Group</option>
+                        @foreach($groups as $group)
+                          <option value="{{ $group->id }}"> {{ $group->name }}</option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
 
