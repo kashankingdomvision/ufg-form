@@ -131,17 +131,16 @@
 <script>
 window.onload = function() {
 
+  /* hide & show label of time */
   $(document).on('change', '.show-tf', function(){
 
-    var value = $(this).val();
+    let value          = $(this).val();
+    let relavantColumn = $(this).closest('.parent').find('.label-of-time-col');
 
     if(value == 1){
-
-      $(this).closest('.parent').find('.label-of-time-col').removeClass('d-none');
-
+      relavantColumn.removeClass('d-none');
     }else{
-
-      $(this).closest('.parent').find('.label-of-time-col').addClass('d-none');
+      relavantColumn.addClass('d-none');
     }
   });
 
