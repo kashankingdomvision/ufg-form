@@ -42,6 +42,26 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
+    public function categoryArray($request)
+    {
+        $data = [
+
+            'name'                     => $request->name,
+            'slug'                     => Str::slug($request->name),
+            'feilds'                   => $request->feilds,
+            'quote'                    => $request->quote,
+            'booking'                  => $request->booking,
+            'sort_order'               => $request->sort_order,
+            'set_end_date_of_service'  => $request->set_end_date_of_service,
+            'show_tf'                  => $request->show_tf,
+            'label_of_time'            => ($request->show_tf == 1) ? $request->label_of_time : NULL,
+            'second_tf'                => $request->second_tf,
+            'second_label_of_time'     => ($request->second_tf == 1) ? $request->second_label_of_time : NULL,
+        ];
+    
+        return $data;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,20 +74,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         // dd($request->all());
-
-        Category::create([
-            'name'                     => $request->name,
-            'slug'                     => Str::slug($request->name),
-            'feilds'                   => $request->feilds,
-            'quote'                    => $request->quote,
-            'booking'                  => $request->booking,
-            'sort_order'               => $request->sort_order,
-            'set_end_date_of_service'  => $request->set_end_date_of_service,
-            'show_tf'                  => $request->show_tf,
-            'label_of_time'            => ($request->show_tf == 1 ? $request->label_of_time : NULL),
-            'second_tf'                => $request->second_tf,
-            'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
-        ]);
+        Category::create($this->categoryArray($request));
 
         return response()->json(['status' => true, 'success_message' => 'Category created successfully']);
     }
@@ -96,23 +103,9 @@ class CategoryController extends Controller
     // Request
     public function update(UpdateCategoryRequest $request)
     {
-        $category = Category::findOrFail(decrypt($request->id));
-
-        $category->update([
-            'name'                     => $request->name,
-            'slug'                     => Str::slug($request->name),
-            'feilds'                   => $request->feilds,
-            'quote'                    => $request->quote,
-            'booking'                  => $request->booking,
-            'sort_order'               => $request->sort_order,
-            'set_end_date_of_service'  => $request->set_end_date_of_service,
-            'show_tf'                  => $request->show_tf,
-            'label_of_time'            => ($request->show_tf == 1 ? $request->label_of_time : NULL),
-            'second_tf'                => $request->second_tf,
-            'second_label_of_time'     => ($request->second_tf == 1 ? $request->second_label_of_time : NULL),
-        ]);
-
-        $json_quotes = QuoteDetail::where('category_id', $category->id)->whereNotNull('category_details')->get([ 'id', 'category_details']);
+        // dd($request->all());
+        $category    = Category::find(decrypt($request->id))->update($this->categoryArray($request));
+        $json_quotes = QuoteDetail::where('category_id', $request->id)->whereNotNull('category_details')->get([ 'id', 'category_details']);
 
         if($json_quotes->count() > 0){
 
