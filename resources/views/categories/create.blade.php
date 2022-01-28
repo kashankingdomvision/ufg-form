@@ -189,6 +189,7 @@ window.onload = function() {
         'style',
         'access',
         'accept',
+        'toggle',
         // 'value',
       ],
       typeUserAttrs: {

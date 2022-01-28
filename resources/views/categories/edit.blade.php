@@ -237,6 +237,7 @@ window.onload = function() {
           'style',
           'access',
           'accept',
+          'toggle',
           // 'value',
         ],
         formData: presetData,
