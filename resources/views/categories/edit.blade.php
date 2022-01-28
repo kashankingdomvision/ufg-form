@@ -79,14 +79,6 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                <div class="form-group">
-                  <label>Appeared In <span style="color:red">*</span></label>
-                  <br>
-                  <input type="hidden" name="quote" class="quote" value="{{$category->quote}}"><input id="quote"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->quote == 1) ? 'checked': '' }}><label for="quote"> &nbsp; Quote</label>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <input type="hidden" name="booking" class="booking" value="{{$category->booking}}"><input id="booking"   type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->booking == 1) ? 'checked': '' }}><label for="booking" > &nbsp; Booking</label>
-                </div>
-
                 <div class="form-row parent">
                   <div class="col-md-12">
                     <label>Hide/Show First Time Feild <span style="color:red">*</span></label>
@@ -449,3 +441,11 @@ window.onload = function() {
 
 </script>
 @endpush
+
+{{-- <div class="form-group">
+  <label>Appeared In <span style="color:red">*</span></label>
+  <br>
+  <input type="hidden" name="quote" class="quote" value="{{$category->quote}}"><input id="quote"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->quote == 1) ? 'checked': '' }}><label for="quote"> &nbsp; Quote</label>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <input type="hidden" name="booking" class="booking" value="{{$category->booking}}"><input id="booking"   type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($category->booking == 1) ? 'checked': '' }}><label for="booking" > &nbsp; Booking</label>
+</div> --}}
