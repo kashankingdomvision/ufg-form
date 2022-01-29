@@ -151,6 +151,9 @@ $(document).ready(function($) {
         $(p).removeAttr("disabled");
     }
 
+    function removeSpace(string) {
+        return string.replace(/\s/g, '');
+    }
     
     function removeFormValidationStyles(){
         $('input, select').removeClass('is-invalid');
@@ -1952,6 +1955,19 @@ $(document).ready(function($) {
                 quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
             });
 
+            $(document).on('change', '.cat-details-checkbox', function(e) {
+
+                var quote       = $(this).closest('.quote');
+                var quoteKey    = quote.data('key');
+
+                var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                var feildIndex  = $(this).parents('.cat-feild-col').index();
+                var optionIndex = $(this).parents('.cat-details-checkbox-parent').index();
+                formData[feildIndex].values[optionIndex].selected = true;
+        
+                quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
+            });
+
             $(document).on('keyup', '.prod-details-feild', function(e) {
 
                 var quote            = $(this).closest('.quote');
@@ -1994,83 +2010,113 @@ $(document).ready(function($) {
 
             function createElm(quote, selector, type, obj ) {
 
-                var tagName = '';
-                
-                // input text
-                if( obj.type == 'text' )
-                    tagName = 'input';
-                
-                // Textarea
-                else if( obj.type == 'textarea' )
-                    tagName = obj.type;
-            
-                // Dropdown Select
-                else if( obj.type == 'select' )
-                    tagName = obj.type;
+                let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete' ];
+                var appendHTML = '';
 
-                else if( obj.type == 'autocomplete' )
-                tagName = 'select';
-            
-                if( tagName == '' )
-                    return;
-            
-                let elm = document.createElement(tagName);
-            
-                // Set attributes
-                elm.setAttribute('type', 'text');
-                elm.setAttribute('name', obj.name);
-            
-                if( obj.placeholder != undefined ){
-                    elm.setAttribute('placeholder', obj.placeholder);
-                }
-            
-                if( obj.className != undefined && type == 'category_details' ){
-                    elm.setAttribute('class', obj.className + ' cat-details-feild');
-                }
+                if(obj.type == 'checkbox-group'){
+                    
+                    var checkboxElementParent = document.createElement("div");
+                    if(obj.inline){
+                        checkboxElementParent.setAttribute('class', 'd-flex');
+                    }
 
-                if( obj.className != undefined && type == 'product_details' ){
-                    elm.setAttribute('class', obj.className + ' prod-details-feild');
-                }
-
-                if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details'){
-                    elm.setAttribute('class', obj.className + ' select2single cat-details-select');
-                }
-
-                if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details'){
-                    elm.setAttribute('class', obj.className + ' select2single prod-details-select');
-                }
-            
-                if( obj.required != undefined && obj.required ){
-                    elm.setAttribute('required', true);
-                }
-            
-                // set value to text and textarea
-                if( obj.value != undefined && ['text', 'textarea'].includes(obj.type) ) {
-                    elm.setAttribute('value', obj.value);
-                }
-            
-                // add options to selectbox
-                else if( obj.type == 'select' || obj.type == 'autocomplete' ) {
                     //Create and append the options
                     for (let i = 0; i < obj.values.length; i++) {
-                        let option   = document.createElement("option");
-                        option.value = obj.values[i].label;
-                        option.text  = obj.values[i].value;
 
+                        let checkboxDiv = document.createElement("div");
+                        checkboxDiv.setAttribute('class', 'mr-1 cat-details-checkbox-parent');
+
+                        let checkbox   = document.createElement("input")
+                        checkbox.setAttribute("type", "checkbox");
+                        checkbox.setAttribute("name", obj.values[i].value);
+                        checkbox.setAttribute("id", removeSpace(obj.values[i].value));
+                        checkbox.setAttribute("class", "cat-details-checkbox");
+                        checkbox.setAttribute("value", obj.values[i].value);
                         if(obj.values[i].selected){
-                            option.setAttribute('selected','selected');
+                            option.setAttribute('checked','checked');
                         }
 
-                        elm.appendChild(option);
+                        let label = document.createElement('label');
+                        label.innerHTML = `&nbsp; ${obj.values[i].label}`;
+                        label.setAttribute("for", removeSpace(obj.values[i].value));
+
+                        checkboxDiv.appendChild(checkbox);
+                        checkboxDiv.appendChild(label);
+
+                        checkboxElementParent.appendChild(checkboxDiv);
                     }
+
+                    appendHTML = createParentDivOfElm(checkboxElementParent, type, obj);
                 }
 
-                let div = createParentDivOfElm(elm, type, obj);
+                if(inputTypes.includes(obj.type)){
 
-                quote.find(selector).append(div);
+                    let elementType = '';
+
+                    if( obj.type == 'text' )
+                        elementType = 'input';
+
+                    else if( obj.type == 'autocomplete' )
+                        elementType = 'select';
+
+                    else
+                        elementType = obj.type;
+
+                    let elm = document.createElement(elementType);
                 
-                // initialize feild select
-                reinitializedDynamicFeilds();
+                    // Set attributes
+                    elm.setAttribute('type', 'text');
+                    elm.setAttribute('name', obj.name);
+                
+                    if( obj.placeholder != undefined ){
+                        elm.setAttribute('placeholder', obj.placeholder);
+                    }
+                
+                    if( obj.className != undefined && type == 'category_details' ){
+                        elm.setAttribute('class', obj.className + ' cat-details-feild');
+                    }
+    
+                    if( obj.className != undefined && type == 'product_details' ){
+                        elm.setAttribute('class', obj.className + ' prod-details-feild');
+                    }
+    
+                    if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details'){
+                        elm.setAttribute('class', obj.className + ' select2single cat-details-select');
+                    }
+    
+                    if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details'){
+                        elm.setAttribute('class', obj.className + ' select2single prod-details-select');
+                    }
+                
+                    if( obj.required != undefined && obj.required ){
+                        elm.setAttribute('required', true);
+                    }
+                
+                    // set value to text and textarea
+                    if( obj.value != undefined && ['text', 'textarea'].includes(obj.type) ) {
+                        elm.setAttribute('value', obj.value);
+                    }
+                
+                    // add options to selectbox
+                    else if( obj.type == 'select' || obj.type == 'autocomplete' ) {
+                        //Create and append the options
+                        for (let i = 0; i < obj.values.length; i++) {
+                            let option   = document.createElement("option");
+                            option.value = obj.values[i].label;
+                            option.text  = obj.values[i].value;
+    
+                            if(obj.values[i].selected){
+                                option.setAttribute('selected','selected');
+                            }
+    
+                            elm.appendChild(option);
+                        }
+                    }
+    
+                    appendHTML = createParentDivOfElm(elm, type, obj);
+                }
+
+                quote.find(selector).append(appendHTML);
 
                 // insElment.appendChild(div);
                 // $(div).insertAfter(quote.find('.product-id-col'));
@@ -2080,20 +2126,17 @@ $(document).ready(function($) {
 
                 var div = document.createElement('div');
 
-                if(type == 'category_details'){
-                    div.setAttribute('class', 'col-md-2 cat-feild-col');
-                }
+                if(type == 'category_details')
+                    div.setAttribute('class', 'col-md-3 cat-feild-col');
 
-                if(type == 'product_details'){
-                    div.setAttribute('class', 'col-md-2 prod-feild-col');
-                }
+                if(type == 'product_details')
+                    div.setAttribute('class', 'col-md-3 prod-feild-col');
 
-
-                var formGroup = document.createElement('div');
+                let formGroup = document.createElement('div');
                 formGroup.setAttribute('class', 'form-group');
 
-                var label = document.createElement('label');
-                label.innerHTML = obj.label;
+                let label = document.createElement('label');
+                label.innerHTML = `&nbsp; ${obj.label}`;
 
                 formGroup.appendChild(label);
                 formGroup.appendChild(elem);

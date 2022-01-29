@@ -70225,6 +70225,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(p).removeAttr("disabled");
   }
 
+  function removeSpace(string) {
+    return string.replace(/\s/g, '');
+  }
+
   function removeFormValidationStyles() {
     $('input, select').removeClass('is-invalid');
     $('.text-danger').html('');
@@ -71855,6 +71859,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
   });
+  $(document).on('change', '.cat-details-checkbox', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
+    var feildIndex = $(this).parents('.cat-feild-col').index();
+    var optionIndex = $(this).parents('.cat-details-checkbox-parent').index();
+    formData[feildIndex].values[optionIndex].selected = true;
+    quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+  });
   $(document).on('keyup', '.prod-details-feild', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -71887,82 +71900,109 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function createElm(quote, selector, type, obj) {
-    var tagName = ''; // input text
+    var inputTypes = ['text', 'textarea', 'select', 'autocomplete'];
+    var appendHTML = '';
 
-    if (obj.type == 'text') tagName = 'input'; // Textarea
-    else if (obj.type == 'textarea') tagName = obj.type; // Dropdown Select
-    else if (obj.type == 'select') tagName = obj.type;else if (obj.type == 'autocomplete') tagName = 'select';
-    if (tagName == '') return;
-    var elm = document.createElement(tagName); // Set attributes
+    if (obj.type == 'checkbox-group') {
+      var checkboxElementParent = document.createElement("div");
 
-    elm.setAttribute('type', 'text');
-    elm.setAttribute('name', obj.name);
-
-    if (obj.placeholder != undefined) {
-      elm.setAttribute('placeholder', obj.placeholder);
-    }
-
-    if (obj.className != undefined && type == 'category_details') {
-      elm.setAttribute('class', obj.className + ' cat-details-feild');
-    }
-
-    if (obj.className != undefined && type == 'product_details') {
-      elm.setAttribute('class', obj.className + ' prod-details-feild');
-    }
-
-    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details') {
-      elm.setAttribute('class', obj.className + ' select2single cat-details-select');
-    }
-
-    if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details') {
-      elm.setAttribute('class', obj.className + ' select2single prod-details-select');
-    }
-
-    if (obj.required != undefined && obj.required) {
-      elm.setAttribute('required', true);
-    } // set value to text and textarea
+      if (obj.inline) {
+        checkboxElementParent.setAttribute('class', 'd-flex');
+      } //Create and append the options
 
 
-    if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
-      elm.setAttribute('value', obj.value);
-    } // add options to selectbox
-    else if (obj.type == 'select' || obj.type == 'autocomplete') {
-      //Create and append the options
       for (var i = 0; i < obj.values.length; i++) {
-        var option = document.createElement("option");
-        option.value = obj.values[i].label;
-        option.text = obj.values[i].value;
+        var checkboxDiv = document.createElement("div");
+        checkboxDiv.setAttribute('class', 'mr-1 cat-details-checkbox-parent');
+        var checkbox = document.createElement("input");
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("name", obj.values[i].value);
+        checkbox.setAttribute("id", removeSpace(obj.values[i].value));
+        checkbox.setAttribute("class", "cat-details-checkbox");
+        checkbox.setAttribute("value", obj.values[i].value);
 
         if (obj.values[i].selected) {
-          option.setAttribute('selected', 'selected');
+          option.setAttribute('checked', 'checked');
         }
 
-        elm.appendChild(option);
+        var label = document.createElement('label');
+        label.innerHTML = "&nbsp; ".concat(obj.values[i].label);
+        label.setAttribute("for", removeSpace(obj.values[i].value));
+        checkboxDiv.appendChild(checkbox);
+        checkboxDiv.appendChild(label);
+        checkboxElementParent.appendChild(checkboxDiv);
       }
+
+      appendHTML = createParentDivOfElm(checkboxElementParent, type, obj);
     }
 
-    var div = createParentDivOfElm(elm, type, obj);
-    quote.find(selector).append(div); // initialize feild select
+    if (inputTypes.includes(obj.type)) {
+      var elementType = '';
+      if (obj.type == 'text') elementType = 'input';else if (obj.type == 'autocomplete') elementType = 'select';else elementType = obj.type;
+      var elm = document.createElement(elementType); // Set attributes
 
-    reinitializedDynamicFeilds(); // insElment.appendChild(div);
+      elm.setAttribute('type', 'text');
+      elm.setAttribute('name', obj.name);
+
+      if (obj.placeholder != undefined) {
+        elm.setAttribute('placeholder', obj.placeholder);
+      }
+
+      if (obj.className != undefined && type == 'category_details') {
+        elm.setAttribute('class', obj.className + ' cat-details-feild');
+      }
+
+      if (obj.className != undefined && type == 'product_details') {
+        elm.setAttribute('class', obj.className + ' prod-details-feild');
+      }
+
+      if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details') {
+        elm.setAttribute('class', obj.className + ' select2single cat-details-select');
+      }
+
+      if (obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details') {
+        elm.setAttribute('class', obj.className + ' select2single prod-details-select');
+      }
+
+      if (obj.required != undefined && obj.required) {
+        elm.setAttribute('required', true);
+      } // set value to text and textarea
+
+
+      if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
+        elm.setAttribute('value', obj.value);
+      } // add options to selectbox
+      else if (obj.type == 'select' || obj.type == 'autocomplete') {
+        //Create and append the options
+        for (var _i = 0; _i < obj.values.length; _i++) {
+          var _option = document.createElement("option");
+
+          _option.value = obj.values[_i].label;
+          _option.text = obj.values[_i].value;
+
+          if (obj.values[_i].selected) {
+            _option.setAttribute('selected', 'selected');
+          }
+
+          elm.appendChild(_option);
+        }
+      }
+
+      appendHTML = createParentDivOfElm(elm, type, obj);
+    }
+
+    quote.find(selector).append(appendHTML); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 
   function createParentDivOfElm(elem, type, obj) {
     var div = document.createElement('div');
-
-    if (type == 'category_details') {
-      div.setAttribute('class', 'col-md-2 cat-feild-col');
-    }
-
-    if (type == 'product_details') {
-      div.setAttribute('class', 'col-md-2 prod-feild-col');
-    }
-
+    if (type == 'category_details') div.setAttribute('class', 'col-md-3 cat-feild-col');
+    if (type == 'product_details') div.setAttribute('class', 'col-md-3 prod-feild-col');
     var formGroup = document.createElement('div');
     formGroup.setAttribute('class', 'form-group');
     var label = document.createElement('label');
-    label.innerHTML = obj.label;
+    label.innerHTML = "&nbsp; ".concat(obj.label);
     formGroup.appendChild(label);
     formGroup.appendChild(elem);
     div.appendChild(formGroup);
@@ -74561,14 +74601,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       idLength = ids.length + _val;
     }
 
-    for (var _i = 0; _i <= ids.length; _i++) {
-      var count = 2 + _i;
+    for (var _i2 = 0; _i2 <= ids.length; _i2++) {
+      var count = 2 + _i2;
 
       if (agency_Val == 1) {
-        count = 1 + _i;
+        count = 1 + _i2;
       }
 
-      $('#' + ids[_i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
+      $('#' + ids[_i2]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
     }
   }); //pax appednd work end
 
