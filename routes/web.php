@@ -144,8 +144,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get_autocomplete_data', array('as' => 'get_autocomplete_data', 'uses' => 'QuoteController@get_autocomplete_data'));
     });
 
-
-
     /*
     |--------------------------------------------------------------------------
     | Stored Text
@@ -204,7 +202,6 @@ Route::group(['middleware' => ['auth']], function(){
 
 
    /* Supplier Bulk Payments */
-
     Route::group([
         'prefix' => 'supplier-bulk-payments',
         'as'     => 'supplier-bulk-payments.'
@@ -217,7 +214,6 @@ Route::group(['middleware' => ['auth']], function(){
         /* View Supplier Bulk Payment */
         Route::get('view', array('as' => 'view', 'uses' => 'SupplierBulkPaymentController@view'));
     });
-
 
 
     /*
@@ -347,9 +343,7 @@ Route::group(['middleware' => ['auth']], function(){
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
-    /*  Supplier Product */
-
-    
+    /*  Products */
     Route::group([
         'prefix' => 'products',
         'as'     => 'products.'
@@ -358,28 +352,12 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'ProductController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'ProductController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'ProductController@store'));
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'ProductController@edit']);
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'ProductController@edit'));
         Route::post('update', array('as' => 'update', 'uses' => 'ProductController@update'));
-        Route::delete('delete/{id}', ['as' => 'destroy', 'uses' => 'ProductController@destroy']);
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'ProductController@destroy'));
 
-        // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
-
-
-    // Route::get('index', array('as' => 'products.index', 'uses' => 'ProductController@index'));
-    // Route::get('edit/{id}', ['as' => 'products.edit', 'uses' => 'ProductController@edit']);
-    // Route::post('update', array('as' => 'products.update', 'uses' => 'ProductController@update'));
-
-    // Route::resource('products', 'ProductController',['only' => [
-    //     'index','create', 'store',  'destroy'
-    // ]]);
-
-    /*  Supplier Categories */
-    // Route::resource('categories', 'CategoryController',['only' => [
-    //     'index','create', 'store', 'edit', 'update', 'destroy'
-    // ]]);
-
+;
     /*  Supplier Categories */
     Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
@@ -394,14 +372,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'CategoryController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'CategoryController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'CategoryController@store'));
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'CategoryController@edit']);
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CategoryController@edit'));
         Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
-        Route::delete('delete/{id}', ['as' => 'destroy', 'uses' => 'CategoryController@destroy']);
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CategoryController@destroy'));
 
-        // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-    	// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
     });
-
 
 
     /*
@@ -570,3 +545,21 @@ Route::group(['middleware' => ['auth']], function(){
         return view('quote_documents.index');
     });
 });
+
+
+
+// Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+// Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+
+// Route::get('index', array('as' => 'products.index', 'uses' => 'ProductController@index'));
+// Route::get('edit/{id}', ['as' => 'products.edit', 'uses' => 'ProductController@edit']);
+// Route::post('update', array('as' => 'products.update', 'uses' => 'ProductController@update'));
+
+// Route::resource('products', 'ProductController',['only' => [
+//     'index','create', 'store',  'destroy'
+// ]]);
+
+/*  Supplier Categories */
+// Route::resource('categories', 'CategoryController',['only' => [
+//     'index','create', 'store', 'edit', 'update', 'destroy'
+// ]])
