@@ -147,7 +147,7 @@ $(document).ready(function() {
 
     $(document).on('click', '#store_category_submit', function(){
 
-        let storeFormData = storeFormBuilder[0].actions.getData('json')
+        let storeFormData = storeFormBuilder[0].actions.getData('json');
         let url           = $('#store_category').attr('action');
         let storeCategory = new FormData($('#store_category')[0]);
         storeFormData     = (storeFormData == '[]') ? '' : storeFormData;
@@ -283,7 +283,7 @@ $(document).ready(function() {
 
     $(document).on('click', '#update_category_submit', function(){
 
-        let updateFormData = updateFormBuilder.actions.getData('json')
+        let updateFormData = updateFormBuilder.actions.getData('json');
         let url            = $('#update_category').attr('action');
         let updateCategory = new FormData($('#update_category')[0]);
         updateFormData     = (updateFormData == '[]') ? '' : updateFormData;
