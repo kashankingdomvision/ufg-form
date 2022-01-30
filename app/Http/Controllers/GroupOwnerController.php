@@ -54,7 +54,7 @@ class GroupOwnerController extends Controller
             'name'       => $request->name,
         ]);
 
-        return redirect()->route('group_owners.index')->with('success_message', 'Group Owner created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Group Owner created successfully' ]);
     }
 
     /**
@@ -94,7 +94,7 @@ class GroupOwnerController extends Controller
             'name'       => $request->name,
         ]);
 
-        return redirect()->route('group_owners.index')->with('success_message', 'Group Owner updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Group Owner updated successfully' ]);
     }
 
     /**
