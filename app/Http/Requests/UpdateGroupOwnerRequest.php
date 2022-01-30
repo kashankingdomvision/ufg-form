@@ -25,7 +25,7 @@ class UpdateGroupOwnerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('group_owners','name')->ignore(decrypt($this->group_owner))],
+            'name' => ['required', Rule::unique('group_owners','name')->ignore(decrypt($this->id))],
         ];
     }
 

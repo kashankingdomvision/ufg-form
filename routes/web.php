@@ -333,10 +333,20 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::resource('suppliers', 'SupplierController');
 
-    /*  Supplier Group Owner */
-    Route::resource('group_owners', 'GroupOwnerController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    /* Group Owner */
+    Route::group([
+        'prefix' => 'group-owners',
+        'as'     => 'group_owners.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'GroupOwnerController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'GroupOwnerController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'GroupOwnerController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'GroupOwnerController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'GroupOwnerController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'GroupOwnerController@destroy'));
+
+    });
 
     /*  Supplier Rate Sheet */
     Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
