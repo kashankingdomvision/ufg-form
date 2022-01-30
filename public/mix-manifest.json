@@ -1,7 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/js/category_app.js": "/js/category_app.js",
     "/js/product_app.js": "/js/product_app.js",
-    "/js/quote_app.js": "/js/quote_app.js"
+    "/js/quote_app.js": "/js/quote_app.js",
+    "/js/supplier_management.js": "/js/supplier_management.js"
 }

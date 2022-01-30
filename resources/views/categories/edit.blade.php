@@ -106,7 +106,7 @@
                 </div>
               </form>
 
-              <div id="form_builder_div"></div>
+              <div id="update_form_builder_div"></div>
             </div>
 
             <div class="card-footer">
@@ -126,203 +126,17 @@
 @endsection
 
 @push('js')
-<script src="{{ asset('js/category_app.js') }}" ></script>
+<script src="{{ asset('js/supplier_management.js') }}" ></script>
 <script>
 
 window.onload = function() {
 
-  $(document).on('change', '.show-tf', function(){
-
-    let value          = $(this).val();
-    let relavantColumn = $(this).closest('.parent').find('.label-of-time-col');
-
-    if(value == 1){
-      relavantColumn.removeClass('d-none');
-    }else{
-      relavantColumn.addClass('d-none');
-    }
-  });
-
-  $(document).on("click", ".del-button",function() {
-
-    let parentLI    = $(this).closest('li');
-    let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
-    let categoryID  = $('input[name=id]').val();
-
-    let data = {
-      'id'            : categoryID,
-      'element_name'  : elementName,
-      "_token"        : CSRFTOKEN,
-    };
-
-    $.ajax({
-      type: 'GET',
-      url: `${BASEURL}remove-form-buidler-feild`,
-      data: data,
-      success: function(data){
-        if(data && data.status == true){
-          alert(data.success_message);
-          return;
-        }
-
-        parentLI.remove();
-      },
-      error: function(reject) {
-
-        if(reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-        }
-      },
-    });
-    
-  });
 
 
-  /* formbuilder function */
-  var presetFormData = $('#preset_form_data').val();
 
-  /* formbuilder function */
-  var options = {
-    disabledActionButtons: ['clear','data','save'],
-    disableFields: ['file','hidden','button'],
-    disabledAttrs: [
-      'className',
-      'description',
-      'maxlength',
-      'name',
-      'other',
-      'required',
-      'rows',
-      'step',
-      'style',
-      'access',
-      'accept',
-      'toggle',
-      // 'value',
-    ],
-    formData: presetFormData,
-    typeUserAttrs: {
-      autocomplete: {
-        data: {
-          label: 'Type',
-          /* options keys should be related table name */ 
-          options: {
-            'airport_codes' : 'Airport Codes',
-            'harbours'      : 'Harbours, Train and Points of Interest',
-            'hotels'        : 'Hotels',
-            'all'           : 'All',
-            'group_owners'  : 'Group Owner',
-            'none'          : 'None',
-          },
-        }
-      },
-    },
-    onAddField: function(fieldId, fieldData) {
-      setFieldData(fieldData);
-    },
-    onOpenFieldEdit: function(field) {
-      if(currentFieldData.type == "autocomplete"){
 
-        /* By default hide options & remove child li */ 
-        hideOptionsAndRemoveChildLI(field.id);
 
-        let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
-        $(selector).on('change', function(){
 
-          if($(this).val() === "none"){
-
-            /* display options li */ 
-            showOptions(field.id);
-          } else {
-            hideOptionsAndRemoveChildLI(field.id);
-          }
-        });
-
-      } /* end if condition*/
-      
-    },
-  }; /* options */
-
-  var formBuilderDiv = $('#form_builder_div');
-  var formBuilder    = $(formBuilderDiv).formBuilder(options);
-
-  function setFieldData(fieldData){
-    currentFieldData = fieldData;
-  }
-  
-  function hideOptionsAndRemoveChildLI(fieldID){
-    $(`#${fieldID} .field-options`).addClass("d-none");
-    $(`#${fieldID} .sortable-options li`).remove();
-  }
-
-  function showOptions(fieldID){
-    $(`#${fieldID} .field-options`).removeClass("d-none");
-  }
-  /* End formbuilder function */
-
-  $(document).on('click', '#update_category_submit', function(){
-
-    let formData       = formBuilder.actions.getData('json')
-    let url            = $('#update_category').attr('action');
-    let updateCategory = new FormData($('#update_category')[0]);
-    formData           = (formData == '[]') ? '' : formData;
-    updateCategory.append('feilds', formData);
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: updateCategory,
-      processData: false,
-      contentType: false,
-      cache: false,
-      beforeSend: function() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-      },
-      success: function(data) {
-        $("#overlay").removeClass('overlay').html('');
-        
-        setTimeout(function() {
-
-          if(data && data.status == true){
-            alert(data.success_message);
-            window.location.href = '{{route('categories.index')}}';
-          }
-        }, 200);
-      },
-      error: function(reject) {
-
-        if (reject.status === 422) {
-
-          var errors = $.parseJSON(reject.responseText);
-          var flag = true;
-
-          setTimeout(function() {
-
-            $("#overlay").removeClass('overlay').html('');
-
-            jQuery.each(errors.errors, function(index, value) {
-
-              index = index.replace(/\./g, '_');
-
-              $(`#${index}`).addClass('is-invalid');
-              $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-              if(flag){
-                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                flag = false;
-              }
-
-            });
-          }, 400);
-        }
-        
-      },
-    }); /* end ajax*/
-
-  });
 }
 </script>
 @endpush
