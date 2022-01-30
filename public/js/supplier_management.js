@@ -27375,6 +27375,8 @@ __webpack_require__(/*! ./supplier_managment/category_app */ "./resources/js/sup
 
 __webpack_require__(/*! ./supplier_managment/product_app */ "./resources/js/supplier_managment/product_app.js");
 
+__webpack_require__(/*! ./supplier_managment/supplier_rate_sheet */ "./resources/js/supplier_managment/supplier_rate_sheet.js");
+
 /***/ }),
 
 /***/ "./resources/js/supplier_managment/category_app.js":
@@ -27930,6 +27932,105 @@ $(document).ready(function () {
       }
     });
     /* end ajax*/
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/supplier_managment/supplier_rate_sheet.js":
+/*!****************************************************************!*\
+  !*** ./resources/js/supplier_managment/supplier_rate_sheet.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Supplier Rate Sheet
+  |--------------------------------------------------------------------------------
+  */
+  $("#store_supplier_rate_sheet").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(data) {
+        removeFormLoadingStyles();
+        setTimeout(function () {
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            removeFormLoadingStyles();
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 200);
+        }
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Supplier Rate Sheet
+  |--------------------------------------------------------------------------------
+  */
+
+  $("#update_supplier_rate_sheet").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(data) {
+        removeFormLoadingStyles();
+        setTimeout(function () {
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            removeFormLoadingStyles();
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 200);
+        }
+      }
+    });
   });
 });
 

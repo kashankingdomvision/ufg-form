@@ -5,3 +5,4 @@ require('./form_builder/formBuilder');
 
 require('./supplier_managment/category_app');
 require('./supplier_managment/product_app');
+require('./supplier_managment/supplier_rate_sheet');
