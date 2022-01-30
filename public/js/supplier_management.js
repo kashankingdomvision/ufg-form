@@ -27415,37 +27415,83 @@ $(document).ready(function () {
       relavantColumn.addClass('d-none');
     }
   });
+  /* 
+      Remove form builder feild method
+      also used product form builder
+  */
+
   $(document).on("click", ".del-button", function () {
-    var parentLI = $(this).closest('li');
-    var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
-    var categoryID = $('input[name=id]').val();
-    var data = {
-      'id': categoryID,
-      'element_name': elementName,
-      "_token": CSRFTOKEN
-    };
+    if (CURRENT_ROUTE_NAME == "categories.create" || CURRENT_ROUTE_NAME == "categories.edit") {
+      var parentLI = $(this).closest('li');
+      var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+      var categoryID = $('input[name=id]').val();
+      var data = {
+        'id': categoryID,
+        'element_name': elementName,
+        "_token": CSRFTOKEN
+      };
 
-    if (typeof categoryID !== 'undefined' && categoryID != "") {
-      $.ajax({
-        type: 'GET',
-        url: "".concat(BASEURL, "remove-form-buidler-feild"),
-        data: data,
-        success: function success(data) {
-          if (data && data.status == true) {
-            alert(data.success_message);
-            return;
-          }
+      if (typeof categoryID !== 'undefined' && categoryID != "") {
+        $.ajax({
+          type: 'GET',
+          url: "".concat(BASEURL, "remove-form-buidler-feild"),
+          data: data,
+          success: function success(data) {
+            if (data && data.status == true) {
+              alert(data.success_message);
+              return;
+            }
 
-          parentLI.remove();
-        },
-        error: function error(reject) {
-          if (reject.status === 422) {
-            var errors = $.parseJSON(reject.responseText);
+            parentLI.remove();
+          },
+          error: function error(reject) {
+            if (reject.status === 422) {
+              var errors = $.parseJSON(reject.responseText);
+            }
           }
-        }
-      });
-    } else {
-      parentLI.remove();
+        });
+      } else {
+        parentLI.remove();
+      }
+    }
+
+    if (CURRENT_ROUTE_NAME == "products.create" || CURRENT_ROUTE_NAME == "products.edit") {
+      console.log("products");
+
+      var _parentLI = $(this).closest('li');
+
+      var _elementName = _parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+
+      var _categoryID = $('input[name=id]').val();
+
+      var _data = {
+        'id': _categoryID,
+        'element_name': _elementName,
+        "_token": CSRFTOKEN
+      };
+
+      if (typeof _categoryID !== 'undefined' && _categoryID != "") {
+        $.ajax({
+          type: 'GET',
+          url: "".concat(BASEURL, "remove-form-buidler-feild"),
+          data: _data,
+          success: function success(data) {
+            if (data && data.status == true) {
+              alert(data.success_message);
+              return;
+            }
+
+            _parentLI.remove();
+          },
+          error: function error(reject) {
+            if (reject.status === 422) {
+              var errors = $.parseJSON(reject.responseText);
+            }
+          }
+        });
+      } else {
+        _parentLI.remove();
+      }
     }
   });
   /*
@@ -27674,6 +27720,11 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  /*
+    Note: 
+    Remove form builder feild method define in supplier_managment/category_app.js
+  */
+
   /*
   |--------------------------------------------------------------------------------
   | Common Functions

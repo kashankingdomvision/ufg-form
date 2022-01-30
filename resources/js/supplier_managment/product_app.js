@@ -1,8 +1,13 @@
 $(document).ready(function() {
+
+  /*
+    Note: 
+    Remove form builder feild method define in supplier_managment/category_app.js
+  */
   
   /*
   |--------------------------------------------------------------------------------
-  | Common Functions
+  | Common Functions for Store & Update Product
   |--------------------------------------------------------------------------------
   */
 

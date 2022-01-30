@@ -2,7 +2,7 @@ $(document).ready(function() {
    
     /*
     |--------------------------------------------------------------------------------
-    | Common Functions
+    | Common Functions for Store & Update Category
     |--------------------------------------------------------------------------------
     */
 
@@ -32,44 +32,95 @@ $(document).ready(function() {
         }
     });
 
+    /* 
+        Remove form builder feild method
+        also used product form builder
+    */
     $(document).on("click", ".del-button",function() {
 
-        let parentLI    = $(this).closest('li');
-        let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
-        let categoryID  = $('input[name=id]').val();
-    
-        let data = {
-          'id'            : categoryID,
-          'element_name'  : elementName,
-          "_token"        : CSRFTOKEN,
-        };
 
-        if(typeof categoryID !== 'undefined' && categoryID != ""){
+        if(CURRENT_ROUTE_NAME == "categories.create" || CURRENT_ROUTE_NAME == "categories.edit"){
 
-            $.ajax({
-                type: 'GET',
-                url: `${BASEURL}remove-form-buidler-feild`,
-                data: data,
-                success: function(data){
-                    if(data && data.status == true){
-                        alert(data.success_message);
-                        return;
-                    }
+            let parentLI    = $(this).closest('li');
+            let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+            let categoryID  = $('input[name=id]').val();
         
-                    parentLI.remove();
-                },
-                error: function(reject) {
-            
-                    if(reject.status === 422) {
-                        var errors = $.parseJSON(reject.responseText);
-                    }
-                },
-            });
-        }else{
-
-            parentLI.remove();
-        }
+            let data = {
+              'id'            : categoryID,
+              'element_name'  : elementName,
+              "_token"        : CSRFTOKEN,
+            };
     
+            if(typeof categoryID !== 'undefined' && categoryID != ""){
+    
+                $.ajax({
+                    type: 'GET',
+                    url: `${BASEURL}remove-form-buidler-feild`,
+                    data: data,
+                    success: function(data){
+                        if(data && data.status == true){
+                            alert(data.success_message);
+                            return;
+                        }
+            
+                        parentLI.remove();
+                    },
+                    error: function(reject) {
+                
+                        if(reject.status === 422) {
+                            var errors = $.parseJSON(reject.responseText);
+                        }
+                    },
+                });
+            }else{
+    
+                parentLI.remove();
+            }
+
+        }
+
+        if(CURRENT_ROUTE_NAME == "products.create" || CURRENT_ROUTE_NAME == "products.edit"){
+
+            console.log("products");
+
+            let parentLI    = $(this).closest('li');
+            let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+            let categoryID  = $('input[name=id]').val();
+        
+            let data = {
+              'id'            : categoryID,
+              'element_name'  : elementName,
+              "_token"        : CSRFTOKEN,
+            };
+    
+            if(typeof categoryID !== 'undefined' && categoryID != ""){
+    
+                $.ajax({
+                    type: 'GET',
+                    url: `${BASEURL}remove-form-buidler-feild`,
+                    data: data,
+                    success: function(data){
+                        if(data && data.status == true){
+                            alert(data.success_message);
+                            return;
+                        }
+            
+                        parentLI.remove();
+                    },
+                    error: function(reject) {
+                
+                        if(reject.status === 422) {
+                            var errors = $.parseJSON(reject.responseText);
+                        }
+                    },
+                });
+            }else{
+    
+                parentLI.remove();
+            }
+
+        }
+        
     });
 
     /*
