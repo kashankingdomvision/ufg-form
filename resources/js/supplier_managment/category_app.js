@@ -39,7 +39,7 @@ $(document).ready(function() {
     $(document).on("click", ".del-button",function() {
 
 
-        if(CURRENT_ROUTE_NAME == "categories.create" || CURRENT_ROUTE_NAME == "categories.edit"){
+        if([ "categories.create", "categories.edit" ].includes(CURRENT_ROUTE_NAME)){
 
             let parentLI    = $(this).closest('li');
             let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
@@ -79,9 +79,7 @@ $(document).ready(function() {
 
         }
 
-        if(CURRENT_ROUTE_NAME == "products.create" || CURRENT_ROUTE_NAME == "products.edit"){
-
-            console.log("products");
+        if([ "products.create", "products.edit" ].includes(CURRENT_ROUTE_NAME)){
 
             let parentLI    = $(this).closest('li');
             let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();

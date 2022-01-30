@@ -27387,7 +27387,7 @@ __webpack_require__(/*! ./supplier_managment/product_app */ "./resources/js/supp
 $(document).ready(function () {
   /*
   |--------------------------------------------------------------------------------
-  | Common Functions
+  | Common Functions for Store & Update Category
   |--------------------------------------------------------------------------------
   */
   function setFieldData(fieldData) {
@@ -27421,7 +27421,7 @@ $(document).ready(function () {
   */
 
   $(document).on("click", ".del-button", function () {
-    if (CURRENT_ROUTE_NAME == "categories.create" || CURRENT_ROUTE_NAME == "categories.edit") {
+    if (["categories.create", "categories.edit"].includes(CURRENT_ROUTE_NAME)) {
       var parentLI = $(this).closest('li');
       var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
       var categoryID = $('input[name=id]').val();
@@ -27455,9 +27455,7 @@ $(document).ready(function () {
       }
     }
 
-    if (CURRENT_ROUTE_NAME == "products.create" || CURRENT_ROUTE_NAME == "products.edit") {
-      console.log("products");
-
+    if (["products.create", "products.edit"].includes(CURRENT_ROUTE_NAME)) {
       var _parentLI = $(this).closest('li');
 
       var _elementName = _parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
@@ -27727,7 +27725,7 @@ $(document).ready(function () {
 
   /*
   |--------------------------------------------------------------------------------
-  | Common Functions
+  | Common Functions for Store & Update Product
   |--------------------------------------------------------------------------------
   */
   function setFieldData(fieldData) {
