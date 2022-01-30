@@ -27373,6 +27373,8 @@ __webpack_require__(/*! ./form_builder/formBuilder */ "./resources/js/form_build
 
 __webpack_require__(/*! ./supplier_managment/category_app */ "./resources/js/supplier_managment/category_app.js");
 
+__webpack_require__(/*! ./supplier_managment/product_app */ "./resources/js/supplier_managment/product_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/supplier_managment/category_app.js":
@@ -27657,6 +27659,141 @@ $(document).ready(function () {
       }
     });
     /* end ajax*/
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/supplier_managment/product_app.js":
+/*!********************************************************!*\
+  !*** ./resources/js/supplier_managment/product_app.js ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Common Functions
+  |--------------------------------------------------------------------------------
+  */
+  function setFieldData(fieldData) {
+    currentFieldData = fieldData;
+  }
+
+  function hideOptionsAndRemoveChildLI(fieldID) {
+    $("#".concat(fieldID, " .field-options")).addClass("d-none");
+    $("#".concat(fieldID, " .sortable-options li")).remove();
+  }
+
+  function showOptions(fieldID) {
+    $("#".concat(fieldID, " .field-options")).removeClass("d-none");
+  }
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Product
+  |--------------------------------------------------------------------------------
+  */
+
+
+  var storeProductOptions = {
+    disabledActionButtons: ['clear', 'data', 'save'],
+    disableFields: ['file', 'hidden', 'button'],
+    disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
+    ],
+    typeUserAttrs: {
+      autocomplete: {
+        data: {
+          label: 'Type',
+
+          /* options keys should be related table name */
+          options: {
+            'airport_codes': 'Airport Codes',
+            'harbours': 'Harbours, Train and Points of Interest',
+            'hotels': 'Hotels',
+            'all': 'All',
+            'group_owners': 'Group Owner',
+            'none': 'None'
+          }
+        }
+      }
+    },
+    onAddField: function onAddField(fieldId, fieldData) {
+      setFieldData(fieldData);
+    },
+    onOpenFieldEdit: function onOpenFieldEdit(field) {
+      if (currentFieldData.type == "autocomplete") {
+        /* By default hide options & remove child li */
+        hideOptionsAndRemoveChildLI(field.id);
+        var selector = "#".concat(field.id, " .form-elements .data-wrap .input-wrap select");
+        $(selector).on('change', function () {
+          if ($(this).val() === "none") {
+            /* display options li */
+            showOptions(field.id);
+          } else {
+            hideOptionsAndRemoveChildLI(field.id);
+          }
+        });
+      }
+      /* end if condition*/
+
+    }
+  };
+  var storeProductFormBuilderDiv = $('#store_product_form_builder_div');
+  var storeProductFormBuilder = [];
+  $(storeProductFormBuilderDiv).formBuilder(storeProductOptions).promise.then(function (response) {
+    storeProductFormBuilder.push(response);
+  });
+  $(document).on('click', '#store_product_submit', function () {
+    var storeProductFormData = storeProductFormBuilder[0].actions.getData('json');
+    var url = $('#store_product').attr('action');
+    var storeProduct = new FormData($('#store_product')[0]);
+    storeProductFormData = storeProductFormData == '[]' ? '' : storeProductFormData;
+    storeProduct.append('feilds', storeProductFormData);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: storeProduct,
+      processData: false,
+      contentType: false,
+      cache: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          if (data && data.status == true) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "products/index");
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          var flag = true;
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+              if (flag) {
+                $('html, body').animate({
+                  scrollTop: $("#".concat(index)).offset().top
+                }, 1000);
+                flag = false;
+              }
+            });
+          }, 400);
+        }
+      }
+    });
   });
 });
 

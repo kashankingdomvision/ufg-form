@@ -4,3 +4,4 @@ require('./form_builder/formBuilder');
 
 
 require('./supplier_managment/category_app');
+require('./supplier_managment/product_app');
