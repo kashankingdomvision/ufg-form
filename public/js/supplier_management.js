@@ -27797,6 +27797,91 @@ $(document).ready(function () {
       }
     });
   });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Product
+  |--------------------------------------------------------------------------------
+  */
+
+  var presetProductFormData = $('#preset_product_form_data').val();
+  var updateProductOptions = {
+    disabledActionButtons: ['clear', 'data', 'save'],
+    disableFields: ['file', 'hidden', 'button'],
+    disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
+    ],
+    formData: presetProductFormData,
+    typeUserAttrs: {
+      autocomplete: {
+        data: {
+          label: 'Type',
+          options: {
+            'airport_codes': 'Airport Codes',
+            'harbours': 'Harbours, Train and Points of Interest',
+            'hotels': 'Hotels',
+            'all': 'All',
+            'none': 'None'
+          }
+        }
+      }
+    }
+  };
+  var updateProductFormBuilderDiv = $('#update_product_form_builder_div');
+  var updateProductFormBuilder = [];
+  $(updateProductFormBuilderDiv).formBuilder(updateProductOptions).promise.then(function (response) {
+    updateProductFormBuilder.push(response);
+  });
+  $(document).on('click', '#update_product_submit', function () {
+    var updateProductFormData = updateProductFormBuilder[0].actions.getData('json');
+    var url = $('#update_product').attr('action');
+    var updateProduct = new FormData($('#update_product')[0]);
+    updateProductFormData = updateProductFormData == '[]' ? '' : updateProductFormData;
+    updateProduct.append('feilds', updateProductFormData);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: updateProduct,
+      processData: false,
+      contentType: false,
+      cache: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          if (data && data.status == true) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "products/index");
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          var flag = true;
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+              if (flag) {
+                $('html, body').animate({
+                  scrollTop: $("#".concat(index)).offset().top
+                }, 1000);
+                flag = false;
+              }
+            });
+          }, 400);
+        }
+      }
+    });
+    /* end ajax*/
+  });
 });
 
 /***/ }),
