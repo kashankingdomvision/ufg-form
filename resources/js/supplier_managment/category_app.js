@@ -32,6 +32,46 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on("click", ".del-button",function() {
+
+        let parentLI    = $(this).closest('li');
+        let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+        let categoryID  = $('input[name=id]').val();
+    
+        let data = {
+          'id'            : categoryID,
+          'element_name'  : elementName,
+          "_token"        : CSRFTOKEN,
+        };
+
+        if(typeof categoryID !== 'undefined' && categoryID != ""){
+
+            $.ajax({
+                type: 'GET',
+                url: `${BASEURL}remove-form-buidler-feild`,
+                data: data,
+                success: function(data){
+                    if(data && data.status == true){
+                        alert(data.success_message);
+                        return;
+                    }
+        
+                    parentLI.remove();
+                },
+                error: function(reject) {
+            
+                    if(reject.status === 422) {
+                        var errors = $.parseJSON(reject.responseText);
+                    }
+                },
+            });
+        }else{
+
+            parentLI.remove();
+        }
+    
+    });
+
     /*
     |--------------------------------------------------------------------------------
     | Store Category

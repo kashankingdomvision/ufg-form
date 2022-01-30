@@ -27413,6 +27413,39 @@ $(document).ready(function () {
       relavantColumn.addClass('d-none');
     }
   });
+  $(document).on("click", ".del-button", function () {
+    var parentLI = $(this).closest('li');
+    var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+    var categoryID = $('input[name=id]').val();
+    var data = {
+      'id': categoryID,
+      'element_name': elementName,
+      "_token": CSRFTOKEN
+    };
+
+    if (typeof categoryID !== 'undefined' && categoryID != "") {
+      $.ajax({
+        type: 'GET',
+        url: "".concat(BASEURL, "remove-form-buidler-feild"),
+        data: data,
+        success: function success(data) {
+          if (data && data.status == true) {
+            alert(data.success_message);
+            return;
+          }
+
+          parentLI.remove();
+        },
+        error: function error(reject) {
+          if (reject.status === 422) {
+            var errors = $.parseJSON(reject.responseText);
+          }
+        }
+      });
+    } else {
+      parentLI.remove();
+    }
+  });
   /*
   |--------------------------------------------------------------------------------
   | Store Category
