@@ -106,7 +106,7 @@
                 </div>
               </form>
 
-              <div id="update_form_builder_div"></div>
+              <div id="update_category_form_builder_div"></div>
             </div>
 
             <div class="card-footer">
@@ -114,7 +114,7 @@
               <a href="{{ route('categories.index') }}"><button type="button" class="btn btn-default float-right mr-2">Cancel</button></a>
             </div>
 
-            <input type="hidden" id="preset_form_data" value="{{ isset($category->feilds) ? $category->feilds : ''  }}">
+            <input type="hidden" id="preset_category_form_data" value="{{ isset($category->feilds) ? $category->feilds : ''  }}">
             
             <div id="overlay" class=""></div>
           </div>

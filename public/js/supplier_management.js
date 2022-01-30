@@ -27454,7 +27454,7 @@ $(document).ready(function () {
   |--------------------------------------------------------------------------------
   */
 
-  var storeOptions = {
+  var storeCatgeoryOptions = {
     disabledActionButtons: ['clear', 'data', 'save'],
     disableFields: ['file', 'hidden', 'button'],
     disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
@@ -27497,18 +27497,17 @@ $(document).ready(function () {
 
     }
   };
-  var storeFormBuilderDiv = $('#store_form_builder_div'); // var storeFormBuilder    = $(storeFormBuilderDiv).formBuilder(storeOptions);
-
-  var storeFormBuilder = [];
-  $(storeFormBuilderDiv).formBuilder(storeOptions).promise.then(function (response) {
-    storeFormBuilder.push(response);
+  var storeCategoryFormBuilderDiv = $('#store_category_form_builder_div');
+  var storeCategoryFormBuilder = [];
+  $(storeCategoryFormBuilderDiv).formBuilder(storeCatgeoryOptions).promise.then(function (response) {
+    storeCategoryFormBuilder.push(response);
   });
   $(document).on('click', '#store_category_submit', function () {
-    var storeFormData = storeFormBuilder[0].actions.getData('json');
+    var storeCatgeoryFormData = storeCategoryFormBuilder[0].actions.getData('json');
     var url = $('#store_category').attr('action');
     var storeCategory = new FormData($('#store_category')[0]);
-    storeFormData = storeFormData == '[]' ? '' : storeFormData;
-    storeCategory.append('feilds', storeFormData);
+    storeCatgeoryFormData = storeCatgeoryFormData == '[]' ? '' : storeCatgeoryFormData;
+    storeCategory.append('feilds', storeCatgeoryFormData);
     $.ajax({
       type: 'POST',
       url: url,
@@ -27561,13 +27560,13 @@ $(document).ready(function () {
   |--------------------------------------------------------------------------------
   */
 
-  var presetFormData = $('#preset_form_data').val();
-  var updateOptions = {
+  var presetCategoryFormData = $('#preset_category_form_data').val();
+  var updateCategoryOptions = {
     disabledActionButtons: ['clear', 'data', 'save'],
     disableFields: ['file', 'hidden', 'button'],
     disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
     ],
-    formData: presetFormData,
+    formData: presetCategoryFormData,
     typeUserAttrs: {
       autocomplete: {
         data: {
@@ -27606,14 +27605,17 @@ $(document).ready(function () {
 
     }
   };
-  var updateFormBuilderDiv = $('#update_form_builder_div');
-  var updateFormBuilder = $(updateFormBuilderDiv).formBuilder(updateOptions);
+  var updateCategoryFormBuilderDiv = $('#update_category_form_builder_div');
+  var updateCategoryFormBuilder = [];
+  $(updateCategoryFormBuilderDiv).formBuilder(updateCategoryOptions).promise.then(function (response) {
+    updateCategoryFormBuilder.push(response);
+  });
   $(document).on('click', '#update_category_submit', function () {
-    var updateFormData = updateFormBuilder.actions.getData('json');
+    var updateCategoryFormData = updateCategoryFormBuilder[0].actions.getData('json');
     var url = $('#update_category').attr('action');
     var updateCategory = new FormData($('#update_category')[0]);
-    updateFormData = updateFormData == '[]' ? '' : updateFormData;
-    updateCategory.append('feilds', updateFormData);
+    updateCategoryFormData = updateCategoryFormData == '[]' ? '' : updateCategoryFormData;
+    updateCategory.append('feilds', updateCategoryFormData);
     $.ajax({
       type: 'POST',
       url: url,

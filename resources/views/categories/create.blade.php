@@ -113,7 +113,7 @@
 
                 </form>
                 
-                <div id="store_form_builder_div"></div>
+                <div id="store_category_form_builder_div"></div>
               </div>
 
               <div class="card-footer">
