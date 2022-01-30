@@ -21,8 +21,8 @@
   
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <div class="offset-md-2 col-md-8">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
 
           <div class="card card-secondary">
             <div class="card-header">
@@ -72,7 +72,6 @@
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
-
                 </div>
 
                 <div class="form-row parent">
@@ -107,9 +106,16 @@
                 </div>
               </form>
 
-              <div id="form-builder-div"></div>
+              <div id="form_builder_div"></div>
             </div>
 
+            <div class="card-footer">
+              <button type="button" id="update_category_submit" class="btn btn-primary float-right">Submit</button>
+              <a href="{{ route('categories.index') }}"><button type="button" class="btn btn-default float-right mr-2">Cancel</button></a>
+            </div>
+
+            <input type="hidden" id="preset_form_data" value="{{ isset($category->feilds) ? $category->feilds : ''  }}">
+            
             <div id="overlay" class=""></div>
           </div>
         </div>
@@ -124,42 +130,35 @@
 <script>
 
 window.onload = function() {
-  var presetData = {!! json_encode($category->feilds, JSON_HEX_TAG) !!};
 
   $(document).on('change', '.show-tf', function(){
 
-    var value = $(this).val();
+    let value          = $(this).val();
+    let relavantColumn = $(this).closest('.parent').find('.label-of-time-col');
 
     if(value == 1){
-
-      $(this).closest('.parent').find('.label-of-time-col').removeClass('d-none');
-
+      relavantColumn.removeClass('d-none');
     }else{
-
-      $(this).closest('.parent').find('.label-of-time-col').addClass('d-none');
+      relavantColumn.addClass('d-none');
     }
   });
 
   $(document).on("click", ".del-button",function() {
 
-    var parentLI    = $(this).closest('li');
-    var elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
-    var id          = $('input[name=id]').val();
+    let parentLI    = $(this).closest('li');
+    let elementName = parentLI.find('.frm-holder .form-elements .name-wrap .input-wrap .form-control').val();
+    let categoryID  = $('input[name=id]').val();
 
-    var data = {
-      'id'            : id,
+    let data = {
+      'id'            : categoryID,
       'element_name'  : elementName,
-      "_token"        : "{{ csrf_token() }}",
+      "_token"        : CSRFTOKEN,
     };
 
     $.ajax({
       type: 'GET',
-      url: `${window.location.origin}/ufg-form/public/json/remove-form-buidler-feild`,
-      data: {
-        'id'            : id,
-        'element_name'  : elementName,
-        "_token"        : "{{ csrf_token() }}",
-      },
+      url: `${BASEURL}remove-form-buidler-feild`,
+      data: data,
       success: function(data){
         if(data && data.status == true){
           alert(data.success_message);
@@ -180,150 +179,148 @@ window.onload = function() {
 
 
   /* formbuilder function */
-  jQuery(function ($) {
+  var presetFormData = $('#preset_form_data').val();
 
-    var formBuilderDiv    = document.getElementById("form-builder-div");
-    var url               = '';
-    var updateCategory    = '';
-    var currentFieldData  = '';
-    var formData          = '';
+  /* formbuilder function */
+  var options = {
+    disabledActionButtons: ['clear','data','save'],
+    disableFields: ['file','hidden','button'],
+    disabledAttrs: [
+      'className',
+      'description',
+      'maxlength',
+      'name',
+      'other',
+      'required',
+      'rows',
+      'step',
+      'style',
+      'access',
+      'accept',
+      'toggle',
+      // 'value',
+    ],
+    formData: presetFormData,
+    typeUserAttrs: {
+      autocomplete: {
+        data: {
+          label: 'Type',
+          /* options keys should be related table name */ 
+          options: {
+            'airport_codes' : 'Airport Codes',
+            'harbours'      : 'Harbours, Train and Points of Interest',
+            'hotels'        : 'Hotels',
+            'all'           : 'All',
+            'group_owners'  : 'Group Owner',
+            'none'          : 'None',
+          },
+        }
+      },
+    },
+    onAddField: function(fieldId, fieldData) {
+      setFieldData(fieldData);
+    },
+    onOpenFieldEdit: function(field) {
+      if(currentFieldData.type == "autocomplete"){
 
-    var options = {
-      // disabledActionButtons: ['clear','data'],
-      disableFields: ['file','hidden','button'],
-      disabledAttrs: [
-        'className',
-        'description',
-        'maxlength',
-        'name',
-        'other',
-        'required',
-        'rows',
-        'step',
-        'style',
-        'access',
-        'accept',
-        // 'value',
-      ],
-      formData: presetData,
-      typeUserAttrs: {
-        autocomplete: {
-          data: {
-            label: 'Type',
-            /* options keys should be related table name */ 
-            options: {
-              'airport_codes' : 'Airport Codes',
-              'harbours'      : 'Harbours, Train and Points of Interest',
-              'hotels'        : 'Hotels',
-              'all'           : 'All',
-              'group_owners'  : 'Group Owner',
-              'none'          : 'None',
-            },
+        /* By default hide options & remove child li */ 
+        hideOptionsAndRemoveChildLI(field.id);
+
+        let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
+        $(selector).on('change', function(){
+
+          if($(this).val() === "none"){
+
+            /* display options li */ 
+            showOptions(field.id);
+          } else {
+            hideOptionsAndRemoveChildLI(field.id);
           }
-        },
+        });
+
+      } /* end if condition*/
+      
+    },
+  }; /* options */
+
+  var formBuilderDiv = $('#form_builder_div');
+  var formBuilder    = $(formBuilderDiv).formBuilder(options);
+
+  function setFieldData(fieldData){
+    currentFieldData = fieldData;
+  }
+  
+  function hideOptionsAndRemoveChildLI(fieldID){
+    $(`#${fieldID} .field-options`).addClass("d-none");
+    $(`#${fieldID} .sortable-options li`).remove();
+  }
+
+  function showOptions(fieldID){
+    $(`#${fieldID} .field-options`).removeClass("d-none");
+  }
+  /* End formbuilder function */
+
+  $(document).on('click', '#update_category_submit', function(){
+
+    let formData       = formBuilder.actions.getData('json')
+    let url            = $('#update_category').attr('action');
+    let updateCategory = new FormData($('#update_category')[0]);
+    formData           = (formData == '[]') ? '' : formData;
+    updateCategory.append('feilds', formData);
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: updateCategory,
+      processData: false,
+      contentType: false,
+      cache: false,
+      beforeSend: function() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
       },
-      onAddField: function(fieldId, fieldData) {
-        setFieldData(fieldData);
-      },
-      onOpenFieldEdit: function(field) {
-        if(currentFieldData.type == "autocomplete"){
-
-          /* By default hide options & remove child li */ 
-          hideOptionsAndRemoveChildLI(field.id);
-
-          let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
-          $(selector).on('change', function(){
-
-            if($(this).val() === "none"){
-
-              /* display options li */ 
-              showOptions(field.id);
-            } else {
-              hideOptionsAndRemoveChildLI(field.id);
-            }
-          });
-
-        } /* end if condition*/
+      success: function(data) {
+        $("#overlay").removeClass('overlay').html('');
         
+        setTimeout(function() {
+
+          if(data && data.status == true){
+            alert(data.success_message);
+            window.location.href = '{{route('categories.index')}}';
+          }
+        }, 200);
       },
-      onSave: function (evt, formData) {
+      error: function(reject) {
 
-        url            = $('#update_category').attr('action');
-        updateCategory = new FormData($('#update_category')[0]);
-        formData       = (formData == '[]') ? '' : formData;
-        updateCategory.append('feilds', formData);
+        if (reject.status === 422) {
 
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: updateCategory,
-          processData: false,
-          contentType: false,
-          cache: false,
-          beforeSend: function() {
-            $('input, select').removeClass('is-invalid');
-            $('.text-danger').html('');
-            $("#overlay").addClass('overlay');
-            $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
-          },
-          success: function(data) {
+          var errors = $.parseJSON(reject.responseText);
+          var flag = true;
+
+          setTimeout(function() {
+
             $("#overlay").removeClass('overlay').html('');
-            
-            setTimeout(function() {
 
-              if(data && data.status == true){
-                alert(data.success_message);
-                window.location.href = '{{route('categories.index')}}';
+            jQuery.each(errors.errors, function(index, value) {
+
+              index = index.replace(/\./g, '_');
+
+              $(`#${index}`).addClass('is-invalid');
+              $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+              if(flag){
+                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                flag = false;
               }
-            }, 200);
-          },
-          error: function(reject) {
 
-            if (reject.status === 422) {
-
-              var errors = $.parseJSON(reject.responseText);
-              var flag = true;
-
-              setTimeout(function() {
-
-                $("#overlay").removeClass('overlay').html('');
-
-                jQuery.each(errors.errors, function(index, value) {
-
-                  index = index.replace(/\./g, '_');
-
-                  $(`#${index}`).addClass('is-invalid');
-                  $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                  if(flag){
-                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                    flag = false;
-                  }
-
-                });
-              }, 400);
-            }
-            
-          },
-        }); /* end ajax*/
+            });
+          }, 400);
+        }
         
-      }
-    };  /* options */
-
-    $(formBuilderDiv).formBuilder(options);    
-
-    function setFieldData(fieldData){
-      currentFieldData = fieldData;
-    }
-
-    function hideOptionsAndRemoveChildLI(fieldID){
-      $(`#${fieldID} .field-options`).addClass("d-none");
-      $(`#${fieldID} .sortable-options li`).remove();
-    }
-
-    function showOptions(fieldID){
-      $(`#${fieldID} .field-options`).removeClass("d-none");
-    }
+      },
+    }); /* end ajax*/
 
   });
 }
