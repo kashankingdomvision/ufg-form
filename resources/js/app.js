@@ -170,6 +170,16 @@ $(document).ready(function($) {
         $("#overlay").html('');
     }
 
+    window.printServerValidationErrors = function(errors) {
+        jQuery.each(errors.errors, function(index, value) {
+
+            index = index.replace(/\./g, '_');
+
+            $(`#${index}`).addClass('is-invalid');
+            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+        });
+    }
+
     var curday = function(sp) {
         var today = new Date();
         var dd = today.getDate();

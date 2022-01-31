@@ -70221,6 +70221,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#overlay").html('');
   };
 
+  window.printServerValidationErrors = function (errors) {
+    jQuery.each(errors.errors, function (index, value) {
+      index = index.replace(/\./g, '_');
+      $("#".concat(index)).addClass('is-invalid');
+      $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+    });
+  };
+
   var curday = function curday(sp) {
     var today = new Date();
     var dd = today.getDate();
