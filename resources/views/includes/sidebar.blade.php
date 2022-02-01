@@ -13,9 +13,9 @@
         'categories.index',
         'categories.edit',
         'wallets.index',
-        'supplier-rate-sheet.create',
-        'supplier-rate-sheet.index',
-        'supplier-rate-sheet.edit',
+        'supplier_rate_sheet.create',
+        'supplier_rate_sheet.index',
+        'supplier_rate_sheet.edit',
         'group_owners.create',
         'group_owners.index',
         'group_owners.edit',
@@ -329,7 +329,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('supplier-rate-sheet.index') }}" class="nav-link {{  $route == 'supplier-rate-sheet.create' || $route == 'supplier-rate-sheet.index' || $route == 'supplier-rate-sheet.edit' ? 'active' : '' }}">
+                            <a href="{{ route('supplier_rate_sheet.index') }}" class="nav-link {{  $route == 'supplier_rate_sheet.create' || $route == 'supplier_rate_sheet.index' || $route == 'supplier_rate_sheet.edit' ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>Supplier Rate Sheet</p>
                             </a>

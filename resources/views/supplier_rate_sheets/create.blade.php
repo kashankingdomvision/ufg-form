@@ -35,7 +35,7 @@
               <h3 class="card-title">Supplier Rate Sheet Form</h3>
             </div>
 
-            <form method="POST" id="store_supplier_rate_sheet" action="{{ route('supplier-rate-sheet.store') }}" accept-charset="UTF-8" enctype="multipart/form-data"> 
+            <form method="POST" id="store_supplier_rate_sheet" action="{{ route('supplier_rate_sheet.store') }}" accept-charset="UTF-8" enctype="multipart/form-data"> 
               @csrf
 
               <div class="card-body">
@@ -70,7 +70,7 @@
             
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary float-right">Submit</button>
-                <a href="{{ route('supplier-rate-sheet.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                <a href="{{ route('supplier_rate_sheet.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
               </div>
             </form>
 

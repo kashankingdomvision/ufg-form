@@ -156,7 +156,7 @@ class SupplierRateSheetController extends Controller
     public function destroy($id)
     {
         SupplierRateSheet::destroy(decrypt($id));
-        return redirect()->route('supplier-rate-sheet.index')->with('success_message', 'Supplier Rate Sheet Deleted Successfully');
+        return redirect()->route('supplier_rate_sheet.index')->with('success_message', 'Supplier Rate Sheet Deleted Successfully');
     }
 
     public function fileStore(Request $request, $old = NULL)

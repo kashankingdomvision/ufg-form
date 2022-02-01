@@ -23,38 +23,16 @@ $(document).ready(function() {
                 removeFormValidationStyles();
                 addFormLoadingStyles();
             },
-            success: function(data) {
+            success: function(response) {
 
                 removeFormLoadingStyles();
-
-                setTimeout(function() {
-
-                    if(data && data.status == 200){
-                        alert(data.success_message);
-                        window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
-                    }
-                }, 200);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheet/index`);
             },
-            error: function(reject) {
-
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        removeFormLoadingStyles();
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 200);
-
-                }
-            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
         });
     });
 
@@ -82,39 +60,16 @@ $(document).ready(function() {
                 removeFormValidationStyles();
                 addFormLoadingStyles();
             },
-            success: function(data) {
+            success: function(response) {
 
                 removeFormLoadingStyles();
-
-                setTimeout(function() {
-
-                    if(data && data.status == 200){
-                        alert(data.success_message);
-                        window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
-                    }
-                }, 200);
-          
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheet/index`);
             },
-            error: function(reject) {
-
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        removeFormLoadingStyles();
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 200);
-
-                }
-            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
         });
     });
 

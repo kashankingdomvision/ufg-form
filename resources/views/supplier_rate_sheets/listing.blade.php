@@ -14,7 +14,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Supplier Rate Sheet <x-add-new-button :route="route('supplier-rate-sheet.create')" /> </h4>
+            <h4>View Supplier Rate Sheet <x-add-new-button :route="route('supplier_rate_sheet.create')" /> </h4>
           </div>
         </div>
 
@@ -36,7 +36,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('supplier-rate-sheet.index')">
+  <x-page-filters :route="route('supplier_rate_sheet.index')">
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">
@@ -130,8 +130,8 @@
                           </td>
 
                           <td class="text-center">
-                            <form method="post" action="{{ route('supplier-rate-sheet.destroy', encrypt($supplier_rate_sheet->id)) }}">
-                              <a href="{{ route('supplier-rate-sheet.edit', encrypt($supplier_rate_sheet->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <form method="post" action="{{ route('supplier_rate_sheet.destroy', encrypt($supplier_rate_sheet->id)) }}">
+                              <a href="{{ route('supplier_rate_sheet.edit', encrypt($supplier_rate_sheet->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                               @csrf
                               @method('delete')
                               <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

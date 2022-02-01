@@ -27941,27 +27941,13 @@ $(document).ready(function () {
         removeFormValidationStyles();
         addFormLoadingStyles();
       },
-      success: function success(data) {
+      success: function success(response) {
         removeFormLoadingStyles();
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
-          }
-        }, 200);
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheet/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            removeFormLoadingStyles();
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 200);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });
@@ -27985,27 +27971,13 @@ $(document).ready(function () {
         removeFormValidationStyles();
         addFormLoadingStyles();
       },
-      success: function success(data) {
+      success: function success(response) {
         removeFormLoadingStyles();
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = REDIRECT_BASEURL + "supplier-rate-sheet";
-          }
-        }, 200);
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheet/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            removeFormLoadingStyles();
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 200);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });

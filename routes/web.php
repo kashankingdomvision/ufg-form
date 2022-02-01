@@ -348,10 +348,20 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
-    /*  Supplier Rate Sheet */
-    Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    /*  Products */
+    Route::group([
+        'prefix' => 'supplier-rate-sheet',
+        'as'     => 'supplier_rate_sheet.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'SupplierRateSheetController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'SupplierRateSheetController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'SupplierRateSheetController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SupplierRateSheetController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierRateSheetController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierRateSheetController@destroy'));
+
+    });
 
     /*  Products */
     Route::group([
@@ -367,7 +377,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'ProductController@destroy'));
 
     });
-;
+
     /*  Supplier Categories */
     Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
         'index','create', 'store', 'edit', 'update', 'destroy'
@@ -573,3 +583,8 @@ Route::group(['middleware' => ['auth']], function(){
 // Route::resource('categories', 'CategoryController',['only' => [
 //     'index','create', 'store', 'edit', 'update', 'destroy'
 // ]])
+
+/*  Supplier Rate Sheet */
+// Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
+// 'index','create', 'store', 'edit', 'update', 'destroy'
+// ]]);
