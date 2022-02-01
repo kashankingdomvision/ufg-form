@@ -15,7 +15,7 @@ class UpdateSupplierRequest extends FormRequest
     public function rules()
     {
         return [
-            'username'    => ['required', Rule::unique('suppliers','name')->ignore(decrypt($this->supplier))],
+            'username'    => ['required', Rule::unique('suppliers','name')->ignore(decrypt($this->id))],
             'country_id'  => 'required',
             'location_id' => 'required',
             'categories'  =>  'required|array',

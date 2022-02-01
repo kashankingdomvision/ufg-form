@@ -331,7 +331,23 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::resource('suppliers', 'SupplierController');
+    // Route::resource('suppliers', 'SupplierController');
+
+    Route::group([
+        'prefix' => 'suppliers',
+        'as'     => 'suppliers.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'SupplierController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'SupplierController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'SupplierController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SupplierController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierController@update'));
+        Route::get('show/{id}', array('as' => 'show', 'uses' => 'SupplierController@show'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierController@destroy'));
+
+    });
+
 
     /* Group Owner */
     Route::group([

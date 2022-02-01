@@ -27371,11 +27371,13 @@ __webpack_require__(/*! ./form_builder/formRender */ "./resources/js/form_builde
 
 __webpack_require__(/*! ./form_builder/formBuilder */ "./resources/js/form_builder/formBuilder.js");
 
+__webpack_require__(/*! ./supplier_managment/supplier_app */ "./resources/js/supplier_managment/supplier_app.js");
+
 __webpack_require__(/*! ./supplier_managment/category_app */ "./resources/js/supplier_managment/category_app.js");
 
 __webpack_require__(/*! ./supplier_managment/product_app */ "./resources/js/supplier_managment/product_app.js");
 
-__webpack_require__(/*! ./supplier_managment/supplier_rate_sheet */ "./resources/js/supplier_managment/supplier_rate_sheet.js");
+__webpack_require__(/*! ./supplier_managment/supplier_rate_sheet_app */ "./resources/js/supplier_managment/supplier_rate_sheet_app.js");
 
 __webpack_require__(/*! ./supplier_managment/group_owner */ "./resources/js/supplier_managment/group_owner.js");
 
@@ -27914,10 +27916,81 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./resources/js/supplier_managment/supplier_rate_sheet.js":
-/*!****************************************************************!*\
-  !*** ./resources/js/supplier_managment/supplier_rate_sheet.js ***!
-  \****************************************************************/
+/***/ "./resources/js/supplier_managment/supplier_app.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/supplier_managment/supplier_app.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Supplier
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_supplier', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "suppliers/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Supplier
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_supplier', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "suppliers/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/supplier_managment/supplier_rate_sheet_app.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/supplier_managment/supplier_rate_sheet_app.js ***!
+  \********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

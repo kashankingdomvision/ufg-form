@@ -124,7 +124,7 @@ class SupplierController extends Controller
         $supplier->getCountries()->sync($request->country_id);
         $supplier->getLocations()->sync($request->location_id);
 
-        return response()->json(['status' => 200, 'success_message' => 'Supplier created successfully']);
+        return response()->json(['status' => true, 'success_message' => 'Supplier Created Successfully.']);
     }
 
     /**
@@ -194,7 +194,7 @@ class SupplierController extends Controller
         $supplier->getCountries()->sync($request->country_id);
         $supplier->getLocations()->sync($request->location_id);
         
-        return response()->json(['status' => 200, 'success_message' => 'Supplier Updated successfully']);
+        return response()->json(['status' => true, 'success_message' => 'Supplier Updated Successfully.']);
     }
 
     /**
