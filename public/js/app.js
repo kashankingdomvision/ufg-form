@@ -70244,15 +70244,29 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#overlay").html('');
   };
 
-  window.printServerValidationErrors = function (errors) {
-    setTimeout(function () {
-      removeFormLoadingStyles();
-      jQuery.each(errors.errors, function (index, value) {
-        index = index.replace(/\./g, '_');
-        $("#".concat(index)).addClass('is-invalid');
-        $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+  window.printServerValidationErrors = function (response) {
+    if (response.status === 422) {
+      var errors = response.responseJSON;
+      setTimeout(function () {
+        jQuery.each(errors.errors, function (index, value) {
+          index = index.replace(/\./g, '_');
+          $("#".concat(index)).addClass('is-invalid');
+          $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+        });
+      }, 200);
+    }
+  };
+
+  window.printServerSuccessMessage = function (data, redirectURL) {
+    if (data && data.status) {
+      Toast.fire({
+        icon: 'success',
+        title: data.success_message
       });
-    }, 200);
+      setTimeout(function () {
+        window.location.href = "".concat(redirectURL);
+      }, 2500);
+    }
   };
 
   var curday = function curday(sp) {
@@ -74739,7 +74753,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 }); // CreateGroupQuote //
 
 var checkedQuoteValues = null;
-var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+window.Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   toast: true,
   position: 'top-end',
   showConfirmButton: false,

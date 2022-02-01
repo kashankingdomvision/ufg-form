@@ -27727,7 +27727,7 @@ $(document).ready(function () {
   | Store Supplier Rate Sheet
   |--------------------------------------------------------------------------------
   */
-  $("#store_group_owner").submit(function (event) {
+  $(document).on('submit', '#store_group_owner', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     $.ajax({
@@ -27741,20 +27741,13 @@ $(document).ready(function () {
         removeFormValidationStyles();
         addFormLoadingStyles();
       },
-      success: function success(data) {
+      success: function success(response) {
         removeFormLoadingStyles();
-        setTimeout(function () {
-          if (data && data.status) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "group-owners/index");
-          }
-        }, 200);
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "group-owners/index"));
       },
       error: function error(response) {
-        if (response.status === 422) {
-          var errors = response.responseJSON;
-          printServerValidationErrors(errors);
-        }
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });
@@ -27764,7 +27757,7 @@ $(document).ready(function () {
   |--------------------------------------------------------------------------------
   */
 
-  $("#update_group_owner").submit(function (event) {
+  $(document).on('submit', '#update_group_owner', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     $.ajax({
@@ -27778,20 +27771,13 @@ $(document).ready(function () {
         removeFormValidationStyles();
         addFormLoadingStyles();
       },
-      success: function success(data) {
+      success: function success(response) {
         removeFormLoadingStyles();
-        setTimeout(function () {
-          if (data && data.status) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "group-owners/index");
-          }
-        }, 200);
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "group-owners/index"));
       },
       error: function error(response) {
-        if (response.status === 422) {
-          var errors = response.responseJSON;
-          printServerValidationErrors(errors);
-        }
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });

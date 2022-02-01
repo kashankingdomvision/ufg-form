@@ -170,20 +170,39 @@ $(document).ready(function($) {
         $("#overlay").html('');
     }
 
-    window.printServerValidationErrors = function(errors) {
+    window.printServerValidationErrors = function(response) {
 
-        setTimeout(function() {
-            removeFormLoadingStyles();
+        if (response.status === 422) {
 
-            jQuery.each(errors.errors, function(index, value) {
+            let errors = response.responseJSON;
 
-                index = index.replace(/\./g, '_');
+            setTimeout(function() {
+                jQuery.each(errors.errors, function(index, value) {
 
-                $(`#${index}`).addClass('is-invalid');
-                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                    index = index.replace(/\./g, '_');
+
+                    $(`#${index}`).addClass('is-invalid');
+                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                });
+
+            }, 200);
+
+        }
+    }
+
+    window.printServerSuccessMessage = function(data, redirectURL) {
+
+        if(data && data.status){
+            Toast.fire({
+                icon: 'success',
+                title: data.success_message
             });
 
-        }, 200);
+            setTimeout(function() {
+                window.location.href = `${redirectURL}`;
+            }, 2500);
+        }
+
     }
 
     var curday = function(sp) {
@@ -5687,7 +5706,7 @@ $(document).on('click', '.addmodalforquote', function() {
 
 // CreateGroupQuote //
     var checkedQuoteValues = null;
-    const Toast = Swal.mixin({
+    window.Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
