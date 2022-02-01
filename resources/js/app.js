@@ -175,6 +175,7 @@ $(document).ready(function($) {
         if (response.status === 422) {
 
             let errors = response.responseJSON;
+            let flag   = true;
 
             setTimeout(function() {
                 jQuery.each(errors.errors, function(index, value) {
@@ -183,6 +184,11 @@ $(document).ready(function($) {
 
                     $(`#${index}`).addClass('is-invalid');
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                    if(flag){
+                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                        flag = false;
+                    }
                 });
 
             }, 200);

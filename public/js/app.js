@@ -70247,11 +70247,19 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   window.printServerValidationErrors = function (response) {
     if (response.status === 422) {
       var errors = response.responseJSON;
+      var flag = true;
       setTimeout(function () {
         jQuery.each(errors.errors, function (index, value) {
           index = index.replace(/\./g, '_');
           $("#".concat(index)).addClass('is-invalid');
           $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+          if (flag) {
+            $('html, body').animate({
+              scrollTop: $("#".concat(index)).offset().top
+            }, 1000);
+            flag = false;
+          }
         });
       }, 200);
     }
