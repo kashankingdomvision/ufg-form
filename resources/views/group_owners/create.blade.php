@@ -26,7 +26,7 @@
       <div class="row d-flex justify-content-center">
         <div class="col-md-10">
 
-          <div class="card card-secondary">
+          <div class="card card-secondary shadow-sm">
             <div class="card-header">
               <h3 class="card-title text-center">Group Owner Form</h3>
             </div>
@@ -43,7 +43,7 @@
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary float-right">Submit</button>
+                <button type="submit" class="btn btn-success float-right">Submit</button>
                 <a href="{{ route('group_owners.store') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
               </div>
             </form>
