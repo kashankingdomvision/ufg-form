@@ -70240,8 +70240,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.removeFormLoadingStyles = function () {
-    $("#overlay").removeClass('overlay');
-    $("#overlay").html('');
+    setTimeout(function () {
+      $("#overlay").removeClass('overlay');
+      $("#overlay").html('');
+    }, 250);
   };
 
   window.printServerValidationErrors = function (response) {
@@ -70261,7 +70263,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
             flag = false;
           }
         });
-      }, 200);
+      }, 250);
     }
   };
 

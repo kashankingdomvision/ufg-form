@@ -166,8 +166,10 @@ $(document).ready(function($) {
     }
 
     window.removeFormLoadingStyles = function() {
-        $("#overlay").removeClass('overlay');
-        $("#overlay").html('');
+        setTimeout(function() {
+            $("#overlay").removeClass('overlay');
+            $("#overlay").html('');
+        }, 250);
     }
 
     window.printServerValidationErrors = function(response) {
@@ -191,7 +193,7 @@ $(document).ready(function($) {
                     }
                 });
 
-            }, 200);
+            }, 250);
 
         }
     }
