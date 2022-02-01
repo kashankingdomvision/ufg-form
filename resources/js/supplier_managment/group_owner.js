@@ -34,24 +34,12 @@ $(document).ready(function() {
                     }
                 }, 200);
             },
-            error: function(reject) {
+            error: function(response) {
+                
+                if (response.status === 422) {
 
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        removeFormLoadingStyles();
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 200);
-
+                    let errors = response.responseJSON;
+                    printServerValidationErrors(errors);
                 }
             },
         });
@@ -94,24 +82,12 @@ $(document).ready(function() {
                 }, 200);
           
             },
-            error: function(reject) {
+            error: function(response) {
 
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-                        removeFormLoadingStyles();
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 200);
-
+                if (response.status === 422) {
+                    
+                    let errors = response.responseJSON;
+                    printServerValidationErrors(errors);
                 }
             },
         });

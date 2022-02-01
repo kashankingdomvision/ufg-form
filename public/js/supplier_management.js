@@ -27750,17 +27750,10 @@ $(document).ready(function () {
           }
         }, 200);
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            removeFormLoadingStyles();
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 200);
+      error: function error(response) {
+        if (response.status === 422) {
+          var errors = response.responseJSON;
+          printServerValidationErrors(errors);
         }
       }
     });
@@ -27794,17 +27787,10 @@ $(document).ready(function () {
           }
         }, 200);
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            removeFormLoadingStyles();
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 200);
+      error: function error(response) {
+        if (response.status === 422) {
+          var errors = response.responseJSON;
+          printServerValidationErrors(errors);
         }
       }
     });

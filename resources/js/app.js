@@ -171,13 +171,19 @@ $(document).ready(function($) {
     }
 
     window.printServerValidationErrors = function(errors) {
-        jQuery.each(errors.errors, function(index, value) {
 
-            index = index.replace(/\./g, '_');
+        setTimeout(function() {
+            removeFormLoadingStyles();
 
-            $(`#${index}`).addClass('is-invalid');
-            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-        });
+            jQuery.each(errors.errors, function(index, value) {
+
+                index = index.replace(/\./g, '_');
+
+                $(`#${index}`).addClass('is-invalid');
+                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+            });
+
+        }, 200);
     }
 
     var curday = function(sp) {
