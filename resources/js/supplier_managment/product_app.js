@@ -32,63 +32,63 @@ $(document).ready(function() {
   */
 
   var storeProductOptions = {
-      disabledActionButtons: ['clear','data','save'],
-      disableFields: ['file','hidden','button'],
-      disabledAttrs: [
-          'className',
-          'description',
-          'maxlength',
-          'name',
-          'other',
-          'required',
-          'rows',
-          'step',
-          'style',
-          'access',
-          'accept',
-          'toggle',
-          // 'value',
-      ],
-      typeUserAttrs: {
-          autocomplete: {
-          data: {
-              label: 'Type',
-              /* options keys should be related table name */ 
-              options: {
-              'airport_codes' : 'Airport Codes',
-              'harbours'      : 'Harbours, Train and Points of Interest',
-              'hotels'        : 'Hotels',
-              'all'           : 'All',
-              'group_owners'  : 'Group Owner',
-              'none'          : 'None',
-              },
-          }
+    disabledActionButtons: ['clear','data','save'],
+    disableFields: ['file','hidden','button'],
+    disabledAttrs: [
+      'className',
+      'description',
+      'maxlength',
+      'name',
+      'other',
+      'required',
+      'rows',
+      'step',
+      'style',
+      'access',
+      'accept',
+      'toggle',
+      // 'value',
+    ],
+    typeUserAttrs: {
+      autocomplete: {
+        data: {
+          label: 'Type',
+          /* options keys should be related table name */ 
+          options: {
+          'airport_codes' : 'Airport Codes',
+          'harbours'      : 'Harbours, Train and Points of Interest',
+          'hotels'        : 'Hotels',
+          'all'           : 'All',
+          'group_owners'  : 'Group Owner',
+          'none'          : 'None',
           },
+        }
       },
-      onAddField: function(fieldId, fieldData) {
-          setFieldData(fieldData);
-      },
-      onOpenFieldEdit: function(field) {
-          if(currentFieldData.type == "autocomplete"){
-  
-          /* By default hide options & remove child li */ 
-          hideOptionsAndRemoveChildLI(field.id);
-  
-          let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
-          $(selector).on('change', function(){
-  
-              if($(this).val() === "none"){
-  
-              /* display options li */ 
-              showOptions(field.id);
-              } else {
-              hideOptionsAndRemoveChildLI(field.id);
-              }
-          });
-  
-          } /* end if condition*/
-          
-      },
+    },
+    onAddField: function(fieldId, fieldData) {
+      setFieldData(fieldData);
+    },
+    onOpenFieldEdit: function(field) {
+      if(currentFieldData.type == "autocomplete"){
+
+        /* By default hide options & remove child li */ 
+        hideOptionsAndRemoveChildLI(field.id);
+
+        let selector = `#${field.id} .form-elements .data-wrap .input-wrap select`;
+        $(selector).on('change', function(){
+
+          if($(this).val() === "none"){
+
+            /* display options li */ 
+            showOptions(field.id);
+          } else {
+            hideOptionsAndRemoveChildLI(field.id);
+          }
+        });
+
+      } /* end if condition*/
+        
+    },
   };
   
   var storeProductFormBuilderDiv = $('#store_product_form_builder_div');
@@ -113,52 +113,18 @@ $(document).ready(function() {
       contentType: false,
       cache: false,
       beforeSend: function() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function(data) {
+      success: function(response) {
 
-        $("#overlay").removeClass('overlay').html('');
-        
-        setTimeout(function() {
-
-          if(data && data.status == true){
-            alert(data.success_message);
-            window.location.href = `${REDIRECT_BASEURL}products/index`;
-          }
-        }, 200);
-        
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, `${REDIRECT_BASEURL}products/index`);
       },
-      error: function(reject) {
-
-        if (reject.status === 422) {
-
-          var errors = $.parseJSON(reject.responseText);
-          var flag = true;
-
-          setTimeout(function() {
-
-            $("#overlay").removeClass('overlay').html('');
-
-            jQuery.each(errors.errors, function(index, value) {
-
-              index = index.replace(/\./g, '_');
-
-              $(`#${index}`).addClass('is-invalid');
-              $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-              if(flag){
-                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                flag = false;
-              }
-
-            });
-          }, 400);
-        }
-
-
+      error: function(response) {
+          
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
 
@@ -232,50 +198,19 @@ $(document).ready(function() {
       contentType: false,
       cache: false,
       beforeSend: function() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function(data) {
-        $("#overlay").removeClass('overlay').html('');
-        
-        setTimeout(function() {
+      success: function(response) {
 
-          if(data && data.status == true){
-            alert(data.success_message);
-            window.location.href = `${REDIRECT_BASEURL}products/index`;
-          }
-        }, 200);
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, `${REDIRECT_BASEURL}products/index`);
       },
-      error: function(reject) {
-
-        if (reject.status === 422) {
-
-          var errors = $.parseJSON(reject.responseText);
-          var flag = true;
-
-          setTimeout(function() {
-
-            $("#overlay").removeClass('overlay').html('');
-
-            jQuery.each(errors.errors, function(index, value) {
-
-              index = index.replace(/\./g, '_');
-
-              $(`#${index}`).addClass('is-invalid');
-              $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-              if(flag){
-                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                flag = false;
-              }
-
-            });
-          }, 400);
-        }
-      
-      },
+      error: function(response) {
+          
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
     }); /* end ajax*/
 
   });
