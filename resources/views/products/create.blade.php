@@ -23,7 +23,7 @@
       <div class="container-fluid">
         <div class="row d-flex justify-content-center">
           <div class="col-md-10">
-            <div class="card card-primary">
+            <div class="card card-secondary shadow-sm">
               <div class="card-header">
                 <h3 class="card-title text-center">Product Form</h3>
               </div>
@@ -99,7 +99,7 @@
               </div>
 
               <div class="card-footer">
-                <button type="button" id="store_product_submit" class="btn btn-primary float-right">Submit</button>
+                <button type="button" id="store_product_submit" class="btn btn-success float-right">Submit</button>
                 <a href="{{ route('products.index') }}"><button type="button" class="btn btn-default float-right mr-2">Cancel</button></a>
               </div>
               
