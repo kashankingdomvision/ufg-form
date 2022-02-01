@@ -221,7 +221,7 @@ $(document).ready(function() {
                 
                 removeFormLoadingStyles();
                 printServerValidationErrors(response);
-            },
+            }
         }); /* end ajax*/
 
     });
@@ -330,7 +330,7 @@ $(document).ready(function() {
                 
                 removeFormLoadingStyles();
                 printServerValidationErrors(response);
-            },
+            }
         }); /* end ajax*/
 
     });

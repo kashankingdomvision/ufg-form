@@ -27836,40 +27836,16 @@ $(document).ready(function () {
       contentType: false,
       cache: false,
       beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == true) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "products/index");
-          }
-        }, 200);
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "products/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          var flag = true;
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-              if (flag) {
-                $('html, body').animate({
-                  scrollTop: $("#".concat(index)).offset().top
-                }, 1000);
-                flag = false;
-              }
-            });
-          }, 400);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });
@@ -27920,40 +27896,16 @@ $(document).ready(function () {
       contentType: false,
       cache: false,
       beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == true) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "products/index");
-          }
-        }, 200);
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "products/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          var flag = true;
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-              if (flag) {
-                $('html, body').animate({
-                  scrollTop: $("#".concat(index)).offset().top
-                }, 1000);
-                flag = false;
-              }
-            });
-          }, 400);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
     /* end ajax*/

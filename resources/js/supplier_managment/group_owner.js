@@ -31,7 +31,7 @@ $(document).ready(function() {
                 
                 removeFormLoadingStyles();
                 printServerValidationErrors(response);
-            },
+            }
         });
     });
 
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 
                 removeFormLoadingStyles();
                 printServerValidationErrors(response);
-            },
+            }
         });
     });
 });
