@@ -25,7 +25,7 @@
       <div class="container-fluid">
         <div class="row d-flex justify-content-center">
           <div class="col-md-10">
-            <div class="card card-primary shadow-sm">
+            <div class="card card-secondary shadow-sm">
               <div class="card-header">
                 <h3 class="card-title">Supplier Form</h3>
               </div>
@@ -129,7 +129,7 @@
                 </div>
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary buttonSumbit float-right">Submit</button>
+                  <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
                   <a href="{{ route('suppliers.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
                 </div>
 
