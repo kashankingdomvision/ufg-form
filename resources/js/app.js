@@ -1939,7 +1939,7 @@ $(document).ready(function($) {
                 
             });
 
-            if(location.href.substring(0, location.href.lastIndexOf('/')) == 'http://localhost/ufg-form/public/quotes/edit' || location.href.substring(0, location.href.lastIndexOf('/')) == 'https://booking.unforgettabletravel.com/ufg-form/public/quotes/edit'){
+            if([ 'quotes.edit', 'quotes.view.version' ].includes(CURRENT_ROUTE_NAME)){
          
                 $(".quote").each(function(){
                    
@@ -1948,11 +1948,11 @@ $(document).ready(function($) {
                     var categoryFormData = $(`#quote_${quoteKey}_category_details`).val();
                     var productFormData  = $(`#quote_${quoteKey}_product_details`).val();
 
-                    if(categoryFormData != '' && categoryFormData != 'undefined'){
+                    if(categoryFormData != '' && typeof categoryFormData != 'undefined'){
                         createAllElm( quote, '.category-details-render', 'category_details', JSON.parse(categoryFormData));
                     }
 
-                    if(productFormData != '' && productFormData != 'undefined'){
+                    if(productFormData != '' && typeof productFormData != 'undefined'){
                         createAllElm( quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
                     }
 
@@ -2011,6 +2011,32 @@ $(document).ready(function($) {
                 quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
             });
 
+            $(document).on('change', '.cat-details-radio-btn', function(e) {
+
+                var quote       = $(this).closest('.quote');
+                var quoteKey    = quote.data('key');
+
+                var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                var feildIndex  = $(this).parents('.cat-feild-col').index();
+                var optionIndex = $(this).parents('.cat-details-radio-btn-parent').index();
+
+                var formData = formData.map(function(obj) {
+                    if(obj.type == 'radio-group'){
+                        obj.values.map(function(obj) {
+                            obj.selected = false;
+                            return obj;
+                        });
+                    }
+
+                    return obj;
+                });
+        
+                formData[feildIndex].values[optionIndex].selected = true;
+
+
+                quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
+            });
+
             $(document).on('keyup', '.prod-details-feild', function(e) {
 
                 var quote            = $(this).closest('.quote');
@@ -2056,6 +2082,42 @@ $(document).ready(function($) {
                 let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete' ];
                 var appendHTML = '';
 
+                if(obj.type == 'radio-group'){
+    
+                    var radioBtnElementParent = document.createElement("div");
+                    if(obj.inline){
+                        radioBtnElementParent.setAttribute('class', 'd-flex');
+                    }
+                
+                    //Create and append the options
+                    for (let i = 0; i < obj.values.length; i++) {
+                
+                        let radioBtnDiv = document.createElement("div");
+                        radioBtnDiv.setAttribute('class', 'mr-1 cat-details-radio-btn-parent');
+                
+                        let radioBtn   = document.createElement("input")
+                        radioBtn.setAttribute("type", "radio");
+                        radioBtn.setAttribute("name", obj.name);
+                        radioBtn.setAttribute("id", removeSpace(obj.values[i].value));
+                        radioBtn.setAttribute("class", "cat-details-radio-btn");
+                        radioBtn.setAttribute("value", obj.values[i].value);
+                        if(obj.values[i].selected){
+                            radioBtn.setAttribute('checked','checked');
+                        }
+                
+                        let label = document.createElement('label');
+                        label.innerHTML = `&nbsp; ${obj.values[i].label}`;
+                        label.setAttribute("for", removeSpace(obj.values[i].value));
+                
+                        radioBtnDiv.appendChild(radioBtn);
+                        radioBtnDiv.appendChild(label);
+                
+                        radioBtnElementParent.appendChild(radioBtnDiv);
+                    }
+                
+                    appendHTML = createParentDivOfElm(radioBtnElementParent, type, obj);
+                }
+
                 if(obj.type == 'checkbox-group'){
                     
                     var checkboxElementParent = document.createElement("div");
@@ -2076,7 +2138,7 @@ $(document).ready(function($) {
                         checkbox.setAttribute("class", "cat-details-checkbox");
                         checkbox.setAttribute("value", obj.values[i].value);
                         if(obj.values[i].selected){
-                            option.setAttribute('checked','checked');
+                            checkbox.setAttribute('checked','checked');
                         }
 
                         let label = document.createElement('label');
@@ -2256,6 +2318,8 @@ $(document).ready(function($) {
                         if(response.category_details != '' && response.category_details != 'undefined'){
 
                             $(`#quote_${quoteKey}_category_details`).val(response.category_details);
+
+                            console.log(JSON.parse(response.category_details));
 
                             createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
                         }
@@ -3522,12 +3586,6 @@ $(document).ready(function($) {
                         $(".versions :input").removeAttr("disabled");
                         $(this).data('recall', 'false');
                         $(this).text('Back Into Version');
-                        var add_HTML = `<div class="col-12 text-right">
-                        <button type="button" id="add_more" class="btn mr-3 btn-outline-dark  pull-right ">+ Add more </button>
-                        <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  float-right pull-right">x Remove Stored Text</button>
-
-                                    </div>`;
-                        $('#addMoreButton').append(add_HTML);
 
                       var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
                         $('#btnSubmitversion').append(btn_Submit);
@@ -3542,7 +3600,6 @@ $(document).ready(function($) {
                     $("#versions :input").prop("disabled", true);
                     $('#reCall').prop("disabled", false);
                     $(this).text('Recall Version');
-                    $('#addMoreButton').append();
                     $('#btnSubmitversion').append();
                 }
             });
