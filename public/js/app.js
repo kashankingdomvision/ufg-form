@@ -71922,7 +71922,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         checkbox.setAttribute("value", obj.values[i].value);
 
         if (obj.values[i].selected) {
-          option.setAttribute('checked', 'checked');
+          checkbox.setAttribute('checked', 'checked');
         }
 
         var label = document.createElement('label');
@@ -71975,16 +71975,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       else if (obj.type == 'select' || obj.type == 'autocomplete') {
         //Create and append the options
         for (var _i = 0; _i < obj.values.length; _i++) {
-          var _option = document.createElement("option");
-
-          _option.value = obj.values[_i].label;
-          _option.text = obj.values[_i].value;
+          var option = document.createElement("option");
+          option.value = obj.values[_i].label;
+          option.text = obj.values[_i].value;
 
           if (obj.values[_i].selected) {
-            _option.setAttribute('selected', 'selected');
+            option.setAttribute('selected', 'selected');
           }
 
-          elm.appendChild(_option);
+          elm.appendChild(option);
         }
       }
 
@@ -72065,6 +72064,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       success: function success(response) {
         if (response.category_details != '' && response.category_details != 'undefined') {
           $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details);
+          console.log(JSON.parse(response.category_details));
           createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
         } // Hide & Show Category details btn according to status
 

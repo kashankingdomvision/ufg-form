@@ -2033,7 +2033,7 @@ $(document).ready(function($) {
                         checkbox.setAttribute("class", "cat-details-checkbox");
                         checkbox.setAttribute("value", obj.values[i].value);
                         if(obj.values[i].selected){
-                            option.setAttribute('checked','checked');
+                            checkbox.setAttribute('checked','checked');
                         }
 
                         let label = document.createElement('label');
@@ -2213,6 +2213,8 @@ $(document).ready(function($) {
                         if(response.category_details != '' && response.category_details != 'undefined'){
 
                             $(`#quote_${quoteKey}_category_details`).val(response.category_details);
+
+                            console.log(JSON.parse(response.category_details));
 
                             createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
                         }
