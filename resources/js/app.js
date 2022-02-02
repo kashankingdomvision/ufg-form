@@ -1968,6 +1968,32 @@ $(document).ready(function($) {
                 quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
             });
 
+            $(document).on('change', '.cat-details-radio-btn', function(e) {
+
+                var quote       = $(this).closest('.quote');
+                var quoteKey    = quote.data('key');
+
+                var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+                var feildIndex  = $(this).parents('.cat-feild-col').index();
+                var optionIndex = $(this).parents('.cat-details-radio-btn-parent').index();
+
+                var formData = formData.map(function(obj) {
+                    if(obj.type == 'radio-group'){
+                        obj.values.map(function(obj) {
+                            obj.selected = false;
+                            return obj;
+                        });
+                    }
+
+                    return obj;
+                });
+        
+                formData[feildIndex].values[optionIndex].selected = true;
+
+
+                quote.find(`#quote_${quoteKey}_category_details`).val( JSON.stringify(formData) );
+            });
+
             $(document).on('keyup', '.prod-details-feild', function(e) {
 
                 var quote            = $(this).closest('.quote');
@@ -2012,6 +2038,42 @@ $(document).ready(function($) {
 
                 let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete' ];
                 var appendHTML = '';
+
+                if(obj.type == 'radio-group'){
+    
+                    var radioBtnElementParent = document.createElement("div");
+                    if(obj.inline){
+                        radioBtnElementParent.setAttribute('class', 'd-flex');
+                    }
+                
+                    //Create and append the options
+                    for (let i = 0; i < obj.values.length; i++) {
+                
+                        let radioBtnDiv = document.createElement("div");
+                        radioBtnDiv.setAttribute('class', 'mr-1 cat-details-radio-btn-parent');
+                
+                        let radioBtn   = document.createElement("input")
+                        radioBtn.setAttribute("type", "radio");
+                        radioBtn.setAttribute("name", obj.name);
+                        radioBtn.setAttribute("id", removeSpace(obj.values[i].value));
+                        radioBtn.setAttribute("class", "cat-details-radio-btn");
+                        radioBtn.setAttribute("value", obj.values[i].value);
+                        if(obj.values[i].selected){
+                            radioBtn.setAttribute('checked','checked');
+                        }
+                
+                        let label = document.createElement('label');
+                        label.innerHTML = `&nbsp; ${obj.values[i].label}`;
+                        label.setAttribute("for", removeSpace(obj.values[i].value));
+                
+                        radioBtnDiv.appendChild(radioBtn);
+                        radioBtnDiv.appendChild(label);
+                
+                        radioBtnElementParent.appendChild(radioBtnDiv);
+                    }
+                
+                    appendHTML = createParentDivOfElm(radioBtnElementParent, type, obj);
+                }
 
                 if(obj.type == 'checkbox-group'){
                     

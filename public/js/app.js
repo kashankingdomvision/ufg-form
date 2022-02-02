@@ -71868,6 +71868,25 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
   });
+  $(document).on('change', '.cat-details-radio-btn', function (e) {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
+    var feildIndex = $(this).parents('.cat-feild-col').index();
+    var optionIndex = $(this).parents('.cat-details-radio-btn-parent').index();
+    var formData = formData.map(function (obj) {
+      if (obj.type == 'radio-group') {
+        obj.values.map(function (obj) {
+          obj.selected = false;
+          return obj;
+        });
+      }
+
+      return obj;
+    });
+    formData[feildIndex].values[optionIndex].selected = true;
+    quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+  });
   $(document).on('keyup', '.prod-details-feild', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -71903,6 +71922,39 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var inputTypes = ['text', 'textarea', 'select', 'autocomplete'];
     var appendHTML = '';
 
+    if (obj.type == 'radio-group') {
+      var radioBtnElementParent = document.createElement("div");
+
+      if (obj.inline) {
+        radioBtnElementParent.setAttribute('class', 'd-flex');
+      } //Create and append the options
+
+
+      for (var i = 0; i < obj.values.length; i++) {
+        var radioBtnDiv = document.createElement("div");
+        radioBtnDiv.setAttribute('class', 'mr-1 cat-details-radio-btn-parent');
+        var radioBtn = document.createElement("input");
+        radioBtn.setAttribute("type", "radio");
+        radioBtn.setAttribute("name", obj.name);
+        radioBtn.setAttribute("id", removeSpace(obj.values[i].value));
+        radioBtn.setAttribute("class", "cat-details-radio-btn");
+        radioBtn.setAttribute("value", obj.values[i].value);
+
+        if (obj.values[i].selected) {
+          radioBtn.setAttribute('checked', 'checked');
+        }
+
+        var label = document.createElement('label');
+        label.innerHTML = "&nbsp; ".concat(obj.values[i].label);
+        label.setAttribute("for", removeSpace(obj.values[i].value));
+        radioBtnDiv.appendChild(radioBtn);
+        radioBtnDiv.appendChild(label);
+        radioBtnElementParent.appendChild(radioBtnDiv);
+      }
+
+      appendHTML = createParentDivOfElm(radioBtnElementParent, type, obj);
+    }
+
     if (obj.type == 'checkbox-group') {
       var checkboxElementParent = document.createElement("div");
 
@@ -71911,25 +71963,28 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       } //Create and append the options
 
 
-      for (var i = 0; i < obj.values.length; i++) {
+      for (var _i = 0; _i < obj.values.length; _i++) {
         var checkboxDiv = document.createElement("div");
         checkboxDiv.setAttribute('class', 'mr-1 cat-details-checkbox-parent');
         var checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
-        checkbox.setAttribute("name", obj.values[i].value);
-        checkbox.setAttribute("id", removeSpace(obj.values[i].value));
+        checkbox.setAttribute("name", obj.values[_i].value);
+        checkbox.setAttribute("id", removeSpace(obj.values[_i].value));
         checkbox.setAttribute("class", "cat-details-checkbox");
-        checkbox.setAttribute("value", obj.values[i].value);
+        checkbox.setAttribute("value", obj.values[_i].value);
 
-        if (obj.values[i].selected) {
+        if (obj.values[_i].selected) {
           checkbox.setAttribute('checked', 'checked');
         }
 
-        var label = document.createElement('label');
-        label.innerHTML = "&nbsp; ".concat(obj.values[i].label);
-        label.setAttribute("for", removeSpace(obj.values[i].value));
+        var _label = document.createElement('label');
+
+        _label.innerHTML = "&nbsp; ".concat(obj.values[_i].label);
+
+        _label.setAttribute("for", removeSpace(obj.values[_i].value));
+
         checkboxDiv.appendChild(checkbox);
-        checkboxDiv.appendChild(label);
+        checkboxDiv.appendChild(_label);
         checkboxElementParent.appendChild(checkboxDiv);
       }
 
@@ -71974,12 +72029,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       } // add options to selectbox
       else if (obj.type == 'select' || obj.type == 'autocomplete') {
         //Create and append the options
-        for (var _i = 0; _i < obj.values.length; _i++) {
+        for (var _i2 = 0; _i2 < obj.values.length; _i2++) {
           var option = document.createElement("option");
-          option.value = obj.values[_i].label;
-          option.text = obj.values[_i].value;
+          option.value = obj.values[_i2].label;
+          option.text = obj.values[_i2].value;
 
-          if (obj.values[_i].selected) {
+          if (obj.values[_i2].selected) {
             option.setAttribute('selected', 'selected');
           }
 
@@ -74601,14 +74656,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       idLength = ids.length + _val;
     }
 
-    for (var _i2 = 0; _i2 <= ids.length; _i2++) {
-      var count = 2 + _i2;
+    for (var _i3 = 0; _i3 <= ids.length; _i3++) {
+      var count = 2 + _i3;
 
       if (agency_Val == 1) {
-        count = 1 + _i2;
+        count = 1 + _i3;
       }
 
-      $('#' + ids[_i2]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
+      $('#' + ids[_i3]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
     }
   }); //pax appednd work end
 
