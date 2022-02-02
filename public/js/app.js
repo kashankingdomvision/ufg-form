@@ -71961,7 +71961,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var radioBtnElementParent = document.createElement("div");
 
       if (obj.inline) {
-        radioBtnElementParent.setAttribute('class', 'd-flex');
+        radioBtnElementParent.setAttribute('class', 'd-flex row');
       } //Create and append the options
 
 
