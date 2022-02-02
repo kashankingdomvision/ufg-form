@@ -5252,7 +5252,7 @@ $(document).ready(function($) {
                         <input type="text" name="pax[${count}][medical_requirement]" class="form-control" placeholder="Medical Requirements">
                     </div>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="form-group">
                             <label>Up To Date Covid Vaccination Status </label>
                             <div>
@@ -5295,83 +5295,96 @@ $(document).ready(function($) {
                 }
                 const $_html = `
                         <div class="mb-1 appendCount" id="appendCount${count}">
-                            <div class="row" >
-                            <div class="col-md-12">
-                                <button type="button" class=" remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-minus" aria-hidden="true"></i></button>
-                            </div>
-                                <div class="col-md-3 mb-2">
-                                    <label class="mainLabel">Passenger #${c} Full Name</label>
-                                    <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="PASSENGER FULL NAME" >
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Email Address</label>
-                                    <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="EMAIL ADDRESS" >
-                                </div>
-
-
-                                <div class="col-md-3 mb-2">
-                                    <label>Contact Number</label>
-                                    <input type="tel" name="pax[${count}][contact_number]"  data-key="${count}" class="form-control phone phone${count}" >
-                                    <span class="text-danger error_msg${count}" role="alert"></span>
-                                    <span class="text-success valid_msg${count}" role="alert"></span>
-                                </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Date Of Birth</label>
-                                    <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth" >
-                                </div>
-                            </div>
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-md-12">
+                                    <button type="button" class="remove-pax-column btn btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                </div>
+                            
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="mainLabel">Passenger #${c} Full Name</label>
+                                        <input type="text" name="pax[${count}][full_name]" class="form-control" placeholder="Passsenger Name">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" name="pax[${count}][email_address]" class="form-control" placeholder="Email Address">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Contact Number</label>
+                                        <input type="tel" name="pax[${count}][contact_number]" data-key="${count}" class="form-control phone phone${count}">
+                                        <span class="text-danger error_msg${count}" role="alert"></span>
+                                        <span class="text-success valid_msg${count}" role="alert"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Date Of Birth</label>
+                                        <input type="date" max="{{ date('Y-m-d') }}" name="pax[${count}][date_of_birth]" class="form-control" placeholder="Date Of Birth">
+                                    </div>
+                                </div>
+            
+                                <div class="col-md-3">
                                     <label>Nationality</label>
-                                    <select name="pax[${count}][nationality_id]"  class="form-control nationality-select2 nationality-id">
+                                    <select name="pax[${count}][nationality_id]" class="form-control nationality-select2 nationality-id">
                                         <option selected value="" >Select Nationality</option>
                                         ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
                                     </select>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                    <label>Resident In</label>
-                                    <select name="pax[${count}][resident_in]" class="form-control nationality-select2 resident-id">
-                                        <option selected value="" >Select Resident</option>
-                                        ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
-                                    </select>
-                                    <span class="text-danger" role="alert"></span>
+                                        <label>Resident In</label>
+                                        <select name="pax[${count}][resident_in]" class="form-control nationality-select2 resident-id">
+                                            <option selected value="" >Select Resident</option>
+                                            ${countries.map(co => `<option value="${co.id}" >${co.name}</option>`).join("")}
+                                        </select>
+                                        <span class="text-danger" role="alert"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-3 mb-2">
-                                    <label>Bedding Preference</label>
-                                    <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="BEDDING PREFERENCES" >
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Bedding Preference</label>
+                                        <input type="text" name="pax[${count}][bedding_preference]" class="form-control" placeholder="Bedding Preferences" >
+                                    </div>
                                 </div>
 
-                                <div class="col-md-3 mb-2">
-                                    <label>Dietary Preferences</label>
-                                    <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Dietary Preferences</label>
+                                        <input type="text" name="pax[${count}][dietary_preferences]" class="form-control" placeholder="Dietary Preferences" >
+                                    </div>
                                 </div>
 
-                                <div class="col-md-3 mb-2">
-                                    <label>Medical Requirements</label>
-                                    <input type="text" name="pax[${count}][medical_requirement]" class="form-control" placeholder="Medical Requirements">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Medical Requirements</label>
+                                        <input type="text" name="pax[${count}][medical_requirement]" class="form-control" placeholder="Medical Requirements">
+                                    </div>
                                 </div>
 
-                                <div class="col-sm-3">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Up To Date Covid Vaccination Status </label>
                                         <div>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No &nbsp;&nbsp;
-                                            </label>
-                                            <label class="radio-inline">
-                                                <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="2" > Not Sure
-                                            </label>
+                                            <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_yes_${count}" class="covid-vaccinated" value="1">
+                                            <label class="radio-inline mr-half" for="pax_cv_yes_${count}">Yes</label>
+
+                                            <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_no_${count}" class="covid-vaccinated" value="0" checked>
+                                            <label class="radio-inline mr-half" for="pax_cv_no_${count}">No</label>
+
+                                            <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_not_sure_${count}" class="covid-vaccinated" value="2">
+                                            <label class="radio-inline mr-half" for="pax_cv_not_sure_${count}">Not Sure</label>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>`;
                         $('#appendPaxName').append($_html);
