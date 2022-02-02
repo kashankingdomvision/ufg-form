@@ -1896,7 +1896,7 @@ $(document).ready(function($) {
                 
             });
 
-            if(location.href.substring(0, location.href.lastIndexOf('/')) == 'http://localhost/ufg-form/public/quotes/edit' || location.href.substring(0, location.href.lastIndexOf('/')) == 'https://booking.unforgettabletravel.com/ufg-form/public/quotes/edit'){
+            if([ 'quotes.edit', 'quotes.view.version' ].includes(CURRENT_ROUTE_NAME)){
          
                 $(".quote").each(function(){
                    
@@ -1905,11 +1905,11 @@ $(document).ready(function($) {
                     var categoryFormData = $(`#quote_${quoteKey}_category_details`).val();
                     var productFormData  = $(`#quote_${quoteKey}_product_details`).val();
 
-                    if(categoryFormData != '' && categoryFormData != 'undefined'){
+                    if(categoryFormData != '' && typeof categoryFormData != 'undefined'){
                         createAllElm( quote, '.category-details-render', 'category_details', JSON.parse(categoryFormData));
                     }
 
-                    if(productFormData != '' && productFormData != 'undefined'){
+                    if(productFormData != '' && typeof productFormData != 'undefined'){
                         createAllElm( quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
                     }
 
@@ -3543,12 +3543,6 @@ $(document).ready(function($) {
                         $(".versions :input").removeAttr("disabled");
                         $(this).data('recall', 'false');
                         $(this).text('Back Into Version');
-                        var add_HTML = `<div class="col-12 text-right">
-                        <button type="button" id="add_more" class="btn mr-3 btn-outline-dark  pull-right ">+ Add more </button>
-                        <button type="button"  id="add_storeText" class="mr-3 btn btn-outline-dark  float-right pull-right">x Remove Stored Text</button>
-
-                                    </div>`;
-                        $('#addMoreButton').append(add_HTML);
 
                       var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
                         $('#btnSubmitversion').append(btn_Submit);
@@ -3563,7 +3557,6 @@ $(document).ready(function($) {
                     $("#versions :input").prop("disabled", true);
                     $('#reCall').prop("disabled", false);
                     $(this).text('Recall Version');
-                    $('#addMoreButton').append();
                     $('#btnSubmitversion').append();
                 }
             });
