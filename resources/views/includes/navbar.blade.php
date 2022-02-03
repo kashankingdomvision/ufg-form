@@ -9,8 +9,9 @@
   <ul class="navbar-nav ml-auto mr-1">
     <li class="nav-item dropdown border rounded">
       <a class="nav-link align-middle" data-toggle="dropdown" href="#">
-        <span>{{ (Auth::user()->name) }}</span> &nbsp;
-        <i class="fa fa-caret-down" aria-hidden="true"></i>
+        <i class="fa fa-user text-dark pr-1" aria-hidden="true"></i>
+        <span class="text-dark">{{ (Auth::user()->name) }}</span> &nbsp;
+        <i class="fa fa-caret-down text-dark" aria-hidden="true"></i>
       </a>
 
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-sm">
