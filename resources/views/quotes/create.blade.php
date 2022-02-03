@@ -709,20 +709,19 @@
                   <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                 </div>
 
-                <div class="form-group row agencyField d-none">
-                  <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12 agencyField d-none">
                     <div class="form-group">
                       <label>Agency Commission Type <span style="color:red">*</span></label>
                       <div>
-                        <label class="radio-inline">
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" value="net-price" >&nbsp; Net Price &nbsp;&nbsp;
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" value="paid-net-of-commission" >&nbsp; Paid Net of Commission &nbsp;&nbsp;
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" value="we-pay-commission-on-departure">&nbsp; We pay Commission on Departure
-                        </label>
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_net_price" value="net-price" checked>
+                        <label class="radio-inline mr-1" for="agency_yes_net_price">Net Price</label>
+
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission">
+                        <label class="radio-inline mr-1" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure"> 
+                        <label class="radio-inline" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
                       </div>
                     </div>
                   </div>

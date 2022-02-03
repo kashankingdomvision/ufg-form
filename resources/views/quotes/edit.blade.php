@@ -912,19 +912,20 @@
                   <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
                 </div>
 
-                <div class="col-md-12 agencyField {{ ($quote->agency == 0) ? 'd-none' : '' }}">
-                  <div class="form-group">
-                    <label>Agency Commission Type <span style="color:red">*</span></label>
-                    <div>
-                      <label class="radio-inline">
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" value="net-price" {{ $quote->agency == 1 && $quote->agency_commission_type == 'net-price' ? 'checked' : '' }}>&nbsp; Net Price &nbsp;&nbsp;
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" value="paid-net-of-commission" {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' ? 'checked' : '' }}>&nbsp; Paid Net of Commission &nbsp;&nbsp;
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" value="we-pay-commission-on-departure" {{ $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? 'checked' : '' }}>&nbsp; We pay Commission on Departure
-                      </label>
+                <div class="row">
+                  <div class="col-md-12 agencyField {{ ($quote->agency == 0) ? 'd-none' : '' }}">
+                    <div class="form-group">
+                      <label>Agency Commission Type <span style="color:red">*</span></label>
+                      <div>
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_net_price" value="net-price" {{ $quote->agency == 1 && $quote->agency_commission_type == 'net-price' ? 'checked' : '' }}>
+                        <label class="radio-inline mr-1" for="agency_yes_net_price">Net Price</label>
+
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission" {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' ? 'checked' : '' }}>
+                        <label class="radio-inline mr-1" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+
+                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure" {{ $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? 'checked' : '' }}> 
+                        <label class="radio-inline" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
+                      </div>
                     </div>
                   </div>
                 </div>
