@@ -72058,11 +72058,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
       if (obj.required != undefined && obj.required) {
         elm.setAttribute('required', true);
-      } // set value to text and textarea
+      } // set value for text and textarea
 
 
-      if (obj.value != undefined && ['text', 'textarea'].includes(obj.type)) {
+      if (obj.value != undefined && ['text', 'textarea', 'number'].includes(obj.type)) {
         elm.setAttribute('value', obj.value);
+      } // set value for textarea
+
+
+      if (obj.value != undefined && ['textarea'].includes(obj.type)) {
+        elm.innerHTML = obj.value;
       } // add options to selectbox
       else if (obj.type == 'select' || obj.type == 'autocomplete') {
         //Create and append the options

@@ -2203,9 +2203,14 @@ $(document).ready(function($) {
                         elm.setAttribute('required', true);
                     }
                 
-                    // set value to text and textarea
-                    if( obj.value != undefined && ['text', 'textarea'].includes(obj.type) ) {
+                    // set value for text and textarea
+                    if( obj.value != undefined && ['text', 'textarea', 'number'].includes(obj.type) ) {
                         elm.setAttribute('value', obj.value);
+                    }
+
+                    // set value for textarea
+                    if( obj.value != undefined && ['textarea'].includes(obj.type) ) {
+                        elm.innerHTML =  obj.value;
                     }
                 
                     // add options to selectbox
