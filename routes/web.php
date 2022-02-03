@@ -238,7 +238,7 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
-    /* Commissions */
+    /* Commissions Group */
     Route::group([
         'prefix' => 'commission-group',
         'as'     => 'commission_group.'
@@ -250,6 +250,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionGroupController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionGroupController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionGroupController@destroy'));
+    });
+
+    /* Commissions Group */
+    Route::group([
+        'prefix' => 'commission-criteria',
+        'as'     => 'commission_criteria.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CommissionCriteriaController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CommissionCriteriaController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CommissionCriteriaController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));
     });
     
 
@@ -269,9 +283,9 @@ Route::group(['middleware' => ['auth']], function(){
         // ]]);
 
         /*  Commission Criteria */
-        Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
     });
 

@@ -97,6 +97,8 @@ __webpack_require__(/*! ./commission_management/commission_app */ "./resources/j
 
 __webpack_require__(/*! ./commission_management/commission_group_app.js */ "./resources/js/commission_management/commission_group_app.js");
 
+__webpack_require__(/*! ./commission_management/commission_criteria_app.js */ "./resources/js/commission_management/commission_criteria_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/commission_management/commission_app.js":
@@ -159,6 +161,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commissions/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/commission_management/commission_criteria_app.js":
+/*!***********************************************************************!*\
+  !*** ./resources/js/commission_management/commission_criteria_app.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Commission Criteria 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_commission_criteria', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-criteria/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Commission Criteria
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_commission_criteria', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-criteria/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

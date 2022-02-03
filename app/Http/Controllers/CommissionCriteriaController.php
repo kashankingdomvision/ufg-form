@@ -93,8 +93,8 @@ class CommissionCriteriaController extends Controller
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
         
-        return redirect()->route('commissions.commission-criteria.index')->with('success_message', 'Commission Criteria created successfully'); 
 
+        return response()->json(['status' => true, 'success_message' => 'Commission Criteria Created Successfully.']);
     }
 
     /**
@@ -169,7 +169,7 @@ class CommissionCriteriaController extends Controller
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
       
-        return redirect()->route('commissions.commission-criteria.index')->with('success_message', 'Commission Criteria updated successfully'); 
+        return response()->json(['status' => true, 'success_message' => 'Commission Criteria Updated Successfully.']);
     }
 
     /**
@@ -181,6 +181,6 @@ class CommissionCriteriaController extends Controller
     public function destroy($id)
     {
         CommissionCriteria::destroy(decrypt($id));
-        return redirect()->route('commissions.commission-criteria.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
+        return redirect()->route('commission_criteria.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
     }
 }

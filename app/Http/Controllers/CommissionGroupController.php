@@ -27,7 +27,6 @@ class CommissionGroupController extends Controller
             if($request->has('search') && !empty($request->search)){
                 $commission_group->where('name', 'like', '%'.$request->search.'%' );
             }
-
         }
 
         $data['commission_groups'] = $commission_group->paginate($this->pagination);
