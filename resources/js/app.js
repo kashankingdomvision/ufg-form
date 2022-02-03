@@ -2080,7 +2080,7 @@ $(document).ready(function($) {
 
             function createElm(quote, selector, type, obj ) {
 
-                let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete' ];
+                let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete', 'number' ];
                 var appendHTML = '';
 
                 if(obj.type == 'radio-group'){
@@ -2159,7 +2159,7 @@ $(document).ready(function($) {
 
                     let elementType = '';
 
-                    if( obj.type == 'text' )
+                    if( obj.type == 'text' || 'number' )
                         elementType = 'input';
 
                     else if( obj.type == 'autocomplete' )
@@ -2224,6 +2224,7 @@ $(document).ready(function($) {
 
                 quote.find(selector).append(appendHTML);
 
+                reinitializedDynamicFeilds();
                 // insElment.appendChild(div);
                 // $(div).insertAfter(quote.find('.product-id-col'));
             }

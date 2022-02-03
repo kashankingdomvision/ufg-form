@@ -25,5 +25,8 @@ class CategoryTableSeeder extends Seeder
         }
 
         Category::where('id', 1)->update([ 'set_end_date_of_service' => '1' ]);
+        
+        $sql = file_get_contents(database_path() . '/seeds/sql_dump/categories.sql');
+        DB::unprepared($sql);
     }
 }

@@ -71955,7 +71955,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function createElm(quote, selector, type, obj) {
-    var inputTypes = ['text', 'textarea', 'select', 'autocomplete'];
+    var inputTypes = ['text', 'textarea', 'select', 'autocomplete', 'number'];
     var appendHTML = '';
 
     if (obj.type == 'radio-group') {
@@ -72029,7 +72029,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (inputTypes.includes(obj.type)) {
       var elementType = '';
-      if (obj.type == 'text') elementType = 'input';else if (obj.type == 'autocomplete') elementType = 'select';else elementType = obj.type;
+      if (obj.type == 'text' || 'number') elementType = 'input';else if (obj.type == 'autocomplete') elementType = 'select';else elementType = obj.type;
       var elm = document.createElement(elementType); // Set attributes
 
       elm.setAttribute('type', 'text');
@@ -72081,7 +72081,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       appendHTML = createParentDivOfElm(elm, type, obj);
     }
 
-    quote.find(selector).append(appendHTML); // insElment.appendChild(div);
+    quote.find(selector).append(appendHTML);
+    reinitializedDynamicFeilds(); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 
