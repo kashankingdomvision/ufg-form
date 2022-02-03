@@ -267,28 +267,6 @@ Route::group(['middleware' => ['auth']], function(){
     });
     
 
-    Route::group([
-        'prefix' => 'commissions',
-        'as'     => 'commissions.'
-    ], function () {
-
-        /* Commsisions */
-        // Route::resource('commission', 'CommissionController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-        /* Commission Group */
-        // Route::resource('commission-group', 'CommissionGroupController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-        /*  Commission Criteria */
-        // Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-    });
-
     /*
     |--------------------------------------------------------------------------
     | Users Manangement
@@ -390,7 +368,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierController@update'));
         Route::get('show/{id}', array('as' => 'show', 'uses' => 'SupplierController@show'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierController@destroy'));
-
     });
 
 
@@ -406,7 +383,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'GroupOwnerController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'GroupOwnerController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'GroupOwnerController@destroy'));
-
     });
 
     /*  Products */
@@ -421,7 +397,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SupplierRateSheetController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierRateSheetController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierRateSheetController@destroy'));
-
     });
 
     /*  Products */
@@ -436,7 +411,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'ProductController@edit'));
         Route::post('update', array('as' => 'update', 'uses' => 'ProductController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'ProductController@destroy'));
-
     });
 
     /*  Supplier Categories */
@@ -456,7 +430,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CategoryController@edit'));
         Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CategoryController@destroy'));
-
     });
 
 
@@ -627,7 +600,27 @@ Route::group(['middleware' => ['auth']], function(){
     });
 });
 
+// Route::group([
+//     'prefix' => 'commissions',
+//     'as'     => 'commissions.'
+// ], function () {
 
+    /* Commsisions */
+    // Route::resource('commission', 'CommissionController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Commission Group */
+    // Route::resource('commission-group', 'CommissionGroupController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /*  Commission Criteria */
+    // Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+// });
 
 // Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
 // Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
