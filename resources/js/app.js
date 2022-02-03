@@ -2159,10 +2159,10 @@ $(document).ready(function($) {
 
                     let elementType = '';
 
-                    if( obj.type == 'text' || 'number' )
+                    if( [ 'text', 'number' ].includes(obj.type) )
                         elementType = 'input';
 
-                    else if( obj.type == 'autocomplete' )
+                    else if( [ 'autocomplete', 'select' ].includes(obj.type) )
                         elementType = 'select';
 
                     else

@@ -72029,7 +72029,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
     if (inputTypes.includes(obj.type)) {
       var elementType = '';
-      if (obj.type == 'text' || 'number') elementType = 'input';else if (obj.type == 'autocomplete') elementType = 'select';else elementType = obj.type;
+      if (['text', 'number'].includes(obj.type)) elementType = 'input';else if (['autocomplete', 'select'].includes(obj.type)) elementType = 'select';else elementType = obj.type;
       var elm = document.createElement(elementType); // Set attributes
 
       elm.setAttribute('type', 'text');
