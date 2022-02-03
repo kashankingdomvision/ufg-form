@@ -238,6 +238,21 @@ Route::group(['middleware' => ['auth']], function(){
 
     });
 
+    /* Commissions */
+    Route::group([
+        'prefix' => 'commission-group',
+        'as'     => 'commission_group.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CommissionGroupController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CommissionGroupController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CommissionGroupController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionGroupController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionGroupController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionGroupController@destroy'));
+    });
+    
+
     Route::group([
         'prefix' => 'commissions',
         'as'     => 'commissions.'
@@ -249,9 +264,9 @@ Route::group(['middleware' => ['auth']], function(){
         // ]]);
 
         /* Commission Group */
-        Route::resource('commission-group', 'CommissionGroupController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('commission-group', 'CommissionGroupController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
         /*  Commission Criteria */
         Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [

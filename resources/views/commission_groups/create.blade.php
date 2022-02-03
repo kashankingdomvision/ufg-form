@@ -33,28 +33,25 @@
                 <h3 class="card-title text-center">Commission Group Form</h3>
               </div>
 
-              <form method="POST" action="{{ route('commissions.commission-group.store') }}" >
+              <form method="POST" id="store_commission_group" action="{{ route('commission_group.store') }}" >
                 @csrf
 
                 <div class="card-body">
-
                   <div class="form-group">
                     <label>Group Name <span style="color:red">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Group Name" >
-                    
-                    @error('name')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Group Name" >
+                    <span class="text-danger" role="alert"></span>
                   </div>
-
                 </div> 
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                  <a href="{{ route('commissions.commission-group.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                  <a href="{{ route('commission_group.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
                 </div>
 
               </form>
+
+              <div id="overlay" class=""></div>
             </div>
           </div>
         </div>
@@ -63,3 +60,7 @@
 
   </div>
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/commission_management.js') }}" ></script>
+@endpush

@@ -57,7 +57,7 @@ class CommissionGroupController extends Controller
             'name'          => $request->name
         ]);
 
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Created Successfully');
+        return response()->json(['status' => true, 'success_message' => 'Commission Group Created Successfully.']);
     }
 
     /**
@@ -97,7 +97,7 @@ class CommissionGroupController extends Controller
             'name'          => $request->name
         ]);
 
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Updated Successfully');
+        return response()->json(['status' => true, 'success_message' => 'Commission Group Updated Successfully.']);
     }
 
     /**
@@ -109,6 +109,6 @@ class CommissionGroupController extends Controller
     public function destroy($id)
     {
         CommissionGroup::destroy(decrypt($id));
-        return redirect()->route('commissions.commission-group.index')->with('success_message', 'Commission Group Deleted Successfully'); 
+        return redirect()->route('commission_group.index')->with('success_message', 'Commission Group Deleted Successfully'); 
     }
 }

@@ -263,7 +263,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item {{ $route == 'commissions.index' || $route == 'commissions.create' || $route == 'commissions.edit' ||  $route == 'commissions.commission-group.index' || $route == 'commissions.commission-group.create' || $route == 'commissions.commission-group.edit' || $route == 'commissions.commission-criteria.index' || $route == 'commissions.commission-criteria.create' || $route == 'commissions.commission-criteria.edit' ? 'menu-open': '' }}">
+                    <li class="nav-item {{ $route == 'commissions.index' || $route == 'commissions.create' || $route == 'commissions.edit' ||  $route == 'commission_group.index' || $route == 'commission_group.create' || $route == 'commission_group.edit' || $route == 'commissions.commission-criteria.index' || $route == 'commissions.commission-criteria.create' || $route == 'commissions.commission-criteria.edit' ? 'menu-open': '' }}">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-percentage"></i>
                             <p>
@@ -283,7 +283,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ route('commissions.commission-group.index') }}" class="nav-link {{ $route == 'commissions.commission-group.index' || $route == 'commissions.commission-group.create' || $route == 'commissions.commission-group.edit'  ? 'active' : '' }}">
+                                <a href="{{ route('commission_group.index') }}" class="nav-link {{ $route == 'commission_group.index' || $route == 'commission_group.create' || $route == 'commission_group.edit'  ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Commission Groups

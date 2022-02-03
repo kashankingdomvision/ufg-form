@@ -31,6 +31,7 @@ class CommissionController extends Controller
             }
         }
         $data['commissions'] = $commission->paginate($this->pagination);
+        
         return view('commissions.listing', $data);
     }
 
