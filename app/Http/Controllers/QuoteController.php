@@ -635,6 +635,8 @@ class QuoteController extends Controller
         $quote                    = $log->data;
         $data['quote']            = $quote;
         $data['log']              = $log;
+        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();

@@ -3588,9 +3588,6 @@ $(document).ready(function($) {
                         $(this).data('recall', 'false');
                         $(this).text('Back Into Version');
 
-                      var btn_Submit = `  <button type="submit" class="btn btn-success float-right">Submit</button>`;
-                        $('#btnSubmitversion').append(btn_Submit);
-
                         $('.remove').addClass('remove-quote-detail-service');
                         $('.remove').removeClass('d-none');
                         $('.add-new-product, .insert-quick-text, .add-new-service-below').removeClass('d-none');
@@ -3601,7 +3598,6 @@ $(document).ready(function($) {
                     $("#versions :input").prop("disabled", true);
                     $('#reCall').prop("disabled", false);
                     $(this).text('Recall Version');
-                    $('#btnSubmitversion').append();
                 }
             });
 
