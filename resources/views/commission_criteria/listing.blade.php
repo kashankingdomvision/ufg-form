@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('commissions.commission.index')">
+  <x-page-filters :route="route('commissions.commission-criteria.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">

@@ -59,7 +59,7 @@ class CommissionController extends Controller
     {
         $commission = Commission::create([ 'name' => $request->name ]);
 
-        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission created successfully'); 
+        return response()->json(['status' => true, 'success_message' => 'Category Created Successfully.']);
     }
 
 
@@ -86,7 +86,8 @@ class CommissionController extends Controller
     public function update(CommissionRequest $request, $id)
     {
         Commission::findOrFail(decrypt($id))->update($request->all());
-        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission updated successfully'); 
+
+        return response()->json(['status' => true, 'success_message' => 'Category Updated Successfully.']);
     }
 
     /**
@@ -98,6 +99,6 @@ class CommissionController extends Controller
     public function destroy($id)
     {
         Commission::destroy(decrypt($id));
-        return redirect()->route('commissions.commission.index')->with('success_message', 'Commission deleted successfully'); 
+        return redirect()->route('commissions.index')->with('success_message', 'Commission deleted successfully'); 
     }
 }

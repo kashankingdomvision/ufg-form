@@ -222,15 +222,31 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
+    
+    /* Commissions */
+    Route::group([
+        'prefix' => 'commissions',
+        'as'     => 'commissions.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CommissionController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CommissionController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CommissionController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionController@destroy'));
+
+    });
+
     Route::group([
         'prefix' => 'commissions',
         'as'     => 'commissions.'
     ], function () {
 
         /* Commsisions */
-        Route::resource('commission', 'CommissionController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('commission', 'CommissionController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
         /* Commission Group */
         Route::resource('commission-group', 'CommissionGroupController',['only' => [

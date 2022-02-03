@@ -18,3 +18,4 @@ mix.js('resources/js/app.js', 'public/js/app.js')
 .js('resources/js/product_app.js', 'public/js/product_app.js')
 
 .js('resources/js/supplier_management.js', 'public/js/supplier_management.js')
+.js('resources/js/commission_management.js', 'public/js/commission_management.js')
