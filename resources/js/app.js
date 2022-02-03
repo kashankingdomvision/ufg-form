@@ -5297,7 +5297,7 @@ $(document).ready(function($) {
                         <div class="mb-1 appendCount" id="appendCount${count}">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <button type="button" class="remove-pax-column btn btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
+                                    <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
                                 </div>
                             
                                 <div class="col-md-3">

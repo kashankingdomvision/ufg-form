@@ -441,7 +441,7 @@
                             
                           <div class="row">
                             <div class="col-md-12">
-                              <button type="button" class="remove-pax-column btn btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
+                              <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
                             </div>
 
                             <div class="col-md-3">
@@ -547,7 +547,7 @@
                   </div>
 
                   <div class="col-md-12">
-                    <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button type="button" class="add-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                   </div>
                 </div>
                 
@@ -603,15 +603,11 @@
                         </div>
 
                         <div class="card-body">
-                          <div class="row">
-                            <div class="col-md-12">
-                              <div class="form-group ">
-                                <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                  @include('partials.addmediaModal')
-                                </div>
-                              </div>
-                              <button data-show="calladdmediaModal" type="button" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                          <div class="row d-flex justify-content-end pb-2 pr-2">
+                            <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              @include('partials.addmediaModal')
                             </div>
+                            <button data-show="calladdmediaModal" type="button" class="float-right btn btn-sm btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                           </div>
 
                           <div class="row">
