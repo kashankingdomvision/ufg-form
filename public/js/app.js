@@ -71955,7 +71955,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   });
 
   function createElm(quote, selector, type, obj) {
-    var inputTypes = ['text', 'textarea', 'select', 'autocomplete', 'number'];
+    var inputTypes = ['text', 'textarea', 'number', 'select', 'autocomplete'];
     var appendHTML = '';
 
     if (obj.type == 'radio-group') {
@@ -72028,11 +72028,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     if (inputTypes.includes(obj.type)) {
-      var elementType = '';
-      if (['text', 'number'].includes(obj.type)) elementType = 'input';else if (['autocomplete', 'select'].includes(obj.type)) elementType = 'select';else elementType = obj.type;
-      var elm = document.createElement(elementType); // Set attributes
+      var element = '';
+      if (['text', 'number'].includes(obj.type)) element = 'input';else if (['autocomplete', 'select'].includes(obj.type)) element = 'select';else element = obj.type;
+      var elm = document.createElement(element); // Set attributes
 
-      elm.setAttribute('type', 'text');
+      if (obj.type == 'text') elm.setAttribute('type', 'text');
+      if (obj.type == 'number') elm.setAttribute('type', 'number');
       elm.setAttribute('name', obj.name);
 
       if (obj.placeholder != undefined) {

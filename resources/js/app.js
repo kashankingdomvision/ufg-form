@@ -2080,7 +2080,7 @@ $(document).ready(function($) {
 
             function createElm(quote, selector, type, obj ) {
 
-                let inputTypes = [ 'text', 'textarea', 'select', 'autocomplete', 'number' ];
+                let inputTypes = [ 'text', 'textarea', 'number', 'select', 'autocomplete' ];
                 var appendHTML = '';
 
                 if(obj.type == 'radio-group'){
@@ -2157,21 +2157,26 @@ $(document).ready(function($) {
 
                 if(inputTypes.includes(obj.type)){
 
-                    let elementType = '';
+                    let element     = '';
 
                     if( [ 'text', 'number' ].includes(obj.type) )
-                        elementType = 'input';
+                        element = 'input';
 
                     else if( [ 'autocomplete', 'select' ].includes(obj.type) )
-                        elementType = 'select';
+                        element = 'select';
 
                     else
-                        elementType = obj.type;
+                        element = obj.type;
 
-                    let elm = document.createElement(elementType);
+                    let elm = document.createElement(element);
                 
                     // Set attributes
-                    elm.setAttribute('type', 'text');
+                    if(obj.type == 'text')
+                        elm.setAttribute('type', 'text');
+
+                    if(obj.type == 'number')
+                        elm.setAttribute('type', 'number');
+                    
                     elm.setAttribute('name', obj.name);
                 
                     if( obj.placeholder != undefined ){
