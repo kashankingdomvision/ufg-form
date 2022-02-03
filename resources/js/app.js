@@ -122,7 +122,7 @@ $(document).ready(function($) {
             return option.text;
         }
 
-        return $(`<span><img height="20" width="20" src="${optionImage}" class="option-flag-image" />${option.text}</span>`);
+        return $(`<span><img height="19" width="19" src="${optionImage}" class="option-flag-image" />${option.text}</span>`);
     };
 
     function reinitializedDynamicFeilds() {

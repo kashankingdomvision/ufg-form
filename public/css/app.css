@@ -5064,6 +5064,16 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   padding-bottom: 4px;
 }
 
+.select2-container--classic .select2-selection--multiple .select2-selection__choice {
+  background-color: #FFFFFF;
+  border: 1px solid #BEBEBE;
+  border-radius: 4px;
+  display: inline-block;
+  margin-left: 5px;
+  margin-top: 5px;
+  padding: 0;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Quote Managment

@@ -70171,7 +70171,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       return option.text;
     }
 
-    return $("<span><img height=\"20\" width=\"20\" src=\"".concat(optionImage, "\" class=\"option-flag-image\" />").concat(option.text, "</span>"));
+    return $("<span><img height=\"19\" width=\"19\" src=\"".concat(optionImage, "\" class=\"option-flag-image\" />").concat(option.text, "</span>"));
   }
 
   ;
