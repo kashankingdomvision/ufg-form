@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="col-4">
-                                <button type="submit" class="btn sign-in-btn-color btn-block">Sign In</button>
+                                <button type="submit" class="btn sign-in-btn-color btn-block"><i  class="fas fa-sign-in-alt fa-sm"></i> Sign In</button>
                             </div>
 
                         </div>
