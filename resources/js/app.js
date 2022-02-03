@@ -188,7 +188,8 @@ $(document).ready(function($) {
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
                     if(flag){
-                        $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                        $('html, body').animate({ scrollTop: $(`#${index}`).parent('.form-group').offset().top }, 1000);
+                        // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
                         flag = false;
                     }
                 });

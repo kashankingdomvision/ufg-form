@@ -70258,8 +70258,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
           if (flag) {
             $('html, body').animate({
-              scrollTop: $("#".concat(index)).offset().top
-            }, 1000);
+              scrollTop: $("#".concat(index)).parent('.form-group').offset().top
+            }, 1000); // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+
             flag = false;
           }
         });
