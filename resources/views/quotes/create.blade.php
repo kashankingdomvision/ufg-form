@@ -5,14 +5,12 @@
 @section('content')
 
 <div class="content-wrapper">
-  @include('includes.print_errors')
+  {{-- @include('includes.print_errors') --}}
 
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-6">
-            <h4>Add Quote</h4>
-          </div>
+        <div class="col-sm-6"><h4>Add Quote</h4></div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a>Home</a></li>
@@ -136,17 +134,11 @@
                   <div class="col-sm-6">
                     <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                     <div class="form-group">
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="rate_type" value="live" class="rate-type"  
-                        {{ (Auth::user()->rate_type == 'live')? 'checked': '' }}
-                        {{ (Auth::user()->id != 1) ? 'disabled' : '' }}
-                        >
-                        <span>&nbsp;Live Rate</span>
-                      </label>
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="rate_type" value="manual" class="rate-type" {{ (Auth::user()->rate_type == 'manual')? 'checked': '' }}>
-                        <span>&nbsp;Manual Rate</span>
-                      </label>
+                      <input type="radio" name="rate_type" id="live_rate" class="rate-type" value="live" {{ (Auth::user()->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
+                      <label class="radio-inline mr-1" for="live_rate">Live Rate</label>
+                      
+                      <input type="radio" name="rate_type" id="manual_rate" class="rate-type" value="manual" {{ (Auth::user()->rate_type == 'manual') ? 'checked': '' }}>
+                      <label class="radio-inline mr-1" for="manual_rate">Manual Rate</label>
                     </div>
                   </div>
                 </div>
@@ -158,7 +150,7 @@
                       <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
                         <option selected value="">Select Sales Person</option>
                         @foreach ($sale_persons as $person)
-                          <option value="{{ $person->id }}" {{ ($person->id == old('sale_person_id'))? 'selected' : (($person->id == Auth::id())? 'selected':NULL) }}>{{ $person->name }}</option>
+                          <option value="{{ $person->id }}" {{ $person->id == Auth::id() ? 'selected' : '' }}>{{ $person->name }}</option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
@@ -169,7 +161,7 @@
                     <div class="form-group">
                       <label>Brand <span style="color:red">*</span></label>
                       <select name="brand_id" id="brand_id" class="form-control select2single getBrandtoHoliday brand-id">
-                        <option selected value="" >Select Brand</option>
+                        <option selected value="">Select Brand</option>
                         @foreach ($brands as $brand)
                           <option value="{{ $brand->id }}" {{ isset(Auth::user()->brand_id) && !empty(Auth::user()->brand_id) && $brand->id == Auth::user()->brand_id ? 'selected' : '' }}> {{ $brand->name }} </option>
                         @endforeach
@@ -208,18 +200,15 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
-                        <label>Booking Currency <span style="color:red">*</span></label>
-                        <select name="currency_id" id="currency_id"
-                                class="form-control select2single booking-currency-id @error('currency_id') is-invalid @enderror">
-                            <option selected value="">Select Booking Currency</option>
-                            @foreach ($currencies as $currency)
-                                <option value="{{ $currency->id }}" data-code="{{$currency->code}}"
-                                        data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}>
-                                    &nbsp; {{$currency->code}} - {{$currency->name}} </option>
-                            @endforeach
-                        </select>
-                        <span class="text-danger" role="alert"></span>
-                        <input type="hidden" value="{{ url('quotes/getGroups/') }}" id="routeForGroups">
+                      <label>Booking Currency <span style="color:red">*</span></label>
+                      <select name="currency_id" id="currency_id" class="form-control select2single booking-currency-id">
+                        <option selected value="">Select Booking Currency</option>
+                        @foreach ($currencies as $currency)
+                          <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getCurrency->id) && !empty(Auth::user()->getCurrency->id) && Auth::user()->getCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                        @endforeach
+                      </select>
+                      <span class="text-danger" role="alert"></span>
+                      <input type="hidden" value="{{ url('quotes/getGroups/') }}" id="routeForGroups">
                     </div>
                   </div>
 
@@ -227,45 +216,45 @@
                     <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div>
-                        <label class="radio-inline">
-                          <input type="radio" name="agency" class="select-agency" value="1" > Yes
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="agency" class="select-agency" value="0"  checked> No
-                        </label>
+                        <input class="select-agency" value="1" type="radio" name="agency" id="agency_yes"> 
+                        <label class="mr-half radio-inline" for="agency_yes">Yes</label>
+
+                        <input class="select-agency" value="0" type="radio" name="agency" id="agency_no" checked>
+                        <label for="agency_no">No</label>
                       </div>
                     </div>
                   </div>
 
-
-
-                  <div class="col-md-12 agency-columns" >
-
-                    <div class="row mt-1 agencyField d-none" >
+                  <div class="col-md-12 agency-columns">
+                    <div class="row mt-1 agencyField d-none">
                       <div class="col form-group">
-                        <label for="inputEmail3" class="">Agency Name</label> <span style="color:red"> *</span>
-                        <input type="text"  name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
+                        <label>Agency Name</label> <span style="color:red"> *</span>
+                        <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                         <span class="text-danger" role="alert" > </span>
                       </div>
+
                       <div class="col form-group">
-                        <label for="inputEmail3" class="">Agency Contact Name </label> <span style="color:red"> *</span>
-                        <input type="text"  name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
+                        <label>Agency Contact Name </label> <span style="color:red"> *</span>
+                        <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                         <span class="text-danger" role="alert" > </span>
                       </div>
+                      
                       <div class="col form-group">
-                        <label for="inputEmail3" class="">Agency Contact No.</label> <span style="color:red"> *</span>
-                        <input type="tel"  name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
+                        <label>Agency Contact No.</label> <span style="color:red"> *</span>
+                        <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
                           <span class="text-danger error_msggc hide" role="alert"></span>
                           <span class="text-success valid_msggc" role="alert"></span>
                       </div>
 
                       <div class="col form-group">
-                        <label for="inputEmail3" class="">Agency Email </label> <span style="color:red"> *</span>
-                        <input type="email"  name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
+                        <label>Agency Email </label> <span style="color:red"> *</span>
+                        <input type="email" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
                         <span class="text-danger" role="alert" > </span>
                       </div>
                     </div>
-                    <div class="row mt-1 PassengerField" >
+
+                    <div class="row mt-1 PassengerField">
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Lead Passenger Name <span style="color:red">*</span></label>
@@ -273,6 +262,7 @@
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Email Address <span style="color:red">*</span></label>
@@ -280,6 +270,7 @@
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Contact Number <span style="color:red">*</span></label>
@@ -296,8 +287,7 @@
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
-                    </div>
-                    <div class="row PassengerField">
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Nationality (Passport)</label>
@@ -331,6 +321,7 @@
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
+
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Dietary Preferences</label>
@@ -347,25 +338,22 @@
                         </div>
                       </div>
 
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label>Up To Date Covid Vaccination Status</label>
                           <div>
-                            <label class="radio-inline">
-                              <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
-                            </label>
-                            <label class="radio-inline">
-                              <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="0" checked> No &nbsp;&nbsp;
-                            </label>
-                            <label class="radio-inline">
-                              <input type="radio" name="lead_passenger_covid_vaccinated" class="covid-vaccinated" value="2" > Not Sure
-                            </label>
+                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_yes" class="covid-vaccinated" value="1">
+                            <label class="radio-inline mr-half" for="lpcv_yes">Yes</label>
+
+                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_no" class="covid-vaccinated" value="0">
+                            <label class="radio-inline mr-half" for="lpcv_no">No</label>
+
+                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_not_sure" class="covid-vaccinated" value="2">
+                            <label class="radio-inline mr-half" for="lpcv_not_sure">Not Sure</label>
                           </div>
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
-
-
                     </div>
                   </div>
 
@@ -375,37 +363,36 @@
                       <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
                         <option selected value="">Select Pax No</option>
                         @for($i=1;$i<=30;$i++)
-                          <option value={{$i}} {{ old('pax_no') == $i || $i == 1 ? "selected" : "" }}>{{$i}}</option>
+                          <option value={{$i}} {{ $i == 1 ? 'selected' : '' }}>{{$i}}</option>
                         @endfor
                       </select>
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
 
-                  <div id="appendPaxName" class="col-md-12 ">
+                  <div id="appendPaxName" class="col-md-12"></div>
 
-                  </div>
                   <div class="col-md-12 col-offset-md-4">
-                    <button type="button" class="add-pax-column btn btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button type="button" class="add-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
                   </div>
                 </div>
 
-                <div class="row mb-2">
-                  <div class="col-md-2 offset-md-8">
-                    <label for="">Public Template</label>
+                <div class="row justify-content-end mb-2">
+                  <div class="col-md-3">
+                    <label>Public Template</label>
                     <select name="template" class="float-right select2single form-control template tempalte-id">
-                      <option  disabled selected value="">Select Template</option>
-                      @foreach ($public_templates as $template)
+                      <option disabled selected value="">Select Template</option>
+                      @foreach($public_templates as $template)
                         <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
                       @endforeach
                     </select>
                   </div>
 
-                  <div class="col-md-2 ">
+                  <div class="col-md-3">
                     <label for="">Private Template</label>
                     <select name="template" class="float-right select2single form-control template tempalte-id">
-                      <option  disabled selected value="">Select Template</option>
-                      @foreach ($private_templates as $template)
+                      <option disabled selected value="">Select Template</option>
+                      @foreach($private_templates as $template)
                         <option  value="{{ encrypt($template->id) }}">{{ $template->title }}</option>
                       @endforeach
                     </select>
@@ -419,6 +406,7 @@
                       <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
                     </div>
                   </div>
+
                   <div class="sortable sortable-spacing">
                     <div class="quote card card-default quote-0" data-key="0">
 
@@ -440,15 +428,11 @@
                       </div>
 
                       <div class="card-body">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="form-group ">
-                              <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                @include('partials.addmediaModal')
-                              </div>
-                            </div>
-                            <button type="button" data-show="calladdmediaModal" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                        <div class="row d-flex justify-content-end pb-2 pr-2">
+                          <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            @include('partials.addmediaModal')
                           </div>
+                          <button data-show="calladdmediaModal" type="button" class="float-right btn btn-sm btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                         </div>
 
                         <div class="row">
@@ -519,9 +503,7 @@
                           </div>
                         </div>
 
-                        <div class="row">
-                          <div class="category-details-render col-12 row"></div>
-                        </div>
+                        <div class="category-details-render col-12 row"></div>
 
                         <div class="row">
                           <div class="col">
@@ -538,9 +520,7 @@
 
                           <div class="col">
                             <div class="form-group">
-                              <label>
-                                Supplier <span style="color:red">*</span>
-                                <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
+                              <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                               </label>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single">
                                 <option selected value="">Select Supplier</option>
@@ -566,9 +546,9 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-
-                          <div class="product-details-render col-12 row"></div>
                         </div>
+
+                        <div class="product-details-render col-12 row"></div>
 
                         <div class="row">
                           <div class="col-md-3">
@@ -580,10 +560,6 @@
                                   <option value="{{ $booking_type->id }}" data-slug="{{ $booking_type->slug }}" > {{$booking_type->name}} </option>
                                 @endforeach
                               </select>
-
-                              @error('booking_type_id')
-                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                              @enderror
                             </div>
                           </div>
 
@@ -648,11 +624,7 @@
                             <div class="form-group">
                               <label>Selling Price <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text supplier-currency-code">
-                                    {{-- <i class="fas fa-dollar-sign"></i> --}}
-                                  </span>
-                                </div>
+                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code"></span></div>
                                 <input type="number" step="any" name="quote[0][selling_price]" data-name="selling_price" id="quote_0_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                               </div>
                             </div>
@@ -662,11 +634,7 @@
                             <div class="form-group">
                               <label>Profit % <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <div class="input-group-prepend">
-                                  <span class="input-group-text supplier-currency-code">
-                                    {{-- <i class="fas fa-dollar-sign"></i> --}}
-                                  </span>
-                                </div>
+                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code"></span></div>
                                 <input type="number" step="any" name="quote[0][profit_percentage]" data-name="profit_percentage" id="quote_0_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
@@ -711,21 +679,6 @@
                             </div>
                           </div>
 
-                          {{-- @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
-                            <div class="col-sm-2 d-flex justify-content-center">
-                              <div class="form-group">
-                                <label>Added in Sage </label>
-                                <div class="input-group">
-                                  <div class="input-group-prepend">
-                                    <div class="icheck-primary">
-                                      <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          @endif --}}
-
                           <div class="col-md-4">
                             <div class="form-group">
                               <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
@@ -756,8 +709,8 @@
                   <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
                 </div>
 
-                <div class="row mb-1 agencyField d-none">
-                  <div class="col-md-9">
+                <div class="form-group row agencyField d-none">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label>Agency Commission Type <span style="color:red">*</span></label>
                       <div>
@@ -805,7 +758,6 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <div class="input-group">
-                      
                         <input type="number" step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" readonly>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
@@ -896,6 +848,7 @@
                       <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage"></span>
                     </h5>
                   </label>
+
                   <div class="col-md-3">
                     <div class="form-group">
                       <div class="input-group">
@@ -987,112 +940,7 @@
 @endsection
 
 @push('js')
-<script src="{{ asset('js/quote_app.js') }}" ></script>
-<script>
-
-window.onload = function() {
-  
-  var quote  = '';
-  var key  = '';
-  var formRenderID  = ".build-wrap"; 
-  
-  // $(document).on('click', '.category-detail-feilds-submit', function() {
-  //   var data = JSON.stringify($(formRenderID).formRender("userData"));
-  //   $(`#quote_${key}_category_details`).val(data);
-  // });
-
-  $(document).on("input", ".rendered-form-parent .form-control",function() {
-
-    var quote                 = jQuery(this).closest('.quote');
-    var key                   = quote.data('key');
-    var data = JSON.stringify($(formRenderID).formRender("userData"));
-    $(`#quote_${key}_category_details`).val(data);
-  });
-
-  $(document).on('click', '.add-category-detail', function() {
-
-    quote                 = jQuery(this).closest('.quote');
-    key                   = quote.data('key');
-    var type              = $(`#quote_${key}_category_id`).find(':selected').data('slug');
-    var category_name     = $(`#quote_${key}_category_id`).find(':selected').data('name');
-    var category_id       = $(`#quote_${key}_category_id`).val();
-    var booking_detail_id = $(this).attr('data-id');
-    var url               = '{{route('bookings.category.detail.feilds')}}';
-    var modal             = jQuery('.category-detail-feilds');
-    var fields_data       = $(`#quote_${key}_category_details`).val();
-
-    if(typeof type === 'undefined') {
-      alert("Please Select Category first");
-      return;
-    }
-
-    var airport_codes;
-    var harbours;
-    var hotels;
-    var all;
-
-    $.ajax({
-      type: "GET",
-      url: '{{ route("quotes.get_autocomplete_data") }}',
-      datatype: "json",
-      async: false,
-      success: function(data){
-        airport_codes = data.airport_codes;
-        harbours = data.harbours;
-        hotels = data.hotels;
-        all = data.all;
-      }
-    });
-
-    function get_table(data)
-    {
-      return (data === "airport_codes") ? airport_codes : (data === "harbours") ? harbours : (data === "hotels") ? hotels : all;
-    }
-
-    var fieldData = JSON.parse(fields_data);
-    for(var i = 0; i < fieldData.length; i++)
-    {
-      if(fieldData[i].type === "autocomplete")
-      {
-        if(fieldData[i].data !== "none") {
-          fieldData[i].values = [];
-          $.each(get_table(fieldData[i].data, fieldData[i].values), function(key, item) {
-            fieldData[i].values.push({
-                label: item.name,
-                value:  item.name,
-                selected: false
-            });
-          });
-        }
-      }
-    }
-    fields_data = JSON.stringify(fieldData);
-
-    jQuery(function($) {
-      var formRenderOptions = {
-        formData: fields_data 
-      }
-
-      $(formRenderID).html("");
-      $(formRenderID).formRender(formRenderOptions);
-
-      if(fields_data == ""){
-        $(formRenderID).html("No Form Data.");
-      }
-    });
-
-    modal.modal('show');
-    modal.find('.modal-title').html(`${category_name} Details`);
-
-    if(fields_data == ""){
-      modal.find('.modal-footer').addClass("d-none");
-    }else{
-      modal.find('.modal-footer').removeClass("d-none");
-    }
-
-  });
-}
-</script>
+  <script src="{{ asset('js/quote_app.js') }}" ></script>
 @endpush
 {{-- @include('partials.category_detail_feilds') --}}
 
@@ -1253,3 +1101,18 @@ window.onload = function() {
 {{-- <div class="input-group-prepend">
 <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
 </div> --}}
+
+{{-- @if(Auth::user()->getRole->slug == 'admin' || Auth::user()->getRole->slug == 'accountant')
+  <div class="col-sm-2 d-flex justify-content-center">
+    <div class="form-group">
+      <label>Added in Sage </label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="icheck-primary">
+            <input type="hidden" name="quote[0][added_in_sage]"  value="0"><input data-name="added_in_sage" id="quote_0_added_in_sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endif --}}
