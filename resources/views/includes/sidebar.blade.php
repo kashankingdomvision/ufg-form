@@ -407,14 +407,6 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.harbours.index') }}" class="nav-link d-inline-flex {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
-                                <i class="fa fa-map-marker nav-icon"></i>
-                                <p>Harbours, Train and Points of Interest</p>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item">
                             <a href="{{ route('setting.airport_codes.index') }}" class="nav-link {{ $route == 'setting.airport_codes.index' || $route == 'setting.airport_codes.create' || $route == 'setting.airport_codes.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-plane nav-icon"></i>
                                 <p>Airport</p>
@@ -422,9 +414,21 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.hotels.index') }}" class="nav-link {{ $route == 'setting.hotels.index' || $route == 'setting.hotels.create' || $route == 'setting.hotels.edit'  ? 'active' : '' }}">
-                                <i class="fa fa-hotel nav-icon"></i>
-                                <p>Hotels</p>
+                            <a href="{{ route('setting.banks.index') }}" class="nav-link {{ $route == 'setting.banks.index' || $route == 'setting.banks.create' || $route == 'setting.banks.edit' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Banks
+                                </p>
+                            </a>
+                        </li>
+
+                        
+                        <li class="nav-item">
+                            <a href="{{ route('setting.brands.index') }}" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Brands
+                                </p>
                             </a>
                         </li>
 
@@ -434,6 +438,52 @@
                                 <p>Countries</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.currencies.index') }}" class="nav-link {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-money-bill-alt"></i>
+                                <p>
+                                    Currencies
+                                </p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a  href="{{ route('setting.currency_conversions.index') }}" class="nav-link {{ $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' ? 'active' : '' }}">
+                                <i class="fas fa-money-bill-alt nav-icon"></i>
+                                <p>
+                                    Currency Rates
+                                </p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link d-inline-flex  {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-map-marker nav-icon"></i>
+                                <p>Harbours, Train & POI </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.holidaytypes.index') }}" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Holiday Types
+                                </p>
+                            </a>
+                        </li>
+           
+
+                        <li class="nav-item">
+                            <a href="{{ route('setting.hotels.index') }}" class="nav-link {{ $route == 'setting.hotels.index' || $route == 'setting.hotels.create' || $route == 'setting.hotels.edit'  ? 'active' : '' }}">
+                                <i class="fa fa-hotel nav-icon"></i>
+                                <p>Hotels</p>
+                            </a>
+                        </li>
+
+        
 
                         <li class="nav-item">
                             <a href="{{ route('setting.locations.index') }}" class="nav-link {{ $route == 'setting.locations.index' || $route == 'setting.locations.create' || $route == 'setting.locations.edit' ? 'active' : '' }}">
@@ -449,6 +499,14 @@
                             </a>
                         </li> --}}
 
+                        <li class="nav-item">
+                            <a href="{{ route('setting.payment_methods.index') }}" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-money-check-alt"></i>
+                                <p>
+                                    Payment Methods
+                                </p>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' ? 'active' : '' }}">
@@ -523,14 +581,7 @@
                             </ul>
                         </li> --}}
 
-                        <li class="nav-item">
-                            <a href="{{ route('setting.payment_methods.index') }}" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-money-check-alt"></i>
-                                <p>
-                                    Payment Methods
-                                </p>
-                            </a>
-                        </li>
+              
 
                         {{-- <li class="nav-item {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.booking_methods.index' || $route == 'setting.booking_methods.create' || $route == 'setting.booking_methods.edit' ? 'setting-child-active' : '' }}">
@@ -591,15 +642,7 @@
                             </ul>
                         </li> --}}
 
-                        <li class="nav-item">
-                            <a href="{{ route('setting.currencies.index') }}" class="nav-link {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-money-bill-alt"></i>
-                                <p>
-                                    Currencies
-                                </p>
-                            </a>
-                        </li>
-
+        
                         {{-- <li class="nav-item {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'menu-open': '' }}">
                             <a href="#" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'setting-child-active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
@@ -624,15 +667,6 @@
 
                             </ul>
                         </li> --}}
-
-                        <li class="nav-item">
-                            <a href="{{ route('setting.brands.index') }}" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Brands
-                                </p>
-                            </a>
-                        </li>
 
 
                         {{-- <li class="nav-item {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
@@ -660,31 +694,10 @@
                             </ul>
                         </li> --}}
 
-                        <li class="nav-item">
-                            <a href="{{ route('setting.holidaytypes.index') }}" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Holiday Types
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('setting.banks.index') }}" class="nav-link {{ $route == 'setting.banks.index' || $route == 'setting.banks.create' || $route == 'setting.banks.edit' ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Banks
-                                </p>
-                            </a>
-                        </li>
+  
+                  
 
-                        <li class="nav-item">
-                            <a  href="{{ route('setting.currency_conversions.index') }}" class="nav-link {{ $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' ? 'active' : '' }}">
-                                <i class="fas fa-money-bill-alt nav-icon"></i>
-                                <p>
-                                    View Currency Rate
-                                </p>
-                            </a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a href="{{ route('store.texts.index') }}" class="nav-link {{ $route == 'store.texts.index' || $route == 'store.texts.create' || $route == 'store.texts.edit'  ? 'active' : '' }}">
