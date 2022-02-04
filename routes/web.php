@@ -254,8 +254,8 @@ Route::group(['middleware' => ['auth']], function(){
 
     /* Commissions Group */
     Route::group([
-        'prefix' => 'commission-criteria',
-        'as'     => 'commission_criteria.'
+        'prefix' => 'commission-criterias',
+        'as'     => 'commission_criterias.'
     ], function () {
         
         Route::get('index', array('as' => 'index', 'uses' => 'CommissionCriteriaController@index'));
@@ -550,7 +550,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
         
         /* calculate commission routes */
-        Route::get('get-commission-criterias',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
+        Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@get_commissions'));
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
         /* calculate commission routes */
@@ -616,7 +616,7 @@ Route::group(['middleware' => ['auth']], function(){
     // ]]);
 
     /*  Commission Criteria */
-    // Route::resource('commission-criteria', 'CommissionCriteriaController',['only' => [
+    // Route::resource('commission-criterias', 'CommissionCriteriaController',['only' => [
     //     'index','create', 'store', 'edit', 'update', 'destroy'
     // ]]);
 

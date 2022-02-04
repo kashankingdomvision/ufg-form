@@ -32,7 +32,7 @@
               <h3 class="card-title text-center">Commission Criteria Form</h3>
             </div>
 
-            <form method="POST" id="update_commission_criteria" action="{{ route('commission_criteria.update', encrypt($commission_criteria->id)) }}">
+            <form method="POST" id="update_commission_criteria" action="{{ route('commission_criterias.update', encrypt($commission_criteria->id)) }}">
               @csrf @method('put')
 
               <div class="card-body">
@@ -107,7 +107,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success float-right">Submit</button>
-                <a href="{{ route('commission_criteria.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
+                <a href="{{ route('commission_criterias.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
               </div>
             </form>
 

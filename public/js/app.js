@@ -70344,7 +70344,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   function getCommissionCriteriaJson() {
     return JSON.parse($.ajax({
       type: 'GET',
-      url: "".concat(BASEURL, "get-commission-criterias"),
+      url: "".concat(BASEURL, "get-commission-criteriass"),
       dataType: 'json',
       global: false,
       async: false,

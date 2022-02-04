@@ -25,7 +25,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-criteria/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-criterias/index`);
             },
             error: function(response) {
                 
@@ -62,7 +62,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-criteria/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-criterias/index`);
             },
             error: function(response) {
                 

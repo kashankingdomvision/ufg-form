@@ -30,7 +30,7 @@ class CommissionCriteriaController extends Controller
      
         $data['commission_criterias'] = $commission_criterias->paginate($this->pagination);
         
-        return view('commission_criteria.listing', $data);
+        return view('commission_criterias.listing', $data);
         
     }
 
@@ -47,7 +47,7 @@ class CommissionCriteriaController extends Controller
         $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['booking_seasons']    = Season::all();
 
-        return view('commission_criteria.create', $data);
+        return view('commission_criterias.create', $data);
     }
 
     /**
@@ -116,7 +116,7 @@ class CommissionCriteriaController extends Controller
         $data['commission_criteria']  = $commission_criteria;
         $data['holiday_types']        = HolidayType::whereIn('brand_id', $commission_criteria->getBrands()->pluck('brand_id')->toArray())->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')->get(['holiday_types.id','brands.name as brand_name','holiday_types.name']);
 
-        return view('commission_criteria.edit', $data);
+        return view('commission_criterias.edit', $data);
  
     }
 
@@ -181,6 +181,6 @@ class CommissionCriteriaController extends Controller
     public function destroy($id)
     {
         CommissionCriteria::destroy(decrypt($id));
-        return redirect()->route('commission_criteria.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
+        return redirect()->route('commission_criterias.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
     }
 }

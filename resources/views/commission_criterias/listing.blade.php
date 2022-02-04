@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Commission Criteria <x-add-new-button :route="route('commission_criteria.create')" /> </h4>
+            <h4>View Commission Criteria <x-add-new-button :route="route('commission_criterias.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('commission_criteria.index')">
+  <x-page-filters :route="route('commission_criterias.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -133,8 +133,8 @@
                         </td>
 
                         <td>
-                          <form method="post" action="{{ route('commission_criteria.destroy', encrypt($commission_criteria->id)) }}">
-                            <a href="{{ route('commission_criteria.edit', encrypt($commission_criteria->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('commission_criterias.destroy', encrypt($commission_criteria->id)) }}">
+                            <a href="{{ route('commission_criterias.edit', encrypt($commission_criteria->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

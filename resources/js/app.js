@@ -277,7 +277,7 @@ $(document).ready(function($) {
     function getCommissionCriteriaJson() {
         return JSON.parse($.ajax({
             type: 'GET',
-            url: `${BASEURL}get-commission-criterias`,
+            url: `${BASEURL}get-commission-criteriass`,
             dataType: 'json',
             global: false,
             async: false,
