@@ -27593,6 +27593,7 @@ $(document).ready(function () {
     disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
     ],
     formData: presetCategoryFormData,
+    dataType: 'json',
     typeUserAttrs: {
       autocomplete: {
         data: {
@@ -27864,6 +27865,7 @@ $(document).ready(function () {
     disabledAttrs: ['className', 'description', 'maxlength', 'name', 'other', 'required', 'rows', 'step', 'style', 'access', 'accept', 'toggle' // 'value',
     ],
     formData: presetProductFormData,
+    dataType: 'json',
     typeUserAttrs: {
       autocomplete: {
         data: {

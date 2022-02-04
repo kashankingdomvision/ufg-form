@@ -159,6 +159,7 @@ $(document).ready(function() {
       // 'value',
     ],
     formData: presetProductFormData,
+    dataType: 'json',
     typeUserAttrs: {
       autocomplete: {
         data: {
