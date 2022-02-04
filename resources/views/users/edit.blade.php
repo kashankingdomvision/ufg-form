@@ -111,28 +111,22 @@
                 <div class="form-group">
                   <label>Default Currency Rate Type</label>
                   <div>
-                    <label class="radio-inline mr-1">
-                      <input type="radio" name="rate_type" value="live" class="rate-type" {{ ($user->rate_type == 'live') ? 'checked': ''}} >
-                      <span>&nbsp;Live Rate</span>
-                    </label>
-                    <label class="radio-inline mr-1">
-                      <input type="radio" name="rate_type" value="manual" class="rate-type" {{ ($user->rate_type == 'manual') ? 'checked': ''}}>
-                      <span>&nbsp;Manual Rate</span>
-                    </label>
+                    <input type="radio" name="rate_type" id="live_rate" value="live" class="rate-type" {{ ($user->rate_type == 'live') ? 'checked': ''}}>
+                    <label class="radio-inline mr-1" for="live_rate">Live Rate</label>
+
+                    <input type="radio" name="rate_type" id="manual_rate" value="manual" class="rate-type" {{ ($user->rate_type == 'manual') ? 'checked': ''}}>
+                    <label class="radio-inline mr-1" for="manual_rate">Manual Rate</label>
                   </div>
                 </div>
 
                 <div class="form-group">
                   <label>Markup Type</label>
                   <div>
-                    <label class="radio-inline mr-1">
-                      <input type="radio" name="markup_type" value="itemised" {{ ($user->markup_type == 'itemised') ? 'checked': '' }} class="rate-type">
-                      <span>&nbsp;Itemised Markup </span>
-                    </label>
-                    <label class="radio-inline mr-1">
-                      <input type="radio" name="markup_type" value="whole" {{ ($user->markup_type == 'whole') ? 'checked': '' }} class="rate-type">
-                      <span>&nbsp;Whole Markup</span>
-                    </label>
+                    <input type="radio" name="markup_type" id="markup_type_itemised" value="itemised" class="rate-type" {{ ($user->markup_type == 'itemised') ? 'checked': '' }}>
+                    <label class="radio-inline mr-1" for="markup_type_itemised">Itemised Markup</label>
+                    
+                    <input type="radio" name="markup_type" id="markup_type_whole" value="whole" class="rate-type" {{ ($user->markup_type == 'whole') ? 'checked': '' }}>
+                    <label class="radio-inline mr-1" for="markup_type_whole">Whole Markup</label>
                   </div>
                 </div>
 
