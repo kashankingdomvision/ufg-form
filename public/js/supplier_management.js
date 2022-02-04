@@ -27914,6 +27914,46 @@ $(document).ready(function () {
     });
     /* end ajax*/
   });
+  /* Category feild templates */
+
+  var categoryTemplates = {
+    tours: [{
+      "type": "text",
+      "label": "Meeting Point",
+      "className": "form-control",
+      "subtype": "text"
+    }, {
+      "type": "text",
+      "label": "Contact",
+      "className": "form-control",
+      "subtype": "text"
+    }, {
+      "type": "number",
+      "label": "Telephone",
+      "className": "form-control"
+    }, {
+      "type": "textarea",
+      "label": "Address",
+      "className": "form-control",
+      "subtype": "textarea"
+    }]
+  };
+  /* 
+    Note:
+    This function work for both create & update product form builder
+  */
+
+  /* Set selected category feild templates on catgeory change */
+
+  $(document).on('change', '#store_product #category_id, #update_product #category_id', function () {
+    var category_slug = $(this).find(':selected').attr('data-slug');
+
+    if (category_slug in categoryTemplates) {
+      storeProductFormBuilder[0].actions.setData(categoryTemplates[category_slug]);
+    } else {
+      storeProductFormBuilder[0].actions.setData('[]');
+    }
+  });
 });
 
 /***/ }),
