@@ -273,6 +273,7 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
+    /* Users */
     Route::group([
         'prefix' => 'users',
         'as'     => 'users.'
@@ -287,9 +288,19 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('transfer-report-column', array('as' => 'transfer.report.column', 'uses' => 'UserController@transfer_report_column'));
     });
 
-    Route::resource('roles', 'RoleController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    /* Roles */
+    Route::group([
+        'prefix' => 'roles',
+        'as'     => 'roles.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'RoleController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'RoleController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'RoleController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'RoleController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'RoleController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'RoleController@destroy'));
+    });
 
     /*
     |--------------------------------------------------------------------------

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Role;
 
 class RoleController extends Controller
@@ -18,12 +19,15 @@ class RoleController extends Controller
     public function index(Request $request)
     {  
         $roles = Role::orderBy('id', 'ASC');
+
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $roles = $roles->where('name', 'like', '%'.$request->search.'%');
             }
         }
+
         $data['roles'] = $roles->paginate($this->pagination);
+
         return view('roles.listing', $data);
     }
 
@@ -49,13 +53,14 @@ class RoleController extends Controller
             'name' => $request->name,
             'slug' => Str::slug($request->name), 
         ]);
-        
-        return redirect()->route('roles.index')->with('success_message', 'Role created successfully');
+
+        return response()->json([ 'status' => true, 'success_message' => 'Role Created Successfully.' ]);
     }
 
     public function edit($id)
     {
         $data['role'] = Role::findOrFail(decrypt($id));
+
         return view('roles.edit',$data);
     }
 
@@ -66,15 +71,15 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RoleRequest $request, $id)
+    public function update(UpdateRoleRequest $request, $id)
     {
-        $role = Role::findOrFail(decrypt($id));
-        $role->update([
+        $role = Role::findOrFail(decrypt($id))->update([
+
             'name' => $request->name,
             'slug' => Str::slug($request->name), 
         ]);
-        return redirect()->route('roles.index')->with('success_message', 'Role update successfully');
-        
+
+        return response()->json([ 'status' => true, 'success_message' => 'Role Updated Successfully.' ]);
     }
 
     /**

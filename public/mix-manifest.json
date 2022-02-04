@@ -1,9 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
     "/js/commission_management.js": "/js/commission_management.js",
     "/js/product_app.js": "/js/product_app.js",
     "/js/quote_app.js": "/js/quote_app.js",
     "/js/supplier_management.js": "/js/supplier_management.js",
-    "/js/user_management.js": "/js/user_management.js",
-    "/css/app.css": "/css/app.css"
+    "/js/user_management.js": "/js/user_management.js"
 }

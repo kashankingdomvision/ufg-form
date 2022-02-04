@@ -93,7 +93,80 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./user_management/user_app */ "./resources/js/user_management/user_app.js"); // require('./user_management/role_app');
+__webpack_require__(/*! ./user_management/user_app */ "./resources/js/user_management/user_app.js");
+
+__webpack_require__(/*! ./user_management/role_app */ "./resources/js/user_management/role_app.js");
+
+/***/ }),
+
+/***/ "./resources/js/user_management/role_app.js":
+/*!**************************************************!*\
+  !*** ./resources/js/user_management/role_app.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Role
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_role', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "roles/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Role
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_role', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "roles/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
 
 /***/ }),
 
