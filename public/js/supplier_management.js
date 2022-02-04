@@ -28058,7 +28058,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheet/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheets/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -28088,7 +28088,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheet/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheets/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

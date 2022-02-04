@@ -387,8 +387,8 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*  Products */
     Route::group([
-        'prefix' => 'supplier-rate-sheet',
-        'as'     => 'supplier_rate_sheet.'
+        'prefix' => 'supplier-rate-sheets',
+        'as'     => 'supplier_rate_sheets.'
     ], function () {
         
         Route::get('index', array('as' => 'index', 'uses' => 'SupplierRateSheetController@index'));
@@ -577,7 +577,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate/{ids?}', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filter_currency_rate'));
         
-        // Route::get('get-supplier-rate-sheet',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
+        // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
         Route::post('add-product-with-supplier-sync',array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
 
@@ -639,6 +639,6 @@ Route::group(['middleware' => ['auth']], function(){
 // ]])
 
 /*  Supplier Rate Sheet */
-// Route::resource('supplier-rate-sheet', 'SupplierRateSheetController',['only' => [
+// Route::resource('supplier-rate-sheets', 'SupplierRateSheetController',['only' => [
 // 'index','create', 'store', 'edit', 'update', 'destroy'
 // ]]);

@@ -26,7 +26,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheet/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheets/index`);
             },
             error: function(response) {
                 
@@ -63,7 +63,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheet/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheets/index`);
             },
             error: function(response) {
                 
