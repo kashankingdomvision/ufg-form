@@ -108,6 +108,6 @@ class CommissionGroupController extends Controller
     public function destroy($id)
     {
         CommissionGroup::destroy(decrypt($id));
-        return redirect()->route('commission_group.index')->with('success_message', 'Commission Group Deleted Successfully'); 
+        return redirect()->route('commission_groups.index')->with('success_message', 'Commission Group Deleted Successfully'); 
     }
 }

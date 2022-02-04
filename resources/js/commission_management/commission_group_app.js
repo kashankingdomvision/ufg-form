@@ -25,7 +25,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-group/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-groups/index`);
             },
             error: function(response) {
                 
@@ -62,7 +62,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-group/index`);
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}commission-groups/index`);
             },
             error: function(response) {
                 

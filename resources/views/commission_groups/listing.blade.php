@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Commission Group <x-add-new-button :route="route('commission_group.create')" /> </h4>
+            <h4>View Commission Group <x-add-new-button :route="route('commission_groups.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('commission_group.index')">
+  <x-page-filters :route="route('commission_groups.index')">
     <div class="row">
       <div class="col">
         <div class="form-group">
@@ -93,8 +93,8 @@
                         </td>
                         <td>{{ isset($commission_group->name) && !empty($commission_group->name) ? $commission_group->name : '' }}</td>
                         <td>
-                          <form method="post" action="{{ route('commission_group.destroy', encrypt($commission_group->id)) }}">
-                            <a href="{{ route('commission_group.edit', encrypt($commission_group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('commission_groups.destroy', encrypt($commission_group->id)) }}">
+                            <a href="{{ route('commission_groups.edit', encrypt($commission_group->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

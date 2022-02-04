@@ -272,7 +272,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-group/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-groups/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -302,7 +302,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-group/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-groups/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

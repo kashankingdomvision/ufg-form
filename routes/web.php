@@ -240,8 +240,8 @@ Route::group(['middleware' => ['auth']], function(){
 
     /* Commissions Group */
     Route::group([
-        'prefix' => 'commission-group',
-        'as'     => 'commission_group.'
+        'prefix' => 'commission-groups',
+        'as'     => 'commission_groups.'
     ], function () {
         
         Route::get('index', array('as' => 'index', 'uses' => 'CommissionGroupController@index'));

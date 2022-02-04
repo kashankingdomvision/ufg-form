@@ -33,7 +33,7 @@
                 <h3 class="card-title text-center">Commission Group Form</h3>
               </div>
 
-              <form method="POST" id="store_commission_group" action="{{ route('commission_group.store') }}" >
+              <form method="POST" id="store_commission_group" action="{{ route('commission_groups.store') }}" >
                 @csrf
 
                 <div class="card-body">
@@ -46,7 +46,7 @@
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right">Submit</button>
-                  <a href="{{ route('commission_group.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
+                  <a href="{{ route('commission_groups.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
                 </div>
 
               </form>
