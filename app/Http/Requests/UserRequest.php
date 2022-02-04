@@ -27,7 +27,7 @@ class UserRequest extends FormRequest
             'name'                => 'required|string',
             'email'               => 'required|email|unique:users',
             'password'            => 'required|min:8',
-            'role'                => 'required',
+            'role_id'             => 'required',
             'commission_id'       => 'required',
             'commission_group_id' => 'required'
         ];
@@ -39,7 +39,7 @@ class UserRequest extends FormRequest
             'name'                => 'Name',
             'email'               => 'Email address',
             'password'            => 'Password',
-            'role'                => 'User Type',
+            'role_id'             => 'User Type',
             'commission_id'       => 'Commission',
             'commission_group_id' => 'Commission Group'
         ];

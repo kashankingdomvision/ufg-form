@@ -2552,23 +2552,7 @@ $(document).ready(function($) {
 
             // });
 
-            $(document).on('change', '.role', function() {
-
-                var role = $(this).find('option:selected').data('role');
-                var supervisor = $('#supervisor_feild');
-
-                if (role == 'Sales Agent' || role == 2) {
-
-                    $(supervisor).removeClass("d-none");
-                    $('#supervisor_id').attr("required", true).removeAttr('disabled');
-
-                } else {
-
-                    $(supervisor).addClass("d-none");
-                    $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
-                }
-
-            });
+     
 
             /**
              * -------------------------------------------------------------------------------------

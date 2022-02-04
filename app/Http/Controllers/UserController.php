@@ -19,14 +19,11 @@ use App\Commission;
 class UserController extends Controller
 {
     public $pagination = 10;
-    public function __CONSTRUCT()
-    {
-
-    }
 
     public function index(Request $request)
     {
         $user = User::orderBy('id', 'ASC');
+
         if (count($request->all()) > 0) {
             if ($request->has('search') && !empty($request->search)) {
                 $user = $user->where(function ($query) use($request) {
@@ -57,11 +54,43 @@ class UserController extends Controller
             }
         }
         
-        $data['users'] = $user->paginate($this->pagination);
+        $data['users']      = $user->paginate($this->pagination);
         $data['roles']      = Role::orderBy('name', 'ASC')->get();
         $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
         $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+
         return view('users.listing', $data);
+    }
+
+    public function userArray($request, $method)
+    {
+        $data = [
+            
+            'name'                => $request->name,
+            'email'               => $request->email,
+            'role_id'             => $request->role_id,
+            'supervisor_id'       => $request->supervisor_id,
+            'currency_id'         => $request->currency,
+            'brand_id'            => $request->brand,
+            'holiday_type_id'     => $request->holiday_type,
+            'commission_id'       => $request->commission_id,
+            'commission_group_id' => $request->commission_group_id,
+            'rate_type'           => $request->rate_type,
+            'markup_type'         => $request->markup_type,
+        ];
+
+        if($method == 'store'){
+            $data['password'] = Hash::make($request->password);
+        }
+
+        if($method == 'update'){
+            
+            if($request->has('password') && !empty($request->password)) {
+                $data['password'] = Hash::make($request->password);
+            }
+        }
+    
+        return $data;
     }
 
     public function create()
@@ -79,27 +108,14 @@ class UserController extends Controller
         return view('users.create', $data);
     }
 
+    // UserRequest
     public function store(UserRequest $request)
     {
-        $request->validate(['password' => 'required|min:8', 'email' => 'unique:users']);
+        User::create($this->userArray($request, 'store'));
 
-        User::create([
-            'name'                => $request->name,
-            'email'               => $request->email,
-            'role_id'             => $request->role,
-            'password'            => Hash::make($request->password),
-            'supervisor_id'       => $request->supervisor_id,
-            'currency_id'         => $request->currency,
-            'brand_id'            => $request->brand,
-            'holiday_type_id'     => $request->holiday_type,
-            'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'rate_type'           => $request->rate_type,
-            'markup_type'         => $request->markup_type,
-        ]);
-
-        return redirect()->route('users.index')->with('success_message', 'User created successfully');
+        return response()->json(['status' => true, 'success_message' => 'User Created Successfully.']);
     }
+
     public function edit($id, $status = null)
     {
         $data['user']              = User::findOrFail(decrypt($id));
@@ -118,35 +134,15 @@ class UserController extends Controller
 
     }
 
-    public function update(UpdateUserRequest $request, $id, $status = null )
+    public function update(UpdateUserRequest $request, $id, $status = null)
     {
-        $user = User::findOrFail(decrypt($id));
+        $user = User::find(decrypt($request->id))->update($this->userArray($request, 'update'));
         
-        $data = [
-            'name'                => $request->name,
-            'email'               => $request->email,
-            'supervisor_id'       => $request->supervisor_id,
-            'currency_id'         => $request->currency,
-            'brand_id'            => $request->brand,
-            'holiday_type_id'     => $request->holiday_type,
-            'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'rate_type'           => $request->rate_type,
-            'markup_type'         => $request->markup_type,
-        ];
-        if($request->has('role') && $request->role){
-            $data['role_id']  = $request->role;
-        }
-
-        if ($request->has('password') && !empty($request->password)) {
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
         if($status == 'profile'){
             return redirect()->route('dashboard.index')->with('success_message', 'profile updated successfully');
         }
-        return redirect()->route('users.index')->with('success_message', 'User updated successfully');
+
+        return response()->json(['status' => true, 'success_message' => 'User Updated Successfully.']);
     }
 
     public function delete($id)

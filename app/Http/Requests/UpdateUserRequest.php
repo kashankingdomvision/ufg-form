@@ -24,6 +24,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+
         return [ 
             'name'                => 'required|string',
             'email'               => ['required', Rule::unique('users')->ignore(decrypt($this->id))],
