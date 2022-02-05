@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Airport<x-add-new-button :route="route('setting.airport_codes.create')" /> </h4>
+            <h4>View Airport<x-add-new-button :route="route('airport_codes.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.airport_codes.index')">
+  <x-page-filters :route="route('airport_codes.index')">
       <div class="row">
           <div class="col-md-12">
               <div class="form-group">
@@ -91,8 +91,8 @@
                       <td>{{ $value->name }}</td>
                       <td>{{ $value->iata_code }}</td>
                       <td>
-                        <form method="post" action="{{ route('setting.airport_codes.destroy', encrypt($value->id)) }}">
-                        <a href="{{ route('setting.airport_codes.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('airport_codes.destroy', encrypt($value->id)) }}">
+                        <a href="{{ route('airport_codes.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

@@ -466,6 +466,20 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
+    /* AirportCode */
+    Route::group([
+        'prefix' => 'airport-codes',
+        'as'     => 'airport_codes.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'AirportCodeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'AirportCodeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'AirportCodeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'AirportCodeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'AirportCodeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'AirportCodeController@destroy'));
+    });
+
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -477,9 +491,9 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 
         /* AirportCode */
-		Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
         /* Hotels */
 		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [

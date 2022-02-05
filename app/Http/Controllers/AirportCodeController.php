@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -53,11 +53,11 @@ class AirportCodeController extends Controller
     public function store(AirportCodeRequest $request)
     {
         AirportCode::create([
-            'name'       =>  $request->name,
-            'iata_code'  =>  $request->iata_code
+            'name'      => $request->name,
+            'iata_code' => $request->iata_code
         ]);
 
-        return redirect()->route('setting.airport_codes.index')->with('success_message', 'Airport created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Airport created Successfully.' ]);
     }
 
     /**
@@ -80,7 +80,8 @@ class AirportCodeController extends Controller
     public function edit($id)
     {
         $data['airport_code'] = AirportCode::find(decrypt($id));
-        return view('airport_codes.edit',$data);
+
+        return view('airport_codes.edit', $data);
     }
 
     /**
@@ -93,11 +94,11 @@ class AirportCodeController extends Controller
     public function update(UpdateAirportCodeRequest $request, $id)
     {
         AirportCode::find(decrypt($id))->update([
-            'name'       =>  $request->name,
-            'iata_code'  =>  $request->iata_code
+            'name'      => $request->name,
+            'iata_code' => $request->iata_code
         ]);
 
-        return redirect()->route('setting.airport_codes.index')->with('success_message', 'Airport updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Airport Updated Successfully.' ]);
     }
 
     /**
@@ -109,6 +110,7 @@ class AirportCodeController extends Controller
     public function destroy($id)
     {
         AirportCode::destroy(decrypt($id));
-        return redirect()->route('setting.airport_codes.index')->with('success_message', 'Airport deleted successfully'); 
+
+        return redirect()->route('airport_codes.index')->with('success_message', 'Airport deleted successfully'); 
     }
 }

@@ -60,9 +60,9 @@
         'setting.hotels.create',
         'setting.hotels.index',
         'setting.hotels.edit',
-        'setting.airport_codes.index',
-        'setting.airport_codes.create',
-        'setting.airport_codes.edit',
+        'airport_codes.index',
+        'airport_codes.create',
+        'airport_codes.edit',
         'setting.harbours.index',
         'setting.harbours.create',
         'setting.harbours.edit',
@@ -328,7 +328,7 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.airport_codes.index') }}" class="nav-link {{ $route == 'setting.airport_codes.index' || $route == 'setting.airport_codes.create' || $route == 'setting.airport_codes.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('airport_codes.index') }}" class="nav-link {{ $route == 'airport_codes.index' || $route == 'airport_codes.create' || $route == 'airport_codes.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-plane nav-icon"></i>
                                 <p>Airport</p>
                             </a>
