@@ -41,9 +41,9 @@
         'setting.booking_methods.index',
         'setting.booking_methods.create',
         'setting.booking_methods.edit',
-        'setting.brands.index',
-        'setting.brands.create',
-        'setting.brands.edit',
+        'brands.index',
+        'brands.create',
+        'brands.edit',
         'setting.holidaytypes.index',
         'setting.holidaytypes.create',
         'setting.holidaytypes.edit',
@@ -353,7 +353,7 @@
 
                         
                         <li class="nav-item">
-                            <a href="{{ route('setting.brands.index') }}" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'active' : '' }}">
+                            <a href="{{ route('brands.index') }}" class="nav-link {{ $route == 'brands.index' || $route == 'brands.create' || $route == 'brands.edit' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Brands
@@ -794,8 +794,8 @@
 </li> --}}
 
 
-{{-- <li class="nav-item {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'menu-open': '' }}">
-    <a href="#" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.create' || $route == 'setting.brands.edit' ? 'setting-child-active' : '' }}">
+{{-- <li class="nav-item {{ $route == 'brands.index' || $route == 'brands.create' || $route == 'brands.edit' ? 'menu-open': '' }}">
+    <a href="#" class="nav-link {{ $route == 'brands.index' || $route == 'brands.create' || $route == 'brands.edit' ? 'setting-child-active' : '' }}">
         <i class="far fa-circle nav-icon"></i>
         <p>
             Brand
@@ -804,13 +804,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('setting.brands.create') }}" class="nav-link {{ $route == 'setting.brands.create' ? 'active' : '' }}">
+            <a href="{{ route('brands.create') }}" class="nav-link {{ $route == 'brands.create' ? 'active' : '' }}">
                 <i class="fa fa-plus nav-icon"></i>
                 <p>Add Brand</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('setting.brands.index') }}" class="nav-link {{ $route == 'setting.brands.index' || $route == 'setting.brands.edit' ? 'active' : '' }}">
+            <a href="{{ route('brands.index') }}" class="nav-link {{ $route == 'brands.index' || $route == 'brands.edit' ? 'active' : '' }}">
                 <i class="fa fa-eye nav-icon"></i>
                 <p>View Brand</p>
             </a>

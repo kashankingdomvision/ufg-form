@@ -97,6 +97,8 @@ __webpack_require__(/*! ./setting/airport_code_app */ "./resources/js/setting/ai
 
 __webpack_require__(/*! ./setting/bank_app */ "./resources/js/setting/bank_app.js");
 
+__webpack_require__(/*! ./setting/brand_app */ "./resources/js/setting/brand_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -180,7 +182,7 @@ $(document).ready(function () {
 $(document).ready(function () {
   /*
   |--------------------------------------------------------------------------------
-  | Store AirportCode 
+  | Store Bank
   |--------------------------------------------------------------------------------
   */
   $(document).on('submit', '#store_bank', function (event) {
@@ -209,7 +211,7 @@ $(document).ready(function () {
   });
   /*
   |--------------------------------------------------------------------------------
-  | Update AirportCode
+  | Update Bank
   |--------------------------------------------------------------------------------
   */
 
@@ -230,6 +232,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "banks/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/brand_app.js":
+/*!*******************************************!*\
+  !*** ./resources/js/setting/brand_app.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Brand 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_brand', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "brands/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Brand
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_brand', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "brands/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

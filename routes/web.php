@@ -494,6 +494,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BankController@destroy'));
     });
 
+    /* Brands */
+    Route::group([
+        'prefix' => 'brands',
+        'as'     => 'brands.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'BrandController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'BrandController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'BrandController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BrandController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'BrandController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BrandController@destroy'));
+    });
+
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -546,9 +560,9 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 
 		/* Brands */
-		Route::resource('brands', 'SettingControllers\BrandController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('brands', 'SettingControllers\BrandController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
 		/*  Holiday Types */
 		Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [

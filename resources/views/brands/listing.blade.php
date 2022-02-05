@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-             <h4>View Brands <x-add-new-button :route="route('setting.brands.create')" /> </h4>
+             <h4>View Brands <x-add-new-button :route="route('brands.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.brands.index')">
+  <x-page-filters :route="route('brands.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -99,8 +99,8 @@
                         <td>{{ $value->phone  }}</td>
                         <td>@if($value->logo)<img src="{{ $value->image_path }}" width="30" height="30" alt="brand logo" /> @endif</td>
                         <td>
-                          <form method="post" action="{{ route('setting.brands.destroy', encrypt($value->id)) }}">
-                            <a href="{{ route('setting.brands.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('brands.destroy', encrypt($value->id)) }}">
+                            <a href="{{ route('brands.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

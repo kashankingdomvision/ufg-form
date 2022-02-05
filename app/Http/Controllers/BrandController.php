@@ -1,12 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\BrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
+
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Auth;
 use App\Brand;
 
 class BrandController extends Controller
@@ -20,6 +23,7 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         $Brand = Brand::orderBy('id', 'ASC');
+
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $Brand->where(function($q) use($request){
@@ -30,7 +34,9 @@ class BrandController extends Controller
                 });
             }
         }
+
         $data['brands'] = $Brand->paginate($this->pagination);
+
         return view('brands.listing',$data);
     }
 
@@ -44,31 +50,61 @@ class BrandController extends Controller
         return view('brands.create');
     }
 
+    public function brandArray($request, $method, $brand = null)
+    {
+        $data = [
+            
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'address'  => $request->address,
+            'phone'    => $request->full_number,
+            'about_us' => $request->about_us,
+            'user_id'  => Auth::id(),
+        ];
+
+        if($method == 'store'){
+
+            if($request->hasFile('logo')) {
+                $data['logo'] = $this->fileStore($request);
+            }
+        }
+
+        if($method == 'update'){
+
+            if($request->hasFile('logo')) {
+                $data['logo'] = $this->fileStore($request, $brand);
+            }
+        }
+    
+        return $data;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BrandRequest $request)
     {
-        $request->validate(['name' => 'required|string']);
-        $data = [ 
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'address'   => $request->address,
-            'phone'     => $request->full_number,
-            'about_us'  => $request->about_us,
-            'user_id'   => Auth::id(),
-        ];
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $this->fileStore($request);
-        }
+        // $request->validate(['name' => 'required|string']);
 
-        // dd($data);
+        // $data = [ 
+        //     'name'      => $request->name,
+        //     'email'     => $request->email,
+        //     'address'   => $request->address,
+        //     'phone'     => $request->full_number,
+        //     'about_us'  => $request->about_us,
+        //     'user_id'   => Auth::id(),
+        // ];
 
-        Brand::create($data);
-        return redirect()->route('setting.brands.index')->with('success_message', 'Brand created successfully'); 
+        // if($request->hasFile('logo')) {
+        //     $data['logo'] = $this->fileStore($request);
+        // }
+
+        Brand::create($this->brandArray($request, 'store'));
+
+        return response()->json([ 'status' => true, 'success_message' => 'Brand Created Successfully.' ]);
     }
 
     /**
@@ -91,6 +127,7 @@ class BrandController extends Controller
     public function edit($id)
     {
         $data['brand'] = Brand::findOrFail(decrypt($id));
+
         return view('brands.edit',$data);
     }
 
@@ -101,24 +138,14 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBrandRequest $request, $id)
     {
-        $request->validate(['name' => 'required|string']);
-        $brand = Brand::findOrFail(decrypt($id));
-        
-        $data = [
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'address'   => $request->address,
-            'phone'     => $request->full_number,
-            'about_us'  => $request->about_us
-        ];
-        
-        if ($request->hasFile('logo')) {
-            $data['logo'] = $this->fileStore($request, $brand);
-        }
-        $brand->update($data);
-        return redirect()->route('setting.brands.index')->with('success_message', 'Brand updated successfully');
+
+        $brand = Brand::find(decrypt($id));
+
+        $brand->update($this->brandArray($request, 'update', $brand));
+
+        return response()->json([ 'status' => true, 'success_message' => 'Brand Updated Successfully.' ]);
     }
 
     /**
@@ -130,7 +157,8 @@ class BrandController extends Controller
     public function destroy($id)
     {
         Brand::findOrFail(decrypt($id))->delete();
-        return redirect()->route('setting.brands.index')->with('success_message', 'Brand deleted successfully');
+
+        return redirect()->route('brands.index')->with('success_message', 'Brand deleted successfully');
 
     }
     
