@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','View Airlines')
+@section('title','View Banks')
 
 @section('content')
 <div class="content-wrapper">
@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Banks <x-add-new-button :route="route('setting.banks.create')" /> </h4>
+            <h4>View Banks <x-add-new-button :route="route('banks.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.banks.index')">
+  <x-page-filters :route="route('banks.index')">
       <div class="row">
           <div class="col-md-12">
               <div class="form-group">
@@ -89,8 +89,8 @@
                       </td>
                       <td>{{ $bank->name }}</td>
                       <td>
-                        <form method="post" action="{{ route('setting.banks.destroy', encrypt($bank->id)) }}">
-                        <a href="{{ route('setting.banks.edit', encrypt($bank->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('banks.destroy', encrypt($bank->id)) }}">
+                        <a href="{{ route('banks.edit', encrypt($bank->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

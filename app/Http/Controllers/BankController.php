@@ -1,9 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BankRequest;
+use App\Http\Requests\UpdateBankRequest;
+
 use App\Bank;
 
 class BankController extends Controller
@@ -22,6 +25,7 @@ class BankController extends Controller
     public function index()
     {
         $data['banks'] = Bank::paginate($this->pagination);
+
         return view('banks.listing',$data);
     }
 
@@ -41,13 +45,13 @@ class BankController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BankRequest $request)
     {
         Bank::create([
             'name'  =>  $request->name
         ]);
         
-        return redirect()->route('setting.banks.index')->with('success_message', 'Bank created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Bank Created Successfully.' ]);
     }
 
     /**
@@ -59,6 +63,7 @@ class BankController extends Controller
     public function edit($id)
     {
         $data['bank'] = Bank::findOrFail(decrypt($id));
+
         return view('banks.edit', $data);
     }
 
@@ -69,13 +74,13 @@ class BankController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBankRequest $request, $id)
     {
         $bank = Bank::findOrFail(decrypt($id))->update([
             'name' => $request->name,
         ]);
         
-        return redirect()->route('setting.banks.index')->with('success_message', 'Bank updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Bank Updated Successfully.' ]);
     }
     
     /**
@@ -87,7 +92,7 @@ class BankController extends Controller
     public function destroy($id)
     {
         Bank::findOrFail(decrypt($id))->delete();
-        return redirect()->route('setting.banks.index')->with('success_message', 'Bank deleted successfully'); 
+        return redirect()->route('banks.index')->with('success_message', 'Bank deleted successfully'); 
         
     }
 }

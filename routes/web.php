@@ -480,6 +480,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'AirportCodeController@destroy'));
     });
 
+    /* Banks */
+    Route::group([
+        'prefix' => 'banks',
+        'as'     => 'banks.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'BankController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'BankController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'BankController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BankController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'BankController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BankController@destroy'));
+    });
+
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -495,6 +509,11 @@ Route::group(['middleware' => ['auth']], function(){
 		// 	'index','create', 'store', 'edit', 'update', 'destroy'
 		// ]]);
 
+        /* Bank */
+        // Route::resource('banks', 'SettingControllers\BankController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
+
         /* Hotels */
 		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
 			'index','create', 'store', 'edit', 'update', 'destroy'
@@ -505,10 +524,6 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
-        /* Bank */
-        Route::resource('banks', 'SettingControllers\BankController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
 
         /* Airlines */
 		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [

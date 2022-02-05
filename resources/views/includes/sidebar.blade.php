@@ -21,10 +21,20 @@
         'group_owners.edit',
     ];
 
+    // 'setting.airlines.index',
+    // 'setting.airlines.create',
+    // 'setting.airlines.edit',
+
     $setting_routes = [
-        'setting.airlines.index',
-        'setting.airlines.create',
-        'setting.airlines.edit',
+
+        'airport_codes.index',
+        'airport_codes.create',
+        'airport_codes.edit',
+
+        'banks.index',
+        'banks.create',
+        'banks.edit',
+        
         'setting.payment_methods.index',
         'setting.payment_methods.create',
         'setting.payment_methods.edit',
@@ -60,9 +70,7 @@
         'setting.hotels.create',
         'setting.hotels.index',
         'setting.hotels.edit',
-        'airport_codes.index',
-        'airport_codes.create',
-        'airport_codes.edit',
+
         'setting.harbours.index',
         'setting.harbours.create',
         'setting.harbours.edit',
@@ -335,7 +343,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.banks.index') }}" class="nav-link {{ $route == 'setting.banks.index' || $route == 'setting.banks.create' || $route == 'setting.banks.edit' ? 'active' : '' }}">
+                            <a href="{{ route('banks.index') }}" class="nav-link {{ $route == 'banks.index' || $route == 'banks.create' || $route == 'banks.edit' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Banks

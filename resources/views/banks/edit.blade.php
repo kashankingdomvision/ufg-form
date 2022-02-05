@@ -1,11 +1,10 @@
 @extends('layouts.app')
 
-@section('title','Edit Airline')
+@section('title','Edit Banks')
 
 @section('content')
 
 <div class="content-wrapper">
-
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -25,46 +24,41 @@
 
   <section class="content">
     <div class="container-fluid">
-      <div class="row">
-        <div class="offset-md-2 col-md-8">
-
-          <div class="card card-secondary">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+          <div class="card card-secondary shadow-sm">
             <div class="card-header">
               <h3 class="card-title text-center">Banks Form</h3>
             </div>
 
-            <form method="POST" action="{{ route('setting.banks.update',  encrypt($bank->id)) }}">
-              @csrf
-              @method('put')
+            <form method="POST" id="update_bank" action="{{ route('banks.update', encrypt($bank->id)) }}">
+              @csrf @method('put')
 
               <div class="card-body">
-
                 <div class="form-group">
                   <label>Name <span style="color:red">*</span></label>
-                  <input type="text" name="name" value="{{$bank->name}}" class="form-control @error('name') is-invalid @enderror" placeholder="Banks Name" required>
-
-                  @error('name')
-                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                  @enderror
+                  <input type="text" name="name" id="name" value="{{ $bank->name }}" class="form-control" placeholder="Banks Name">
+                  <span class="text-danger" role="alert"></span>
                 </div>
-
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                <a href="{{ route('setting.banks.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
-                
+                <button type="submit" class="btn btn-success float-right">Submit</button>
+                <a href="{{ route('banks.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
               </div>
-
             </form>
+
+            <div id="overlay" class=""></div>
           </div>
-
-
         </div>
-
       </div>
     </div>
   </section>
 
 </div>
+
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/setting.js') }}" ></script>
+@endpush
