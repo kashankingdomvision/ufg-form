@@ -492,6 +492,7 @@
                             <a href="{{ route('reports.activity.by.user') }}" class="nav-link {{  $route == 'reports.activity.by.user' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Activity By User</p>
+                            </a>
                             <a href="{{ route('reports.supplier.report') }}" class="nav-link {{  $route == 'reports.supplier.report' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Supplier Report</p>
