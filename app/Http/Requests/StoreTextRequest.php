@@ -29,4 +29,13 @@ class StoreTextRequest extends FormRequest
             'description'   => 'required',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name'        => 'Stored Text Name',
+            'page_title'  => 'Title',
+            'description' => 'Text',
+        ];
+    }
 }

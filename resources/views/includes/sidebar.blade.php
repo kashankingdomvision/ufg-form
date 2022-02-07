@@ -52,9 +52,9 @@
         'currencies.edit',
         'currency_conversions.index',
         'currency_conversions.edit',
-        'store.texts.create',
-        'store.texts.index', 
-        'store.texts.edit',
+        'store_texts.create',
+        'store_texts.index', 
+        'store_texts.edit',
         'preset_comments.index',
         'preset_comments.create',
         'preset_comments.edit',
@@ -445,7 +445,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('store.texts.index') }}" class="nav-link {{ $route == 'store.texts.index' || $route == 'store.texts.create' || $route == 'store.texts.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('store_texts.index') }}" class="nav-link {{ $route == 'store_texts.index' || $route == 'store_texts.create' || $route == 'store_texts.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-file-word nav-icon" aria-hidden="true"></i>
                                 <p>Stored Text</p>
                             </a>

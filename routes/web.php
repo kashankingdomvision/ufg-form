@@ -150,18 +150,7 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::group([
-        'prefix' => 'store/text',
-        'as'     => 'store.texts.'
-    ], function () {
 
-        Route::get('index', array('as' => 'index', 'uses' => 'StoreTextController@index'));
-        Route::get('create', ['as' => 'create', 'uses' => 'StoreTextController@create']);
-        Route::get('edit/{slug}', ['as' => 'edit', 'uses' => 'StoreTextController@edit']);
-        Route::put('update/{slug}', ['as' => 'update', 'uses' => 'StoreTextController@update']);
-        Route::post('store', ['as' => 'store', 'uses' => 'StoreTextController@store']);
-        Route::delete('destroy/{slug}', ['as' => 'destroy', 'uses' => 'StoreTextController@destroy']);
-    });
 
     /*
     |--------------------------------------------------------------------------
@@ -644,6 +633,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SeasonController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SeasonController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SeasonController@destroy'));
+    });
+
+    /* Store Text */
+    Route::group([
+        'prefix' => 'store-texts',
+        'as'     => 'store_texts.'
+    ], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'StoreTextController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'StoreTextController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'StoreTextController@store'));
+        Route::get('edit/{slug}', array('as' => 'edit', 'uses' => 'StoreTextController@edit'));
+        Route::put('update/{slug}', array('as' => 'update', 'uses' => 'StoreTextController@update'));
+        Route::delete('delete/{slug}', array('as' => 'destroy', 'uses' => 'StoreTextController@destroy'));
     });
     
     Route::group([
