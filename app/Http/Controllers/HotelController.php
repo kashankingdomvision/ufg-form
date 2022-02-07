@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -56,7 +56,7 @@ class HotelController extends Controller
             'accom_code' =>  $request->accom_code
         ]);
 
-        return redirect()->route('setting.hotels.index')->with('success_message', 'Hotel created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Hotel Created Successfully.' ]);
     }
 
     /**
@@ -79,6 +79,7 @@ class HotelController extends Controller
     public function edit($id)
     {
         $data['hotel'] = Hotel::find(decrypt($id));
+
         return view('hotels.edit',$data);
     }
 
@@ -96,7 +97,7 @@ class HotelController extends Controller
             'accom_code' =>  $request->accom_code
         ]);
 
-        return redirect()->route('setting.hotels.index')->with('success_message', 'Hotel updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Hotel Updated Successfully.' ]);
     }
 
     /**
@@ -108,6 +109,6 @@ class HotelController extends Controller
     public function destroy($id)
     {
         Hotel::destroy(decrypt($id));
-        return redirect()->route('setting.hotels.index')->with('success_message', 'Hotel deleted successfully'); 
+        return redirect()->route('hotels.index')->with('success_message', 'Hotel deleted successfully'); 
     }
 }

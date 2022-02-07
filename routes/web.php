@@ -575,6 +575,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'HolidayTypeController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HolidayTypeController@destroy'));
     });
+
+    /*  Holiday Types */
+    Route::group([
+        'prefix' => 'hotels',
+        'as'     => 'hotels.'
+    ], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'HotelController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'HotelController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'HotelController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'HotelController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'HotelController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HotelController@destroy'));
+    });
     
     Route::group([
         'prefix' => 'setting',

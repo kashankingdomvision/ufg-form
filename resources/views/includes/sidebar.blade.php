@@ -67,9 +67,9 @@
         'setting.towns.create',
         'setting.towns.index',
         'setting.towns.edit',
-        'setting.hotels.create',
-        'setting.hotels.index',
-        'setting.hotels.edit',
+        'hotels.create',
+        'hotels.index',
+        'hotels.edit',
 
         'harbours.index',
         'harbours.create',
@@ -406,7 +406,7 @@
            
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.hotels.index') }}" class="nav-link {{ $route == 'setting.hotels.index' || $route == 'setting.hotels.create' || $route == 'setting.hotels.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('hotels.index') }}" class="nav-link {{ $route == 'hotels.index' || $route == 'hotels.create' || $route == 'hotels.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-hotel nav-icon"></i>
                                 <p>Hotels</p>
                             </a>
