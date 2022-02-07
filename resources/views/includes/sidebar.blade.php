@@ -61,9 +61,9 @@
         'seasons.index',
         'seasons.create',
         'seasons.edit',
-        'setting.countries.index',
-        'setting.countries.create',
-        'setting.countries.edit',
+        'countries.index',
+        'countries.create',
+        'countries.edit',
         'setting.towns.create',
         'setting.towns.index',
         'setting.towns.edit',
@@ -362,7 +362,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.countries.index') }}" class="nav-link {{ $route == 'setting.countries.index' || $route == 'setting.countries.create' || $route == 'setting.countries.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('countries.index') }}" class="nav-link {{ $route == 'countries.index' || $route == 'countries.create' || $route == 'countries.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-globe nav-icon"></i>
                                 <p>Countries</p>
                             </a>

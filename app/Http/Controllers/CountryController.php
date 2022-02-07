@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -60,7 +60,7 @@ class CountryController extends Controller
             'phonecode' => $request->phonecode,
         ]);
         
-        return redirect()->route('setting.countries.index')->with('success_message', 'Country created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Country Created Successfully.' ]);
     }
 
     /**
@@ -91,7 +91,7 @@ class CountryController extends Controller
             'phonecode' => $request->phonecode,
         ]);
         
-        return redirect()->route('setting.countries.index')->with('success_message', 'Country updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Country Updated Successfully.' ]);
     }
 
 }

@@ -508,6 +508,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BrandController@destroy'));
     });
 
+    /* Brands */
+    Route::group([
+        'prefix' => 'countries',
+        'as'     => 'countries.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CountryController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CountryController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CountryController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CountryController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CountryController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CountryController@destroy'));
+    });
+
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -576,9 +590,9 @@ Route::group(['middleware' => ['auth']], function(){
 
 
         /* Countries */
-        Route::resource('countries', 'SettingControllers\CountryController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('countries', 'SettingControllers\CountryController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
         /* Towns */
         Route::resource('towns', 'SettingControllers\TownController',['only' => [

@@ -33,7 +33,7 @@ class CountryRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'      => 'Name',
+            'name'      => 'Country Name',
             'sortname'  => 'Sort Name',
             'phonecode' => 'Phone Code',
         ];

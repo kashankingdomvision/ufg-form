@@ -26,16 +26,16 @@ class UpdateCountryRequest extends FormRequest
     {
    
         return [
-            'name'      => ['required', Rule::unique('countries')->ignore(decrypt($this->country))],
-            'sortname'  => ['required', Rule::unique('countries')->ignore(decrypt($this->country))],
-            'phonecode' => ['required', Rule::unique('countries')->ignore(decrypt($this->country))],
+            'name'      => ['required', Rule::unique('countries')->ignore(decrypt($this->id))],
+            'sortname'  => ['required', Rule::unique('countries')->ignore(decrypt($this->id))],
+            'phonecode' => ['required', Rule::unique('countries')->ignore(decrypt($this->id))],
         ];
     }
     
     public function attributes()
     {
         return [
-            'name'      => 'Name',
+            'name'      => 'Country Name',
             'sortname'  => 'Sort Name',
             'phonecode' => 'Phone Code',
         ];
