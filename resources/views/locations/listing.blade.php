@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Locations <x-add-new-button :route="route('setting.locations.create')" /> </h4>
+            <h4>View Locations <x-add-new-button :route="route('locations.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.locations.index')">
+  <x-page-filters :route="route('locations.index')">
     <div class="row">
 
       <div class="col-md-6">
@@ -107,8 +107,8 @@
                         <td>{{ $value->getCountry->name ?? NULL }}</td>
                         <td>{{ $value->name }}</td>
                         <td>
-                          <form method="post" action="{{ route('setting.locations.destroy', encrypt($value->id)) }}">
-                            <a href="{{ route('setting.locations.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('locations.destroy', encrypt($value->id)) }}">
+                            <a href="{{ route('locations.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

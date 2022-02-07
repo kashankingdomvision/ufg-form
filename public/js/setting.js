@@ -111,6 +111,8 @@ __webpack_require__(/*! ./setting/holiday_type_app */ "./resources/js/setting/ho
 
 __webpack_require__(/*! ./setting/hotel_app */ "./resources/js/setting/hotel_app.js");
 
+__webpack_require__(/*! ./setting/location_app */ "./resources/js/setting/location_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -711,6 +713,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "hotels/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/location_app.js":
+/*!**********************************************!*\
+  !*** ./resources/js/setting/location_app.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Location 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_location', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "locations/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Location
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_location', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "locations/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

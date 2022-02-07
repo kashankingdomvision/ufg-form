@@ -589,6 +589,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'HotelController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HotelController@destroy'));
     });
+
+    /*  Location */
+    Route::group([
+        'prefix' => 'locations',
+        'as'     => 'locations.'
+    ], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'LocationController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'LocationController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'LocationController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'LocationController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'LocationController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'LocationController@destroy'));
+    });
     
     Route::group([
         'prefix' => 'setting',
@@ -611,9 +625,9 @@ Route::group(['middleware' => ['auth']], function(){
         // ]]);
 
         /* Hotels */
-		Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
         /* Preset Comment */
         Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
@@ -668,9 +682,9 @@ Route::group(['middleware' => ['auth']], function(){
         ]]);
 
         /* Locations */
-        Route::resource('locations', 'SettingControllers\LocationController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('locations', 'SettingControllers\LocationController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
 	});
 

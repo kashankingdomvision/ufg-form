@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -64,7 +64,7 @@ class LocationController extends Controller
             'name'       => $request->name,
         ]);
 
-        return redirect()->route('setting.locations.index')->with('success_message', 'Location created successfully');
+        return response()->json([ 'status' => true, 'success_message' => 'Location Created Successfully.' ]);
     }
 
     /**
@@ -106,7 +106,7 @@ class LocationController extends Controller
             'name'       => $request->name,
         ]);
 
-        return redirect()->route('setting.locations.index')->with('success_message', 'Location updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Location Updated Successfully.' ]);
     }
 
     /**
@@ -118,6 +118,6 @@ class LocationController extends Controller
     public function destroy($id)
     {
         Location::destroy(decrypt($id));
-        return redirect()->route('setting.locations.index')->with('success_message', 'Location deleted successfully');
+        return redirect()->route('locations.index')->with('success_message', 'Location deleted successfully');
     }
 }

@@ -74,9 +74,9 @@
         'harbours.index',
         'harbours.create',
         'harbours.edit',
-        'setting.locations.create',
-        'setting.locations.index',
-        'setting.locations.edit',
+        'locations.create',
+        'locations.index',
+        'locations.edit',
     ];
 @endphp
 
@@ -415,7 +415,7 @@
         
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.locations.index') }}" class="nav-link {{ $route == 'setting.locations.index' || $route == 'setting.locations.create' || $route == 'setting.locations.edit' ? 'active' : '' }}">
+                            <a href="{{ route('locations.index') }}" class="nav-link {{ $route == 'locations.index' || $route == 'locations.create' || $route == 'locations.edit' ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Locations</p>
                             </a>
