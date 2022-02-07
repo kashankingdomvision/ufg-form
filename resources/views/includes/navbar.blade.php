@@ -14,7 +14,7 @@
         <i class="fa fa-caret-down text-dark" aria-hidden="true"></i>
       </a>
 
-      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-sm">
+      <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-sm border">
         <div class="dropdown-divider"></div>
         <a href="{{ route('users.edit', [encrypt(Auth::id()), 'profile']) }}" class="dropdown-item">
           <i class="fas fa-user-edit mr-2"></i>Edit Profile
