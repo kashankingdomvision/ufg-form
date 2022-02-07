@@ -24,18 +24,18 @@ class CountryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      => 'required|string|unique:countries',
-            'sortname'  => 'required|string|unique:countries',
-            'phonecode' => 'required|string|unique:countries',
+            'name'       => 'required|string|unique:countries',
+            'sort_order' => 'required',
+            'phone'  => 'required',
         ];
     }
 
     public function attributes()
     {
         return [
-            'name'      => 'Country Name',
-            'sortname'  => 'Sort Name',
-            'phonecode' => 'Phone Code',
+            'name'       => 'Country Name',
+            'sort_order' => 'Sort Order',
+            'phone'  => 'Phone Code',
         ];
     }
 }

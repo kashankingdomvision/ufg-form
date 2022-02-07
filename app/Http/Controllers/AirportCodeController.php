@@ -57,7 +57,7 @@ class AirportCodeController extends Controller
             'iata_code' => $request->iata_code
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Airport created Successfully.' ]);
+        return response()->json([ 'status' => true, 'success_message' => 'Airport Created Successfully.' ]);
     }
 
     /**

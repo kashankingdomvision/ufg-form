@@ -90,8 +90,8 @@
                         </div>
                       </td>
                       <td>{{ $country->name }}</td>
-                      <td>{{ $country->sortname }}</td>
-                      <td>{{ $country->phonecode }}</td>
+                      <td>{{ $country->sort_order }}</td>
+                      <td>{{ $country->phone }}</td>
                       <td>
                         <form method="post" action="{{ route('countries.destroy', encrypt($country->id)) }}">
                         <a href="{{ route('countries.edit', encrypt($country->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>

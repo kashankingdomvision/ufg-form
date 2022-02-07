@@ -26,8 +26,8 @@ class CountryController extends Controller
 
             if($request->has('search') && !empty($request->search)){
                 $query->where('name', 'like', '%'.$request->search.'%');
-                $query->orWhere('sortname', 'like', '%'.$request->search.'%');
-                $query->orWhere('phonecode', 'like', '%'.$request->search.'%');
+                $query->orWhere('sort_order', 'like', '%'.$request->search.'%');
+                $query->orWhere('phone', 'like', '%'.$request->search.'%');
             }
         }
 
@@ -56,8 +56,8 @@ class CountryController extends Controller
     {
         Country::create([
             'name'      => $request->name,
-            'sortname'  => $request->sortname,
-            'phonecode' => $request->phonecode,
+            'sort_order'  => $request->sort_order,
+            'phone' => $request->phone,
         ]);
         
         return response()->json([ 'status' => true, 'success_message' => 'Country Created Successfully.' ]);
@@ -87,8 +87,8 @@ class CountryController extends Controller
     {
         Country::findOrFail(decrypt($id))->update([
             'name'      => $request->name,
-            'sortname'  => $request->sortname,
-            'phonecode' => $request->phonecode,
+            'sort_order'  => $request->sort_order,
+            'phone' => $request->phone,
         ]);
         
         return response()->json([ 'status' => true, 'success_message' => 'Country Updated Successfully.' ]);

@@ -1,5 +1,5 @@
 
-INSERT INTO `countries` (`id`, `sortname`, `name`, `phonecode`, `sort_order`, `created_at`, `updated_at`) VALUES
+INSERT INTO `countries` (`id`, `sortname`, `name`, `phone`, `sort_order`, `created_at`, `updated_at`) VALUES
 (1, 'AF', 'Afghanistan', '93', 6, NULL, NULL),
 (2, 'AL', 'Albania', '355', 6, NULL, NULL),
 (3, 'DZ', 'Algeria', '213', 6, NULL, NULL),

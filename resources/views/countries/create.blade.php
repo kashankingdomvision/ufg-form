@@ -42,14 +42,14 @@
                 </div>
 
                 <div class="form-group">
-                  <label>Sort Name <span style="color:red">*</span></label>
-                  <input type="text" name="sortname" id="sortname" class="form-control" placeholder="Sort Name">
+                  <label>Sort Order <span style="color:red">*</span></label>
+                  <input type="text" name="sort_order" id="sort_order" class="form-control" placeholder="Sort Name">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
                   <label>Phone Code <span style="color:red">*</span></label>
-                  <input type="text" name="phonecode" id="phonecode" class="form-control" placeholder="Phone Code">
+                  <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone Code">
                   <span class="text-danger" role="alert"></span>
                 </div>
               </div>

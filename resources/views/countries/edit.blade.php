@@ -35,19 +35,19 @@
               <div class="card-body">
                 <div class="form-group">
                   <label>Country Name <span style="color:red">*</span></label>
-                  <input type="text" name="name" id="name" value="{{ !empty(old('name')) ? old('name') : $country->name }}" class="form-control" placeholder="Country Name">
+                  <input type="text" name="name" id="name" value="{{ $country->name }}" class="form-control" placeholder="Country Name">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
-                  <label>Sort Name <span style="color:red">*</span></label>
-                  <input type="text" name="sortname" id="sortname" value="{{ !empty(old('sortname')) ? old('sortname') : $country->sortname  }}" class="form-control" placeholder="Sort Name">
+                  <label>Sort Order <span style="color:red">*</span></label>
+                  <input type="text" name="sort_order" id="sort_order" value="{{ $country->sort_order }}" class="form-control" placeholder="Sort Name">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
                   <label>Phone Code <span style="color:red">*</span></label>
-                  <input type="text" name="phonecode" id="phonecode" value="{{ !empty(old('phonecode')) ? old('phonecode') : $country->phonecode }}" class="form-control" placeholder="Phone Code">
+                  <input type="text" name="phone" id="phone" value="{{ $country->phone }}" class="form-control" placeholder="Phone Code">
                   <span class="text-danger" role="alert"></span>
                 </div>
               </div>
