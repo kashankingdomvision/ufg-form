@@ -162,6 +162,7 @@ $(document).ready(function($) {
 
     window.addFormLoadingStyles = function() {
         $("#overlay").addClass('overlay');
+        $(".note-editor").css('border-color', '');
         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
     }
 
@@ -186,6 +187,7 @@ $(document).ready(function($) {
 
                     $(`#${index}`).addClass('is-invalid');
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                    $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
 
                     if(flag){
                         $('html, body').animate({ scrollTop: $(`#${index}`).parent('.form-group').offset().top }, 1000);

@@ -70213,6 +70213,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   window.addFormLoadingStyles = function () {
     $("#overlay").addClass('overlay');
+    $(".note-editor").css('border-color', '');
     $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
   };
 
@@ -70232,6 +70233,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           index = index.replace(/\./g, '_');
           $("#".concat(index)).addClass('is-invalid');
           $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+          $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
 
           if (flag) {
             $('html, body').animate({
