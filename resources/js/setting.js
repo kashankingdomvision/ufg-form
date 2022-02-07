@@ -8,3 +8,4 @@ require('./setting/harbour_app');
 require('./setting/holiday_type_app');
 require('./setting/hotel_app');
 require('./setting/location_app');
+require('./setting/payment_method');

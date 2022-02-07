@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Payment Method <x-add-new-button :route="route('setting.payment_methods.create')" /> </h4>
+            <h4>View Payment Method <x-add-new-button :route="route('payment_methods.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -31,7 +31,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.payment_methods.index')">
+  <x-page-filters :route="route('payment_methods.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -89,8 +89,8 @@
                       </td>
                       <td>{{ $value->name }}</td>
                       <td>
-                        <form method="post" action="{{ route('setting.payment_methods.destroy', encrypt($value->id)) }}">
-                        <a href="{{ route('setting.payment_methods.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('payment_methods.destroy', encrypt($value->id)) }}">
+                        <a href="{{ route('payment_methods.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

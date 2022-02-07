@@ -35,9 +35,9 @@
         'banks.create',
         'banks.edit',
         
-        'setting.payment_methods.index',
-        'setting.payment_methods.create',
-        'setting.payment_methods.edit',
+        'payment_methods.index',
+        'payment_methods.create',
+        'payment_methods.edit',
         'setting.booking_methods.index',
         'setting.booking_methods.create',
         'setting.booking_methods.edit',
@@ -422,7 +422,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.payment_methods.index') }}" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'active' : '' }}">
+                            <a href="{{ route('payment_methods.index') }}" class="nav-link {{ $route == 'payment_methods.index' || $route == 'payment_methods.create' || $route == 'payment_methods.edit' ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-money-check-alt"></i>
                                 <p>
                                     Payment Methods
@@ -708,8 +708,8 @@
     </a>
 </li> --}}
 
-{{-- <li class="nav-item {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'menu-open': '' }}">
-    <a href="#" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.create' || $route == 'setting.payment_methods.edit' ? 'setting-child-active' : '' }}">
+{{-- <li class="nav-item {{ $route == 'payment_methods.index' || $route == 'payment_methods.create' || $route == 'payment_methods.edit' ? 'menu-open': '' }}">
+    <a href="#" class="nav-link {{ $route == 'payment_methods.index' || $route == 'payment_methods.create' || $route == 'payment_methods.edit' ? 'setting-child-active' : '' }}">
         <i class="fas fa-money-check-alt nav-icon"></i>
         <p>
             Payment Method
@@ -718,13 +718,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('setting.payment_methods.create') }}" class="nav-link {{ $route == 'setting.payment_methods.create' ? 'active' : '' }}">
+            <a href="{{ route('payment_methods.create') }}" class="nav-link {{ $route == 'payment_methods.create' ? 'active' : '' }}">
                 <i class="fa fa-plus nav-icon"></i>
                 <p>Add Payment Method</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('setting.payment_methods.index') }}" class="nav-link {{ $route == 'setting.payment_methods.index' || $route == 'setting.payment_methods.edit' ? 'active' : '' }}">
+            <a href="{{ route('payment_methods.index') }}" class="nav-link {{ $route == 'payment_methods.index' || $route == 'payment_methods.edit' ? 'active' : '' }}">
                 <i class="fa fa-eye nav-icon"></i>
                 <p>View Payment Method</p>
             </a>

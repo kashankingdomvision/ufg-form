@@ -604,6 +604,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'LocationController@destroy'));
     });
     
+    /* Payment methods */
+    Route::group([
+        'prefix' => 'payment-methods',
+        'as'     => 'payment_methods.'
+    ], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'PaymentMethodController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'PaymentMethodController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'PaymentMethodController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'PaymentMethodController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'PaymentMethodController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PaymentMethodController@destroy'));
+    });
+    
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -634,21 +648,20 @@ Route::group(['middleware' => ['auth']], function(){
             'index','create', 'store', 'edit', 'update', 'destroy'
         ]]);
 
-
         /* Airlines */
 		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
 			'index','create', 'store', 'edit', 'update', 'destroy'
 		]]);
 
         /* Booking methods */
-		Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
 	    /* Payment methods */
-		Route::resource('payment_methods', 'SettingControllers\PaymentMethodController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('payment_methods', 'SettingControllers\PaymentMethodController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
 		/* Currencies */
 		// Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [

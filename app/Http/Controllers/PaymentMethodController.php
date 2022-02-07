@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\PaymentMethodRequest;
+use App\Http\Requests\UpdatePaymentMethodRequest;
+
 use App\PaymentMethod;
 class PaymentMethodController extends Controller
 {
@@ -43,12 +47,11 @@ class PaymentMethodController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PaymentMethodRequest $request)
     {
-        $request->validate(['name' => 'required|string']);
         PaymentMethod::create($request->all());
-        return redirect()->route('setting.payment_methods.index')->with('success_message', 'Payment method created successfully'); 
-        
+
+        return response()->json([ 'status' => true, 'success_message' => 'Payment Method Created Successfully.' ]);
     }
 
 
@@ -61,6 +64,7 @@ class PaymentMethodController extends Controller
     public function edit($id)
     {
         $data['payment_method'] = PaymentMethod::findOrFail(decrypt($id));
+
         return view('payment_methods.edit',$data);
     }
 
@@ -71,12 +75,11 @@ class PaymentMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePaymentMethodRequest $request, $id)
     {
-        $request->validate(['name' => 'required|string']);
         PaymentMethod::findOrFail(decrypt($id))->update($request->all());
-        return redirect()->route('setting.payment_methods.index')->with('success_message', 'Payment method updated successfully'); 
-        
+
+        return response()->json([ 'status' => true, 'success_message' => 'Payment Method Updated Successfully.' ]);
     }
 
     /**
@@ -88,7 +91,7 @@ class PaymentMethodController extends Controller
     public function destroy($id)
     {
         PaymentMethod::destroy(decrypt($id));
-        return redirect()->route('setting.payment_methods.index')->with('success_message', 'Payment method deleted successfully'); 
+        return redirect()->route('payment_methods.index')->with('success_message', 'Payment method deleted successfully'); 
         
     }
 }
