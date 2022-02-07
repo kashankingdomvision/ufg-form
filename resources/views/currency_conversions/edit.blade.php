@@ -26,19 +26,19 @@
 
       <section class="content">
         <div class="container-fluid">
-          <div class="row">
-            <div class="offset-md-2 col-md-8">
-
-              <div class="card card-secondary">
+          <div class="row d-flex justify-content-center">
+            <div class="col-md-10">
+              <div class="card card-secondary shadow-sm">
                 <div class="card-header">
                   <h3 class="card-title">Currency Form</h3>
                 </div>
 
-                <form method="POST" action="{{ route('setting.currency_conversions.update', encrypt($currency->id)) }}">
+                <form method="POST" id="update_currency_conversion" action="{{ route('currency_conversions.update', encrypt($currency->id)) }}">
                   @csrf
                   @method('put')
 
                     <div class="card-body">
+
                       <div class="form-group">
                         <label>From <span class="text-danger">*</span></label>
                         <select name="from" class="form-control select2single  @error('currency') is-invalid @enderror" required disabled>
@@ -59,31 +59,20 @@
                         </select>
                       </div> 
 
-           
                       <div class="form-group">
                         <label>Manual Rate</label>
-                        <div class="input-group">
-                          <input type="number" name="manual" value="{{ $currency->manual }}" placeholder="0.00" step="any" min="0" step="any" class="form-control hide-arrows @error('manual') is-invalid @enderror">
-                        </div>
-
-                        @error('manual')
-                          <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
+                          <input type="number" name="manual" id="manual" value="{{ $currency->manual }}" placeholder="0.00" step="any" min="0" step="any" class="form-control hide-arrows @error('manual') is-invalid @enderror">
+                        <span class="text-danger" role="alert"></span>
                       </div>
-
-
                     </div>
 
                   <div class="card-footer">
-                    <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                    <a href="{{ route('setting.currency_conversions.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
-                    
+                    <button type="submit" class="btn btn-success float-right">Submit</button>
+                    <a href="{{ route('currency_conversions.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                   </div>
-
                 </form>
+                <div id="overlay" class=""></div>
               </div>
-
-
             </div>
 
           </div>
@@ -92,3 +81,8 @@
 
     </div>
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/setting.js') }}" ></script>
+@endpush
+

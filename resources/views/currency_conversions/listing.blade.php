@@ -28,7 +28,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.currency_conversions.index')">
+  <x-page-filters :route="route('currency_conversions.index')">
     <div class="row">
       <div class="col">
           <div class="form-group">
@@ -87,7 +87,7 @@
                         <td>{{ $value->live }}</td>
                         <td>{{ $value->manual }}</td>
                         <td>
-                          <a href="{{ route('setting.currency_conversions.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <a href="{{ route('currency_conversions.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                         </td>
                       </tr>
                     @endforeach

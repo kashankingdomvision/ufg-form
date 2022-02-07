@@ -50,8 +50,8 @@
         'currencies.index',
         'currencies.create',
         'currencies.edit',
-        'setting.currency_conversions.index',
-        'setting.currency_conversions.edit',
+        'currency_conversions.index',
+        'currency_conversions.edit',
         'store.texts.create',
         'store.texts.index', 
         'store.texts.edit',
@@ -379,7 +379,7 @@
 
 
                         <li class="nav-item">
-                            <a  href="{{ route('setting.currency_conversions.index') }}" class="nav-link {{ $route == 'setting.currency_conversions.index' || $route == 'setting.currency_conversions.edit' ? 'active' : '' }}">
+                            <a  href="{{ route('currency_conversions.index') }}" class="nav-link {{ $route == 'currency_conversions.index' || $route == 'currency_conversions.edit' ? 'active' : '' }}">
                                 <i class="fas fa-money-bill-alt nav-icon"></i>
                                 <p>
                                     Currency Rates

@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\CurrencyConversionRequest;
+
 use App\CurrencyConversion;
 use App\Currency;
+
 class CurrencyConversionController extends Controller
 {
     public $pagination = 10;
@@ -32,6 +35,7 @@ class CurrencyConversionController extends Controller
         }
         
         $data['currency_conversions'] = $currency_conver->paginate($this->pagination);
+
         return view('currency_conversions.listing',$data);
     }
 
@@ -39,6 +43,7 @@ class CurrencyConversionController extends Controller
         
         $data['currency']        = CurrencyConversion::findOrFail(decrypt($id));
         $data['currencies']      = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+
         return view('currency_conversions.edit',$data);
     }
     
@@ -49,13 +54,12 @@ class CurrencyConversionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CurrencyConversionRequest $request, $id)
     { 
-        // $this->validate($request, ['manual_rate' => 'required'], ['required' => 'Manual Rate is required']);
         CurrencyConversion::findOrFail(decrypt($id))->update([
-                'manual'   =>  $request->manual
-            ]);
+            'manual' => $request->manual
+        ]);
 
-        return redirect()->route('setting.currency_conversions.index')->with('success_message', 'Currency rate Updated Successfully');
+        return response()->json([ 'status' => true, 'success_message' => 'Currency Rate Updated Successfully.' ]);
     }
 }

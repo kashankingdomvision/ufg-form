@@ -536,6 +536,17 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CurrencyController@destroy'));
     });
 
+    /* Currency Conversion */
+    Route::group([
+        'prefix' => 'currency-conversions',
+        'as'     => 'currency_conversions.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CurrencyConversionController@index'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyConversionController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyConversionController@update'));
+    });
+
     
     Route::group([
         'prefix' => 'setting',
@@ -599,9 +610,9 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 
 		/* Currency Conversion */
-		Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
-			'index', 'edit', 'update'
-		]]);
+		// Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
+		// 	'index', 'edit', 'update'
+		// ]]);
 
 
         /* Countries */

@@ -103,6 +103,8 @@ __webpack_require__(/*! ./setting/country_app */ "./resources/js/setting/country
 
 __webpack_require__(/*! ./setting/currency_app */ "./resources/js/setting/currency_app.js");
 
+__webpack_require__(/*! ./setting/currency_conversion_app */ "./resources/js/setting/currency_conversion_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -449,6 +451,47 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currencies/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/currency_conversion_app.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/setting/currency_conversion_app.js ***!
+  \*********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Update CurrencyConversion
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#update_currency_conversion', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currency-conversions/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();
