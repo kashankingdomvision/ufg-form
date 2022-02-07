@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Currency <x-add-new-button :route="route('setting.currencies.create')" /> </h4>
+            <h4>View Currency <x-add-new-button :route="route('currencies.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.currencies.index')">
+  <x-page-filters :route="route('currencies.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -107,7 +107,7 @@
                           <td>{{ $value->code }}</td>
                           <td>{{ $value->status == 1 ? 'Active' : 'Inactive' }}</td>
                           <td>
-                            <a href="{{ route('setting.currencies.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <a href="{{ route('currencies.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           </td>
                         </tr>
                       @endforeach

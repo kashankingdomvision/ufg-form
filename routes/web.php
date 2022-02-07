@@ -508,7 +508,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BrandController@destroy'));
     });
 
-    /* Brands */
+    /* Countries */
     Route::group([
         'prefix' => 'countries',
         'as'     => 'countries.'
@@ -522,6 +522,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CountryController@destroy'));
     });
 
+    /* Currencies */
+    Route::group([
+        'prefix' => 'currencies',
+        'as'     => 'currencies.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CurrencyController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CurrencyController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CurrencyController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CurrencyController@destroy'));
+    });
+
+    
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
@@ -569,9 +584,9 @@ Route::group(['middleware' => ['auth']], function(){
 		]]);
 
 		/* Currencies */
-		Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
 		/* Brands */
 		// Route::resource('brands', 'SettingControllers\BrandController',['only' => [

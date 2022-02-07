@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\CurrencyRequest;
+
 use App\Currency;
 use App\AllCurrency;
 use App\CurrencyConversion;
@@ -48,7 +50,7 @@ class CurrencyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CurrencyRequest $request)
     {
         // $nCurrency = AllCurrency::where('code', $request->currency)->first();
         // Currency::create([
@@ -116,8 +118,7 @@ class CurrencyController extends Controller
         // }
 
         //-- end
-    
-        return redirect()->route('setting.currencies.index')->with('success_message', 'Currency added successfully');  
+        return response()->json([ 'status' => true, 'success_message' => 'Currency Added Successfully.' ]);
     }
 
     /**
@@ -144,9 +145,9 @@ class CurrencyController extends Controller
      */
     public function update(Request $request, $id)
     { 
-        Currency::findOrFail(decrypt($id))->update([ 'status' => ($request->status == "1")? 1 : 0 ]);
+        Currency::findOrFail(decrypt($id))->update([ 'status' => ($request->status == "1") ? 1 : 0 ]);
         
-        return redirect()->route('setting.currencies.index')->with('success_message', 'Currency updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Currency Updated Successfully.' ]);
     }
 
     /**
@@ -158,7 +159,7 @@ class CurrencyController extends Controller
     public function destroy($id)
     {
         Currency::destroy(decrypt($id));
-        return redirect()->route('setting.currencies.index')->with('success_message', 'Currency updated successfully'); 
+        return redirect()->route('currencies.index')->with('success_message', 'Currency updated successfully'); 
         
     }
 }

@@ -101,6 +101,8 @@ __webpack_require__(/*! ./setting/brand_app */ "./resources/js/setting/brand_app
 
 __webpack_require__(/*! ./setting/country_app */ "./resources/js/setting/country_app.js");
 
+__webpack_require__(/*! ./setting/currency_app */ "./resources/js/setting/currency_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -376,6 +378,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "countries/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/currency_app.js":
+/*!**********************************************!*\
+  !*** ./resources/js/setting/currency_app.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Brand 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_currency', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currencies/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Brand
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_currency', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currencies/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

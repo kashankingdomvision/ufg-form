@@ -47,9 +47,9 @@
         'setting.holidaytypes.index',
         'setting.holidaytypes.create',
         'setting.holidaytypes.edit',
-        'setting.currencies.index',
-        'setting.currencies.create',
-        'setting.currencies.edit',
+        'currencies.index',
+        'currencies.create',
+        'currencies.edit',
         'setting.currency_conversions.index',
         'setting.currency_conversions.edit',
         'store.texts.create',
@@ -369,7 +369,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.currencies.index') }}" class="nav-link {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' ? 'active' : '' }}">
+                            <a href="{{ route('currencies.index') }}" class="nav-link {{ $route == 'currencies.index' || $route == 'currencies.create' || $route == 'currencies.edit' ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-money-bill-alt"></i>
                                 <p>
                                     Currencies
@@ -769,8 +769,8 @@
     </a>
 </li> --}}
 
-{{-- <li class="nav-item {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' ? 'menu-open': '' }}">
-    <a href="#" class="nav-link {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.create' || $route == 'setting.currencies.edit' ? 'setting-child-active' : '' }}">
+{{-- <li class="nav-item {{ $route == 'currencies.index' || $route == 'currencies.create' || $route == 'currencies.edit' ? 'menu-open': '' }}">
+    <a href="#" class="nav-link {{ $route == 'currencies.index' || $route == 'currencies.create' || $route == 'currencies.edit' ? 'setting-child-active' : '' }}">
         <i class="fas fa-money-bill-alt nav-icon"></i>
         <p>
             Currency
@@ -779,13 +779,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('setting.currencies.create') }}" class="nav-link {{ $route == 'setting.currencies.create' ? 'active' : '' }}">
+            <a href="{{ route('currencies.create') }}" class="nav-link {{ $route == 'currencies.create' ? 'active' : '' }}">
                 <i class="fa fa-plus nav-icon"></i>
                 <p>Add Currency</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('setting.currencies.index') }}" class="nav-link {{ $route == 'setting.currencies.index' || $route == 'setting.currencies.edit' ? 'active' : '' }}">
+            <a href="{{ route('currencies.index') }}" class="nav-link {{ $route == 'currencies.index' || $route == 'currencies.edit' ? 'active' : '' }}">
                 <i class="fa fa-eye nav-icon"></i>
                 <p>View Currency</p>
             </a>
