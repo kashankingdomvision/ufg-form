@@ -156,7 +156,7 @@ $(document).ready(function($) {
     }
     
     window.removeFormValidationStyles = function() {
-        $('input, select').removeClass('is-invalid');
+        $('input, select, textarea').removeClass('is-invalid');
         $('.text-danger').html('');
     }
 

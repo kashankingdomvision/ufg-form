@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Preset Comments <x-add-new-button :route="route('setting.preset-comments.create')" /> </h4>
+            <h4>View Preset Comments <x-add-new-button :route="route('preset_comments.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -31,7 +31,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.preset-comments.index')">
+  <x-page-filters :route="route('preset_comments.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -89,8 +89,8 @@
                       </td>
                       <td>{{ $value->comment }}</td>
                       <td>
-                        <form method="post" action="{{ route('setting.preset-comments.destroy', encrypt($value->id)) }}">
-                        <a href="{{ route('setting.preset-comments.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('preset_comments.destroy', encrypt($value->id)) }}">
+                        <a href="{{ route('preset_comments.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

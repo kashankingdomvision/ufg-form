@@ -55,9 +55,9 @@
         'store.texts.create',
         'store.texts.index', 
         'store.texts.edit',
-        'setting.preset-comments.index',
-        'setting.preset-comments.create',
-        'setting.preset-comments.edit',
+        'preset_comments.index',
+        'preset_comments.create',
+        'preset_comments.edit',
         'seasons.index',
         'seasons.create',
         'seasons.edit',
@@ -431,7 +431,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.preset-comments.index') }}" class="nav-link {{ $route == 'setting.preset-comments.index' || $route == 'setting.preset-comments.create' || $route == 'setting.preset-comments.edit' ? 'active' : '' }}">
+                            <a href="{{ route('preset_comments.index') }}" class="nav-link {{ $route == 'preset_comments.index' || $route == 'preset_comments.create' || $route == 'preset_comments.edit' ? 'active' : '' }}">
                                 <i class="fa fa-comment nav-icon"></i>
                                 <p>Preset Comments</p>
                             </a>

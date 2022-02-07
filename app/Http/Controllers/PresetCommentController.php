@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
+use App\Http\Requests\PresetCommentRequest;
+use App\Http\Requests\UpdatePresetCommentRequest;
+
 use App\PresetComment;
 
 class PresetCommentController extends Controller
@@ -47,19 +51,19 @@ class PresetCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PresetCommentRequest $request)
     {
-        $this->validate(
-            $request, 
-            [ 'comment' => 'required' ],
-            [ 'comment.required' => 'The Preset Comment field is required.' ]
-        );
+        // $this->validate(
+        //     $request, 
+        //     [ 'comment' => 'required' ],
+        //     [ 'comment.required' => 'The Preset Comment field is required.' ]
+        // );
 
         PresetComment::create([
             'comment' => $request->comment
         ]);
 
-        return redirect()->route('setting.preset-comments.index')->with('success_message', 'Preset Comment created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Preset Comment Created Successfully.' ]);
     }
 
     /**
@@ -94,8 +98,7 @@ class PresetCommentController extends Controller
             'comment' => $request->comment
         ]);
 
-        return redirect()->route('setting.preset-comments.index')->with('success_message', 'Preset Comment updated successfully'); 
-        
+        return response()->json([ 'status' => true, 'success_message' => 'Preset Comment Updated Successfully.' ]);
     }
 
     /**
@@ -108,7 +111,7 @@ class PresetCommentController extends Controller
     {
         PresetComment::destroy(decrypt($id));
 
-        return redirect()->route('setting.preset-comments.index')->with('success_message', 'Preset Comment deleted successfully'); 
+        return redirect()->route('preset_comments.index')->with('success_message', 'Preset Comment deleted successfully'); 
     }
 
 }

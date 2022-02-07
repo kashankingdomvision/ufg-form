@@ -70207,7 +70207,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   }
 
   window.removeFormValidationStyles = function () {
-    $('input, select').removeClass('is-invalid');
+    $('input, select, textarea').removeClass('is-invalid');
     $('.text-danger').html('');
   };
 

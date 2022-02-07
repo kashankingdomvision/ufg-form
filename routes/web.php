@@ -617,6 +617,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'PaymentMethodController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PaymentMethodController@destroy'));
     });
+
+    /* Preset Comment */
+    Route::group([
+        'prefix' => 'preset-comments',
+        'as'     => 'preset_comments.'
+    ], function () {
+
+        Route::get('index', array('as' => 'index', 'uses' => 'PresetCommentController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'PresetCommentController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'PresetCommentController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'PresetCommentController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'PresetCommentController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PresetCommentController@destroy'));
+    });
     
     Route::group([
         'prefix' => 'setting',
@@ -644,9 +658,9 @@ Route::group(['middleware' => ['auth']], function(){
 		// ]]);
 
         /* Preset Comment */
-        Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
 
         /* Airlines */
 		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
