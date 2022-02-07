@@ -354,9 +354,9 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    Route::resource('seasons', 'SeasonController',['only' => [
-		'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('seasons', 'SeasonController',['only' => [
+	// 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
 
     /*
@@ -630,6 +630,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'PresetCommentController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'PresetCommentController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PresetCommentController@destroy'));
+    });
+
+    /* Seasons */
+    Route::group([
+        'prefix' => 'seasons',
+        'as'     => 'seasons.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'SeasonController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'SeasonController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'SeasonController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SeasonController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'SeasonController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SeasonController@destroy'));
     });
     
     Route::group([

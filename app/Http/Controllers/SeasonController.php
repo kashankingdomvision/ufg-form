@@ -79,7 +79,7 @@ class SeasonController extends Controller
             'default'     => $request->default
         ]);
 
-        return redirect()->route('seasons.index')->with('success_message', 'Season created successfully');
+        return response()->json([ 'status' => true, 'success_message' => 'Season Created Successfully.' ]);
     }
 
     /**
@@ -126,7 +126,7 @@ class SeasonController extends Controller
             'default'     => $request->default
         ]);
 
-        return redirect()->route('seasons.index')->with('success_message', 'Season updated successfully');
+        return response()->json([ 'status' => true, 'success_message' => 'Season Updated Successfully.' ]);
     }
 
     /**

@@ -27,7 +27,7 @@ class UpdateSeasonRequest extends FormRequest
     {
         return [
 
-            'name'          => ['required', Rule::unique('seasons','name')->ignore(decrypt($this->season))],
+            'name'          => ['required', Rule::unique('seasons','name')->ignore(decrypt($this->id))],
             'start_date'    => 'required|date',
             'end_date'      => 'required|date',
             'default'       => 'required',

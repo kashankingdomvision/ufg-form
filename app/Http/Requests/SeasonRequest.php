@@ -34,10 +34,10 @@ class SeasonRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name'          => 'Season name',
-            'start_date'    => 'Season start date',
-            'end_date'      => 'Season end date',
-            'default'       => 'Select default season',
+            'name'          => 'Season Name',
+            'start_date'    => 'Start Date',
+            'end_date'      => 'End Date',
+            'default'       => 'Select Default Season',
         ];
     }
 }

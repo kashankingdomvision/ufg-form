@@ -93,7 +93,7 @@
                                                     {{ $value->name }} &nbsp;
                                                     
                                                     @if ($value->default == 1)
-                                                    <span class="btn btn-primary badge">Default</span>
+                                                    <span class="btn btn-info badge">Default</span>
                                                     @endif
                                                 </td>
 
