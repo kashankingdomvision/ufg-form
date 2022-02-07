@@ -10,7 +10,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Harbours, Train and Points of Interest <x-add-new-button :route="route('setting.harbours.create')" /> </h4>
+            <h4>View Harbours, Train and Points of Interest <x-add-new-button :route="route('harbours.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -30,7 +30,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.harbours.index')">
+  <x-page-filters :route="route('harbours.index')">
       <div class="row">
           <div class="col-md-12">
               <div class="form-group">
@@ -91,8 +91,8 @@
                       <td>{{ $value->port_id }}</td>
                       <td>{{ $value->name }}</td>
                       <td>
-                        <form method="post" action="{{ route('setting.harbours.destroy', encrypt($value->id)) }}">
-                        <a href="{{ route('setting.harbours.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('harbours.destroy', encrypt($value->id)) }}">
+                        <a href="{{ route('harbours.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

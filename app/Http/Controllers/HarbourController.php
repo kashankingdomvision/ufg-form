@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -56,7 +56,7 @@ class HarbourController extends Controller
             'name'    =>  $request->name
         ]);
 
-        return redirect()->route('setting.harbours.index')->with('success_message', 'Harbours, Train and Points of Interest created successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Harbours, Train and POI Created Successfully.' ]);
     }
 
     /**
@@ -79,6 +79,7 @@ class HarbourController extends Controller
     public function edit($id)
     {
         $data['harbour'] = Harbour::find(decrypt($id));
+
         return view('harbours.edit',$data);
     }
 
@@ -96,7 +97,7 @@ class HarbourController extends Controller
             'name'    =>  $request->name
         ]);
 
-        return redirect()->route('setting.harbours.index')->with('success_message', 'Harbours, Train and Points of Interest updated successfully'); 
+        return response()->json([ 'status' => true, 'success_message' => 'Harbours, Train and POI Updated Successfully.' ]);
     }
 
     /**
@@ -108,6 +109,7 @@ class HarbourController extends Controller
     public function destroy($id)
     {
         Harbour::destroy(decrypt($id));
-        return redirect()->route('setting.harbours.index')->with('success_message', 'Harbours, Train and Points of Interest deleted successfully');
+        
+        return redirect()->route('harbours.index')->with('success_message', 'Harbours, Train and Points of Interest deleted successfully');
     }
 }

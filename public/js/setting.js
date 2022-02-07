@@ -105,6 +105,8 @@ __webpack_require__(/*! ./setting/currency_app */ "./resources/js/setting/curren
 
 __webpack_require__(/*! ./setting/currency_conversion_app */ "./resources/js/setting/currency_conversion_app.js");
 
+__webpack_require__(/*! ./setting/harbour_app */ "./resources/js/setting/harbour_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -492,6 +494,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currency-conversions/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/harbour_app.js":
+/*!*********************************************!*\
+  !*** ./resources/js/setting/harbour_app.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Harbour 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_harbour', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "harbours/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Harbour
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_harbour', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "harbours/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

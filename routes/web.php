@@ -548,15 +548,29 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
     
+    /* Harbours, Train and Points of Interest */
+    Route::group([
+        'prefix' => 'harbours',
+        'as'     => 'harbours.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'HarbourController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'HarbourController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'HarbourController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'HarbourController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'HarbourController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HarbourController@destroy'));
+    });
+    
     Route::group([
         'prefix' => 'setting',
         'as'     => 'setting.'
     ],function (){
 
         /* Harbours, Train and Points of Interest */
-		Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
         /* AirportCode */
 		// Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [

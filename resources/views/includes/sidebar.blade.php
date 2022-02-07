@@ -71,9 +71,9 @@
         'setting.hotels.index',
         'setting.hotels.edit',
 
-        'setting.harbours.index',
-        'setting.harbours.create',
-        'setting.harbours.edit',
+        'harbours.index',
+        'harbours.create',
+        'harbours.edit',
         'setting.locations.create',
         'setting.locations.index',
         'setting.locations.edit',
@@ -389,7 +389,7 @@
 
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link d-inline-flex  {{ $route == 'setting.harbours.index' || $route == 'setting.harbours.create' || $route == 'setting.harbours.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link d-inline-flex  {{ $route == 'harbours.index' || $route == 'harbours.create' || $route == 'harbours.edit'  ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train & POI </p>
                             </a>
