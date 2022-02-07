@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Holiday Type <x-add-new-button :route="route('setting.holidaytypes.create')" /> </h4>
+            <h4>View Holiday Type <x-add-new-button :route="route('holiday_types.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
@@ -33,7 +33,7 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('setting.holidaytypes.index')">
+  <x-page-filters :route="route('holiday_types.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -94,8 +94,8 @@
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->getBrand->name ?? NULL }}</td>
                         <td>
-                          <form method="post" action="{{ route('setting.holidaytypes.destroy', encrypt($value->id)) }}">
-                            <a href="{{ route('setting.holidaytypes.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('holiday_types.destroy', encrypt($value->id)) }}">
+                            <a href="{{ route('holiday_types.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

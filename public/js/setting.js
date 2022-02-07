@@ -107,6 +107,8 @@ __webpack_require__(/*! ./setting/currency_conversion_app */ "./resources/js/set
 
 __webpack_require__(/*! ./setting/harbour_app */ "./resources/js/setting/harbour_app.js");
 
+__webpack_require__(/*! ./setting/holiday_type_app */ "./resources/js/setting/holiday_type_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -565,6 +567,77 @@ $(document).ready(function () {
       success: function success(response) {
         removeFormLoadingStyles();
         printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "harbours/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/holiday_type_app.js":
+/*!**************************************************!*\
+  !*** ./resources/js/setting/holiday_type_app.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Harbour 
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_holiday_type', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "holiday-types/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Harbour
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_holiday_type', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "holiday-types/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();

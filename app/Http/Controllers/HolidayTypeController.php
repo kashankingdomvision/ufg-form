@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\SettingControllers;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\HolidayTypeRequest;
+
 use App\Brand;
 use App\HolidayType;
-use App\Http\Requests\HolidayTypeRequest;
 
 class HolidayTypeController extends Controller
 {
@@ -41,6 +42,7 @@ class HolidayTypeController extends Controller
     public function create()
     {
         $data['brands'] = Brand::get();
+        
         return view('holiday_types.create', $data);
     }
 
@@ -53,7 +55,8 @@ class HolidayTypeController extends Controller
     public function store(HolidayTypeRequest $request)
     {
         HolidayType::create($request->all());
-        return redirect()->route('setting.holidaytypes.index')->with('success_message', 'Holiday type created successfully'); 
+
+        return response()->json([ 'status' => true, 'success_message' => 'Holiday Type Created Successfully.' ]);
     }
 
 
@@ -80,7 +83,8 @@ class HolidayTypeController extends Controller
     public function update(HolidayTypeRequest $request, $id)
     {
         HolidayType::findOrFail(decrypt($id))->update($request->all());
-        return redirect()->route('setting.holidaytypes.index')->with('success_message', 'Holiday type updated successfully'); 
+
+        return response()->json([ 'status' => true, 'success_message' => 'Holiday Type Updated Successfully.' ]);
     }
 
     /**
@@ -92,7 +96,8 @@ class HolidayTypeController extends Controller
     public function destroy($id)
     {
         HolidayType::destroy(decrypt($id));
-        return redirect()->route('setting.holidaytypes.index')->with('success_message', 'Holiday type deleted successfully'); 
+
+        return redirect()->route('holiday_types.index')->with('success_message', 'Holiday type deleted successfully'); 
     }
     
 }

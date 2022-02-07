@@ -561,6 +561,20 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'HarbourController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HarbourController@destroy'));
     });
+
+    /*  Holiday Types */
+    Route::group([
+        'prefix' => 'holiday-types',
+        'as'     => 'holiday_types.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'HolidayTypeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'HolidayTypeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'HolidayTypeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'HolidayTypeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'HolidayTypeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HolidayTypeController@destroy'));
+    });
     
     Route::group([
         'prefix' => 'setting',
@@ -619,9 +633,9 @@ Route::group(['middleware' => ['auth']], function(){
 		// ]]);
 
 		/*  Holiday Types */
-		Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
+		// Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [
+		// 	'index','create', 'store', 'edit', 'update', 'destroy'
+		// ]]);
 
 		/* Currency Conversion */
 		// Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [

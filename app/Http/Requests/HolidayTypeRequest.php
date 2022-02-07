@@ -32,8 +32,8 @@ class HolidayTypeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => 'Name',
-            'brand_id' => 'Brand name',
+            'name' => 'Holiday Type Name',
+            'brand_id' => 'Brand',
         ];
     }
 }

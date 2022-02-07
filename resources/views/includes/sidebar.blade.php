@@ -44,9 +44,9 @@
         'brands.index',
         'brands.create',
         'brands.edit',
-        'setting.holidaytypes.index',
-        'setting.holidaytypes.create',
-        'setting.holidaytypes.edit',
+        'holiday_types.index',
+        'holiday_types.create',
+        'holiday_types.edit',
         'currencies.index',
         'currencies.create',
         'currencies.edit',
@@ -396,7 +396,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('setting.holidaytypes.index') }}" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'active' : '' }}">
+                            <a href="{{ route('holiday_types.index') }}" class="nav-link {{ $route == 'holiday_types.index' || $route == 'holiday_types.create' || $route == 'holiday_types.edit' ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Holiday Types
@@ -821,8 +821,8 @@
 </li> --}}
 
 
-{{-- <li class="nav-item {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'menu-open': '' }}">
-    <a href="#" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.create' || $route == 'setting.holidaytypes.edit' ? 'setting-child-active' : '' }}">
+{{-- <li class="nav-item {{ $route == 'holiday_types.index' || $route == 'holiday_types.create' || $route == 'holiday_types.edit' ? 'menu-open': '' }}">
+    <a href="#" class="nav-link {{ $route == 'holiday_types.index' || $route == 'holiday_types.create' || $route == 'holiday_types.edit' ? 'setting-child-active' : '' }}">
         <i class="far fa-circle nav-icon"></i>
         <p>
             Holiday Type
@@ -831,13 +831,13 @@
     </a>
     <ul class="nav nav-treeview">
         <li class="nav-item">
-            <a href="{{ route('setting.holidaytypes.create') }}" class="nav-link {{ $route == 'setting.holidaytypes.create' ? 'active' : '' }}">
+            <a href="{{ route('holiday_types.create') }}" class="nav-link {{ $route == 'holiday_types.create' ? 'active' : '' }}">
                 <i class="fa fa-plus nav-icon"></i>
                 <p>Add Holiday Type</p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ route('setting.holidaytypes.index') }}" class="nav-link {{ $route == 'setting.holidaytypes.index' || $route == 'setting.holidaytypes.edit' ? 'active' : '' }}">
+            <a href="{{ route('holiday_types.index') }}" class="nav-link {{ $route == 'holiday_types.index' || $route == 'holiday_types.edit' ? 'active' : '' }}">
                 <i class="fa fa-eye nav-icon"></i>
                 <p>View Holiday Type</p>
             </a>
