@@ -20,7 +20,7 @@
       </div>
     </section>
 
-    <section class="content versions" id="content" data-countries="{{ $countries }}">
+    <section class="content" id="content" data-countries="{{ $countries }}">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
@@ -29,11 +29,11 @@
                 <h3 class="card-title text-center lh-2">Quote Version #{{  $log['log_no'] }} {{ isset($log['version_no']) && !empty($log['version_no']) ? $log['version_no'] : '' }}</h3>
                 
                 @if(!isset($type))
-                  <button id="reCall" type="button" data-recall="true" class="btn btn-light float-right">Recall Version</button>
+                  <button id="recall_version" type="button" data-recall="true" class="btn btn-dark btn-sm float-right">Recall Version</button>
                 @endif
               </div>
 
-              <form method="POST" class="update-quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}">
+              <form method="POST" id="version_quote" action="{{ route('quotes.update', encrypt($quote['id'])) }}">
                 <div class="card-body">
                   @csrf @method('put')
 
@@ -545,9 +545,9 @@
                             </h3>
 
                             <div class="card-tools">
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below d-none" ><i class="fas fa-plus"></i> &nbsp; Add New Service</a>
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
-                              <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 remove d-none" title="Remove"><i class="fas fa-times"></i></a>
+                              <button type="button" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below"><i class="fas fa-plus"></i> &nbsp; &nbsp; <i class="fas fa-arrow-down"></i> </button>
+                              <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn"><i class="fas fa-minus"></i></button>
+                              <button type="button" class="btn btn-sm btn-outline-dark mr-2 remove" title="Remove"><i class="fas fa-times"></i></button>
                             </div>
                           </div>
 
@@ -1068,6 +1068,12 @@
 
 @push('js')
   <script src="{{ asset('js/quote_app.js') }}" ></script>
+
+<script>
+  $(document).ready(function(){
+    
+  });
+</script>
 @endpush
 
 {{-- <div class="col-sm-2">

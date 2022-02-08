@@ -73083,30 +73083,31 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(".readonly").keypress(function (evt) {
     evt.preventDefault();
   });
-  $(".versions :input").prop("disabled", true);
   $('#bookingVersion :input').prop('disabled', true);
-  $('#reCall, .disablebutton').prop("disabled", false);
-  $(".add-category-detail, .versions .category-detail-feilds-close").removeAttr("disabled");
-  $(".versions .category-detail-feilds-submit").addClass("d-none");
   $(".collapse-all-btn").removeAttr('disabled');
   $(".expand-all-btn").removeAttr('disabled');
-  $('#reCall').on('click', function () {
-    if ($(this).data('recall') == true) {
-      if (confirm("Are you sure you want to Recall this Quotation?") == true) {
-        $(".versions :input").removeAttr("disabled");
-        $(this).data('recall', 'false');
-        $(this).text('Back Into Version');
-        $('.remove').addClass('remove-quote-detail-service');
-        $('.remove').removeClass('d-none');
-        $('.add-new-product, .insert-quick-text, .add-new-service-below').removeClass('d-none');
-        getMarkupTypeFeildAttribute();
+  /* Quote Version page script */
+
+  if (['quotes.view.version'].includes(CURRENT_ROUTE_NAME)) {
+    $("#version_quote :input").prop("disabled", true);
+    $('#recall_version').on('click', function () {
+      if ($(this).data('recall')) {
+        if (confirm("Are you sure you want to Recall this Quotation?")) {
+          $("#version_quote :input").prop("disabled", false);
+          $('#recall_version').data('recall', false);
+          $(this).text('Back Into Version');
+          getMarkupTypeFeildAttribute();
+        }
+      } else {
+        $("#version_quote :input").prop("disabled", true);
+        $('#recall_version').prop("disabled", false);
+        $(this).text('Recall Version');
       }
-    } else {
-      $("#versions :input").prop("disabled", true);
-      $('#reCall').prop("disabled", false);
-      $(this).text('Recall Version');
-    }
-  });
+    });
+  }
+  /* End Quote Version page script */
+
+
   $("#quoteCreate").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
