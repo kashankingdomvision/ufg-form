@@ -890,7 +890,7 @@
                             <div class="col-md-4">
                               <label>Add Stored Text</label>
                               <div class="form-group">
-                                <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
+                                <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark btn-sm addmodalforquote" data-toggle="modal">Add Stored Text</button>
                                 <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                   @include('partials.stored_text_modal')
                                 </div>
@@ -1116,7 +1116,7 @@
               @if($quote->booking_status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
-                  <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
+                  <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-2">Cancel</a>
                 </div>
               @endif
             </form><!-- end form -->

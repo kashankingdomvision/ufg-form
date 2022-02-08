@@ -689,7 +689,7 @@
                           <div class="col-md-3">
                             <label>Add Stored Text</label>
                             <div class="form-group">
-                              <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark addmodalforquote" data-toggle="modal">Add Stored Text</button>
+                              <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark btn-sm addmodalforquote" data-toggle="modal">Add Stored Text</button>
                               <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                 @include('partials.stored_text_modal')
                               </div>
@@ -704,9 +704,9 @@
                   <div class="parent-spinner text-gray spinner-border-sm "></div>
                 </div><!-- End parent -->
 
-                <div class="row justify-content-end">
-                  <button type="button" id="add_more" class="mr-3 btn btn-outline-dark  pull-right">+ Add more </button>
-                  <button type="button" id="save_template" class="btn btn-outline-success  pull-right">Save as Template</button>
+                <div class="row d-flex justify-content-end">
+                  <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half">+ Add more </button>
+                  <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
                 </div>
 
                 <div class="row">
@@ -915,7 +915,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
-                <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-3">Cancel</a>
+                <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-2">Cancel</a>
               </div>
 
             </form><!-- End form -->
