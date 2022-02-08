@@ -70247,8 +70247,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
+  window.resetForm = function () {
+    $('select').val('').change();
+    $('form').trigger("reset");
+  };
+
   window.printServerSuccessMessage = function (data, redirectURL) {
     if (data && data.status) {
+      resetForm();
       Toast.fire({
         icon: 'success',
         title: data.success_message
