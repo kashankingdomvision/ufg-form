@@ -159,7 +159,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-4">
+                  <div class="col-sm-3">
                     <div class="form-group">
                       <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                       <input type="text" name="tas_ref" class="form-control" value="{{ $quote->tas_ref }}"  placeholder="TAS Reference Number" >

@@ -100,7 +100,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-sm-3">
                     <div class="form-group">
                       <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                       <input type="text" id="tas_ref" name="tas_ref" class="form-control" value="{{ isset($tas_ref) & !empty($tas_ref) ? $tas_ref : '' }}"  placeholder="TAS Reference Number" >
