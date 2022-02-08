@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -28100,7 +28100,7 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ 3:
+/***/ 1:
 /*!***************************************************!*\
   !*** multi ./resources/js/supplier_management.js ***!
   \***************************************************/

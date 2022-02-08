@@ -1103,7 +1103,7 @@
 @endsection
 
 @push('js')
-  <script src="{{ asset('js/quote_app.js') }}" ></script>
+  <script src="{{ asset('js/quote_management.js') }}" ></script>
 
   <script>
     $(document).ready(function(){
