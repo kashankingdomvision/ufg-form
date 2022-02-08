@@ -545,7 +545,7 @@
                             </h3>
 
                             <div class="card-tools">
-                              <button type="button" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below"><i class="fas fa-plus"></i> &nbsp; &nbsp; <i class="fas fa-arrow-down"></i> </button>
+                              <button type="button" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
                               <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn"><i class="fas fa-minus"></i></button>
                               <button type="button" class="btn btn-sm btn-outline-dark mr-2 remove" title="Remove"><i class="fas fa-times"></i></button>
                             </div>
