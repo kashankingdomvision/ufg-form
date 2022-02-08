@@ -21,62 +21,48 @@
         'group_owners.edit',
     ];
 
-    // 'setting.airlines.index',
-    // 'setting.airlines.create',
-    // 'setting.airlines.edit',
-
     $setting_routes = [
-
         'airport_codes.index',
         'airport_codes.create',
         'airport_codes.edit',
-
         'banks.index',
         'banks.create',
         'banks.edit',
-        
-        'payment_methods.index',
-        'payment_methods.create',
-        'payment_methods.edit',
-        'setting.booking_methods.index',
-        'setting.booking_methods.create',
-        'setting.booking_methods.edit',
         'brands.index',
         'brands.create',
         'brands.edit',
-        'holiday_types.index',
-        'holiday_types.create',
-        'holiday_types.edit',
+        'countries.index',
+        'countries.create',
+        'countries.edit',
         'currencies.index',
         'currencies.create',
         'currencies.edit',
         'currency_conversions.index',
         'currency_conversions.edit',
-        'store_texts.create',
-        'store_texts.index', 
-        'store_texts.edit',
+        'harbours.index',
+        'harbours.create',
+        'harbours.edit',
+        'holiday_types.index',
+        'holiday_types.create',
+        'holiday_types.edit',
+        'hotels.create',
+        'hotels.index',
+        'hotels.edit',
+        'locations.create',
+        'locations.index',
+        'locations.edit',
+        'payment_methods.index',
+        'payment_methods.create',
+        'payment_methods.edit',
         'preset_comments.index',
         'preset_comments.create',
         'preset_comments.edit',
         'seasons.index',
         'seasons.create',
         'seasons.edit',
-        'countries.index',
-        'countries.create',
-        'countries.edit',
-        'setting.towns.create',
-        'setting.towns.index',
-        'setting.towns.edit',
-        'hotels.create',
-        'hotels.index',
-        'hotels.edit',
-
-        'harbours.index',
-        'harbours.create',
-        'harbours.edit',
-        'locations.create',
-        'locations.index',
-        'locations.edit',
+        'store_texts.create',
+        'store_texts.index', 
+        'store_texts.edit',
     ];
 @endphp
 
@@ -845,3 +831,15 @@
 
     </ul>
 </li> --}}
+{{-- 
+
+'setting.towns.create',
+'setting.towns.index',
+'setting.towns.edit',
+'setting.booking_methods.index',
+'setting.booking_methods.create',
+'setting.booking_methods.edit', --}}
+
+{{-- 'setting.airlines.index',
+'setting.airlines.create',
+'setting.airlines.edit', --}}
