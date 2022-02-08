@@ -668,6 +668,10 @@ class QuoteController extends Controller
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
+        $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::whereHas('getRole', function($query){
