@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Country extends Model
 {
     protected $fillable = [
-        'sort_order',
+        
         'name',
         'phone',
+        'sort_order',
     ];
 
     public function getTowns()

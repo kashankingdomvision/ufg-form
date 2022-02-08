@@ -55,9 +55,9 @@ class CountryController extends Controller
     public function store(CountryRequest $request)
     {
         Country::create([
-            'name'      => $request->name,
-            'sort_order'  => $request->sort_order,
-            'phone' => $request->phone,
+            'name'       => $request->name,
+            'phone'      => $request->phone,
+            'sort_order' => $request->sort_order,
         ]);
         
         return response()->json([ 'status' => true, 'success_message' => 'Country Created Successfully.' ]);
@@ -86,9 +86,9 @@ class CountryController extends Controller
     public function update(UpdateCountryRequest $request, $id)
     {
         Country::findOrFail(decrypt($id))->update([
-            'name'      => $request->name,
-            'sort_order'  => $request->sort_order,
-            'phone' => $request->phone,
+            'name'       => $request->name,
+            'phone'      => $request->phone,
+            'sort_order' => $request->sort_order,
         ]);
         
         return response()->json([ 'status' => true, 'success_message' => 'Country Updated Successfully.' ]);

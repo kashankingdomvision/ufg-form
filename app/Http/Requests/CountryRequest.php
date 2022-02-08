@@ -24,9 +24,9 @@ class CountryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => 'required|string|unique:countries',
+            'name'       => 'required|string|unique:countries,name',
+            'phone'      => 'required|unique:countries,phone',
             'sort_order' => 'required',
-            'phone'  => 'required',
         ];
     }
 
@@ -34,8 +34,8 @@ class CountryRequest extends FormRequest
     {
         return [
             'name'       => 'Country Name',
+            'phone'      => 'Phone Code',
             'sort_order' => 'Sort Order',
-            'phone'  => 'Phone Code',
         ];
     }
 }
