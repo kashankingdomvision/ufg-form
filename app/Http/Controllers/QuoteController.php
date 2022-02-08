@@ -633,7 +633,7 @@ class QuoteController extends Controller
         $log = QuoteLog::findOrFail(decrypt($id));
 
         $quote                    = $log->data;
-        $data['quote']            = $quote;
+        $data['quote']            = (object) $quote;
         $data['log']              = $log;
         $data['public_templates']  = Template::where('privacy_status', 1)->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
@@ -650,9 +650,9 @@ class QuoteController extends Controller
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote['quote_ref'])->get('quote_ref');
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $data['quote']->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']['currency_id'])->orderBy('id','ASC')->get();
+        $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']->currency_id)->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();

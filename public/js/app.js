@@ -73354,7 +73354,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   |--------------------------------------------------------------------------
   */
 
-  $(".update-quote").submit(function (event) {
+  $(document).on('submit', ".update-quote, #version_quote", function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     removeDisabledAttribute(".create-template [name=_method]"); // $('#lead_passenger_contact').intlTelInput("getNumber");/

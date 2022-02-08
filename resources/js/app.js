@@ -3919,7 +3919,8 @@ $(document).ready(function($) {
             |--------------------------------------------------------------------------
             */
 
-            $(".update-quote").submit(function(event) {
+            $(document).on('submit', ".update-quote, #version_quote", function(event) {
+
                 event.preventDefault();
              
                 var url = $(this).attr('action');
