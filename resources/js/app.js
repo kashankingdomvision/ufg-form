@@ -201,16 +201,9 @@ $(document).ready(function($) {
         }
     }
 
-    window.resetForm = function() {
-        $('select').val('').change();
-        $('form').trigger("reset");
-    }
-
     window.printServerSuccessMessage = function(data, redirectURL) {
 
         if(data && data.status){
-            resetForm();
-
             Toast.fire({
                 icon: 'success',
                 title: data.success_message
@@ -220,7 +213,6 @@ $(document).ready(function($) {
                 window.location.href = `${redirectURL}`;
             }, 2500);
         }
-
     }
 
     var curday = function(sp) {
