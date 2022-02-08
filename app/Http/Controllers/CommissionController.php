@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionRequest;
+use App\Http\Requests\UpdateCommissionRequest;
 
 use App\Commission;
 use App\Brand;
@@ -60,7 +61,7 @@ class CommissionController extends Controller
     {
         $commission = Commission::create([ 'name' => $request->name ]);
 
-        return response()->json(['status' => true, 'success_message' => 'Category Created Successfully.']);
+        return response()->json(['status' => true, 'success_message' => 'Commission Created Successfully.']);
     }
 
 
@@ -84,11 +85,11 @@ class CommissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CommissionRequest $request, $id)
+    public function update(UpdateCommissionRequest $request, $id)
     {
         Commission::findOrFail(decrypt($id))->update($request->all());
 
-        return response()->json(['status' => true, 'success_message' => 'Category Updated Successfully.']);
+        return response()->json(['status' => true, 'success_message' => 'Commission Updated Successfully.']);
     }
 
     /**

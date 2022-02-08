@@ -26,7 +26,7 @@ class CommissionRequest extends FormRequest
     {
 
         return [
-            'name' => 'required',
+            'name' => 'required|unique:commissions,name',
         ];
     }
 
