@@ -146,14 +146,6 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*
     |--------------------------------------------------------------------------
-    | Stored Text
-    |--------------------------------------------------------------------------
-    */
-
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Customer
     |--------------------------------------------------------------------------
     */
@@ -189,7 +181,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
     });
 
-
    /* Supplier Bulk Payments */
     Route::group([
         'prefix' => 'supplier-bulk-payments',
@@ -211,7 +202,6 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    
     /* Commissions */
     Route::group([
         'prefix' => 'commissions',
@@ -224,7 +214,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionController@destroy'));
-
     });
 
     /* Commissions Group */
@@ -339,23 +328,11 @@ Route::group(['middleware' => ['auth']], function(){
 
     /*
     |--------------------------------------------------------------------------
-    | Season Manangement
-    |--------------------------------------------------------------------------
-    */
-
-    // Route::resource('seasons', 'SeasonController',['only' => [
-	// 	'index','create', 'store', 'edit', 'update', 'destroy'
-    // ]]);
-
-
-    /*
-    |--------------------------------------------------------------------------
     | Supplier Managment
     |--------------------------------------------------------------------------
     */
 
-    // Route::resource('suppliers', 'SupplierController');
-
+    /*  Suppliers */
     Route::group([
         'prefix' => 'suppliers',
         'as'     => 'suppliers.'
@@ -385,7 +362,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'GroupOwnerController@destroy'));
     });
 
-    /*  Products */
+    /*  Supplier Rate Sheet */
     Route::group([
         'prefix' => 'supplier-rate-sheets',
         'as'     => 'supplier_rate_sheets.'
@@ -413,12 +390,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'ProductController@destroy'));
     });
 
-    /*  Supplier Categories */
-    Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
 
-    
+    /*  Categories */
     Route::group([
         'prefix' => 'categories',
         'as'     => 'categories.'
@@ -455,7 +428,7 @@ Route::group(['middleware' => ['auth']], function(){
     |--------------------------------------------------------------------------
     */
 
-    /* AirportCode */
+    /*  AirportCode */
     Route::group([
         'prefix' => 'airport-codes',
         'as'     => 'airport_codes.'
@@ -469,7 +442,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'AirportCodeController@destroy'));
     });
 
-    /* Banks */
+    /*  Banks */
     Route::group([
         'prefix' => 'banks',
         'as'     => 'banks.'
@@ -483,7 +456,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BankController@destroy'));
     });
 
-    /* Brands */
+    /*  Brands */
     Route::group([
         'prefix' => 'brands',
         'as'     => 'brands.'
@@ -497,7 +470,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BrandController@destroy'));
     });
 
-    /* Countries */
+    /*  Countries */
     Route::group([
         'prefix' => 'countries',
         'as'     => 'countries.'
@@ -511,7 +484,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CountryController@destroy'));
     });
 
-    /* Currencies */
+    /*  Currencies */
     Route::group([
         'prefix' => 'currencies',
         'as'     => 'currencies.'
@@ -525,7 +498,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CurrencyController@destroy'));
     });
 
-    /* Currency Conversion */
+    /*  Currency Conversion */
     Route::group([
         'prefix' => 'currency-conversions',
         'as'     => 'currency_conversions.'
@@ -535,9 +508,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyConversionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyConversionController@update'));
     });
-
     
-    /* Harbours, Train and Points of Interest */
+    /*  Harbours, Train and Points of Interest */
     Route::group([
         'prefix' => 'harbours',
         'as'     => 'harbours.'
@@ -565,7 +537,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HolidayTypeController@destroy'));
     });
 
-    /*  Holiday Types */
+    /*  Hotels */
     Route::group([
         'prefix' => 'hotels',
         'as'     => 'hotels.'
@@ -579,7 +551,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HotelController@destroy'));
     });
 
-    /*  Location */
+    /*  Locations */
     Route::group([
         'prefix' => 'locations',
         'as'     => 'locations.'
@@ -593,7 +565,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'LocationController@destroy'));
     });
     
-    /* Payment methods */
+    /* Payment Methods */
     Route::group([
         'prefix' => 'payment-methods',
         'as'     => 'payment_methods.'
@@ -607,7 +579,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PaymentMethodController@destroy'));
     });
 
-    /* Preset Comment */
+    /* Preset Comments */
     Route::group([
         'prefix' => 'preset-comments',
         'as'     => 'preset_comments.'
@@ -648,90 +620,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{slug}', array('as' => 'update', 'uses' => 'StoreTextController@update'));
         Route::delete('delete/{slug}', array('as' => 'destroy', 'uses' => 'StoreTextController@destroy'));
     });
-    
-    Route::group([
-        'prefix' => 'setting',
-        'as'     => 'setting.'
-    ],function (){
-
-        /* Harbours, Train and Points of Interest */
-		// Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-        /* AirportCode */
-		// Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-        /* Bank */
-        // Route::resource('banks', 'SettingControllers\BankController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-        /* Hotels */
-		// Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-        /* Preset Comment */
-        // Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-        /* Airlines */
-		Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
-			'index','create', 'store', 'edit', 'update', 'destroy'
-		]]);
-
-        /* Booking methods */
-		// Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-	    /* Payment methods */
-		// Route::resource('payment_methods', 'SettingControllers\PaymentMethodController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-		/* Currencies */
-		// Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-		/* Brands */
-		// Route::resource('brands', 'SettingControllers\BrandController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-		/*  Holiday Types */
-		// Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [
-		// 	'index','create', 'store', 'edit', 'update', 'destroy'
-		// ]]);
-
-		/* Currency Conversion */
-		// Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
-		// 	'index', 'edit', 'update'
-		// ]]);
-
-
-        /* Countries */
-        // Route::resource('countries', 'SettingControllers\CountryController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-        /* Towns */
-        Route::resource('towns', 'SettingControllers\TownController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
-
-        /* Locations */
-        // Route::resource('locations', 'SettingControllers\LocationController',['only' => [
-        //     'index','create', 'store', 'edit', 'update', 'destroy'
-        // ]]);
-
-	});
-
 
    /*
     |--------------------------------------------------------------------------
@@ -836,3 +724,104 @@ Route::group(['middleware' => ['auth']], function(){
 // Route::resource('supplier-rate-sheets', 'SupplierRateSheetController',['only' => [
 // 'index','create', 'store', 'edit', 'update', 'destroy'
 // ]]);
+
+  
+Route::group([
+    'prefix' => 'setting',
+    'as'     => 'setting.'
+],function (){
+
+    /* Harbours, Train and Points of Interest */
+    // Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* AirportCode */
+    // Route::resource('airport_codes', 'SettingControllers\AirportCodeController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Bank */
+    // Route::resource('banks', 'SettingControllers\BankController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Hotels */
+    // Route::resource('hotels', 'SettingControllers\HotelController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Preset Comment */
+    // Route::resource('preset-comments', 'SettingControllers\PresetCommentController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Airlines */
+    Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+    /* Booking methods */
+    // Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Payment methods */
+    // Route::resource('payment_methods', 'SettingControllers\PaymentMethodController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Currencies */
+    // Route::resource('currencies', 'SettingControllers\CurrencyController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Brands */
+    // Route::resource('brands', 'SettingControllers\BrandController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /*  Holiday Types */
+    // Route::resource('holidaytypes', 'SettingControllers\HolidayTypeController',['only' => [
+    // 	'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Currency Conversion */
+    // Route::resource('currency_conversions', 'SettingControllers\CurrencyConversionController',['only' => [
+    // 	'index', 'edit', 'update'
+    // ]]);
+
+
+    /* Countries */
+    // Route::resource('countries', 'SettingControllers\CountryController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+    /* Towns */
+    Route::resource('towns', 'SettingControllers\TownController',['only' => [
+        'index','create', 'store', 'edit', 'update', 'destroy'
+    ]]);
+
+    /* Locations */
+    // Route::resource('locations', 'SettingControllers\LocationController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
+
+});
+
+/*
+|--------------------------------------------------------------------------
+| Season Manangement
+|--------------------------------------------------------------------------
+*/
+
+// Route::resource('seasons', 'SeasonController',['only' => [
+// 	'index','create', 'store', 'edit', 'update', 'destroy'
+// ]]);
+
+/*  Supplier Categories */
+// Route::resource('category-detail-forms', 'CategoryDetailFormController',['only' => [
+//     'index','create', 'store', 'edit', 'update', 'destroy'
+// ]]);
+
+// Route::resource('suppliers', 'SupplierController');
