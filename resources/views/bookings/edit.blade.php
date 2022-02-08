@@ -2129,17 +2129,25 @@
       @endif
     @endif
   </div>
-  @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
-  @include('partials.add_new_product')
-  @include('partials.payment_details_modal')
-  @include('partials.refund_to_bank')
-  @include('partials.credit_note')
-  @include('partials.view_rates_modal')
-  @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
-  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'bookings-service-category-btn-below' ])
 
-  @include('partials.cancel_booking_modal')
-  @include('partials.category_detail_feilds')
+
+  <!-- Modals -->
+
+    <!-- bookings -->
+    @include('bookings.includes.view_payment_details_modal')
+    @include('bookings.includes.store_booking_cancellation_modal')
+    
+    <!-- quotes -->
+    @include('quotes.includes.store_template_modal')
+
+    <!-- quote_booking -->
+    @include('quote_booking_includes.preset_comment_modal', [ 'preset_comments' => $preset_comments ])
+    @include('quote_booking_includes.store_product_modal')
+    @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
+    @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'bookings-service-category-btn-below' ])
+    @include('quote_booking_includes.currency_conversion_modal')
+
+  <!-- End Modals  -->
 
   {{-- @include('partials.cancel_booking_service') --}}
 

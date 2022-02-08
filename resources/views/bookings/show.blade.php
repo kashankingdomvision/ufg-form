@@ -1965,8 +1965,13 @@
     @endif --}}
   </div>
 
-  @include('partials.payment_details_modal')
-  @include('partials.view_rates_modal')
+  <!-- Modals -->
+    <!-- bookings -->
+    @include('bookings.includes.store_booking_cancellation_modal')
+
+    <!-- quote_booking -->
+    @include('quote_booking_includes.currency_conversion_modal')
+  <!-- End Modals  -->
 @endsection
 
 @push('js')

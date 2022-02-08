@@ -224,5 +224,8 @@
     </section>
 </div>
 
-@include('partials.cancel_booking_modal')
+  <!-- Modals -->
+    <!-- bookings -->
+        @include('bookings.includes.store_booking_cancellation_modal').
+    <!-- End Modals  -->
 @endsection

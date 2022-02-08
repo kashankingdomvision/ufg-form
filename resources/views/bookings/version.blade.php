@@ -1702,5 +1702,10 @@
       </div>
     </section>
   </div>
-  @include('partials.view_rates_modal')
+
+  
+  <!-- Modals -->
+    <!-- quote_booking -->
+    @include('quote_booking_includes.currency_conversion_modal')
+  <!-- End Modals  -->
 @endsection

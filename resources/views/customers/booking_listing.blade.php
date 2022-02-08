@@ -279,5 +279,9 @@
     </section>
 </div>
 
-@include('partials.cancel_booking_modal')
+    <!-- Modals -->
+
+        <!-- bookings -->
+        @include('bookings.includes.view_payment_details_modal')
+    <!-- End Modals  -->
 @endsection

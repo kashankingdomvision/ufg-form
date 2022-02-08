@@ -430,7 +430,7 @@
                       <div class="card-body">
                         <div class="row d-flex justify-content-end pb-2 pr-2">
                           <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            @include('partials.addmediaModal')
+                            @include('quotes.includes.quote_detail_media_modal')
                           </div>
                           <button data-show="calladdmediaModal" type="button" class="float-right btn btn-sm btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
                         </div>
@@ -691,10 +691,10 @@
                             <div class="form-group">
                               <button type="button" data-show="callStoredTextModal" class="mr-3 btn btn-outline-dark btn-sm addmodalforquote" data-toggle="modal">Add Stored Text</button>
                               <div class="modal fade callStoredTextModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                @include('partials.stored_text_modal')
+                                @include('quotes.includes.quote_detail_stored_text_modal')
                               </div>
                             </div>
-                          </div> <!--col-md-2-->
+                          </div>
 
                         </div>
                       </div>
@@ -928,12 +928,25 @@
     </div>
   </section>
 
-  @include('partials.insert_quick_text', [ 'preset_comments' => $preset_comments ])
+  {{-- @include('partials.insert_quick_text', [ 'preset_comments' => $preset_comments ])
   @include('partials.add_new_product')
-  @include('partials.template_modal')
-  @include('partials.new_service_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
-  @include('partials.new_service_modal_below', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
-  @include('partials.view_rates_modal')
+  @include('partials.template_modal') --}}
+  {{-- @include('partials.new_service_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ]) --}}
+  {{-- @include('partials.new_service_modal_below', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ]) --}}
+  {{-- @include('partials.view_rates_modal') --}}
+
+  <!-- Modals -->
+    <!-- quotes -->
+    @include('quotes.includes.store_template_modal')
+
+    <!-- quote_booking -->
+    @include('quote_booking_includes.preset_comment_modal', [ 'preset_comments' => $preset_comments ])
+    @include('quote_booking_includes.store_product_modal')
+    @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
+    @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
+    @include('quote_booking_includes.currency_conversion_modal')
+
+  <!-- End Modals  -->
 </div>
 
 @endsection

@@ -628,7 +628,7 @@ class ResponseController extends Controller
 
         $data['currency_conversions'] = $query->get();
 
-        return view('partials.filter_currency_rates', $data);
+        return view('quote_booking_includes.currency_conversion_filter_modal', $data);
     }
     
     public function updateCurrencyStatus(Request $request)
