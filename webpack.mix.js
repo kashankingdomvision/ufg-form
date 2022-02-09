@@ -14,6 +14,7 @@ const mix = require('laravel-mix');
 mix.sass('resources/sass/app.scss', 'public/css');
 
 mix.js('resources/js/app.js', 'public/js/app.js')
+.js('resources/js/booking_management.js', 'public/js/booking_management.js')
 .js('resources/js/quote_management.js', 'public/js/quote_management.js')
 .js('resources/js/supplier_management.js', 'public/js/supplier_management.js')
 .js('resources/js/commission_management.js', 'public/js/commission_management.js')

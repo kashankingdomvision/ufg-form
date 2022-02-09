@@ -1,6 +1,3 @@
 require('./quote_booking/quote_booking');
 require('./quote_booking_template/quote_booking_template');
-require('./quote_template/quote_template');
-require('./quote_management/quote_app');
-
- 
+require('./booking_management/booking_app');

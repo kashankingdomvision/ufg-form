@@ -1708,7 +1708,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group row">
+                    <div class="form-group row" id="potential_commission_feild">
                       <label for="inputEmail3" class="col-sm-3 col-form-label">
                         Staff Commission
                         <h5>
@@ -2152,9 +2152,12 @@
   {{-- @include('partials.cancel_booking_service') --}}
 
 @endsection
+
 @push('js')
-<script src="{{ asset('js/category/jquery-ui.js') }}"></script>
-<script src="{{ asset('js/category/formRender.js') }}"></script>
+  <script src="{{ asset('js/booking_management.js') }}" ></script>
+@endpush
+
+@push('js')
 
 <script>
 

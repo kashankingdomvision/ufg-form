@@ -1,0 +1,1683 @@
+$(document).ready(function() {
+   
+
+    $('#bookingVersion :input').prop('disabled', true);
+
+ 
+    function getBookingMarkupTypeFeildAttribute(){
+
+        var markupType = $("input[name=markup_type]:checked").val();
+
+        if(markupType == 'whole'){
+
+            $('.booking-whole-markup-feilds').addClass('d-none');
+            $('.total-markup-amount').removeAttr('readonly');
+            $('.total-markup-percent').removeAttr('readonly');
+            getBookingTotalValues();
+
+        }else if(markupType == 'itemised'){
+
+            $('.booking-whole-markup-feilds').removeClass('d-none');
+            $('.total-markup-amount').prop('readonly', true);
+            $('.total-markup-percent').prop('readonly', true);  
+            getBookingTotalValues();
+
+        }
+
+
+    }
+
+    function getBookingTotalValuesOnMarkupChange(changeFeild){
+
+        var totalNetPrice                   = 0;
+        var totalMarkupAmount               = 0;
+        var markupPercentage                = 0;
+        var calculatedTotalMarkupPercentage = 0;
+        var totalSellingPrice               = 0;
+        var calculatedTotalMarkupAmount     = 0;
+        var calculatedProfitPercentage      = 0;
+
+        totalNetPrice               = parseFloat($('.total-net-price').val());
+        totalMarkupAmount           = parseFloat($('.total-markup-amount').val());
+        markupPercentage            = parseFloat($('.total-markup-percent').val());
+
+        if(changeFeild == 'total_markup_amount'){
+
+            calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
+            totalSellingPrice               = totalNetPrice + totalMarkupAmount;
+
+            $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
+            $('.total-selling-price').val(check(totalSellingPrice));
+        }
+
+        if(changeFeild == 'total_markup_percent'){
+
+            calculatedTotalMarkupAmount = (parseFloat(totalNetPrice) / 100) * parseFloat(markupPercentage);
+            totalSellingPrice           = totalNetPrice + calculatedTotalMarkupAmount;
+
+            $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
+            $('.total-selling-price').val(check(totalSellingPrice));
+        }
+
+        calculatedProfitPercentage = ((parseFloat(totalSellingPrice) - parseFloat(totalNetPrice)) / parseFloat(totalSellingPrice)) * 100;
+        $('.total-profit-percentage').val(check(calculatedProfitPercentage));
+
+        getCommissionRate();
+        getBookingAmountPerPerson();
+        getCalculatedTotalNetMarkup();
+    }
+
+
+    $(document).on('click', '.increment', function() {
+
+        var close = $(this).closest('.finance-clonning');
+
+        var valueElement = close.find('.ab_number_of_days');
+        var dueDate = close.find('.deposit-due-date').val();
+        var nowDate = todayDate();
+        const firstDate = new Date(dueDate);
+        const secondDate = convertDate(nowDate);
+
+        if (firstDate == 'Invalid Date') {
+            alert('Due Date is Required');
+        } else {
+            if (!$(valueElement).is('[readonly]')) {
+                const oneDay = 24 * 60 * 60 * 1000;
+                const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+                if (firstDate < secondDate) {
+                    $(this).attr('disabled', true);
+                } else {
+                    if (valueElement.val() == '') {
+                        valueElement.val(0);
+                    }
+                    var count = Math.max(parseInt(valueElement.val() ?? 0));
+                    var diffcount = diffDays - valueElement.val();
+                    var b = 1;
+                    if ($(this).hasClass('plus')) {
+                        if (diffcount < 1) {
+                            close.find('.plus').attr('disabled', true);
+                        } else {
+                            count = count + b;
+                            valueElement.val(count);
+                        }
+                    } else if (valueElement.val() > 0) // Stops the value going into negatives
+                    {
+                        close.find('.plus').attr('disabled', false);
+                        count -= b;
+                        valueElement.val(count);
+                    }
+                }
+            }
+        }
+        return false;
+    });
+
+    $(document).on('change', '.deposit-due-date', function() {
+        var close = $(this).closest('.finance-clonning');
+        close.find('.plus').removeAttr('disabled');
+    });
+
+    // for booking
+    $(document).on('change', '.booking-total-markup-change', function() {
+
+        var changeFeild = $(this).attr("data-name");
+        getBookingTotalValuesOnMarkupChange(changeFeild);
+
+    });
+
+    $(document).on('change', '.booking-markup-type', function() {
+        getBookingMarkupTypeFeildAttribute();
+    });
+
+
+    // booking update payment
+    $("#update-payment").submit(function(event) {
+        event.preventDefault();
+
+        $('#update-payment :input').prop('disabled', false);
+
+        var $form = $(this),
+            url = $form.attr('action');
+        var formdata = $(this).serialize();
+
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+
+        /* Send the data using post */
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $("#overlay").addClass('overlay');
+                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+            },
+            success: function(data) {
+
+                $("#overlay").removeClass('overlay').html('');
+                setTimeout(function() {
+                    alert(data.success_message);
+                    window.location.href = REDIRECT_BASEURL + "bookings/index";
+
+                }, 1000);
+            },
+            error: function(reject) {
+
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+
+                        $("#overlay").removeClass('overlay').html('');
+
+                        if (errors.hasOwnProperty("overrride_errors")) {
+                            alert(errors.overrride_errors);
+                            window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        } else {
+
+                            var flag = true;
+                            
+                            jQuery.each(errors.errors, function(index, value) {
+
+                                index = index.replace(/\./g, '_');
+                                $(`#${index}`).addClass('is-invalid');
+                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                if (flag) {
+
+                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                    flag = false;
+                                }
+                            });
+                        }
+
+                    }, 400);
+
+                }
+            },
+        });
+    });
+
+    $("#update-booking").submit(function(event) {
+        event.preventDefault();
+
+        $('.payment-method').removeAttr('disabled');
+
+        var url         = $(this).attr('action');
+        var formData    = new FormData(this);
+        var agency      = $("input[name=agency]:checked").val();
+        var full_number = '';
+
+        if(agency == 0){
+            full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+        }else{
+            full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+        }
+
+        formData.append('full_number', full_number);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $('input, select').removeClass('is-invalid');
+                $('.text-danger').html('');
+                $("#overlay").addClass('overlay');
+                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+            },
+            success: function(data) {
+
+                $("#overlay").removeClass('overlay').html('');
+                setTimeout(function() {
+
+                    if(data && data.status == 200){
+                        alert(data.success_message);
+                        window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        // location.reload();
+                    }
+
+                }, 200);
+            },
+            error: function(reject) {
+
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+
+                        $("#overlay").removeClass('overlay').html('');
+
+                        if (errors.hasOwnProperty("overrride_errors")) {
+                            alert(errors.overrride_errors);
+                            window.location.href = REDIRECT_BASEURL + "bookings/index";
+                        } else {
+
+                            var flag = true;
+
+                            jQuery.each(errors.errors, function(index, value) {
+
+                                index = index.replace(/\./g, '_');
+
+                                // expand quote if feild has an error
+                                $(`#${index}`).closest('.quote').removeClass('collapsed-card');
+                                $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
+                                $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+
+                                $(`#${index}`).addClass('is-invalid');
+                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                if (flag) {
+
+                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                    flag = false;
+                                }
+                            });
+                        }
+
+                    }, 200);
+
+                }
+            },
+        });
+    });
+
+
+    $(document).on('change', '.cancellation-refund-amount', function() {
+
+        var cancellationRefundAmount = $(this).val();
+        var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();
+
+        console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
+        console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
+
+
+        var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalCancellationRefundAmount = totalCancellationRefundAmountArray.reduce((a, b) => (a + b), 0);
+
+        if (totalCancellationRefundAmount > cancellationRefundTotalAmount) {
+            alert("Please Enter Correct Refund Amount.");
+            $(this).val("0.00");
+        }
+
+    });
+
+    
+    $(document).on('click', '.add-more-cancellation-payments', function() {
+
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var cancellationPayments = $('.cancellation-payments');
+        var cancellationRefundPaymentRow = $(".cancellation-refund-payment-row").length;
+
+        cancellationPayments.find('.cancellation-refund-payment-row').first().clone().find("input").val("").each(function() {
+
+                let name = $(this).attr("data-name");
+
+                this.name = this.name.replace(/\[(\d+)\]/, function() {
+                    return `[${cancellationRefundPaymentRow}]`
+                });
+
+                this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function() {
+                    return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
+                });
+
+            }).end().find('.cancellation-refund-payment-label').each(function() {
+
+                this.id = `cancellation_refund_payment_label_${cancellationRefundPaymentRow}`;
+                $(this).text(`Refund Amount #${cancellationRefundPaymentRow+1}`);
+
+            }).end()
+            .find("select").val("").each(function() {
+
+                let name = $(this).attr("data-name");
+
+                this.name = this.name.replace(/\[(\d+)\]/, function() {
+                    return `[${cancellationRefundPaymentRow}]`
+                });
+
+                this.id = this.id.replace(/\d+/g, cancellationRefundPaymentRow, function() {
+                    return `cancellation_refund_${cancellationRefundPaymentRow}_${name}`
+                });
+
+            }).end().find('.select2single').select2({
+                width: '100%',
+                theme: "bootstrap",
+            }).end()
+            .show()
+            .insertAfter($('.cancellation-refund-payment-row:last'));
+
+        // set feild after clone
+        // quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+        // quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+        // quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+        // quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
+        cancellationPayments.find('.cancellation-refund-payment-row:last .cancellation-refund-payment-row-remove-btn').removeClass('d-none');
+
+        reinitializedDynamicFeilds();
+    });
+
+
+    
+    $(document).on('click', '.clone_booking_finance', function() {
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var financeCloningLength = quote.find(".finance-clonning").length;
+
+        quote.find('.finance-clonning').first().clone().find("input").val("").each(function() {
+
+                let n = 1;
+                let name = $(this).attr("data-name");
+
+                this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                    return `][${financeCloningLength}]`;
+                });
+
+                this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? financeCloningLength : v, function() {
+                    return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
+                });
+
+            }).end().find('.depositeLabel').each(function() {
+
+                this.id = 'deposite_heading' + financeCloningLength;
+                $(this).text(`Payment #${financeCloningLength+1}`);
+
+            }).end()
+            .find("select").val("").each(function() {
+
+                let n = 1;
+                let name = $(this).attr("data-name");
+
+                this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                    return `][${financeCloningLength}]`;
+                });
+
+                this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? financeCloningLength : v, function() {
+                    return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
+                });
+
+            }).end().find('.select2single').select2({
+                width: '100%',
+                theme: "bootstrap",
+            }).end()
+            .show()
+            .insertAfter(quote.find('.finance-clonning:last'));
+
+        // set feild after clone
+        quote.find('.finance-clonning:last .checkbox').prop('checked', false);
+        quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
+        quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
+        quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
+
+        reinitializedDynamicFeilds();
+    });
+
+    $("#cancel_booking_submit").submit(function(event) {
+
+        event.preventDefault();
+
+        var url = $(this).attr('action');
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            beforeSend: function() {
+                $('input').removeClass('is-invalid');
+                $('.text-danger').html('');
+                $("#submit_cancel_booking").find('span').addClass('spinner-border spinner-border-sm');
+            },
+            success: function(data) {
+                $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
+
+                jQuery('#cancel_booking').modal('hide');
+
+                setTimeout(function() {
+
+                    if (data.success_message) {
+                        alert(data.success_message);
+                        location.reload();
+                    }
+
+                }, 400);
+            },
+            error: function(reject) {
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+
+                        $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        jQuery.each(errors.errors, function(index, value) {
+                            index = index.replace(/\./g, '_');
+                            $(`#${index}`).addClass('is-invalid');
+                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                        });
+
+                    }, 400);
+
+                }
+            },
+        });
+
+    });
+
+    $(document).on('click', '.remove-booking-detail-service', function(e) {
+        e.preventDefault();
+
+        if( confirm("Are you sure you want to Remove this Service?") == true){
+            $(this).closest(".quote").remove();
+
+            getBookingTotalValues();
+        }
+    });
+
+    $(document).on('click', '.revert-booking-detail-cancellation', function(e) {
+        e.preventDefault();
+
+        var booking_detail_id       = $(this).attr('data-bookingDetialID');
+
+        if( confirm("Are you sure you want to Revert Cancelled Service?") == true){
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: `${REDIRECT_BASEURL}bookings/revert-booking-detail-cancellation/${booking_detail_id}`,
+                type: 'GET',
+                success: function(data) {
+
+                    setTimeout(function() {
+
+                        if (data.success_message) {
+                            alert(data.success_message);
+                            location.reload();
+                        }
+
+                    }, 100);
+
+                },
+                error: function(reject) {}
+            });
+
+        }
+
+    });
+
+    $(document).on('click', '.booking-detail-cancellation', function(e) {
+        e.preventDefault();
+
+        var booking_detail_id       = $(this).attr('data-bookingDetialID');
+
+        var quote      = jQuery(this).closest('.quote');
+        var quoteKey   = quote.data('key');
+        var created_by = $(`#quote_${quoteKey}_created_by`).val();
+
+        var data = {
+            booking_detail_id       : booking_detail_id,
+            booking_cancelled_by_id : created_by
+        };
+
+        if( confirm("Are you sure you want to Cancel this Service?") == true){
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: `${REDIRECT_BASEURL}bookings/booking-detail-cancellation`,
+                type: 'POST',
+                data: data,
+                success: function(data) {
+
+                    setTimeout(function() {
+
+                        if (data.success_message) {
+                            alert(data.success_message);
+                            location.reload();
+                        }
+
+                    }, 100);
+
+                },
+                error: function(reject) {}
+            });
+
+        }
+    });
+
+    // also used in customer booking
+    $(document).on('click', '.cancel-booking', function(e) {
+
+        e.preventDefault();
+
+
+        if (confirm("Are you sure you want to Cancel Booking?") == true) {
+
+            var booking_id = $(this).attr('data-bookingid');
+            jQuery('#cancel_booking').modal('show');
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: `${REDIRECT_BASEURL}bookings/get-booking-net-price/${booking_id}`,
+                type: 'get',
+                success: function(data) {
+
+                    // console.log(data);
+
+                    if (data !== null && data !== '' && data !== undefined) {
+
+                        jQuery('#cancel_booking').modal('show').find('#booking_currency_id').val(data.booking_currency_id);
+                        jQuery('#cancel_booking').modal('show').find('#booking_net_price').val(data.booking_net_price);
+                        jQuery('#cancel_booking').modal('show').find('#booking_net_price_text').text(`Cancellation Charges should not be greater ${data.booking_net_price} ${data.booking_currency_code}`);
+                        jQuery('#cancel_booking').modal('show').find('#booking_id').val(booking_id);
+                        jQuery('#cancel_booking').modal('show').find('#booking_currency_code').text(data.booking_currency_code);
+                    }
+
+                },
+                error: function(reject) {}
+            });
+
+        }
+    });
+
+    $(document).on('click', '.view-payment_detail', function() {
+
+        var details = $(this).data('details');
+        var tbody = '';
+        var client_type = details.client_type == 1 ? 'Client' : 'Agency';
+        var payment_method = '';
+        if (details.payment_type_id == 1) {
+            payment_method = 'Bank';
+        } else if (details.payment_type_id == 2) {
+            payment_method = 'Paysafe';
+        } else {
+            payment_method = '';
+        }
+
+        tbody += `<tr>
+            <th>Ref #</th>
+            <td>${isEmpty(details.zoho_booking_reference)}</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>${(isEmpty(details.status))}</td>
+        </tr>
+        <tr>
+            <th>Payment For</th>
+            <td>${isEmpty(details.payment_for)}</td>
+        </tr>
+        <tr>
+            <th>Payment Method</th>
+            <td>${isEmpty(payment_method)}</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <td>${isEmpty(details.date)}</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>${isEmpty(details.amount)}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>${isEmpty(client_type)}</td>
+        </tr>
+        <tr>
+            <th>Ref ID</th>
+            <td>${isEmpty(details.ref_id)}</td>
+        </tr>
+        <tr>
+            <th>Card Holder Name</th>
+            <td>${isEmpty(details.card_holder_name)}</td>
+        </tr>
+        <tr>
+            <th>Address</th>
+            <td>${isEmpty(details.b_street_address)}</td>
+        </tr>
+        <tr>
+            <th>Post Code</th>
+            <td>${isEmpty(details.b_zip_code)}</td>
+        </tr>
+        <tr>
+            <th>Note</th>
+            <td>${isEmpty(details.note)}</td>
+        </tr>
+        <tr>
+            <th>Sort Code</th>
+            <td>${isEmpty(details.sort_code)}</td>
+        </tr>
+        <tr>
+            <th>Created At</th>
+            <td>${isEmpty(details.created_at)}</td>
+        </tr>
+        <tr>
+            <th>Amount Payable</th>
+            <td>${isEmpty(details.amount_payable)}</td>
+        </tr>`;
+
+        jQuery('#payment_details_modal').modal('show');
+        jQuery('#payment_details_modal_body').html(tbody);
+    });
+
+    $(document).on('change', '.cal_selling_price', function() {
+
+        var key = $(this).closest('.quote').data('key');
+        var changeFeild = 'estimated_cost';
+
+        if ($(this).is(':checked')) {
+            $(`#quote_${key}_markup_amount`).attr("readonly", false);
+            $(`#quote_${key}_markup_percentage`).attr("readonly", false);
+            $(`#quote_${key}_actual_cost`).attr("data-status", "");
+
+        } else {
+            $(`#quote_${key}_markup_amount`).attr("readonly", true);
+            $(`#quote_${key}_markup_percentage`).attr("readonly", true);
+            $(`#quote_${key}_actual_cost`).attr("data-status", "booking");;
+        }
+    });
+
+    
+    $(document).on("keyup change", '.change', function(event) {
+
+        var key = $(this).closest('.quote').data('key');
+        var changeFeild = $(this).attr("data-name");
+        var cal_selling_price = $('.cal_selling_price').is(':checked');
+        var status = $(this).attr("data-status");
+
+        if (status && status == 'booking' && cal_selling_price == false) {
+            getBookingDetailValues(key);
+
+        } else {
+            getQuoteDetailValuesForBooking(key, changeFeild);
+        }
+
+    });
+
+    $(document).on('click', '.bookings-service-category-btn', function(e) {
+
+        e.preventDefault();
+
+        var category_id   = $(this).attr('data-id');
+        var category_name = $(this).attr('data-name');
+
+        jQuery('#new_service_modal').modal('hide');
+        $('.parent-spinner').addClass('spinner-border');
+
+        if(category_id){
+
+            setTimeout(function() {
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                if ($('.select2-multiple').data('select2')) {
+                    $('.select2-multiple').select2('destroy');
+                }
+
+                var quote = $(".quote").eq(0).clone()
+                    .find("input").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName    = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end()
+                    .find("textarea").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end()
+                    .find("select").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() { 
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end().show().insertAfter(".quote:last");
+
+                var quoteLength = $('.quote').length;
+                var quoteKey    = quoteLength - 1;
+                var quoteClass = `.quote-${quoteKey}`;
+
+                quote.attr('data-key', quoteKey);
+                quote.removeClass(`quote-0`);
+                quote.addClass(`quote-${quoteKey}`);
+
+                $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
+                $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
+                $(`${quoteClass}`).find('.markup-amount').attr("readonly", false);
+                $(`${quoteClass}`).find('.markup-percentage').attr("readonly", false);
+                $(`${quoteClass}`).find('.cal_selling_price').attr('checked', 'checked');
+                $(`${quoteClass}`).find('.deposit-amount').val('0.00');
+
+                $(`${quoteClass} .finance`).find("input").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+                        // return '[' + ($('.quote').length - 1) + ']';
+
+                        let quoteLength = parseInt($('.quote').length) - 1;
+                        return `[${quoteLength}]`;
+                    });
+
+                    let n = 1;
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                       
+                        let name        = $(this).attr("data-name");
+                        let quoteLength = parseInt($('.quote').length) - 1;
+
+                        return `quote_${quoteLength}_finance_${0}_${name}`;
+                    });
+
+                }).end()
+                .find("select").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                        let quoteLength = parseInt($('.quote').length) - 1;
+                        return `[${quoteLength}]`;
+                    });
+
+                    let n           = 1;
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+
+                        let name        = $(this).attr("data-name");
+                        let quoteLength = parseInt($('.quote').length) - 1;
+
+                        return `quote_${quoteLength}_finance_${0}_${name}`;
+                    });
+                });
+
+                // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
+                $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
+                $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);
+                $(`${quoteClass}`).find('.finance-clonning').removeClass("cancelled-payment-styling");
+                $(`${quoteClass}`).find('.btn-group').removeClass("d-none");
+                $(`${quoteClass}`).find('.clone_booking_finance').removeClass("d-none");
+                $(`${quoteClass}`).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+                $(`${quoteClass}`).find('.payment-method').attr("disabled", false);
+                $(`${quoteClass}`).find('.outstanding-amount').attr("readonly", true);
+                $(`${quoteClass}`).find('.cancel-payemnt-btn').attr("hidden", true);
+                $(`${quoteClass}`).find('.refund-by-credit-note-section').remove();
+                $(`${quoteClass}`).find('.refund-by-bank-section').remove();
+                $(`${quoteClass}`).find('.supplier-id').html(`<option selected value="">Select Supplier</option>`);
+                $(`${quoteClass}`).find('.product-id').html(`<option selected value="">Select Product</option>`);
+                $(`${quoteClass}`).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+                $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                $(`${quoteClass}`).find('.added-in-sage').removeAttr('checked');
+                $(`${quoteClass}`).find('.booking-detail-cancellation').remove();
+                $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
+                $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                $(`${quoteClass}`).find('.badge-service-status').html('');
+                $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+
+                datepickerReset(1,`${quoteClass}`);
+                reinitializedDynamicFeilds();
+                reinitializedMultiDynamicFeilds();
+
+                $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
+                $('.parent-spinner').removeClass('spinner-border');
+
+            }, 180);
+
+        }
+
+    });
+
+
+
+    
+    $(document).on('click', '.bookings-service-category-btn-below', function(e) {
+
+        e.preventDefault();
+
+        var category_id   = $(this).attr('data-id');
+        var category_name = $(this).attr('data-name');
+
+        jQuery('#new_service_modal_below').modal('hide');
+        $('.parent-spinner').addClass('spinner-border');
+
+        var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
+        var onQuoteClass = `.quote-${classvalue}`;
+
+        if(category_id){
+
+            setTimeout(function() {
+
+                if ($('.select2single').data('select2')) {
+                    $('.select2single').select2('destroy');
+                }
+
+                if ($('.select2-multiple').data('select2')) {
+                    $('.select2-multiple').select2('destroy');
+                }
+
+                var quote = $(".quote").eq(0).clone()
+                    .find("input").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName    = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end()
+                    .find("textarea").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() {
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end()
+                    .find("select").val("").each(function() {
+                        this.name = this.name.replace(/\[(\d+)\]/, function() { 
+                            let quoteLength = $('.quote').length;
+                            return `[${quoteLength}]`;
+                        });
+                        this.id = this.id.replace(/\d+/g, $('.quote').length, function() {
+                            let quoteLength = $('.quote').length;
+                            let dataName = $(this).attr("data-name");
+                            return `quote_${quoteLength}_${dataName}`;
+                        });
+                    }).end().show().insertAfter(onQuoteClass);
+
+                var quoteLength = $('.quote').length;
+                var quoteKey    = quoteLength - 1;
+                var quoteClass  = `.quote-${quoteKey}`;
+
+                quote.attr('data-key', quoteKey);
+                quote.removeClass(`quote-0`);
+                quote.addClass(`quote-${quoteKey}`);
+
+                $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
+                $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
+                $(`${quoteClass}`).find('.markup-amount').attr("readonly", false);
+                $(`${quoteClass}`).find('.markup-percentage').attr("readonly", false);
+                $(`${quoteClass}`).find('.cal_selling_price').attr('checked', 'checked');
+                $(`${quoteClass}`).find('.deposit-amount').val('0.00');
+
+                $(`${quoteClass} .finance`).find("input").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+
+                        let quoteLength = parseInt($('.quote').length) - 1;
+                        return `[${quoteLength}]`;
+                    });
+
+                    let n = 1;
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+                       
+                        let name        = $(this).attr("data-name");
+                        let quoteLength = parseInt($('.quote').length) - 1;
+
+                        return `quote_${quoteLength}_finance_${0}_${name}`;
+                    });
+
+                }).end()
+                .find("select").val("").each(function() {
+                    this.name = this.name.replace(/\[(\d+)\]/, function() {
+                        let quoteLength = parseInt($('.quote').length) - 1;
+                        return `[${quoteLength}]`;
+                    });
+
+                    let n           = 1;
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? 0 : v, function() {
+
+                        let name        = $(this).attr("data-name");
+                        let quoteLength = parseInt($('.quote').length) - 1;
+
+                        return `quote_${quoteLength}_finance_${0}_${name}`;
+                    });
+                });
+
+                // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+                $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
+                $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
+                $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);
+                $(`${quoteClass}`).find('.finance-clonning').removeClass("cancelled-payment-styling");
+                $(`${quoteClass}`).find('.btn-group').removeClass("d-none");
+                $(`${quoteClass}`).find('.clone_booking_finance').removeClass("d-none");
+                $(`${quoteClass}`).find('.finance-clonning input, .finance-clonning select').attr("readonly", false);
+                $(`${quoteClass}`).find('.payment-method').attr("disabled", false);
+                $(`${quoteClass}`).find('.outstanding-amount').attr("readonly", true);
+                $(`${quoteClass}`).find('.cancel-payemnt-btn').attr("hidden", true);
+                $(`${quoteClass}`).find('.refund-by-credit-note-section').remove();
+                $(`${quoteClass}`).find('.refund-by-bank-section').remove();
+                $(`${quoteClass}`).find('.supplier-id').html(`<option selected value="">Select Supplier</option>`);
+                $(`${quoteClass}`).find('.product-id').html(`<option selected value="">Select Product</option>`);
+                $(`${quoteClass}`).find(".estimated-cost, .actual-cost, .markup-amount, .markup-percentage, .selling-price, .profit-percentage, .estimated-cost-in-booking-currency, .selling-price-in-booking-currency, .markup-amount-in-booking-currency").val('0.00').attr('data-code', '');
+                $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
+                $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
+                $(`${quoteClass}`).find('.added-in-sage').removeAttr('checked');
+                $(`${quoteClass}`).find('.booking-detail-cancellation').remove();
+                $(`${quoteClass}`).find('.revert-booking-detail-cancellation').remove();
+                $(`${quoteClass}`).find('.category-id').val(category_id).change();
+                $(`${quoteClass}`).find('.badge-category-id').html(category_name);
+                $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').addClass('d-none');
+                $(`${quoteClass}`).find('.badge-date-of-service, .badge-time-of-service, .badge-supplier-id, .badge-product-id, .badge-supplier-currency-id').html('');
+                // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
+                $(`${quoteClass}`).find('.badge-service-status').html('');
+                $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+
+                datepickerReset(1,`${quoteClass}`);
+                reinitializedDynamicFeilds();
+                reinitializedMultiDynamicFeilds();
+
+                $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
+                $('.parent-spinner').removeClass('spinner-border');
+
+            }, 180);
+
+        }
+
+    });
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Booking Management Calculation Functions
+    |--------------------------------------------------------------------------
+    */
+
+    function getBookingTotalValues() {
+
+        var markupType                       = $("input[name=markup_type]:checked").val();
+        var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var actualCostInBookingCurrency      = actualCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+        $(".total-net-price").val(check(actualCostInBookingCurrency));
+
+        if(markupType == 'itemised'){
+            var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var sellingPriceInBookingCurrency      = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+            var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var markupAmountInBookingCurrency      = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
+
+            var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
+            var markupPercentage      = markupPercentageArray.reduce((a, b) => (a + b), 0);
+
+            var profitPercentageArray = $(".profit-percentage").map((i, e) => parseFloat(e.value)).get();
+            var profitPercentage      = profitPercentageArray.reduce((a, b) => (a + b), 0);
+            
+            $(".total-selling-price").val(check(sellingPriceInBookingCurrency));
+            $(".total-markup-amount").val(check(markupAmountInBookingCurrency));
+            $(".total-markup-percent").val(check(markupPercentage));
+            $(".total-profit-percentage").val(check(profitPercentage));
+        }
+
+        if(markupType == 'whole'){
+
+            $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+            $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+            $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+            $(".total-selling-price").val(check(actualCostInBookingCurrency));
+        }
+
+        onChangeAgencyCommissionType();
+        getCommissionRate();
+        getBookingAmountPerPerson();
+        getSellingPrice();
+    }
+
+    function getBookingRateTypeValues() {
+
+        var rateType          = $("input[name=rate_type]:checked").val();
+        var actualCostArray   = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency   = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize             = parseInt($('.quote').length);
+        var calculatedActualCostInBookingCurrency   = 0
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
+
+        while (key < quoteSize) {
+
+            var actualCost       = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice     = sellingPriceArray[key];
+            var markupAmount     = markupAmountArray[key];
+
+            // console.log( supplierCurrency);
+
+            if (supplierCurrency && bookingCurrency) {
+
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+            } else {
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+
+        getBookingTotalValues();
+    }
+
+    function getBookingSupplierCurrencyValues(supplierCurrency, key) {
+
+        var rateType        = $("input[name=rate_type]:checked").val();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var actualCost      = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var markupAmount    = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
+        var sellingPrice    = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var rate            = getRate(supplierCurrency, bookingCurrency, rateType);
+        var calculatedActualCostInBookingCurrency   = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        calculatedActualCostInBookingCurrency   = parseFloat(actualCost) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    function getBookingDetailValues(key) {
+
+        var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
+        var rateType         = $('input[name="rate_type"]:checked').val();
+        var actualCost       = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var sellingPrice     = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
+
+        var calculatedMarkupAmount     = 0;
+        var calculatedMarkupPercentage = 0;
+        var calculatedProfitPercentage = 0;
+        var calculatedActualCostInBookingCurrency   = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+
+        calculatedMarkupAmount     = parseFloat(sellingPrice) - parseFloat(actualCost);
+        calculatedMarkupPercentage = parseFloat(calculatedMarkupAmount) / parseFloat(actualCost / 100);
+        calculatedProfitPercentage = ((parseFloat(sellingPrice) - parseFloat(actualCost)) / parseFloat(sellingPrice)) * 100;
+        calculatedActualCostInBookingCurrency   = parseFloat(actualCost) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+
+        $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+        $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+        $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+        $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+
+        getBookingTotalValues();
+    }
+
+    function getQuoteDetailValuesForBooking(key, changeFeild) {
+
+        var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
+        var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
+        var rateType         = $('input[name="rate_type"]:checked').val();
+        var actualCost       = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
+        var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount     = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
+        var calculatedSellingPrice     = 0;
+        var calculatedMarkupPercentage = 0;
+        var calculatedMarkupAmount     = 0;
+        var calculatedProfitPercentage = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var calculatedActualCostInBookingCurrency   = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+
+        if (changeFeild == 'actual_cost') {
+
+            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+            calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        if (changeFeild == 'markup_amount') {
+
+            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_percentage`).val(check(calculatedMarkupPercentage));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        if (changeFeild == 'markup_percentage') {
+
+            calculatedMarkupAmount = (parseFloat(actualCost) / 100) * parseFloat(markupPercentage);
+            calculatedSellingPrice = parseFloat(calculatedMarkupAmount) + parseFloat(actualCost);
+            calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
+            calculatedMarkupAmountInBookingCurrency = parseFloat(calculatedMarkupAmount) * parseFloat(rate);
+            calculatedSellingPriceInBookingCurrency = parseFloat(calculatedSellingPrice) * parseFloat(rate);
+
+            $(`#quote_${key}_markup_amount`).val(check(calculatedMarkupAmount));
+            $(`#quote_${key}_selling_price`).val(check(calculatedSellingPrice));
+            $(`#quote_${key}_profit_percentage`).val(check(calculatedProfitPercentage));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+        }
+
+        getBookingTotalValues();
+    }
+
+    function getBookingBookingCurrencyValues() {
+
+        var rateType = $("input[name=rate_type]:checked").val();
+        var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
+        var quoteSize = parseInt($(".quote").length);
+        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedSellingPriceInBookingCurrency = 0;
+        var calculatedMarkupAmountInBookingCurrency = 0;
+        var key = 0;
+
+        while (key < quoteSize) {
+
+            var actualCost = actualCostArray[key];
+            var supplierCurrency = supplierCurrencyArray[key];
+            var sellingPrice = sellingPriceArray[key];
+            var markupAmount = markupAmountArray[key];
+
+            if (supplierCurrency && bookingCurrency) {
+
+                var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+                calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+
+            } else {
+
+                calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+                calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+            }
+
+            $(`#quote_${key}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+            $(`#quote_${key}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+            $(`#quote_${key}_markup_amount_in_booking_currency`).val(check(calculatedMarkupAmountInBookingCurrency));
+            key++;
+        }
+    }
+
+    $(document).on('change', '.booking-supplier-currency-id', function() {
+
+        var code = $(this).find(":selected").data("code");
+        var quote = $(this).closest(".quote");
+        var quoteKey = quote.data("key");
+        var currency_name = $(this).find(':selected').attr('data-name');
+        var supplierCurrency = $(this).val();
+        var bookingCurrency  = $('#currency_id').val();
+
+        if(typeof supplierCurrency === 'undefined' || supplierCurrency == "") {
+            quote.find("[class*=supplier-currency-code]").html("");
+            quote.find('.badge-supplier-currency-id').html("");
+            return;
+        }
+
+        if (typeof bookingCurrency === 'undefined' || bookingCurrency == "") {
+            alert("Please Select Booking Currency first");
+            return;
+        }
+
+        quote.find("[class*=supplier-currency-code]").html(code);
+        quote.find('.badge-supplier-currency-id').html(currency_name);
+
+        getBookingSupplierCurrencyValues(code, quoteKey);
+        getBookingTotalValues();
+    });
+
+    $(document).on('change', '.payment-method', function() {
+
+        var payment_method = $(this).val();
+        var supplier_id = $(this).closest('.quote').find('.supplier-id').val();
+        var current_payment_methods = $(this);
+
+        var quoteKey = $(this).closest('.quote').data('key');
+        var financeKey = $(this).closest('.finance-clonning').data('financekey');
+
+        var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
+        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+
+        var wa = 0;
+        var outstandingAmountLeft = estimatedCost - totalDepositAmount;
+        var currentDepositAmount = $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val();
+
+
+        if (supplier_id != null && payment_method == 3) {
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                type: 'get',
+                success: function(data) {
+
+                    if (data.response == true) {
+                        wa = parseFloat(data.message);
+
+                        if (currentDepositAmount > wa) {
+                            alert("Please Enter Correct Wallet Amount");
+
+
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                        } else {
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+                        }
+
+                    }
+                },
+                error: function(reject) {
+
+                    if (reject.status === 422) {
+                        var errors = $.parseJSON(reject.responseText);
+                        alert(errors.message);
+                        $(current_payment_methods).val('').trigger('change');
+                    }
+                },
+            });
+
+        } else {
+            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
+            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+        }
+    });
+
+    $(document).on('change', '.deposit-amount', function() {
+
+        var quoteKey = $(this).closest('.quote').data('key');
+        var financeKey = $(this).closest('.finance-clonning').data('financekey');
+        var closestFinance = $(this).closest('.finance');
+        var depositAmount = parseFloat($(this).val()).toFixed(2);
+        var estimated_cost = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+        var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
+        var supplier_id = $(`#quote_${quoteKey}_supplier_id`).val();
+        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+        var walletAmount = 0;
+
+        if (payment_method && payment_method == 3) {
+
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                type: 'get',
+                success: function(data) {
+
+                    if (data.response == true) {
+                        walletAmount = parseFloat(data.message);
+
+                        if (depositAmount > walletAmount) {
+                            alert("Please Enter Correct Wallet Amount");
+                            $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                        } else {
+
+                            if (outstandingAmountLeft < 0) {
+                                alert("Please Enter Correct Amount");
+                                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+                            } else {
+
+                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                            }
+                        }
+                    }
+                },
+                error: function(reject) {}
+            });
+        } else {
+
+            if (outstandingAmountLeft >= 0 && payment_method != '') {
+
+                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
+                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+
+            } else if (outstandingAmountLeft < 0 && payment_method != 3) {
+                alert("Please Enter Correct Deposit Amount");
+                $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
+                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
+            }
+
+        }
+
+    });
+
+    function getActualCost(quote) {
+
+        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var amountArray = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
+        var amountTotalArray = amountArray.filter(function(value) { return !Number.isNaN(value); });
+        var totalAmount = amountTotalArray.reduce((a, b) => (a + b), 0);
+        var actualCost = totalDepositAmount - totalAmount;
+
+        return actualCost;
+    }
+
+    function getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey) {
+
+        var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
+        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var rateType = $("input[name=rate_type]:checked").val();
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+
+        var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+        var calculatedSellingPriceInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
+
+        $(`#quote_${quoteKey}_actual_cost_in_booking_currency`).val(check(calculatedActualCostInBookingCurrency));
+        $(`#quote_${quoteKey}_selling_price_in_booking_currency`).val(check(calculatedSellingPriceInBookingCurrency));
+    }
+
+    $(document).on('change', '.refund_amount', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = $(this).closest('.quote').data('key');
+        var actualCost = parseFloat(getActualCost(quote));
+
+
+        if (actualCost < 0) {
+            alert("Please Enter Correct Amount");
+            $(this).val('0.00');
+        } else {
+
+            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
+
+            getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+
+            getBookingTotalValues();
+        }
+
+    });
+
+    $(document).on('change', '.credit-note-amount', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = $(this).closest('.quote').data('key');
+        var actualCost = parseFloat(getActualCost(quote));
+
+
+        if (actualCost < 0) {
+            alert("Please Enter Correct Paid Amount");
+            $(this).val('0.00');
+        } else {
+
+            $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+            $(`#quote_${quoteKey}_markup_amount`).val('0.00');
+            $(`#quote_${quoteKey}_markup_amount_in_booking_currency`).val('0.00');
+            $(`#quote_${quoteKey}_markup_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_profit_percentage`).val('0.00');
+            $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
+
+            getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+
+            getBookingTotalValues();
+        }
+
+    });
+
+    $(document).on('click', '.refund-to-bank', function() {
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+        if (parseInt(refundPaymentRowLength) == 0) {
+
+            if (confirm("Are you sure you want Refund Payment? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                quote.find('.refund-payment-section').attr("hidden", false);
+            }
+        } else {
+
+            quote.find('.refund-payment-row').first().clone().find("input").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${refundPaymentRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.refund-payment-label').each(function() {
+
+                    this.id = `refund_payment_label_${refundPaymentRowLength}`;
+                    $(this).text(`Refund Payment #${refundPaymentRowLength+1}`);
+
+                }).end()
+                .find("select").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${refundPaymentRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? refundPaymentRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${refundPaymentRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                }).end()
+                .show()
+                .insertAfter(quote.find('.refund-payment-row:last'));
+
+            quote.find('.refund-payment-row:last .checkbox').prop('checked', false);
+            quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+            quote.find('.refund-payment-row:last .refund_amount').val('');
+            quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
+        }
+
+        reinitializedDynamicFeilds();
+    });
+
+    $(document).on('click', '.credit-note', function() {
+
+        if ($('.select2single').data('select2')) {
+            $('.select2single').select2('destroy');
+        }
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+        // console.log(creditNoteRowLength);
+
+        if (parseInt(creditNoteRowLength) == 0) {
+            if (confirm("Are you sure you want Credit Note? Actual Cost, Markup Amount, Selling Price, Profit% will be override.") == true) {
+                quote.find('.credit-note-section').attr("hidden", false);
+            }
+
+        } else {
+
+            quote.find('.credit-note-row').first().clone().find("input").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${creditNoteRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.credit_note_label').each(function() {
+
+                    this.id = `credit_note_label_${creditNoteRowLength}`;
+                    $(this).text(`Credit Note Amount Payment #${creditNoteRowLength+1}`);
+
+                }).end()
+                .find("select").val("").each(function() {
+
+                    let n = 1;
+                    let name = $(this).attr("data-name");
+
+                    this.name = this.name.replace(/]\[(\d+)]/g, function() {
+                        return `][${creditNoteRowLength}]`;
+                    });
+
+                    this.id = this.id.replace(/[0-9]+/g, v => n++ == 2 ? creditNoteRowLength : v, function() {
+                        return `quote_${quoteKey}_finance_${creditNoteRowLength}_${name}`;
+                    });
+
+                }).end()
+                .find('.select2single').select2({
+                    width: '100%',
+                    theme: "bootstrap",
+                }).end()
+                .show()
+                .insertAfter(quote.find(".credit-note-row:last"));
+
+            // quote.find('.refund-payment-row:last :input, select').removeAttr('readonly disabled');
+            // quote.find('.refund-payment-row:last .refund_amount').val('');
+            quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
+        }
+
+        reinitializedDynamicFeilds();
+
+    });
+
+    $(document).on('click', '.refund-payment-hidden-btn', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
+
+        if (parseInt(refundPaymentRowLength) == 1) {
+            quote.find('.refund-payment-section').attr("hidden", true);
+            quote.find('.refund-payment-section .refund_amount').val("");
+        } else {
+            $(this).closest('.refund-payment-row').remove();
+        }
+
+        var actualCost = parseFloat(getActualCost(quote));
+        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+        getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+        getBookingTotalValues();
+    });
+
+    $(document).on('click', '.credit-note-hidden-btn', function() {
+
+        var quote = $(this).closest('.quote');
+        var quoteKey = quote.data('key');
+        var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length;
+
+        if (parseInt(creditNoteRowLength) == 1) {
+            quote.find('.credit-note-section').attr("hidden", true);
+            quote.find('.credit-note-section .credit-note-amount').val("");
+        } else {
+            $(this).closest('.credit-note-row').remove();
+        }
+
+        var actualCost = parseFloat(getActualCost(quote));
+        $(`#quote_${quoteKey}_actual_cost`).val(check(actualCost));
+
+        getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
+        getBookingTotalValues();
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | End Booking Management
+    |--------------------------------------------------------------------------
+    */
+
+
+
+
+
+});
+
+
+

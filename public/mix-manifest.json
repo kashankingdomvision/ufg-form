@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/js/booking_management.js": "/js/booking_management.js",
     "/js/commission_management.js": "/js/commission_management.js",
     "/js/quote_management.js": "/js/quote_management.js",
     "/js/setting.js": "/js/setting.js",

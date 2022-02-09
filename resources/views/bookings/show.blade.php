@@ -1975,6 +1975,10 @@
 @endsection
 
 @push('js')
+  <script src="{{ asset('js/booking_management.js') }}" ></script>
+@endpush
+
+@push('js')
 <script>
   @if($status && !empty($status))
     $('#update-payment :input').attr('disabled', 'disabled');
