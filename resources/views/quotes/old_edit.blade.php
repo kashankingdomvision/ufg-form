@@ -1298,7 +1298,7 @@
 
     @if($exist && $user_id)
       @if($exist == 1 && $user_id != Auth::id())
-        @include('partials.override_modal',[ 'status' => 'quotes', 'id' => $quote->id ])
+        @include('includes.override_modal',[ 'status' => 'quotes', 'id' => $quote->id ])
       @endif
     @endif
 
