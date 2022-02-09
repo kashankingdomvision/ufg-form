@@ -79,7 +79,7 @@
     <div class="sidebar">
   
         <nav>
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+            <ul class="nav nav-pills nav-sidebar flex-column text-sm" data-widget="treeview" role="menu"
                 data-accordion="false">
 
                 <li class="nav-item">
