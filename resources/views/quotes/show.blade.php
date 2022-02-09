@@ -567,7 +567,9 @@
                           </h3>
 
                           <div class="card-tools">
-                            <a href="javascript:void(0)" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></a>
+                            <button type="button" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-dark mr-2 remove-quote-detail-service" title="Remove"><i class="fas fa-times"></i></button>
                           </div>
                         </div>
 
@@ -876,6 +878,11 @@
                   <div class="parent-spinner text-gray spinner-border-sm "></div>
                 </div>
 
+                <div class="row d-flex justify-content-end">
+                  <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half">+ Add more </button>
+                  <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
+                </div>
+
                 <div class="row">
                   <div class="col-md-12 agencyField {{ ($quote->agency == 0) ? 'd-none' : '' }}">
                     <div class="form-group">
@@ -1076,6 +1083,13 @@
                   </div>
                 </div>
               </div>
+
+              @if($quote->booking_status == 'quote')
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
+                  <a href="{{ route('quotes.index') }}" class="btn btn-outline-danger buttonSumbit float-right mr-2">Cancel</a>
+                </div>
+              @endif
             </form><!-- end form -->
 
             <div id="overlay" class=""></div>
@@ -1110,10 +1124,4 @@
 
 @push('js')
   <script src="{{ asset('js/quote_management.js') }}" ></script>
-
-  <script>
-    $(document).ready(function(){
-      $("#show_quote :input").prop("disabled", true);
-    });
-  </script>
 @endpush

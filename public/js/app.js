@@ -73086,7 +73086,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('#bookingVersion :input').prop('disabled', true);
   $(".collapse-all-btn").removeAttr('disabled');
   $(".expand-all-btn").removeAttr('disabled');
+  /* Quote Final page script */
+
+  if (['quotes.final'].includes(CURRENT_ROUTE_NAME)) {
+    $("#show_quote :input").prop("disabled", true);
+  }
+  /* End Quote Final page script */
+
   /* Quote Version page script */
+
 
   if (['quotes.view.version'].includes(CURRENT_ROUTE_NAME)) {
     $("#version_quote :input").prop("disabled", true);

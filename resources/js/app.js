@@ -3573,6 +3573,13 @@ $(document).ready(function($) {
             $(".expand-all-btn").removeAttr('disabled');
 
 
+            /* Quote Final page script */
+            if([ 'quotes.final' ].includes(CURRENT_ROUTE_NAME)){
+
+                $("#show_quote :input").prop("disabled", true);
+            }
+            /* End Quote Final page script */
+
             /* Quote Version page script */
             if([ 'quotes.view.version' ].includes(CURRENT_ROUTE_NAME)){
 
