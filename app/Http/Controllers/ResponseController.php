@@ -578,7 +578,7 @@ class ResponseController extends Controller
         $data['storetexts']       = StoreText::get();
         
         $return['template']       = $template;
-        $return['template_view']  = View::make('partials.quote_template', $data)->render();
+        $return['template_view']  = View::make('quotes.includes.quote_details_template', $data)->render();
    
         return response()->json($return);
     }
