@@ -2,6 +2,7 @@
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/commission_management.js": "/js/commission_management.js",
+    "/js/quote_management.js": "/js/quote_management.js",
     "/js/setting.js": "/js/setting.js",
     "/js/supplier_management.js": "/js/supplier_management.js",
     "/js/user_management.js": "/js/user_management.js"
