@@ -31,7 +31,7 @@
               <h3 class="card-title text-center">Quote Form</h3>
             </div>
 
-            <form method="POST" action="{{ route('quotes.store') }}" id="quoteCreate" class="create-template"> @csrf
+            <form method="POST" action="{{ route('quotes.store') }}" id="store_quote" class="create-template"> @csrf
               <div class="card-body">
 
                 <!-- For Commission Calculation -->
@@ -70,16 +70,16 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <label>Booking Details <span style="color:red">*</span></label>
                     <div class="form-group">
+                      <label>Booking Details <span style="color:red">*</span></label>
                       <input type="text" name="booking_details" id="booking_details" class="form-control" placeholder="Enter Booking Details">
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
-                    <label>Reason for Trip <span style="color:red">*</span></label>
                     <div class="form-group">
+                      <label>Reason for Trip <span style="color:red">*</span></label>
                       <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" placeholder="Enter Reason for Trip">
                       <span class="text-danger" role="alert"></span>
                     </div>
@@ -88,8 +88,8 @@
 
                 <div class="row">
                   <div class="col-md-4">
-                    <label>Zoho Reference <span style="color:red">*</span></label>
                     <div class="form-group">
+                      <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group">
                         <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
                           <div class="input-group-append">
@@ -109,8 +109,8 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label>Markup Type <span style="color:red">*</span></label>
                     <div class="form-group">
+                      <label>Markup Type <span style="color:red">*</span></label>
                       <label class="radio-inline mr-1">
                         <input type="radio" name="markup_type" value="itemised" class="markup-type" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
                         <span>&nbsp;Itemised Markup </span>
@@ -132,8 +132,8 @@
                   </div>
                   
                   <div class="col-sm-6">
-                    <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                     <div class="form-group">
+                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                       <input type="radio" name="rate_type" id="live_rate" class="rate-type" value="live" {{ (Auth::user()->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
                       <label class="radio-inline mr-1" for="live_rate">Live Rate</label>
                       
@@ -928,13 +928,6 @@
     </div>
   </section>
 
-  {{-- @include('partials.insert_quick_text', [ 'preset_comments' => $preset_comments ])
-  @include('partials.add_new_product')
-  @include('partials.template_modal') --}}
-  {{-- @include('partials.new_service_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ]) --}}
-  {{-- @include('partials.new_service_modal_below', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ]) --}}
-  {{-- @include('partials.view_rates_modal') --}}
-
   <!-- Modals -->
     <!-- quotes -->
     @include('quotes.includes.store_template_modal')
@@ -1128,3 +1121,10 @@
     </div>
   </div>
 @endif --}}
+
+{{-- @include('partials.insert_quick_text', [ 'preset_comments' => $preset_comments ])
+@include('partials.add_new_product')
+@include('partials.template_modal') --}}
+{{-- @include('partials.new_service_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ]) --}}
+{{-- @include('partials.new_service_modal_below', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ]) --}}
+{{-- @include('partials.view_rates_modal') --}}

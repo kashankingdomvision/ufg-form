@@ -1481,6 +1481,76 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Database Related Functions
+  |--------------------------------------------------------------------------------
+  */
+  var currencyConvert = getJson();
+  var commissionCriteriaRates = getCommissionCriteriaJson();
+  var commissions = getCommissionJson();
+  var commissionGroups = getCommissionGroupsJson();
+
+  function getJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-currency-conversion"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+
+  function getCommissionCriteriaJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-commission-criteriass"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+
+  function getCommissionJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-commissions"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+
+  function getCommissionGroupsJson() {
+    return JSON.parse($.ajax({
+      type: 'GET',
+      url: "".concat(BASEURL, "get-commission-groups"),
+      dataType: 'json',
+      global: false,
+      async: false,
+      success: function success(data) {
+        return data;
+      }
+    }).responseText);
+  }
+  /*--------------------------------------------------------------------------------*/
+
+  /*
+  |--------------------------------------------------------------------------------
+  | Other Functions
+  |--------------------------------------------------------------------------------
+  */
+
+
   window.getBookingAmountPerPerson = function () {
     var paxNumber = parseFloat($(".pax-number").val());
     var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
@@ -1557,6 +1627,84 @@ $(document).ready(function () {
     });
     return object.shift()[rateType];
   };
+
+  function resetCommissionNameFeilds() {
+    $('.badge-commission-name').text('');
+    $('.badge-commission-group-name').text('');
+    $('.badge-commission-percentage').text('');
+  }
+
+  function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID) {
+    var commissionPercentage = 0.00;
+    var object = commissionCriteriaRates.filter(function (elem) {
+      return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
+    });
+
+    if (object.length > 0) {
+      commissionPercentage = object.shift().percentage;
+    }
+
+    return commissionPercentage;
+  }
+
+  function getCommissionAndGroupName(commissionID, commissionGroupID) {
+    var commissionNameObject = {};
+    var commission_name = commissions.filter(function (elem) {
+      return elem.id == commissionID;
+    });
+    var commission_group_name = commissionGroups.filter(function (elem) {
+      return elem.id == commissionGroupID;
+    });
+    commissionNameObject = {
+      commissionName: commission_name.shift().name,
+      commissionGroupName: commission_group_name.shift().name
+    };
+    return commissionNameObject;
+  }
+
+  function getQuoteBookingCurrencyValues() {
+    var rateType = $("input[name=rate_type]:checked").val();
+    var estimatedCostArray = $(".estimated-cost").map(function (i, e) {
+      return parseFloat(e.value).toFixed(2);
+    }).get();
+    var sellingPriceArray = $(".selling-price").map(function (i, e) {
+      return parseFloat(e.value).toFixed(2);
+    }).get();
+    var markupAmountArray = $(".markup-amount").map(function (i, e) {
+      return parseFloat(e.value).toFixed(2);
+    }).get();
+    var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+    var supplierCurrencyArray = $(".supplier-currency-id").map(function (i, e) {
+      return $(e).find(":selected").data("code");
+    }).get();
+    var quoteSize = parseInt($('.quote').length);
+    var calculatedEstimatedCostInBookingCurrency = 0;
+    var calculatedSellingPriceInBookingCurrency = 0;
+    var calculatedMarkupAmountInBookingCurrency = 0;
+    var key = 0;
+
+    while (key < quoteSize) {
+      var estimatedCost = estimatedCostArray[key];
+      var supplierCurrency = supplierCurrencyArray[key];
+      var sellingPrice = sellingPriceArray[key];
+      var markupAmount = markupAmountArray[key];
+
+      if (supplierCurrency && bookingCurrency) {
+        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
+        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+      } else {
+        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
+        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
+      }
+
+      $("#quote_".concat(key, "_estimated_cost_in_booking_currency")).val(check(calculatedEstimatedCostInBookingCurrency));
+      $("#quote_".concat(key, "_selling_price_in_booking_currency")).val(check(calculatedSellingPriceInBookingCurrency));
+      $("#quote_".concat(key, "_markup_amount_in_booking_currency")).val(check(calculatedMarkupAmountInBookingCurrency));
+      key++;
+    }
+  }
   /* Hide Potentail Commission for another Behalf User */
 
 
@@ -1594,7 +1742,7 @@ $(document).ready(function () {
       }
     });
   });
-  $('.search-reference').on('click', function () {
+  $(document).on('click', '.search-reference', function () {
     var searchRef = $(this);
     var reference_no = $('.reference-name').val();
 
@@ -1737,7 +1885,7 @@ $(document).ready(function () {
   $(document).on('click', '#add_more, #add_more_booking', function (e) {
     jQuery('#new_service_modal').modal('show');
   });
-  $('.season-id').on('change', function () {
+  $(document).on('change', '.season-id', function () {
     getCommissionRate(); // $('.datepicker').datepicker("setDate", '');
   });
   $(document).on('change', '.holiday-type-id', function () {
@@ -1775,144 +1923,6 @@ $(document).ready(function () {
       getQuoteRateTypeValues();
     }
   });
-
-  function resetCommissionNameFeilds() {
-    $('.badge-commission-name').text('');
-    $('.badge-commission-group-name').text('');
-    $('.badge-commission-percentage').text('');
-  }
-
-  function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID) {
-    var commissionPercentage = 0.00;
-    var object = commissionCriteriaRates.filter(function (elem) {
-      return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
-    });
-
-    if (object.length > 0) {
-      commissionPercentage = object.shift().percentage;
-    }
-
-    return commissionPercentage;
-  }
-
-  function getCommissionAndGroupName(commissionID, commissionGroupID) {
-    var commissionNameObject = {};
-    var commission_name = commissions.filter(function (elem) {
-      return elem.id == commissionID;
-    });
-    var commission_group_name = commissionGroups.filter(function (elem) {
-      return elem.id == commissionGroupID;
-    });
-    commissionNameObject = {
-      commissionName: commission_name.shift().name,
-      commissionGroupName: commission_group_name.shift().name
-    };
-    return commissionNameObject;
-  }
-
-  var currencyConvert = getJson();
-
-  function getJson() {
-    return JSON.parse($.ajax({
-      type: 'GET',
-      url: "".concat(BASEURL, "get-currency-conversion"),
-      dataType: 'json',
-      global: false,
-      async: false,
-      success: function success(data) {
-        return data;
-      }
-    }).responseText);
-  }
-
-  var commissionCriteriaRates = getCommissionCriteriaJson();
-
-  function getCommissionCriteriaJson() {
-    return JSON.parse($.ajax({
-      type: 'GET',
-      url: "".concat(BASEURL, "get-commission-criteriass"),
-      dataType: 'json',
-      global: false,
-      async: false,
-      success: function success(data) {
-        return data;
-      }
-    }).responseText);
-  }
-
-  var commissions = getCommissionJson();
-
-  function getCommissionJson() {
-    return JSON.parse($.ajax({
-      type: 'GET',
-      url: "".concat(BASEURL, "get-commissions"),
-      dataType: 'json',
-      global: false,
-      async: false,
-      success: function success(data) {
-        return data;
-      }
-    }).responseText);
-  }
-
-  var commissionGroups = getCommissionGroupsJson();
-
-  function getCommissionGroupsJson() {
-    return JSON.parse($.ajax({
-      type: 'GET',
-      url: "".concat(BASEURL, "get-commission-groups"),
-      dataType: 'json',
-      global: false,
-      async: false,
-      success: function success(data) {
-        return data;
-      }
-    }).responseText);
-  }
-
-  function getQuoteBookingCurrencyValues() {
-    var rateType = $("input[name=rate_type]:checked").val();
-    var estimatedCostArray = $(".estimated-cost").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
-    }).get();
-    var sellingPriceArray = $(".selling-price").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
-    }).get();
-    var markupAmountArray = $(".markup-amount").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
-    }).get();
-    var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-    var supplierCurrencyArray = $(".supplier-currency-id").map(function (i, e) {
-      return $(e).find(":selected").data("code");
-    }).get();
-    var quoteSize = parseInt($('.quote').length);
-    var calculatedEstimatedCostInBookingCurrency = 0;
-    var calculatedSellingPriceInBookingCurrency = 0;
-    var calculatedMarkupAmountInBookingCurrency = 0;
-    var key = 0;
-
-    while (key < quoteSize) {
-      var estimatedCost = estimatedCostArray[key];
-      var supplierCurrency = supplierCurrencyArray[key];
-      var sellingPrice = sellingPriceArray[key];
-      var markupAmount = markupAmountArray[key];
-
-      if (supplierCurrency && bookingCurrency) {
-        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
-        calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-        calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-        calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
-      } else {
-        calculatedSellingPriceInBookingCurrency = parseFloat(0.00);
-        calculatedMarkupAmountInBookingCurrency = parseFloat(0.00);
-      }
-
-      $("#quote_".concat(key, "_estimated_cost_in_booking_currency")).val(check(calculatedEstimatedCostInBookingCurrency));
-      $("#quote_".concat(key, "_selling_price_in_booking_currency")).val(check(calculatedSellingPriceInBookingCurrency));
-      $("#quote_".concat(key, "_markup_amount_in_booking_currency")).val(check(calculatedMarkupAmountInBookingCurrency));
-      key++;
-    }
-  }
 });
 
 /***/ }),

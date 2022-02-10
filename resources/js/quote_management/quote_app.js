@@ -322,12 +322,11 @@ $(document).ready(function() {
     });
 
 
-    $("#quoteCreate").submit(function(event) {
-        event.preventDefault();
-        var url = $(this).attr('action');
+    $("#store_quote").submit(function(event) {
 
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
+        event.preventDefault();
+
+        var url = $(this).attr('action');
 
         $.ajax({
             type: 'POST',
@@ -337,53 +336,19 @@ $(document).ready(function() {
             cache: false,
             processData: false,
             beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                removeFormValidationStyles();
+                addFormLoadingStyles();
             },
-            success: function(data) {
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
+            success: function(response) {
 
-                    if(data && data.status == 200){
-                        alert(data.success_message);
-                        window.location.href = REDIRECT_BASEURL + "quotes/index";
-                    }
-                }, 200);
+                removeFormLoadingStyles();
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
             },
-            error: function(reject) {
-
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
-                        var flag = true;
-
-                        $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-
-                            // expand quote if feild has an error
-                            $(`#${index}`).closest('.quote').removeClass('collapsed-card');
-                            $(`#${index}`).closest('.quote').find('.card-body').css("display", "block");
-                            $(`#${index}`).closest('.quote').find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
-
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                            if (flag) {
-
-                                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                flag = false;
-                            }
-
-                        });
-                    }, 400);
-                }
-            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
         });
     });
 
