@@ -19,6 +19,38 @@ require('./intl_tel_input/utils');
 
 $(document).ready(function($) {
 
+    $(document).on('click', '.removeChild', function() {
+        var id = $(this).data('show');
+        $(id).removeAttr("style");
+        $($(this).data('append')).empty();
+        $(this).attr("style", "display:none");
+    });
+
+    $(document).on('click', '.addChild', function() {
+        $('.append').empty();
+        var id = $(this).data('id');
+        var refNumber = $(this).data('ref');
+        var appendId = $(this).data('append');
+        var url = '{{ route("get.child.reference", ":id") }}';
+        url = url.replace(':id', refNumber);
+        var removeBtnId = $(this).data('remove');
+        var showBtnId = $(this).data('show');
+        $('.addChild').removeAttr("style");
+        $('.removeChild').attr("style", "display:none");
+
+        $(this).attr("style", "display:none")
+            // $(appendId).empty();
+
+        $.ajax({
+            url: BASEURL + 'quotes/child/reference',
+            data: { id: id, ref_no: refNumber },
+            type: 'get',
+            success: function(response) {
+                $(appendId).append(response);
+                $(removeBtnId).removeAttr("style");
+            }
+        });
+    });
  
 
     window.calltextEditorSummerNote = function(val = null) {
