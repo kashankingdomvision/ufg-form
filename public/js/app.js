@@ -67029,10 +67029,1592 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/adminlte/adminlte.js":
-/*!*******************************************!*\
-  !*** ./resources/js/adminlte/adminlte.js ***!
-  \*******************************************/
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable.js */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
+/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
+/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
+/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
+
+window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+
+
+
+
+
+
+
+
+__webpack_require__(/*! ./global_variables */ "./resources/js/global_variables.js");
+
+__webpack_require__(/*! ./asset/laravel_filemanager/stand-alone-button */ "./resources/js/asset/laravel_filemanager/stand-alone-button.js");
+
+__webpack_require__(/*! ./asset/summernote/summernote-bs4.min */ "./resources/js/asset/summernote/summernote-bs4.min.js");
+
+__webpack_require__(/*! ./asset/bootstrap/bootstrap.bundle.min */ "./resources/js/asset/bootstrap/bootstrap.bundle.min.js");
+
+__webpack_require__(/*! ./asset/adminlte/adminlte */ "./resources/js/asset/adminlte/adminlte.js");
+
+__webpack_require__(/*! ./asset/intl_tel_input/utils */ "./resources/js/asset/intl_tel_input/utils.js");
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
+  $(document).on('click', '.removeChild', function () {
+    var id = $(this).data('show');
+    $(id).removeAttr("style");
+    $($(this).data('append')).empty();
+    $(this).attr("style", "display:none");
+  });
+  $(document).on('click', '.addChild', function () {
+    $('.append').empty();
+    var id = $(this).data('id');
+    var refNumber = $(this).data('ref');
+    var appendId = $(this).data('append');
+    var url = '{{ route("get.child.reference", ":id") }}';
+    url = url.replace(':id', refNumber);
+    var removeBtnId = $(this).data('remove');
+    var showBtnId = $(this).data('show');
+    $('.addChild').removeAttr("style");
+    $('.removeChild').attr("style", "display:none");
+    $(this).attr("style", "display:none"); // $(appendId).empty();
+
+    $.ajax({
+      url: BASEURL + 'quotes/child/reference',
+      data: {
+        id: id,
+        ref_no: refNumber
+      },
+      type: 'get',
+      success: function success(response) {
+        $(appendId).append(response);
+        $(removeBtnId).removeAttr("style");
+      }
+    });
+  });
+
+  window.calltextEditorSummerNote = function () {
+    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    $('.summernote:last').summernote('destroy');
+    $('.note-editor:last').remove();
+    $('.summernote').summernote({
+      height: 100,
+      //set editable area's height
+      placeholder: 'Enter Text Here..',
+      codemirror: {
+        // codemirror options
+        theme: 'monokai'
+      }
+    }, 'code', val);
+  };
+
+  window.setTextEditorValue = function (id, Text) {
+    $(id).summernote('code', Text);
+  }; // function formatState(option) {
+
+
+  window.formatState = function (option) {
+    var optionImage = $(option.element).attr('data-image');
+
+    if (!optionImage) {
+      return option.text;
+    }
+
+    return $("<span><img height=\"19\" width=\"19\" src=\"".concat(optionImage, "\" class=\"option-flag-image\" />").concat(option.text, "</span>"));
+  };
+
+  window.reinitializedDynamicFeilds = function () {
+    $('.select2single').select2({
+      width: '100%',
+      theme: "bootstrap",
+      templateResult: formatState,
+      templateSelection: formatState
+    });
+  };
+
+  window.reinitializedMultiDynamicFeilds = function () {
+    $('.select2-multiple').select2({
+      width: '100%',
+      theme: "classic",
+      templateResult: formatState,
+      templateSelection: formatState
+    });
+  };
+
+  window.disabledFeild = function (p) {
+    $(p).attr("disabled", true);
+  };
+
+  window.removeDisabledAttribute = function (p) {
+    $(p).removeAttr("disabled");
+  };
+
+  window.removeSpace = function (string) {
+    return string.replace(/\s/g, '');
+  };
+  /*
+  |--------------------------------------------------------------------------
+  | Define Global Functions
+  |--------------------------------------------------------------------------
+  */
+
+
+  window.removeFormValidationStyles = function () {
+    $('input, select, textarea').removeClass('is-invalid');
+    $('.text-danger').html('');
+  };
+
+  window.addFormLoadingStyles = function () {
+    $("#overlay").addClass('overlay');
+    $(".note-editor").css('border-color', '');
+    $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+  };
+
+  window.removeFormLoadingStyles = function () {
+    setTimeout(function () {
+      $("#overlay").removeClass('overlay');
+      $("#overlay").html('');
+    }, 250);
+  };
+
+  window.printServerValidationErrors = function (response) {
+    if (response.status === 422) {
+      var errors = response.responseJSON;
+      var flag = true;
+      setTimeout(function () {
+        jQuery.each(errors.errors, function (index, value) {
+          index = index.replace(/\./g, '_');
+          $("#".concat(index)).addClass('is-invalid');
+          $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+          $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
+
+          if (flag) {
+            $('html, body').animate({
+              scrollTop: $("#".concat(index)).parent('.form-group').offset().top
+            }, 1000); // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+
+            flag = false;
+          }
+        });
+      }, 250);
+    }
+  };
+
+  window.printServerSuccessMessage = function (data, redirectURL) {
+    if (data && data.status) {
+      Toast.fire({
+        icon: 'success',
+        title: data.success_message
+      });
+      setTimeout(function () {
+        window.location.href = "".concat(redirectURL);
+      }, 2500);
+    }
+  };
+
+  window.curday = function (sp) {
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //As January is 0.
+
+    var yyyy = today.getFullYear();
+    if (dd < 10) dd = '0' + dd;
+    if (mm < 10) mm = '0' + mm;
+    return yyyy + sp + mm + sp + dd;
+  };
+
+  window.todayDate = function () {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+
+    var yyyy = today.getFullYear();
+    return today = dd + '/' + mm + '/' + yyyy;
+  };
+
+  window.check = function (x) {
+    if (isNaN(x) || !isFinite(x)) {
+      return parseFloat(0).toFixed(2);
+    }
+
+    return parseFloat(x).toFixed(2);
+  };
+
+  window.checkForInt = function (x) {
+    if (isNaN(x) || !isFinite(x)) {
+      return '';
+    }
+
+    return parseInt(x);
+  };
+
+  window.isEmpty = function (value) {
+    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
+  };
+
+  window.datepickerReset = function () {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var quoteClass = arguments.length > 1 ? arguments[1] : undefined;
+    var $season = $("#season_id");
+    var season_start_date = new Date($season.find(':selected').data('start'));
+    var season_end_date = new Date($season.find(':selected').data('end'));
+
+    if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
+      if (key != null) {
+        $("".concat(quoteClass, " .bookingDateOfService")).datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+
+        $("".concat(quoteClass, " .bookingEndDateOfService")).datepicker('destroy').datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy',
+          startDate: season_start_date,
+          endDate: season_end_date
+        });
+        $('.stored-text-date').datepicker("destroy").datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy'
+        });
+      } else {
+        // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        $('.datepicker').datepicker("destroy").datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy'
+        });
+      }
+    } else {
+      $('.datepicker').datepicker('destroy').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy'
+      });
+    }
+  };
+  /*
+  |--------------------------------------------------------------------------
+  | Invoke Global Functions
+  |--------------------------------------------------------------------------
+  */
+
+
+  datepickerReset();
+  /*  ajaxSetup */
+
+  $.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': CSRFTOKEN
+    }
+  });
+  $('.select2').select2({
+    width: '100%',
+    theme: "classic"
+  });
+  $('.select2single').select2({
+    width: '100%',
+    theme: "bootstrap",
+    templateResult: formatState,
+    templateSelection: formatState
+  });
+  $('.nationality-select2').select2({
+    width: '100%',
+    theme: "bootstrap",
+    templateResult: formatState,
+    templateSelection: formatState
+  });
+  $('.select2-multiple').select2({
+    width: '100%',
+    theme: "classic",
+    templateResult: formatState,
+    templateSelection: formatState
+  });
+  $('.select2-single').select2({
+    width: '90%',
+    theme: "bootstrap"
+  });
+  $('.selling-price-other-currency').select2({
+    width: '68%',
+    theme: "bootstrap",
+    templateResult: formatState,
+    templateSelection: formatState
+  });
+  $('.summernote').summernote({
+    height: 70,
+    //set editable area's height
+    placeholder: 'Enter Text Here..',
+    codemirror: {
+      // codemirror options
+      theme: 'monokai'
+    }
+  }); // make quote section sortable
+
+  $(".sortable").sortable();
+  $('.date-range-picker').daterangepicker({
+    autoUpdateInput: false,
+    locale: {
+      cancelLabel: 'Clear',
+      format: 'DD/MM/YYYY'
+    }
+  });
+  $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
+    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+  });
+  $('.date-range-picker').on('cancel.daterangepicker', function (ev, picker) {
+    $(this).val('');
+  });
+  /*---------------------------------------------------------------------------------------*/
+
+  /* Focus In/Out Function on Calculation Values */
+
+  $(document).on('focus', '.remove-zero-values', function () {
+    var value = parseFloat($(this).val()).toFixed(2);
+
+    if (value == 0.00) {
+      $(this).val('');
+    }
+  });
+  $(document).on('focusout', '.remove-zero-values', function () {
+    var value = $(this).val();
+
+    if (value == '') {
+      $(this).val(parseFloat(0).toFixed(2));
+    }
+  });
+  /* End Focus In/Out Function on Calculation Values */
+
+  $("#generate-pdf").submit(function (event) {
+    event.preventDefault();
+    var $form = $(this),
+        url = $form.attr('action');
+    var editor = $('#editor').html();
+    var formData = $(this).serializeArray();
+    formData.push({
+      name: 'data',
+      value: editor
+    });
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      success: function success(data) {// console.log(data, 'data');
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+
+            if (errors.hasOwnProperty("overrride_errors")) {
+              alert(errors.overrride_errors);
+              window.location.href = REDIRECT_BASEURL + "quotes/index";
+            } else {
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $('#' + index).addClass('is-invalid');
+                $('#' + index).closest('.form-group').find('.text-danger').html(value);
+              });
+            }
+          }, 400);
+        }
+      }
+    });
+  }); // user managment
+
+  $(document).on('change', '.getBrandtoHoliday', function () {
+    var brand_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_id': brand_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Type Of Holiday</option>';
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+        });
+        $('.appendHolidayType').html(options);
+      }
+    });
+    getCommissionRate();
+  }); // commission criteria
+
+  $(document).on('change', '.getMultipleBrandtoHoliday', function () {
+    var brand_ids = $(this).val();
+    var options = '';
+    var url = BASEURL + 'multiple/brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_ids': brand_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendMultipleHolidayType').html(options);
+      },
+      success: function success(response) {
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.brand_name, ") </option>");
+        });
+        $('.appendMultipleHolidayType').html(options);
+      }
+    });
+  }); // $(document).on('change', '.getCountryToTown', function() {
+  //     let country_id = $(this).val();
+  //     var options    = '';
+  //     var url = BASEURL + 'country/to/town'
+  //     $.ajax({
+  //         type: 'get',
+  //         url: url,
+  //         data: { 'country_id': country_id },
+  //         success: function(response) {
+  //             options += '<option value="">Select Town</option>';
+  //             $.each(response, function(key, value) {
+  //                 options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+  //             });
+  //             $('.appendCountryTown').html(options);
+  //         }
+  //     });
+  // });
+  // suppliers
+
+  $(document).on('change', '.getCountryToLocation', function () {
+    var supplier_country_ids = $(this).val();
+    var url = BASEURL + 'country/to/location';
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'supplier_country_ids': supplier_country_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendCountryLocation').html(options);
+      },
+      success: function success(response) {
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.country_name, ") </option>");
+        });
+        $('.appendCountryLocation').html(options);
+      }
+    });
+  });
+  $(document).on('change', '.select-agency', function () {
+    var agency_ = $('.agencyField');
+    var passenger_ = $('.PassengerField');
+
+    if ($(this).val() == 1) {
+      $('#pax_no').val(1).change();
+      $("input[name=agency_commission_type][value=net-price]").prop('checked', true);
+      agency_.removeClass('d-none');
+      passenger_.addClass('d-none');
+      agency_.find('input, select').removeAttr('disabled');
+      passenger_.find('input, select').attr('disabled', 'disabled'); // $('#agency_contact').addClass('phone phone0');
+      // $('#lead_passenger_contact').removeClass('phone');
+      // $('#lead_passenger_contact').removeClass('phone0');
+
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#lead_passenger_contact'), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
+      });
+      iti.destroy(); // intTelinput('gc');
+    } else {
+      $('#pax_no').val(1).change();
+      $('.paid-net-commission-on-departure').addClass('d-none');
+      agency_.addClass('d-none');
+      passenger_.removeClass('d-none');
+      passenger_.find('input, select').removeAttr('disabled');
+      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#agency_contact'), {
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
+      });
+      iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');
+      // $('#agency_contact').removeClass('phone');
+      // $('#agency_contact').removeClass('phone0');
+
+      agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
+    }
+
+    getCommissionRate();
+  });
+  $(document).on('click', '.expand-all-btn', function (event) {
+    $('#parent .quote').removeClass('collapsed-card');
+    $('#parent .card-body').css("display", "block");
+    $('#parent .collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>"); // $(this).addClass('d-none');
+    // $('.collapse-all-btn').removeClass('d-none');
+  });
+  $(document).on('click', '.collapse-all-btn', function (event) {
+    $('#parent .quote').addClass('collapsed-card');
+    $('#parent .card-body').css("display", "none");
+    $('#parent .collapse-expand-btn').html("<i class=\"fas fa-plus\"></i>"); // $(this).addClass('d-none');
+    // $('.expand-all-btn').removeClass('d-none');
+  });
+  $(document).on('click', '.compare-expand-all-btn', function (event) {
+    $('#compare_parent .card').removeClass('collapsed-card');
+    $('#compare_parent .card-body').css("display", "block");
+    $('#compare_parent .compare-collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+  });
+  $(document).on('click', '.compare-collapse-all-btn', function (event) {
+    $('#compare_parent .card').addClass('collapsed-card');
+    $('#compare_parent .card-body').css("display", "none");
+    $('#compare_parent .compare-collapse-expand-btn').html("<i class=\"fas fa-plus\"></i>");
+  }); // $(document).on('change', '.supplier-id', function() {
+  //     var quote                = $(this).closest('.quote');
+  //     var quoteKey             = quote.data('key');
+  //     var supplier_name        = $(this).find(':selected').attr('data-name');
+  //     var supplier_id          = $(this).val();
+  //     var season_id            = $('.season-id').val();
+  //     var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+  //     var category_id          = $(`#quote_${quoteKey}_category_id`).val();
+  //     var options              = '';
+  //     /* set/unset card header, supplier currency & product */
+  //     if(typeof supplier_id === 'undefined' || supplier_id == "") {
+  //         quote.find('.badge-supplier-id').html("");
+  //         // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+  //         // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+  //         $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
+  //         return;
+  //     }else{
+  //         quote.find('.badge-supplier-id').html(supplier_name);
+  //         // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+  //     }
+  //     /* get supplier's rate sheet, supplier's product, supplier's currency */
+  //     if(season_id != "" && supplier_id != ""){
+  //         $.ajax({
+  //             type: 'get',
+  //             url: `${BASEURL}get-supplier-product-and-sheet`,
+  //             data: { 
+  //                 'supplier_id': supplier_id,
+  //                 'season_id': season_id,
+  //                 'supplier_location_id': supplier_location_id,
+  //                 'category_id': category_id,
+  //             },
+  //             success: function(response) {
+  //                 if(response && response.url != ""){
+  //                     quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
+  //                 }else{
+  //                     quote.find('.view-supplier-rate').attr("href","").html("");
+  //                 }
+  //                 // /* set product dropdown */
+  //                 // if(response && response.products.length > 0){
+  //                 //     options += "<option value=''>Select Product</option>";
+  //                 //     $.each(response.products, function(key, value) {
+  //                 //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //                 //     });
+  //                 //     $(`#quote_${quoteKey}_product_id`).html(options);
+  //                 // }else{
+  //                 //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+  //                 // }
+  //                 /* set supplier currency */
+  //                 if(response && response.supplier_currency != ""){
+  //                     $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
+  //                 }
+  //             }
+  //         });
+  //     }else{
+  //         quote.find('.view-supplier-rate').attr("href","").html("");
+  //         $(`#quote_${quoteKey}_product_id`).html("");
+  //     }
+  // });
+  // $(document).on('change', '.product-location-id', function(){
+  //     var quote                 = $(this).closest('.quote');
+  //     var quoteKey              = quote.data('key');
+  //     var product_location_id   = $(`#quote_${quoteKey}_product_location_id`).val();
+  //     var supplier_id           = $(`#quote_${quoteKey}_supplier_id`).val();
+  //     var options               = '';
+  //     $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
+  //     /* set product dropdown null when product location become null */
+  //     if(typeof product_location_id === 'undefined' || product_location_id == ""){
+  //         // quote.find('.badge-category-id').html("");
+  //         $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+  //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+  //         return;
+  //     }
+  //     $.ajax({
+  //         type: 'get',
+  //         url: `${BASEURL}location/to/product`,
+  //         data: { 'product_location_id': product_location_id, 'supplier_id' : supplier_id },
+  //         success: function(response) {
+  //             /* set supplier dropdown*/
+  //             options += "<option value=''>Select Product</option>";
+  //             $.each(response.products, function(key, value) {
+  //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //             });
+  //             $(`#quote_${quoteKey}_product_id`).html(options);
+  //         }
+  //     })
+  // });
+
+  /**
+   * -------------------------------------------------------------------------------------
+   *                                Season Manangement
+   * -------------------------------------------------------------------------------------
+   */
+  // $('#seasons').keyup(function() {
+  //     var val = $(this).val();
+  //     if (val.length == 4) {
+  //         $(this).val(val + '-');
+  //     }
+  // });
+
+  /**
+   * -------------------------------------------------------------------------------------
+   *                                Quote Manangement
+   * -------------------------------------------------------------------------------------
+   */
+
+  $(document).on('click', '.parent-row', function (e) {
+    var parentID = $(this).data('id');
+    $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
+    $(this).html($(this).html() == "<span class=\"fa fa-minus\"></span>" ? "<span class=\"fa fa-plus\"></span>" : "<span class=\"fa fa-minus\"></span>");
+  }); // $(document).on('click', '.cancel-service', function(e) {
+  //     e.preventDefault();
+  //     var booking_detail_id = $(this).attr('data-bookingDetialID');
+  //     if( confirm("Are you sure you want to Cancel this Service?") == true){
+  //         $.ajax({
+  //             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+  //             url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
+  //             type: 'get',
+  //             success: function(data) {
+  //                 setTimeout(function() {
+  //                     if (data.success_message) {
+  //                         alert(data.success_message);
+  //                         location.reload();
+  //                     }
+  //                 }, 400);
+  //             },
+  //             error: function(reject) {}
+  //         });
+  //     }
+  // });
+
+  $(".readonly").keypress(function (evt) {
+    evt.preventDefault();
+  });
+  $(".collapse-all-btn").removeAttr('disabled');
+  $(".expand-all-btn").removeAttr('disabled');
+  /*
+  |--------------------------------------------------------------------------
+  | Template Management
+  |--------------------------------------------------------------------------
+  */
+  // template management
+
+  $("#create_template").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+          }
+        }, 400);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            var flag = true;
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_'); // expand quote if feild has an error
+
+              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
+              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
+              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+              if (flag) {
+                $('html, body').animate({
+                  scrollTop: $("#".concat(index)).offset().top
+                }, 1000);
+                flag = false;
+              }
+            });
+          }, 400);
+        }
+      }
+    });
+  }); // template management
+
+  $("#update_template").submit(function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#overlay").addClass('overlay');
+        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+      },
+      success: function success(data) {
+        $("#overlay").removeClass('overlay').html('');
+        setTimeout(function () {
+          if (data && data.status == 200) {
+            alert(data.success_message);
+            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
+          }
+        }, 400);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#overlay").removeClass('overlay').html('');
+            jQuery.each(errors.errors, function (index, value) {
+              index = index.replace(/\./g, '_');
+              $("#".concat(index)).addClass('is-invalid');
+              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+            });
+          }, 400);
+        }
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------
+  | End Template Management
+  |--------------------------------------------------------------------------
+  */
+  // transfer report
+
+  function createFilter(type, label, data) {
+    var options;
+
+    if (label == null) {
+      $('.filter-col').remove();
+      return;
+    }
+
+    $.ajax({
+      type: "GET",
+      url: "".concat(BASEURL, "category-details-filter"),
+      data: {
+        'type': type,
+        'label': label,
+        'data': data
+      },
+      datatype: "json",
+      async: false,
+      success: function success(response) {
+        var result = '';
+        $.each(response.label_results, function (key, value) {
+          result += "<option value=\"".concat(value.value, "\"> ").concat(value.value, " </option>");
+        });
+        options = result;
+      }
+    });
+    var multipleSelect2HTML = "<div class=\"col-md-3 filter-col\">\n                    <div class=\"d-flex bd-highlight\">\n                        <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                        <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n                    </div>\n                    <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n                </div>");
+    return multipleSelect2HTML;
+  } // transfer report
+
+
+  $(document).on('change', '.transfer-detail-feild', function () {
+    var feild = $(this).val();
+
+    if (typeof feild === 'undefined' || feild == "") {
+      $('#search_transfer_detail').addClass('d-none');
+    } else {
+      $('#search_transfer_detail').removeClass('d-none');
+    }
+
+    var type = $(this).find(':selected').attr('data-optionType');
+    var label = $(this).find(':selected').attr('data-optionLable');
+    var data = $(this).find(':selected').attr('data-optionData');
+    $(createFilter(type, label, data)).insertBefore("#more_filter");
+    reinitializedMultiDynamicFeilds();
+  }); // transfer report
+
+  $(document).on('click', '.remove-col', function () {
+    $(this).closest('.filter-col').remove();
+  });
+  $('.parent').on('click', function (e) {
+    if ($(this).is(':checked', true)) {
+      $(".child").prop('checked', true);
+    } else {
+      $(".child").prop('checked', false);
+    }
+  });
+  $('.sbp-parent').on('click', function (e) {
+    if ($(this).is(':checked', true)) {
+      $(".credit").prop('checked', false);
+      $('.credit').trigger('click');
+    } else {
+      $('.credit').trigger('click');
+      $('.total-paid-amount').val(parseFloat(0).toFixed(2));
+    }
+  }); // Supplier Bulk Payments
+
+  $('.credit').change(function () {
+    var currencyCode = $(this).attr('data-currencyCode');
+    var value = parseFloat($(this).attr('data-value')).toFixed(2);
+    var row = $(this).closest('.credit-row');
+
+    if ($(this).is(':checked')) {
+      $(this).val('1');
+      row.find('.row-paid-amount').val(value);
+      row.find('.row-total-paid-amount').val(value);
+      getTotalPaidAmount();
+    } else {
+      $(this).val('0');
+      row.find('.row-paid-amount').val(parseFloat(0).toFixed(2));
+      row.find('.row-total-paid-amount').val(parseFloat(0).toFixed(2));
+      getTotalPaidAmount(); // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
+    }
+  }); // Supplier Bulk Payments
+
+  $(document).on("change", '.row-paid-amount', function (event) {
+    var row = $(this).closest('.credit-row');
+    var currentPaidAmountValue = parseFloat($(this).val());
+    var rowCreditNoteAmount = row.find('.row-credit-note-amount').val();
+    var rowTotalPaidAmount = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+    var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+    if (rowTotalPaidAmount > totalOutstandingAmountLeft) {
+      alert("Please Enter Correct Amount");
+      $(this).val('0.00');
+      row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
+    }
+
+    getTotalPaidAmount(); // var value                 = parseFloat($(this).val());
+    // var row                   = $(this).closest('.credit-row');
+    // var outstandingAmountLeft = row.find('.credit').val();
+    // if(value > outstandingAmountLeft){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }
+    // getTotalPaidAmount();
+  });
+
+  function getTotalPaidAmount() {
+    var paidAmountValues = parseFloat(getPaidAmountValues());
+    $('.total-paid-amount').val(getFloat(paidAmountValues));
+  }
+
+  function getRemainingCreditNoteAmount() {
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+    var result = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+    $('.remaining-credit-amount').html(getFloat(result));
+    $('.remaining-credit-amount').val(getFloat(result));
+  }
+
+  function getPaidAmountValues() {
+    var checkedValuesArray = $('.row-total-paid-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
+
+  function getCreditNoteValues() {
+    var checkedValuesArray = $('.row-credit-note-amount').map(function (i, e) {
+      return parseFloat(e.value);
+    }).get();
+    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+  }
+
+  function getFloat(value) {
+    // console.log(parseFloat(value).toFixed(2));
+    return parseFloat(value).toFixed(2);
+  } // Supplier Bulk Payments
+
+
+  $(document).on("change", '.row-credit-note-amount', function (event) {
+    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+    var currentCreditNoteValue = parseFloat($(this).val());
+    var row = $(this).closest('.credit-row');
+    var rowOutstandingAmount = row.find('.credit').attr('data-value');
+    var rowPaidAmount = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+    var rowTotalPaidAmount = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+    if (row.find('.credit').is(':checked')) {
+      row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+      row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+      if (currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount) {
+        alert("Please Enter Correct Amount");
+        $(this).val('0.00');
+        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+      }
+
+      getTotalPaidAmount();
+      getRemainingCreditNoteAmount();
+    } else {
+      $(this).val('0.00');
+    }
+  }); // Supplier Bulk Payments
+
+  $("#bulk_payment").submit(function (event) {
+    event.preventDefault();
+    var checkedValues = $('.credit:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+
+    if (checkedValues.length == 0) {
+      alert("Please Check any Record First");
+      return;
+    }
+
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        $('input, select').removeClass('is-invalid');
+        $('.text-danger').html('');
+        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+        setTimeout(function () {
+          if (data && data.status == true) {
+            alert(data.success_message);
+            location.reload();
+          }
+        }, 200);
+      },
+      error: function error(reject) {
+        if (reject.status === 422) {
+          var errors = $.parseJSON(reject.responseText);
+          setTimeout(function () {
+            $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+            if (errors.hasOwnProperty("payment_error")) {
+              alert(errors.payment_error);
+              location.reload();
+            } else {
+              var flag = true;
+              jQuery.each(errors.errors, function (index, value) {
+                index = index.replace(/\./g, '_');
+                $("#".concat(index)).addClass('is-invalid');
+                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+
+                if (flag) {
+                  $('html, body').animate({
+                    scrollTop: $("#".concat(index)).offset().top
+                  }, 1000);
+                  flag = false;
+                }
+              });
+            }
+          }, 400);
+        }
+      }
+    });
+  });
+  $('#delete_all').on('click', function (e) {
+    e.preventDefault();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+
+    if (checkedValues.length > 0) {
+      jQuery('#multiple_delete_modal').modal('show');
+    } else {
+      alert("Please Check any Record First");
+    }
+  });
+  $('#multiple_delete').on('click', function (e) {
+    e.preventDefault();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var tableName = $('.table-name').val();
+    $.ajax({
+      url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
+      type: 'Delete',
+      dataType: "JSON",
+      data: {
+        "checkedValues": checkedValues,
+        "tableName": tableName
+      },
+      beforeSend: function beforeSend() {
+        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(response) {
+        if (response.status == true) {
+          $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+          jQuery('#multiple_delete_modal').modal('hide');
+          setTimeout(function () {
+            alert(response.message);
+            location.reload();
+          }, 600);
+        }
+      },
+      error: function error(xhr) {
+        console.log(xhr.responseText);
+      }
+    });
+  });
+  $('.multiple-action').on('change', function (e) {
+    var action = $(this).val();
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+
+    if (checkedValues.length > 0) {
+      jQuery('#multiple_delete_modal').modal('show');
+      $('.action_name').val(action);
+      $('#multiple_delete').addClass('btn btn-danger');
+      $("#multiple_delete").html(action);
+      $('#multiple_delete').removeClass();
+      $('#multiple_delete').addClass('btn btn-primary');
+
+      if (action == 'Delete') {
+        $('#multiple_delete').addClass('btn btn-danger');
+      }
+    } else {
+      alert("Please Check any Record First");
+      $('.multiple-action').val("");
+    } // if(action && checkedValues.length > 0){
+    //     $.ajax({
+    //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+    //         type: 'delete',
+    //         dataType: "JSON",
+    //         data: { "checkedValues": checkedValues, "action": action },
+    //         beforeSend: function() {
+    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+    //         },
+    //         success: function (response)
+    //         {
+    //             if(response.status == true){
+    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+    //                 jQuery('#multiple_delete_modal').modal('hide');
+    //                 setTimeout(function() {
+    //                     alert(response.message);
+    //                     location.reload();
+    //                 }, 600);
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //           console.log(xhr.responseText);
+    //         }
+    //     });
+    // }
+
+  }); // booking incremnet and
+  // tel input  start
+
+  if ($('.phone').length > 0) {
+    for (var i = 0; i < $('.phone').length; i++) {
+      if ($('.phone' + i).length != 0) {
+        intTelinput(i);
+      }
+    }
+  }
+
+  if ($('#agency_contact').length > 0) {
+    intTelinput('gc'); // console.log(inTelinput);
+  } //tel input end
+  //intl-tel-input ************** Start ******************** //
+
+
+  function intTelinput() {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var inVal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    // console.log(key);
+    var input = document.querySelector('.phone' + key);
+    var errorMsg = document.querySelector('.error_msg' + key);
+    var validMsg = document.querySelector('.valid_msg' + key);
+    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+      separateDialCode: true,
+      formatOnDisplay: true,
+      initialCountry: "US",
+      nationalMode: true,
+      hiddenInput: "full_number",
+      autoPlaceholder: "polite",
+      placeholderNumberType: "MOBILE"
+    });
+    input.nextElementSibling.value = iti.getNumber(); // iti.setCountry("US");
+    // on blur: validate
+
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    input.addEventListener('blur', function () {
+      input.nextElementSibling.value = iti.getNumber();
+      reset();
+
+      if (input.value.trim()) {
+        if (iti.isValidNumber()) {
+          $('.buttonSumbit').removeAttr('disabled');
+          input.classList.add("is-valid");
+          validMsg.innerHTML = 'The number is valid';
+        } else {
+          $('.buttonSumbit').attr('disabled', 'disabled');
+          input.classList.add("is-invalid");
+          validMsg.innerHTML = '';
+          var errorCode = iti.getValidationError();
+          errorMsg.innerHTML = errorMap[errorCode];
+          errorMsg.classList.remove("hide");
+        }
+      }
+    });
+
+    var reset = function reset() {
+      input.classList.remove("is-invalid");
+      errorMsg.innerHTML = "";
+      errorMsg.classList.add("hide");
+    };
+  } //intl-tel-input ************** End ******************** //
+  /// pax append work  start//
+
+
+  $(document).on('change', '.pax-number', function () {
+    $('.nationality-select2').select2('destroy');
+    var $_val = $(this).val();
+    var agencyVal = $('.select-agency:checked').val();
+    var currentDate = curday('-');
+    var countries = $('#content').data('countries');
+
+    if (agencyVal == $_val) {
+      var count = 1;
+      var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address </label>\n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number </label>\n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth </label>\n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality </label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
+        return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+      }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                        <label>Resident In</label>\n                        <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                            <option selected value=\"\" >Select Resident</option>\n                            ").concat(countries.map(function (co) {
+        return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+      }).join(""), "\n                        </select>\n                        <span class=\"text-danger\" role=\"alert\"></span>\n                        </div>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dietary Preferences </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][dietary_preferences]\" class=\"form-control\" placeholder=\"Dietary Preferences\" >\n                    </div>\n\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Medical Requirements</label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][medical_requirement]\" class=\"form-control\" placeholder=\"Medical Requirements\">\n                    </div>\n\n                    <div class=\"col-sm-4\">\n                        <div class=\"form-group\">\n                            <label>Up To Date Covid Vaccination Status </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes &nbsp;&nbsp;\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No &nbsp;&nbsp;\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"2\" > Not Sure\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n\n                </div>\n            </div>"); // console.log($v_html);
+
+      $('#appendPaxName').html($v_html);
+      intTelinput(1);
+      $('#pax_no option').first().attr('disabled', 'disabled');
+    }
+
+    if ($_val > $('.appendCount').length) {
+      var countable = $_val - $('.appendCount').length - 1;
+
+      if (agencyVal == 1) {
+        var countable = $_val - $('.appendCount').length;
+      }
+
+      for (i = 1; i <= countable; ++i) {
+        var count = $('.appendCount').length + 1;
+        var c = count + 1;
+
+        if (agencyVal == 1) {
+          c = count;
+        }
+
+        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\">\n                                <div class=\"col-md-12\">\n                                    <button type=\"button\" class=\"remove-pax-column btn btn-sm btn-dark float-right\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>\n                                </div>\n                            \n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Email Address</label>\n                                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Contact Number</label>\n                                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\" data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\">\n                                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Date Of Birth</label>\n                                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\">\n                                    </div>\n                                </div>\n            \n                                <div class=\"col-md-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\" class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
+          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+        }).join(""), "\n                                    </select>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Resident In</label>\n                                        <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                                            <option selected value=\"\" >Select Resident</option>\n                                            ").concat(countries.map(function (co) {
+          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
+        }).join(""), "\n                                        </select>\n                                        <span class=\"text-danger\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Bedding Preference</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Dietary Preferences</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][dietary_preferences]\" class=\"form-control\" placeholder=\"Dietary Preferences\" >\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Medical Requirements</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][medical_requirement]\" class=\"form-control\" placeholder=\"Medical Requirements\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-4\">\n                                    <div class=\"form-group\">\n                                        <label>Up To Date Covid Vaccination Status </label>\n                                        <div>\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_yes_").concat(count, "\" class=\"covid-vaccinated\" value=\"1\">\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_yes_").concat(count, "\">Yes</label>\n\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_no_").concat(count, "\" class=\"covid-vaccinated\" value=\"0\" checked>\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_no_").concat(count, "\">No</label>\n\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_not_sure_").concat(count, "\" class=\"covid-vaccinated\" value=\"2\">\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_not_sure_").concat(count, "\">Not Sure</label>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>");
+        $('#appendPaxName').append($_html);
+        intTelinput(count);
+      }
+    } else {
+      if (agencyVal != $_val) {
+        var countable = $('.appendCount').length + 1;
+
+        for (var i = countable - 1; i >= $_val; i--) {
+          $("#appendCount" + i).remove();
+        }
+      }
+    }
+
+    $('.nationality-select2').select2({
+      width: '100%',
+      theme: "bootstrap"
+    });
+    getBookingAmountPerPerson();
+  });
+  $(document).on('click', '.add-pax-column', function () {
+    var pax_value = $('#pax_no').val();
+    var updateCount = pax_value != '' ? parseInt(pax_value) + 1 : 1;
+
+    if (isNaN(updateCount)) {
+      $('#pax_no').val(1).change();
+    } else {
+      $('#pax_no').val(updateCount).change();
+    }
+  });
+  $(document).on('click', '.remove-pax-column', function () {
+    var agency_Val = $('.select-agency:checked').val();
+    $(this).closest('.appendCount').remove();
+    var pax_value = $('#pax_no').val();
+    var updateCount = parseInt(pax_value) - 1;
+    $('#pax_no').val(updateCount).change();
+    var ids = [];
+    $('.appendCount').each(function () {
+      ids.push($(this).attr('id'));
+    });
+    var _val = 2;
+    var idLength = ids.length + _val;
+
+    if (agency_Val == 1) {
+      _val = 1;
+      idLength = ids.length + _val;
+    }
+
+    for (var _i = 0; _i <= ids.length; _i++) {
+      var count = 2 + _i;
+
+      if (agency_Val == 1) {
+        count = 1 + _i;
+      }
+
+      $('#' + ids[_i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
+    }
+  }); //pax appednd work end
+
+  var btnname = null; //BUlk DATA DELETE
+
+  $('.btnbulkClick').on('click', function (e) {
+    btnname = $(this).attr('name');
+  });
+  $(".bulk-action").submit(function (e) {
+    e.preventDefault();
+    var url = $(this).attr('action');
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var formData = $(this).serializeArray();
+    var message = '';
+    formData.push({
+      name: 'id',
+      value: checkedValues
+    });
+    formData.push({
+      name: 'btn',
+      value: btnname
+    });
+
+    switch (btnname) {
+      case "archive":
+        message = 'Are you sure you want to Archive Quotes?';
+        break;
+
+      case "unarchive":
+        message = 'Are you sure you want to Revert Quotes from Archive?';
+        break;
+
+      case "quote":
+        message = 'Are you sure you want to Revert Cancelled Quotes?';
+        break;
+
+      case "cancel":
+        message = 'Are you sure you want to Cancel Quotes?';
+    }
+
+    if (checkedValues.length > 0) {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
+        title: 'Are you sure?',
+        text: message,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        confirmButtonColor: '#5cb85c',
+        cancelButtonText: 'No',
+        showLoaderOnConfirm: true
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "PUT",
+            url: url,
+            data: $.param(formData),
+            success: function success(data) {
+              setTimeout(function () {
+                alert(data.message);
+                location.reload();
+              }, 600);
+            }
+          });
+        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
+        }
+      });
+    } else {
+      alert('Please Check any Record First');
+    }
+  }); /// Update Currency Status
+
+  $("#currencyStatus").submit(function (e) {
+    e.preventDefault(); // console.log('run');
+
+    var url = $(this).attr('action');
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var formData = $(this).serializeArray();
+    formData.push({
+      name: 'id',
+      value: checkedValues
+    });
+    formData.push({
+      name: 'btn',
+      value: btnname
+    });
+    var message = 'Are you sure you want to inactive this records?';
+
+    if (btnname == 'active') {
+      message = 'Are you sure you want to active this records?';
+    }
+
+    if (checkedValues.length > 0) {
+      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
+        title: 'Are you sure?',
+        text: message,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, ' + btnname + ' it!',
+        confirmButtonColor: '#5cb85c',
+        cancelButtonText: 'No, keep it',
+        showLoaderOnConfirm: true
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: $.param(formData),
+            success: function success(data) {
+              setTimeout(function () {
+                alert(data.message);
+                location.reload();
+              }, 600);
+            }
+          });
+        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
+        }
+      });
+    } else {
+      alert('Please Check any Record First');
+    }
+  }); /// Update Currency Status
+  //BUlk DATA DELETE
+  ///////////////// RELEVANT QUOTE FIELD
+
+  $('#cloneRelevantquote').on('click', function () {
+    $('.relevant-quote').eq(0).clone().find("input").val("").each(function () {
+      this.name = this.name.replace(/\[(\d+)\]/, function () {
+        return '[' + $('.quote').length + ']';
+      });
+      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
+        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
+      });
+    }).end().show().insertAfter(".relevant-quote:last");
+  }); ///////////////// RELEVANT QUOTE FIELD
+  //////////// quote media modal close
+
+  $(document).on('click', '.QuotemediaModalClose', function () {
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).closest('.modal-body').children('.previewId').find('img').remove();
+    jQuery('.modal').modal('hide');
+  }); // remove image work
+
+  $(document).on('click', '.remove-img', function () {
+    console.log('sadas'); // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
+
+    $(this).closest('.modal-body').children('.input-group').find('input').val("");
+    $(this).parent().html("<img src=\"\" class=\"img-fluid\">"); // console.log($(this).closest('.modal-body').find('.image').html());
+  }); // $(document).on('click', '#add_storeText', function () {
+  //     var x = document.getElementById("storedText");
+  //     if (x.style.display === "none") {
+  //         x.style.display = "block";
+  //         $('#selectstoretext').removeAttr('disabled');
+  //         console.log('show');
+  //         $(this).text('x Remove Stored Text')
+  //     } else {
+  //         console.log('hide');
+  //         x.style.display = "none";
+  //         $(this).text('+ Add Stored Text')
+  //         $('#selectstoretext').attr('disabled', true);
+  //     }
+  // })
+  //////////// quote media modal close
+  ////////////////////// Stored Text
+
+  $(document).on('change', '.selectStoredText', function () {
+    var slug = $(this).val();
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
+    $.ajax({
+      url: "".concat(BASEURL, "stored/").concat(slug, "/text"),
+      type: 'get',
+      dataType: "json",
+      success: function success(data) {
+        console.log(key);
+        var id = '#quote_' + key + '_stored_text';
+        setTextEditorValue(id, data);
+      },
+      error: function error(reject) {
+        alert(reject);
+      }
+    });
+  });
+  $(document).on('click', '.addmodalforquote', function () {
+    var quote = $(this).closest('.quote');
+    var key = quote.data('key');
+    var target = '.' + $(this).data('show'); // console.log(target);
+
+    quote.find(target).modal('show');
+    quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
+  }); /////////////////// Stored Text End
+}); // CreateGroupQuote //
+
+var checkedQuoteValues = null;
+window.Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 2200,
+  timerProgressBar: true,
+  didOpen: function didOpen(toast) {
+    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.stopTimer);
+    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.resumeTimer);
+  }
+}); //Create group quote
+
+jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', function (e) {
+  checkedQuoteValues = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.child:checked').map(function (i, e) {
+    return e.value;
+  }).get();
+  /*console.log(checkedQuoteValues);
+  return false;*/
+
+  if (checkedQuoteValues.length > 1) {
+    jQuery('#group-quote-modal').modal('show');
+  } else {
+    alert('Please check atleat two records.');
+  }
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(function (e) {
+  e.preventDefault();
+  var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action');
+  /*var formData       = $(this).serializeArray();
+  formData.push({name:'quote_ids', value: checkedQuoteValues});*/
+
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    type: "POST",
+    url: url,
+    // data: $.param(formData),
+    data: [jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(), jquery__WEBPACK_IMPORTED_MODULE_0___default.a.param({
+      quote_ids: checkedQuoteValues
+    })].join('&'),
+    success: function success(data) {
+      // console.log(data);
+      // return false;
+      if (data.status) {
+        jQuery('#group-quote-modal').modal('hide');
+        Toast.fire({
+          icon: 'success',
+          title: data.msg
+        });
+        setTimeout(function () {
+          window.location.href = data.redirect;
+        }, 2800);
+      } else {
+        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
+      }
+    }
+  });
+});
+jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(function (e) {
+  e.preventDefault();
+  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
+    type: "POST",
+    url: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action'),
+    data: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(),
+    success: function success(data) {
+      if (data.status) {
+        Toast.fire({
+          icon: 'success',
+          title: data.msg
+        });
+        setTimeout(function () {
+          window.location.href = data.redirect;
+        }, 2800);
+      } else {
+        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
+      }
+    }
+  });
+}); // $(document).ready(function() {
+//    setTimeout(function() {
+//        jQuery('.alert-success').fadeOut(1500);
+//        jQuery('.alert-danger').fadeOut(1500);
+//     }, 3000);
+//     $('.booking-currency-id').on('change', function() {
+//         let url = $('#routeForGroups').val() + '/' + $(this).val();
+//         console.log(url);
+//         $.ajax({
+//             type: "GET",
+//             url: url,
+//             success:function(response) {
+//                 if(response.status) {
+//                     $('.dynamic-group').empty();
+//                     $.each(response.groups, function(value, key) {
+//                         $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
+//                     });
+//                     $('.dynamic-group').select2();
+//                 }
+//             }
+//         });
+//     });
+// });
+
+/***/ }),
+
+/***/ "./resources/js/asset/adminlte/adminlte.js":
+/*!*************************************************!*\
+  !*** ./resources/js/asset/adminlte/adminlte.js ***!
+  \*************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -70023,1592 +71605,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
-/***/ "./resources/js/app.js":
-/*!*****************************!*\
-  !*** ./resources/js/app.js ***!
-  \*****************************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery-ui/ui/widgets/sortable.js */ "./node_modules/jquery-ui/ui/widgets/sortable.js");
-/* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
-/* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
-
-window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
-window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
-
-
-
-
-
-
-
-
-__webpack_require__(/*! ./global_variables */ "./resources/js/global_variables.js");
-
-__webpack_require__(/*! ./laravel_filemanager/stand-alone-button */ "./resources/js/laravel_filemanager/stand-alone-button.js");
-
-__webpack_require__(/*! ./summernote/summernote-bs4.min */ "./resources/js/summernote/summernote-bs4.min.js");
-
-__webpack_require__(/*! ./bootstrap/bootstrap.bundle.min */ "./resources/js/bootstrap/bootstrap.bundle.min.js");
-
-__webpack_require__(/*! ./adminlte/adminlte */ "./resources/js/adminlte/adminlte.js");
-
-__webpack_require__(/*! ./intl_tel_input/utils */ "./resources/js/intl_tel_input/utils.js");
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  $(document).on('click', '.removeChild', function () {
-    var id = $(this).data('show');
-    $(id).removeAttr("style");
-    $($(this).data('append')).empty();
-    $(this).attr("style", "display:none");
-  });
-  $(document).on('click', '.addChild', function () {
-    $('.append').empty();
-    var id = $(this).data('id');
-    var refNumber = $(this).data('ref');
-    var appendId = $(this).data('append');
-    var url = '{{ route("get.child.reference", ":id") }}';
-    url = url.replace(':id', refNumber);
-    var removeBtnId = $(this).data('remove');
-    var showBtnId = $(this).data('show');
-    $('.addChild').removeAttr("style");
-    $('.removeChild').attr("style", "display:none");
-    $(this).attr("style", "display:none"); // $(appendId).empty();
-
-    $.ajax({
-      url: BASEURL + 'quotes/child/reference',
-      data: {
-        id: id,
-        ref_no: refNumber
-      },
-      type: 'get',
-      success: function success(response) {
-        $(appendId).append(response);
-        $(removeBtnId).removeAttr("style");
-      }
-    });
-  });
-
-  window.calltextEditorSummerNote = function () {
-    var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    $('.summernote:last').summernote('destroy');
-    $('.note-editor:last').remove();
-    $('.summernote').summernote({
-      height: 100,
-      //set editable area's height
-      placeholder: 'Enter Text Here..',
-      codemirror: {
-        // codemirror options
-        theme: 'monokai'
-      }
-    }, 'code', val);
-  };
-
-  window.setTextEditorValue = function (id, Text) {
-    $(id).summernote('code', Text);
-  }; // function formatState(option) {
-
-
-  window.formatState = function (option) {
-    var optionImage = $(option.element).attr('data-image');
-
-    if (!optionImage) {
-      return option.text;
-    }
-
-    return $("<span><img height=\"19\" width=\"19\" src=\"".concat(optionImage, "\" class=\"option-flag-image\" />").concat(option.text, "</span>"));
-  };
-
-  window.reinitializedDynamicFeilds = function () {
-    $('.select2single').select2({
-      width: '100%',
-      theme: "bootstrap",
-      templateResult: formatState,
-      templateSelection: formatState
-    });
-  };
-
-  window.reinitializedMultiDynamicFeilds = function () {
-    $('.select2-multiple').select2({
-      width: '100%',
-      theme: "classic",
-      templateResult: formatState,
-      templateSelection: formatState
-    });
-  };
-
-  window.disabledFeild = function (p) {
-    $(p).attr("disabled", true);
-  };
-
-  window.removeDisabledAttribute = function (p) {
-    $(p).removeAttr("disabled");
-  };
-
-  window.removeSpace = function (string) {
-    return string.replace(/\s/g, '');
-  };
-  /*
-  |--------------------------------------------------------------------------
-  | Define Global Functions
-  |--------------------------------------------------------------------------
-  */
-
-
-  window.removeFormValidationStyles = function () {
-    $('input, select, textarea').removeClass('is-invalid');
-    $('.text-danger').html('');
-  };
-
-  window.addFormLoadingStyles = function () {
-    $("#overlay").addClass('overlay');
-    $(".note-editor").css('border-color', '');
-    $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-  };
-
-  window.removeFormLoadingStyles = function () {
-    setTimeout(function () {
-      $("#overlay").removeClass('overlay');
-      $("#overlay").html('');
-    }, 250);
-  };
-
-  window.printServerValidationErrors = function (response) {
-    if (response.status === 422) {
-      var errors = response.responseJSON;
-      var flag = true;
-      setTimeout(function () {
-        jQuery.each(errors.errors, function (index, value) {
-          index = index.replace(/\./g, '_');
-          $("#".concat(index)).addClass('is-invalid');
-          $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-          $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
-
-          if (flag) {
-            $('html, body').animate({
-              scrollTop: $("#".concat(index)).parent('.form-group').offset().top
-            }, 1000); // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-
-            flag = false;
-          }
-        });
-      }, 250);
-    }
-  };
-
-  window.printServerSuccessMessage = function (data, redirectURL) {
-    if (data && data.status) {
-      Toast.fire({
-        icon: 'success',
-        title: data.success_message
-      });
-      setTimeout(function () {
-        window.location.href = "".concat(redirectURL);
-      }, 2500);
-    }
-  };
-
-  window.curday = function (sp) {
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth() + 1; //As January is 0.
-
-    var yyyy = today.getFullYear();
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
-    return yyyy + sp + mm + sp + dd;
-  };
-
-  window.todayDate = function () {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-
-    var yyyy = today.getFullYear();
-    return today = dd + '/' + mm + '/' + yyyy;
-  };
-
-  window.check = function (x) {
-    if (isNaN(x) || !isFinite(x)) {
-      return parseFloat(0).toFixed(2);
-    }
-
-    return parseFloat(x).toFixed(2);
-  };
-
-  window.checkForInt = function (x) {
-    if (isNaN(x) || !isFinite(x)) {
-      return '';
-    }
-
-    return parseInt(x);
-  };
-
-  window.isEmpty = function (value) {
-    return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
-  };
-
-  window.datepickerReset = function () {
-    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var quoteClass = arguments.length > 1 ? arguments[1] : undefined;
-    var $season = $("#season_id");
-    var season_start_date = new Date($season.find(':selected').data('start'));
-    var season_end_date = new Date($season.find(':selected').data('end'));
-
-    if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
-      if (key != null) {
-        $("".concat(quoteClass, " .bookingDateOfService")).datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-
-        $("".concat(quoteClass, " .bookingEndDateOfService")).datepicker('destroy').datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        });
-        $('.stored-text-date').datepicker("destroy").datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy'
-        });
-      } else {
-        // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-        $('.datepicker').datepicker("destroy").datepicker({
-          autoclose: true,
-          format: 'dd/mm/yyyy'
-        });
-      }
-    } else {
-      $('.datepicker').datepicker('destroy').datepicker({
-        autoclose: true,
-        format: 'dd/mm/yyyy'
-      });
-    }
-  };
-  /*
-  |--------------------------------------------------------------------------
-  | Invoke Global Functions
-  |--------------------------------------------------------------------------
-  */
-
-
-  datepickerReset();
-  /*  ajaxSetup */
-
-  $.ajaxSetup({
-    headers: {
-      'X-CSRF-TOKEN': CSRFTOKEN
-    }
-  });
-  $('.select2').select2({
-    width: '100%',
-    theme: "classic"
-  });
-  $('.select2single').select2({
-    width: '100%',
-    theme: "bootstrap",
-    templateResult: formatState,
-    templateSelection: formatState
-  });
-  $('.nationality-select2').select2({
-    width: '100%',
-    theme: "bootstrap",
-    templateResult: formatState,
-    templateSelection: formatState
-  });
-  $('.select2-multiple').select2({
-    width: '100%',
-    theme: "classic",
-    templateResult: formatState,
-    templateSelection: formatState
-  });
-  $('.select2-single').select2({
-    width: '90%',
-    theme: "bootstrap"
-  });
-  $('.selling-price-other-currency').select2({
-    width: '68%',
-    theme: "bootstrap",
-    templateResult: formatState,
-    templateSelection: formatState
-  });
-  $('.summernote').summernote({
-    height: 70,
-    //set editable area's height
-    placeholder: 'Enter Text Here..',
-    codemirror: {
-      // codemirror options
-      theme: 'monokai'
-    }
-  }); // make quote section sortable
-
-  $(".sortable").sortable();
-  $('.date-range-picker').daterangepicker({
-    autoUpdateInput: false,
-    locale: {
-      cancelLabel: 'Clear',
-      format: 'DD/MM/YYYY'
-    }
-  });
-  $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
-    $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-  });
-  $('.date-range-picker').on('cancel.daterangepicker', function (ev, picker) {
-    $(this).val('');
-  });
-  /*---------------------------------------------------------------------------------------*/
-
-  /* Focus In/Out Function on Calculation Values */
-
-  $(document).on('focus', '.remove-zero-values', function () {
-    var value = parseFloat($(this).val()).toFixed(2);
-
-    if (value == 0.00) {
-      $(this).val('');
-    }
-  });
-  $(document).on('focusout', '.remove-zero-values', function () {
-    var value = $(this).val();
-
-    if (value == '') {
-      $(this).val(parseFloat(0).toFixed(2));
-    }
-  });
-  /* End Focus In/Out Function on Calculation Values */
-
-  $("#generate-pdf").submit(function (event) {
-    event.preventDefault();
-    var $form = $(this),
-        url = $form.attr('action');
-    var editor = $('#editor').html();
-    var formData = $(this).serializeArray();
-    formData.push({
-      name: 'data',
-      value: editor
-    });
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: formData,
-      success: function success(data) {// console.log(data, 'data');
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-
-            if (errors.hasOwnProperty("overrride_errors")) {
-              alert(errors.overrride_errors);
-              window.location.href = REDIRECT_BASEURL + "quotes/index";
-            } else {
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
-                $('#' + index).addClass('is-invalid');
-                $('#' + index).closest('.form-group').find('.text-danger').html(value);
-              });
-            }
-          }, 400);
-        }
-      }
-    });
-  }); // user managment
-
-  $(document).on('change', '.getBrandtoHoliday', function () {
-    var brand_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_id': brand_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-        });
-        $('.appendHolidayType').html(options);
-      }
-    });
-    getCommissionRate();
-  }); // commission criteria
-
-  $(document).on('change', '.getMultipleBrandtoHoliday', function () {
-    var brand_ids = $(this).val();
-    var options = '';
-    var url = BASEURL + 'multiple/brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_ids': brand_ids
-      },
-      beforeSend: function beforeSend() {
-        $('.appendMultipleHolidayType').html(options);
-      },
-      success: function success(response) {
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.brand_name, ") </option>");
-        });
-        $('.appendMultipleHolidayType').html(options);
-      }
-    });
-  }); // $(document).on('change', '.getCountryToTown', function() {
-  //     let country_id = $(this).val();
-  //     var options    = '';
-  //     var url = BASEURL + 'country/to/town'
-  //     $.ajax({
-  //         type: 'get',
-  //         url: url,
-  //         data: { 'country_id': country_id },
-  //         success: function(response) {
-  //             options += '<option value="">Select Town</option>';
-  //             $.each(response, function(key, value) {
-  //                 options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-  //             });
-  //             $('.appendCountryTown').html(options);
-  //         }
-  //     });
-  // });
-  // suppliers
-
-  $(document).on('change', '.getCountryToLocation', function () {
-    var supplier_country_ids = $(this).val();
-    var url = BASEURL + 'country/to/location';
-    var options = '';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'supplier_country_ids': supplier_country_ids
-      },
-      beforeSend: function beforeSend() {
-        $('.appendCountryLocation').html(options);
-      },
-      success: function success(response) {
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.country_name, ") </option>");
-        });
-        $('.appendCountryLocation').html(options);
-      }
-    });
-  });
-  $(document).on('change', '.select-agency', function () {
-    var agency_ = $('.agencyField');
-    var passenger_ = $('.PassengerField');
-
-    if ($(this).val() == 1) {
-      $('#pax_no').val(1).change();
-      $("input[name=agency_commission_type][value=net-price]").prop('checked', true);
-      agency_.removeClass('d-none');
-      passenger_.addClass('d-none');
-      agency_.find('input, select').removeAttr('disabled');
-      passenger_.find('input, select').attr('disabled', 'disabled'); // $('#agency_contact').addClass('phone phone0');
-      // $('#lead_passenger_contact').removeClass('phone');
-      // $('#lead_passenger_contact').removeClass('phone0');
-
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#lead_passenger_contact'), {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
-      });
-      iti.destroy(); // intTelinput('gc');
-    } else {
-      $('#pax_no').val(1).change();
-      $('.paid-net-commission-on-departure').addClass('d-none');
-      agency_.addClass('d-none');
-      passenger_.removeClass('d-none');
-      passenger_.find('input, select').removeAttr('disabled');
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#agency_contact'), {
-        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
-      });
-      iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');
-      // $('#agency_contact').removeClass('phone');
-      // $('#agency_contact').removeClass('phone0');
-
-      agency_.find('input, select').attr('disabled', 'disabled'); // intTelinput(0);
-    }
-
-    getCommissionRate();
-  });
-  $(document).on('click', '.expand-all-btn', function (event) {
-    $('#parent .quote').removeClass('collapsed-card');
-    $('#parent .card-body').css("display", "block");
-    $('#parent .collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>"); // $(this).addClass('d-none');
-    // $('.collapse-all-btn').removeClass('d-none');
-  });
-  $(document).on('click', '.collapse-all-btn', function (event) {
-    $('#parent .quote').addClass('collapsed-card');
-    $('#parent .card-body').css("display", "none");
-    $('#parent .collapse-expand-btn').html("<i class=\"fas fa-plus\"></i>"); // $(this).addClass('d-none');
-    // $('.expand-all-btn').removeClass('d-none');
-  });
-  $(document).on('click', '.compare-expand-all-btn', function (event) {
-    $('#compare_parent .card').removeClass('collapsed-card');
-    $('#compare_parent .card-body').css("display", "block");
-    $('#compare_parent .compare-collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
-  });
-  $(document).on('click', '.compare-collapse-all-btn', function (event) {
-    $('#compare_parent .card').addClass('collapsed-card');
-    $('#compare_parent .card-body').css("display", "none");
-    $('#compare_parent .compare-collapse-expand-btn').html("<i class=\"fas fa-plus\"></i>");
-  }); // $(document).on('change', '.supplier-id', function() {
-  //     var quote                = $(this).closest('.quote');
-  //     var quoteKey             = quote.data('key');
-  //     var supplier_name        = $(this).find(':selected').attr('data-name');
-  //     var supplier_id          = $(this).val();
-  //     var season_id            = $('.season-id').val();
-  //     var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
-  //     var category_id          = $(`#quote_${quoteKey}_category_id`).val();
-  //     var options              = '';
-  //     /* set/unset card header, supplier currency & product */
-  //     if(typeof supplier_id === 'undefined' || supplier_id == "") {
-  //         quote.find('.badge-supplier-id').html("");
-  //         // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-  //         // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
-  //         $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
-  //         return;
-  //     }else{
-  //         quote.find('.badge-supplier-id').html(supplier_name);
-  //         // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
-  //     }
-  //     /* get supplier's rate sheet, supplier's product, supplier's currency */
-  //     if(season_id != "" && supplier_id != ""){
-  //         $.ajax({
-  //             type: 'get',
-  //             url: `${BASEURL}get-supplier-product-and-sheet`,
-  //             data: { 
-  //                 'supplier_id': supplier_id,
-  //                 'season_id': season_id,
-  //                 'supplier_location_id': supplier_location_id,
-  //                 'category_id': category_id,
-  //             },
-  //             success: function(response) {
-  //                 if(response && response.url != ""){
-  //                     quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
-  //                 }else{
-  //                     quote.find('.view-supplier-rate').attr("href","").html("");
-  //                 }
-  //                 // /* set product dropdown */
-  //                 // if(response && response.products.length > 0){
-  //                 //     options += "<option value=''>Select Product</option>";
-  //                 //     $.each(response.products, function(key, value) {
-  //                 //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-  //                 //     });
-  //                 //     $(`#quote_${quoteKey}_product_id`).html(options);
-  //                 // }else{
-  //                 //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-  //                 // }
-  //                 /* set supplier currency */
-  //                 if(response && response.supplier_currency != ""){
-  //                     $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
-  //                 }
-  //             }
-  //         });
-  //     }else{
-  //         quote.find('.view-supplier-rate').attr("href","").html("");
-  //         $(`#quote_${quoteKey}_product_id`).html("");
-  //     }
-  // });
-  // $(document).on('change', '.product-location-id', function(){
-  //     var quote                 = $(this).closest('.quote');
-  //     var quoteKey              = quote.data('key');
-  //     var product_location_id   = $(`#quote_${quoteKey}_product_location_id`).val();
-  //     var supplier_id           = $(`#quote_${quoteKey}_supplier_id`).val();
-  //     var options               = '';
-  //     $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
-  //     /* set product dropdown null when product location become null */
-  //     if(typeof product_location_id === 'undefined' || product_location_id == ""){
-  //         // quote.find('.badge-category-id').html("");
-  //         $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-  //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-  //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
-  //         return;
-  //     }
-  //     $.ajax({
-  //         type: 'get',
-  //         url: `${BASEURL}location/to/product`,
-  //         data: { 'product_location_id': product_location_id, 'supplier_id' : supplier_id },
-  //         success: function(response) {
-  //             /* set supplier dropdown*/
-  //             options += "<option value=''>Select Product</option>";
-  //             $.each(response.products, function(key, value) {
-  //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-  //             });
-  //             $(`#quote_${quoteKey}_product_id`).html(options);
-  //         }
-  //     })
-  // });
-
-  /**
-   * -------------------------------------------------------------------------------------
-   *                                Season Manangement
-   * -------------------------------------------------------------------------------------
-   */
-  // $('#seasons').keyup(function() {
-  //     var val = $(this).val();
-  //     if (val.length == 4) {
-  //         $(this).val(val + '-');
-  //     }
-  // });
-
-  /**
-   * -------------------------------------------------------------------------------------
-   *                                Quote Manangement
-   * -------------------------------------------------------------------------------------
-   */
-
-  $(document).on('click', '.parent-row', function (e) {
-    var parentID = $(this).data('id');
-    $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
-    $(this).html($(this).html() == "<span class=\"fa fa-minus\"></span>" ? "<span class=\"fa fa-plus\"></span>" : "<span class=\"fa fa-minus\"></span>");
-  }); // $(document).on('click', '.cancel-service', function(e) {
-  //     e.preventDefault();
-  //     var booking_detail_id = $(this).attr('data-bookingDetialID');
-  //     if( confirm("Are you sure you want to Cancel this Service?") == true){
-  //         $.ajax({
-  //             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-  //             url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
-  //             type: 'get',
-  //             success: function(data) {
-  //                 setTimeout(function() {
-  //                     if (data.success_message) {
-  //                         alert(data.success_message);
-  //                         location.reload();
-  //                     }
-  //                 }, 400);
-  //             },
-  //             error: function(reject) {}
-  //         });
-  //     }
-  // });
-
-  $(".readonly").keypress(function (evt) {
-    evt.preventDefault();
-  });
-  $(".collapse-all-btn").removeAttr('disabled');
-  $(".expand-all-btn").removeAttr('disabled');
-  /*
-  |--------------------------------------------------------------------------
-  | Template Management
-  |--------------------------------------------------------------------------
-  */
-  // template management
-
-  $("#create_template").submit(function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    /* Send the data using post */
-
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-      },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
-          }
-        }, 400);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            var flag = true;
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_'); // expand quote if feild has an error
-
-              $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
-              $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
-              $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-              if (flag) {
-                $('html, body').animate({
-                  scrollTop: $("#".concat(index)).offset().top
-                }, 1000);
-                flag = false;
-              }
-            });
-          }, 400);
-        }
-      }
-    });
-  }); // template management
-
-  $("#update_template").submit(function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-      },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = "".concat(REDIRECT_BASEURL, "template/index");
-          }
-        }, 400);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(index)).addClass('is-invalid');
-              $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-            });
-          }, 400);
-        }
-      }
-    });
-  });
-  /*
-  |--------------------------------------------------------------------------
-  | End Template Management
-  |--------------------------------------------------------------------------
-  */
-  // transfer report
-
-  function createFilter(type, label, data) {
-    var options;
-
-    if (label == null) {
-      $('.filter-col').remove();
-      return;
-    }
-
-    $.ajax({
-      type: "GET",
-      url: "".concat(BASEURL, "category-details-filter"),
-      data: {
-        'type': type,
-        'label': label,
-        'data': data
-      },
-      datatype: "json",
-      async: false,
-      success: function success(response) {
-        var result = '';
-        $.each(response.label_results, function (key, value) {
-          result += "<option value=\"".concat(value.value, "\"> ").concat(value.value, " </option>");
-        });
-        options = result;
-      }
-    });
-    var multipleSelect2HTML = "<div class=\"col-md-3 filter-col\">\n                    <div class=\"d-flex bd-highlight\">\n                        <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                        <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n                    </div>\n                    <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n                </div>");
-    return multipleSelect2HTML;
-  } // transfer report
-
-
-  $(document).on('change', '.transfer-detail-feild', function () {
-    var feild = $(this).val();
-
-    if (typeof feild === 'undefined' || feild == "") {
-      $('#search_transfer_detail').addClass('d-none');
-    } else {
-      $('#search_transfer_detail').removeClass('d-none');
-    }
-
-    var type = $(this).find(':selected').attr('data-optionType');
-    var label = $(this).find(':selected').attr('data-optionLable');
-    var data = $(this).find(':selected').attr('data-optionData');
-    $(createFilter(type, label, data)).insertBefore("#more_filter");
-    reinitializedMultiDynamicFeilds();
-  }); // transfer report
-
-  $(document).on('click', '.remove-col', function () {
-    $(this).closest('.filter-col').remove();
-  });
-  $('.parent').on('click', function (e) {
-    if ($(this).is(':checked', true)) {
-      $(".child").prop('checked', true);
-    } else {
-      $(".child").prop('checked', false);
-    }
-  });
-  $('.sbp-parent').on('click', function (e) {
-    if ($(this).is(':checked', true)) {
-      $(".credit").prop('checked', false);
-      $('.credit').trigger('click');
-    } else {
-      $('.credit').trigger('click');
-      $('.total-paid-amount').val(parseFloat(0).toFixed(2));
-    }
-  }); // Supplier Bulk Payments
-
-  $('.credit').change(function () {
-    var currencyCode = $(this).attr('data-currencyCode');
-    var value = parseFloat($(this).attr('data-value')).toFixed(2);
-    var row = $(this).closest('.credit-row');
-
-    if ($(this).is(':checked')) {
-      $(this).val('1');
-      row.find('.row-paid-amount').val(value);
-      row.find('.row-total-paid-amount').val(value);
-      getTotalPaidAmount();
-    } else {
-      $(this).val('0');
-      row.find('.row-paid-amount').val(parseFloat(0).toFixed(2));
-      row.find('.row-total-paid-amount').val(parseFloat(0).toFixed(2));
-      getTotalPaidAmount(); // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
-    }
-  }); // Supplier Bulk Payments
-
-  $(document).on("change", '.row-paid-amount', function (event) {
-    var row = $(this).closest('.credit-row');
-    var currentPaidAmountValue = parseFloat($(this).val());
-    var rowCreditNoteAmount = row.find('.row-credit-note-amount').val();
-    var rowTotalPaidAmount = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
-    var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
-    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
-
-    if (rowTotalPaidAmount > totalOutstandingAmountLeft) {
-      alert("Please Enter Correct Amount");
-      $(this).val('0.00');
-      row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
-    }
-
-    getTotalPaidAmount(); // var value                 = parseFloat($(this).val());
-    // var row                   = $(this).closest('.credit-row');
-    // var outstandingAmountLeft = row.find('.credit').val();
-    // if(value > outstandingAmountLeft){
-    //     alert("Please Enter Correct Amount");
-    //     $(this).val('0.00');
-    // }
-    // getTotalPaidAmount();
-  });
-
-  function getTotalPaidAmount() {
-    var paidAmountValues = parseFloat(getPaidAmountValues());
-    $('.total-paid-amount').val(getFloat(paidAmountValues));
-  }
-
-  function getRemainingCreditNoteAmount() {
-    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    var result = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
-    $('.remaining-credit-amount').html(getFloat(result));
-    $('.remaining-credit-amount').val(getFloat(result));
-  }
-
-  function getPaidAmountValues() {
-    var checkedValuesArray = $('.row-total-paid-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-  }
-
-  function getCreditNoteValues() {
-    var checkedValuesArray = $('.row-credit-note-amount').map(function (i, e) {
-      return parseFloat(e.value);
-    }).get();
-    var checkedValuesTotal = checkedValuesArray.reduce(function (a, b) {
-      return a + b;
-    }, 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-  }
-
-  function getFloat(value) {
-    // console.log(parseFloat(value).toFixed(2));
-    return parseFloat(value).toFixed(2);
-  } // Supplier Bulk Payments
-
-
-  $(document).on("change", '.row-credit-note-amount', function (event) {
-    var totalWalletAmount = parseFloat($('.total-credit-amount').val());
-    var currentCreditNoteValue = parseFloat($(this).val());
-    var row = $(this).closest('.credit-row');
-    var rowOutstandingAmount = row.find('.credit').attr('data-value');
-    var rowPaidAmount = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
-    var rowTotalPaidAmount = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-
-    if (row.find('.credit').is(':checked')) {
-      row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
-      row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
-
-      if (currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount) {
-        alert("Please Enter Correct Amount");
-        $(this).val('0.00');
-        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
-        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
-      }
-
-      getTotalPaidAmount();
-      getRemainingCreditNoteAmount();
-    } else {
-      $(this).val('0.00');
-    }
-  }); // Supplier Bulk Payments
-
-  $("#bulk_payment").submit(function (event) {
-    event.preventDefault();
-    var checkedValues = $('.credit:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-
-    if (checkedValues.length == 0) {
-      alert("Please Check any Record First");
-      return;
-    }
-
-    var url = $(this).attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(data) {
-        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-        setTimeout(function () {
-          if (data && data.status == true) {
-            alert(data.success_message);
-            location.reload();
-          }
-        }, 200);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-
-            if (errors.hasOwnProperty("payment_error")) {
-              alert(errors.payment_error);
-              location.reload();
-            } else {
-              var flag = true;
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
-                $("#".concat(index)).addClass('is-invalid');
-                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-                if (flag) {
-                  $('html, body').animate({
-                    scrollTop: $("#".concat(index)).offset().top
-                  }, 1000);
-                  flag = false;
-                }
-              });
-            }
-          }, 400);
-        }
-      }
-    });
-  });
-  $('#delete_all').on('click', function (e) {
-    e.preventDefault();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-
-    if (checkedValues.length > 0) {
-      jQuery('#multiple_delete_modal').modal('show');
-    } else {
-      alert("Please Check any Record First");
-    }
-  });
-  $('#multiple_delete').on('click', function (e) {
-    e.preventDefault();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var tableName = $('.table-name').val();
-    $.ajax({
-      url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
-      type: 'Delete',
-      dataType: "JSON",
-      data: {
-        "checkedValues": checkedValues,
-        "tableName": tableName
-      },
-      beforeSend: function beforeSend() {
-        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(response) {
-        if (response.status == true) {
-          $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-          jQuery('#multiple_delete_modal').modal('hide');
-          setTimeout(function () {
-            alert(response.message);
-            location.reload();
-          }, 600);
-        }
-      },
-      error: function error(xhr) {
-        console.log(xhr.responseText);
-      }
-    });
-  });
-  $('.multiple-action').on('change', function (e) {
-    var action = $(this).val();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-
-    if (checkedValues.length > 0) {
-      jQuery('#multiple_delete_modal').modal('show');
-      $('.action_name').val(action);
-      $('#multiple_delete').addClass('btn btn-danger');
-      $("#multiple_delete").html(action);
-      $('#multiple_delete').removeClass();
-      $('#multiple_delete').addClass('btn btn-primary');
-
-      if (action == 'Delete') {
-        $('#multiple_delete').addClass('btn btn-danger');
-      }
-    } else {
-      alert("Please Check any Record First");
-      $('.multiple-action').val("");
-    } // if(action && checkedValues.length > 0){
-    //     $.ajax({
-    //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-    //         type: 'delete',
-    //         dataType: "JSON",
-    //         data: { "checkedValues": checkedValues, "action": action },
-    //         beforeSend: function() {
-    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-    //         },
-    //         success: function (response)
-    //         {
-    //             if(response.status == true){
-    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-    //                 jQuery('#multiple_delete_modal').modal('hide');
-    //                 setTimeout(function() {
-    //                     alert(response.message);
-    //                     location.reload();
-    //                 }, 600);
-    //             }
-    //         },
-    //         error: function(xhr) {
-    //           console.log(xhr.responseText);
-    //         }
-    //     });
-    // }
-
-  }); // booking incremnet and
-  // tel input  start
-
-  if ($('.phone').length > 0) {
-    for (var i = 0; i < $('.phone').length; i++) {
-      if ($('.phone' + i).length != 0) {
-        intTelinput(i);
-      }
-    }
-  }
-
-  if ($('#agency_contact').length > 0) {
-    intTelinput('gc'); // console.log(inTelinput);
-  } //tel input end
-  //intl-tel-input ************** Start ******************** //
-
-
-  function intTelinput() {
-    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var inVal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    // console.log(key);
-    var input = document.querySelector('.phone' + key);
-    var errorMsg = document.querySelector('.error_msg' + key);
-    var validMsg = document.querySelector('.valid_msg' + key);
-    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-      separateDialCode: true,
-      formatOnDisplay: true,
-      initialCountry: "US",
-      nationalMode: true,
-      hiddenInput: "full_number",
-      autoPlaceholder: "polite",
-      placeholderNumberType: "MOBILE"
-    });
-    input.nextElementSibling.value = iti.getNumber(); // iti.setCountry("US");
-    // on blur: validate
-
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-    input.addEventListener('blur', function () {
-      input.nextElementSibling.value = iti.getNumber();
-      reset();
-
-      if (input.value.trim()) {
-        if (iti.isValidNumber()) {
-          $('.buttonSumbit').removeAttr('disabled');
-          input.classList.add("is-valid");
-          validMsg.innerHTML = 'The number is valid';
-        } else {
-          $('.buttonSumbit').attr('disabled', 'disabled');
-          input.classList.add("is-invalid");
-          validMsg.innerHTML = '';
-          var errorCode = iti.getValidationError();
-          errorMsg.innerHTML = errorMap[errorCode];
-          errorMsg.classList.remove("hide");
-        }
-      }
-    });
-
-    var reset = function reset() {
-      input.classList.remove("is-invalid");
-      errorMsg.innerHTML = "";
-      errorMsg.classList.add("hide");
-    };
-  } //intl-tel-input ************** End ******************** //
-  /// pax append work  start//
-
-
-  $(document).on('change', '.pax-number', function () {
-    $('.nationality-select2').select2('destroy');
-    var $_val = $(this).val();
-    var agencyVal = $('.select-agency:checked').val();
-    var currentDate = curday('-');
-    var countries = $('#content').data('countries');
-
-    if (agencyVal == $_val) {
-      var count = 1;
-      var $v_html = "\n            <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                <div class=\"row\" >\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Passenger #").concat(count, " Full Name </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Email Address </label>\n                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\" >\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Contact Number </label>\n                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\"  data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\" >\n                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Date Of Birth </label>\n                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\" >\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-sm-3\">\n                        <label>Nationality </label>\n                        <select name=\"pax[").concat(count, "][nationality_id]\"  class=\"form-control nationality-select2 nationality-id\">\n                            <option selected value=\"\" >Select Nationality</option>\n                            ").concat(countries.map(function (co) {
-        return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n                        </select>\n                    </div>\n                    <div class=\"col-sm-3\">\n                        <div class=\"form-group\">\n                        <label>Resident In</label>\n                        <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                            <option selected value=\"\" >Select Resident</option>\n                            ").concat(countries.map(function (co) {
-        return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-      }).join(""), "\n                        </select>\n                        <span class=\"text-danger\" role=\"alert\"></span>\n                        </div>\n                    </div>\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Bedding Preference </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                    </div>\n\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Dietary Preferences </label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][dietary_preferences]\" class=\"form-control\" placeholder=\"Dietary Preferences\" >\n                    </div>\n\n                    <div class=\"col-md-3 mb-2\">\n                        <label>Medical Requirements</label>\n                        <input type=\"text\" name=\"pax[").concat(count, "][medical_requirement]\" class=\"form-control\" placeholder=\"Medical Requirements\">\n                    </div>\n\n                    <div class=\"col-sm-4\">\n                        <div class=\"form-group\">\n                            <label>Up To Date Covid Vaccination Status </label>\n                            <div>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"1\" > Yes &nbsp;&nbsp;\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"0\" checked> No &nbsp;&nbsp;\n                                </label>\n                                <label class=\"radio-inline\">\n                                    <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" class=\"covid-vaccinated\" value=\"2\" > Not Sure\n                                </label>\n                            </div>\n                        </div>\n                    </div>\n\n                </div>\n            </div>"); // console.log($v_html);
-
-      $('#appendPaxName').html($v_html);
-      intTelinput(1);
-      $('#pax_no option').first().attr('disabled', 'disabled');
-    }
-
-    if ($_val > $('.appendCount').length) {
-      var countable = $_val - $('.appendCount').length - 1;
-
-      if (agencyVal == 1) {
-        var countable = $_val - $('.appendCount').length;
-      }
-
-      for (i = 1; i <= countable; ++i) {
-        var count = $('.appendCount').length + 1;
-        var c = count + 1;
-
-        if (agencyVal == 1) {
-          c = count;
-        }
-
-        var $_html = "\n                        <div class=\"mb-1 appendCount\" id=\"appendCount".concat(count, "\">\n                            <div class=\"row\">\n                                <div class=\"col-md-12\">\n                                    <button type=\"button\" class=\"remove-pax-column btn btn-sm btn-dark float-right\"><i class=\"fa fa-times\" aria-hidden=\"true\"></i></button>\n                                </div>\n                            \n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label class=\"mainLabel\">Passenger #").concat(c, " Full Name</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][full_name]\" class=\"form-control\" placeholder=\"Passsenger Name\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Email Address</label>\n                                        <input type=\"email\" name=\"pax[").concat(count, "][email_address]\" class=\"form-control\" placeholder=\"Email Address\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Contact Number</label>\n                                        <input type=\"tel\" name=\"pax[").concat(count, "][contact_number]\" data-key=\"").concat(count, "\" class=\"form-control phone phone").concat(count, "\">\n                                        <span class=\"text-danger error_msg").concat(count, "\" role=\"alert\"></span>\n                                        <span class=\"text-success valid_msg").concat(count, "\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Date Of Birth</label>\n                                        <input type=\"date\" max=\"{{ date('Y-m-d') }}\" name=\"pax[").concat(count, "][date_of_birth]\" class=\"form-control\" placeholder=\"Date Of Birth\">\n                                    </div>\n                                </div>\n            \n                                <div class=\"col-md-3\">\n                                    <label>Nationality</label>\n                                    <select name=\"pax[").concat(count, "][nationality_id]\" class=\"form-control nationality-select2 nationality-id\">\n                                        <option selected value=\"\" >Select Nationality</option>\n                                        ").concat(countries.map(function (co) {
-          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                    </select>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Resident In</label>\n                                        <select name=\"pax[").concat(count, "][resident_in]\" class=\"form-control nationality-select2 resident-id\">\n                                            <option selected value=\"\" >Select Resident</option>\n                                            ").concat(countries.map(function (co) {
-          return "<option value=\"".concat(co.id, "\" >").concat(co.name, "</option>");
-        }).join(""), "\n                                        </select>\n                                        <span class=\"text-danger\" role=\"alert\"></span>\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Bedding Preference</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][bedding_preference]\" class=\"form-control\" placeholder=\"Bedding Preferences\" >\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Dietary Preferences</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][dietary_preferences]\" class=\"form-control\" placeholder=\"Dietary Preferences\" >\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-3\">\n                                    <div class=\"form-group\">\n                                        <label>Medical Requirements</label>\n                                        <input type=\"text\" name=\"pax[").concat(count, "][medical_requirement]\" class=\"form-control\" placeholder=\"Medical Requirements\">\n                                    </div>\n                                </div>\n\n                                <div class=\"col-md-4\">\n                                    <div class=\"form-group\">\n                                        <label>Up To Date Covid Vaccination Status </label>\n                                        <div>\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_yes_").concat(count, "\" class=\"covid-vaccinated\" value=\"1\">\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_yes_").concat(count, "\">Yes</label>\n\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_no_").concat(count, "\" class=\"covid-vaccinated\" value=\"0\" checked>\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_no_").concat(count, "\">No</label>\n\n                                            <input type=\"radio\" name=\"pax[").concat(count, "][covid_vaccinated]\" id=\"pax_cv_not_sure_").concat(count, "\" class=\"covid-vaccinated\" value=\"2\">\n                                            <label class=\"radio-inline mr-half\" for=\"pax_cv_not_sure_").concat(count, "\">Not Sure</label>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>");
-        $('#appendPaxName').append($_html);
-        intTelinput(count);
-      }
-    } else {
-      if (agencyVal != $_val) {
-        var countable = $('.appendCount').length + 1;
-
-        for (var i = countable - 1; i >= $_val; i--) {
-          $("#appendCount" + i).remove();
-        }
-      }
-    }
-
-    $('.nationality-select2').select2({
-      width: '100%',
-      theme: "bootstrap"
-    });
-    getBookingAmountPerPerson();
-  });
-  $(document).on('click', '.add-pax-column', function () {
-    var pax_value = $('#pax_no').val();
-    var updateCount = pax_value != '' ? parseInt(pax_value) + 1 : 1;
-
-    if (isNaN(updateCount)) {
-      $('#pax_no').val(1).change();
-    } else {
-      $('#pax_no').val(updateCount).change();
-    }
-  });
-  $(document).on('click', '.remove-pax-column', function () {
-    var agency_Val = $('.select-agency:checked').val();
-    $(this).closest('.appendCount').remove();
-    var pax_value = $('#pax_no').val();
-    var updateCount = parseInt(pax_value) - 1;
-    $('#pax_no').val(updateCount).change();
-    var ids = [];
-    $('.appendCount').each(function () {
-      ids.push($(this).attr('id'));
-    });
-    var _val = 2;
-    var idLength = ids.length + _val;
-
-    if (agency_Val == 1) {
-      _val = 1;
-      idLength = ids.length + _val;
-    }
-
-    for (var _i = 0; _i <= ids.length; _i++) {
-      var count = 2 + _i;
-
-      if (agency_Val == 1) {
-        count = 1 + _i;
-      }
-
-      $('#' + ids[_i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
-    }
-  }); //pax appednd work end
-
-  var btnname = null; //BUlk DATA DELETE
-
-  $('.btnbulkClick').on('click', function (e) {
-    btnname = $(this).attr('name');
-  });
-  $(".bulk-action").submit(function (e) {
-    e.preventDefault();
-    var url = $(this).attr('action');
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var formData = $(this).serializeArray();
-    var message = '';
-    formData.push({
-      name: 'id',
-      value: checkedValues
-    });
-    formData.push({
-      name: 'btn',
-      value: btnname
-    });
-
-    switch (btnname) {
-      case "archive":
-        message = 'Are you sure you want to Archive Quotes?';
-        break;
-
-      case "unarchive":
-        message = 'Are you sure you want to Revert Quotes from Archive?';
-        break;
-
-      case "quote":
-        message = 'Are you sure you want to Revert Cancelled Quotes?';
-        break;
-
-      case "cancel":
-        message = 'Are you sure you want to Cancel Quotes?';
-    }
-
-    if (checkedValues.length > 0) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-        title: 'Are you sure?',
-        text: message,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        confirmButtonColor: '#5cb85c',
-        cancelButtonText: 'No',
-        showLoaderOnConfirm: true
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          $.ajax({
-            type: "PUT",
-            url: url,
-            data: $.param(formData),
-            success: function success(data) {
-              setTimeout(function () {
-                alert(data.message);
-                location.reload();
-              }, 600);
-            }
-          });
-        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
-        }
-      });
-    } else {
-      alert('Please Check any Record First');
-    }
-  }); /// Update Currency Status
-
-  $("#currencyStatus").submit(function (e) {
-    e.preventDefault(); // console.log('run');
-
-    var url = $(this).attr('action');
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var formData = $(this).serializeArray();
-    formData.push({
-      name: 'id',
-      value: checkedValues
-    });
-    formData.push({
-      name: 'btn',
-      value: btnname
-    });
-    var message = 'Are you sure you want to inactive this records?';
-
-    if (btnname == 'active') {
-      message = 'Are you sure you want to active this records?';
-    }
-
-    if (checkedValues.length > 0) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-        title: 'Are you sure?',
-        text: message,
-        focusConfirm: false,
-        showCancelButton: true,
-        confirmButtonText: 'Yes, ' + btnname + ' it!',
-        confirmButtonColor: '#5cb85c',
-        cancelButtonText: 'No, keep it',
-        showLoaderOnConfirm: true
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: $.param(formData),
-            success: function success(data) {
-              setTimeout(function () {
-                alert(data.message);
-                location.reload();
-              }, 600);
-            }
-          });
-        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
-        }
-      });
-    } else {
-      alert('Please Check any Record First');
-    }
-  }); /// Update Currency Status
-  //BUlk DATA DELETE
-  ///////////////// RELEVANT QUOTE FIELD
-
-  $('#cloneRelevantquote').on('click', function () {
-    $('.relevant-quote').eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".relevant-quote:last");
-  }); ///////////////// RELEVANT QUOTE FIELD
-  //////////// quote media modal close
-
-  $(document).on('click', '.QuotemediaModalClose', function () {
-    $(this).closest('.modal-body').children('.input-group').find('input').val("");
-    $(this).closest('.modal-body').children('.previewId').find('img').remove();
-    jQuery('.modal').modal('hide');
-  }); // remove image work
-
-  $(document).on('click', '.remove-img', function () {
-    console.log('sadas'); // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
-
-    $(this).closest('.modal-body').children('.input-group').find('input').val("");
-    $(this).parent().html("<img src=\"\" class=\"img-fluid\">"); // console.log($(this).closest('.modal-body').find('.image').html());
-  }); // $(document).on('click', '#add_storeText', function () {
-  //     var x = document.getElementById("storedText");
-  //     if (x.style.display === "none") {
-  //         x.style.display = "block";
-  //         $('#selectstoretext').removeAttr('disabled');
-  //         console.log('show');
-  //         $(this).text('x Remove Stored Text')
-  //     } else {
-  //         console.log('hide');
-  //         x.style.display = "none";
-  //         $(this).text('+ Add Stored Text')
-  //         $('#selectstoretext').attr('disabled', true);
-  //     }
-  // })
-  //////////// quote media modal close
-  ////////////////////// Stored Text
-
-  $(document).on('change', '.selectStoredText', function () {
-    var slug = $(this).val();
-    var quote = jQuery(this).closest('.quote');
-    var key = quote.data('key');
-    $.ajax({
-      url: "".concat(BASEURL, "stored/").concat(slug, "/text"),
-      type: 'get',
-      dataType: "json",
-      success: function success(data) {
-        console.log(key);
-        var id = '#quote_' + key + '_stored_text';
-        setTextEditorValue(id, data);
-      },
-      error: function error(reject) {
-        alert(reject);
-      }
-    });
-  });
-  $(document).on('click', '.addmodalforquote', function () {
-    var quote = $(this).closest('.quote');
-    var key = quote.data('key');
-    var target = '.' + $(this).data('show'); // console.log(target);
-
-    quote.find(target).modal('show');
-    quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
-  }); /////////////////// Stored Text End
-}); // CreateGroupQuote //
-
-var checkedQuoteValues = null;
-window.Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
-  toast: true,
-  position: 'top-end',
-  showConfirmButton: false,
-  timer: 2200,
-  timerProgressBar: true,
-  didOpen: function didOpen(toast) {
-    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.stopTimer);
-    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.resumeTimer);
-  }
-}); //Create group quote
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', function (e) {
-  checkedQuoteValues = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.child:checked').map(function (i, e) {
-    return e.value;
-  }).get();
-  /*console.log(checkedQuoteValues);
-  return false;*/
-
-  if (checkedQuoteValues.length > 1) {
-    jQuery('#group-quote-modal').modal('show');
-  } else {
-    alert('Please check atleat two records.');
-  }
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(function (e) {
-  e.preventDefault();
-  var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action');
-  /*var formData       = $(this).serializeArray();
-  formData.push({name:'quote_ids', value: checkedQuoteValues});*/
-
-  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    type: "POST",
-    url: url,
-    // data: $.param(formData),
-    data: [jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(), jquery__WEBPACK_IMPORTED_MODULE_0___default.a.param({
-      quote_ids: checkedQuoteValues
-    })].join('&'),
-    success: function success(data) {
-      // console.log(data);
-      // return false;
-      if (data.status) {
-        jQuery('#group-quote-modal').modal('hide');
-        Toast.fire({
-          icon: 'success',
-          title: data.msg
-        });
-        setTimeout(function () {
-          window.location.href = data.redirect;
-        }, 2800);
-      } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
-      }
-    }
-  });
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(function (e) {
-  e.preventDefault();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    type: "POST",
-    url: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action'),
-    data: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(),
-    success: function success(data) {
-      if (data.status) {
-        Toast.fire({
-          icon: 'success',
-          title: data.msg
-        });
-        setTimeout(function () {
-          window.location.href = data.redirect;
-        }, 2800);
-      } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
-      }
-    }
-  });
-}); // $(document).ready(function() {
-//    setTimeout(function() {
-//        jQuery('.alert-success').fadeOut(1500);
-//        jQuery('.alert-danger').fadeOut(1500);
-//     }, 3000);
-//     $('.booking-currency-id').on('change', function() {
-//         let url = $('#routeForGroups').val() + '/' + $(this).val();
-//         console.log(url);
-//         $.ajax({
-//             type: "GET",
-//             url: url,
-//             success:function(response) {
-//                 if(response.status) {
-//                     $('.dynamic-group').empty();
-//                     $.each(response.groups, function(value, key) {
-//                         $('.dynamic-group').append($("<option></option>").attr("value", key.id).text(key.name));
-//                     });
-//                     $('.dynamic-group').select2();
-//                 }
-//             }
-//         });
-//     });
-// });
-
-/***/ }),
-
-/***/ "./resources/js/bootstrap/bootstrap.bundle.min.js":
-/*!********************************************************!*\
-  !*** ./resources/js/bootstrap/bootstrap.bundle.min.js ***!
-  \********************************************************/
+/***/ "./resources/js/asset/bootstrap/bootstrap.bundle.min.js":
+/*!**************************************************************!*\
+  !*** ./resources/js/asset/bootstrap/bootstrap.bundle.min.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -74359,29 +74359,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(fun
     value: !0
   });
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
-/***/ "./resources/js/global_variables.js":
-/*!******************************************!*\
-  !*** ./resources/js/global_variables.js ***!
-  \******************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
-window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
-window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
-window.CSRFTOKEN = $('#csrf-token').attr('content');
-window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
-
-/***/ }),
-
-/***/ "./resources/js/intl_tel_input/utils.js":
-/*!**********************************************!*\
-  !*** ./resources/js/intl_tel_input/utils.js ***!
-  \**********************************************/
+/***/ "./resources/js/asset/intl_tel_input/utils.js":
+/*!****************************************************!*\
+  !*** ./resources/js/asset/intl_tel_input/utils.js ***!
+  \****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -76193,14 +76178,14 @@ window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
     NOT_A_NUMBER: 4
   });
 })();
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
-/***/ "./resources/js/laravel_filemanager/stand-alone-button.js":
-/*!****************************************************************!*\
-  !*** ./resources/js/laravel_filemanager/stand-alone-button.js ***!
-  \****************************************************************/
+/***/ "./resources/js/asset/laravel_filemanager/stand-alone-button.js":
+/*!**********************************************************************!*\
+  !*** ./resources/js/asset/laravel_filemanager/stand-alone-button.js ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -76239,10 +76224,10 @@ window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
 
 /***/ }),
 
-/***/ "./resources/js/summernote/summernote-bs4.min.js":
-/*!*******************************************************!*\
-  !*** ./resources/js/summernote/summernote-bs4.min.js ***!
-  \*******************************************************/
+/***/ "./resources/js/asset/summernote/summernote-bs4.min.js":
+/*!*************************************************************!*\
+  !*** ./resources/js/asset/summernote/summernote-bs4.min.js ***!
+  \*************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -81881,7 +81866,22 @@ window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
     }
   });
 });
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../node_modules/webpack/buildin/module.js */ "./node_modules/webpack/buildin/module.js")(module)))
+
+/***/ }),
+
+/***/ "./resources/js/global_variables.js":
+/*!******************************************!*\
+  !*** ./resources/js/global_variables.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+window.BASEURL = "".concat(window.location.origin, "/ufg-form/public/json/");
+window.REDIRECT_BASEURL = "".concat(window.location.origin, "/ufg-form/public/");
+window.FILE_MANAGER_URL = "".concat(window.location.origin, "/ufg-form/public/laravel-filemanager");
+window.CSRFTOKEN = $('#csrf-token').attr('content');
+window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
 
 /***/ }),
 

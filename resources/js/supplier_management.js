@@ -1,6 +1,6 @@
-require('./form_builder/jquery-ui');
-require('./form_builder/formRender');
-require('./form_builder/formBuilder');
+require('./asset/form_builder/jquery-ui');
+require('./asset/form_builder/formRender');
+require('./asset/form_builder/formBuilder');
 
 require('./supplier_managment/supplier_app');
 require('./supplier_managment/category_app');

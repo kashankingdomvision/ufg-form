@@ -11,11 +11,11 @@ import daterangepicker from 'daterangepicker';
 import { result } from 'lodash';
 
 require('./global_variables');
-require('./laravel_filemanager/stand-alone-button');
-require('./summernote/summernote-bs4.min');
-require('./bootstrap/bootstrap.bundle.min');
-require('./adminlte/adminlte');
-require('./intl_tel_input/utils');
+require('./asset/laravel_filemanager/stand-alone-button');
+require('./asset/summernote/summernote-bs4.min');
+require('./asset/bootstrap/bootstrap.bundle.min');
+require('./asset/adminlte/adminlte');
+require('./asset/intl_tel_input/utils');
 
 $(document).ready(function($) {
 

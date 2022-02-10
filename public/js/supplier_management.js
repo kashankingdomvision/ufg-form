@@ -10979,10 +10979,10 @@ return jQuery;
 
 /***/ }),
 
-/***/ "./resources/js/form_builder/formBuilder.js":
-/*!**************************************************!*\
-  !*** ./resources/js/form_builder/formBuilder.js ***!
-  \**************************************************/
+/***/ "./resources/js/asset/form_builder/formBuilder.js":
+/*!********************************************************!*\
+  !*** ./resources/js/asset/form_builder/formBuilder.js ***!
+  \********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -16582,10 +16582,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 /***/ }),
 
-/***/ "./resources/js/form_builder/formRender.js":
-/*!*************************************************!*\
-  !*** ./resources/js/form_builder/formRender.js ***!
-  \*************************************************/
+/***/ "./resources/js/asset/form_builder/formRender.js":
+/*!*******************************************************!*\
+  !*** ./resources/js/asset/form_builder/formRender.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -20287,10 +20287,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 /***/ }),
 
-/***/ "./resources/js/form_builder/jquery-ui.js":
-/*!************************************************!*\
-  !*** ./resources/js/form_builder/jquery-ui.js ***!
-  \************************************************/
+/***/ "./resources/js/asset/form_builder/jquery-ui.js":
+/*!******************************************************!*\
+  !*** ./resources/js/asset/form_builder/jquery-ui.js ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -27365,11 +27365,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./form_builder/jquery-ui */ "./resources/js/form_builder/jquery-ui.js");
+__webpack_require__(/*! ./asset/form_builder/jquery-ui */ "./resources/js/asset/form_builder/jquery-ui.js");
 
-__webpack_require__(/*! ./form_builder/formRender */ "./resources/js/form_builder/formRender.js");
+__webpack_require__(/*! ./asset/form_builder/formRender */ "./resources/js/asset/form_builder/formRender.js");
 
-__webpack_require__(/*! ./form_builder/formBuilder */ "./resources/js/form_builder/formBuilder.js");
+__webpack_require__(/*! ./asset/form_builder/formBuilder */ "./resources/js/asset/form_builder/formBuilder.js");
 
 __webpack_require__(/*! ./supplier_managment/supplier_app */ "./resources/js/supplier_managment/supplier_app.js");
 
