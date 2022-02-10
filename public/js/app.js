@@ -67202,10 +67202,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       setTimeout(function () {
         jQuery.each(errors.errors, function (index, value) {
           index = index.replace(/\./g, '_');
+          /* Expand Quote Details Card */
+
           var closestQuote = $("#".concat(index)).closest('.quote');
           closestQuote.removeClass('collapsed-card');
           closestQuote.find('.card-body').css("display", "block");
           closestQuote.find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+          /* --------------------------------  */
+
           $("#".concat(index)).addClass('is-invalid');
           $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
           $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');

@@ -147,10 +147,13 @@ $(document).ready(function($) {
 
                     index = index.replace(/\./g, '_');
 
+                    /* Expand Quote Details Card */
                     let closestQuote = $(`#${index}`).closest('.quote');
+
                     closestQuote.removeClass('collapsed-card');
                     closestQuote.find('.card-body').css("display", "block");
                     closestQuote.find('.collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+                    /* --------------------------------  */
 
                     $(`#${index}`).addClass('is-invalid');
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
