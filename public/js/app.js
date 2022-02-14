@@ -67150,7 +67150,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   };
 
-  window.reinitializedMultiDynamicFeilds = function () {
+  window.reinitializedMultipleSelect2 = function () {
     $('.select2-multiple').select2({
       width: '100%',
       theme: "classic",
@@ -67887,7 +67887,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var label = $(this).find(':selected').attr('data-optionLable');
     var data = $(this).find(':selected').attr('data-optionData');
     $(createFilter(type, label, data)).insertBefore("#more_filter");
-    reinitializedMultiDynamicFeilds();
+    reinitializedMultipleSelect2();
   }); // transfer report
 
   $(document).on('click', '.remove-col', function () {

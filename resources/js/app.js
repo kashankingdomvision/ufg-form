@@ -90,7 +90,7 @@ $(document).ready(function($) {
         });
     }
 
-    window.reinitializedMultiDynamicFeilds = function() {
+    window.reinitializedMultipleSelect2 = function() {
         $('.select2-multiple').select2({
             width: '100%',
             theme: "classic",
@@ -959,7 +959,7 @@ $(document).ready(function($) {
                 var data  = $(this).find(':selected').attr('data-optionData');
 
                 $(createFilter(type,label,data)).insertBefore("#more_filter");
-                reinitializedMultiDynamicFeilds();
+                reinitializedMultipleSelect2();
             });
 
             // transfer report

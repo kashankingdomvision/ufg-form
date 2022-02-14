@@ -848,7 +848,7 @@ $(document).ready(function() {
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
-                reinitializedMultiDynamicFeilds();
+                reinitializedMultipleSelect2();
 
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
@@ -1003,7 +1003,7 @@ $(document).ready(function() {
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
-                reinitializedMultiDynamicFeilds();
+                reinitializedMultipleSelect2();
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

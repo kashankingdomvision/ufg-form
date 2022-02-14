@@ -1867,7 +1867,7 @@ $(document).ready(function () {
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
-        reinitializedMultiDynamicFeilds();
+        reinitializedMultipleSelect2();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
@@ -1958,7 +1958,7 @@ $(document).ready(function () {
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
-        reinitializedMultiDynamicFeilds();
+        reinitializedMultipleSelect2();
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top
         }, 1000);

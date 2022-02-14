@@ -195,7 +195,7 @@ $(document).ready(function() {
 
                 reinitializedSummerNote(`${quoteClass}`);
                 reinitializedSingleSelect2();
-                reinitializedMultiDynamicFeilds();
+                reinitializedMultipleSelect2();
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
@@ -320,7 +320,7 @@ $(document).ready(function() {
 
                 reinitializedSummerNote(`${quoteClass}`);
                 reinitializedSingleSelect2();
-                reinitializedMultiDynamicFeilds();
+                reinitializedMultipleSelect2();
 
                 $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

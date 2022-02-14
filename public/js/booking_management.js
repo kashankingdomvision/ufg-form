@@ -737,7 +737,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
-        reinitializedMultiDynamicFeilds();
+        reinitializedMultipleSelect2();
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);
@@ -865,7 +865,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
-        reinitializedMultiDynamicFeilds();
+        reinitializedMultipleSelect2();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
