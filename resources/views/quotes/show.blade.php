@@ -546,7 +546,7 @@
 
                 <div class="parent" id="parent">
                   
-                  @include('quote_booking_includes.expand-collapse-quote-detail-cards')
+                  @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                   <div class="sortable sortable-spacing">
                     @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )

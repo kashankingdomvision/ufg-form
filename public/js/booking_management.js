@@ -2093,6 +2093,32 @@ $(document).ready(function () {
       createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
     }
   });
+  /* Expand Collapse Script */
+  // var status = false;
+
+  $(document).on('click', '.expand-collapse-quote-detail-cards', function (event) {
+    var BtnText = $(this).text();
+    var status = $(this).data('status');
+    console.log(status);
+
+    if (!status) {
+      $(this).data('status', true);
+      $('#parent .quote').removeClass('collapsed-card');
+      $('#parent .card-body').css("display", "block");
+      $('#parent .collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
+      BtnText = "Collapse All &nbsp; <i class=\"fas fa-minus\"></i>";
+    } else {
+      $(this).data('status', false);
+      $('#parent .quote').addClass('collapsed-card');
+      $('#parent .card-body').css("display", "none");
+      $('#parent .collapse-expand-btn').html("<i class=\"fas fa-plus\"></i>");
+      BtnText = "Expand All &nbsp; <i class=\"fas fa-plus\"></i>";
+    }
+
+    $(this).html("".concat(BtnText)); // $(".collapse-expand-btn").trigger("click");
+  });
+  /* End Expand Collapse Script */
+
   /*
   |--------------------------------------------------------------------------------
   | Other Functions

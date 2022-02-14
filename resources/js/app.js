@@ -546,34 +546,7 @@ $(document).ready(function($) {
                 // $('.expand-collapse-quote-detail-cards').removeClass('d-none');
             });
 
-            /* Expand Collapse Script */
-            var status = false;
-            $(document).on('click', '.expand-collapse-quote-detail-cards', function(event) {
 
-                let BtnText = $(this).text();
-                status      = !(status); 
-
-                if(!status){
-                    
-                    $('#parent .quote').removeClass('collapsed-card');
-                    $('#parent .card-body').css("display", "block");
-                    $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
-
-                    BtnText = `Collapse All &nbsp; <i class="fas fa-minus"></i>`;
-                }else{
-
-                    $('#parent .quote').addClass('collapsed-card');
-                    $('#parent .card-body').css("display", "none");
-                    $('#parent .collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
-
-                    BtnText = `Expand All &nbsp; <i class="fas fa-plus"></i>`;
-                }
-
-                $(this).html(`${BtnText}`);
-                // $(".collapse-expand-btn").trigger("click");
-
-            });
-            /* End Expand Collapse Script */
 
             $(document).on('click', '.compare-expand-all-btn', function(event) {
                 $('#compare_parent .card').removeClass('collapsed-card');

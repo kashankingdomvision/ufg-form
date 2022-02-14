@@ -401,7 +401,7 @@
 
                 <div class="parent" id="parent">
 
-                  @include('quote_booking_includes.expand-collapse-quote-detail-cards')
+                  @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                   <div class="sortable sortable-spacing">
                     <div class="quote card card-default quote-0" data-key="0">

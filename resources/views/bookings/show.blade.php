@@ -568,7 +568,7 @@
 
                     <div class="parent" id="parent">
                       
-                      @include('quote_booking_includes.expand-collapse-quote-detail-cards')
+                      @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                       @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                       <div class="sortable sortable-spacing">
