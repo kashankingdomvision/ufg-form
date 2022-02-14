@@ -2094,12 +2094,10 @@ $(document).ready(function () {
     }
   });
   /* Expand Collapse Script */
-  // var status = false;
 
   $(document).on('click', '.expand-collapse-quote-detail-cards', function (event) {
     var BtnText = $(this).text();
     var status = $(this).data('status');
-    console.log(status);
 
     if (!status) {
       $(this).data('status', true);
