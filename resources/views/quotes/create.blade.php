@@ -601,7 +601,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3 whole-markup-feilds">
+                          <div class="col-md-3 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Markup Amount <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -613,7 +613,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3 whole-markup-feilds">
+                          <div class="col-md-3 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Markup % <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -625,7 +625,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3 whole-markup-feilds">
+                          <div class="col-md-3 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Selling Price <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -635,7 +635,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-3 whole-markup-feilds">
+                          <div class="col-md-3 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Profit % <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -660,7 +660,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-4 whole-markup-feilds">
+                          <div class="col-md-4 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -672,7 +672,7 @@
                             </div>
                           </div>
 
-                          <div class="col-md-4 whole-markup-feilds">
+                          <div class="col-md-4 whole-markup-feilds {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? 'd-none' : '' }}">
                             <div class="form-group">
                               <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -754,7 +754,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" readonly>
+                        <input type="number" step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? '' : 'readonly' }}>
                       </div>
                     </div>
                   </div>
@@ -762,7 +762,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <div class="input-group">
-                        <input type="number" step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" readonly>
+                        <input type="number" step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? '' : 'readonly' }}>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
                         </div>
