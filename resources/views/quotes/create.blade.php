@@ -442,15 +442,24 @@
                           <div class="col">
                             <div class="form-group">
                               <label>Date of Service <span style="color:red">*</span></label>
-                              <input type="text" placeholder="DD/MM/YYYY" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
+                              <div class="input-group">
+                                <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
+                                <input type="text" placeholder="DD/MM/YYYY" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
+                              </div>
+
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
 
+                    
                           <div class="col">
                             <div class="form-group">
                               <label>End Date of Service <span style="color:red">*</span></label>
-                              <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
+                              <div class="input-group">
+                                <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
+                                <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
+                              </div>
+                              
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
