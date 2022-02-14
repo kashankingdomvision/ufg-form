@@ -100,16 +100,16 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <label>Booking Details <span style="color:red">*</span></label>
                     <div class="form-group">
+                    <label>Booking Details <span style="color:red">*</span></label>
                       <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $quote->booking_details }}" placeholder="Enter Booking Details">
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
 
                   <div class="col-sm-6">
-                    <label>Reason for Trip <span style="color:red">*</span></label>
                     <div class="form-group">
+                    <label>Reason for Trip <span style="color:red">*</span></label>
                       <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" value="{{ $quote->reason_for_trip }}" placeholder="Enter Reason for Trip">
                       <span class="text-danger" role="alert"></span>
                     </div>
@@ -118,8 +118,8 @@
 
                 <div class="row">
                   <div class="col-sm-4">
-                    <label>Zoho Reference <span style="color:red">*</span></label>
                     <div class="form-group">
+                    <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group ">
                         <input type="text" name="ref_no" id="ref_no" value="{{ $quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
                           <div class="input-group-append">
