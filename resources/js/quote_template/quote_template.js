@@ -194,7 +194,7 @@ $(document).ready(function() {
                 datepickerReset(1,`${quoteClass}`);
 
                 reinitializedSummerNote(`${quoteClass}`);
-                reinitializedDynamicFeilds();
+                reinitializedSingleSelect2();
                 reinitializedMultiDynamicFeilds();
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
@@ -319,7 +319,7 @@ $(document).ready(function() {
                 datepickerReset(1,`${quoteClass}`);
 
                 reinitializedSummerNote(`${quoteClass}`);
-                reinitializedDynamicFeilds();
+                reinitializedSingleSelect2();
                 reinitializedMultiDynamicFeilds();
 
                 $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);

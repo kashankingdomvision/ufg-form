@@ -400,7 +400,7 @@ $(document).ready(function () {
     // quote.find('.finance-clonning:last').attr('data-financekey',financeCloningLength);
 
     cancellationPayments.find('.cancellation-refund-payment-row:last .cancellation-refund-payment-row-remove-btn').removeClass('d-none');
-    reinitializedDynamicFeilds();
+    reinitializedSingleSelect2();
   });
   $(document).on('click', '.clone_booking_finance', function () {
     if ($('.select2single').data('select2')) {
@@ -444,7 +444,7 @@ $(document).ready(function () {
     quote.find('.finance-clonning:last .deposit-amount').val('0.00').attr("readonly", false);
     quote.find('.finance-clonning:last .ab_number_of_days').val('0').attr("readonly", false);
     quote.find('.finance-clonning:last').attr('data-financekey', financeCloningLength);
-    reinitializedDynamicFeilds();
+    reinitializedSingleSelect2();
   });
   $("#cancel_booking_submit").submit(function (event) {
     event.preventDefault();
@@ -736,7 +736,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
-        reinitializedDynamicFeilds();
+        reinitializedSingleSelect2();
         reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
@@ -864,7 +864,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
-        reinitializedDynamicFeilds();
+        reinitializedSingleSelect2();
         reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
@@ -1378,7 +1378,7 @@ $(document).ready(function () {
       quote.find('.refund-payment-row:last .refund-payment-hidden-btn').removeClass('d-none');
     }
 
-    reinitializedDynamicFeilds();
+    reinitializedSingleSelect2();
   });
   $(document).on('click', '.credit-note', function () {
     if ($('.select2single').data('select2')) {
@@ -1428,7 +1428,7 @@ $(document).ready(function () {
       quote.find('.credit-note-row:last .credit-note-hidden-btn').removeClass('d-none');
     }
 
-    reinitializedDynamicFeilds();
+    reinitializedSingleSelect2();
   });
   $(document).on('click', '.refund-payment-hidden-btn', function () {
     var quote = $(this).closest('.quote');
@@ -2074,7 +2074,7 @@ $(document).ready(function () {
     }
 
     quote.find(selector).append(appendHTML);
-    reinitializedDynamicFeilds(); // insElment.appendChild(div);
+    reinitializedSingleSelect2(); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 

@@ -162,7 +162,7 @@ $(document).ready(function() {
 
         quote.find(selector).append(appendHTML);
 
-        reinitializedDynamicFeilds();
+        reinitializedSingleSelect2();
         // insElment.appendChild(div);
         // $(div).insertAfter(quote.find('.product-id-col'));
     }

@@ -67141,7 +67141,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return $("<span><img height=\"19\" width=\"19\" src=\"".concat(optionImage, "\" class=\"option-flag-image\" />").concat(option.text, "</span>"));
   };
 
-  window.reinitializedDynamicFeilds = function () {
+  window.reinitializedSingleSelect2 = function () {
     $('.select2single').select2({
       width: '100%',
       theme: "bootstrap",

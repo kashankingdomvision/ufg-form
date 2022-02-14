@@ -687,7 +687,7 @@ $(document).ready(function () {
     }
 
     quote.find(selector).append(appendHTML);
-    reinitializedDynamicFeilds(); // insElment.appendChild(div);
+    reinitializedSingleSelect2(); // insElment.appendChild(div);
     // $(div).insertAfter(quote.find('.product-id-col'));
   }
 
@@ -1866,7 +1866,7 @@ $(document).ready(function () {
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
-        reinitializedDynamicFeilds();
+        reinitializedSingleSelect2();
         reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
@@ -1957,7 +1957,7 @@ $(document).ready(function () {
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
-        reinitializedDynamicFeilds();
+        reinitializedSingleSelect2();
         reinitializedMultiDynamicFeilds();
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top

@@ -680,7 +680,7 @@ $(document).on('click', '.quotes-service-category-btn-below', function(e) {
             datepickerReset(1);
             calltextEditorSummerNote('#quote_' + qleng + '_service_details');
             calltextEditorSummerNote('#quote_' + qleng + '_stored_text');
-            reinitializedDynamicFeilds();
+            reinitializedSingleSelect2();
 
             $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
 
