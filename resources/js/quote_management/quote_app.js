@@ -2,7 +2,7 @@ $(document).ready(function() {
    
     /*
     |--------------------------------------------------------------------------------
-    | Common Functions for Store & Update Category
+    | Functions
     |--------------------------------------------------------------------------------
     */
 
@@ -47,307 +47,6 @@ $(document).ready(function() {
         getCalculatedTotalNetMarkup();
     }
 
-    $(document).on('change', '.total-markup-change', function() {
-
-        var changeFeild = $(this).attr("data-name");
-        getQuoteTotalValuesOnMarkupChange(changeFeild);
-
-    });
-    
-
-    $("#update-override").submit(function(event) {
-        event.preventDefault();
-
-        var $form = $(this),
-            url = $form.attr('action');
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function() {
-                $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function(data) {
-
-
-                if (data.success_message) {
-
-                    // $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
-                    jQuery('.category-detail-feilds').modal('show');
-                }
-
-
-                // $("#overlay").removeClass('overlay').html('');
-                // setTimeout(function() {
-                //     alert('Quote updated Successfully');
-                //     window.location.href = REDIRECT_BASEURL + "quotes/index";
-                // }, 400);
-            },
-            error: function(reject) {
-
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-
-                    setTimeout(function() {
-                        $("#overlay").removeClass('overlay').html('');
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 400);
-
-                }
-            },
-        });
-    });
-
-    $(document).on('submit', "#update_quote, #version_quote", function(event) {
-
-        event.preventDefault();
-        removeDisabledAttribute(".create-template [name=_method]");
-     
-        var url         = $(this).attr('action');
-        var formData    = new FormData(this);
-        var full_number = '';
-        var agency      = $("input[name=agency]:checked").val();
-
-        if(agency == 0){
-            full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
-        }else{
-            full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
-        }
-
-        formData.append('full_number', full_number);
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function() {
-                removeFormValidationStyles();
-                addFormLoadingStyles();
-            },
-            success: function(response) {
-
-                removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
-            },
-            error: function(response) {
-                
-                removeFormLoadingStyles();
-                printServerValidationErrors(response);
-            }
-        });
-    });
-
-    $('.tempalte-id').on('change', function() {
-
-        var templateID = $(this).val();
-
-        $.ajax({
-            url: `${BASEURL}template/${templateID}/partial`,
-            type: 'get',
-            dataType: "json",
-            success: function(data) {
-
-                if (data) {
-                    if (confirm("Are you sure! you want to override Quote Details?")) {
-
-                        $('#parent').html(data.template_view);
-
-                        $(".select2single").select2({
-                            width: "100%",
-                            theme: "bootstrap",
-                            templateResult: formatState,
-                            templateSelection: formatState,
-                        });
-
-                        $(`input[name=markup_type][value='${data.template.markup_type}']`).attr('checked', 'checked');
-                        $(`input[name=rate_type][value='${data.template.rate_type}']`).attr('checked', 'checked');
-                        $(".booking-currency-id").val(data.template.currency_id).change();
-
-                        // make quote section sortable
-                        $(function() {
-                            $( ".sortable" ).sortable();
-                        });
-
-                        getQuoteTotalValues();
-
-                        // jQuery('.note-editor').remove();
-                        jQuery('.summernote').summernote({
-                            height: 100,   //set editable area's height
-                            placeholder: 'Enter Text Here..',
-                            codemirror: { // codemirror options
-                                theme: 'monokai'
-                            },
-                        });
-                    }
-                }
-
-            },
-            error: function(reject) {
-                console.log(reject);
-                // searchRef.text('Search').prop('disabled', false);
-            },
-        });
-
-    });
-
-    $(document).on('click', '#submit_template', function() {
-
-        disabledFeild(".create-template [name=_method]");
-
-        var templateName  = $('#template_name').val();
-        var privacyStatus = $('input[name="privacy_status"]:checked').val();
-        var formData      = $('.create-template').serialize() + '&template_name=' + templateName + '&privacy_status=' + privacyStatus ;
-        var url           = `${REDIRECT_BASEURL}template/store-for-quote`;
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            beforeSend: function() {
-
-                $('input').removeClass('is-invalid');
-                $('.text-danger').html('');
-                $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function(data) {
-
-                $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
-                jQuery('#modal-default').modal('hide');
-
-                setTimeout(function() {
-                    alert('Template Created Successfully');
-                    removeDisabledAttribute(".create-template [name=_method]");
-                }, 400);
-            },
-            error: function(reject) {
-                removeDisabledAttribute(".create-template [name=_method]");
-                if (reject.status === 422) {
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
-                        $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
-
-                        jQuery.each(errors.errors, function(index, value) {
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-                    }, 400);
-                }
-            },
-        });
-
-    });
-
-    // Reset Template Modal On Open
-    $(document).on('click', '#save_template', function() {
-
-        var modal = jQuery('#modal-default').modal('show');
-
-        modal.find('#template_name').val('');
-        modal.find("input[name=privacy_status][value=1]").prop('checked', true);
-    });
-
-
-    $("#store_quote").submit(function(event) {
-
-        event.preventDefault();
-
-        var url = $(this).attr('action');
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function() {
-                removeFormValidationStyles();
-                addFormLoadingStyles();
-            },
-            success: function(response) {
-
-                removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
-            },
-            error: function(response) {
-                
-                removeFormLoadingStyles();
-                printServerValidationErrors(response);
-            }
-        });
-    });
-
-
-
-            /* Quote Final page script */
-            if([ 'quotes.final' ].includes(CURRENT_ROUTE_NAME)){
-
-                $("#show_quote :input").prop("disabled", true);
-            }
-            /* End Quote Final page script */
-
-            /* Quote Version page script */
-            if([ 'quotes.view.version' ].includes(CURRENT_ROUTE_NAME)){
-
-                $("#version_quote :input").prop("disabled", true);
-                $('#recall_version').on('click', function() {
-    
-                    if ($(this).data('recall')) {
-                        if (confirm("Are you sure you want to Recall this Quotation?")) {
-    
-                            $("#version_quote :input").prop("disabled", false);
-                            $('#recall_version').data('recall', false);
-                            $(this).text('Back Into Version');
-    
-                            getMarkupTypeFeildAttribute();
-                        }
-    
-                    }
-                    else{
-    
-                        $("#version_quote :input").prop("disabled", true);
-                        $('#recall_version').prop("disabled", false);
-                        $(this).text('Recall Version');
-                    }
-                });
-            }
-            /* End Quote Version page script */
-
-            
-     
-   
-
-
-
-             /*
-    |--------------------------------------------------------------------------
-    | Quote Management Calculation Functions
-    |--------------------------------------------------------------------------
-    */
-
-
-
-
-
     function onChangeAgencyCommissionType(){
 
         var agency               = $("input[name=agency]:checked").val();
@@ -364,15 +63,6 @@ $(document).ready(function() {
         getCalculatedTotalNetMarkup();
         getCommissionRate();
     }
-
-    $(document).on('change, click', '.agency-commission-type', function() {
-        onChangeAgencyCommissionType();
-    });
-
-    $(document).on('change', '.agency-commission', function() {
-        getCalculatedTotalNetMarkup();
-        getCommissionRate();
-    });
 
     function getCalculatedTotalNetMarkup() {
 
@@ -564,15 +254,299 @@ $(document).ready(function() {
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | End Quote Management
-    |--------------------------------------------------------------------------
+    |--------------------------------------------------------------------------------
+    | Specific Page Script
+    |--------------------------------------------------------------------------------
     */
 
+    /* Quote Final page script */
+        $("#show_quote :input").prop("disabled", true);
+    /* End Quote Final page script */
+
+    /* Quote Version page script */
+    $("#version_quote :input").prop("disabled", true);
+    $('#recall_version').on('click', function() {
+
+        if ($(this).data('recall')) {
+            if (confirm("Are you sure you want to Recall this Quotation?")) {
+
+                $("#version_quote :input").prop("disabled", false);
+                $('#recall_version').data('recall', false);
+                $(this).text('Back Into Version');
+
+                getMarkupTypeFeildAttribute();
+            }
+
+        }
+        else{
+
+            $("#version_quote :input").prop("disabled", true);
+            $('#recall_version').prop("disabled", false);
+            $(this).text('Recall Version');
+        }
+    });
+    /* End Quote Version page script */
 
 
+    /*
+    |--------------------------------------------------------------------------------
+    | Other Functions
+    |--------------------------------------------------------------------------------
+    */
+
+    $(document).on('change', '.total-markup-change', function() {
+
+        var changeFeild = $(this).attr("data-name");
+        getQuoteTotalValuesOnMarkupChange(changeFeild);
+    });
+    
+    $(document).on('submit', "#store_quote", function(event) {
+
+        event.preventDefault();
+
+        var url = $(this).attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+
+                removeFormLoadingStyles();
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    $(document).on('submit', "#update_quote, #version_quote", function(event) {
+
+        event.preventDefault();
+        removeDisabledAttribute(".create-template [name=_method]");
+     
+        var url         = $(this).attr('action');
+        var formData    = new FormData(this);
+        var full_number = '';
+        var agency      = $("input[name=agency]:checked").val();
+
+        if(agency == 0){
+            full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+        }else{
+            full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+        }
+
+        formData.append('full_number', full_number);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+
+                removeFormLoadingStyles();
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    $('.tempalte-id').on('change', function() {
+
+        var templateID = $(this).val();
+
+        $.ajax({
+            url: `${BASEURL}template/${templateID}/partial`,
+            type: 'get',
+            dataType: "json",
+            success: function(data) {
+
+                if (data) {
+                    if (confirm("Are you sure! you want to override Quote Details?")) {
+
+                        $('#parent').html(data.template_view);
+
+                        $(".select2single").select2({
+                            width: "100%",
+                            theme: "bootstrap",
+                            templateResult: formatState,
+                            templateSelection: formatState,
+                        });
+
+                        $(`input[name=markup_type][value='${data.template.markup_type}']`).attr('checked', 'checked');
+                        $(`input[name=rate_type][value='${data.template.rate_type}']`).attr('checked', 'checked');
+                        $(".booking-currency-id").val(data.template.currency_id).change();
+
+                        // make quote section sortable
+                        $(function() {
+                            $( ".sortable" ).sortable();
+                        });
+
+                        getQuoteTotalValues();
+
+                        // jQuery('.note-editor').remove();
+                        jQuery('.summernote').summernote({
+                            height: 100,   //set editable area's height
+                            placeholder: 'Enter Text Here..',
+                            codemirror: { // codemirror options
+                                theme: 'monokai'
+                            },
+                        });
+                    }
+                }
+
+            },
+            error: function(reject) {
+                console.log(reject);
+                // searchRef.text('Search').prop('disabled', false);
+            },
+        });
+
+    });
+
+    $(document).on('click', '#submit_template', function() {
+
+        disabledFeild(".create-template [name=_method]");
+
+        var templateName  = $('#template_name').val();
+        var privacyStatus = $('input[name="privacy_status"]:checked').val();
+        var formData      = $('.create-template').serialize() + '&template_name=' + templateName + '&privacy_status=' + privacyStatus ;
+        var url           = `${REDIRECT_BASEURL}template/store-for-quote`;
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            beforeSend: function() {
+
+                $('input').removeClass('is-invalid');
+                $('.text-danger').html('');
+                $("#submit_template").find('span').addClass('spinner-border spinner-border-sm');
+            },
+            success: function(data) {
+
+                $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+                jQuery('#modal-default').modal('hide');
+
+                setTimeout(function() {
+                    alert('Template Created Successfully');
+                    removeDisabledAttribute(".create-template [name=_method]");
+                }, 400);
+            },
+            error: function(reject) {
+                removeDisabledAttribute(".create-template [name=_method]");
+                if (reject.status === 422) {
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function() {
+
+                        $("#submit_template").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        jQuery.each(errors.errors, function(index, value) {
+                            index = index.replace(/\./g, '_');
+                            $(`#${index}`).addClass('is-invalid');
+                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                        });
+                    }, 400);
+                }
+            },
+        });
+
+    });
+
+    // Reset Template Modal On Open
+    $(document).on('click', '#save_template', function() {
+
+        var modal = jQuery('#modal-default').modal('show');
+
+        modal.find('#template_name').val('');
+        modal.find("input[name=privacy_status][value=1]").prop('checked', true);
+    });
+
+    $(document).on('submit', "#update-override", function(event) {
+        event.preventDefault();
+
+        var $form = $(this),
+            url = $form.attr('action');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                $("#override_submit").find('span').addClass('spinner-border spinner-border-sm');
+            },
+            success: function(data) {
 
 
+                if (data.success_message) {
 
+                    // $("#override_submit").find('span').removeClass('spinner-border spinner-border-sm');
+                    jQuery('.category-detail-feilds').modal('show');
+                }
+
+
+                // $("#overlay").removeClass('overlay').html('');
+                // setTimeout(function() {
+                //     alert('Quote updated Successfully');
+                //     window.location.href = REDIRECT_BASEURL + "quotes/index";
+                // }, 400);
+            },
+            error: function(reject) {
+
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+
+                    setTimeout(function() {
+                        $("#overlay").removeClass('overlay').html('');
+
+                        jQuery.each(errors.errors, function(index, value) {
+
+                            index = index.replace(/\./g, '_');
+                            $(`#${index}`).addClass('is-invalid');
+                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                        });
+
+                    }, 400);
+
+                }
+            },
+        });
+    });
+
+    $(document).on('change, click', '.agency-commission-type', function() {
+        onChangeAgencyCommissionType();
+    });
+
+    $(document).on('change', '.agency-commission', function() {
+        getCalculatedTotalNetMarkup();
+        getCommissionRate();
+    });
 
 });
