@@ -67579,11 +67579,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     status = !status;
 
     if (!status) {
-      $(this).html("Expand All &nbsp; <i class=\"fas fa-minus\"></i>");
+      BtnText = "Collapse All &nbsp; <i class=\"fas fa-minus\"></i>";
     } else {
-      $(this).html("Collapse All &nbsp; <i class=\"fas fa-plus\"></i>");
+      BtnText = "Expand All &nbsp; <i class=\"fas fa-plus\"></i>";
     }
 
+    $(this).html("".concat(BtnText));
     $(".collapse-expand-btn").trigger("click");
   });
   /* End Expand Collapse Script */

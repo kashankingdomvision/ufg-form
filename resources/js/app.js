@@ -542,11 +542,12 @@ $(document).ready(function($) {
                 status      = !(status); 
 
                 if(!status){
-                    $(this).html(`Expand All &nbsp; <i class="fas fa-minus"></i>`);
+                    BtnText = `Collapse All &nbsp; <i class="fas fa-minus"></i>`;
                 }else{
-                    $(this).html(`Collapse All &nbsp; <i class="fas fa-plus"></i>`);
+                    BtnText = `Expand All &nbsp; <i class="fas fa-plus"></i>`;
                 }
 
+                $(this).html(`${BtnText}`);
                 $(".collapse-expand-btn").trigger("click");
 
             });
