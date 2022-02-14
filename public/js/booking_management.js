@@ -365,10 +365,7 @@ $(document).ready(function () {
     }
   });
   $(document).on('click', '.add-more-cancellation-payments', function () {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
+    destroySingleSelect2();
     var cancellationPayments = $('.cancellation-payments');
     var cancellationRefundPaymentRow = $(".cancellation-refund-payment-row").length;
     cancellationPayments.find('.cancellation-refund-payment-row').first().clone().find("input").val("").each(function () {
@@ -403,10 +400,7 @@ $(document).ready(function () {
     reinitializedSingleSelect2();
   });
   $(document).on('click', '.clone_booking_finance', function () {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
+    destroySingleSelect2();
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var financeCloningLength = quote.find(".finance-clonning").length;
@@ -627,14 +621,8 @@ $(document).ready(function () {
 
     if (category_id) {
       setTimeout(function () {
-        if ($('.select2single').data('select2')) {
-          $('.select2single').select2('destroy');
-        }
-
-        if ($('.select2-multiple').data('select2')) {
-          $('.select2-multiple').select2('destroy');
-        }
-
+        destroySingleSelect2();
+        destroyMultipleSelect2();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -756,14 +744,8 @@ $(document).ready(function () {
 
     if (category_id) {
       setTimeout(function () {
-        if ($('.select2single').data('select2')) {
-          $('.select2single').select2('destroy');
-        }
-
-        if ($('.select2-multiple').data('select2')) {
-          $('.select2-multiple').select2('destroy');
-        }
-
+        destroySingleSelect2();
+        destroyMultipleSelect2();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -1330,10 +1312,7 @@ $(document).ready(function () {
     }
   });
   $(document).on('click', '.refund-to-bank', function () {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
+    destroySingleSelect2();
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var refundPaymentRowLength = quote.find(".refund-payment-row:not(:hidden)").length;
@@ -1381,10 +1360,7 @@ $(document).ready(function () {
     reinitializedSingleSelect2();
   });
   $(document).on('click', '.credit-note', function () {
-    if ($('.select2single').data('select2')) {
-      $('.select2single').select2('destroy');
-    }
-
+    destroySingleSelect2();
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var creditNoteRowLength = quote.find(".credit-note-row:not(:hidden)").length; // console.log(creditNoteRowLength);

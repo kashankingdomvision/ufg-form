@@ -1798,14 +1798,8 @@ $(document).ready(function () {
 
     if (category_id) {
       setTimeout(function () {
-        if ($('.select2single').data('select2')) {
-          $('.select2single').select2('destroy');
-        }
-
-        if ($('.select2-multiple').data('select2')) {
-          $('.select2-multiple').select2('destroy');
-        }
-
+        destroySingleSelect2();
+        destroyMultipleSelect2();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -1889,14 +1883,8 @@ $(document).ready(function () {
 
     if (category_id) {
       setTimeout(function () {
-        if ($('.select2single').data('select2')) {
-          $('.select2single').select2('destroy');
-        }
-
-        if ($('.select2-multiple').data('select2')) {
-          $('.select2-multiple').select2('destroy');
-        }
-
+        destroySingleSelect2();
+        destroyMultipleSelect2();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;

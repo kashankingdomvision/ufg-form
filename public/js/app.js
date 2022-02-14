@@ -67159,6 +67159,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     });
   };
 
+  window.destroySingleSelect2 = function () {
+    if ($('.select2single').data('select2')) {
+      $('.select2single').select2('destroy');
+    }
+  };
+
+  window.destroyMultipleSelect2 = function () {
+    if ($('.select2-multiple').data('select2')) {
+      $('.select2-multiple').select2('destroy');
+    }
+  };
+
   window.disabledFeild = function (p) {
     $(p).attr("disabled", true);
   };
