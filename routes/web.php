@@ -167,7 +167,7 @@ Route::group(['middleware' => ['auth']], function(){
     */
 
 	Route::group([
-        'prefix' => 'template',
+        'prefix' => 'templates',
         'as' 	 => 'templates.'
     ], function() {
 

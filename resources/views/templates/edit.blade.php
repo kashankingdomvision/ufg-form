@@ -39,7 +39,7 @@
                         <h3 class="card-title text-center">Edit Template</h3>
                         </div>
                         
-                        <form method="POST" action="{{ route('templates.update', encrypt($template->id)) }}" id="update_template"> 
+                        <form method="POST" id="update_template" action="{{ route('templates.update', encrypt($template->id)) }}" > 
                             @csrf @method('put')
                             <div class="card-body">
                                 
@@ -577,6 +577,10 @@
   @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
   @include('partials.category_detail_feilds')
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/template_management.js') }}" ></script>
+@endpush
 
 @push('js')
 

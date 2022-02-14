@@ -40,7 +40,7 @@
                 <h3 class="card-title text-center">Template Form</h3>
               </div>
             
-              <form method="POST" action="{{ route('templates.store') }}" id="create_template"> @csrf
+              <form method="POST" id="store_template" action="{{ route('templates.store') }}" > @csrf
                 <div class="card-body">
 
                   <div class="row p-3">
@@ -172,7 +172,7 @@
                             <div class="col-md-12">
                               <div class="form-group ">
                                 <div class="modal fade calladdmediaModal" data-backdrop="static"  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                  @include('partials.addmediaModal')
+                                  {{-- @include('partials.addmediaModal') --}}
                                 </div>
                               </div>
                               <button type="button" data-show="calladdmediaModal" class="float-right btn btn-dark addmodalforquote" data-toggle="modal" data-target=".exampleModalCenter"><i class="fa fa-upload" aria-hidden="true"></i></button>
@@ -546,11 +546,15 @@
     </section>
 
   </div>
-  @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ])
-  @include('partials.category_detail_feilds')
+  {{-- @include('partials.insert_quick_text',[ 'preset_comments' => $preset_comments ]) --}}
+  {{-- @include('partials.category_detail_feilds')
   @include('partials.new_service_modal',['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
-  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
+  @include('partials.new_service_modal_below',['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ]) --}}
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/template_management.js') }}" ></script>
+@endpush
 
 @push('js')
 

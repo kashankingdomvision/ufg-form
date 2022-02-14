@@ -81,38 +81,25 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/user_management.js":
-/*!*****************************************!*\
-  !*** ./resources/js/user_management.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(/*! ./user_management/user_app */ "./resources/js/user_management/user_app.js");
-
-__webpack_require__(/*! ./user_management/role_app */ "./resources/js/user_management/role_app.js");
-
-/***/ }),
-
-/***/ "./resources/js/user_management/role_app.js":
-/*!**************************************************!*\
-  !*** ./resources/js/user_management/role_app.js ***!
-  \**************************************************/
+/***/ "./resources/js/template_management.js":
+/*!*********************************************!*\
+  !*** ./resources/js/template_management.js ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
   /*
   |--------------------------------------------------------------------------------
-  | Store Role
+  | Store Template 
   |--------------------------------------------------------------------------------
   */
-  $(document).on('submit', '#store_role', function (event) {
+  $(document).on('submit', '#store_template', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     $.ajax({
@@ -128,7 +115,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "roles/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "templates/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -138,11 +125,11 @@ $(document).ready(function () {
   });
   /*
   |--------------------------------------------------------------------------------
-  | Update Role
+  | Update Template
   |--------------------------------------------------------------------------------
   */
 
-  $(document).on('submit', '#update_role', function (event) {
+  $(document).on('submit', '#update_template', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     $.ajax({
@@ -158,7 +145,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "roles/index"));
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "templates/index"));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -170,116 +157,14 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./resources/js/user_management/user_app.js":
-/*!**************************************************!*\
-  !*** ./resources/js/user_management/user_app.js ***!
-  \**************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-$(document).ready(function () {
-  /*
-  |--------------------------------------------------------------------------------
-  | Store User
-  |--------------------------------------------------------------------------------
-  */
-  $(document).on('submit', '#store_user', function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addFormLoadingStyles();
-      },
-      success: function success(response) {
-        removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "users/index"));
-      },
-      error: function error(response) {
-        removeFormLoadingStyles();
-        printServerValidationErrors(response);
-      }
-    });
-  });
-  /*
-  |--------------------------------------------------------------------------------
-  | Update User
-  |--------------------------------------------------------------------------------
-  */
-
-  $(document).on('submit', '#update_user', function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addFormLoadingStyles();
-      },
-      success: function success(response) {
-        removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "users/index"));
-      },
-      error: function error(response) {
-        removeFormLoadingStyles();
-        printServerValidationErrors(response);
-      }
-    });
-  });
-  $(document).on('change', '.role-id', function () {
-    var role = $(this).find('option:selected').data('role');
-    var supervisor = $('#supervisor_feild');
-
-    if (role == 'Sales Agent' || role == 2) {
-      $(supervisor).removeClass("d-none");
-      $('#supervisor_id').attr("required", true).removeAttr('disabled');
-    } else {
-      $(supervisor).addClass("d-none");
-      $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
-    }
-  });
-  $(document).on('change', '.getBrandtoHoliday', function () {
-    var brand_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_id': brand_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-        });
-        $('.appendHolidayType').html(options);
-      }
-    });
-  });
-});
-
-/***/ }),
-
-/***/ 6:
-/*!***********************************************!*\
-  !*** multi ./resources/js/user_management.js ***!
-  \***********************************************/
+/***/ 3:
+/*!***************************************************!*\
+  !*** multi ./resources/js/template_management.js ***!
+  \***************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\js\user_management.js */"./resources/js/user_management.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\js\template_management.js */"./resources/js/template_management.js");
 
 
 /***/ })
