@@ -249,6 +249,25 @@ $(document).ready(function () {
       $('#selectSupervisor').attr("required", false).attr('disabled', 'disabled');
     }
   });
+  $(document).on('change', '.getBrandtoHoliday', function () {
+    var brand_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_id': brand_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Type Of Holiday</option>';
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+        });
+        $('.appendHolidayType').html(options);
+      }
+    });
+  });
 });
 
 /***/ }),

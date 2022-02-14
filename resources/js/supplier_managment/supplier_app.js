@@ -71,4 +71,29 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(document).on('change', '.getCountryToLocation', function() {
+        
+        var supplier_country_ids = $(this).val();
+        var url         = BASEURL + 'country/to/location';
+        var options     = '';
+
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'supplier_country_ids': supplier_country_ids },
+            beforeSend: function() {
+                $('.appendCountryLocation').html(options);
+            },
+            success: function(response) {
+
+                $.each(response, function(key, value) {
+                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} (${value.country_name}) </option>`;
+                });
+
+                $('.appendCountryLocation').html(options);
+            }
+        });
+    
+    });
 });

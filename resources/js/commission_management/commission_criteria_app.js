@@ -71,4 +71,28 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(document).on('change', '.getMultipleBrandtoHoliday', function() {
+
+        let brand_ids = $(this).val();
+        var options = '';
+        var url = BASEURL + 'multiple/brand/to/holidays'
+        
+        $.ajax({
+            type: 'get',
+            url: url,
+            data: { 'brand_ids': brand_ids },
+            beforeSend: function() {
+                $('.appendMultipleHolidayType').html(options);
+            },
+            success: function(response) {
+                $.each(response, function(key, value) {
+                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} (${value.brand_name}) </option>`;
+                });
+
+                $('.appendMultipleHolidayType').html(options);
+            }
+        });
+ 
+    });
 });

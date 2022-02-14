@@ -164,6 +164,13 @@ $(document).ready(function () {
   */
 
 
+  $('.selling-price-other-currency').select2({
+    width: '68%',
+    theme: "bootstrap",
+    templateResult: formatState,
+    templateSelection: formatState
+  });
+
   window.getBookingAmountPerPerson = function () {
     var paxNumber = parseFloat($(".pax-number").val());
     var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
@@ -318,8 +325,28 @@ $(document).ready(function () {
       key++;
     }
   }
-  /* Hide Potentail Commission for another Behalf User */
 
+  $(document).on('change', '.getBrandtoHoliday', function () {
+    var brand_id = $(this).val();
+    var options = '';
+    var url = BASEURL + 'brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_id': brand_id
+      },
+      success: function success(response) {
+        options += '<option value="">Select Type Of Holiday</option>';
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+        });
+        $('.appendHolidayType').html(options);
+      }
+    });
+    getCommissionRate();
+  });
+  /* Hide Potentail Commission for another Behalf User */
 
   $(document).on('change', '.sales-person-id', function () {
     console.log("sales  salessalessales");

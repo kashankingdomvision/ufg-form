@@ -269,8 +269,8 @@ $(document).ready(function($) {
     
     datepickerReset();
 
-       /*  ajaxSetup */
-       $.ajaxSetup({
+    /*  ajaxSetup */
+    $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': CSRFTOKEN
         }
@@ -305,13 +305,6 @@ $(document).ready(function($) {
     $('.select2-single').select2({
         width: '90%',
         theme: "bootstrap",
-    });
-
-    $('.selling-price-other-currency').select2({
-        width: '68%',
-        theme: "bootstrap",
-        templateResult: formatState,
-        templateSelection: formatState,
     });
 
     $('.summernote').summernote({
@@ -401,347 +394,86 @@ $(document).ready(function($) {
         });
     });
 
-  
 
-    // user managment
-    $(document).on('change', '.getBrandtoHoliday', function() {
-        let brand_id = $(this).val();
-        var options = '';
-        var url = BASEURL + 'brand/to/holidays'
-        $.ajax({
-            type: 'get',
-            url: url,
-            data: { 'brand_id': brand_id },
-            success: function(response) {
-                options += '<option value="">Select Type Of Holiday</option>';
-                $.each(response, function(key, value) {
-                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                });
-                $('.appendHolidayType').html(options);
-            }
-        });
+
+
+    $(document).on('change', '.select-agency', function() {
+        var agency_ = $('.agencyField');
+        var passenger_ = $('.PassengerField');
+        if (($(this).val() == 1)) {
+            $('#pax_no').val(1).change();
+            $("input[name=agency_commission_type][value=net-price]").prop('checked', true);
+            agency_.removeClass('d-none');
+            passenger_.addClass('d-none');
+            agency_.find('input, select').removeAttr('disabled');
+            passenger_.find('input, select').attr('disabled', 'disabled');
+            // $('#agency_contact').addClass('phone phone0');
+            // $('#lead_passenger_contact').removeClass('phone');
+            // $('#lead_passenger_contact').removeClass('phone0');
+            var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+            });
+            iti.destroy();
+            // intTelinput('gc');
+        } else {
+            $('#pax_no').val(1).change();
+            $('.paid-net-commission-on-departure').addClass('d-none');
+            agency_.addClass('d-none');
+            passenger_.removeClass('d-none');
+            passenger_.find('input, select').removeAttr('disabled');
+            var iti = intlTelInput(document.querySelector('#agency_contact'), {
+                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+            });
+            iti.destroy();
+            // $('#lead_passenger_contact').addClass('phone phone0');
+            // $('#agency_contact').removeClass('phone');
+            // $('#agency_contact').removeClass('phone0');
+            agency_.find('input, select').attr('disabled', 'disabled');
+            // intTelinput(0);
+        }
 
         getCommissionRate();
     });
 
-    // commission criteria
-    $(document).on('change', '.getMultipleBrandtoHoliday', function() {
-
-        let brand_ids = $(this).val();
-        var options = '';
-        var url = BASEURL + 'multiple/brand/to/holidays'
-        
-        $.ajax({
-            type: 'get',
-            url: url,
-            data: { 'brand_ids': brand_ids },
-            beforeSend: function() {
-                $('.appendMultipleHolidayType').html(options);
-            },
-            success: function(response) {
-                $.each(response, function(key, value) {
-                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} (${value.brand_name}) </option>`;
-                });
-
-                $('.appendMultipleHolidayType').html(options);
-            }
-        });
- 
+    $(document).on('click', '.expand-all-btn', function(event) {
+        $('#parent .quote').removeClass('collapsed-card');
+        $('#parent .card-body').css("display", "block");
+        $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
+        // $(this).addClass('d-none');
+        // $('.expand-collapse-quote-detail-cards').removeClass('d-none');
     });
 
-    // $(document).on('change', '.getCountryToTown', function() {
-    //     let country_id = $(this).val();
-    //     var options    = '';
-
-    //     var url = BASEURL + 'country/to/town'
-    //     $.ajax({
-    //         type: 'get',
-    //         url: url,
-    //         data: { 'country_id': country_id },
-    //         success: function(response) {
-    //             options += '<option value="">Select Town</option>';
-    //             $.each(response, function(key, value) {
-    //                 options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-    //             });
-
-    //             $('.appendCountryTown').html(options);
-    //         }
-    //     });
-    
-    // });
-
-
-    // suppliers
-    $(document).on('change', '.getCountryToLocation', function() {
-        
-        var supplier_country_ids = $(this).val();
-        var url         = BASEURL + 'country/to/location';
-        var options     = '';
-
-        $.ajax({
-            type: 'get',
-            url: url,
-            data: { 'supplier_country_ids': supplier_country_ids },
-            beforeSend: function() {
-                $('.appendCountryLocation').html(options);
-            },
-            success: function(response) {
-
-                $.each(response, function(key, value) {
-                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} (${value.country_name}) </option>`;
-                });
-
-                $('.appendCountryLocation').html(options);
-            }
-        });
-    
+    $(document).on('click', '.compare-expand-all-btn', function(event) {
+        $('#compare_parent .card').removeClass('collapsed-card');
+        $('#compare_parent .card-body').css("display", "block");
+        $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
     });
 
+    $(document).on('click', '.compare-expand-collapse-quote-detail-cards', function(event) {
 
-  
+        $('#compare_parent .card').addClass('collapsed-card');
+        $('#compare_parent .card-body').css("display", "none");
+        $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
+    });
 
-            $(document).on('change', '.select-agency', function() {
-                var agency_ = $('.agencyField');
-                var passenger_ = $('.PassengerField');
-                if (($(this).val() == 1)) {
-                    $('#pax_no').val(1).change();
-                    $("input[name=agency_commission_type][value=net-price]").prop('checked', true);
-                    agency_.removeClass('d-none');
-                    passenger_.addClass('d-none');
-                    agency_.find('input, select').removeAttr('disabled');
-                    passenger_.find('input, select').attr('disabled', 'disabled');
-                    // $('#agency_contact').addClass('phone phone0');
-                    // $('#lead_passenger_contact').removeClass('phone');
-                    // $('#lead_passenger_contact').removeClass('phone0');
-                    var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
-                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-                    });
-                    iti.destroy();
-                    // intTelinput('gc');
-                } else {
-                    $('#pax_no').val(1).change();
-                    $('.paid-net-commission-on-departure').addClass('d-none');
-                    agency_.addClass('d-none');
-                    passenger_.removeClass('d-none');
-                    passenger_.find('input, select').removeAttr('disabled');
-                    var iti = intlTelInput(document.querySelector('#agency_contact'), {
-                        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-                    });
-                    iti.destroy();
-                    // $('#lead_passenger_contact').addClass('phone phone0');
-                    // $('#agency_contact').removeClass('phone');
-                    // $('#agency_contact').removeClass('phone0');
-                    agency_.find('input, select').attr('disabled', 'disabled');
-                    // intTelinput(0);
-                }
+    /**
+     * -------------------------------------------------------------------------------------
+     *                                Quote Manangement
+     * -------------------------------------------------------------------------------------
+     */
 
-                getCommissionRate();
-            });
+    $(document).on('click', '.parent-row', function(e) {
+        var parentID = $(this).data('id');
+        $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
+        $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
+    });
 
-            $(document).on('click', '.expand-all-btn', function(event) {
-                $('#parent .quote').removeClass('collapsed-card');
-                $('#parent .card-body').css("display", "block");
-                $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
-                // $(this).addClass('d-none');
-                // $('.expand-collapse-quote-detail-cards').removeClass('d-none');
-            });
+    $(".readonly").keypress(function(evt) {
+        evt.preventDefault();
+    });
 
-
-
-            $(document).on('click', '.compare-expand-all-btn', function(event) {
-                $('#compare_parent .card').removeClass('collapsed-card');
-                $('#compare_parent .card-body').css("display", "block");
-                $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
-            });
-
-            $(document).on('click', '.compare-expand-collapse-quote-detail-cards', function(event) {
-
-                $('#compare_parent .card').addClass('collapsed-card');
-                $('#compare_parent .card-body').css("display", "none");
-                $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
-            });
-
-
-            // $(document).on('change', '.supplier-id', function() {
-
-            //     var quote                = $(this).closest('.quote');
-            //     var quoteKey             = quote.data('key');
-            //     var supplier_name        = $(this).find(':selected').attr('data-name');
-            //     var supplier_id          = $(this).val();
-            //     var season_id            = $('.season-id').val();
-            //     var supplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
-            //     var category_id          = $(`#quote_${quoteKey}_category_id`).val();
-            //     var options              = '';
-
-            //     /* set/unset card header, supplier currency & product */
-            //     if(typeof supplier_id === 'undefined' || supplier_id == "") {
-            //         quote.find('.badge-supplier-id').html("");
-
-            //         // $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-            //         // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
-
-            //         $(`#quote_${quoteKey}_supplier_currency_id`).val("").trigger('change');
-            //         return;
-            //     }else{
-            //         quote.find('.badge-supplier-id').html(supplier_name);
-            //         // $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
-            //     }
-
-            //     /* get supplier's rate sheet, supplier's product, supplier's currency */
-            //     if(season_id != "" && supplier_id != ""){
-            //         $.ajax({
-            //             type: 'get',
-            //             url: `${BASEURL}get-supplier-product-and-sheet`,
-            //             data: { 
-            //                 'supplier_id': supplier_id,
-            //                 'season_id': season_id,
-            //                 'supplier_location_id': supplier_location_id,
-            //                 'category_id': category_id,
-            //             },
-            //             success: function(response) {
-
-            //                 if(response && response.url != ""){
-            //                     quote.find('.view-supplier-rate').attr("href", response.url).html("(View Rates)");
-            //                 }else{
-            //                     quote.find('.view-supplier-rate').attr("href","").html("");
-            //                 }
-
-            //                 // /* set product dropdown */
-            //                 // if(response && response.products.length > 0){
-                            
-            //                 //     options += "<option value=''>Select Product</option>";
-            //                 //     $.each(response.products, function(key, value) {
-            //                 //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-            //                 //     });
-
-            //                 //     $(`#quote_${quoteKey}_product_id`).html(options);
-            //                 // }else{
-            //                 //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-            //                 // }
-
-            //                 /* set supplier currency */
-            //                 if(response && response.supplier_currency != ""){
-            //                     $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier_currency).trigger('change');
-            //                 }
-
-            //             }
-            //         });
-            //     }else{
-            //         quote.find('.view-supplier-rate').attr("href","").html("");
-            //         $(`#quote_${quoteKey}_product_id`).html("");
-            //     }
-            // });
-
-            // $(document).on('change', '.product-location-id', function(){
-                
-            //     var quote                 = $(this).closest('.quote');
-            //     var quoteKey              = quote.data('key');
-            //     var product_location_id   = $(`#quote_${quoteKey}_product_location_id`).val();
-            //     var supplier_id           = $(`#quote_${quoteKey}_supplier_id`).val();
-            //     var options               = '';
-
-            //     $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
-
-            //     /* set product dropdown null when product location become null */
-            //     if(typeof product_location_id === 'undefined' || product_location_id == ""){
-            //         // quote.find('.badge-category-id').html("");
-            //         $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-            //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-            //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
-            //         return;
-            //     }
-
-            //     $.ajax({
-            //         type: 'get',
-            //         url: `${BASEURL}location/to/product`,
-            //         data: { 'product_location_id': product_location_id, 'supplier_id' : supplier_id },
-            //         success: function(response) {
-
-            //             /* set supplier dropdown*/
-            //             options += "<option value=''>Select Product</option>";
-            //             $.each(response.products, function(key, value) {
-            //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-            //             });
-            //             $(`#quote_${quoteKey}_product_id`).html(options);
-                      
-            //         }
-            //     })
-
-            // });
-
-     
-
-            /**
-             * -------------------------------------------------------------------------------------
-             *                                Season Manangement
-             * -------------------------------------------------------------------------------------
-             */
-
-            // $('#seasons').keyup(function() {
-            //     var val = $(this).val();
-            //     if (val.length == 4) {
-            //         $(this).val(val + '-');
-            //     }
-            // });
-
-
-            /**
-             * -------------------------------------------------------------------------------------
-             *                                Quote Manangement
-             * -------------------------------------------------------------------------------------
-             */
-
-            $(document).on('click', '.parent-row', function(e) {
-                var parentID = $(this).data('id');
-                $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
-                $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
-            });
-
-        
-
-     
-         
-
-
-
-            // $(document).on('click', '.cancel-service', function(e) {
-
-            //     e.preventDefault();
-
-            //     var booking_detail_id = $(this).attr('data-bookingDetialID');
-
-            //     if( confirm("Are you sure you want to Cancel this Service?") == true){
-
-            //         $.ajax({
-            //             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-            //             url: `${REDIRECT_BASEURL}bookings/cancel-booking-service/${booking_detail_id}/${status}`,
-            //             type: 'get',
-            //             success: function(data) {
-
-            //                 setTimeout(function() {
-
-            //                     if (data.success_message) {
-            //                         alert(data.success_message);
-            //                         location.reload();
-            //                     }
-
-            //                 }, 400);
-
-            //             },
-            //             error: function(reject) {}
-            //         });
-            //     }
-
-            // });
-
-       
-
-            $(".readonly").keypress(function(evt) {
-                evt.preventDefault();
-            });
-
-            $(".collapse-all-btn").removeAttr('disabled');
-            $(".expand-all-btn").removeAttr('disabled');
+    $(".collapse-all-btn").removeAttr('disabled');
+    $(".expand-all-btn").removeAttr('disabled');
 
 
 

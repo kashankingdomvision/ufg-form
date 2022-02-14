@@ -239,6 +239,27 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('change', '.getMultipleBrandtoHoliday', function () {
+    var brand_ids = $(this).val();
+    var options = '';
+    var url = BASEURL + 'multiple/brand/to/holidays';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'brand_ids': brand_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendMultipleHolidayType').html(options);
+      },
+      success: function success(response) {
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.brand_name, ") </option>");
+        });
+        $('.appendMultipleHolidayType').html(options);
+      }
+    });
+  });
 });
 
 /***/ }),
