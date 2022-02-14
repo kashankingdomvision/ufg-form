@@ -89,7 +89,7 @@
 
             </div>
 
-            <form method="POST" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}">
+            <form method="POST" id="update_quote" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}">
               @csrf @method('put')
               <div class="card-body">
 

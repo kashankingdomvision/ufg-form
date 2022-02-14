@@ -60,7 +60,7 @@
               @endif
             </div>
 
-            <form method="POST" id="show_quote" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}">
+            <form method="POST" id="show_quote" class="create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}">
               @csrf @method('put')
               <div class="card-body">
 

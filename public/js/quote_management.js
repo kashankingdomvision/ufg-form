@@ -1301,13 +1301,10 @@ $(document).ready(function () {
       }
     });
   });
-  $(document).on('submit', ".update-quote, #version_quote", function (event) {
+  $(document).on('submit', "#update_quote, #version_quote", function (event) {
     event.preventDefault();
+    removeDisabledAttribute(".create-template [name=_method]");
     var url = $(this).attr('action');
-    removeDisabledAttribute(".create-template [name=_method]"); // $('#lead_passenger_contact').intlTelInput("getNumber");/
-    // console.log($("input[name='full_number']").val()+ 'asdsa');
-    // $('#lead_passenger_contact').intlTelInput("getNumber")
-
     var formData = new FormData(this);
     var full_number = '';
     var agency = $("input[name=agency]:checked").val();
@@ -1319,8 +1316,6 @@ $(document).ready(function () {
     }
 
     formData.append('full_number', full_number);
-    /* Send the data using post */
-
     $.ajax({
       type: 'POST',
       url: url,
@@ -1329,52 +1324,16 @@ $(document).ready(function () {
       cache: false,
       processData: false,
       beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-        $('.quote').removeClass('border border-danger');
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = REDIRECT_BASEURL + "quotes/index";
-          }
-        }, 200);
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "quotes/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-            var flag = true;
-
-            if (errors.hasOwnProperty("overrride_errors")) {
-              alert(errors.overrride_errors);
-              window.location.href = REDIRECT_BASEURL + "quotes/index";
-            } else {
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_'); // expand quote if feild has an error
-                // $(`#${index}`).closest('.quote').addClass('border border-danger');
-
-                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
-                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
-                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
-                $("#".concat(index)).addClass('is-invalid');
-                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-                if (flag) {
-                  $('html, body').animate({
-                    scrollTop: $("#".concat(index)).offset().top
-                  }, 1000);
-                  flag = false;
-                }
-              });
-            }
-          }, 400);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });

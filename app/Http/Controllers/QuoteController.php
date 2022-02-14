@@ -489,7 +489,12 @@ class QuoteController extends Controller
             $new_quote_group->quotes()->attach($quote->id);
         }
 
-        return \Response::json(['status' => 200, 'success_message' => 'Quote created successfully'], 200);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Quote Created Successfully.',
+            'redirect_url'    => route('quotes.index') 
+        ]);
+
     }
 
     public function edit($id)
@@ -625,7 +630,11 @@ class QuoteController extends Controller
         }
         // $quote_update_detail->delete();
 
-        return \Response::json(['status' => 200, 'success_message' => 'Quote update successfully'], 200);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Quote Updated Successfully.',
+            'redirect_url'    => route('quotes.index') 
+        ]);
     }
     
     public function quoteVersion($id, $type = null)
