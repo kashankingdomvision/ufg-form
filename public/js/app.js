@@ -67330,7 +67330,59 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         format: 'dd/mm/yyyy'
       });
     }
-  };
+  }; //tel input end
+  //intl-tel-input ************** Start ******************** //
+  // function intTelinput(key = null, inVal = null) {
+
+
+  window.intTelinput = function () {
+    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    var inVal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+    // console.log(key);
+    var input = document.querySelector('.phone' + key);
+    var errorMsg = document.querySelector('.error_msg' + key);
+    var validMsg = document.querySelector('.valid_msg' + key);
+    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+      separateDialCode: true,
+      formatOnDisplay: true,
+      initialCountry: "US",
+      nationalMode: true,
+      hiddenInput: "full_number",
+      autoPlaceholder: "polite",
+      placeholderNumberType: "MOBILE"
+    });
+    input.nextElementSibling.value = iti.getNumber(); // iti.setCountry("US");
+    // on blur: validate
+
+    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+    input.addEventListener('blur', function () {
+      input.nextElementSibling.value = iti.getNumber();
+      reset();
+
+      if (input.value.trim()) {
+        if (iti.isValidNumber()) {
+          $('.buttonSumbit').removeAttr('disabled');
+          input.classList.add("is-valid");
+          validMsg.innerHTML = 'The number is valid';
+        } else {
+          $('.buttonSumbit').attr('disabled', 'disabled');
+          input.classList.add("is-invalid");
+          validMsg.innerHTML = '';
+          var errorCode = iti.getValidationError();
+          errorMsg.innerHTML = errorMap[errorCode];
+          errorMsg.classList.remove("hide");
+        }
+      }
+    });
+
+    var reset = function reset() {
+      input.classList.remove("is-invalid");
+      errorMsg.innerHTML = "";
+      errorMsg.classList.add("hide");
+    };
+  }; //intl-tel-input ************** End ******************** //
+
   /*
   |--------------------------------------------------------------------------
   | Invoke Global Functions
@@ -67825,58 +67877,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   if ($('#agency_contact').length > 0) {
     intTelinput('gc'); // console.log(inTelinput);
-  } //tel input end
-  //intl-tel-input ************** Start ******************** //
-
-
-  function intTelinput() {
-    var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var inVal = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-    // console.log(key);
-    var input = document.querySelector('.phone' + key);
-    var errorMsg = document.querySelector('.error_msg' + key);
-    var validMsg = document.querySelector('.valid_msg' + key);
-    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
-      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-      separateDialCode: true,
-      formatOnDisplay: true,
-      initialCountry: "US",
-      nationalMode: true,
-      hiddenInput: "full_number",
-      autoPlaceholder: "polite",
-      placeholderNumberType: "MOBILE"
-    });
-    input.nextElementSibling.value = iti.getNumber(); // iti.setCountry("US");
-    // on blur: validate
-
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-    input.addEventListener('blur', function () {
-      input.nextElementSibling.value = iti.getNumber();
-      reset();
-
-      if (input.value.trim()) {
-        if (iti.isValidNumber()) {
-          $('.buttonSumbit').removeAttr('disabled');
-          input.classList.add("is-valid");
-          validMsg.innerHTML = 'The number is valid';
-        } else {
-          $('.buttonSumbit').attr('disabled', 'disabled');
-          input.classList.add("is-invalid");
-          validMsg.innerHTML = '';
-          var errorCode = iti.getValidationError();
-          errorMsg.innerHTML = errorMap[errorCode];
-          errorMsg.classList.remove("hide");
-        }
-      }
-    });
-
-    var reset = function reset() {
-      input.classList.remove("is-invalid");
-      errorMsg.innerHTML = "";
-      errorMsg.classList.add("hide");
-    };
-  } //intl-tel-input ************** End ******************** //
-
+  }
 
   var btnname = null; //BUlk DATA DELETE
 
