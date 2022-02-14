@@ -327,7 +327,21 @@ $(document).ready(function() {
         jQuery('.fileManger').filemanager('image', {prefix: route_prefix});
     }
 
+    /* Quote Medial Modal  */
+    $(document).on('click', '.QuotemediaModalClose', function () {
+        $(this).closest('.modal-body').children('.input-group').find('input').val("");
+        $(this).closest('.modal-body').children('.previewId').find('img').remove();
+        jQuery('.modal').modal('hide');
+    });
 
+    /* Remove Image in Medial Modal  */
+    $(document).on('click', '.remove-img', function () {
+
+        // $('#previewId').html(`<img src="" class="img-fluid"></img>`);
+        $(this).closest('.modal-body').children('.input-group').find('input').val("");
+        $(this).parent().html(`<img src="" class="img-fluid">`);
+        // console.log($(this).closest('.modal-body').find('.image').html());
+    });
 
 
 
