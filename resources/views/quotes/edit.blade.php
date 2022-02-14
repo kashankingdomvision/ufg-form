@@ -193,8 +193,8 @@
                   </div>
 
                   <div class="col-sm-6">
+                    <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                     <div class="form-group">
-                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                       <input type="radio" name="rate_type" id="live_rate" class="rate-type" value="live" {{ ($quote->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
                       <label class="radio-inline mr-1" for="live_rate">Live Rate</label>
                       
