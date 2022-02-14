@@ -1,4 +1,12 @@
 
+$(document).on('click', '.collapse-all-btn', function(event) {
+    $('#parent .quote').addClass('collapsed-card');
+    $('#parent .card-body').css("display", "none");
+    $('#parent .collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
+    // $(this).addClass('d-none');
+    // $('.expand-all-btn').removeClass('d-none');
+});
+
 
     Toast.fire({
         icon: 'success',

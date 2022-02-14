@@ -545,12 +545,8 @@
                 </div>
 
                 <div class="parent" id="parent">
-                  <div class="row">
-                    <div class="col-md-12 text-right mb-2 p-1">
-                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 expand-all-btn" >Expand All</button>
-                      <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-all-btn" >Collapse All</button>
-                    </div>
-                  </div>
+                  
+                  @include('quote_booking_includes.expand-collapse-quote-detail-cards')
 
                   <div class="sortable sortable-spacing">
                     @foreach ($quote->getQuoteDetails()->get() as $key  => $q_detail )

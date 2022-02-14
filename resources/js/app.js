@@ -531,20 +531,26 @@ $(document).ready(function($) {
                 $('#parent .card-body').css("display", "block");
                 $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
                 // $(this).addClass('d-none');
-                // $('.collapse-all-btn').removeClass('d-none');
+                // $('.expand-collapse-quote-detail-cards').removeClass('d-none');
             });
 
-            $(document).on('click', '.collapse-all-btn', function(event) {
-                $('#parent .quote').addClass('collapsed-card');
-                $('#parent .card-body').css("display", "none");
-                $('#parent .collapse-expand-btn').html(`<i class="fas fa-plus"></i>`);
-                // $(this).addClass('d-none');
-                // $('.expand-all-btn').removeClass('d-none');
+            /* Expand Collapse Script */
+            var status = false;
+            $(document).on('click', '.expand-collapse-quote-detail-cards', function(event) {
+
+                let BtnText = $(this).text();
+                status      = !(status); 
+
+                if(!status){
+                    $(this).html(`Expand All &nbsp; <i class="fas fa-minus"></i>`);
+                }else{
+                    $(this).html(`Collapse All &nbsp; <i class="fas fa-plus"></i>`);
+                }
+
+                $(".collapse-expand-btn").trigger("click");
+
             });
-
-
-
-
+            /* End Expand Collapse Script */
 
             $(document).on('click', '.compare-expand-all-btn', function(event) {
                 $('#compare_parent .card').removeClass('collapsed-card');
@@ -552,7 +558,7 @@ $(document).ready(function($) {
                 $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
             });
 
-            $(document).on('click', '.compare-collapse-all-btn', function(event) {
+            $(document).on('click', '.compare-expand-collapse-quote-detail-cards', function(event) {
 
                 $('#compare_parent .card').addClass('collapsed-card');
                 $('#compare_parent .card-body').css("display", "none");
