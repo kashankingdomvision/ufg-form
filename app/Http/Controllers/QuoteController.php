@@ -243,7 +243,6 @@ class QuoteController extends Controller
             $data['stored_text'] = $request->stored_text??NULL;
         }
 
-        
         if($type == 'bookings'){
 
             $data['quote_id']        = $request->id;
@@ -403,6 +402,55 @@ class QuoteController extends Controller
         return $data;
     }
 
+    public function getQuoteDetailCountryArray( $quote, $quoteDetail, $id, $type)
+    {
+        $data = [
+            'country_id'      => $id
+        ];
+
+        if($type == 'quote_details'){
+
+            $data['quote_id']        = $quote->id;
+            $data['quote_detail_id'] = $quoteDetail->id;
+        }
+
+        if($type == 'booking_details'){
+
+            $data['booking_id']        = $quote->id;
+            $data['booking_detail_id'] = $quoteDetail->id;
+        }
+
+        return $data;
+    }
+
+    public function getQuoteDetailStoredTextArray($new_quote_details, $quote_details){
+
+        $data = [
+            'quote_detail_id' => $new_quote_details->id,
+            'stored_text'     => $quote_details['stored_text']['text'],
+            'action_date'     => $quote_details['stored_text']['date']
+        ];
+
+        return $data;
+    }
+
+    public function getQuoteLogArray($quote)
+    {
+
+        $array          = $quote->toArray();
+        $array['quote'] = $quote->getQuoteDetails->toArray();
+        $array['pax'  ] = $quote->getPaxDetail->toArray();
+
+        $data = [
+            'quote_id'   => $quote->id,
+            'version_no' => $quote->version,
+            'data'       => $array,
+            'log_no'     => $quote->getQuotelogs()->count(),
+        ];
+
+        return $data;
+    }
+
     public function create()
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
@@ -435,29 +483,6 @@ class QuoteController extends Controller
         return view('quotes.create', $data);
     }
 
-
-    public function getQuoteDetailCountryArray( $quote, $quoteDetail, $id, $type)
-    {
-        $data = [
-            'country_id'      => $id
-        ];
-
-        if($type == 'quote_details'){
-
-            $data['quote_id']        = $quote->id;
-            $data['quote_detail_id'] = $quoteDetail->id;
-
-        }
-
-        if($type == 'booking_details'){
-
-            $data['booking_id']        = $quote->id;
-            $data['booking_detail_id'] = $quoteDetail->id;
-        }
-
-        return $data;
-    }
-
     // QuoteRequest
     // Request
     public function store(QuoteRequest $request)
@@ -465,13 +490,12 @@ class QuoteController extends Controller
 
         // dd($request->all());
 
-        $quote =  Quote::create($this->quoteArray($request, 'quotes'));
+        $quote = Quote::create($this->quoteArray($request, 'quotes'));
 
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $quote_details) {
 
-                $getQuoteDetailsArray = $this->getQuoteDetailsArray($quote_details, $quote, 'quote_details');
-                $quoteDetail          = QuoteDetail::create($getQuoteDetailsArray);
+                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote_details, $quote, 'quote_details'));
 
                 if(isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids'])){
 
@@ -481,11 +505,7 @@ class QuoteController extends Controller
                 }
 
                 if(isset($quote_details['stored_text'])){
-                    QuoteDetailStoredText::create([
-                        'quote_detail_id' => $quoteDetail->id,
-                        'stored_text'     => $quote_details['stored_text']['text'],
-                        'action_date'     => $quote_details['stored_text']['date']
-                    ]);
+                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($quoteDetail, $quote_details));
                 }
 
                 /* quote_category_details values*/ 
@@ -496,8 +516,7 @@ class QuoteController extends Controller
                     foreach ($category_details as $category_detail){
                         if(isset($category_detail['userData'])){
 
-                            $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($quoteDetail, $category_detail);
-                            QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
+                            QuoteCategoryDetail::create($this->getQuoteCategoryDetailArray($quoteDetail, $category_detail));
                         }
                     }
                 }
@@ -509,8 +528,7 @@ class QuoteController extends Controller
         if($request->has('pax')){
             foreach ($request->pax as $pax_data) {
 
-                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data, 'quotes');
-                QuotePaxDetail::create($getPaxDetailsArray);
+                QuotePaxDetail::create($this->getPaxDetailsArray($quote, $pax_data, 'quotes'));
             }
         }
 
@@ -565,7 +583,6 @@ class QuoteController extends Controller
         return view('quotes.edit',$data);
     }
 
-
     // QuoteRequest
     // Request
     public function update(QuoteRequest $request, $id)
@@ -578,20 +595,10 @@ class QuoteController extends Controller
         //     return \Response::json(['overrride_errors' => 'Someone Has Override Update Access.'], 422); // Status code here
         // }
 
-        $quote          = Quote::findOrFail(decrypt($id));
+        $quote = Quote::findOrFail(decrypt($id));
 
-        /* quote log */ 
-        $array          = $quote->toArray();
-        $array['quote'] = $quote->getQuoteDetails->toArray();
-        $array['pax'  ] = $quote->getPaxDetail->toArray();
-
-        QuoteLog::create([
-            'quote_id'   => $quote->id,
-            'version_no' => $quote->version,
-            'data'       => $array,
-            'log_no'     => $quote->getQuotelogs()->count(),
-        ]);
-        /* quote log */ 
+        /* store quote log*/ 
+        QuoteLog::create($this->getQuoteLogArray($quote));
 
         /* update quote table */ 
         $quote->update($this->quoteArray($request, 'quotes'));
@@ -615,11 +622,8 @@ class QuoteController extends Controller
                 
                 /* quote_detail_stored_texts values*/ 
                 if(isset($quote_details['stored_text'])){
-                    QuoteDetailStoredText::create([
-                        'quote_detail_id'   => $new_quote_details->id,
-                        'stored_text'       => $quote_details['stored_text']['text'],
-                        'action_date'       => $quote_details['stored_text']['date']
-                    ]);
+
+                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($new_quote_details, $quote_details));
                 }
 
                 /* quote_category_details values*/ 
@@ -630,8 +634,7 @@ class QuoteController extends Controller
                     foreach ($category_details as $category_detail){
                         if(isset($category_detail['userData'])){
 
-                            $getQuoteCategoryDetailArray = $this->getQuoteCategoryDetailArray($new_quote_details, $category_detail);
-                            QuoteCategoryDetail::create($getQuoteCategoryDetailArray);
+                            QuoteCategoryDetail::create($this->getQuoteCategoryDetailArray($new_quote_details, $category_detail));
                         }
                     }
                 }
@@ -646,8 +649,7 @@ class QuoteController extends Controller
             $quote->getPaxDetail()->delete();
 
             foreach ($request->pax as $pax_data) {
-                $getPaxDetailsArray = $this->getPaxDetailsArray($quote, $pax_data, 'quotes');
-                QuotePaxDetail::create($getPaxDetailsArray);
+                QuotePaxDetail::create($this->getPaxDetailsArray($quote, $pax_data, 'quotes'));
             }
         }else{
             $quote->getPaxDetail()->delete();
@@ -753,8 +755,7 @@ class QuoteController extends Controller
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
 
-                    $getBookingQuoteCategoryDetailArray = $this->getBookingQuoteCategoryDetailArray($bookingDetail, $feilds);
-                    BookingCategoryDetail::create($getBookingQuoteCategoryDetailArray);
+                    BookingCategoryDetail::create($this->getBookingQuoteCategoryDetailArray($bookingDetail, $feilds));
                 }
             }
         }
@@ -762,8 +763,7 @@ class QuoteController extends Controller
         if($quote->getPaxDetail->count()){
             foreach ($quote->getPaxDetail as $pax_data) {
 
-                $getPaxDetailsArray = $this->getPaxDetailsArray($booking, $pax_data, 'bookings');
-                BookingPaxDetail::create($getPaxDetailsArray);
+                BookingPaxDetail::create($this->getPaxDetailsArray($booking, $pax_data, 'bookings'));
             }
         }
         
@@ -878,8 +878,8 @@ class QuoteController extends Controller
     public function clone($id)
     {
         $quote      = Quote::findORFail(decrypt($id));
-        $getQuote   = $this->quoteArray($quote, 'quotes');
-        $clone      = Quote::create($getQuote);
+        $clone      = Quote::create($this->quoteArray($quote, 'quotes'));
+
         foreach ($quote->getQuoteDetails as $qu_details) {
 
             $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($qu_details, $clone, 'quote_details'));
@@ -887,8 +887,7 @@ class QuoteController extends Controller
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
 
-                    $getCloneQuoteCategoryDetailArray = $this->getCloneQuoteCategoryDetailArray($quoteDetail, $feilds);
-                    QuoteCategoryDetail::create($getCloneQuoteCategoryDetailArray);
+                    QuoteCategoryDetail::create($this->getCloneQuoteCategoryDetailArray($quoteDetail, $feilds));
                 }
             }
 
@@ -903,8 +902,7 @@ class QuoteController extends Controller
         if($quote->getPaxDetail && $quote->pax_no >= 1){
             foreach ($quote->getPaxDetail as $pax_data) {
 
-                $getPaxDetailsArray = $this->getPaxDetailsArray($clone, $pax_data, 'clone');
-                QuotePaxDetail::create($getPaxDetailsArray);
+                QuotePaxDetail::create($this->getPaxDetailsArray($clone, $pax_data, 'clone'));
             }
         }
 
