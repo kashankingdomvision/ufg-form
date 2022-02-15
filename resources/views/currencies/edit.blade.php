@@ -46,16 +46,18 @@
                   <span class="text-danger" role="alert"></span>
                 </div> 
 
-                <div class="form-group clearfix">
+                <div class="form-group">
                   <label>Status <span style="color:red">*</span></label><br>
-                  <div class="icheck-primary d-inline mr-1">
-                    <input type="radio" id="active" name="status" value="1" {{ $currency->status == 1 ? "checked" : "" }}>
-                    <label for="active">Active</label>
-                  </div>
+                  <div class="d-flex flex-row">
+                    <div class="custom-control custom-radio mr-1">
+                      <input type="radio" name="status" id="status_active" value="1" class="custom-control-input custom-control-input-success custom-control-input-outline" {{ $currency->status == 1 ? "checked" : "" }}>
+                      <label class="custom-control-label" for="status_active">Active</label>
+                    </div>
 
-                  <div class="icheck-primary d-inline">
-                    <input type="radio" id="inactive" name="status" value="0" {{ $currency->status == 0 ? "checked" : "" }}>
-                    <label for="inactive">Inactive</label>
+                    <div class="custom-control custom-radio mr-1">
+                      <input type="radio" name="status" id="status_inactive" value="0" class="custom-control-input custom-control-input-success custom-control-input-outline" {{ $currency->status == 0 ? "checked" : "" }}>
+                      <label class="custom-control-label" for="status_inactive">Inactive</label>
+                    </div>
                   </div>
                 </div>
               </div>
