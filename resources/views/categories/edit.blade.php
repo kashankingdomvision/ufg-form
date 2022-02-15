@@ -54,14 +54,19 @@
 
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="show_tf" value="0" class="show-tf" {{ ($category->show_tf == 0) ? 'checked' : '' }}>
-                        <span>&nbsp;Hide</span>
-                      </label>
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="show_tf" value="1" class="show-tf" {{ ($category->show_tf == 1) ? 'checked' : '' }}>
-                        <span>&nbsp;Show</span>
-                      </label>
+                      <div class="d-flex flex-row">
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="show_tf" id="show_tf_hide" value="0" class="show-tf custom-control-input custom-control-input-success custom-control-input-outline" {{ ($category->show_tf == 0) ? 'checked' : '' }}>
+                          <label class="custom-control-label" for="show_tf_hide">Hide</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="show_tf" id="show_tf_show" value="1" class="show-tf custom-control-input custom-control-input-success custom-control-input-outline" {{ ($category->show_tf == 1) ? 'checked' : '' }}>
+                          <label class="custom-control-label" for="show_tf_show">Show</label>
+                        </div>
+                      </div>
+                  
                     </div>
                   </div>
 
@@ -81,14 +86,17 @@
 
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="second_tf" value="0" class="show-tf" {{ ($category->second_tf == 0) ? 'checked' : '' }}>
-                        <span>&nbsp;Hide</span>
-                      </label>
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="second_tf" value="1" class="show-tf" {{ ($category->second_tf == 1) ? 'checked' : '' }}>
-                        <span>&nbsp;Show</span>
-                      </label>
+                      <div class="d-flex flex-row">
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="second_tf" id="second_tf_hide" value="0" class="show-tf custom-control-input custom-control-input-success custom-control-input-outline" {{ ($category->second_tf == 0) ? 'checked' : '' }}>
+                          <label class="custom-control-label" for="second_tf_hide"> Hide </label>
+                        </div>
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="second_tf" id="second_tf_show" value="1" class="show-tf custom-control-input custom-control-input-success custom-control-input-outline" {{ ($category->second_tf == 1) ? 'checked' : '' }}>
+                          <label class="custom-control-label" for="second_tf_show">Show </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
