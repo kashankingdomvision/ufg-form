@@ -2130,11 +2130,11 @@
         </div>
       </div>
     </section>
-    @if(isset($exist) && isset($user_id))
+    {{-- @if(isset($exist) && isset($user_id))
       @if($exist == 1 && $user_id != Auth::id())
         @include('includes.override_modal',[ 'status' => 'bookings' , 'id' => $booking->id ])
       @endif
-    @endif
+    @endif --}}
   </div>
 
 

@@ -1185,11 +1185,11 @@
 
   <!-- End Modals  -->
 
-  @if($exist && $user_id)
+  {{-- @if($exist && $user_id)
     @if($exist == 1 && $user_id != Auth::id())
       @include('includes.override_modal',[ 'status' => 'quotes', 'id' => $quote->id ])
     @endif
-  @endif
+  @endif --}}
 </div>
 
 @endsection
