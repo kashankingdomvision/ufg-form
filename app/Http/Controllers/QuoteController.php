@@ -185,7 +185,7 @@ class QuoteController extends Controller
         return CurrencyConversion::all();
     }
 
-    public function quoteArray($request, $type = null)
+    public function quoteArray($request, $type)
     {
         $data = [
 
@@ -236,9 +236,22 @@ class QuoteController extends Controller
             'markup_type'                       =>  $request->markup_type??NULL,
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
-        if($type != 'booking'){
-            $data['stored_text']                =   $request->stored_text??NULL;
+
+        
+        if($type == 'quotes'){
+
+            $data['stored_text'] = $request->stored_text??NULL;
         }
+
+        
+        if($type == 'bookings'){
+
+            $data['quote_id']        = $request->id;
+            $data['booking_details'] = $request->booking_details;
+            $data['booking_status']  = 'confirmed';
+            $data['booking_date']    = Carbon::now();
+        }
+
         return $data;
     }
 
@@ -280,7 +293,12 @@ class QuoteController extends Controller
 
         if($type == 'booking_details'){
 
-            $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? $quoteD['supplier_country_ids'] : NULL ;
+            $data['booking_id']                   = $quote->id;
+            $data['supplier_country_ids']         = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? $quoteD['supplier_country_ids'] : NULL ;
+            $data['outstanding_amount_left']      = $quoteD['estimated_cost'];
+            $data['actual_cost']                  = $quoteD['estimated_cost'];
+            $data['actual_cost_bc']               = $quoteD['estimated_cost_bc'];
+            $data['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
         }
 
         return $data;
@@ -447,7 +465,7 @@ class QuoteController extends Controller
 
         // dd($request->all());
 
-        $quote =  Quote::create($this->quoteArray($request));
+        $quote =  Quote::create($this->quoteArray($request, 'quotes'));
 
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $quote_details) {
@@ -576,7 +594,7 @@ class QuoteController extends Controller
         /* quote log */ 
 
         /* update quote table */ 
-        $quote->update($this->quoteArray($request));
+        $quote->update($this->quoteArray($request, 'quotes'));
 
         /* update quote detail table*/ 
         if($request->has('quote') && count($request->quote) > 0){
@@ -586,10 +604,7 @@ class QuoteController extends Controller
 
             foreach ($request->quote as $quote_details) {
                 
-                $getQuoteDetailsArray = $this->getQuoteDetailsArray($quote_details, $quote, 'quote_details');
-                $getQuoteDetailsArray['quote_id'] = $quote->id;
-
-                $new_quote_details = QuoteDetail::create($getQuoteDetailsArray);
+                $new_quote_details = QuoteDetail::create($this->getQuoteDetailsArray($quote_details, $quote, 'quote_details'));
 
                 if( isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids']) ){
 
@@ -720,24 +735,13 @@ class QuoteController extends Controller
 
     public function booking($id)
     {
-        $quote = Quote::findORFail(decrypt($id));
-        $getQuote = $this->quoteArray($quote, 'booking');
-        $getQuote['quote_id']       = $quote->id;
-        $getQuote['booking_details']  = $quote->booking_details;
-        $getQuote['booking_status'] = 'confirmed';
-        $getQuote['booking_date']   = Carbon::now();
-        $booking = Booking::create($getQuote);
+        $quote   = Quote::findORFail(decrypt($id));
+
+        $booking = Booking::create($this->quoteArray($quote, 'bookings'));
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $quote, 'booking_details');
-
-            $quoteDetail['booking_id']                   = $booking->id;
-            $quoteDetail['outstanding_amount_left']      = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost']                  = $quoteDetail['estimated_cost'];
-            $quoteDetail['actual_cost_bc']               = $quoteDetail['estimated_cost_bc'];
-            $quoteDetail['booking_detail_unique_ref_id'] = Helper::getBDUniqueRefID();
-            $bookingDetail = BookingDetail::create($quoteDetail);
+            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($qu_details, $quote, 'booking_details'));
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {
@@ -874,13 +878,11 @@ class QuoteController extends Controller
     public function clone($id)
     {
         $quote      = Quote::findORFail(decrypt($id));
-        $getQuote   = $this->quoteArray($quote,'clone');
+        $getQuote   = $this->quoteArray($quote, 'quotes');
         $clone      = Quote::create($getQuote);
         foreach ($quote->getQuoteDetails as $qu_details) {
-            $quoteDetail = $this->getQuoteDetailsArray($qu_details, $clone, 'quote_details');
-            $quoteDetail['quote_id'] = $clone->id;
 
-            $quoteDetail = QuoteDetail::create($quoteDetail);
+            $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($qu_details, $clone, 'quote_details'));
 
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
