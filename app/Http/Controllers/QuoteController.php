@@ -201,19 +201,16 @@ class QuoteController extends Controller
             'holiday_type_id'                   =>  $request->holiday_type_id,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'ref_no'                            =>  $request->ref_no,
-            'quote_ref'                         =>  ($type == 'clone')? Helper::getQuoteID() : ($request->quote_no??$request->quote_ref),
             'sale_person_id'                    =>  $request->sale_person_id,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
             'agency_commission_type'            =>  $request->agency == 1 ? $request->agency_commission_type : NULL,
             'agency_commission'                 =>  $request->agency == 1 && $request->agency_commission_type == 'paid-net-of-commission' || $request->agency == 1 && $request->agency_commission_type == 'we-pay-commission-on-departure' ? $request->agency_commission : NULL,
             'total_net_margin'                  =>  $request->agency == 1 && $request->agency_commission_type == 'paid-net-of-commission' || $request->agency == 1 && $request->agency_commission_type == 'we-pay-commission-on-departure' ? $request->total_net_margin : $request->total_markup_amount,
             'agency_name'                       =>  $request->agency_name??NULL,
-            'agency_contact'                    =>  (!empty($type))? $request->agency_contact : (($request->agency_contact)? $request->full_number : NULL),
             'agency_email'                      =>  $request->agency_email??NULL,
             'agency_contact_name'               =>  $request->agency_contact_name??NULL,
             'lead_passenger_name'               =>  $request->lead_passenger_name??NULL,
             'lead_passenger_email'              =>  $request->lead_passenger_email??NULL,
-            'lead_passenger_contact'            =>  (!empty($type))? $request->lead_passenger_contact : (($request->lead_passenger_contact)? $request->full_number : NULL),
             'lead_passenger_dbo'                =>  $request->lead_passenger_dbo??NULL,
             'lead_passenger_resident'           =>  $request->lead_passenger_resident??NULL,
             'lead_passsenger_nationailty_id'    =>  $request->lead_passsenger_nationailty_id??NULL,
@@ -237,18 +234,31 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
 
-        
         if($type == 'quotes'){
 
-            $data['stored_text'] = $request->stored_text??NULL;
+            $data['quote_ref']              = $request->quote_no??$request->quote_ref;
+            $data['agency_contact']         = $request->full_number??NULL;
+            $data['lead_passenger_contact'] = $request->full_number??NULL;
+            $data['stored_text']            = $request->stored_text??NULL;
+        }
+
+        if($type == 'clone'){
+
+            $data['quote_ref']              = Helper::getQuoteID();
+            $data['agency_contact']         = $request->agency_contact??NULL;
+            $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
+            $data['stored_text']            = $request->stored_text??NULL;
         }
 
         if($type == 'bookings'){
 
-            $data['quote_id']        = $request->id;
-            $data['booking_details'] = $request->booking_details;
-            $data['booking_status']  = 'confirmed';
-            $data['booking_date']    = Carbon::now();
+            $data['quote_id']               = $request->id;
+            $data['quote_ref']              = $request->quote_no??$request->quote_ref;
+            $data['agency_contact']         = $request->agency_contact??NULL;
+            $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
+            $data['booking_details']        = $request->booking_details;
+            $data['booking_status']         = 'confirmed';
+            $data['booking_date']           = Carbon::now();
         }
 
         return $data;
@@ -878,7 +888,7 @@ class QuoteController extends Controller
     public function clone($id)
     {
         $quote      = Quote::findORFail(decrypt($id));
-        $clone      = Quote::create($this->quoteArray($quote, 'quotes'));
+        $clone      = Quote::create($this->quoteArray($quote, 'clone'));
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
