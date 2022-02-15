@@ -112,7 +112,6 @@
                     <div class="form-group">
                       <label>Markup Type <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
-
                         <div class="custom-control custom-radio mr-1">
                           <input type="radio" name="markup_type" id="itemised" value="itemised" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
                           <label class="custom-control-label" for="itemised">Itemised Markup </label>
@@ -122,7 +121,6 @@
                           <input type="radio" name="markup_type" id="whole" value="whole" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
                           <label class="custom-control-label" for="whole">Whole Markup</label>
                         </div>
-
                       </div>
                     </div>
                   </div>
