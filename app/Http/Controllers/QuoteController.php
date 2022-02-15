@@ -254,7 +254,7 @@ class QuoteController extends Controller
         return $data;
     }
 
-    public function getQuoteDetailsArray($quoteD, $quote, $type)
+    public function getQuoteDetailsArray($quote, $quoteD, $type)
     {
         $data = [
             
@@ -495,7 +495,7 @@ class QuoteController extends Controller
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $quote_details) {
 
-                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote_details, $quote, 'quote_details'));
+                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_details, 'quote_details'));
 
                 if(isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids'])){
 
@@ -611,7 +611,7 @@ class QuoteController extends Controller
 
             foreach ($request->quote as $quote_details) {
                 
-                $new_quote_details = QuoteDetail::create($this->getQuoteDetailsArray($quote_details, $quote, 'quote_details'));
+                $new_quote_details = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_details, 'quote_details'));
 
                 if( isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids']) ){
 
@@ -743,7 +743,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($qu_details, $quote, 'booking_details'));
+            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {
@@ -882,7 +882,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($qu_details, $clone, 'quote_details'));
+            $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($clone, $qu_details, 'quote_details'));
 
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
