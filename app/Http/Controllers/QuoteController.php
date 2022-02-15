@@ -185,7 +185,7 @@ class QuoteController extends Controller
         return CurrencyConversion::all();
     }
 
-    public function quoteArray($request, $type)
+    public function quoteArray($request, $type, $action = null)
     {
         $data = [
 
@@ -234,11 +234,16 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
 
+        /* append only for store quote */
+        if(!is_null($action)){
+            $data['created_by'] =  Auth::id();
+        }
+
         if($type == 'quotes'){
 
             $data['quote_ref']              = $request->quote_no??$request->quote_ref;
-            $data['agency_contact']         = $request->full_number??NULL;
-            $data['lead_passenger_contact'] = $request->full_number??NULL;
+            $data['agency_contact']         = isset($request->agency_contact) && !empty($request->agency_contact) ? $request->full_number : NULL;
+            $data['lead_passenger_contact'] = isset($request->lead_passenger_contact) && !empty($request->lead_passenger_contact) ? $request->full_number : NULL;
             $data['stored_text']            = $request->stored_text??NULL;
         }
 
@@ -500,7 +505,7 @@ class QuoteController extends Controller
 
         // dd($request->all());
 
-        $quote = Quote::create($this->quoteArray($request, 'quotes'));
+        $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
 
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $quote_details) {
