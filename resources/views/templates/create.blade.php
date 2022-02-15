@@ -81,16 +81,16 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Currency Rate Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="live" class="rate-type" checked>
-                            <span>&nbsp;Live Rate</span>
-                          </label>
-                          
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="rate_type" value="manual" class="rate-type">
-                            <span>&nbsp;Manual Rate</span>
-                          </label>
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="rate_type" id="live_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="live" {{ (Auth::user()->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
+                            <label class="custom-control-label" for="live_rate">Live Rate</label>
+                          </div>
+      
+                          <div class="custom-control custom-radio">
+                            <input type="radio" name="rate_type" id="manual_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="manual" {{ (Auth::user()->rate_type == 'manual') ? 'checked': '' }}>
+                            <label class="custom-control-label" for="manual_rate">Manual Rate</label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -98,15 +98,16 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Markup Type <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="itemised" class="markup-type" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
-                            <span>&nbsp;Itemised Markup </span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="markup_type" value="whole" class="markup-type" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
-                            <span>&nbsp;Whole Markup</span>
-                          </label>
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="markup_type" id="itemised" value="itemised" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
+                            <label class="custom-control-label" for="itemised">Itemised Markup </label>
+                          </div>
+      
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="markup_type" id="whole" value="whole" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
+                            <label class="custom-control-label" for="whole">Whole Markup</label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -114,15 +115,18 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Privacy Status <span style="color:red">*</span></label>
-                        <div>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="privacy_status" value="1" class="privacy-status" checked>
-                            <span>&nbsp;Public  </span>
-                          </label>
-                          <label class="radio-inline mr-1">
-                            <input type="radio" name="privacy_status" value="0" class="privacy-status">
-                            <span>&nbsp;Private </span>
-                          </label>
+                        <div class="d-flex flex-row">
+
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="privacy_status" id="privacy_status_public" value="1" class="privacy-status custom-control-input custom-control-input-success custom-control-input-outline" checked>
+                            <label class="custom-control-label" for="privacy_status_public">Public</label>
+                          </div>
+            
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="privacy_status" id="privacy_status_private" value="0" class="privacy-status custom-control-input custom-control-input-success custom-control-input-outline">
+                            <label class="custom-control-label" for="privacy_status_private">Private</label>
+                          </div>
+                          
                         </div>
                       </div>
                     </div>
