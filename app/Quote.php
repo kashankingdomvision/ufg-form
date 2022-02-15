@@ -170,7 +170,8 @@ class Quote extends Model
     {
         $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
         if($checkUserExist){
-            return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
+            return "";
+            // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
         }
     }
     
