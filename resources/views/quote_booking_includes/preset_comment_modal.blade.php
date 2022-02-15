@@ -14,9 +14,9 @@
             @foreach ($preset_comments as $key => $preset_comment)
               <div class="col-md-4">
                 <div class="form-group">
-                  <div>
-                    <input type="radio" name="comment" value="{{ $preset_comment->comment }}" id="quick_comment_{{$key}}" class="quick-comment">
-                    <label class="radio-inline mr-1" for="quick_comment_{{$key}}">{{ $preset_comment->comment }}</label>
+                  <div class="custom-control custom-radio mr-1">
+                    <input type="radio" name="comment" value="{{ $preset_comment->comment }}" id="quick_comment_{{$key}}" class="quick-comment custom-control-input custom-control-input-success custom-control-input-outline">
+                    <label class="custom-control-label" for="quick_comment_{{$key}}">{{ $preset_comment->comment }}</label>
                   </div>
                 </div>
               </div>
