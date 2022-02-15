@@ -50,18 +50,21 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                <div class="form-group clearfix">
+                <div class="form-group">
                   <label>Default Season <span style="color:red">*</span></label><br>
-                  <div class="icheck-primary d-inline mr-1">
-                    <input type="radio" id="yes" name="default" value="1">
-                    <label for="yes">Yes</label>
-                  </div>
+                  <div class="d-flex flex-row">
+                    <div class="custom-control custom-radio mr-1">
+                      <input type="radio" id="yes" name="default" class="custom-control-input custom-control-input-success custom-control-input-outline" value="1">
+                      <label class="custom-control-label" for="yes">Yes</label>
+                    </div>
 
-                  <div class="icheck-primary  d-inline">
-                    <input type="radio" id="no" name="default" value="0" checked>
-                    <label for="no">No</label>
+                    <div class="custom-control custom-radio mr-1">
+                      <input type="radio" id="no" name="default" class="custom-control-input custom-control-input-success custom-control-input-outline" value="0" checked>
+                      <label class="custom-control-label" for="no">No</label>
+                    </div>
                   </div>
                 </div>
+                
               </div>
 
               <div class="card-footer">
