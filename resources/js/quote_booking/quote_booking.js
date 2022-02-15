@@ -339,16 +339,22 @@ $(document).ready(function() {
                     <div class="col-sm-4">
                         <div class="form-group">
                             <label>Up To Date Covid Vaccination Status </label>
-                            <div>
-                                <label class="radio-inline">
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="1" > Yes &nbsp;&nbsp;
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="0" checked> No &nbsp;&nbsp;
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" class="covid-vaccinated" value="2" > Not Sure
-                                </label>
+                            <div class="d-flex flex-row">
+
+                                <div class="custom-control custom-radio mr-1">
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_yes_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1" >
+                                    <label class="custom-control-label" for="pax_cv_yes_${count}"> Yes </label>
+                                </div>
+
+                                <div class="custom-control custom-radio mr-1">
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_no_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" checked> 
+                                    <label class="custom-control-label" for="pax_cv_no_${count}">No </label>
+                                </div>
+
+                                <div class="custom-control custom-radio mr-1">
+                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_not_sure_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2" > 
+                                    <label class="custom-control-label" for="pax_cv_not_sure_${count}">Not Sure</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -459,15 +465,23 @@ $(document).ready(function() {
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Up To Date Covid Vaccination Status </label>
-                                <div>
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_yes_${count}" class="covid-vaccinated" value="1">
-                                    <label class="radio-inline mr-half" for="pax_cv_yes_${count}">Yes</label>
+                                <div class="d-flex flex-row">
 
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_no_${count}" class="covid-vaccinated" value="0" checked>
-                                    <label class="radio-inline mr-half" for="pax_cv_no_${count}">No</label>
+                                    <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_yes_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1">
+                                        <label class="custom-control-label" for="pax_cv_yes_${count}">Yes</label>
+                                    </div>
 
-                                    <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_not_sure_${count}" class="covid-vaccinated" value="2">
-                                    <label class="radio-inline mr-half" for="pax_cv_not_sure_${count}">Not Sure</label>
+                                    <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_no_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" checked>
+                                        <label class="custom-control-label" for="pax_cv_no_${count}">No</label>
+                                    </div>
+
+                                    <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[${count}][covid_vaccinated]" id="pax_cv_not_sure_${count}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2">
+                                        <label class="custom-control-label" for="pax_cv_not_sure_${count}">Not Sure</label>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>

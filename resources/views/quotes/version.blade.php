@@ -113,15 +113,19 @@
 
                     <div class="col-sm-4">
                       <div class="form-group">
-                      <label>Markup Type <span style="color:red">*</span></label>
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="markup_type" {{ ($quote->markup_type == 'itemised')? 'checked': NULL }} value="itemised" class="markup-type">
-                          <span>&nbsp;Itemised Markup </span>
-                        </label>
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="markup_type" {{ ($quote->markup_type == 'whole')? 'checked': NULL }} value="whole" class="markup-type">
-                          <span>&nbsp;Whole Markup</span>
-                        </label>
+                        <label>Markup Type <span style="color:red">*</span></label>
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="markup_type" id="itemised" value="itemised" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ ($quote->markup_type == 'itemised') ? 'checked': '' }}>
+                            <label class="custom-control-label" for="itemised">Itemised Markup </label>
+                          </div>
+  
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="markup_type" id="whole" value="whole" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ ($quote->markup_type == 'whole') ? 'checked': '' }} >
+                            <label class="custom-control-label" for="whole">Whole Markup</label>
+                          </div>
+                        </div>
+  
                       </div>
                     </div>
                   </div>
@@ -135,20 +139,20 @@
                       </div>
                     </div>
 
-                    <div class="col-md-6">
-                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+                    <div class="col-sm-6">
                       <div class="form-group">
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="rate_type" class="rate-type" value="live"
-                           {{ ($quote->rate_type == 'live')? 'checked': NULL }}
-                           {{ (Auth::user()->id != 1) ? 'disabled' : '' }}
-                           >
-                          <span>&nbsp;Live Rate</span>
-                        </label>
-                        <label class="radio-inline mr-1">
-                          <input type="radio" name="rate_type" class="rate-type" value="manual"  {{ ($quote->rate_type == 'manual')? 'checked': NULL }} >
-                          <span>&nbsp;Manual Rate</span>
-                        </label>
+                        <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="rate_type" id="live_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="live" {{ ($quote->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
+                            <label class="custom-control-label" for="live_rate">Live Rate</label>
+                          </div>
+  
+                          <div class="custom-control custom-radio">
+                            <input type="radio" name="rate_type" id="manual_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="manual" {{ ($quote->rate_type == 'manual') ? 'checked': '' }}>
+                            <label class="custom-control-label" for="manual_rate">Manual Rate</label>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -223,12 +227,16 @@
                     <div class="col-sm-6">
                       <div class="form-group">
                         <label>Agency Booking <span style="color:red">*</span></label>
-                        <div>
-                          <input class="select-agency" value="1" type="radio" name="agency" id="agency_yes" {{ ($quote->agency ==  1) ? 'checked' : '' }}> 
-                          <label class="mr-half radio-inline" for="agency_yes">Yes</label>
+                        <div class="d-flex flex-row">
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="1" name="agency" id="agency_yes" {{ ($quote->agency ==  1) ? 'checked' : '' }}> 
+                            <label class="custom-control-label" for="agency_yes">Yes</label>
+                          </div>
   
-                          <input class="select-agency" value="0" type="radio" name="agency" id="agency_no" {{ ($quote->agency ==  0 || $quote->agency == null) ? 'checked' : '' }}>
-                          <label for="agency_no">No</label>
+                          <div class="custom-control custom-radio">
+                            <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="0" name="agency" id="agency_no" {{ ($quote->agency ==  0 || $quote->agency == null) ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="agency_no">No</label>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -350,15 +358,21 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Up To Date Covid Vaccination Status</label>
-                            <div>
-                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_yes" class="covid-vaccinated" value="1" {{ ($quote->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}>
-                              <label class="radio-inline mr-half" for="lpcv_yes">Yes</label>
+                            <div class="d-flex flex-row">
+                              <div class="custom-control custom-radio mr-1">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_yes" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1" {{ ($quote->lead_passenger_covid_vaccinated ==  1) ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="lpcv_yes">Yes</label>
+                              </div>
   
-                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_no" class="covid-vaccinated" value="0" {{ ($quote->lead_passenger_covid_vaccinated ==  0 || $quote->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} >
-                              <label class="radio-inline mr-half" for="lpcv_no">No</label>
+                              <div class="custom-control custom-radio mr-1">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_no" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" {{ ($quote->lead_passenger_covid_vaccinated ==  0 || $quote->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} >
+                                <label class="custom-control-label" for="lpcv_no">No</label>
+                              </div>
   
-                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_not_sure" class="covid-vaccinated" value="2" {{ ($quote->lead_passenger_covid_vaccinated ==  2 || $quote->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }} >
-                              <label class="radio-inline mr-half" for="lpcv_not_sure">Not Sure</label>
+                              <div class="custom-control custom-radio mr-1">
+                                <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_not_sure" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2" {{ ($quote->lead_passenger_covid_vaccinated ==  2 || $quote->lead_passenger_covid_vaccinated == null) ? 'checked' : '' }}>
+                                <label class="custom-control-label" for="lpcv_not_sure">Not Sure</label>
+                              </div>
                             </div>
                             <span class="text-danger" role="alert"></span>
                           </div>
@@ -476,18 +490,27 @@
                                 <div class="col-md-4">
                                   <div class="form-group">
                                     <label>Up To Date Covid Vaccination Status</label>
-                                    <div>
-                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_yes_{{$count}}" class="covid-vaccinated" value="1" @if($pax['covid_vaccinated'] == 1) checked @endif>
-                                      <label class="radio-inline mr-half" for="pax_cv_yes_{{$count}}"> Yes</label>
+                                    <div class="d-flex flex-row">
     
-                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_no_{{$count}}" class="covid-vaccinated" value="0" @if($pax['covid_vaccinated'] == 0) checked @endif>
-                                      <label class="radio-inline mr-half" for="pax_cv_no_{{$count}}">No</label>
+                                      <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_yes_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1" @if($pax->covid_vaccinated == 1) checked @endif>
+                                        <label class="custom-control-label" for="pax_cv_yes_{{$count}}"> Yes</label>
+                                      </div>
     
-                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_not_sure_{{$count}}" class="covid-vaccinated" value="2" @if($pax['covid_vaccinated'] == 2) checked @endif> 
-                                      <label class="radio-inline mr-half" for="pax_cv_not_sure_{{$count}}">Not Sure</label>
+                                      <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_no_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" @if($pax->covid_vaccinated == 0) checked @endif>
+                                        <label class="custom-control-label" for="pax_cv_no_{{$count}}">No</label>
+                                      </div>
+    
+                                      <div class="custom-control custom-radio mr-1">
+                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_not_sure_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2" @if($pax->covid_vaccinated == 2) checked @endif> 
+                                        <label class="custom-control-label" for="pax_cv_not_sure_{{$count}}">Not Sure</label>
+                                      </div>
+    
                                     </div>
                                   </div>
                                 </div>
+
                               </div>
                             </div>
                             @endforeach
@@ -856,15 +879,23 @@
                     <div class="col-md-12 agencyField {{ ($quote->agency == 0) ? 'd-none' : '' }}">
                       <div class="form-group">
                         <label>Agency Commission Type <span style="color:red">*</span></label>
-                        <div>
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_net_price" value="net-price" {{ $quote->agency == 1 && $quote->agency_commission_type == 'net-price' ? 'checked' : '' }}>
-                          <label class="radio-inline mr-1" for="agency_yes_net_price">Net Price</label>
+                        <div class="d-flex flex-row">
 
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission" {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' ? 'checked' : '' }}>
-                          <label class="radio-inline mr-1" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_net_price" value="net-price" {{ $quote->agency == 1 && $quote->agency_commission_type == 'net-price' ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="agency_yes_net_price">Net Price</label>
+                          </div>
 
-                          <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure" {{ $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? 'checked' : '' }}> 
-                          <label class="radio-inline" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission" {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+                          </div>
+
+                          <div class="custom-control custom-radio mr-1">
+                            <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure" {{ $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? 'checked' : '' }}> 
+                            <label class="custom-control-label" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
+                          </div>
+
                         </div>
                       </div>
                     </div>
@@ -909,7 +940,7 @@
 
                   <div class="paid-net-commission-on-departure {{ $quote->agency == 1 && $quote->agency_commission_type == 'paid-net-of-commission' || $quote->agency == 1 && $quote->agency_commission_type == 'we-pay-commission-on-departure' ? '' : 'd-none' }} ">
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Agency Commission</label>
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Agency Commission</label>
                       <div class="col-md-3">
                         <div class="form-group">
                           <div class="input-group">
@@ -923,7 +954,7 @@
                     </div>
   
                     <div class="form-group row">
-                      <label for="inputEmail3" class="col-sm-3 col-form-label">Net Margin</label>
+                      <label for="inputEmail3" class="col-md-4 col-form-label">Net Margin</label>
                       <div class="col-md-3">
                         <div class="form-group">
                           <div class="input-group">

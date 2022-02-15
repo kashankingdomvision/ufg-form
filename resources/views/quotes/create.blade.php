@@ -109,16 +109,21 @@
                   </div>
 
                   <div class="col-md-4">
-                    <label>Markup Type <span style="color:red">*</span></label>
                     <div class="form-group">
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="markup_type" value="itemised" class="markup-type" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
-                        <span>&nbsp;Itemised Markup </span>
-                      </label>
-                      <label class="radio-inline mr-1">
-                        <input type="radio" name="markup_type" value="whole" class="markup-type" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
-                        <span>&nbsp;Whole Markup</span>
-                      </label>
+                      <label>Markup Type <span style="color:red">*</span></label>
+                      <div class="d-flex flex-row">
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="markup_type" id="itemised" value="itemised" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'itemised') ? 'checked': '' }} >
+                          <label class="custom-control-label" for="itemised">Itemised Markup </label>
+                        </div>
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="markup_type" id="whole" value="whole" class="markup-type custom-control-input custom-control-input-success custom-control-input-outline" {{ (Auth::user()->markup_type == 'whole') ? 'checked': '' }} >
+                          <label class="custom-control-label" for="whole">Whole Markup</label>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -132,13 +137,21 @@
                   </div>
                   
                   <div class="col-sm-6">
-                    <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                     <div class="form-group">
-                      <input type="radio" name="rate_type" id="live_rate" class="rate-type" value="live" {{ (Auth::user()->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
-                      <label class="radio-inline mr-1" for="live_rate">Live Rate</label>
+                      <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
+
+                      <div class="d-flex flex-row">
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="rate_type" id="live_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="live" {{ (Auth::user()->rate_type == 'live') ? 'checked': '' }} {{ (Auth::user()->id != 1) ? 'disabled' : '' }}>
+                          <label class="custom-control-label" for="live_rate">Live Rate</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                          <input type="radio" name="rate_type" id="manual_rate" class="rate-type custom-control-input custom-control-input-success custom-control-input-outline" value="manual" {{ (Auth::user()->rate_type == 'manual') ? 'checked': '' }}>
+                          <label class="custom-control-label" for="manual_rate">Manual Rate</label>
+                        </div>
+                      </div>
                       
-                      <input type="radio" name="rate_type" id="manual_rate" class="rate-type" value="manual" {{ (Auth::user()->rate_type == 'manual') ? 'checked': '' }}>
-                      <label class="radio-inline mr-1" for="manual_rate">Manual Rate</label>
                     </div>
                   </div>
                 </div>
@@ -215,12 +228,18 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
-                      <div>
-                        <input class="select-agency" value="1" type="radio" name="agency" id="agency_yes"> 
-                        <label class="mr-half radio-inline" for="agency_yes">Yes</label>
+                      <div class="d-flex flex-row">
 
-                        <input class="select-agency" value="0" type="radio" name="agency" id="agency_no" checked>
-                        <label for="agency_no">No</label>
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="1" name="agency" id="agency_yes"> 
+                          <label class="custom-control-label" for="agency_yes">Yes</label>
+                        </div>
+
+                        <div class="custom-control custom-radio">
+                          <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="0" name="agency" id="agency_no" checked>
+                          <label class="custom-control-label" for="agency_no">No</label>
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -341,15 +360,23 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label>Up To Date Covid Vaccination Status</label>
-                          <div>
-                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_yes" class="covid-vaccinated" value="1">
-                            <label class="radio-inline mr-half" for="lpcv_yes">Yes</label>
+                          <div class="d-flex flex-row">
 
-                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_no" class="covid-vaccinated" value="0">
-                            <label class="radio-inline mr-half" for="lpcv_no">No</label>
+                            <div class="custom-control custom-radio mr-1">
+                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_yes" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1">
+                              <label class="custom-control-label" for="lpcv_yes">Yes</label>
+                            </div>
 
-                            <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_not_sure" class="covid-vaccinated" value="2">
-                            <label class="radio-inline mr-half" for="lpcv_not_sure">Not Sure</label>
+                            <div class="custom-control custom-radio mr-1">
+                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_no" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" checked>
+                              <label class="custom-control-label" for="lpcv_no">No</label>
+                            </div>
+
+                            <div class="custom-control custom-radio mr-1">
+                              <input type="radio" name="lead_passenger_covid_vaccinated" id="lpcv_not_sure" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2">
+                              <label class="custom-control-label" for="lpcv_not_sure">Not Sure</label>
+                            </div>
+
                           </div>
                           <span class="text-danger" role="alert"></span>
                         </div>
@@ -718,15 +745,23 @@
                   <div class="col-md-12 agencyField d-none">
                     <div class="form-group">
                       <label>Agency Commission Type <span style="color:red">*</span></label>
-                      <div>
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_net_price" value="net-price" checked>
-                        <label class="radio-inline mr-1" for="agency_yes_net_price">Net Price</label>
+                      <div class="d-flex flex-row">
 
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission">
-                        <label class="radio-inline mr-1" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_net_price" value="net-price" checked>
+                          <label class="custom-control-label" for="agency_yes_net_price">Net Price</label>
+                        </div>
 
-                        <input type="radio" name="agency_commission_type" class="agency-commission-type" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure"> 
-                        <label class="radio-inline" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_paid_net_of_commission" value="paid-net-of-commission">
+                          <label class="custom-control-label" for="agency_yes_paid_net_of_commission">Paid Net of Commission</label>
+                        </div>
+
+                        <div class="custom-control custom-radio mr-1">
+                          <input type="radio" name="agency_commission_type" class="agency-commission-type custom-control-input custom-control-input-success custom-control-input-outline" id="agency_yes_we_pay_commission_on_departure" value="we-pay-commission-on-departure"> 
+                          <label class="custom-control-label" for="agency_yes_we_pay_commission_on_departure">We pay Commission on Departure</label>
+                        </div>
+
                       </div>
                     </div>
                   </div>
