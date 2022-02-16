@@ -5049,6 +5049,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
 
 /*  Side layout Fixed */
 
+.m-point-3 {
+  margin-right: 0.3rem !important;
+}
+
 .m-1 {
   margin-top: 1rem !important;
   margin-right: 1rem !important;
@@ -5145,6 +5149,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
 .note-placeholder {
   width: 460px;
   height: 300px;
+}
+
+.double-underline {
+  border-bottom: 3px double;
 }
 
 /**

@@ -757,6 +757,8 @@ class QuoteController extends Controller
         $quote   = Quote::findORFail(decrypt($id));
         $booking = Booking::create($this->quoteArray($quote, 'bookings'));
 
+        // dd($booking);
+
         foreach ($quote->getQuoteDetails as $qu_details) {
 
             $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));

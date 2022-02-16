@@ -140,6 +140,10 @@
 
 /*  Side layout Fixed */
 
+.m-point-3{
+    margin-right: 0.3rem !important;
+} 
+
 .m-1{
     margin-top: 1rem !important;
     margin-right: 1rem !important;
@@ -240,6 +244,9 @@
     width: 460px;
     height: 300px;
 }
+
+
+.double-underline { border-bottom: 3px double; }
 
 /**
  * -------------------------------------------------------------------------------------

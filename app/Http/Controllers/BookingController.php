@@ -242,6 +242,7 @@ class BookingController extends Controller
             'added_in_sage'                     => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : 0,
             'outstanding_amount_left'           => $quoteD['outstanding_amount_left'],
             'category_details'                  => $quoteD['category_details'],
+            'product_details'                   => $quoteD['product_details'],
         ];
 
         return $data;

@@ -277,7 +277,7 @@ $(document).ready(function () {
       }
     });
   });
-  $("#update-booking").submit(function (event) {
+  $("#update_booking").submit(function (event) {
     event.preventDefault();
     $('.payment-method').removeAttr('disabled');
     var url = $(this).attr('action');
@@ -2266,6 +2266,11 @@ $(document).ready(function () {
   |--------------------------------------------------------------------------------
   */
 
+  $(document).on('click', '.add-new-service-below', function (e) {
+    var quote = $(this).closest('.quote').data('key');
+    jQuery('#new_service_modal_below').modal('show');
+    jQuery('#new_service_modal_below').find('.current-key').val(quote);
+  });
   $(document).on('change', '.time-of-service', function () {
     var quote = $(this).closest('.quote');
     quote.find('.badge-time-of-service').html($(this).val());
@@ -2491,6 +2496,7 @@ $(document).ready(function () {
     });
   });
   $(document).on('change', '.supplier-country-id', function () {
+    console.log("dsdsdsd");
     var supplier_country_ids = $(this).val();
     var url = BASEURL + 'country/to/supplier';
     var options = '';

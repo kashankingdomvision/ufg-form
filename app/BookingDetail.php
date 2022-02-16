@@ -47,7 +47,8 @@ class BookingDetail extends Model
         'outstanding_amount_left',
         'status',
         'payment_status',
-        'category_details'
+        'category_details',
+        'product_details'
     ];
 
     public function getBookingDetailCountries()

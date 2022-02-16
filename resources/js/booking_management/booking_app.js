@@ -202,7 +202,7 @@ $(document).ready(function() {
         });
     });
 
-    $("#update-booking").submit(function(event) {
+    $("#update_booking").submit(function(event) {
         event.preventDefault();
 
         $('.payment-method').removeAttr('disabled');

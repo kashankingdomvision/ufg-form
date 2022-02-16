@@ -51,7 +51,8 @@ class CreateBookingDetailsTable extends Migration
             $table->string('invoice')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->enum('payment_status', ['active', 'cancelled'])->default('active');
-            $table->text('category_details')->nullable();
+            $table->longText('category_details')->nullable();
+            $table->longText('product_details')->nullable();
             $table->timestamps();
         });
     }

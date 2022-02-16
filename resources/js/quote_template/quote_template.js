@@ -202,13 +202,7 @@ $(document).ready(function() {
 
     });
 
-    $(document).on('click', '.add-new-service-below', function(e) {
-          
-        var quote = $(this).closest('.quote').data('key');
 
-        jQuery('#new_service_modal_below').modal('show');
-        jQuery('#new_service_modal_below').find('.current-key').val(quote);
-    });
 
 
     $(document).on('click', '.quotes-service-category-btn', function(e) {
