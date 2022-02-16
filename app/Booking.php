@@ -12,6 +12,7 @@ class Booking extends Model
 
         'quote_id',
         'user_id',
+        'created_by',
         'commission_id',
         'commission_group_id',
         'season_id',

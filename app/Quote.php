@@ -67,9 +67,9 @@ class Quote extends Model
         'markup_type',
     ];
     
-    public function getUser()
+    public function getCreatedBy()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'created_by');
     }
     
     public function getQuotelogs()

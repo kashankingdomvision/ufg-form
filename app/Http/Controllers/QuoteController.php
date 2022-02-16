@@ -234,17 +234,17 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
         ];
 
-        /* append only for store quote */
-        if(!is_null($action)){
-            $data['created_by'] =  Auth::id();
-        }
-
         if($type == 'quotes'){
 
             $data['quote_ref']              = $request->quote_no??$request->quote_ref;
             $data['agency_contact']         = isset($request->agency_contact) && !empty($request->agency_contact) ? $request->full_number : NULL;
             $data['lead_passenger_contact'] = isset($request->lead_passenger_contact) && !empty($request->lead_passenger_contact) ? $request->full_number : NULL;
             $data['stored_text']            = $request->stored_text??NULL;
+
+            /* append only for store quote */
+            if($action == 'store'){
+                $data['created_by'] =  Auth::id();
+            }
         }
 
         if($type == 'clone'){
@@ -253,6 +253,7 @@ class QuoteController extends Controller
             $data['agency_contact']         = $request->agency_contact??NULL;
             $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
             $data['stored_text']            = $request->stored_text??NULL;
+            $data['created_by']             =  Auth::id();
         }
 
         if($type == 'bookings'){
@@ -264,6 +265,7 @@ class QuoteController extends Controller
             $data['booking_details']        = $request->booking_details;
             $data['booking_status']         = 'confirmed';
             $data['booking_date']           = Carbon::now();
+            $data['created_by']             =  Auth::id();
         }
 
         return $data;
