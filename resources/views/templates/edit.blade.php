@@ -282,7 +282,7 @@
 
                                                 <div class="col-sm-2">
                                                   <div class="form-group">
-                                                    <label>Product <a href="javascript:void(0)" class="ml-1 add-new-product"> ( Add New Product ) </a></label>
+                                                    <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                                     <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                                       <option value="">Select Product</option>
                                                       @if(isset($q_detail->getSupplier) && $q_detail->getSupplier->getProducts)
@@ -525,7 +525,7 @@
                   
                                                 <div class="col-sm-3">
                                                   <div class="form-group">
-                                                    <label>Internal Comments <a href="javascript:void(0)" class="ml-1 insert-quick-text"> ( Insert Quick Text ) </a></label>
+                                                    <label>Internal Comments <button type="button" class="btn btn-xs btn-outline-dark ml-1 insert-quick-text"> <i class="fas fa-plus"></i> </button></label>
                                                     <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail->comments }}</textarea>
                                                   </div>
                                                 </div>
