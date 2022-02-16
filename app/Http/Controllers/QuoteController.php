@@ -301,7 +301,7 @@ class QuoteController extends Controller
             'image'                             => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
         ];
 
-        if($type == 'quote_details'){
+        if($type == 'quote_details' || $type == 'clone'){
 
             $data['quote_id']             = $quote->id;
             $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
@@ -425,7 +425,7 @@ class QuoteController extends Controller
             'country_id'      => $id
         ];
 
-        if($type == 'quote_details'){
+        if($type == 'quote_details' || $type == 'clone'){
 
             $data['quote_id']        = $quote->id;
             $data['quote_detail_id'] = $quoteDetail->id;
@@ -899,7 +899,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($clone, $qu_details, 'quote_details'));
+            $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($clone, $qu_details, 'clone'));
 
             if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
                 foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
@@ -910,7 +910,7 @@ class QuoteController extends Controller
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {
-                    QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'quote_details'));
+                    QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
                 }
             }
             
