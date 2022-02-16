@@ -47,31 +47,7 @@ $(document).ready(function() {
         getCalculatedTotalNetMarkup();
     }
 
-    function onChangeAgencyCommissionType(){
 
-        var agency               = $("input[name=agency]:checked").val();
-        var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
-
-        if(agency == 1 && agencyCommissionType == 'net-price'){
-            $('.paid-net-commission-on-departure').addClass('d-none');
-        }
-
-        if(agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure'){
-            $('.paid-net-commission-on-departure').removeClass('d-none');
-        }
-        
-        getCalculatedTotalNetMarkup();
-        getCommissionRate();
-    }
-
-    function getCalculatedTotalNetMarkup() {
-
-        var agencyCommission     = $('.agency-commission').val();
-        var agencyTotalMarkup    = $('.total-markup-amount').val();
-        var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
-
-        $('.total-net-margin').val(check(totalAgencyNetMarkup));
-    }
 
     window.getQuoteTotalValues = function() {
 
