@@ -440,12 +440,12 @@ class QuoteController extends Controller
         return $data;
     }
 
-    public function getQuoteDetailStoredTextArray($new_quote_details, $quote_details){
+    public function getQuoteDetailStoredTextArray($quoteDetail, $quote_detail){
 
         $data = [
-            'quote_detail_id' => $new_quote_details->id,
-            'stored_text'     => $quote_details['stored_text']['text'],
-            'action_date'     => $quote_details['stored_text']['date']
+            'quote_detail_id' => $quoteDetail->id,
+            'stored_text'     => $quote_detail['stored_text']['text'],
+            'action_date'     => $quote_detail['stored_text']['date']
         ];
 
         return $data;
@@ -510,25 +510,25 @@ class QuoteController extends Controller
         $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
 
         if($request->has('quote') && count($request->quote) > 0){
-            foreach ($request->quote as $quote_details) {
+            foreach ($request->quote as $quote_detail) {
 
-                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_details, 'quote_details'));
+                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_detail, 'quote_details'));
 
-                if(isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids'])){
+                if(isset($quote_detail['supplier_country_ids']) && !empty($quote_detail['supplier_country_ids'])){
 
-                    foreach($quote_details['supplier_country_ids'] as $id){
+                    foreach($quote_detail['supplier_country_ids'] as $id){
                         QuoteDetailCountry::create($this->getQuoteDetailCountryArray($quote, $quoteDetail, $id, 'quote_details'));
                     }
                 }
 
-                if(isset($quote_details['stored_text'])){
-                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($quoteDetail, $quote_details));
+                if(isset($quote_detail['stored_text'])){
+                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($quoteDetail, $quote_detail));
                 }
 
                 /* quote_category_details values*/ 
-                if(isset($quote_details['category_details']) && !is_null($quote_details['category_details'])){
+                if(isset($quote_detail['category_details']) && !is_null($quote_detail['category_details'])){
 
-                    $category_details = json_decode($quote_details['category_details'], true);
+                    $category_details = json_decode($quote_detail['category_details'], true);
 
                     foreach ($category_details as $category_detail){
                         if(isset($category_detail['userData'])){
@@ -626,32 +626,32 @@ class QuoteController extends Controller
             /* delete old quote details */ 
             $quote->getQuoteDetails()->delete();
 
-            foreach ($request->quote as $quote_details) {
+            foreach ($request->quote as $quote_detail) {
                 
-                $new_quote_details = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_details, 'quote_details'));
+                $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($quote, $quote_detail, 'quote_details'));
 
-                if( isset($quote_details['supplier_country_ids']) && !empty($quote_details['supplier_country_ids']) ){
+                if( isset($quote_detail['supplier_country_ids']) && !empty($quote_detail['supplier_country_ids']) ){
 
-                    foreach($quote_details['supplier_country_ids'] as $key => $id){
-                        QuoteDetailCountry::create($this->getQuoteDetailCountryArray($quote, $new_quote_details, $id, 'quote_details'));
+                    foreach($quote_detail['supplier_country_ids'] as $key => $id){
+                        QuoteDetailCountry::create($this->getQuoteDetailCountryArray($quote, $quoteDetail, $id, 'quote_details'));
                     }
                 }
                 
                 /* quote_detail_stored_texts values*/ 
-                if(isset($quote_details['stored_text'])){
+                if(isset($quote_detail['stored_text'])){
 
-                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($new_quote_details, $quote_details));
+                    QuoteDetailStoredText::create($this->getQuoteDetailStoredTextArray($quoteDetail, $quote_detail));
                 }
 
                 /* quote_category_details values*/ 
-                if(isset($quote_details['category_details']) && !empty($quote_details['category_details'])){
+                if(isset($quote_detail['category_details']) && !empty($quote_detail['category_details'])){
 
-                    $category_details = json_decode($quote_details['category_details'], true);
+                    $category_details = json_decode($quote_detail['category_details'], true);
 
                     foreach ($category_details as $category_detail){
                         if(isset($category_detail['userData'])){
 
-                            QuoteCategoryDetail::create($this->getQuoteCategoryDetailArray($new_quote_details, $category_detail));
+                            QuoteCategoryDetail::create($this->getQuoteCategoryDetailArray($quoteDetail, $category_detail));
                         }
                     }
                 }
@@ -755,7 +755,6 @@ class QuoteController extends Controller
     public function booking($id)
     {
         $quote   = Quote::findORFail(decrypt($id));
-
         $booking = Booking::create($this->quoteArray($quote, 'bookings'));
 
         foreach ($quote->getQuoteDetails as $qu_details) {
