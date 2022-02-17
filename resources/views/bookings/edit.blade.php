@@ -1712,7 +1712,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Selling Price in Other Currency</label>
-                      <select  name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror" style="width: 68%;">
+                      <select  name="selling_price_other_currency" class="form-control selling-price-other-currency" style="width: 68%;">
                         <option value="">Select Currency</option>
                         @foreach ($currencies as $currency)
                           <option value="{{ $currency->code }}" {{ ($booking->selling_currency_oc == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>

@@ -653,7 +653,7 @@ class BookingController extends Controller
     {
         $booking_log                = BookingLog::findOrFail(decrypt($id));
         $data['log']                = $booking_log;
-        $data['booking']            = $booking_log->data;
+        $data['booking']            = (object) $booking_log->data;
         $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
@@ -670,7 +670,7 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
 
-        return view('bookings.version',$data);
+        return view('bookings.version', $data);
     }
 
     public function destroy(Request $request, $id)
