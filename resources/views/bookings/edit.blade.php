@@ -985,7 +985,7 @@
 
                             <!-- Administration row -->
                             <hr>
-                            <h3 class="mt-1 mb-2"><span class="double-underline">Administration</span></h3>
+                            <h3 class="mt-1 mb-1-half"><span class="double-underline">Administration</span></h3>
                         
                             <div class="row administraion-row">
 
@@ -1070,7 +1070,7 @@
                             <section class="finance">
                               @php $total_deposit = 0; @endphp
                               @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
-                                <hr><h3 class="mt-1 mb-1"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                   @php
                                     $count = $fkey + 1;
@@ -1162,7 +1162,7 @@
                                   </div>
                                 @endforeach
                               @else
-                                <hr><h3 class="mt-1 mb-2"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2" data-financekey="0">
                                   
                                   <div class="col-md-12">
@@ -1252,7 +1252,7 @@
                             <section class="refund-by-bank-section">
                               @php $refund_amount = 0; @endphp
                               @if($booking_detail->getBookingRefundPayment && count($booking_detail->getBookingRefundPayment) > 0)
-                                <hr><h3 class="mt-1 mb-1"><span class="double-underline">Refund - By Bank</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Refund - By Bank</span></h3>
                                 @foreach ($booking_detail->getBookingRefundPayment as $rpkey => $payment)
                                   @php
                                     $count = $rpkey + 1;
@@ -1331,7 +1331,7 @@
                               @else
 
                                 <div class="refund-payment-section" hidden>
-                                  <hr><h3 class="mt-1 mb-1"><span class="double-underline">Refund - By Bank</span></h3>
+                                  <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Refund - By Bank</span></h3>
                                   <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2 mb-1">
 
                                     <div class="col-md-12">
@@ -1392,7 +1392,7 @@
                             <section class="refund-by-credit-note-section">
                               @php $credit_note_amount = 0; @endphp
                               @if($booking_detail->getBookingCreditNote && count($booking_detail->getBookingCreditNote) > 0)
-                                <hr><h3 class="mt-1 mb-1"><span class="double-underline">Refund - By Credit Notes</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Refund - By Credit Notes</span></h3>
                                 @foreach ($booking_detail->getBookingCreditNote as $cnkey => $payment)
 
                                   @php
@@ -1407,7 +1407,7 @@
                                         <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm float-right d-none"><i class="fas fa-times"></i></button>
                                       </div>
 
-                                      <div class="col-sm-3">
+                                      <div class="col">
                                         <div class="form-group">
                                           <label class="credit_note_label" id="credit_note_label_{{ $cnkey }}">Credit Note Amount Payment #{{$count}} <span style="color:red">*</span></label>
                                           <div class="input-group">
@@ -1419,7 +1419,7 @@
                                         </div>
                                       </div>
 
-                                      <div class="col-sm-3">
+                                      <div class="col">
                                         <div class="form-group">
                                           <label>Credit Note Date <span style="color:red">*</span></label>
                                           <input type="date" value="{{ $payment->credit_note_recieved_date }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_date]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_date" data-name="credit_note_recieved_date" class="form-control" >
@@ -1427,7 +1427,7 @@
                                         </div>
                                       </div>
 
-                                      <div class="col-sm-3">
+                                      <div class="col">
                                         <div class="form-group">
                                           <label>Credit Note Received By <span style="color:red">*</span></label>
                                           <select  name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_recieved_by]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_recieved_by" data-name="credit_note_recieved_by" class="form-control credit_note_recieved_by select2single" >
@@ -1440,15 +1440,13 @@
                                         </div>
                                       </div>
 
-
-
                                     </div>
                                   </div>
                                 
                                 @endforeach
                               @else
                                 <div class="credit-note-section" hidden>
-                                  <hr><h3 class="mt-1 mb-1"><span class="double-underline">Refund - By Credit Notes</span></h3>
+                                  <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Refund - By Credit Notes</span></h3>
 
                                   <div class="row credit-note-row else-here row-cols-lg-7 mb-1 g-0 g-lg-2">
 
@@ -1740,7 +1738,7 @@
                   <section class="cancellation-payments-section">
 
                     <div class="cancellation-payments">
-                      <hr><h3 class="mt-1 mb-2"><span class="double-underline">Booking Cancellation Refund Payments</span></h3>
+                      <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Booking Cancellation Refund Payments</span></h3>
 
                       <div class="row mb-1">
                         <div class="col-md-3">

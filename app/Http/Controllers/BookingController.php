@@ -612,6 +612,7 @@ class BookingController extends Controller
         $data['banks']            = Bank::all();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
+        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 

@@ -2,6 +2,23 @@ $(document).ready(function() {
    
 
     $('#bookingVersion :input').prop('disabled', true);
+    $('#show_booking :input').attr('disabled', 'disabled');
+
+    var pageStatus = $('#show_booking').data('page_status');
+
+    if(typeof pageStatus !== 'undefined' && pageStatus != ""){
+
+        $('.finance :input').removeAttr('disabled');
+
+
+        $('.refund-by-bank-section :input').removeAttr('disabled');
+        $('.refund-by-credit-note-section :input').removeAttr('disabled');
+        $('button[type="submit"]').removeAttr('disabled');
+
+        $('.cancel-payemnt-btn .btn').removeAttr('disabled');
+        $('.clone_booking_finance').removeAttr('disabled');
+    }
+
 
  
     function getBookingMarkupTypeFeildAttribute(){
@@ -131,17 +148,13 @@ $(document).ready(function() {
 
 
     // booking update payment
-    $("#update-payment").submit(function(event) {
+    $(document).on('submit', '#show_booking', function(event) { 
+
         event.preventDefault();
 
-        $('#update-payment :input').prop('disabled', false);
+        $('#show_booking :input').prop('disabled', false);
 
-        var $form = $(this),
-            url = $form.attr('action');
-        var formdata = $(this).serialize();
-
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
+        let url = $(this).attr('action');
 
         /* Send the data using post */
         $.ajax({
@@ -152,53 +165,19 @@ $(document).ready(function() {
             cache: false,
             processData: false,
             beforeSend: function() {
-                $("#overlay").addClass('overlay');
-                $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+                removeFormValidationStyles();
+                addFormLoadingStyles();
             },
-            success: function(data) {
+            success: function(response) {
 
-                $("#overlay").removeClass('overlay').html('');
-                setTimeout(function() {
-                    alert(data.success_message);
-                    window.location.href = REDIRECT_BASEURL + "bookings/index";
-
-                }, 1000);
+                removeFormLoadingStyles();
+                printServerSuccessMessage(response, `${REDIRECT_BASEURL}bookings/index`);
             },
-            error: function(reject) {
-
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
-                        $("#overlay").removeClass('overlay').html('');
-
-                        if (errors.hasOwnProperty("overrride_errors")) {
-                            alert(errors.overrride_errors);
-                            window.location.href = REDIRECT_BASEURL + "bookings/index";
-                        } else {
-
-                            var flag = true;
-                            
-                            jQuery.each(errors.errors, function(index, value) {
-
-                                index = index.replace(/\./g, '_');
-                                $(`#${index}`).addClass('is-invalid');
-                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                                if (flag) {
-
-                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                    flag = false;
-                                }
-                            });
-                        }
-
-                    }, 400);
-
-                }
-            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
         });
     });
 
