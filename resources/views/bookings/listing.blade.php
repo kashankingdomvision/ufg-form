@@ -229,3 +229,7 @@
         @include('bookings.includes.store_booking_cancellation_modal').
     <!-- End Modals  -->
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/booking_management.js') }}" ></script>
+@endpush

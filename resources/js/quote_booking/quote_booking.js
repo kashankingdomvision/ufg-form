@@ -961,4 +961,8 @@ $(document).ready(function() {
         }
     });
 
+    $(document).on('change, click', '.agency-commission-type', function() {
+        onChangeAgencyCommissionType();
+    });
+
 });

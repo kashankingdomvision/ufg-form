@@ -300,50 +300,16 @@ $(document).ready(function () {
       cache: false,
       processData: false,
       beforeSend: function beforeSend() {
-        $('input, select').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#overlay").addClass('overlay');
-        $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+        removeFormValidationStyles();
+        addFormLoadingStyles();
       },
-      success: function success(data) {
-        $("#overlay").removeClass('overlay').html('');
-        setTimeout(function () {
-          if (data && data.status == 200) {
-            alert(data.success_message);
-            window.location.href = REDIRECT_BASEURL + "bookings/index"; // location.reload();
-          }
-        }, 200);
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "bookings/index"));
       },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#overlay").removeClass('overlay').html('');
-
-            if (errors.hasOwnProperty("overrride_errors")) {
-              alert(errors.overrride_errors);
-              window.location.href = REDIRECT_BASEURL + "bookings/index";
-            } else {
-              var flag = true;
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_'); // expand quote if feild has an error
-
-                $("#".concat(index)).closest('.quote').removeClass('collapsed-card');
-                $("#".concat(index)).closest('.quote').find('.card-body').css("display", "block");
-                $("#".concat(index)).closest('.quote').find('.collapse-expand-btn').html("<i class=\"fas fa-minus\"></i>");
-                $("#".concat(index)).addClass('is-invalid');
-                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-                if (flag) {
-                  $('html, body').animate({
-                    scrollTop: $("#".concat(index)).offset().top
-                  }, 1000);
-                  flag = false;
-                }
-              });
-            }
-          }, 200);
-        }
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
       }
     });
   });
@@ -2041,6 +2007,9 @@ $(document).ready(function () {
     } else {
       getQuoteRateTypeValues();
     }
+  });
+  $(document).on('change, click', '.agency-commission-type', function () {
+    onChangeAgencyCommissionType();
   });
 });
 

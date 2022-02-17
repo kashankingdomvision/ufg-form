@@ -823,6 +823,9 @@ $(document).ready(function () {
       getQuoteRateTypeValues();
     }
   });
+  $(document).on('change, click', '.agency-commission-type', function () {
+    onChangeAgencyCommissionType();
+  });
 });
 
 /***/ }),
@@ -1989,9 +1992,6 @@ $(document).ready(function () {
         }
       }
     });
-  });
-  $(document).on('change, click', '.agency-commission-type', function () {
-    onChangeAgencyCommissionType();
   });
   $(document).on('change', '.agency-commission', function () {
     getCalculatedTotalNetMarkup();
