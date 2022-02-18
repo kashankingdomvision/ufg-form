@@ -1021,7 +1021,7 @@
                       </h5>
                     </label>
 
-                    <div class="col-sm-3">
+                    <div class="col-md-3 d-flex align-items-end">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
