@@ -109,7 +109,7 @@ __webpack_require__(/*! ./booking_management/booking_app */ "./resources/js/book
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  // $('#version_booking :input').prop('disabled', true);
+  $('#version_booking :input').prop('disabled', true);
   $('#show_booking :input').attr('disabled', 'disabled');
   var pageStatus = $('#show_booking').data('page_status');
 

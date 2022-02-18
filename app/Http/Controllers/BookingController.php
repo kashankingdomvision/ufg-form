@@ -393,10 +393,10 @@ class BookingController extends Controller
             array_push($book, $d);
         }
 
-        $array['booking']                        = $book;
-        $array['cancel_booking_refund_payments'] = (count( $booking->getBookingCancellationRefundPaymentDetail) > 0) ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
-        $array['booking_cancellations']          = (count((array) $booking->getTotalRefundAmount) > 0) ? $booking->getTotalRefundAmount->toArray() : [];
-        $array['pax']                            = $booking->getBookingPaxDetail->toArray();
+        $array['booking']                              = $book;
+        $array['booking_cancellation_refund_payments'] = (count( $booking->getBookingCancellationRefundPaymentDetail) > 0) ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
+        $array['booking_cancellations']                = (count((array) $booking->getTotalRefundAmount) > 0) ? $booking->getTotalRefundAmount->toArray() : [];
+        $array['pax']                                  = $booking->getBookingPaxDetail->toArray();
 
         BookingLog::create([
             'booking_id'    => $booking->id,
