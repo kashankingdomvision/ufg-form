@@ -5155,6 +5155,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-bottom: 3px double;
 }
 
+.sidebar-border-left {
+  border-left: 1px solid #dee2e6 !important;
+}
+
 /**
  * -------------------------------------------------------------------------------------
  *                                Form Control
