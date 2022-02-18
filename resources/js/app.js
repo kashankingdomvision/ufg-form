@@ -1173,28 +1173,6 @@ $(document).on('click', '.addmodalforquote', function() {
         });
     });
 
-$(".add-new-group-quote").submit(function (e) {
-    e.preventDefault();
-    $.ajax({
-        type: "POST",
-        url: $(this).attr('action'),
-        data: $(this).serialize(),
-        success: function (data) {
-            if (data.status) {
-                Toast.fire({
-                    icon: 'success',
-                    title: data.msg
-                });
-                setTimeout(function () {
-                    window.location.href = data.redirect;
-                }, 2800);
-
-            } else {
-                new Swal(data.type, data.msg, data.icon);
-            }
-        }
-    });
-});
 
 
     // $(document).ready(function() {

@@ -152,7 +152,7 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form method="POST" action="{{ route('quotes.group-quote.store') }}" class="create-group-quote">
+                <form method="POST" action="{{ route('groups.store') }}" class="create-group-quote">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">

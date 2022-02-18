@@ -32,47 +32,43 @@
 
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="offset-md-2 col-md-8">
-
-            <div class="card card-secondary">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-10">
+  
+            <div class="card card-secondary shadow-sm">
               <div class="card-header">
-                  <h3 class="card-title text-center">Add Group Quote</h3>
+                <h3 class="card-title text-center">Add Group Quote</h3>
               </div>
 
-                <form action="{{ route('quotes.group-quote.store') }}" method="POST" class="add-new-group-quote">
+              <form method="POST" id="store_group" action="{{ route('groups.store') }}">
                 @csrf
                 <div class="card-body">
+
                   <div class="form-group">
                     <label for="name">Name <span style="color:red">*</span></label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="form-control @error('name') is-invalid @enderror" placeholder="Group Name" required id="name">
-                    @error('name')
-                      <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                    @enderror
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Group Name">
+                    <span class="text-danger" role="alert"></span>
                   </div>
 
-                    <div class="form-group">
-                        <label for="quotes">Quotes (Select atleast Two Quotes) <span style="color:red">*</span></label>
-                        <select class="form-control select2-multiple @error('quote_ids') is-invalid @enderror"
-                                data-placeholder="Select Quotes" multiple id="quotes" name="quote_ids[]">
-                            @foreach ($quotes as $quote)
-                                <option
-                                    value="{{ $quote->id }}"> {{ $quote->quote_ref }} - {{ $quote->ref_no }} - {{ $quote->getBookingCurrency->name }} </option>
-                            @endforeach
-                        </select>
-
-                        @error('quote_ids')
-                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                        @enderror
-                    </div>
-
+                  <div class="form-group">
+                    <label for="quotes">Quotes <span class="h6">(Select Atleast Two Quotes)</span> <span style="color:red">*</span></label>
+                    <select name="quote_ids[]" id="quote_ids" class="form-control select2-multiple" data-placeholder="Select Quotes" multiple>
+                      @foreach ($quotes as $quote)
+                        <option value="{{ $quote->id }}"> {{ $quote->quote_ref }} - {{ $quote->ref_no }} - {{ $quote->getBookingCurrency->name }} </option>
+                      @endforeach
+                    </select>
+                    <span class="text-danger" role="alert"></span>
+                  </div>
                 </div>
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-secondary float-right">Submit</button>
-                  <a href="{{ route('quotes.group-quote.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
 
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-success float-right">Submit</button>
+                  <a href="{{ route('groups.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
                 </div>
               </form>
+
+              <div id="overlay" class=""></div>
+
             </div>
           </div>
         </div>
@@ -81,3 +77,7 @@
 
   </div>
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/quote_management.js') }}" ></script>
+@endpush

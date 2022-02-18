@@ -12,7 +12,7 @@
           <div class="d-flex">
             <h4>
                 View Group Quotes
-                <x-add-new-button :route="route('quotes.group-quote.create')"></x-add-new-button>
+                <x-add-new-button :route="route('groups.create')"></x-add-new-button>
             </h4>
           </div>
         </div>
@@ -33,7 +33,7 @@
     </div>
   </section>
 
-  <x-page-filters :route="route('quotes.group-quote.index')">
+  <x-page-filters :route="route('groups.index')">
     <div class="row">
       <div class="col-md-12">
           <div class="form-group">
@@ -120,8 +120,8 @@
                         {{-- <td>{{ \Helper::number_format($group->total_commission_amount).' '.$booking_currency }}</td> --}}
                         <td>{{ isset($group->getBookingCurrency->name) && !empty($group->getBookingCurrency->name) ? $group->getBookingCurrency->code.' - '.$group->getBookingCurrency->name : '' }}</td>
                         <td colspan="2">
-                          <form method="post" action="{{ route('quotes.group-quote.destroy', encrypt($group->id)) }}">
-                            <a href="{{ route('quotes.group-quote.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs mr-2" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <form method="post" action="{{ route('groups.destroy', encrypt($group->id)) }}">
+                            <a href="{{ route('groups.edit', encrypt($group->id)) }}" class="btn btn-outline-success btn-xs mr-2" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                             @csrf
                             @method('delete')
                             <button class="btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">

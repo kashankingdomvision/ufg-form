@@ -132,9 +132,10 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('{id}/generate/pdf', array('as' => 'document.pdf', 'uses' => 'QuoteDocumentsController@generatePDF'));
         
         /* group quote routes */
-        Route::resource('group-quote', 'GroupController',['only' => [
-            'index','create', 'store', 'edit', 'update', 'destroy'
-        ]]);
+        // Route::resource('group-quote', 'GroupController',['only' => [
+        //     'index','create', 'store', 'edit', 'update', 'destroy'
+        // ]]);
+
         Route::get('getGroups/{id}', array('as' => 'getGroups', 'uses' => 'QuoteController@getGroups'));
 
         /* compare quote routes */
@@ -142,6 +143,20 @@ Route::group(['middleware' => ['auth']], function(){
 
         /* category detail get_autocomplete_data routes */
         Route::get('get_autocomplete_data', array('as' => 'get_autocomplete_data', 'uses' => 'QuoteController@get_autocomplete_data'));
+    });
+
+    /* Quote Groups */
+    Route::group([
+        'prefix' => 'groups',
+        'as'     => 'groups.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'GroupController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'GroupController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'GroupController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'GroupController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'GroupController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'GroupController@destroy'));
     });
 
     /*

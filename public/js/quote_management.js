@@ -1537,6 +1537,79 @@ __webpack_require__(/*! ./quote_template/quote_template */ "./resources/js/quote
 
 __webpack_require__(/*! ./quote_management/quote_app */ "./resources/js/quote_management/quote_app.js");
 
+__webpack_require__(/*! ./quote_management/group_app */ "./resources/js/quote_management/group_app.js");
+
+/***/ }),
+
+/***/ "./resources/js/quote_management/group_app.js":
+/*!****************************************************!*\
+  !*** ./resources/js/quote_management/group_app.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Group
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_group', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "groups/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Group
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_group', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "groups/index"));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+});
+
 /***/ }),
 
 /***/ "./resources/js/quote_management/quote_app.js":

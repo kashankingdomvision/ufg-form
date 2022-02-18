@@ -68117,27 +68117,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(func
       }
     }
   });
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(".add-new-group-quote").submit(function (e) {
-  e.preventDefault();
-  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    type: "POST",
-    url: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action'),
-    data: jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(),
-    success: function success(data) {
-      if (data.status) {
-        Toast.fire({
-          icon: 'success',
-          title: data.msg
-        });
-        setTimeout(function () {
-          window.location.href = data.redirect;
-        }, 2800);
-      } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
-      }
-    }
-  });
 }); // $(document).ready(function() {
 //    setTimeout(function() {
 //        jQuery('.alert-success').fadeOut(1500);
