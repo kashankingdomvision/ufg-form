@@ -841,10 +841,11 @@
                                 </div>
                               </div>
                               
-                              <div class="col-md-4">
+                              <div class="col-md-3">
                                 <div class="form-group">
-                                  <label>Internal Comments <button type="button" class="btn btn-xs btn-outline-dark ml-1 insert-quick-text"> <i class="fas fa-plus"></i> </button></label>
-                                  <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="2" placeholder="Enter Comments">{{ $q_detail['comments'] }}</textarea>
+                                  <label>Internal Comments </label>
+                                  <button type="button" class="btn btn-xs btn-outline-dark ml-1 insert-quick-text"> <i class="fas fa-plus"></i> </button>
+                                  <textarea name="quote[{{ $key }}][comments]" data-name="comments" id="quote_{{ $key }}_comments" class="form-control comments" rows="1" placeholder="Enter Comments">{{ $q_detail['comments'] }}</textarea>
                                 </div>
                               </div>
 
