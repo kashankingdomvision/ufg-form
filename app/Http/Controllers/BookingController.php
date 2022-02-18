@@ -367,6 +367,37 @@ class BookingController extends Controller
         return $data;
     }
 
+    public function getBookingLogArray($booking)
+    {
+
+        $array   = $booking->toArray();
+
+        /* Get booking details with child table records */ 
+        $booking_details = $booking->getBookingDetail->map(function($booking_detail) {
+
+            $bd                    = $booking_detail->toArray();
+            $bd['finance']         = $booking_detail->getBookingFinance->toArray();
+            $bd['refund_payments'] = $booking_detail->getBookingRefundPayment->toArray();
+            $bd['credit_notes']    = $booking_detail->getBookingCreditNote->toArray();
+
+            return $bd;
+        });
+
+        $array['booking']                              = $booking_details;
+        $array['booking_cancellation_refund_payments'] = $booking->getBookingCancellationRefundPaymentDetail->count() ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
+        $array['booking_cancellations']                = $booking->getTotalRefundAmount->count() ? $booking->getTotalRefundAmount->toArray() : [];
+        $array['pax']                                  = $booking->getBookingPaxDetail->toArray();
+
+        $data = [
+            'booking_id'    => $booking->id,
+            'version_no'    => $booking->version,
+            'data'          => $array,
+            'log_no'        => $booking->getBookingLogs()->count()
+        ];
+
+        return $data;
+    }
+
     public function update(BookingRequest $request, $id)
     {
 
@@ -381,29 +412,9 @@ class BookingController extends Controller
         //- check update access
 
         $booking = Booking::findOrFail(decrypt($id));
-        $array   = $booking->toArray();
-        $book    = [];
 
-        foreach ($booking->getBookingDetail as $bookingde) {
-            $d = $bookingde->toArray();
-            $d['finance']         = $bookingde->getBookingFinance->toArray();
-            $d['refund_payments'] = $bookingde->getBookingRefundPayment->toArray();
-            $d['credit_notes']    = $bookingde->getBookingCreditNote->toArray();
-            
-            array_push($book, $d);
-        }
-
-        $array['booking']                              = $book;
-        $array['booking_cancellation_refund_payments'] = (count( $booking->getBookingCancellationRefundPaymentDetail) > 0) ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
-        $array['booking_cancellations']                = (count((array) $booking->getTotalRefundAmount) > 0) ? $booking->getTotalRefundAmount->toArray() : [];
-        $array['pax']                                  = $booking->getBookingPaxDetail->toArray();
-
-        BookingLog::create([
-            'booking_id'    => $booking->id,
-            'version_no'    => $booking->version,
-            'data'          => $array,
-            'log_no'        => $booking->getBookingLogs()->count()
-        ]);
+        /* store booking log */ 
+        BookingLog::create($this->getBookingLogArray($booking));
 
         $booking->update($this->bookingArray($request));
 
@@ -919,4 +930,17 @@ class BookingController extends Controller
 
     // 'product_location_id'     => $quoteD['product_location_id'],
     // 'supplier_location_id'    => $quoteD['supplier_location_id'],
+
+
+
+
+// foreach ($booking->getBookingDetail as $bookingde) {
+//     $d = $bookingde->toArray();
+//     $d['finance']         = $bookingde->getBookingFinance->toArray();
+//     $d['refund_payments'] = $bookingde->getBookingRefundPayment->toArray();
+//     $d['credit_notes']    = $bookingde->getBookingCreditNote->toArray();
+
+//     array_push($book, $d);
+// }
+
 }
