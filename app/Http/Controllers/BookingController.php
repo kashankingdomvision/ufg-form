@@ -205,7 +205,7 @@ class BookingController extends Controller
         ];
     }
 
-    public function getBookingDetailsArray($quoteD)
+    public function getBookingDetailsArray($booking, $quoteD)
     {
         $data = [
 
@@ -243,6 +243,10 @@ class BookingController extends Controller
             'outstanding_amount_left'           => $quoteD['outstanding_amount_left'],
             'category_details'                  => $quoteD['category_details'],
             'product_details'                   => $quoteD['product_details'],
+            'invoice'                           => $this->fileStore($quoteD, $booking->id),
+            'booking_id'                        => $booking->id,
+            'status'                            => isset($quoteD['status']) && !empty($quoteD['status']) ? $quoteD['status'] : 'active',
+       
         ];
 
         return $data;
@@ -424,12 +428,7 @@ class BookingController extends Controller
 
             foreach ($request->quote as $qu_details) {
 
-                $bookingDetail               = $this->getBookingDetailsArray($qu_details);
-                $bookingDetail['invoice']    = $this->fileStore($qu_details, $booking->id);
-
-                $bookingDetail['booking_id'] = $booking->id;
-                $bookingDetail['status']     = isset($qu_details['status']) && !empty($qu_details['status']) ? $qu_details['status'] : 'active';
-                $booking_Details             = BookingDetail::create($bookingDetail);
+                $booking_Details = BookingDetail::create($this->getBookingDetailsArray($booking, $qu_details));
 
                 if($booking_Details->status == 'cancelled'){
                     BookingDetailCancellation::create([
