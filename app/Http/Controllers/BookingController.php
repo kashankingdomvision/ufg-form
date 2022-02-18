@@ -402,6 +402,26 @@ class BookingController extends Controller
         return $data;
     }
 
+
+    public function getPaxDetailsArray( $booking, $pax_data ){
+
+        $data = [
+            'booking_id'            => $booking->id,
+            'full_name'             => $pax_data['full_name']??NULL,
+            'email_address'         => $pax_data['email_address']??NULL,
+            'contact_number'        => $pax_data['full_number']??NULL,
+            'date_of_birth'         => $pax_data['date_of_birth']??NULL,
+            'bedding_preference'    => $pax_data['bedding_preference']??NULL,
+            'dietary_preferences'   => $pax_data['dietary_preferences']??NULL,
+            'nationality_id'        => $pax_data['nationality_id']??NULL,
+            'resident_in'           => $pax_data['resident_in']??NULL,
+            'covid_vaccinated'      => $pax_data['covid_vaccinated'],
+            'medical_requirement'   => $pax_data['medical_requirement'],
+        ];
+
+        return $data;
+    }
+
     public function update(BookingRequest $request, $id)
     {
 
@@ -563,19 +583,7 @@ class BookingController extends Controller
 
             foreach ($request->pax as $pax_data) {
 
-                BookingPaxDetail::create([
-                    'booking_id'            => $booking->id,
-                    'full_name'             => $pax_data['full_name']??NULL,
-                    'email_address'         => $pax_data['email_address']??NULL,
-                    'contact_number'        => $pax_data['full_number']??NULL,
-                    'date_of_birth'         => $pax_data['date_of_birth']??NULL,
-                    'bedding_preference'    => $pax_data['bedding_preference']??NULL,
-                    'dietary_preferences'   => $pax_data['dietary_preferences']??NULL,
-                    'nationality_id'        => $pax_data['nationality_id']??NULL,
-                    'resident_in'           => $pax_data['resident_in']??NULL,
-                    'covid_vaccinated'      => $pax_data['covid_vaccinated'],
-                    'medical_requirement'   => $pax_data['medical_requirement'],
-                ]);
+                BookingPaxDetail::create($this->getPaxDetailsArray($booking, $pax_data));
             }
         }else{
             $booking->getPaxDetail()->delete();
