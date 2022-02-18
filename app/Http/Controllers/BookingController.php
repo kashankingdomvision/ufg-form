@@ -289,9 +289,10 @@ class BookingController extends Controller
         ];
     }
 
-    public function getBookingCancellationRefundPaymentsArray($quoteD)
+    public function getBookingCancellationRefundPaymentsArray( $booking ,$quoteD)
     {
         return [
+            'booking_id'            => $booking->id,
             "refund_amount"         => $quoteD['refund_amount']??NULL,
             "refund_date"           => $quoteD['refund_date']??NULL,
             "refund_approved_date"  => $quoteD['refund_approved_date']??NULL,
@@ -552,8 +553,6 @@ class BookingController extends Controller
                                 ]);
                             }
 
- 
-
                             BookingDetailFinance::where('booking_detail_id',$booking_Details->id)->update(['status' => 'cancelled']);
                             BookingDetail::where('id',$booking_Details->id)->update([ 'payment_status' => 'cancelled', 'outstanding_amount_left' => '0.00' ]);
                         }
@@ -595,11 +594,8 @@ class BookingController extends Controller
 
             foreach ($request->cancellation_refund as $cancellation_refund) {
 
-                $cancellation_refund               = $this->getBookingCancellationRefundPaymentsArray($cancellation_refund);
-                $cancellation_refund['booking_id'] = $booking->id;
-
                 if(!empty($cancellation_refund['refund_amount']) && ($cancellation_refund['refund_amount'] > 0) ){
-                    BookingCancellationRefundPayment::create($cancellation_refund);
+                    BookingCancellationRefundPayment::create($this->getBookingCancellationRefundPaymentsArray($booking, $cancellation_refund));
                 }
   
             }
