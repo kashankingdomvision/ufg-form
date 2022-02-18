@@ -266,13 +266,17 @@ class BookingController extends Controller
         ];
     }
 
-    public function getBookingCreditNoteArray($quoteD)
+    public function getBookingCreditNoteArray($booking_Details, $quoteD)
     {
         return [
             "credit_note_amount"         => $quoteD['credit_note_amount']??NULL,
             "credit_note_no"             => Helper::getCreditNote(),
             "credit_note_recieved_date"  => $quoteD['credit_note_recieved_date']??NULL,
             "credit_note_recieved_by"    => $quoteD['credit_note_recieved_by']??NULL,
+            'booking_detail_id'          => $booking_Details->id,
+            'supplier_id'                => $booking_Details->supplier_id,
+            'currency_id'                => $booking_Details->supplier_currency_id,
+            'user_id'                    => Auth::id(),
         ];
     }
 
@@ -520,11 +524,8 @@ class BookingController extends Controller
                     
                     foreach ($qu_details['credit_note'] as $credit_note){
 
-                        $credit_note = $this->getBookingCreditNoteArray($credit_note);
-                        $credit_note['booking_detail_id'] = $booking_Details->id;
-                        $credit_note['supplier_id']       = $booking_Details->supplier_id;
-                        $credit_note['currency_id']       = $booking_Details->supplier_currency_id;
-                        $credit_note['user_id']           = Auth::id();
+                        $credit_note = $this->getBookingCreditNoteArray($booking_Details, $credit_note);
+                   
 
                         if(($credit_note['credit_note_amount']) > 0 && !empty($credit_note['credit_note_recieved_date'])){
 
