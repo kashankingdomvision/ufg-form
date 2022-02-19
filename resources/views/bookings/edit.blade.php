@@ -714,7 +714,7 @@
                                 </div>
                               </div>
 
-                              <div class="col-sm-2">
+                              <div class="col-sm-2 d-none">
                                 <div class="form-group">
                                   <label>Category Details</label>
                                   <input type="text" name="quote[{{ $key }}][category_details]" id="quote_{{ $key }}_category_details" value="{{ $booking_detail->category_details }}" class="form-control category-details">
