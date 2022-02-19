@@ -86,16 +86,19 @@
               </a>
 
               <a href="{{ route('quotes.final', encrypt($booking->quote_id)) }}" target="_blank" class="mr-2 float-right btn btn-primary btn-sm" data-title="Final Quotation" data-target="#Final_Quotation">
+                <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;
                 View Final Quote
               </a>
 
               @if($booking->booking_status == 'confirmed')
                 <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-sm mr-2" data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+                  <i class="fa fa-times"></i> &nbsp;
                   Cancel Booking
                 </a>
               @endif
               @if($booking->booking_status == 'cancelled')
                 <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking mr-2 btn btn-success btn-sm float-right" title="Revert Cancel Booking">
+                  <i class="fa fa-undo-alt"></i> &nbsp;
                   Revert Cancel Booking
                 </a>
               @endif
