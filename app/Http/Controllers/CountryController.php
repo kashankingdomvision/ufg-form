@@ -60,7 +60,11 @@ class CountryController extends Controller
             'sort_order' => $request->sort_order,
         ]);
         
-        return response()->json([ 'status' => true, 'success_message' => 'Country Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Country Created Successfully.',
+            'redirect_url'    => route('countries.index') 
+        ]);
     }
 
     /**
@@ -91,7 +95,11 @@ class CountryController extends Controller
             'sort_order' => $request->sort_order,
         ]);
         
-        return response()->json([ 'status' => true, 'success_message' => 'Country Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Country Updated Successfully.',
+            'redirect_url'    => route('countries.index') 
+        ]);
     }
 
 }

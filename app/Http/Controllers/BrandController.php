@@ -104,7 +104,11 @@ class BrandController extends Controller
 
         Brand::create($this->brandArray($request, 'store'));
 
-        return response()->json([ 'status' => true, 'success_message' => 'Brand Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Brand Created Successfully.',
+            'redirect_url'    => route('brands.index') 
+        ]);
     }
 
     /**
@@ -145,7 +149,11 @@ class BrandController extends Controller
 
         $brand->update($this->brandArray($request, 'update', $brand));
 
-        return response()->json([ 'status' => true, 'success_message' => 'Brand Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Brand Updated Successfully.',
+            'redirect_url'    => route('brands.index') 
+        ]);
     }
 
     /**

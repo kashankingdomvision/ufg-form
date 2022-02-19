@@ -51,7 +51,11 @@ class BankController extends Controller
             'name'  =>  $request->name
         ]);
         
-        return response()->json([ 'status' => true, 'success_message' => 'Bank Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Bank Created Successfully.',
+            'redirect_url'    => route('banks.index') 
+        ]);
     }
 
     /**
@@ -80,7 +84,11 @@ class BankController extends Controller
             'name' => $request->name,
         ]);
         
-        return response()->json([ 'status' => true, 'success_message' => 'Bank Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Bank Updated Successfully.',
+            'redirect_url'    => route('banks.index') 
+        ]);
     }
     
     /**

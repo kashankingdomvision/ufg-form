@@ -57,7 +57,11 @@ class AirportCodeController extends Controller
             'iata_code' => $request->iata_code
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Airport Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Airport Created Successfully.',
+            'redirect_url'    => route('airport_codes.index') 
+        ]);
     }
 
     /**
@@ -98,7 +102,11 @@ class AirportCodeController extends Controller
             'iata_code' => $request->iata_code
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Airport Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Airport Updated Successfully.',
+            'redirect_url'    => route('airport_codes.index') 
+        ]);
     }
 
     /**

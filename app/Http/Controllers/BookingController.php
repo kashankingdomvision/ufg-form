@@ -604,7 +604,12 @@ class BookingController extends Controller
         }
 
         // $quote_update_detail->delete(); 
-        return \Response::json(['status' => 200, 'success_message' => 'Booking Update Successfully'], 200);
+
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Booking Updated Successfully.',
+            'redirect_url'    => route('bookings.index') 
+        ]);
     }
 
     public function show($id,$status = null)
