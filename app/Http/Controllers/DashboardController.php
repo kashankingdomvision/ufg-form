@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Helper;
 use PDF;
 
 use App\Booking;
@@ -14,6 +15,7 @@ use App\Quote;
 use App\QuoteUpdateDetail;
 use App\Supplier;
 use App\User;
+use App\ReferenceCredential;
 
 class DashboardController extends Controller
 {
@@ -119,5 +121,20 @@ class DashboardController extends Controller
         return \Response::json(['success_message' => 'User Updated'], 200);
     }
 
+    public function refresh_token()
+    {
+        $zoho_credentials = ReferenceCredential::find(1);
+        $refresh_token    = $zoho_credentials->refresh_token;
+        $url = "https://accounts.zoho.com/oauth/v2/token?refresh_token=" . $refresh_token . "&client_id=1000.0VJP33J6LLOQ63896U88RWYIVJRSFD&client_secret=81212149f53ee4039b280b420835d64b8443c96a83&grant_type=refresh_token";
+        $args = array('ssl' => false, 'format' => 'ARRAY');
+        $response = Helper::cf_remote_request($url, $args);
+
+        if ($response && $response['status'] == 200) {
+            $body = $response['body'];
+            $zoho_credentials->update(['access_token' => $body['access_token']]);
+        }
+        
+        return "Token updated Successfully.";
+    }
 
 }
