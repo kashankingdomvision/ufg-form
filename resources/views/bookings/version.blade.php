@@ -29,7 +29,7 @@
               <h3 class="card-title text-center lh-2">Version Bookings #{{ $log->log_no }} {{ $log->version_no }} </h3>
 
               <a href="{{ route('bookings.edit', encrypt($log->booking_id)) }}" class="btn btn-dark btn-sm float-right" title="Back">
-                <span class="fa fa-arrow-left"></span>  &nbsp;Back
+                <span class="fa fa-arrow-left"></span>&nbsp;&nbsp;Back
               </a>
             </div>
 
