@@ -117,7 +117,10 @@
             </div>
         </x-page-filters>
 
-        <section class="content p-2">
+
+
+
+        {{-- <section class="content p-2">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-md-12">
@@ -140,7 +143,7 @@
                 </div>
               </div>
             </div>
-        </section>
+        </section> --}}
 
         {{-- GROUP QUOTE MODAL --}}
         <div class="modal fade" id="group-quote-modal" tabindex="-1" role="dialog" aria-labelledby="group-quote-modal-lable" aria-hidden="true">
@@ -178,9 +181,38 @@
                             <div class="card-header">
                                 <h3 class="card-title">@if(isset($status) && $status == 'archive') Archived @endif Quote List</h3>
                             </div>
+                            <!-- Multi Actions -->
+                            <div class="card-header">
+                                <div class="row">
+                                    <form method="POST" id="bulk_action" action="{{ route('quotes.bulk.action') }}" >
+                                        @csrf
+                                        <input type="hidden" name="bulk_action_type" value="">
+                                        <input type="hidden" name="bulk_action_ids" value="">
+
+                                        <div class="dropdown show btn-group">
+                                            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Select Action
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <button type="button" data-action_type="cancel" class="dropdown-item bulk-action-item">Cancel</button>
+                                                <button type="button" data-action_type="revert_cancel" class="dropdown-item bulk-action-item">Revert Cancel</button>
+                                                <button type="button" data-action_type="archive" class="dropdown-item bulk-action-item">Archive</button>
+                                                <button type="button" data-action_type="unarchive" class="dropdown-item bulk-action-item">Unarchive</button>
+
+                                                <div class="dropdown-divider"></div>
+                                                <button data-action_type="store_group_quote" class="dropdown-item bulk-action-item">Create Group Quote</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- End Multi Actions -->
+                            </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive ">
                                     <table id="example1" class="table table-hover" >
+                                        <thead>
+                                         
+                                        </thead>
                                         <thead>
                                           <tr>
                                             <th width="8">

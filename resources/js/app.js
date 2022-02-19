@@ -927,64 +927,166 @@ $(document).ready(function($) {
         btnname = $(this).attr('name');
     })
 
-    $(".bulk-action").submit(function(e) {
 
-        e.preventDefault();
+    // var bulkActionType = null;
+    $('.bulk-action-item').on('click', function (event) {
 
-        var url            = $(this).attr('action');
-        var checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
-        var formData       = $(this).serializeArray();
-        var message        = '';
-
-        formData.push({name:'id', value: checkedValues});
-        formData.push({name:'btn', value: btnname});
-
-        switch(btnname) {
-            case "archive":
-                message = 'Are you sure you want to Archive Quotes?'
-                break;
-            case "unarchive":
-                message = 'Are you sure you want to Revert Quotes from Archive?'
-                break;
-            case "quote":
-                message = 'Are you sure you want to Revert Cancelled Quotes?';
-                break;
-            case "cancel":
-                message = 'Are you sure you want to Cancel Quotes?';
+        let checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
+        let bulkActionType = $(this).data('action_type');
+        let message        = "";
+        let buttonText     = "";
+    
+        if(checkedValues.length == 0){
+        
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please Check Any Record First.!'
+            });
+            return;
         }
+
+  
 
         if(checkedValues.length > 0){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: message,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: `Yes`,
-                confirmButtonColor: '#5cb85c',
-                cancelButtonText: 'No',
-                showLoaderOnConfirm: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "PUT",
-                        url: url,
-                        data: $.param(formData),
-                        success: function(data)
-                        {
-                            setTimeout(function() {
-                                alert(data.message);
-                                location.reload();
-                            }, 600);
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    ///no action here
+
+            if(['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)){
+    
+                $('input[name="bulk_action_type"]').val(bulkActionType);
+                $('input[name="bulk_action_ids"]').val(checkedValues);
+    
+                switch(bulkActionType) {
+                    case "archive":
+                        message    = 'You want to Archive Quotes?';
+                        buttonText = 'Archive';
+                        break;
+                    case "unarchive":
+                        message    = 'You want to Revert Quotes from Archive?'
+                        buttonText = 'Unarchive';
+                        break;
+                    case "revert_cancel":
+                        message    = 'You want to Revert Cancelled Quotes?';
+                        buttonText = 'Revert';
+                        break;
+                    case "cancel":
+                        message    = 'You want to Cancel Quotes?';
+                        buttonText = 'Cancel';
                 }
-            })
-        }else{
-            alert('Please Check any Record First');
+    
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#dc3545',
+                    confirmButtonText: `Yes, ${buttonText} it !`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: $('#bulk_action').attr('action'),
+                            data: new FormData($('#bulk_action')[0]),
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function(response) {
+
+                                let timerInterval
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '',
+                                    html: response.message,
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    didOpen: () => {},
+                                    willClose: () => {
+                                        console.log("asdasd");
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+            }
         }
+
+        if(checkedValues.length > 2){
+
+            // if(['store_group_quote'].includes(bulkActionType)){
+    
+            // }
+        }
+
+        
+
+
+        $("#bulk_action [name=bulk_action_type]").val(bulkActionType);
     });
+
+
+
+    // $(document).on('submit', '#update_role', function(event) {  
+    // });
+
+    // $(".bulk-action").submit(function(e) {
+
+    //     e.preventDefault();
+
+    //     var url            = $(this).attr('action');
+    //     var checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
+    //     var formData       = $(this).serializeArray();
+    //     var message        = '';
+
+    //     formData.push({name:'id', value: checkedValues});
+    //     formData.push({name:'btn', value: btnname});
+
+    //     switch(btnname) {
+    //         case "archive":
+    //             message = 'Are you sure you want to Archive Quotes?'
+    //             break;
+    //         case "unarchive":
+    //             message = 'Are you sure you want to Revert Quotes from Archive?'
+    //             break;
+    //         case "quote":
+    //             message = 'Are you sure you want to Revert Cancelled Quotes?';
+    //             break;
+    //         case "cancel":
+    //             message = 'Are you sure you want to Cancel Quotes?';
+    //     }
+
+    //     if(checkedValues.length > 0){
+    //         Swal.fire({
+    //             title: 'Are you sure?',
+    //             text: message,
+    //             focusConfirm: false,
+    //             showCancelButton: true,
+    //             confirmButtonText: `Yes`,
+    //             confirmButtonColor: '#5cb85c',
+    //             cancelButtonText: 'No',
+    //             showLoaderOnConfirm: true,
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 $.ajax({
+    //                     type: "PUT",
+    //                     url: url,
+    //                     data: $.param(formData),
+    //                     success: function(data)
+    //                     {
+    //                         setTimeout(function() {
+    //                             alert(data.message);
+    //                             location.reload();
+    //                         }, 600);
+    //                     }
+    //                 });
+    //             } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //                 ///no action here
+    //             }
+    //         })
+    //     }else{
+    //         alert('Please Check any Record First');
+    //     }
+    // });
 
     /// Update Currency Status
     $("#currencyStatus").submit(function(e) {
@@ -1115,9 +1217,22 @@ $(document).on('click', '.addmodalforquote', function() {
 
 // CreateGroupQuote //
     var checkedQuoteValues = null;
+    // window.Toast = Swal.mixin({
+    //     toast: true,
+    //     position: 'top-end',
+    //     showConfirmButton: false,
+    //     timer: 2200,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //       toast.addEventListener('mouseenter', Swal.stopTimer)
+    //       toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //     }
+    // });
+
     window.Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        icon: 'success',
+        position: 'top-right',
         showConfirmButton: false,
         timer: 2200,
         timerProgressBar: true,
@@ -1125,7 +1240,7 @@ $(document).on('click', '.addmodalforquote', function() {
           toast.addEventListener('mouseenter', Swal.stopTimer)
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
-    });
+      });
 
     //Create group quote
     $('.createGroupQuote').on('click', function (e) {

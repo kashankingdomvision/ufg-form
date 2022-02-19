@@ -141,6 +141,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         /* category detail get_autocomplete_data routes */
         Route::get('get_autocomplete_data', array('as' => 'get_autocomplete_data', 'uses' => 'QuoteController@get_autocomplete_data'));
+
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'QuoteController@bulkAction' ));
     });
 
     /* Quote Groups */

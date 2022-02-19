@@ -52,6 +52,72 @@ class QuoteController extends Controller
 {
     public $pagiantion = 10;
 
+    public function bulkAction(Request $request)
+    {
+
+        // dd($request->all());
+
+        $status  = false;
+        $message = "";
+
+        $bulk_action_ids  = $request->bulk_action_ids;
+        $bulk_action_type = $request->bulk_action_type;
+
+        $bulk_action_ids  = explode(",", $bulk_action_ids);
+
+        if($bulk_action_type == 'cancel'){
+            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
+            $message = "Quotes Cancelled Successfully.";
+        }
+
+        if($bulk_action_type == 'revert_cancel'){
+            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
+            $message = "Revert Cancelled Quotes Successfully.";
+        }
+
+        if($bulk_action_type == 'archive'){
+            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 1 ]);
+            $message = "Quotes Archived Successfully.";
+        }
+
+        if($bulk_action_type == 'unarchive'){
+            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 0 ]);
+            $message = "Quotes Unarchived Successfully.";
+        }
+
+        // dd($ids);
+
+        return response()->json([ 
+            'status'  => $status, 
+            'message' => $message,
+        ]);
+
+
+        // $table_name        = $request->table;
+        // $respons['status'] = FALSE;
+        // $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
+
+        // if($request->btn == 'archive' || $request->btn == 'unarchive'){
+            
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
+        //     $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
+
+        // }elseif ($request->btn  == 'cancel'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+        //     $respons['message'] = 'Quotes Cancelled Successfully !!';
+        // }
+        // elseif ($request->btn  == 'quote'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+        //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
+        // }
+
+        // $respons['status']  = true;
+
+        // return response()->json($respons);
+    }
+
     public function compare_quote(Request $request)
     {
         if ($request->isMethod('post')) {
