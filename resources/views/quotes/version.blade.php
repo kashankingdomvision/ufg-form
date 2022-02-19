@@ -29,7 +29,7 @@
                 <h3 class="card-title text-center lh-2">Quote Version #{{  $log['log_no'] }} {{ isset($log['version_no']) && !empty($log['version_no']) ? $log['version_no'] : '' }}</h3>
                 
                 @if(!isset($type))
-                  <button id="recall_version" type="button" data-recall="true" class="btn btn-dark btn-sm float-right">Recall Version</button>
+                  <button id="recall_version" type="button" data-recall="true" class="btn btn-dark btn-sm float-right"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Recall Version</button>
                 @endif
               </div>
 

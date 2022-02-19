@@ -103,7 +103,7 @@
         <form class="" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
             @csrf
             <button type="submit" title="Export in Excel"  onclick="return confirm('Are you sure you would like to Export this Quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
-                <i class="fa fa-file-excel"></i>
+                <i class="fa fa-file-export"></i>
             </button>
         </form>
     @endif

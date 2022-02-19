@@ -1857,13 +1857,13 @@ $(document).ready(function () {
       if (confirm("Are you sure you want to Recall this Quotation?")) {
         $("#version_quote :input").prop("disabled", false);
         $('#recall_version').data('recall', false);
-        $(this).text('Back Into Version');
+        $(this).html('<i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back Into Version');
         getMarkupTypeFeildAttribute();
       }
     } else {
       $("#version_quote :input").prop("disabled", true);
       $('#recall_version').prop("disabled", false);
-      $(this).text('Recall Version');
+      $(this).html("<i class=\"fa fa-undo-alt\"></i>&nbsp;&nbsp;Recall Version");
     }
   });
   /* End Quote Version page script */

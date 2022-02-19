@@ -30,32 +30,32 @@
               <h3 class="card-title text-center card-title-style">View Quote</h3>
 
               <a href="{{ route('quotes.index') }}" class="btn btn-dark btn-sm float-right" title="Back">
-                <span class="fa fa-arrow-left"></span>  &nbsp;Back to  Listing
+                <span class="fa fa-arrow-left"></span>&nbsp;&nbsp;Back to  Listing
               </a>
 
               @if($quote->booking_status == 'quote')
                 <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
                   @csrf
-                  <button type="submit" onclick="return confirm('Are you sure you would like to Export this Quote?');" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel">Export in Excel</button>
+                  <button type="submit" onclick="return confirm('Are you sure you would like to Export this Quote?');" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>
                 </form>
               @endif
 
               @if($quote->booking_status == 'quote')
                 <a href="{{ route('quotes.cancelled', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Cancel this Quote?');" data-title="Cancel" data-target="#cancel" title="Cancel Quote">
-                  <button type="button" class="mr-2 btn btn-danger btn-sm float-right" data-title="" data-target="#" title="Cancel Quote">Cancel Quote</button>
+                  <button type="button" class="mr-2 btn btn-danger btn-sm float-right" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
                 </a>
               @endif
 
               @if($quote->booking_status == 'quote')
                 <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                   @csrf @method('patch')
-                  <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
+                  <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
                 </form>
               @endif
 
               @if($quote->booking_status == 'cancelled')
                 <a href="{{ route('quotes.restore', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Restore this Quote?');" data-title="Cancel" title="Restore Quote">
-                  <button type="button" class="mr-2 btn btn-success btn-sm float-right">Restore</button>
+                  <button type="button" class="mr-2 btn btn-success btn-sm float-right"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
                 </a>
               @endif
             </div>
