@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth']], function(){
     /* Zoho Crm Refresh Token */
 	Route::get('refresh-token' ,array('before' => 'csrf', 'as' => 'refresh-token', 'uses' => 'DashboardController@refresh_token'));
 
+    /* Laravel File manager */
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
@@ -193,21 +194,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
     });
 
-   /* Supplier Bulk Payments */
-    Route::group([
-        'prefix' => 'supplier-bulk-payments',
-        'as'     => 'supplier-bulk-payments.'
-    ], function () {
-
-        /* Add Supplier Bulk Payment */
-        Route::get('index', array('as' => 'index', 'uses' => 'SupplierBulkPaymentController@index'));
-        Route::post('supplier-bulk-payments/store', array('as' => 'store', 'uses' => 'SupplierBulkPaymentController@store'));
-        
-        /* View Supplier Bulk Payment */
-        Route::get('view', array('as' => 'view', 'uses' => 'SupplierBulkPaymentController@view'));
-    });
-
-
     /*
     |--------------------------------------------------------------------------
     | Commission Manangement
@@ -359,7 +345,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierController@destroy'));
     });
 
-
     /* Group Owner */
     Route::group([
         'prefix' => 'group-owners',
@@ -402,7 +387,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'ProductController@destroy'));
     });
 
-
     /*  Categories */
     Route::group([
         'prefix' => 'categories',
@@ -417,13 +401,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CategoryController@destroy'));
     });
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Wallet
-    |--------------------------------------------------------------------------
-    */
-
+    /* Wallet */
     Route::group([
         'prefix' => 'wallets',
         'as'     => 'wallets.'
@@ -431,6 +409,25 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('index', array('as' => 'index', 'uses' => 'WalletController@index'));
         Route::get('get-supplier-wallet-amount/{supplier_id}', array('as' => 'get-supplier-wallet-amount', 'uses' => 'WalletController@get_supplier_wallet_amount'));
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Supplier Bulk Payments
+    |--------------------------------------------------------------------------
+    */
+    
+    Route::group([
+        'prefix' => 'supplier-bulk-payments',
+        'as'     => 'supplier-bulk-payments.'
+    ], function () {
+
+        /* Add Supplier Bulk Payment */
+        Route::get('index', array('as' => 'index', 'uses' => 'SupplierBulkPaymentController@index'));
+        Route::post('supplier-bulk-payments/store', array('as' => 'store', 'uses' => 'SupplierBulkPaymentController@store'));
+        
+        /* View Supplier Bulk Payment */
+        Route::get('view', array('as' => 'view', 'uses' => 'SupplierBulkPaymentController@view'));
     });
 
 
