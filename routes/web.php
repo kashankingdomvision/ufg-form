@@ -36,8 +36,8 @@ Route::group(['middleware' => ['auth']], function(){
         'index','create', 'store', 'edit', 'update', 'destroy'
     ]]);
 
-    Route::delete('multiple-delete/{ids}',array('as'=>'multiple-delete','uses'=>'DashboardController@multiple_delete'));
-    Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'DashboardController@has_user_edit'));
+    Route::delete('multiple-delete/{ids}', array('as' =>'multiple-delete', 'uses' => 'DashboardController@multiple_delete'));
+    Route::delete('has-user-edit/{id}', array('as' => 'has-user-edit', 'uses' => 'DashboardController@has_user_edit'));
     Route::put('update_override/{id}', array('as' => 'update.override', 'uses' => 'DashboardController@update_override'));
 
     /*
@@ -184,14 +184,14 @@ Route::group(['middleware' => ['auth']], function(){
         'as' 	 => 'templates.'
     ], function() {
 
-        Route::get('index', ['as' => 'index', 'uses' => 'TemplateController@index']);
-        Route::get('create', ['as' => 'create', 'uses' => 'TemplateController@create']);
-        Route::post('store', ['as' => 'store', 'uses' => 'TemplateController@store']);
-        Route::post('store-for-quote', ['as' => 'store.for.quote', 'uses' => 'TemplateController@store_for_quote']);
-        Route::get('detail/{id}', ['as' => 'detail', 'uses' => 'TemplateController@detail']);
-        Route::get('delete/{id}', ['as' => 'delete', 'uses' => 'TemplateController@destroy']);
-        Route::get('edit/{id}', ['as' => 'edit', 'uses' => 'TemplateController@edit']);
-        Route::put('update/{id}', ['as' => 'update', 'uses' => 'TemplateController@update']);
+        Route::get('index', array('as' => 'index', 'uses' => 'TemplateController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'TemplateController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'TemplateController@store'));
+        Route::post('store-for-quote', array('as' => 'store.for.quote', 'uses' => 'TemplateController@store_for_quote'));
+        Route::get('detail/{id}', array('as' => 'detail', 'uses' => 'TemplateController@detail'));
+        Route::get('delete/{id}', array('as' => 'delete', 'uses' => 'TemplateController@destroy'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TemplateController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TemplateController@update'));
     });
 
     /*
