@@ -126,7 +126,7 @@
 
                         <li class="nav-item">
                             <a href="{{ route('groups.index') }}" class="nav-link {{ $route == 'groups.index' || $route == 'groups.create' || $route == 'groups.edit' ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="fa fa-users nav-icon"></i>
                                 <p>View Group Quote</p>
                             </a>
                         </li>
@@ -209,7 +209,7 @@
 
                             <li class="nav-item">
                                 <a href="{{ route('commission_groups.index') }}" class="nav-link {{ $route == 'commission_groups.index' || $route == 'commission_groups.create' || $route == 'commission_groups.edit'  ? 'active' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
+                                    <i class="fa fa-users nav-icon"></i>
                                     <p>
                                         Commission Groups
                                     </p>
