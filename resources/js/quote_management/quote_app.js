@@ -523,4 +523,117 @@ $(document).ready(function() {
         getCommissionRate();
     });
 
+    $(document).on('click', '.quote-bulk-action-item', function() {
+
+        let checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
+        let bulkActionType = $(this).data('action_type');
+        let message        = "";
+        let buttonText     = "";
+    
+        if(['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)){
+
+            if(checkedValues.length > 0){
+    
+                $('input[name="bulk_action_type"]').val(bulkActionType);
+                $('input[name="bulk_action_ids"]').val(checkedValues);
+    
+                switch(bulkActionType) {
+                    case "archive":
+                        message    = 'You want to Archive Quotes?';
+                        buttonText = 'Archive';
+                        break;
+                    case "unarchive":
+                        message    = 'You want to Revert Quotes from Archive?'
+                        buttonText = 'Unarchive';
+                        break;
+                    case "revert_cancel":
+                        message    = 'You want to Revert Cancelled Quotes?';
+                        buttonText = 'Revert';
+                        break;
+                    case "cancel":
+                        message    = 'You want to Cancel Quotes?';
+                        buttonText = 'Cancel';
+                }
+    
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#dc3545',
+                    confirmButtonText: `Yes, ${buttonText} it !`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: $('#quote_bulk_action').attr('action'),
+                            data: new FormData($('#quote_bulk_action')[0]),
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function(response) {
+                                printListingSuccessMessage(response);
+                            }
+                        });
+                    }
+                })
+            } else {
+
+                printListingErrorMessage("Please Check Atleast One Record.");
+            }
+        }
+
+        if(['store_group_quote'].includes(bulkActionType)){
+                
+            if(checkedValues.length > 1){
+               
+                let checkedBookingCurrency = $('.child:checked').map((i, e) => $(e).data('booking_currency') ).get();
+
+                /* Validate Same Currency */
+                if(!validateSameCurrencies(checkedBookingCurrency)){
+                    printListingErrorMessage("Quotes Booking Currency should be Same.");
+                    return;
+                }
+                
+                $('#store_group_modal').modal('show');
+                $('#store_group_modal input[name="bulk_action_ids"]').val(checkedValues);
+
+                $(document).on('submit', '#store_group_modal_form', function(event) {
+        
+                    event.preventDefault();
+
+                    let formID = $(this).attr('id');
+            
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('action'),
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            removeFormValidationStyles();
+                            addModalFormLoadingStyles(formID);
+                        },
+                        success: function(response) {
+            
+                            removeModalFormLoadingStyles(formID);
+                            printModalServerSuccessMessage(response, "#store_group_modal");
+                        },
+                        error: function(response) {
+            
+                            removeModalFormLoadingStyles(formID);
+                            printModalServerValidationErrors(response);
+                        }
+                    });
+                });
+
+            } else {
+
+                printListingErrorMessage("Please Check Atleast Two Record.");
+            }
+        } 
+
+    });
 });

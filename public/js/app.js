@@ -67046,20 +67046,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
 /* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
-/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
 
 window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 
 
-
+ // import Swal from 'sweetalert2';
 
 
 
@@ -67960,112 +67959,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $('.btnbulkClick').on('click', function (e) {
     btnname = $(this).attr('name');
   }); // var bulkActionType = null;
-
-  $(document).on('click', '.quote-bulk-action-item', function () {
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var bulkActionType = $(this).data('action_type');
-    var message = "";
-    var buttonText = "";
-
-    if (['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)) {
-      if (checkedValues.length > 0) {
-        $('input[name="bulk_action_type"]').val(bulkActionType);
-        $('input[name="bulk_action_ids"]').val(checkedValues);
-
-        switch (bulkActionType) {
-          case "archive":
-            message = 'You want to Archive Quotes?';
-            buttonText = 'Archive';
-            break;
-
-          case "unarchive":
-            message = 'You want to Revert Quotes from Archive?';
-            buttonText = 'Unarchive';
-            break;
-
-          case "revert_cancel":
-            message = 'You want to Revert Cancelled Quotes?';
-            buttonText = 'Revert';
-            break;
-
-          case "cancel":
-            message = 'You want to Cancel Quotes?';
-            buttonText = 'Cancel';
-        }
-
-        sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-          title: 'Are you sure?',
-          text: message,
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#dc3545',
-          confirmButtonText: "Yes, ".concat(buttonText, " it !")
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            $.ajax({
-              type: 'POST',
-              url: $('#quote_bulk_action').attr('action'),
-              data: new FormData($('#quote_bulk_action')[0]),
-              contentType: false,
-              cache: false,
-              processData: false,
-              success: function success(response) {
-                printListingSuccessMessage(response);
-              }
-            });
-          }
-        });
-      } else {
-        printListingErrorMessage("Please Check Atleast One Record.");
-      }
-    }
-
-    if (['store_group_quote'].includes(bulkActionType)) {
-      if (checkedValues.length > 1) {
-        var checkedBookingCurrency = $('.child:checked').map(function (i, e) {
-          return $(e).data('booking_currency');
-        }).get();
-        /* Validate Same Currency */
-
-        if (!validateSameCurrencies(checkedBookingCurrency)) {
-          printListingErrorMessage("Quotes Booking Currency should be Same.");
-          return;
-        }
-
-        $('#store_group_modal').modal('show');
-        $('#store_group_modal input[name="bulk_action_ids"]').val(checkedValues);
-        $(document).on('submit', '#store_group_modal_form', function (event) {
-          event.preventDefault();
-          var formID = $(this).attr('id');
-          $.ajax({
-            type: 'POST',
-            url: $(this).attr('action'),
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function beforeSend() {
-              removeFormValidationStyles();
-              addModalFormLoadingStyles(formID);
-            },
-            success: function success(response) {
-              removeModalFormLoadingStyles(formID);
-              printModalServerSuccessMessage(response, "#store_group_modal");
-            },
-            error: function error(response) {
-              removeModalFormLoadingStyles(formID);
-              printModalServerValidationErrors(response);
-            }
-          });
-        });
-      } else {
-        printListingErrorMessage("Please Check Atleast Two Record.");
-      }
-    }
-  }); // $(document).on('submit', '#update_role', function(event) {  
+  // $(document).on('submit', '#update_role', function(event) {  
   // });
   // $(".bulk-action").submit(function(e) {
   //     e.preventDefault();
@@ -68145,7 +68039,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     if (checkedValues.length > 0) {
-      sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
+      Swal.fire({
         title: 'Are you sure?',
         text: message,
         focusConfirm: false,
@@ -68167,7 +68061,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               }, 600);
             }
           });
-        } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.DismissReason.cancel) {///no action here
+        } else if (result.dismiss === Swal.DismissReason.cancel) {///no action here
         }
       });
     } else {
@@ -68246,7 +68140,7 @@ var checkedQuoteValues = null; // window.Toast = Swal.mixin({
 //     }
 // });
 
-window.Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
+window.Toast = Swal.mixin({
   toast: true,
   icon: 'success',
   position: 'top-right',
@@ -68254,8 +68148,8 @@ window.Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.mixin({
   timer: 2200,
   timerProgressBar: true,
   didOpen: function didOpen(toast) {
-    toast.addEventListener('mouseenter', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.stopTimer);
-    toast.addEventListener('mouseleave', sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.resumeTimer);
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
   }
 }); //Create group quote
 
