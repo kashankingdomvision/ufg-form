@@ -6,7 +6,14 @@
 @import url('https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css');
 @import url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
 
-@import "../css/google_fonts/google_font.css";
+//-------- Fonts
+// @import "../css/google_fonts/google_font.css";
+@import url('https://fonts.googleapis.com/css?family=Quicksand');
+body{
+    font-family: 'Quicksand', sans-serif;
+}
+//-------- End Fonts
+
 
 // Variables
 @import 'variables';
@@ -28,6 +35,45 @@
  *                                layouts
  * -------------------------------------------------------------------------------------
  */
+
+// Font fixes
+.sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
+    width: calc(250px - 1rem) !important;
+    transition: width ease-in-out 0.3s;
+}
+
+.nav-sidebar .nav-link>.right, .nav-sidebar .nav-link>p>.right {
+    position: absolute;
+    right: 0.5rem !important;
+    top: 0.7rem;
+}
+// Font fixes
+
+// sidebar styles
+.nav-pills .nav-link {
+    border-radius: 0rem;
+}
+
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: #1d2531;
+    color: #FFFFFF;
+}
+// sidebar styles
+
+
+// .nav-sidebar .nav-treeview .nav-item .nav-link p {
+// .nav-sidebar .nav-item .nav-link p {
+//     display: inline;
+//     margin: 0;
+//     white-space: normal;
+//     font-size: 14px;
+//     font-weight: bold;
+// }
+
+
+[class*=sidebar-dark-] {
+    background-color: #263544;
+}
 
 .rendered-form-parent {
     display: inline-flex;  
