@@ -132,7 +132,7 @@
                         <!-- Multi Actions -->
                         <div class="card-header">
                             <div class="row">
-                                <form method="POST" id="bulk_action" action="{{ route('quotes.bulk.action') }}" >
+                                <form method="POST" id="quote_bulk_action" action="{{ route('quotes.bulk.action') }}" >
                                     @csrf
                                     <input type="hidden" name="bulk_action_type" value="">
                                     <input type="hidden" name="bulk_action_ids" value="">
@@ -142,13 +142,13 @@
                                             Select Action
                                         </button>
                                         <div class="dropdown-menu">
-                                            <button type="button" data-action_type="cancel" class="dropdown-item bulk-action-item">Cancel</button>
-                                            <button type="button" data-action_type="revert_cancel" class="dropdown-item bulk-action-item">Revert Cancel</button>
-                                            <button type="button" data-action_type="archive" class="dropdown-item bulk-action-item">Archive</button>
-                                            <button type="button" data-action_type="unarchive" class="dropdown-item bulk-action-item">Unarchive</button>
+                                            <button type="button" data-action_type="cancel" class="dropdown-item quote-bulk-action-item">Cancel</button>
+                                            <button type="button" data-action_type="revert_cancel" class="dropdown-item quote-bulk-action-item">Revert Cancel</button>
+                                            <button type="button" data-action_type="archive" class="dropdown-item quote-bulk-action-item">Archive</button>
+                                            <button type="button" data-action_type="unarchive" class="dropdown-item quote-bulk-action-item">Unarchive</button>
 
                                             <div class="dropdown-divider"></div>
-                                            <button type="button" data-action_type="store_group_quote" class="dropdown-item bulk-action-item">Create Group Quote</button>
+                                            <button type="button" data-action_type="store_group_quote" class="dropdown-item quote-bulk-action-item">Create Group Quote</button>
                                         </div>
                                     </div>
                                 </form>
@@ -165,7 +165,7 @@
                                                 <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
                                                 <label for="parent" class="custom-control-label"></label>
                                             </div>
-{{-- 
+                                            {{-- 
                                             <div class="icheck-primary">
                                                 <input type="checkbox" class="parent">
                                             </div> --}}

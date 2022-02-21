@@ -1022,7 +1022,7 @@ $(document).ready(function($) {
 
 
     // var bulkActionType = null;
-    $(document).on('click', '.bulk-action-item', function() {
+    $(document).on('click', '.quote-bulk-action-item', function() {
 
         let checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
         let bulkActionType = $(this).data('action_type');
@@ -1066,8 +1066,8 @@ $(document).ready(function($) {
                     if (result.isConfirmed) {
                         $.ajax({
                             type: 'POST',
-                            url: $('#bulk_action').attr('action'),
-                            data: new FormData($('#bulk_action')[0]),
+                            url: $('#quote_bulk_action').attr('action'),
+                            data: new FormData($('#quote_bulk_action')[0]),
                             contentType: false,
                             cache: false,
                             processData: false,

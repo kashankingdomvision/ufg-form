@@ -67961,7 +67961,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     btnname = $(this).attr('name');
   }); // var bulkActionType = null;
 
-  $(document).on('click', '.bulk-action-item', function () {
+  $(document).on('click', '.quote-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
     }).get();
@@ -68007,8 +68007,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           if (result.isConfirmed) {
             $.ajax({
               type: 'POST',
-              url: $('#bulk_action').attr('action'),
-              data: new FormData($('#bulk_action')[0]),
+              url: $('#quote_bulk_action').attr('action'),
+              data: new FormData($('#quote_bulk_action')[0]),
               contentType: false,
               cache: false,
               processData: false,
