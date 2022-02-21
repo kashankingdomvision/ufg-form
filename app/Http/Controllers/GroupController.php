@@ -119,7 +119,7 @@ class GroupController extends Controller
     */
     // GroupQuoteRequest
     // Request
-    public function store(Request $request)
+    public function store(GroupQuoteRequest $request)
     {
         // dd($request->all());
 
