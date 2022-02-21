@@ -68019,7 +68019,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           }
         });
       } else {
-        printListingErrorMessage("Please check Atleast One Record.");
+        printListingErrorMessage("Please Check Atleast One Record.");
       }
     }
 
@@ -68062,7 +68062,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         });
       } else {
-        printListingErrorMessage("Please check Atleast Two Record.");
+        printListingErrorMessage("Please Check Atleast Two Record.");
       }
     }
   }); // $(document).on('submit', '#update_role', function(event) {  

@@ -1079,7 +1079,7 @@ $(document).ready(function($) {
                 })
             } else {
 
-                printListingErrorMessage("Please check Atleast One Record.");
+                printListingErrorMessage("Please Check Atleast One Record.");
             }
         }
 
@@ -1131,7 +1131,7 @@ $(document).ready(function($) {
 
             } else {
 
-                printListingErrorMessage("Please check Atleast Two Record.");
+                printListingErrorMessage("Please Check Atleast Two Record.");
             }
         } 
 
