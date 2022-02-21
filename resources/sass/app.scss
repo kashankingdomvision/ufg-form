@@ -58,6 +58,10 @@ body{
     background-color: #1d2531;
     color: #FFFFFF;
 }
+
+.sidebar-border-left {
+    border-left: 1px solid #dee2e6 !important;
+}
 // sidebar styles
 
 
@@ -294,9 +298,6 @@ body{
 
 .double-underline { border-bottom: 3px double; }
 
-.sidebar-border-left {
-    border-left: 1px solid #dee2e6!important;
-}
 
 /**
  * -------------------------------------------------------------------------------------

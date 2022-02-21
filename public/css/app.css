@@ -4682,6 +4682,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   color: #FFFFFF;
 }
 
+.sidebar-border-left {
+  border-left: 1px solid #dee2e6 !important;
+}
+
 [class*=sidebar-dark-] {
   background-color: #263544;
 }
@@ -4878,10 +4882,6 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
 
 .double-underline {
   border-bottom: 3px double;
-}
-
-.sidebar-border-left {
-  border-left: 1px solid #dee2e6 !important;
 }
 
 /**
