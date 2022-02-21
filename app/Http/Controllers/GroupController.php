@@ -90,7 +90,15 @@ class GroupController extends Controller
 
     public function groupArray($request, $sum_of_quotes_total)
     {
-        $currency  = Quote::select('currency_id')->where('id', $request->quote_ids[0])->first();
+        if($request->has('quote_ids')){
+            $quote_ids = $request->quote_ids;
+        }
+
+        if($request->has('bulk_action_ids')){
+            $quote_ids = explode(",", $request->bulk_action_ids);
+        }
+
+        $currency  = Quote::select('currency_id')->where('id', $quote_ids[0])->first();
 
         $data = [
             'name'                    => $request->name,
@@ -106,12 +114,24 @@ class GroupController extends Controller
         return $data;
     }
 
+    /*
+       Also used in store Group through Modal
+    */
     // GroupQuoteRequest
     // Request
-    public function store(GroupQuoteRequest $request)
+    public function store(Request $request)
     {
+        // dd($request->all());
+
         // Explode the ID put them in array respectively.
-        $quote_ids                = $request->quote_ids;
+        if($request->has('quote_ids')){
+            $quote_ids = $request->quote_ids;
+        }
+
+        if($request->has('bulk_action_ids')){
+            $quote_ids = explode(",", $request->bulk_action_ids);
+        }
+
         $validate_same_currencies = $this->validateSameCurrencies($quote_ids);
 
         /* through error if currencies is not same */ 
@@ -167,7 +187,14 @@ class GroupController extends Controller
     public function update(UpdateGroupQuoteRequest $request, $id)
     {
         // Explode the ID put them in array respectively.
-        $quote_ids                = $request->quote_ids;
+        if($request->has('quote_ids')){
+            $quote_ids = $request->quote_ids;
+        }
+
+        if($request->has('bulk_action_ids')){
+            $quote_ids = explode(",", $request->bulk_action_ids);
+        }
+
         $validate_same_currencies = $this->validateSameCurrencies($quote_ids);
 
         /* through error if currencies is not same */ 

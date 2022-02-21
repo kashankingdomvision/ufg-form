@@ -140,6 +140,20 @@ $(document).ready(function($) {
         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
     }
 
+    window.addModalFormLoadingStyles = function(formID) {
+
+        $(`#${formID} button[type="submit"]`).find('span').addClass(`spinner-border spinner-border-sm`);
+    }
+
+    window.removeModalFormLoadingStyles = function(formID) {
+
+        setTimeout(function() {
+
+            $(`#${formID} button[type="submit"]`).find('span').removeClass(`spinner-border spinner-border-sm`);
+        }, 250);
+
+    }
+
     window.removeFormLoadingStyles = function() {
         setTimeout(function() {
             $("#overlay").removeClass('overlay');
@@ -196,6 +210,93 @@ $(document).ready(function($) {
             setTimeout(function() {
                 window.location.href = `${redirectURL}`;
             }, 2500);
+        }
+    }
+
+    window.printListingSuccessMessage = function(response) {
+
+        if(response && response.status){
+            
+            $("#listing_card_body").load(location.href + " #listing_card_body");
+    
+            Toast.fire({
+                icon: 'success',
+                title: response.message
+            });
+            
+            setTimeout(function() {
+                // location.reload();
+            }, 2500);
+        }
+
+        if(response && !response.status){
+
+            $("#listing_card_body").load(location.href + " #listing_card_body");
+    
+            Toast.fire({
+                icon: 'error',
+                title: response.message
+            });
+            
+            setTimeout(function() {
+                // location.reload();
+            }, 2500);
+        }
+
+    }
+
+    window.printListingErrorMessage = function(message) {
+
+        Toast.fire({
+            icon: 'error',
+            title: message
+        });
+    }
+
+    window.validateSameCurrencies = function (currencyArray) {
+
+        var unique = currencyArray.filter((v, i, a) => a.indexOf(v) === i);
+
+        if(unique.length === 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    window.printModalServerSuccessMessage = function(response, modalID) {
+
+        if(response && response.status){
+
+            $(`${modalID}`).modal('hide');
+
+            $("#listing_card_body").load(`${location.href} #listing_card_body`);
+
+            Toast.fire({
+                icon: 'success',
+                title: response.success_message
+            });
+        }
+    }
+
+    window.printModalServerValidationErrors = function(response) {
+
+        if (response.status === 422) {
+
+            let errors = response.responseJSON;
+
+            setTimeout(function() {
+                jQuery.each(errors.errors, function(index, value) {
+
+                    index = index.replace(/\./g, '_');
+
+                    $(`#${index}`).addClass('is-invalid');
+                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+                    $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
+                });
+
+            }, 250);
+
         }
     }
 
@@ -545,16 +646,8 @@ $(document).ready(function($) {
                 $(this).closest('.filter-col').remove();
             });
 
+            $(document).on('click', '.parent', function() {
 
-
-      
-
-     
-     
-
-
-
-            $('.parent').on('click', function(e) {
                 if ($(this).is(':checked', true)) {
                     $(".child").prop('checked', true);
 
@@ -929,27 +1022,16 @@ $(document).ready(function($) {
 
 
     // var bulkActionType = null;
-    $('.bulk-action-item').on('click', function (event) {
+    $(document).on('click', '.bulk-action-item', function() {
 
         let checkedValues  = $('.child:checked').map((i, e) => e.value ).get();
         let bulkActionType = $(this).data('action_type');
         let message        = "";
         let buttonText     = "";
     
-        if(checkedValues.length == 0){
-        
-            Toast.fire({
-                icon: 'warning',
-                title: 'Please Check Any Record First.!'
-            });
-            return;
-        }
+        if(['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)){
 
-  
-
-        if(checkedValues.length > 0){
-
-            if(['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)){
+            if(checkedValues.length > 0){
     
                 $('input[name="bulk_action_type"]').val(bulkActionType);
                 $('input[name="bulk_action_ids"]').val(checkedValues);
@@ -990,38 +1072,70 @@ $(document).ready(function($) {
                             cache: false,
                             processData: false,
                             success: function(response) {
-
-                                let timerInterval
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: '',
-                                    html: response.message,
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    didOpen: () => {},
-                                    willClose: () => {
-                                        console.log("asdasd");
-                                        location.reload();
-                                    }
-                                });
+                                printListingSuccessMessage(response);
                             }
                         });
                     }
                 })
+            } else {
+
+                printListingErrorMessage("Please check Atleast One Record.");
             }
         }
 
-        if(checkedValues.length > 2){
+        if(['store_group_quote'].includes(bulkActionType)){
+                
+            if(checkedValues.length > 1){
+               
+                let checkedBookingCurrency = $('.child:checked').map((i, e) => $(e).data('booking_currency') ).get();
 
-            // if(['store_group_quote'].includes(bulkActionType)){
-    
-            // }
-        }
+                /* Validate Same Currency */
+                if(!validateSameCurrencies(checkedBookingCurrency)){
+                    printListingErrorMessage("Quotes Booking Currency should be Same.");
+                    return;
+                }
+                
+                $('#store_group_modal').modal('show');
 
+                $('#store_group_modal input[name="bulk_action_ids"]').val(checkedValues);
+
+                $(document).on('submit', '#store_group_modal_form', function(event) {
         
+                    event.preventDefault();
+
+                    let formID = $(this).attr('id');
+            
+                    $.ajax({
+                        type: 'POST',
+                        url: $(this).attr('action'),
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            removeFormValidationStyles();
+                            addModalFormLoadingStyles(formID);
+                        },
+                        success: function(response) {
+            
+                            removeModalFormLoadingStyles(formID);
+                            printModalServerSuccessMessage(response, "#store_group_modal");
+                        },
+                        error: function(response) {
+            
+                            removeModalFormLoadingStyles(formID);
+                            printModalServerValidationErrors(response);
+                        }
+                    });
+                });
+
+            } else {
+
+                printListingErrorMessage("Please check Atleast Two Record.");
+            }
+        } 
 
 
-        $("#bulk_action [name=bulk_action_type]").val(bulkActionType);
     });
 
 
@@ -1255,38 +1369,38 @@ $(document).on('click', '.addmodalforquote', function() {
         }
     });
 
-    $(".create-group-quote").submit(function(e) {
-        e.preventDefault();
+    // $(".create-group-quote").submit(function(e) {
+    //     e.preventDefault();
 
-        var url            = $(this).attr('action');
-        /*var formData       = $(this).serializeArray();
-        formData.push({name:'quote_ids', value: checkedQuoteValues});*/
+    //     var url            = $(this).attr('action');
+    //     /*var formData       = $(this).serializeArray();
+    //     formData.push({name:'quote_ids', value: checkedQuoteValues});*/
 
-        $.ajax({
-            type: "POST",
-            url: url,
-            // data: $.param(formData),
-            data: [$(this).serialize(),$.param({quote_ids: checkedQuoteValues})].join('&'),
-            success: function(data)
-            {
-                // console.log(data);
-                // return false;
-                if(data.status) {
-                    jQuery('#group-quote-modal').modal('hide');
-                    Toast.fire({
-                        icon: 'success',
-                        title: data.msg
-                    });
-                    setTimeout(function(){
-                        window.location.href = data.redirect;
-                    }, 2800);
+    //     $.ajax({
+    //         type: "POST",
+    //         url: url,
+    //         // data: $.param(formData),
+    //         data: [$(this).serialize(),$.param({quote_ids: checkedQuoteValues})].join('&'),
+    //         success: function(data)
+    //         {
+    //             // console.log(data);
+    //             // return false;
+    //             if(data.status) {
+    //                 jQuery('#group-quote-modal').modal('hide');
+    //                 Toast.fire({
+    //                     icon: 'success',
+    //                     title: data.msg
+    //                 });
+    //                 setTimeout(function(){
+    //                     window.location.href = data.redirect;
+    //                 }, 2800);
 
-                } else {
-                    new Swal(data.type, data.msg, data.icon);
-                }
-            }
-        });
-    });
+    //             } else {
+    //                 new Swal(data.type, data.msg, data.icon);
+    //             }
+    //         }
+    //     });
+    // });
 
 
 

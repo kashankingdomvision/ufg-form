@@ -67200,6 +67200,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
   };
 
+  window.addModalFormLoadingStyles = function (formID) {
+    $("#".concat(formID, " button[type=\"submit\"]")).find('span').addClass("spinner-border spinner-border-sm");
+  };
+
+  window.removeModalFormLoadingStyles = function (formID) {
+    setTimeout(function () {
+      $("#".concat(formID, " button[type=\"submit\"]")).find('span').removeClass("spinner-border spinner-border-sm");
+    }, 250);
+  };
+
   window.removeFormLoadingStyles = function () {
     setTimeout(function () {
       $("#overlay").removeClass('overlay');
@@ -67247,6 +67257,72 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       setTimeout(function () {
         window.location.href = "".concat(redirectURL);
       }, 2500);
+    }
+  };
+
+  window.printListingSuccessMessage = function (response) {
+    if (response && response.status) {
+      $("#listing_card_body").load(location.href + " #listing_card_body");
+      Toast.fire({
+        icon: 'success',
+        title: response.message
+      });
+      setTimeout(function () {// location.reload();
+      }, 2500);
+    }
+
+    if (response && !response.status) {
+      $("#listing_card_body").load(location.href + " #listing_card_body");
+      Toast.fire({
+        icon: 'error',
+        title: response.message
+      });
+      setTimeout(function () {// location.reload();
+      }, 2500);
+    }
+  };
+
+  window.printListingErrorMessage = function (message) {
+    Toast.fire({
+      icon: 'error',
+      title: message
+    });
+  };
+
+  window.validateSameCurrencies = function (currencyArray) {
+    var unique = currencyArray.filter(function (v, i, a) {
+      return a.indexOf(v) === i;
+    });
+
+    if (unique.length === 1) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  window.printModalServerSuccessMessage = function (response, modalID) {
+    if (response && response.status) {
+      $("".concat(modalID)).modal('hide');
+      $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
+      Toast.fire({
+        icon: 'success',
+        title: response.success_message
+      });
+    }
+  };
+
+  window.printModalServerValidationErrors = function (response) {
+    if (response.status === 422) {
+      var errors = response.responseJSON;
+      setTimeout(function () {
+        jQuery.each(errors.errors, function (index, value) {
+          index = index.replace(/\./g, '_');
+          $("#".concat(index)).addClass('is-invalid');
+          $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
+          $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
+        });
+      }, 250);
     }
   };
 
@@ -67587,7 +67663,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   $(document).on('click', '.remove-col', function () {
     $(this).closest('.filter-col').remove();
   });
-  $('.parent').on('click', function (e) {
+  $(document).on('click', '.parent', function () {
     if ($(this).is(':checked', true)) {
       $(".child").prop('checked', true);
     } else {
@@ -67885,7 +67961,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     btnname = $(this).attr('name');
   }); // var bulkActionType = null;
 
-  $('.bulk-action-item').on('click', function (event) {
+  $(document).on('click', '.bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
       return e.value;
     }).get();
@@ -67893,16 +67969,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var message = "";
     var buttonText = "";
 
-    if (checkedValues.length == 0) {
-      Toast.fire({
-        icon: 'warning',
-        title: 'Please Check Any Record First.!'
-      });
-      return;
-    }
-
-    if (checkedValues.length > 0) {
-      if (['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)) {
+    if (['cancel', 'revert_cancel', 'archive', 'unarchive'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
         $('input[name="bulk_action_type"]').val(bulkActionType);
         $('input[name="bulk_action_ids"]').val(checkedValues);
 
@@ -67945,31 +68013,58 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               cache: false,
               processData: false,
               success: function success(response) {
-                var timerInterval;
-                sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire({
-                  icon: 'success',
-                  title: '',
-                  html: response.message,
-                  timer: 2000,
-                  timerProgressBar: true,
-                  didOpen: function didOpen() {},
-                  willClose: function willClose() {
-                    console.log("asdasd");
-                    location.reload();
-                  }
-                });
+                printListingSuccessMessage(response);
               }
             });
           }
         });
+      } else {
+        printListingErrorMessage("Please check Atleast One Record.");
       }
     }
 
-    if (checkedValues.length > 2) {// if(['store_group_quote'].includes(bulkActionType)){
-      // }
-    }
+    if (['store_group_quote'].includes(bulkActionType)) {
+      if (checkedValues.length > 1) {
+        var checkedBookingCurrency = $('.child:checked').map(function (i, e) {
+          return $(e).data('booking_currency');
+        }).get();
+        /* Validate Same Currency */
 
-    $("#bulk_action [name=bulk_action_type]").val(bulkActionType);
+        if (!validateSameCurrencies(checkedBookingCurrency)) {
+          printListingErrorMessage("Quotes Booking Currency should be Same.");
+          return;
+        }
+
+        $('#store_group_modal').modal('show');
+        $('#store_group_modal input[name="bulk_action_ids"]').val(checkedValues);
+        $(document).on('submit', '#store_group_modal_form', function (event) {
+          event.preventDefault();
+          var formID = $(this).attr('id');
+          $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function beforeSend() {
+              removeFormValidationStyles();
+              addModalFormLoadingStyles(formID);
+            },
+            success: function success(response) {
+              removeModalFormLoadingStyles(formID);
+              printModalServerSuccessMessage(response, "#store_group_modal");
+            },
+            error: function error(response) {
+              removeModalFormLoadingStyles(formID);
+              printModalServerValidationErrors(response);
+            }
+          });
+        });
+      } else {
+        printListingErrorMessage("Please check Atleast Two Record.");
+      }
+    }
   }); // $(document).on('submit', '#update_role', function(event) {  
   // });
   // $(".bulk-action").submit(function(e) {
@@ -68176,38 +68271,36 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', f
   } else {
     alert('Please check atleat two records.');
   }
-});
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(".create-group-quote").submit(function (e) {
-  e.preventDefault();
-  var url = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).attr('action');
-  /*var formData       = $(this).serializeArray();
-  formData.push({name:'quote_ids', value: checkedQuoteValues});*/
-
-  jquery__WEBPACK_IMPORTED_MODULE_0___default.a.ajax({
-    type: "POST",
-    url: url,
-    // data: $.param(formData),
-    data: [jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).serialize(), jquery__WEBPACK_IMPORTED_MODULE_0___default.a.param({
-      quote_ids: checkedQuoteValues
-    })].join('&'),
-    success: function success(data) {
-      // console.log(data);
-      // return false;
-      if (data.status) {
-        jQuery('#group-quote-modal').modal('hide');
-        Toast.fire({
-          icon: 'success',
-          title: data.msg
-        });
-        setTimeout(function () {
-          window.location.href = data.redirect;
-        }, 2800);
-      } else {
-        new sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a(data.type, data.msg, data.icon);
-      }
-    }
-  });
-}); // $(document).ready(function() {
+}); // $(".create-group-quote").submit(function(e) {
+//     e.preventDefault();
+//     var url            = $(this).attr('action');
+//     /*var formData       = $(this).serializeArray();
+//     formData.push({name:'quote_ids', value: checkedQuoteValues});*/
+//     $.ajax({
+//         type: "POST",
+//         url: url,
+//         // data: $.param(formData),
+//         data: [$(this).serialize(),$.param({quote_ids: checkedQuoteValues})].join('&'),
+//         success: function(data)
+//         {
+//             // console.log(data);
+//             // return false;
+//             if(data.status) {
+//                 jQuery('#group-quote-modal').modal('hide');
+//                 Toast.fire({
+//                     icon: 'success',
+//                     title: data.msg
+//                 });
+//                 setTimeout(function(){
+//                     window.location.href = data.redirect;
+//                 }, 2800);
+//             } else {
+//                 new Swal(data.type, data.msg, data.icon);
+//             }
+//         }
+//     });
+// });
+// $(document).ready(function() {
 //    setTimeout(function() {
 //        jQuery('.alert-success').fadeOut(1500);
 //        jQuery('.alert-danger').fadeOut(1500);

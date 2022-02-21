@@ -54,44 +54,47 @@ class QuoteController extends Controller
 
     public function bulkAction(Request $request)
     {
+        try {
 
-        // dd($request->all());
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+    
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'cancel'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
+                $message = "Quotes Cancelled Successfully.";
+            }
+    
+            if($bulk_action_type == 'revert_cancel'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
+                $message = "Revert Cancelled Quotes Successfully.";
+            }
+    
+            if($bulk_action_type == 'archive'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 1 ]);
+                $message = "Quotes Archived Successfully.";
+            }
+    
+            if($bulk_action_type == 'unarchive'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 0 ]);
+                $message = "Quotes Unarchived Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
 
-        $status  = false;
-        $message = "";
-
-        $bulk_action_ids  = $request->bulk_action_ids;
-        $bulk_action_type = $request->bulk_action_type;
-
-        $bulk_action_ids  = explode(",", $bulk_action_ids);
-
-        if($bulk_action_type == 'cancel'){
-            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
-            $message = "Quotes Cancelled Successfully.";
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
         }
-
-        if($bulk_action_type == 'revert_cancel'){
-            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
-            $message = "Revert Cancelled Quotes Successfully.";
-        }
-
-        if($bulk_action_type == 'archive'){
-            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 1 ]);
-            $message = "Quotes Archived Successfully.";
-        }
-
-        if($bulk_action_type == 'unarchive'){
-            DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 0 ]);
-            $message = "Quotes Unarchived Successfully.";
-        }
-
-        // dd($ids);
-
-        return response()->json([ 
-            'status'  => $status, 
-            'message' => $message,
-        ]);
-
 
         // $table_name        = $request->table;
         // $respons['status'] = FALSE;

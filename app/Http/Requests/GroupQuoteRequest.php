@@ -13,10 +13,15 @@ class GroupQuoteRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $validation = [
             'name'      => 'required|unique:groups|max:255',
-            'quote_ids' => 'required|array|min:2',
         ];
+
+        if($this->has('quote_ids')){
+            $validation['quote_ids'] = 'required|array|min:2';
+        }
+
+        return $validation;
     }
     
     public function attributes()
