@@ -161,9 +161,14 @@
                                     <thead>
                                         <tr>
                                         <th width="8">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                                                <label for="parent" class="custom-control-label"></label>
+                                            </div>
+{{-- 
                                             <div class="icheck-primary">
                                                 <input type="checkbox" class="parent">
-                                            </div>
+                                            </div> --}}
                                         </th>
                                         <th></th>
                                         <th width="8"></th>
@@ -187,9 +192,14 @@
 
                                                     <td>
                                                         @if($quote->booking_status != 'booked')
-                                                            <div class="icheck-primary">
-                                                                <input type="checkbox" class="child" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" id="child_{{$quote->id}}" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
+                                                                <label for="child_{{$quote->id}}" class="custom-control-label"></label>
                                                             </div>
+
+                                                            {{-- <div class="icheck-primary">
+                                                                <input type="checkbox" class="child" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}">
+                                                            </div> --}}
                                                         @endif
                                                     </td>
 
