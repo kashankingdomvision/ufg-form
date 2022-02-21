@@ -340,6 +340,9 @@
 </div>
 @endsection
 
+@push('js')
+  <script src="{{ asset('js/quote_management.js') }}" ></script>
+@endpush
 {{-- <section class="content p-2">
     <div class="container-fluid">
         <div class="row">
