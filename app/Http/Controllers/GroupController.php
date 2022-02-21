@@ -228,6 +228,35 @@ class GroupController extends Controller
         Group::destroy(decrypt($id));
         return redirect()->route('groups.index')->with('success_message', 'Group quote deleted successfully');
     }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("groups")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Group Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
 }
 
 

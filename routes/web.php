@@ -157,6 +157,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'GroupController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'GroupController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'GroupController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'GroupController@bulkAction' ));
     });
 
     /*
