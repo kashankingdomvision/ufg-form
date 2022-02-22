@@ -381,6 +381,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SupplierRateSheetController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierRateSheetController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierRateSheetController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'SupplierRateSheetController@bulkAction' ));
     });
 
     /*  Products */

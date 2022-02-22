@@ -7,6 +7,7 @@ use App\Http\Requests\SupplierRateSheetRequest;
 use App\Http\Requests\UpdateSupplierRateSheetRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use App\SupplierRateSheet;
 use App\Supplier;
@@ -157,6 +158,35 @@ class SupplierRateSheetController extends Controller
     {
         SupplierRateSheet::destroy(decrypt($id));
         return redirect()->route('supplier_rate_sheets.index')->with('success_message', 'Supplier Rate Sheet Deleted Successfully');
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("supplier_rate_sheets")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Supplier Rate Sheet Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 
     public function fileStore(Request $request, $old = NULL)
