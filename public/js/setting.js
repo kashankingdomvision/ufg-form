@@ -1544,6 +1544,54 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '.season-bulk-action-item', function () {
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var bulkActionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    if (['delete'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
+        $('input[name="bulk_action_type"]').val(bulkActionType);
+        $('input[name="bulk_action_ids"]').val(checkedValues);
+
+        switch (bulkActionType) {
+          case "delete":
+            message = 'You want to Delete Seasons?';
+            buttonText = 'Delete';
+            break;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: message,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "Yes, ".concat(buttonText, " it !")
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: $('#season_bulk_action').attr('action'),
+              data: new FormData($('#season_bulk_action')[0]),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function success(response) {
+                printListingSuccessMessage(response);
+              }
+            });
+          }
+        });
+      } else {
+        printListingErrorMessage("Please Check Atleast One Record.");
+      }
+    }
+  });
 });
 
 /***/ }),
