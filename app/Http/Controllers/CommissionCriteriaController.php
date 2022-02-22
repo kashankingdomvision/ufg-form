@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CommissionCriteriaRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use App\Commission;
 use App\CommissionGroup;
@@ -182,5 +183,34 @@ class CommissionCriteriaController extends Controller
     {
         CommissionCriteria::destroy(decrypt($id));
         return redirect()->route('commission_criterias.index')->with('success_message', 'Commission Criteria Deleted Successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("commission_criterias")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Commission Criteria Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
