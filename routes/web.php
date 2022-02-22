@@ -265,6 +265,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
     	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
         Route::post('transfer-report-column', array('as' => 'transfer.report.column', 'uses' => 'UserController@transfer_report_column'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'UserController@bulkAction' ));
     });
 
     /* Roles */
@@ -279,6 +280,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'RoleController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'RoleController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'RoleController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'RoleController@bulkAction' ));
     });
 
     /*
