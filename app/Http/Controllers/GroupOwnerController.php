@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\GroupOwnerRequest;
 use App\Http\Requests\UpdateGroupOwnerRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\GroupOwner;
 
@@ -107,5 +108,34 @@ class GroupOwnerController extends Controller
     {
         GroupOwner::destroy(decrypt($id));
         return redirect()->route('group_owners.index')->with('success_message', 'Group Owner deleted successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("group_owners")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Group Owner Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }

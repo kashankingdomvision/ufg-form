@@ -42,19 +42,7 @@
       </div>
     </div>
   </x-page-filters>
- 
-  <section class="content p-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <a href="" id="delete_all" class="btn btn-danger btn-sm">
-            <span class="fa fa-trash"></span> &nbsp;
-            <span>Delete Selected Record</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -62,18 +50,39 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Group Owner Lists
+                Group Owner List
               </h3>
             </div>
+            <!-- Multi Actions -->
+            <div class="card-header">
+              <div class="row">
+                <form method="POST" id="group_owner_bulk_action" action="{{ route('group_owners.bulk.action') }}" >
+                  @csrf
+                  <input type="hidden" name="bulk_action_type" value="">
+                  <input type="hidden" name="bulk_action_ids" value="">
 
-            <div class="card-body p-0">
+                  <div class="dropdown show btn-group">
+                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <button type="button" data-action_type="delete" class="dropdown-item group-owner-bulk-action-item">Delete</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- End Multi Actions -->
+
+            <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
                 <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th>
-                      <div class="icheck-primary">
-                        <input type="checkbox" class="parent">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                        <label for="parent" class="custom-control-label"></label>
                       </div>
                     </th>
                     <th>Name</th>
@@ -85,8 +94,9 @@
                     @foreach ($group_owners as $value)
                       <tr>
                         <td>
-                          <div class="icheck-primary">
-                            <input type="checkbox" class="child" value="{{$value->id}}" >
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" id="child_{{$value->id}}" value="{{$value->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
+                            <label for="child_{{$value->id}}" class="custom-control-label"></label>
                           </div>
                         </td>
                         <td>{{ $value->name }}</td>
@@ -110,21 +120,32 @@
               </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'group_owners'])
-
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 {{ $group_owners->links() }}
               </ul>
             </div>
-            
           </div>
-
         </div>
-
       </div>
     </div>
   </section>
 
 </div>
 @endsection
+@push('js')
+  <script src="{{ asset('js/supplier_management.js') }}" ></script>
+@endpush
+  {{-- <section class="content p-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="" id="delete_all" class="btn btn-danger btn-sm">
+            <span class="fa fa-trash"></span> &nbsp;
+            <span>Delete Selected Record</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section> --}}
+ {{-- @include('includes.multiple_delete',['table_name' => 'group_owners']) --}}
