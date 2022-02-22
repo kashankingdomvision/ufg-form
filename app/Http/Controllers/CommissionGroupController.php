@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionGroupRequest;
 use App\Http\Requests\UpdateCommissionGroupRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\CommissionGroup;
 use App\Commission;
@@ -109,5 +110,34 @@ class CommissionGroupController extends Controller
     {
         CommissionGroup::destroy(decrypt($id));
         return redirect()->route('commission_groups.index')->with('success_message', 'Commission Group Deleted Successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("commission_groups")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Commission Groups Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
