@@ -578,6 +578,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'HotelController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'HotelController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'HotelController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'HotelController@bulkAction' ));
     });
 
     /*  Locations */
