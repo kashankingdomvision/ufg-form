@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\LocationRequest;
 use App\Http\Requests\UpdateLocationRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Country;
 use App\Location;
@@ -119,5 +120,34 @@ class LocationController extends Controller
     {
         Location::destroy(decrypt($id));
         return redirect()->route('locations.index')->with('success_message', 'Location deleted successfully');
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("locations")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Location Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
