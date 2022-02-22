@@ -36,10 +36,10 @@
   <x-page-filters :route="route('commission_criterias.index')">
     <div class="row">
       <div class="col-md-12">
-          <div class="form-group">
-              <label>Search</label>
-              <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
-          </div>
+        <div class="form-group">
+          <label>Search</label>
+          <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+        </div>
       </div>
     </div>
   </x-page-filters>
@@ -69,7 +69,7 @@
 
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-striped  table-hover">
+                <table class="table table-striped table-hover">
                   <thead>
                     <tr>
                       <th>
@@ -154,21 +154,17 @@
               </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'commission_criterias'])
-
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 {{ $commission_criterias->links() }}
               </ul>
             </div>
-            
           </div>
-
         </div>
-
       </div>
     </div>
   </section>
 
 </div>
 @endsection
+{{-- @include('includes.multiple_delete',['table_name' => 'commission_criterias']) --}}
