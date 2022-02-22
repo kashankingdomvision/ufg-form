@@ -75,7 +75,7 @@
 
             <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
-                <table class="table table-striped  table-hover">
+                <table class="table table-striped table-hover">
                   <thead>
                     <tr>
                       <th>

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Http\Requests\PresetCommentRequest;
 use App\Http\Requests\UpdatePresetCommentRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\PresetComment;
 
@@ -114,4 +114,32 @@ class PresetCommentController extends Controller
         return redirect()->route('preset_comments.index')->with('success_message', 'Preset Comment deleted successfully'); 
     }
 
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("preset_comments")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Preset Comment Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
 }
