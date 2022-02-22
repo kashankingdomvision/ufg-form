@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Http\Helper;
 
 use App\Product;
@@ -136,5 +137,34 @@ class ProductController extends Controller
     {
         Product::destroy(decrypt($id));
         return redirect()->route('products.index')->with('success_message', 'Product deleted successfully');
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("products")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Product Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }

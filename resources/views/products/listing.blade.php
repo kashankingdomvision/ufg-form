@@ -36,19 +36,6 @@
     </div>
   </x-page-filters>
 
-  <section class="content p-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <a href="" id="delete_all" class="btn btn-danger btn-sm ">
-            <span class="fa fa-trash"></span> &nbsp;
-            <span>Delete Selected Record</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-  
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -57,15 +44,36 @@
             <div class="card-header">
               <h3 class="card-title">Products List</h3>
             </div>
+            <!-- Multi Actions -->
+            <div class="card-header">
+              <div class="row">
+                <form method="POST" id="product_bulk_action" action="{{ route('products.bulk.action') }}" >
+                  @csrf
+                  <input type="hidden" name="bulk_action_type" value="">
+                  <input type="hidden" name="bulk_action_ids" value="">
 
-            <div class="card-body p-0">
+                  <div class="dropdown show btn-group">
+                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <button type="button" data-action_type="delete" class="dropdown-item product-bulk-action-item">Delete</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- End Multi Actions -->
+
+            <div class="card-body p-0" id="listing_card_body">
             <div class="table-responsive">
               <table class="table table-striped table-hover">
                 <thead>
                   <tr>
                     <th>
-                      <div class="icheck-primary">
-                        <input type="checkbox" class="parent">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                        <label for="parent" class="custom-control-label"></label>
                       </div>
                     </th>
                     <th>Category</th>
@@ -79,8 +87,9 @@
                   @foreach ($products as $key => $product)
                   <tr>
                     <td>
-                      <div class="icheck-primary">
-                        <input type="checkbox" class="child" value="{{$product->id}}" >
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="child_{{$product->id}}" value="{{$product->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
+                        <label for="child_{{$product->id}}" class="custom-control-label"></label>
                       </div>
                     </td>
                     <td>{{ isset($product->getCategory->name) && !empty($product->getCategory->name) ? $product->getCategory->name : '' }}</td>
@@ -106,8 +115,6 @@
             </div>
             </div>
 
-            @include('includes.multiple_delete',['table_name' => 'products'])
-
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
                 {{ $products->links() }}
@@ -120,3 +127,20 @@
   </section>
 </div>
 @endsection
+@push('js')
+  <script src="{{ asset('js/supplier_management.js') }}" ></script>
+@endpush
+ {{-- @include('includes.multiple_delete',['table_name' => 'products']) --}}
+
+   {{-- <section class="content p-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="" id="delete_all" class="btn btn-danger btn-sm ">
+            <span class="fa fa-trash"></span> &nbsp;
+            <span>Delete Selected Record</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section> --}}
