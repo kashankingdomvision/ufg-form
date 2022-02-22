@@ -128,7 +128,7 @@
 
               <div class="card-footer">
                 <button type="button" id="store_category_submit" class="btn btn-success float-right">Submit</button>
-                <a href="{{ route('categories.index') }}"><button type="button" class="btn btn-outline-danger float-right mr-2">Cancel</button></a>
+                <a href="{{ route('categories.index') }}"><button type="button" class="btn btn-danger float-right mr-2">Cancel</button></a>
               </div>
 
               <div id="overlay" class=""></div>
@@ -165,7 +165,7 @@
               </div>
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary float-right">Submit</button>
-                <a href="{{ route('categories.index') }}" class="btn btn-outline-danger float-right  mr-2">Cancel</a>
+                <a href="{{ route('categories.index') }}" class="btn btn-danger float-right  mr-2">Cancel</a>
                 
               </div>
             </form>

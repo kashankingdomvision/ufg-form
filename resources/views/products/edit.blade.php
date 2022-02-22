@@ -106,7 +106,7 @@
 
             <div class="card-footer">
               <button type="button" id="update_product_submit" class="btn btn-success float-right">Submit</button>
-              <a href="{{ route('products.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
+              <a href="{{ route('products.index') }}" class="btn btn-danger float-right mr-2">Cancel</a>
             </div>
 
             <div id="overlay" class=""></div>

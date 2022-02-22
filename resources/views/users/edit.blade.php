@@ -165,7 +165,7 @@
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success float-right">Submit</button>
-                <a href="{{ route('users.index') }}" class="btn btn-outline-danger float-right mr-2">Cancel</a>
+                <a href="{{ route('users.index') }}" class="btn btn-danger float-right mr-2">Cancel</a>
               </div>
             </form>
 
