@@ -4675,6 +4675,12 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-radius: 0rem;
 }
 
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: #1d2531;
+  color: #fff;
+}
+
 [class*=sidebar-dark-] .nav-treeview > .nav-item > .nav-link.active,
 [class*=sidebar-dark-] .nav-treeview > .nav-item > .nav-link.active:focus,
 [class*=sidebar-dark-] .nav-treeview > .nav-item > .nav-link.active:hover {
@@ -4684,6 +4690,19 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
 
 .sidebar-border-left {
   border-left: 1px solid #dee2e6 !important;
+}
+
+.sidebar {
+  height: calc(100% - (6.5rem + 1px));
+  overflow-x: none;
+  overflow-y: initial;
+  padding-bottom: 0;
+  padding-left: 0.4rem;
+  padding-right: 0.5rem;
+  padding-top: 0;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  scrollbar-width: thin;
+  scrollbar-color: #a9a9a9 transparent;
 }
 
 [class*=sidebar-dark-] {
