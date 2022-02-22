@@ -219,4 +219,33 @@ class SupplierController extends Controller
 
         return redirect()->route('suppliers.index')->with('error_message', "Supplier can not deleted beacuse it is associated one or more record.");
     }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("suppliers")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Supplier Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
 }

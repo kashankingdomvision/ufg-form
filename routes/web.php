@@ -351,6 +351,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SupplierController@update'));
         Route::get('show/{id}', array('as' => 'show', 'uses' => 'SupplierController@show'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SupplierController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'SupplierController@bulkAction' ));
     });
 
     /* Group Owner */
