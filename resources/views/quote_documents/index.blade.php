@@ -35,7 +35,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <div class="card card-secondary">
+            <div class="card card-outline card-base">
               <div class="card-header">
                 <h3 class="card-title text-center card-title-style">Quote Documents</h3>
                 <a href="{{ route('quotes.index') }}" class="btn btn-outline-dark btn-md float-right" data-title="Final Quotation" data-target="#Final_Quotation">

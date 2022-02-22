@@ -4719,6 +4719,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   background-color: #263544;
 }
 
+.card-base.card-outline {
+  border-top: 3px solid #263544;
+}
+
 .rendered-form-parent {
   display: inline-flex;
   margin-bottom: 1rem;

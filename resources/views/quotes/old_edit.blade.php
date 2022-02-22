@@ -64,7 +64,7 @@
           <div class="col-md-12">
             @include('includes.flash_message')
 
-            <div class="card card-secondary">
+            <div class="card card-outline card-base">
               <div class="card-header">
                 <h3 class="card-title text-center card-title-style">Edit Quote</h3>
 

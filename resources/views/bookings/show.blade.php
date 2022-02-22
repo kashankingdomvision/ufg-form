@@ -77,7 +77,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-secondary">
+          <div class="card card-outline card-base">
             <div class="card-header">
               <h1 class="card-title text-center card-title-style">Edit Booking</h1>
 

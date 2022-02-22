@@ -85,6 +85,12 @@ body{
     background-color: #263544;
 }
 
+// card outline
+.card-base.card-outline{
+    border-top: 3px solid #263544;
+}
+// card outline
+
 .rendered-form-parent {
     display: inline-flex;  
     margin-bottom: 1rem;

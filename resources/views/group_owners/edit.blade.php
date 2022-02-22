@@ -27,7 +27,7 @@
     <div class="container-fluid">
       <div class="row d-flex justify-content-center">
         <div class="col-md-10">
-          <div class="card card-secondary shadow-sm">
+          <div class="card card-outline card-base">
             <div class="card-header">
               <h3 class="card-title text-center">Group Owner Form</h3>
             </div>
