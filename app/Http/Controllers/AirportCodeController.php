@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\UpdateAirportCodeRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\AirportCode;
 
@@ -120,5 +121,34 @@ class AirportCodeController extends Controller
         AirportCode::destroy(decrypt($id));
 
         return redirect()->route('airport_codes.index')->with('success_message', 'Airport deleted successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("airport_codes")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Airports Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
