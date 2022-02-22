@@ -492,6 +492,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'BrandController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'BrandController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'BrandController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'BrandController@bulkAction' ));
     });
 
     /*  Countries */
