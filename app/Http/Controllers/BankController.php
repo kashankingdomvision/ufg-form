@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BankRequest;
 use App\Http\Requests\UpdateBankRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Bank;
 
@@ -102,5 +103,34 @@ class BankController extends Controller
         Bank::findOrFail(decrypt($id))->delete();
         return redirect()->route('banks.index')->with('success_message', 'Bank deleted successfully'); 
         
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("banks")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Banks Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
