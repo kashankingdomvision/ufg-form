@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\HolidayTypeRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Brand;
 use App\HolidayType;
@@ -99,5 +100,33 @@ class HolidayTypeController extends Controller
 
         return redirect()->route('holiday_types.index')->with('success_message', 'Holiday type deleted successfully'); 
     }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
     
+            if($bulk_action_type == 'delete'){
+                DB::table("holiday_types")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Holiday Type Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
 }
