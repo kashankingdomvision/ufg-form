@@ -608,6 +608,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'PaymentMethodController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'PaymentMethodController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'PaymentMethodController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'PaymentMethodController@bulkAction' ));
     });
 
     /* Preset Comments */
