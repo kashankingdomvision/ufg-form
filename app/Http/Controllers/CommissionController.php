@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionRequest;
 use App\Http\Requests\UpdateCommissionRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Commission;
 use App\Brand;
@@ -102,5 +103,34 @@ class CommissionController extends Controller
     {
         Commission::destroy(decrypt($id));
         return redirect()->route('commissions.index')->with('success_message', 'Commission deleted successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("commissions")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Commission Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }

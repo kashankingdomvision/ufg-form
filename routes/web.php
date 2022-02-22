@@ -215,6 +215,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CommissionController@bulkAction' ));
     });
 
     /* Commissions Group */
