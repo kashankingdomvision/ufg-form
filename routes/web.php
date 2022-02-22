@@ -522,6 +522,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CurrencyController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CurrencyController@bulkAction' ));
     });
 
     /*  Currency Conversion */

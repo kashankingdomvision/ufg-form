@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\CurrencyRequest;
+use Illuminate\Support\Facades\DB;
 
 use App\Currency;
 use App\AllCurrency;
@@ -161,5 +162,39 @@ class CurrencyController extends Controller
         Currency::destroy(decrypt($id));
         return redirect()->route('currencies.index')->with('success_message', 'Currency updated successfully'); 
         
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'active'){
+                DB::table("currencies")->whereIn('id', $bulk_action_ids)->update([ 'status' => 1 ]);
+                $message = "Currency Active Successfully.";
+            }
+
+            if($bulk_action_type == 'inactive'){
+                DB::table("currencies")->whereIn('id', $bulk_action_ids)->update([ 'status' => 0 ]);
+                $message = "Currency Inactive Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }

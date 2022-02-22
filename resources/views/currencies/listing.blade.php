@@ -36,37 +36,14 @@
   <x-page-filters :route="route('currencies.index')">
     <div class="row">
       <div class="col-md-12">
-          <div class="form-group">
-              <label>Search</label>
-              <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
-          </div>
+        <div class="form-group">
+          <label>Search</label>
+          <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+        </div>
       </div>
     </div>
   </x-page-filters>
 
-
-  <section class="content p-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-            <form method="POST" action="{{ route('currency.status') }}" id="currencyStatus">
-                @csrf @method('post')
-                <div class="dropdown show">
-                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Action
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <button type="submit" name="active" class="dropdown-item btn-link active btnbulkClick">Active</button>
-                        <button type="submit" name="inactive" class="dropdown-item btn-link inactive btnbulkClick">In-Active</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -78,14 +55,37 @@
               </h3>
             </div>
 
-            <div class="card-body p-0">
+            <!-- Multi Actions -->
+            <div class="card-header">
+              <div class="row">
+                <form method="POST" id="currency_bulk_action" action="{{ route('currencies.bulk.action') }}" >
+                  @csrf
+                  <input type="hidden" name="bulk_action_type" value="">
+                  <input type="hidden" name="bulk_action_ids" value="">
+
+                  <div class="dropdown show btn-group">
+                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <button type="button" data-action_type="active" class="dropdown-item currency-bulk-action-item">Active</button>
+                      <button type="button" data-action_type="inactive" class="dropdown-item currency-bulk-action-item">Inactive</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- End Multi Actions -->
+
+            <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
                 <table class="table table-striped table-hover">
                   <thead>
                     <tr>
                       <th width="8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" class="parent">
+                        <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                          <label for="parent" class="custom-control-label"></label>
                         </div>
                       </th>
                       <th>Name</th>
@@ -99,8 +99,9 @@
                       @foreach ($currencies as $key => $value)
                         <tr>
                           <td>
-                            <div class="icheck-primary">
-                                <input type="checkbox" class="child" value="{{$value->id}}" >
+                            <div class="custom-control custom-checkbox">
+                              <input type="checkbox" id="child_{{$value->id}}" value="{{$value->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
+                              <label for="child_{{$value->id}}" class="custom-control-label"></label>
                             </div>
                           </td>
                           <td>{{ $value->name }}</td>
@@ -125,14 +126,15 @@
                 {{ $currencies->links() }}
               </ul>
             </div>
-            
           </div>
-
         </div>
-
       </div>
     </div>
   </section>
 
 </div>
 @endsection
+
+@push('js')
+  <script src="{{ asset('js/setting.js') }}" ></script>
+@endpush

@@ -1090,50 +1090,50 @@ $(document).ready(function($) {
     // });
 
     /// Update Currency Status
-    $("#currencyStatus").submit(function(e) {
-        e.preventDefault();
-        // console.log('run');
-        var url = $(this).attr('action');
-        var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
-        var formData = $(this).serializeArray();
-        formData.push({name:'id', value: checkedValues});
-        formData.push({name:'btn', value: btnname});
-        var message = 'Are you sure you want to inactive this records?'
-        if(btnname == 'active'){
-            message = 'Are you sure you want to active this records?'
-        }
-        if(checkedValues.length > 0){
-            Swal.fire({
-                title: 'Are you sure?',
-                text: message,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'Yes, '+btnname+' it!',
-                confirmButtonColor: '#5cb85c',
-                cancelButtonText: 'No, keep it',
-                showLoaderOnConfirm: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: $.param(formData),
-                        success: function(data)
-                        {
-                            setTimeout(function() {
-                                alert(data.message);
-                                location.reload();
-                            }, 600);
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    ///no action here
-                }
-            })
-        }else{
-            alert('Please Check any Record First');
-        }
-    });
+    // $("#currencyStatus").submit(function(e) {
+    //     e.preventDefault();
+    //     // console.log('run');
+    //     var url = $(this).attr('action');
+    //     var checkedValues  =  $('.child:checked').map((i, e) => e.value ).get();
+    //     var formData = $(this).serializeArray();
+    //     formData.push({name:'id', value: checkedValues});
+    //     formData.push({name:'btn', value: btnname});
+    //     var message = 'Are you sure you want to inactive this records?'
+    //     if(btnname == 'active'){
+    //         message = 'Are you sure you want to active this records?'
+    //     }
+    //     if(checkedValues.length > 0){
+    //         Swal.fire({
+    //             title: 'Are you sure?',
+    //             text: message,
+    //             focusConfirm: false,
+    //             showCancelButton: true,
+    //             confirmButtonText: 'Yes, '+btnname+' it!',
+    //             confirmButtonColor: '#5cb85c',
+    //             cancelButtonText: 'No, keep it',
+    //             showLoaderOnConfirm: true,
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 $.ajax({
+    //                     type: "POST",
+    //                     url: url,
+    //                     data: $.param(formData),
+    //                     success: function(data)
+    //                     {
+    //                         setTimeout(function() {
+    //                             alert(data.message);
+    //                             location.reload();
+    //                         }, 600);
+    //                     }
+    //                 });
+    //             } else if (result.dismiss === Swal.DismissReason.cancel) {
+    //                 ///no action here
+    //             }
+    //         })
+    //     }else{
+    //         alert('Please Check any Record First');
+    //     }
+    // });
     /// Update Currency Status
     //BUlk DATA DELETE
 
