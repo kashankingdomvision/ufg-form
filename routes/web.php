@@ -652,6 +652,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{slug}', array('as' => 'edit', 'uses' => 'StoreTextController@edit'));
         Route::put('update/{slug}', array('as' => 'update', 'uses' => 'StoreTextController@update'));
         Route::delete('delete/{slug}', array('as' => 'destroy', 'uses' => 'StoreTextController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StoreTextController@bulkAction' ));
     });
 
    /*

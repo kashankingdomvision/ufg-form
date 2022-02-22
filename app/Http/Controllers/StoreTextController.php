@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\StoreText;
 use App\Http\Requests\StoreTextRequest;
+use Illuminate\Support\Facades\DB;
+use App\StoreText;
 
 class StoreTextController extends Controller
 {
@@ -88,5 +89,34 @@ class StoreTextController extends Controller
         $storeText = StoreText::where('slug', $slug)->firstOrFail();
         $storeText->delete();
         return redirect()->route('store_texts.index')->with('success_message', 'Store Text deleted successfully');
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("store_texts")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Store Text Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
