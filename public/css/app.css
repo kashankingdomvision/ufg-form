@@ -4692,19 +4692,6 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-left: 2px solid #dee2e6 !important;
 }
 
-.sidebar {
-  height: calc(100% - (6.5rem + 1px));
-  overflow-x: none;
-  overflow-y: initial;
-  padding-bottom: 0;
-  padding-left: 0.4rem;
-  padding-right: 0.5rem;
-  padding-top: 0;
-  -ms-overflow-style: -ms-autohiding-scrollbar;
-  scrollbar-width: thin;
-  scrollbar-color: #a9a9a9 transparent;
-}
-
 [class*=sidebar-dark-] {
   background-color: #263544;
 }
