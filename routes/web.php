@@ -411,6 +411,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CategoryController@edit'));
         Route::post('update', array('as' => 'update', 'uses' => 'CategoryController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CategoryController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CategoryController@bulkAction' ));
     });
 
     /* Wallet */

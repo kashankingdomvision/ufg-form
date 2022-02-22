@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Helper;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 use App\Category;
@@ -151,5 +151,34 @@ class CategoryController extends Controller
     {
         Category::destroy(decrypt($id));
         return redirect()->back()->with('success_message', 'Category deleted successfully'); 
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("categories")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Categories Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }
