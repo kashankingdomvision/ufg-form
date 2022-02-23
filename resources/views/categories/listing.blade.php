@@ -77,7 +77,6 @@
                         </div>
                       </th>
                       <th>Category Name</th>
-                      <th>Appeared In</th>
                       <th>Sort Order</th>
                       <th>Action</th>
                     </tr>
@@ -93,18 +92,6 @@
                         </div>
                       </td>
                       <td>{{ $category->name }}</td>
-
-                      <td >
-                        <h5>
-                          @if($category->quote == 1)
-                            <span class="badge badge-info mr-2">Quote</span>
-                          @endif
-                          @if($category->booking == 1)
-                            <span class="badge badge-info">Booking</span>
-                          @endif
-                        </h5>
-                      </td>
-
                       <td>{{ $category->sort_order }}</td>
 
                       <td class="d-flex">
@@ -142,6 +129,20 @@
 @push('js')
 <script src="{{ asset('js/supplier_management.js') }}" ></script>
 @endpush
+
+{{-- <th>Appeared In</th> --}}
+
+{{-- <td>
+  <h5>
+    @if($category->quote == 1)
+      <span class="badge badge-info mr-2">Quote</span>
+    @endif
+    @if($category->booking == 1)
+      <span class="badge badge-info">Booking</span>
+    @endif
+  </h5>
+</td> --}}
+
  {{-- @include('includes.multiple_delete',['table_name' => 'categories']) --}}
 
   {{-- <section class="content p-2">
