@@ -308,14 +308,19 @@ $(document).ready(function($) {
 
         if(response && response.status){
 
+            $("#listing_card_body").load(`${location.href} #listing_card_body`);
+
             Toast.fire({
                 icon: 'success',
                 title: response.success_message
             });
 
-            setTimeout(function() {
-                location.reload();
-            }, 2500);
+            /* Reload page if you are on edit page */
+            if(CURRENT_ROUTE_NAME.includes('edit')){
+                setTimeout(function() {
+                    location.reload();
+                }, 2500);
+            }
         }
 
         if(response && !response.status){

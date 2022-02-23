@@ -147,7 +147,7 @@ Route::group(['middleware' => ['auth']], function(){
         /* Export Quote */
         Route::get('export/{id}', array('as' => 'export', 'uses' => 'QuoteController@exportQuote' ));
 
-        // Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
         /* multiple-action route */
         // Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
     });

@@ -235,9 +235,10 @@
                                                             <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit" title="Edit">
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
-                                                            <form class="mr-2 " method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
+
+                                                            <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
                                                                 @csrf @method('patch')
-                                                                <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><span class="fa fa-check"></span></button>
+                                                                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i></button>
                                                             </form>
                                                         @endif
 
@@ -254,11 +255,18 @@
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
-                                                            <a onclick="return confirm('Are you sure you want to Cancel this Quote?');" href="{{ route('quotes.cancelled', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-danger btn-xs" data-title="Cancel" title="Cancel Quote" data-target="#Cancel"><span class="fa fa-times "></span></a>
+                                                            <form method="POST" class="multiple-alert" data-action_type="cancel_quote" action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}">
+                                                                @csrf @method('patch')
+                                                                <button type="submit" class="mr-2 btn btn-outline-danger btn-xs" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i></button>
+                                                            </form>
                                                         @endif
 
                                                         @if($quote->booking_status == 'cancelled')
-                                                            <a onclick="return confirm('Are you sure you want to Restore this Quote?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2 btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a>
+                                                            <form method="POST" class="multiple-alert" data-action_type="restore_quote" action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}">
+                                                                @csrf @method('patch')
+                                                                <button type="submit" class="btn btn-success btn-xs" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i></button>
+                                                            </form>
+                                                            {{-- <a onclick="return confirm('Are you sure you want to Restore this Quote?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2 btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a> --}}
                                                         @endif
 
 
@@ -275,7 +283,7 @@
                                                                     @else
                                                                         <i class="fa fa-archive" ></i>
                                                                     @endif
-                                                                    </button>
+                                                                </button>
                                                             </form>
                                                         @endif
 
@@ -289,12 +297,10 @@
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
-                                                            <form class="" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
-                                                                @csrf
-                                                                <button type="submit" title="Export in Excel"  onclick="return confirm('Are you sure you would like to Export this Quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
-                                                                    <i class="fa fa-file-export"></i>
-                                                                </button>
-                                                            </form>
+
+                                                        <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
+                                                            <button type="button" class="btn btn-outline-secondary btn-xs" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i></button>
+                                                        </a>
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
