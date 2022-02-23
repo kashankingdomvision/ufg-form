@@ -110,20 +110,16 @@ Route::group(['middleware' => ['auth']], function(){
         Route::patch('booked/{id}', array('as' => 'booked', 'uses' => 'QuoteController@booking'));
 
         /* archive quote routes */
-        Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@getArchive'));
-        Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        Route::get('archive', array('as' => 'archive', 'uses' => 'QuoteController@archiveIndex'));
         
         /* override access quote route */
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
         
         /* quote clone route */
         Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
-
-        /* multiple-action route */
-        Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
         
         /* quote export route */
-        Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
+        // Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');
         
         /* quote document routes */
         Route::get('documment/{id}', array('as' => 'quote.documment', 'uses' => 'QuoteDocumentsController@index'));
@@ -142,7 +138,18 @@ Route::group(['middleware' => ['auth']], function(){
         /* category detail get_autocomplete_data routes */
         Route::get('get_autocomplete_data', array('as' => 'get_autocomplete_data', 'uses' => 'QuoteController@get_autocomplete_data'));
 
+        /* Quote Listing Bulk Action Route */
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'QuoteController@bulkAction' ));
+
+        /* Quote Multiple Alert Patches Route */
+        Route::patch('multiple-alert/{type}/{id}', array('as' => 'multiple.alert', 'uses' => 'QuoteController@multipleAlert'));
+        
+        /* Export Quote */
+        Route::get('export/{id}', array('as' => 'export', 'uses' => 'QuoteController@exportQuote' ));
+
+        // Route::patch('archive/{id}/store', array('as' => 'archive.store', 'uses' => 'QuoteController@addInArchive'));
+        /* multiple-action route */
+        // Route::delete('multiple-action',array('as'=>'multiple-action','uses'=>'QuoteController@multiple_action'));
     });
 
     /* Quote Groups */

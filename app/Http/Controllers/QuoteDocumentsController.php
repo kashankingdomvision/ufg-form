@@ -82,28 +82,29 @@ class QuoteDocumentsController extends Controller
     
 
     // quote export work 
-    public function generateExport($id) {
-        $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
-        $data['quote']            = $quote;
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['templates']        = Template::all()->sortBy('name');
-        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-        $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
-        // dd($data);
-        return Excel::download(new QuoteExport($data), "$quote->quote_ref.xlsx");
-    }
+    // public function generateExport($id) {
+
+    //     $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
+    //     $data['quote']            = $quote;
+    //     $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+    //     $data['templates']        = Template::all()->sortBy('name');
+    //     $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+    //     $data['seasons']          = Season::all();
+    //     $data['booked_by']        = User::all()->sortBy('name');
+    //     $data['supervisors']      = User::whereHas('getRole', function($query){
+    //                                     $query->where('slug', 'supervisor');
+    //                                 })->get();
+    //     $data['sale_persons']     = User::get();
+    //     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+    //     $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    //     $data['brands']           = Brand::orderBy('id','ASC')->get();
+    //     $data['booking_types']    = BookingType::all();
+    //     $data['commission_types'] = Commission::all();
+    //     $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
+    //     $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+
+    //     return Excel::download(new QuoteExport($data), "$quote->quote_ref.xlsx");
+    // }
 
     
     

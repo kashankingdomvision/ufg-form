@@ -2227,6 +2227,56 @@ $(document).ready(function () {
       }
     }
   });
+  $(document).on('submit', ".multiple-alert", function (event) {
+    var _this = this;
+
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var actionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    switch (actionType) {
+      case "booked_quote":
+        message = 'You want to Book this Quote?';
+        buttonText = 'Book';
+        break;
+
+      case "cancel_quote":
+        message = 'You want to Cancel this Quote?';
+        buttonText = 'Cancel';
+        break;
+
+      case "restore_quote":
+        message = 'You want to Restore this Quote?';
+        buttonText = 'Restore';
+        break;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes, ".concat(buttonText, " it !")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: new FormData(_this),
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printAlertResponse(response);
+          }
+        });
+      }
+    });
+  });
 });
 
 /***/ }),

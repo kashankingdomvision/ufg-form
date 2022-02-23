@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use PDF;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\QuoteExport;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 use App\Http\Helper;
 use App\Brand;
@@ -52,116 +54,6 @@ class QuoteController extends Controller
 {
     public $pagiantion = 10;
 
-    public function bulkAction(Request $request)
-    {
-        try {
-
-            $message = "";
-            $bulk_action_ids  = $request->bulk_action_ids;
-            $bulk_action_type = $request->bulk_action_type;
-    
-            $bulk_action_ids  = explode(",", $bulk_action_ids);
-    
-            if($bulk_action_type == 'cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
-                $message = "Quotes Cancelled Successfully.";
-            }
-    
-            if($bulk_action_type == 'revert_cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
-                $message = "Revert Cancelled Quotes Successfully.";
-            }
-    
-            if($bulk_action_type == 'archive'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 1 ]);
-                $message = "Quotes Archived Successfully.";
-            }
-    
-            if($bulk_action_type == 'unarchive'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 0 ]);
-                $message = "Quotes Unarchived Successfully.";
-            }
-    
-            return response()->json([ 
-                'status'  => true, 
-                'message' => $message,
-            ]);
-          
-        } catch (\Exception $e) {
-
-            // $e->getMessage(),
-            return response()->json([ 
-                'status'  => false, 
-                'message' => "Something Went Wrong, Please Try Again."
-            ]);
-        }
-
-        // $table_name        = $request->table;
-        // $respons['status'] = FALSE;
-        // $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
-
-        // if($request->btn == 'archive' || $request->btn == 'unarchive'){
-            
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
-        //     $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
-
-        // }elseif ($request->btn  == 'cancel'){
-
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
-        //     $respons['message'] = 'Quotes Cancelled Successfully !!';
-        // }
-        // elseif ($request->btn  == 'quote'){
-
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
-        //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
-        // }
-
-        // $respons['status']  = true;
-
-        // return response()->json($respons);
-    }
-
-    public function compare_quote(Request $request)
-    {
-        if ($request->isMethod('post')) {
-
-            if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
-                $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
-            }
-            
-            if(isset($request->quote_ref_two) && !empty($request->quote_ref_two)){
-                $data['quote_ref_two'] =  Quote::find($request->quote_ref_two);
-            }
-
-            if(isset($request->quote_ref_three) && !empty($request->quote_ref_three)){
-                $data['quote_ref_three'] =  Quote::find($request->quote_ref_three);
-            }
-
-            if(isset($request->quote_ref_four) && !empty($request->quote_ref_four)){
-                $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
-            }
-
-        }
-    
-        $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
-
-        return view('compare_quote.index', $data);
-    }
-
-    public function quote_document(Request $request, $id)
-    {
-        $quote          = Quote::findOrFail(decrypt($id));
-        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
-        $data['quote_details']  = $quoteDetails;
-        $data['created_at']     =  $quote->doc_formated_created_at;
-        $data['title']          =  $quote->booking_details;
-        $data['person_name']    =  $quote->getSalePerson->name;
-        $data['brand_about']    =  $quote->getBrand->about_us;
-        $pdf = PDF::loadView('quote_documents.pdf', $data);
-        return $pdf->stream();
-    }
-
-
     public function index(Request $request)
     {
         $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
@@ -177,77 +69,21 @@ class QuoteController extends Controller
         return view('quotes.listing', $data);
     }
 
-    public function searchFilters($quote, $request)
+    /* archive listing */
+    public function archiveIndex(Request $request)
     {
-        if($request->has('client_type') && !empty($request->client_type)){
-            $client_type = ($request->client_type == 'client')? '0' : '1';
-            $quote->where('agency', 'like', '%'.$client_type.'%' );
+        $data['status'] = 'archive';
+        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1);
+        if(count($request->all()) >0){
+            $quote = $this->searchFilters($quote, $request);
         }
+        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
+        $data['booking_seasons']  = Season::all();
+        $data['users']            = User::all();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
 
-        if($request->has('staff') && !empty($request->staff)){
-            $quote->whereHas('getSalePerson', function($query) use($request){
-                $query->where('name', 'like', '%'.$request->staff.'%' );
-             });
-        }
-
-        if($request->has('status') && !empty($request->status)){
-            if($request->status == 'cancelled'){
-                $quote->where('deleted_at', '!=', null);
-            }else{
-                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
-            }
-        }
-
-        if($request->has('booking_currency') && !empty($request->booking_currency)){
-            $quote->whereHas('getCurrency', function($query) use($request){
-                foreach ($request->booking_currency as $currency) {
-                    $query->where('code', 'like', '%'.$currency.'%' );
-                }
-            });
-        }
-
-        if($request->has('booking_season') && !empty($request->booking_season)){
-            $quote->whereHas('getSeason', function($query) use($request){
-               $query->where('name', 'like', '%'. $request->booking_season.'%' );
-            });
-        }
-
-        if($request->has('brand') && !empty($request->brand)){
-            $quote->whereHas('getBrand', function($query) use($request){
-                foreach ($request->brand as $brand) {
-                    $query->where('name', 'like', '%'.$brand.'%' );
-                }
-            });
-        }
-
-        if($request->has('search') && !empty($request->search)){
-            $quote->where(function($query) use($request){
-                $query->where('ref_no', 'like', '%'.$request->search.'%')
-                ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
-                ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
-                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');
-            });
-        }
-
-        $quote->when($request->dates, function ($query) use ($request) {
-
-            $dates = Helper::dates($request->dates);
-
-            $query->whereDate('created_at', '>=', $dates->start_date);
-            $query->whereDate('created_at', '<=', $dates->end_date);
-        });
-
-        // if($request->has('created_date')){
-        //     $quote->where(function($query) use($request){
-        //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
-        //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
-        //         }
-        //         if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
-        //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
-        //         }
-        //     });
-        // }
-        return $quote;
+        return view('quotes.listing', $data);
     }
 
     public function get_currency_conversion(){
@@ -636,7 +472,6 @@ class QuoteController extends Controller
             'success_message' => 'Quote Created Successfully.',
             'redirect_url'    => route('quotes.index') 
         ]);
-
     }
 
     public function edit($id)
@@ -821,12 +656,283 @@ class QuoteController extends Controller
         return view('quotes.show',$data);
     }
 
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+    
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'cancel'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
+                $message = "Quotes Cancelled Successfully.";
+            }
+    
+            if($bulk_action_type == 'revert_cancel'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
+                $message = "Revert Cancelled Quotes Successfully.";
+            }
+    
+            if($bulk_action_type == 'archive'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 1 ]);
+                $message = "Quotes Archived Successfully.";
+            }
+    
+            if($bulk_action_type == 'unarchive'){
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'is_archive' => 0 ]);
+                $message = "Quotes Unarchived Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+
+        // $table_name        = $request->table;
+        // $respons['status'] = FALSE;
+        // $isArchive         = ($request->btn == 'unarchive')? 0 : 1;
+
+        // if($request->btn == 'archive' || $request->btn == 'unarchive'){
+            
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['is_archive' => $isArchive]);
+        //     $respons['message'] = ($isArchive == 1)? "Quotes Archived Successfully" : 'Quotes Unarchived Successfully';
+
+        // }elseif ($request->btn  == 'cancel'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+        //     $respons['message'] = 'Quotes Cancelled Successfully !!';
+        // }
+        // elseif ($request->btn  == 'quote'){
+
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+        //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
+        // }
+
+        // $respons['status']  = true;
+
+        // return response()->json($respons);
+    }
+
+    public function compare_quote(Request $request)
+    {
+        if ($request->isMethod('post')) {
+
+            if(isset($request->quote_ref_one) && !empty($request->quote_ref_one)){
+                $data['quote_ref_one'] =  Quote::find($request->quote_ref_one);
+            }
+            
+            if(isset($request->quote_ref_two) && !empty($request->quote_ref_two)){
+                $data['quote_ref_two'] =  Quote::find($request->quote_ref_two);
+            }
+
+            if(isset($request->quote_ref_three) && !empty($request->quote_ref_three)){
+                $data['quote_ref_three'] =  Quote::find($request->quote_ref_three);
+            }
+
+            if(isset($request->quote_ref_four) && !empty($request->quote_ref_four)){
+                $data['quote_ref_four'] =  Quote::find($request->quote_ref_four);
+            }
+
+        }
+    
+        $data['quotes'] = Quote::groupBy('ref_no')->orderBy('created_at','DESC')->get();
+
+        return view('compare_quote.index', $data);
+    }
+
+    public function quote_document(Request $request, $id)
+    {
+        $quote          = Quote::findOrFail(decrypt($id));
+        $quoteDetails   = $quote->getQuoteDetails()->orderBy('time_of_service', 'ASC')->orderBy('date_of_service', 'ASC')->get(['date_of_service', 'end_date_of_service', 'time_of_service', 'category_id', 'product_id', 'service_details'])->groupBy('date_of_service');
+        $data['quote_details']  = $quoteDetails;
+        $data['created_at']     =  $quote->doc_formated_created_at;
+        $data['title']          =  $quote->booking_details;
+        $data['person_name']    =  $quote->getSalePerson->name;
+        $data['brand_about']    =  $quote->getBrand->about_us;
+        $pdf = PDF::loadView('quote_documents.pdf', $data);
+        return $pdf->stream();
+    }
+
+    public function searchFilters($quote, $request)
+    {
+        if($request->has('client_type') && !empty($request->client_type)){
+            $client_type = ($request->client_type == 'client')? '0' : '1';
+            $quote->where('agency', 'like', '%'.$client_type.'%' );
+        }
+
+        if($request->has('staff') && !empty($request->staff)){
+            $quote->whereHas('getSalePerson', function($query) use($request){
+                $query->where('name', 'like', '%'.$request->staff.'%' );
+             });
+        }
+
+        if($request->has('status') && !empty($request->status)){
+            if($request->status == 'cancelled'){
+                $quote->where('deleted_at', '!=', null);
+            }else{
+                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+            }
+        }
+
+        if($request->has('booking_currency') && !empty($request->booking_currency)){
+            $quote->whereHas('getCurrency', function($query) use($request){
+                foreach ($request->booking_currency as $currency) {
+                    $query->where('code', 'like', '%'.$currency.'%' );
+                }
+            });
+        }
+
+        if($request->has('booking_season') && !empty($request->booking_season)){
+            $quote->whereHas('getSeason', function($query) use($request){
+               $query->where('name', 'like', '%'. $request->booking_season.'%' );
+            });
+        }
+
+        if($request->has('brand') && !empty($request->brand)){
+            $quote->whereHas('getBrand', function($query) use($request){
+                foreach ($request->brand as $brand) {
+                    $query->where('name', 'like', '%'.$brand.'%' );
+                }
+            });
+        }
+
+        if($request->has('search') && !empty($request->search)){
+            $quote->where(function($query) use($request){
+                $query->where('ref_no', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_name', 'like', '%'.$request->search.'%')
+                ->orWhere('lead_passenger_email', 'like', '%'.$request->search.'%')
+                ->orWhere('quote_ref', 'like', '%'.$request->search.'%');
+            });
+        }
+
+        $quote->when($request->dates, function ($query) use ($request) {
+
+            $dates = Helper::dates($request->dates);
+
+            $query->whereDate('created_at', '>=', $dates->start_date);
+            $query->whereDate('created_at', '<=', $dates->end_date);
+        });
+
+        // if($request->has('created_date')){
+        //     $quote->where(function($query) use($request){
+        //         if(isset($request->created_date['form']) && !empty($request->created_date['form'])){
+        //             $query->where('created_at', '>=', Carbon::createFromFormat('d/m/Y', $request->created_date['from'])->format('Y-m-d'));
+        //         }
+        //         if (isset($request->created_date['to']) && !empty($request->created_date['to'])) {
+        //             $query->where('created_at', '<=', Carbon::createFromFormat('d/m/Y', $request->created_date['to'])->format('Y-m-d'));
+        //         }
+        //     });
+        // }
+        return $quote;
+    }
+
     public function booking($id)
     {
+        try {
+
+            $quote   = Quote::findORFail(decrypt($id));
+            $booking = Booking::create($this->quoteArray($quote, 'bookings'));
+    
+            foreach ($quote->getQuoteDetails as $qu_details) {
+    
+                $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));
+    
+                if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
+                    foreach ($qu_details->getQuoteDetailCountries as $detail) {
+    
+                        BookingDetailCountry::create($this->getQuoteDetailCountryArray($booking, $bookingDetail, $detail->country_id, 'booking_details'));
+                    }
+                }
+    
+                if($qu_details->getCategoryDetailFeilds && $qu_details->getCategoryDetailFeilds->count()){
+                    foreach ($qu_details->getCategoryDetailFeilds as $feilds) {
+    
+                        BookingCategoryDetail::create($this->getBookingQuoteCategoryDetailArray($bookingDetail, $feilds));
+                    }
+                }
+            }
+    
+            if($quote->getPaxDetail->count()){
+                foreach ($quote->getPaxDetail as $pax_data) {
+    
+                    BookingPaxDetail::create($this->getPaxDetailsArray($booking, $pax_data, 'bookings'));
+                }
+            }
+            
+            $quote->update([
+                'booking_status' => 'booked',
+                'booking_date'   => Carbon::now()
+            ]);
+          
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Quote Booked Successfully.',
+            ]);
+
+        } catch (\Exception $e) {
+          
+            // $e->getMessage();
+            return response()->json([ 
+                'status'        => false, 
+                'error_message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
+
+    public function multipleAlert($action_type ,$id){
+        
+        try {
+
+            $message = "";
+
+            if($action_type == 'booked_quote'){
+
+                $this->bookedQuote($id);
+                $message = "Quote Booked Successfully.";
+            }
+
+            if($action_type == 'cancel_quote'){
+                
+                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'cancelled' ]);
+                $message = "Quote Cancelled Successfully.";
+            }
+
+            if($action_type == 'restore_quote'){
+
+                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'quote' ]);
+                $message = "Quote Restored Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            return response()->json([ 
+                'status'        => false, 
+                'error_message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
+
+    public function bookedQuote($id){
+
         $quote   = Quote::findORFail(decrypt($id));
         $booking = Booking::create($this->quoteArray($quote, 'bookings'));
-
-        // dd($booking);
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
@@ -858,8 +964,35 @@ class QuoteController extends Controller
             'booking_status' => 'booked',
             'booking_date'   => Carbon::now()
         ]);
+    }
 
-        return redirect()->back()->with('success_message', 'Quote Booked successfully');
+    public function cancelQuote($id){
+
+        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+    }
+
+    public function exportQuote($id){
+
+        $quote = Quote::with('getSalePerson','getCommission','getBrand','getHolidayType','getSeason','getCurrency','getNationality','getPaxDetail','getQuoteDetails')->findOrFail(decrypt($id));
+        $data['quote']            = $quote;
+        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['templates']        = Template::all()->sortBy('name');
+        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['seasons']          = Season::all();
+        $data['booked_by']        = User::all()->sortBy('name');
+        $data['supervisors']      = User::whereHas('getRole', function($query){
+                                        $query->where('slug', 'supervisor');
+                                    })->get();
+        $data['sale_persons']     = User::get();
+        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['brands']           = Brand::orderBy('id','ASC')->get();
+        $data['booking_types']    = BookingType::all();
+        $data['commission_types'] = Commission::all();
+        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
+        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+    
+        return Excel::download(new QuoteExport($data), "$quote->quote_ref.xlsx");
     }
 
     public function add_and_update_quote_group($quote) {
@@ -905,60 +1038,10 @@ class QuoteController extends Controller
         return redirect()->back()->with('success_message', 'Quote Restore Successfully');
     }
 
-    public function multiple_action(Request $request)
-    {
-        $action       = $request->action;
-        $check_values = $request->checkedValues;
-
-        if($action == "Delete"){
-            Quote::destroy(decrypt($check_values));
-            return ['status' => true, 'message' => 'Records Deleted Successfully !!'];
-        }
-
-        if($action == "Archive"){
-            Quote::findOrFail(decrypt($check_values))->update(['is_archive' => 1]);
-            return ['status' => true, 'message' => 'Records Archived Successfully !!'];
-        }
-
-    }
-
     public function getTrash()
     {
         $data['quotes'] = Quote::onlyTrashed()->paginate($this->pagiantion);
         return view('quotes.trash', $data);
-    }
-
-    /* update status in archive */
-    public function addInArchive(Request $request, $id)
-    {
-        $isArchive = ((int)$request->is_archive == 0)? 1 : 0;
-        Quote::findOrFail(decrypt($id))->update(['is_archive' => $isArchive]);
-        if(isset($request->status)){
-            $messge = 'Quote reverted from archive successfully';
-            return redirect()->route('quotes.archive')->with('success_message', $messge);
-        }else{
-            $messge = 'Quote add in archive successfully';
-            return redirect()->route('quotes.index')->with('success_message', $messge);
-        }
-
-        return redirect()->back();
-    }
-
-    /* archive listing */
-    public function getArchive(Request $request)
-    {
-        $data['status'] = 'archive';
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->where('is_archive', 1);
-        if(count($request->all()) >0){
-            $quote = $this->searchFilters($quote, $request);
-        }
-        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
-        $data['booking_seasons']  = Season::all();
-        $data['users']            = User::all();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
-
-        return view('quotes.listing', $data);
     }
 
     /* quote clone */
@@ -1019,6 +1102,39 @@ class QuoteController extends Controller
             ->get();
         return $array;
     }
+
+    /* update status in archive */
+    // public function addInArchive(Request $request, $id)
+    // {
+    //     $isArchive = ((int)$request->is_archive == 0)? 1 : 0;
+    //     Quote::findOrFail(decrypt($id))->update(['is_archive' => $isArchive]);
+    //     if(isset($request->status)){
+    //         $messge = 'Quote reverted from archive successfully';
+    //         return redirect()->route('quotes.archive')->with('success_message', $messge);
+    //     }else{
+    //         $messge = 'Quote add in archive successfully';
+    //         return redirect()->route('quotes.index')->with('success_message', $messge);
+    //     }
+
+    //     return redirect()->back();
+    // }
+
+    // public function multiple_action(Request $request)
+    // {
+    //     $action       = $request->action;
+    //     $check_values = $request->checkedValues;
+
+    //     if($action == "Delete"){
+    //         Quote::destroy(decrypt($check_values));
+    //         return ['status' => true, 'message' => 'Records Deleted Successfully !!'];
+    //     }
+
+    //     if($action == "Archive"){
+    //         Quote::findOrFail(decrypt($check_values))->update(['is_archive' => 1]);
+    //         return ['status' => true, 'message' => 'Records Archived Successfully !!'];
+    //     }
+
+    // }
 
     // BookingPaxDetail::create([
     //     'booking_id'            => $booking->id,

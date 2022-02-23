@@ -690,4 +690,59 @@ $(document).ready(function() {
         }
 
     });
+
+    $(document).on('submit', ".multiple-alert", function(event) {
+
+        event.preventDefault();
+
+        let url        = $(this).attr('action');
+        let actionType = $(this).data('action_type');
+        let message    = "";
+        let buttonText = "";
+
+        switch(actionType) {
+
+            case "booked_quote":
+                message    = 'You want to Book this Quote?';
+                buttonText = 'Book';
+                break;
+
+            case "cancel_quote":
+                message    = 'You want to Cancel this Quote?';
+                buttonText = 'Cancel';
+                break;
+
+            case "restore_quote":
+                message    = 'You want to Restore this Quote?';
+                buttonText = 'Restore';
+                break;
+        }
+
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes, ${buttonText} it !`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        printAlertResponse(response);
+                    }
+                });
+            }
+        });
+    });
+
+
 });

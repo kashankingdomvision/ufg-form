@@ -61,33 +61,31 @@
               </a>
 
               @if($quote->booking_status == 'quote')
-                <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
-                  @csrf
-                  <button type="submit" onclick="return confirm('Are you sure you would like to Export this Quote?');" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>
-                </form>
-              @endif
-
-              @if($quote->booking_status == 'quote')
-                <a href="{{ route('quotes.cancelled', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Cancel this Quote?');" data-title="Cancel" data-target="#cancel" title="Cancel Quote">
-                  <button type="button" class="mr-2 btn btn-danger btn-sm float-right" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
+                <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
+                  <button type="button" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>
                 </a>
               @endif
 
               @if($quote->booking_status == 'quote')
-                <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
+                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="cancel_quote" action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}">
                   @csrf @method('patch')
-                  
-                  <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
+                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-check"></i>&nbsp;&nbsp;Cancel Quote</button>
                 </form>
               @endif
 
+              @if($quote->booking_status == 'quote')
+                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
+                  @csrf @method('patch')
+                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
+                </form>
+              @endif
 
               @if($quote->booking_status == 'cancelled')
-                <a href="{{ route('quotes.restore', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Restore this Quote?');" data-title="Cancel" title="Restore Quote">
-                  <button type="button" class="mr-2 btn btn-success btn-sm float-right"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
-                </a>
+                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="restore_quote" action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}">
+                  @csrf @method('patch')
+                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
+                </form>
               @endif
-
             </div>
 
             <form method="POST" id="update_quote" class="update-quote create-template" action="{{ route('quotes.update', encrypt($quote->id)) }}">
