@@ -67199,13 +67199,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $("#overlay").html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
   };
 
-  window.addModalFormLoadingStyles = function (formID) {
-    $("#".concat(formID, " button[type=\"submit\"]")).find('span').addClass("spinner-border spinner-border-sm");
+  window.addModalFormLoadingStyles = function (formSelector) {
+    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass("spinner-border spinner-border-sm");
   };
 
-  window.removeModalFormLoadingStyles = function (formID) {
+  window.removeModalFormLoadingStyles = function (formSelector) {
     setTimeout(function () {
-      $("#".concat(formID, " button[type=\"submit\"]")).find('span').removeClass("spinner-border spinner-border-sm");
+      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass("spinner-border spinner-border-sm");
     }, 250);
   };
 
@@ -67300,9 +67300,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
-  window.printModalServerSuccessMessage = function (response, modalID) {
+  window.printModalServerSuccessMessage = function (response, modalSelector) {
     if (response && response.status) {
-      $("".concat(modalID)).modal('hide');
+      $("".concat(modalSelector)).modal('hide');
       $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({
         icon: 'success',

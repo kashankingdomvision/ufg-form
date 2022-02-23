@@ -2158,14 +2158,14 @@ $(document).ready(function () {
             processData: false,
             beforeSend: function beforeSend() {
               removeFormValidationStyles();
-              addModalFormLoadingStyles(formID);
+              addModalFormLoadingStyles("#".concat(formID));
             },
             success: function success(response) {
-              removeModalFormLoadingStyles(formID);
+              removeModalFormLoadingStyles("#".concat(formID));
               printModalServerSuccessMessage(response, "#store_group_modal");
             },
             error: function error(response) {
-              removeModalFormLoadingStyles(formID);
+              removeModalFormLoadingStyles("#".concat(formID));
               printModalServerValidationErrors(response);
             }
           });

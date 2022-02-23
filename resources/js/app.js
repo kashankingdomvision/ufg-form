@@ -141,16 +141,16 @@ $(document).ready(function($) {
         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
     }
 
-    window.addModalFormLoadingStyles = function(formID) {
+    window.addModalFormLoadingStyles = function(formSelector) {
 
-        $(`#${formID} button[type="submit"]`).find('span').addClass(`spinner-border spinner-border-sm`);
+        $(`${formSelector} button[type="submit"]`).find('span').addClass(`spinner-border spinner-border-sm`);
     }
 
-    window.removeModalFormLoadingStyles = function(formID) {
+    window.removeModalFormLoadingStyles = function(formSelector) {
 
         setTimeout(function() {
 
-            $(`#${formID} button[type="submit"]`).find('span').removeClass(`spinner-border spinner-border-sm`);
+            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`spinner-border spinner-border-sm`);
         }, 250);
 
     }
@@ -265,11 +265,11 @@ $(document).ready(function($) {
         }
     }
 
-    window.printModalServerSuccessMessage = function(response, modalID) {
+    window.printModalServerSuccessMessage = function(response, modalSelector) {
 
         if(response && response.status){
 
-            $(`${modalID}`).modal('hide');
+            $(`${modalSelector}`).modal('hide');
 
             $("#listing_card_body").load(`${location.href} #listing_card_body`);
 

@@ -614,16 +614,16 @@ $(document).ready(function() {
                         processData: false,
                         beforeSend: function() {
                             removeFormValidationStyles();
-                            addModalFormLoadingStyles(formID);
+                            addModalFormLoadingStyles(`#${formID}`);
                         },
                         success: function(response) {
             
-                            removeModalFormLoadingStyles(formID);
+                            removeModalFormLoadingStyles(`#${formID}`);
                             printModalServerSuccessMessage(response, "#store_group_modal");
                         },
                         error: function(response) {
             
-                            removeModalFormLoadingStyles(formID);
+                            removeModalFormLoadingStyles(`#${formID}`);
                             printModalServerValidationErrors(response);
                         }
                     });

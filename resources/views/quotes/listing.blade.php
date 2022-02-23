@@ -315,9 +315,11 @@
                                 </table>
                             </div>
 
+                            <!-- Modal -->
+                            @include("quotes.includes.store_group_modal")
+                            <!-- Modal -->
                         </div>
 
-                        @include('includes.quote_multiple_delete')
 
                         <div class="card-footer clearfix">
                             <ul class="pagination pagination-sm m-0 float-right">
@@ -335,15 +337,15 @@
         </div>
     </section>
 
-    <!-- Modal -->
-    @include("quotes.includes.store_group_modal")
-    <!-- Modal -->
+
 </div>
 @endsection
 
 @push('js')
   <script src="{{ asset('js/quote_management.js') }}" ></script>
 @endpush
+{{-- @include('includes.quote_multiple_delete') --}}
+
 {{-- <section class="content p-2">
     <div class="container-fluid">
         <div class="row">
