@@ -62,7 +62,11 @@ class CommissionController extends Controller
     {
         $commission = Commission::create([ 'name' => $request->name ]);
 
-        return response()->json(['status' => true, 'success_message' => 'Commission Created Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Created Successfully.',
+            'redirect_url'    => route('commissions.index') 
+        ]);
     }
 
 
@@ -90,7 +94,11 @@ class CommissionController extends Controller
     {
         Commission::findOrFail(decrypt($id))->update($request->all());
 
-        return response()->json(['status' => true, 'success_message' => 'Commission Updated Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Updated Successfully.',
+            'redirect_url'    => route('commissions.index') 
+        ]);
     }
 
     /**

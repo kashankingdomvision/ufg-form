@@ -60,6 +60,10 @@ class CurrencyConversionController extends Controller
             'manual' => $request->manual
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Currency Rate Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Currency Rate Updated Successfully.',
+            'redirect_url'    => route('currency_conversions.index') 
+        ]);
     }
 }

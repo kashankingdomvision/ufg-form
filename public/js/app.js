@@ -67247,14 +67247,14 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
-  window.printServerSuccessMessage = function (data, redirectURL) {
+  window.printServerSuccessMessage = function (data, formSelector) {
     if (data && data.status) {
       Toast.fire({
         icon: 'success',
         title: data.success_message
       });
       setTimeout(function () {
-        window.location.href = "".concat(redirectURL);
+        window.location.href = data.redirect_url;
       }, 2500);
     }
   };

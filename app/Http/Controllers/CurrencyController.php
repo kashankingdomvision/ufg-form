@@ -119,7 +119,12 @@ class CurrencyController extends Controller
         // }
 
         //-- end
-        return response()->json([ 'status' => true, 'success_message' => 'Currency Added Successfully.' ]);
+
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Currency Added Successfully.',
+            'redirect_url'    => route('currencies.index') 
+        ]);
     }
 
     /**
@@ -148,7 +153,11 @@ class CurrencyController extends Controller
     { 
         Currency::findOrFail(decrypt($id))->update([ 'status' => ($request->status == "1") ? 1 : 0 ]);
         
-        return response()->json([ 'status' => true, 'success_message' => 'Currency Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Currency Updated Successfully.',
+            'redirect_url'    => route('currencies.index') 
+        ]);
     }
 
     /**

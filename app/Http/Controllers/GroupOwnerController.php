@@ -55,7 +55,11 @@ class GroupOwnerController extends Controller
             'name'       => $request->name,
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Group Owner Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Group Owner Created Successfully.',
+            'redirect_url'    => route('group_owners.index') 
+        ]);
     }
 
     /**
@@ -95,7 +99,11 @@ class GroupOwnerController extends Controller
             'name'       => $request->name,
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Group Owner Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Group Owner Updated Successfully.',
+            'redirect_url'    => route('group_owners.index') 
+        ]);
     }
 
     /**

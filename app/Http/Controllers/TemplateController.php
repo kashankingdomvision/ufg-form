@@ -180,7 +180,11 @@ class TemplateController extends Controller
       TemplateDetail::create($data);
     }
 
-    return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
+    return response()->json([ 
+      'status'          => true, 
+      'success_message' => 'Template Created Successfully.',
+      'redirect_url'    => route('templates.index') 
+    ]);
   }
 
   public function store_for_quote(QuoteTemplateRequest $request)
@@ -201,7 +205,11 @@ class TemplateController extends Controller
       TemplateDetail::create($data);
     }
 
-    return \Response::json(['status' => 200, 'success_message' => 'Template Created successfully'], 200);
+    return response()->json([ 
+      'status'          => true, 
+      'success_message' => 'Template Created Successfully.',
+      'redirect_url'    => route('templates.index') 
+    ]);
   }
     
   public function detail($id)
@@ -258,8 +266,11 @@ class TemplateController extends Controller
       TemplateDetail::create($data);
     }
       
-    return \Response::json(['status' => 200, 'success_message' => 'Template Updated Successfully'], 200);
-    // return redirect()->route('templates.index')->with('success_message', 'Template Successfully Updated');
+    return response()->json([ 
+      'status'          => true, 
+      'success_message' => 'Template Updated Successfully.',
+      'redirect_url'    => route('templates.index') 
+    ]);
   }
     
 }

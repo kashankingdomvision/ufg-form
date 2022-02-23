@@ -57,7 +57,11 @@ class HotelController extends Controller
             'accom_code' =>  $request->accom_code
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Hotel Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Hotel Created Successfully.',
+            'redirect_url'    => route('hotels.index') 
+        ]);
     }
 
     /**
@@ -98,7 +102,11 @@ class HotelController extends Controller
             'accom_code' =>  $request->accom_code
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Hotel Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Hotel Updated Successfully.',
+            'redirect_url'    => route('hotels.index') 
+        ]);
     }
 
     /**

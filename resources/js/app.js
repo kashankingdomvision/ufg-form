@@ -200,7 +200,7 @@ $(document).ready(function($) {
         }
     }
 
-    window.printServerSuccessMessage = function(data, redirectURL) {
+    window.printServerSuccessMessage = function(data, formSelector) {
 
         if(data && data.status){
             Toast.fire({
@@ -209,7 +209,7 @@ $(document).ready(function($) {
             });
 
             setTimeout(function() {
-                window.location.href = `${redirectURL}`;
+                window.location.href = data.redirect_url;
             }, 2500);
         }
     }

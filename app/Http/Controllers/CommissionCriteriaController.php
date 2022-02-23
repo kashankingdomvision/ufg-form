@@ -94,8 +94,11 @@ class CommissionCriteriaController extends Controller
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
         
-
-        return response()->json(['status' => true, 'success_message' => 'Commission Criteria Created Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Criteria Created Successfully.',
+            'redirect_url'    => route('commission_criterias.index') 
+        ]);
     }
 
     /**
@@ -170,7 +173,11 @@ class CommissionCriteriaController extends Controller
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
       
-        return response()->json(['status' => true, 'success_message' => 'Commission Criteria Updated Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Criteria Updated Successfully.',
+            'redirect_url'    => route('commission_criterias.index') 
+        ]);
     }
 
     /**

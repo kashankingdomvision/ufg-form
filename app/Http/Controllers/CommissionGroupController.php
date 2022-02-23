@@ -57,7 +57,11 @@ class CommissionGroupController extends Controller
             'name'          => $request->name
         ]);
 
-        return response()->json(['status' => true, 'success_message' => 'Commission Group Created Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Group Created Successfully.',
+            'redirect_url'    => route('commission_groups.index') 
+        ]);
     }
 
     /**
@@ -97,7 +101,11 @@ class CommissionGroupController extends Controller
             'name'          => $request->name
         ]);
 
-        return response()->json(['status' => true, 'success_message' => 'Commission Group Updated Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Commission Group Updated Successfully.',
+            'redirect_url'    => route('commission_groups.index') 
+        ]);
     }
 
     /**

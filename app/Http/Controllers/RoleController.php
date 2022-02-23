@@ -56,7 +56,11 @@ class RoleController extends Controller
             'slug' => Str::slug($request->name), 
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Role Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Role Created Successfully.',
+            'redirect_url'    => route('roles.index') 
+        ]);
     }
 
     public function edit($id)
@@ -81,7 +85,11 @@ class RoleController extends Controller
             'slug' => Str::slug($request->name), 
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Role Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Role Updated Successfully.',
+            'redirect_url'    => route('roles.index') 
+        ]);
     }
 
     /**

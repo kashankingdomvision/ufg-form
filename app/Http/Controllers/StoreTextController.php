@@ -37,7 +37,11 @@ class StoreTextController extends Controller
     {
         StoreText::create($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Store Text Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Store Text Created Successfully.',
+            'redirect_url'    => route('store_texts.index') 
+        ]);
     }
 
     // /**
@@ -75,7 +79,11 @@ class StoreTextController extends Controller
         $storeText = StoreText::where('slug', $slug)->firstOrFail();
         $storeText->update($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Store Text Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Store Text Updated Successfully.',
+            'redirect_url'    => route('store_texts.index') 
+        ]);
     }
 
     /**

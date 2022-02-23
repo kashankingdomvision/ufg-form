@@ -65,7 +65,11 @@ class LocationController extends Controller
             'name'       => $request->name,
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Location Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Location Created Successfully.',
+            'redirect_url'    => route('locations.index') 
+        ]);
     }
 
     /**
@@ -107,7 +111,11 @@ class LocationController extends Controller
             'name'       => $request->name,
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Location Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Location Updated Successfully.',
+            'redirect_url'    => route('locations.index') 
+        ]);
     }
 
     /**

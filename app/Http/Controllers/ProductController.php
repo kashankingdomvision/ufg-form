@@ -87,9 +87,11 @@ class ProductController extends Controller
 
         Product::create($this->productsArray($request));
 
-        return response()->json([ 'status' => true, 'success_message' => 'Product created successfully' ]);
-        
-        // return redirect()->route('products.index')->with('success_message', 'Product created successfully');
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Product Created Successfully.',
+            'redirect_url'    => route('products.index') 
+        ]);
     }
 
     /**
@@ -123,8 +125,11 @@ class ProductController extends Controller
     {
         Product::findOrFail(decrypt($request->id))->update($this->productsArray($request));
 
-        return response()->json([ 'status' => true, 'success_message' => 'Product update successfully' ]);
-        // return redirect()->route('products.index')->with('success_message', 'Product update successfully');
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Product Updated Successfully.',
+            'redirect_url'    => route('products.index') 
+        ]);
     }
 
     /**

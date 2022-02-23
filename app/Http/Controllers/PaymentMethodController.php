@@ -51,7 +51,11 @@ class PaymentMethodController extends Controller
     {
         PaymentMethod::create($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Payment Method Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Payment Method Created Successfully.',
+            'redirect_url'    => route('payment_methods.index') 
+        ]);
     }
 
 
@@ -79,7 +83,11 @@ class PaymentMethodController extends Controller
     {
         PaymentMethod::findOrFail(decrypt($id))->update($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Payment Method Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Payment Method Updated Successfully.',
+            'redirect_url'    => route('payment_methods.index') 
+        ]);
     }
 
     /**

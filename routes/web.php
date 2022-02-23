@@ -197,6 +197,44 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'TemplateController@update'));
     });
 
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Users Manangement
+    |--------------------------------------------------------------------------
+    */
+
+    /* Users */
+    Route::group([
+        'prefix' => 'users',
+        'as'     => 'users.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'UserController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
+        Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
+        Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
+    	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
+        Route::post('transfer-report-column', array('as' => 'transfer.report.column', 'uses' => 'UserController@transfer_report_column'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'UserController@bulkAction' ));
+    });
+
+    /* Roles */
+    Route::group([
+        'prefix' => 'roles',
+        'as'     => 'roles.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'RoleController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'RoleController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'RoleController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'RoleController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'RoleController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'RoleController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'RoleController@bulkAction' ));
+    });
+
     /*
     |--------------------------------------------------------------------------
     | Commission Manangement
@@ -248,90 +286,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CommissionCriteriaController@bulkAction' ));
     });
     
-
-    /*
-    |--------------------------------------------------------------------------
-    | Users Manangement
-    |--------------------------------------------------------------------------
-    */
-
-    /* Users */
-    Route::group([
-        'prefix' => 'users',
-        'as'     => 'users.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'UserController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'UserController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'UserController@store'));
-        Route::get('edit/{id}/{status?}', array('as' => 'edit', 'uses' => 'UserController@edit'));
-        Route::post('update/{id}/{status?}', array('as' => 'update', 'uses' => 'UserController@update'));
-    	Route::delete('delete/{id}',array('as'=>'delete','uses'=>'UserController@delete'));
-        Route::post('transfer-report-column', array('as' => 'transfer.report.column', 'uses' => 'UserController@transfer_report_column'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'UserController@bulkAction' ));
-    });
-
-    /* Roles */
-    Route::group([
-        'prefix' => 'roles',
-        'as'     => 'roles.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'RoleController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'RoleController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'RoleController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'RoleController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'RoleController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'RoleController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'RoleController@bulkAction' ));
-    });
-
-    /*
-    |--------------------------------------------------------------------------
-    | Report
-    |--------------------------------------------------------------------------
-    */
-
-    Route::group([
-        'prefix' => 'reports',
-        'as'     => 'reports.'
-    ], function () {
-
-        Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
-        Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
-        Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
-        Route::get('wallet-report', array('as' => 'wallet.report', 'uses' => 'ReportController@wallet_report'));
-
-        Route::get('quote-report', array('as' => 'quote.report', 'uses' => 'ReportController@quote_report'));
-        Route::get('customer-report', array('as' => 'customer.report', 'uses' => 'ReportController@customer_report'));
-        Route::get('payment-method-report', array('as' => 'payment.method.report', 'uses' => 'ReportController@payment_method_report'));
-
-        Route::get('refund-by-bank-report', array('as' => 'refund.by.bank.report', 'uses' => 'ReportController@refund_by_bank_report'));
-        Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
-
-        Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
-        Route::get('transfer-report-listing', array('as' => 'transfer.report.listing', 'uses' => 'ReportController@transfer_report_listing'));
-
-        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
-
-        // reports-export-routes
-        Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
-        Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));
-        
-        Route::post('compare-quote-report-export', array('as' => 'compare.quote.export', 'uses' => 'ReportController@compare_quote_export'));
-        
-        Route::post('activity-by-user-report-export', array('as' => 'activity.by.user.report.export', 'uses' => 'ReportController@activity_by_user_report_excel'));
-        Route::post('supplier-report-export', array('as' => 'supplier.report.export', 'uses' => 'ReportController@supplier_report_export'));
-        Route::post('quote-report-export', array('as' => 'quote.report.export', 'uses' => 'ReportController@quote_report_export'));
-        Route::post('transfer-report-export', array('as' => 'transfer.report.export', 'uses' => 'ReportController@transfer_report_export'));
-        Route::post('payment_method-report-export', array('as' => 'payment_method.report.export', 'uses' => 'ReportController@payment_method_report_export'));
-        Route::post('refund-by-bank-report-export', array('as' => 'refund.by.bank.report.export', 'uses' => 'ReportController@refund_by_bank_report_export'));
-        Route::post('refund-by-credit-note-report-export', array('as' => 'refund.by.credit_note.report.export', 'uses' => 'ReportController@refund_by_credit_note_report_export'));
-        Route::post('wallet-report-export', array('as' => 'wallet.report.export', 'uses' => 'ReportController@wallet_report_export'));
-        Route::post('commission-report-export', array('as' => 'commission.report.export', 'uses' => 'ReportController@commission_report_export'));
-    });
-
-
     /*
     |--------------------------------------------------------------------------
     | Supplier Managment
@@ -654,6 +608,51 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{slug}', array('as' => 'update', 'uses' => 'StoreTextController@update'));
         Route::delete('delete/{slug}', array('as' => 'destroy', 'uses' => 'StoreTextController@destroy'));
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StoreTextController@bulkAction' ));
+    });
+
+        /*
+    |--------------------------------------------------------------------------
+    | Report
+    |--------------------------------------------------------------------------
+    */
+
+    Route::group([
+        'prefix' => 'reports',
+        'as'     => 'reports.'
+    ], function () {
+
+        Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
+        Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
+        Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
+        Route::get('wallet-report', array('as' => 'wallet.report', 'uses' => 'ReportController@wallet_report'));
+
+        Route::get('quote-report', array('as' => 'quote.report', 'uses' => 'ReportController@quote_report'));
+        Route::get('customer-report', array('as' => 'customer.report', 'uses' => 'ReportController@customer_report'));
+        Route::get('payment-method-report', array('as' => 'payment.method.report', 'uses' => 'ReportController@payment_method_report'));
+
+        Route::get('refund-by-bank-report', array('as' => 'refund.by.bank.report', 'uses' => 'ReportController@refund_by_bank_report'));
+        Route::get('refund-by-credit-note-report', array('as' => 'refund.by.credit.note.report', 'uses' => 'ReportController@refund_by_credit_note_report'));
+
+        Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
+        Route::get('transfer-report-listing', array('as' => 'transfer.report.listing', 'uses' => 'ReportController@transfer_report_listing'));
+
+        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
+
+        // reports-export-routes
+        Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));
+        Route::post('user-report-export', array('as' => 'user.report.export', 'uses' => 'ReportController@user_report_export'));
+        
+        Route::post('compare-quote-report-export', array('as' => 'compare.quote.export', 'uses' => 'ReportController@compare_quote_export'));
+        
+        Route::post('activity-by-user-report-export', array('as' => 'activity.by.user.report.export', 'uses' => 'ReportController@activity_by_user_report_excel'));
+        Route::post('supplier-report-export', array('as' => 'supplier.report.export', 'uses' => 'ReportController@supplier_report_export'));
+        Route::post('quote-report-export', array('as' => 'quote.report.export', 'uses' => 'ReportController@quote_report_export'));
+        Route::post('transfer-report-export', array('as' => 'transfer.report.export', 'uses' => 'ReportController@transfer_report_export'));
+        Route::post('payment_method-report-export', array('as' => 'payment_method.report.export', 'uses' => 'ReportController@payment_method_report_export'));
+        Route::post('refund-by-bank-report-export', array('as' => 'refund.by.bank.report.export', 'uses' => 'ReportController@refund_by_bank_report_export'));
+        Route::post('refund-by-credit-note-report-export', array('as' => 'refund.by.credit_note.report.export', 'uses' => 'ReportController@refund_by_credit_note_report_export'));
+        Route::post('wallet-report-export', array('as' => 'wallet.report.export', 'uses' => 'ReportController@wallet_report_export'));
+        Route::post('commission-report-export', array('as' => 'commission.report.export', 'uses' => 'ReportController@commission_report_export'));
     });
 
    /*

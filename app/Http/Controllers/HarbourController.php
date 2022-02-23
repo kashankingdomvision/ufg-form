@@ -57,7 +57,11 @@ class HarbourController extends Controller
             'name'    =>  $request->name
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Harbours, Train and POI Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Harbours, Train and POI Created Successfully.',
+            'redirect_url'    => route('harbours.index') 
+        ]);
     }
 
     /**
@@ -98,7 +102,11 @@ class HarbourController extends Controller
             'name'    =>  $request->name
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Harbours, Train and POI Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Harbours, Train and POI Updated Successfully.',
+            'redirect_url'    => route('harbours.index') 
+        ]);
     }
 
     /**

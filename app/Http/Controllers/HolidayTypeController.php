@@ -57,7 +57,11 @@ class HolidayTypeController extends Controller
     {
         HolidayType::create($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Holiday Type Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Holiday Type Created Successfully.',
+            'redirect_url'    => route('holiday_types.index') 
+        ]);
     }
 
 
@@ -85,7 +89,11 @@ class HolidayTypeController extends Controller
     {
         HolidayType::findOrFail(decrypt($id))->update($request->all());
 
-        return response()->json([ 'status' => true, 'success_message' => 'Holiday Type Updated Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Holiday Type Updated Successfully.',
+            'redirect_url'    => route('holiday_types.index') 
+        ]);
     }
 
     /**

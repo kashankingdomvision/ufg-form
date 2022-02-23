@@ -83,7 +83,11 @@ class SupplierRateSheetController extends Controller
             'file'        => $this->fileStore($request)
         ]);
 
-        return \Response::json(['status' => 200, 'success_message' => 'Supplier Rate Sheet Added Successfully'], 200);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Supplier Rate Sheet Added Successfully.',
+            'redirect_url'    => route('supplier_rate_sheets.index') 
+        ]);
     }
 
     /**
@@ -145,7 +149,11 @@ class SupplierRateSheetController extends Controller
       
         $supplier_rate_sheet->update($data);
 
-        return \Response::json(['status' => 200, 'success_message' => 'Supplier Rate Sheet Updated Successfully'], 200);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Supplier Rate Sheet Updated Successfully.',
+            'redirect_url'    => route('supplier_rate_sheets.index') 
+        ]);
     }
 
     /**

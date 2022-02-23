@@ -63,7 +63,11 @@ class PresetCommentController extends Controller
             'comment' => $request->comment
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Preset Comment Created Successfully.' ]);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Preset Comment Created Successfully.',
+            'redirect_url'    => route('preset_comments.index') 
+        ]);
     }
 
     /**
@@ -98,7 +102,12 @@ class PresetCommentController extends Controller
             'comment' => $request->comment
         ]);
 
-        return response()->json([ 'status' => true, 'success_message' => 'Preset Comment Updated Successfully.' ]);
+
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Preset Comment Updated Successfully.',
+            'redirect_url'    => route('preset_comments.index') 
+        ]);
     }
 
     /**

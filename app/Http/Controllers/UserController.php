@@ -114,7 +114,11 @@ class UserController extends Controller
     {
         User::create($this->userArray($request, 'store'));
 
-        return response()->json(['status' => true, 'success_message' => 'User Created Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'User Created Successfully.',
+            'redirect_url'    => route('users.index') 
+        ]);
     }
 
     public function edit($id, $status = null)
@@ -143,7 +147,11 @@ class UserController extends Controller
             return redirect()->route('dashboard.index')->with('success_message', 'profile updated successfully');
         }
 
-        return response()->json(['status' => true, 'success_message' => 'User Updated Successfully.']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'User Updated Successfully.',
+            'redirect_url'    => route('users.index') 
+        ]);
     }
 
     public function delete($id)

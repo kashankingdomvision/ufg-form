@@ -76,7 +76,11 @@ class CategoryController extends Controller
         // dd($request->all());
         Category::create($this->categoryArray($request));
 
-        return response()->json(['status' => true, 'success_message' => 'Category created successfully']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Category Created Successfully.',
+            'redirect_url'    => route('categories.index') 
+        ]);
     }
 
     /**
@@ -138,7 +142,11 @@ class CategoryController extends Controller
             }
         }
 
-        return response()->json(['status' => true, 'success_message' => 'Category updated successfully']);
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Category Updated Successfully.',
+            'redirect_url'    => route('categories.index') 
+        ]);
     }
 
     /**
