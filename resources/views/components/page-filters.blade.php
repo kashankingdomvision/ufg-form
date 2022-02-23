@@ -16,8 +16,8 @@
                             <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-outline-success btn-md mr-2" style="width: 10rem;">Filter</button>
-                                        <a href="{{ $route }}" class="btn btn-outline-dark">Reset<span class="fa fa-repeats"></span></a>
+                                        <button type="submit" class="btn btn-success btn-md mr-2" style="width: 10rem;"><i class="fa fa-search fa-lg" aria-hidden="true"></i>&nbsp;Search</button>
+                                        <a href="{{ $route }}" class="btn btn-default">Reset<span class="fa fa-repeats"></span></a>
                                     </div>
                                 </div>
                             </div>

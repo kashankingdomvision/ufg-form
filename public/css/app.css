@@ -4755,6 +4755,12 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   flex-wrap: wrap;
 }
 
+.fa-lg {
+  font-size: 0.83333em;
+  line-height: 0.75em;
+  vertical-align: -0.0667em;
+}
+
 .rendered-form-child {
   width: 250px;
 }
