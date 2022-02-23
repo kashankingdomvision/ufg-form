@@ -1557,6 +1557,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_group', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1570,7 +1571,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "groups/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1587,6 +1588,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_group', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1600,7 +1602,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "groups/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1881,6 +1883,7 @@ $(document).ready(function () {
   $(document).on('submit', "#store_quote", function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1894,7 +1897,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "quotes/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1906,6 +1909,7 @@ $(document).ready(function () {
     event.preventDefault();
     removeDisabledAttribute(".create-template [name=_method]");
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     var formData = new FormData(this);
     var full_number = '';
     var agency = $("input[name=agency]:checked").val();
@@ -1930,7 +1934,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "quotes/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

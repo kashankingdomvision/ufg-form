@@ -101,6 +101,7 @@ $(document).ready(function() {
 
     let storeProductFormData = storeProductFormBuilder[0].actions.getData('json');
     let url                  = $('#store_product').attr('action');
+    let formID               = 'store_product';
     let storeProduct         = new FormData($('#store_product')[0]);
     storeProductFormData     = (storeProductFormData == '[]') ? '' : storeProductFormData;
     storeProduct.append('feilds', storeProductFormData);
@@ -119,7 +120,7 @@ $(document).ready(function() {
       success: function(response) {
 
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, `${REDIRECT_BASEURL}products/index`);
+        printServerSuccessMessage(response, `#${formID}`);
       },
       error: function(response) {
           
@@ -186,7 +187,8 @@ $(document).ready(function() {
   $(document).on('click', '#update_product_submit', function(){
 
     let updateProductFormData = updateProductFormBuilder[0].actions.getData('json');
-    let url                    = $('#update_product').attr('action');
+    let url                   = $('#update_product').attr('action');
+    let formID                = 'update_product';
     let updateProduct         = new FormData($('#update_product')[0]);
     updateProductFormData     = (updateProductFormData == '[]') ? '' : updateProductFormData;
     updateProduct.append('feilds', updateProductFormData);
@@ -205,7 +207,7 @@ $(document).ready(function() {
       success: function(response) {
 
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, `${REDIRECT_BASEURL}products/index`);
+        printServerSuccessMessage(response, `#${formID}`);
       },
       error: function(response) {
           

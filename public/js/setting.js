@@ -139,6 +139,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_airport_code', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -152,7 +153,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "airport-codes/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -169,6 +170,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_airport_code', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -182,7 +184,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "airport-codes/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -258,6 +260,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_bank', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -271,7 +274,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "banks/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -288,6 +291,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_bank', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -301,7 +305,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "banks/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -377,6 +381,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_brand', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -390,7 +395,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "brands/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -407,6 +412,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_brand', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -420,7 +426,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "brands/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -496,6 +502,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_country', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -509,7 +516,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "countries/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -526,6 +533,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_country', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -539,7 +547,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "countries/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -615,6 +623,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_currency', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -628,7 +637,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currencies/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -645,6 +654,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_currency', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -658,7 +668,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currencies/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -738,6 +748,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_currency_conversion', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -751,7 +762,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "currency-conversions/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -779,6 +790,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_harbour', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -792,7 +804,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "harbours/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -809,6 +821,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_harbour', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -822,7 +835,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "harbours/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -898,6 +911,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_holiday_type', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -911,7 +925,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "holiday-types/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -928,6 +942,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_holiday_type', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -941,7 +956,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "holiday-types/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1017,6 +1032,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_hotel', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1030,7 +1046,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "hotels/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1047,6 +1063,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_hotel', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1060,7 +1077,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "hotels/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1136,6 +1153,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_location', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1149,7 +1167,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "locations/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1166,6 +1184,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_location', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1179,7 +1198,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "locations/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1255,6 +1274,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_payment_method', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1268,7 +1288,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "payment-methods/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1285,6 +1305,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_payment_method', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1298,7 +1319,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "payment-methods/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1374,6 +1395,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_preset_comment', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1387,7 +1409,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "preset-comments/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1404,6 +1426,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_preset_comment', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1417,7 +1440,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "preset-comments/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1493,6 +1516,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_season', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1506,7 +1530,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "seasons/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1523,6 +1547,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_season', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1536,7 +1561,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "seasons/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1612,6 +1637,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_store_text', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1625,7 +1651,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "store-texts/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -1642,6 +1668,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_store_text', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -1655,7 +1682,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "store-texts/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

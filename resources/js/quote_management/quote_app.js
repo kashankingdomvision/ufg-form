@@ -280,7 +280,8 @@ $(document).ready(function() {
 
         event.preventDefault();
 
-        var url = $(this).attr('action');
+        let url    = $(this).attr('action');
+        let formID = $(this).attr('id');
 
         $.ajax({
             type: 'POST',
@@ -296,7 +297,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 
@@ -311,7 +312,8 @@ $(document).ready(function() {
         event.preventDefault();
         removeDisabledAttribute(".create-template [name=_method]");
      
-        var url         = $(this).attr('action');
+        let url         = $(this).attr('action');
+        let formID      = $(this).attr('id');
         var formData    = new FormData(this);
         var full_number = '';
         var agency      = $("input[name=agency]:checked").val();
@@ -338,7 +340,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}quotes/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 

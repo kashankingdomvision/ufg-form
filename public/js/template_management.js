@@ -102,6 +102,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_template', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -115,7 +116,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "templates/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -132,6 +133,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_template', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -145,7 +147,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "templates/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

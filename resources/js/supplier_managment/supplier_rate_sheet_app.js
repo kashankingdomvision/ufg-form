@@ -10,7 +10,8 @@ $(document).ready(function() {
         
         event.preventDefault();
 
-        var url = $(this).attr('action');
+        let url    = $(this).attr('action');
+        let formID = $(this).attr('id');
 
         $.ajax({
             type: 'POST',
@@ -26,7 +27,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheets/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 
@@ -47,7 +48,8 @@ $(document).ready(function() {
                 
         event.preventDefault();
 
-        var url = $(this).attr('action');
+        let url    = $(this).attr('action');
+        let formID = $(this).attr('id');
 
         $.ajax({
             type: 'POST',
@@ -63,7 +65,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}supplier-rate-sheets/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 

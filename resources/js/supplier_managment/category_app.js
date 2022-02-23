@@ -197,6 +197,7 @@ $(document).ready(function() {
 
         let storeCatgeoryFormData = storeCategoryFormBuilder[0].actions.getData('json');
         let url                   = $('#store_category').attr('action');
+        let formID                = 'store_category';
         let storeCategory         = new FormData($('#store_category')[0]);
         storeCatgeoryFormData     = (storeCatgeoryFormData == '[]') ? '' : storeCatgeoryFormData;
         storeCategory.append('feilds', storeCatgeoryFormData);
@@ -215,7 +216,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}categories/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 
@@ -307,6 +308,7 @@ $(document).ready(function() {
 
         let updateCategoryFormData = updateCategoryFormBuilder[0].actions.getData('json');
         let url                    = $('#update_category').attr('action');
+        let formID                 = 'update_category';
         let updateCategory         = new FormData($('#update_category')[0]);
         updateCategoryFormData     = (updateCategoryFormData == '[]') ? '' : updateCategoryFormData;
         updateCategory.append('feilds', updateCategoryFormData);
@@ -325,7 +327,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}categories/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 

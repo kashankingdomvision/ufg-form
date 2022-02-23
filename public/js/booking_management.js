@@ -235,6 +235,7 @@ $(document).ready(function () {
     event.preventDefault();
     $('#show_booking :input').prop('disabled', false);
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     /* Send the data using post */
 
     $.ajax({
@@ -250,7 +251,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "bookings/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -262,6 +263,7 @@ $(document).ready(function () {
     event.preventDefault();
     $('.payment-method').removeAttr('disabled');
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     var formData = new FormData(this);
     var agency = $("input[name=agency]:checked").val();
     var full_number = '';
@@ -286,7 +288,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "bookings/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

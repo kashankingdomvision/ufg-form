@@ -117,6 +117,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_commission', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -130,7 +131,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commissions/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -147,6 +148,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_commission', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -160,7 +162,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commissions/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -236,6 +238,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_commission_criteria', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -249,7 +252,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-criterias/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -266,6 +269,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_commission_criteria', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -279,7 +283,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-criterias/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -376,6 +380,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_commission_group', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -389,7 +394,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-groups/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -406,6 +411,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_commission_group', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -419,7 +425,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "commission-groups/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

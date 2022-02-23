@@ -27555,6 +27555,7 @@ $(document).ready(function () {
   $(document).on('click', '#store_category_submit', function () {
     var storeCatgeoryFormData = storeCategoryFormBuilder[0].actions.getData('json');
     var url = $('#store_category').attr('action');
+    var formID = 'store_category';
     var storeCategory = new FormData($('#store_category')[0]);
     storeCatgeoryFormData = storeCatgeoryFormData == '[]' ? '' : storeCatgeoryFormData;
     storeCategory.append('feilds', storeCatgeoryFormData);
@@ -27571,7 +27572,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "categories/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -27640,6 +27641,7 @@ $(document).ready(function () {
   $(document).on('click', '#update_category_submit', function () {
     var updateCategoryFormData = updateCategoryFormBuilder[0].actions.getData('json');
     var url = $('#update_category').attr('action');
+    var formID = 'update_category';
     var updateCategory = new FormData($('#update_category')[0]);
     updateCategoryFormData = updateCategoryFormData == '[]' ? '' : updateCategoryFormData;
     updateCategory.append('feilds', updateCategoryFormData);
@@ -27656,7 +27658,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "categories/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -27733,6 +27735,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_group_owner', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -27746,7 +27749,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "group-owners/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -27763,6 +27766,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_group_owner', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -27776,7 +27780,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "group-owners/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -27924,6 +27928,7 @@ $(document).ready(function () {
   $(document).on('click', '#store_product_submit', function () {
     var storeProductFormData = storeProductFormBuilder[0].actions.getData('json');
     var url = $('#store_product').attr('action');
+    var formID = 'store_product';
     var storeProduct = new FormData($('#store_product')[0]);
     storeProductFormData = storeProductFormData == '[]' ? '' : storeProductFormData;
     storeProduct.append('feilds', storeProductFormData);
@@ -27940,7 +27945,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "products/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -27985,6 +27990,7 @@ $(document).ready(function () {
   $(document).on('click', '#update_product_submit', function () {
     var updateProductFormData = updateProductFormBuilder[0].actions.getData('json');
     var url = $('#update_product').attr('action');
+    var formID = 'update_product';
     var updateProduct = new FormData($('#update_product')[0]);
     updateProductFormData = updateProductFormData == '[]' ? '' : updateProductFormData;
     updateProduct.append('feilds', updateProductFormData);
@@ -28001,7 +28007,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "products/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -28118,6 +28124,7 @@ $(document).ready(function () {
   $(document).on('submit', '#store_supplier', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -28131,7 +28138,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "suppliers/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -28148,6 +28155,7 @@ $(document).ready(function () {
   $(document).on('submit', '#update_supplier', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -28161,7 +28169,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "suppliers/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -28258,6 +28266,7 @@ $(document).ready(function () {
   $("#store_supplier_rate_sheet").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -28271,7 +28280,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheets/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();
@@ -28288,6 +28297,7 @@ $(document).ready(function () {
   $("#update_supplier_rate_sheet").submit(function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
+    var formID = $(this).attr('id');
     $.ajax({
       type: 'POST',
       url: url,
@@ -28301,7 +28311,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
-        printServerSuccessMessage(response, "".concat(REDIRECT_BASEURL, "supplier-rate-sheets/index"));
+        printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
         removeFormLoadingStyles();

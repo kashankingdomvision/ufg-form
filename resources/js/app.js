@@ -203,6 +203,9 @@ $(document).ready(function($) {
     window.printServerSuccessMessage = function(data, formSelector) {
 
         if(data && data.status){
+
+            $(`${formSelector}`)[0].reset();
+
             Toast.fire({
                 icon: 'success',
                 title: data.success_message

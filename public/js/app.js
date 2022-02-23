@@ -67249,6 +67249,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   window.printServerSuccessMessage = function (data, formSelector) {
     if (data && data.status) {
+      $("".concat(formSelector))[0].reset();
       Toast.fire({
         icon: 'success',
         title: data.success_message

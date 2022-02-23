@@ -154,7 +154,8 @@ $(document).ready(function() {
 
         $('#show_booking :input').prop('disabled', false);
 
-        let url = $(this).attr('action');
+        let url    = $(this).attr('action');
+        let formID = $(this).attr('id');
 
         /* Send the data using post */
         $.ajax({
@@ -171,7 +172,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}bookings/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 
@@ -186,7 +187,8 @@ $(document).ready(function() {
 
         $('.payment-method').removeAttr('disabled');
 
-        var url         = $(this).attr('action');
+        let url         = $(this).attr('action');
+        let formID      = $(this).attr('id');
         var formData    = new FormData(this);
         var agency      = $("input[name=agency]:checked").val();
         var full_number = '';
@@ -213,7 +215,7 @@ $(document).ready(function() {
             success: function(response) {
 
                 removeFormLoadingStyles();
-                printServerSuccessMessage(response, `${REDIRECT_BASEURL}bookings/index`);
+                printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
                 
