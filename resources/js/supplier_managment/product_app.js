@@ -120,6 +120,7 @@ $(document).ready(function() {
       success: function(response) {
 
         removeFormLoadingStyles();
+        storeProductFormBuilder[0].actions.clearFields();
         printServerSuccessMessage(response, `#${formID}`);
       },
       error: function(response) {

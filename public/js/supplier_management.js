@@ -27572,6 +27572,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
+        storeCategoryFormBuilder[0].actions.clearFields();
         printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
@@ -27945,6 +27946,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         removeFormLoadingStyles();
+        storeProductFormBuilder[0].actions.clearFields();
         printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
