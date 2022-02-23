@@ -716,13 +716,23 @@ $(document).ready(function() {
                 message    = 'You want to Restore this Quote?';
                 buttonText = 'Restore';
                 break;
+
+            case "archive_quote":
+                message    = 'You want to Archive this Quote?';
+                buttonText = 'Archive';
+                break;
+
+            case "unarchive_quote":
+                message    = 'You want to Unarchive this Quote?';
+                buttonText = 'Unarchive';
+                break;
         }
 
 
         Swal.fire({
             title: 'Are you sure?',
             text: message,
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#28a745',
             cancelButtonColor: '#dc3545',

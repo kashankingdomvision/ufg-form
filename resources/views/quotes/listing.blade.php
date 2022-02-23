@@ -264,29 +264,26 @@
                                                         @if($quote->booking_status == 'cancelled')
                                                             <form method="POST" class="multiple-alert" data-action_type="restore_quote" action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}">
                                                                 @csrf @method('patch')
-                                                                <button type="submit" class="btn btn-success btn-xs" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i></button>
+                                                                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i></button>
                                                             </form>
-                                                            {{-- <a onclick="return confirm('Are you sure you want to Restore this Quote?');" href="{{ route('quotes.restore', encrypt($quote->id)) }}" class="mr-2 btn btn-success btn-xs" title="Restore" data-title="Restore" data-target="#Restore"><span class="fa fa-undo-alt"></span></a> --}}
                                                         @endif
 
-
-                                                        @if($quote->booking_status == 'booked')
-                                                            <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
+                                                        @if($quote->is_archive == 0)
+                                                            <form method="POST" class="multiple-alert mr-2" data-action_type="archive_quote" action="{{ route('quotes.multiple.alert', ['archive_quote', encrypt($quote->id)]) }}">
                                                                 @csrf @method('patch')
-                                                                @if(isset($status))
-                                                                <input type="hidden" value="true" name="status">
-                                                                @endif
-                                                                <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
-                                                                <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
-                                                                    @if(isset($status) || $quote->is_archive == 1)
-                                                                        <i class="fa fa-recycle" ></i>
-                                                                    @else
-                                                                        <i class="fa fa-archive" ></i>
-                                                                    @endif
-                                                                </button>
+                                                                <button type="submit" class="btn btn-outline-dark btn-xs" data-title="" data-target="#" title="Archive Quote"><i class="fa fa-archive nav-icon"></i></button>
                                                             </form>
                                                         @endif
 
+                                                        @if($quote->is_archive == 1)
+                                                            <form method="POST" class="multiple-alert mr-2" data-action_type="unarchive_quote" action="{{ route('quotes.multiple.alert', ['unarchive_quote', encrypt($quote->id)]) }}">
+                                                                @csrf @method('patch')
+                                                                <button type="submit" class="btn btn-outline-dark btn-xs" data-title="" data-target="#" title="Unarchive Quote"><i class="fa fa-recycle"></i></button>
+                                                            </form>
+                                                        @endif
+
+
+              
                                                         @if($quote->booking_status == 'quote')
                                                             <form class="" method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
                                                                 @csrf @method('patch')
@@ -350,6 +347,24 @@
 @push('js')
   <script src="{{ asset('js/quote_management.js') }}" ></script>
 @endpush
+
+{{-- @if($quote->booking_status == 'booked')
+    <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
+        @csrf @method('patch')
+        @if(isset($status))
+        <input type="hidden" value="true" name="status">
+        @endif
+        <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
+        <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
+            @if(isset($status) || $quote->is_archive == 1)
+                <i class="fa fa-recycle" ></i>
+            @else
+                <i class="fa fa-archive" ></i>
+            @endif
+        </button>
+    </form>
+@endif --}}
+
 {{-- @include('includes.quote_multiple_delete') --}}
 
 {{-- <section class="content p-2">

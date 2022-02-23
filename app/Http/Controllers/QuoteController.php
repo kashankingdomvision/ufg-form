@@ -914,6 +914,19 @@ class QuoteController extends Controller
                 Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'quote' ]);
                 $message = "Quote Restored Successfully.";
             }
+
+            if($action_type == 'archive_quote'){
+
+                Quote::findOrFail(decrypt($id))->update([ 'is_archive' => 1 ]);
+                $message = "Quote Archived Successfully.";
+            }
+
+            if($action_type == 'unarchive_quote'){
+
+                Quote::findOrFail(decrypt($id))->update([ 'is_archive' => 0 ]);
+                $message = "Quote Unarchived Successfully.";
+            }
+
     
             return response()->json([ 
                 'status'          => true, 
