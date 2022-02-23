@@ -903,6 +903,12 @@ class QuoteController extends Controller
                 $message = "Quote Booked Successfully.";
             }
 
+            if($action_type == 'clone_quote'){
+
+                $this->cloneQuote($id);
+                $message = "Quote Cloned Successfully.";
+            }
+
             if($action_type == 'cancel_quote'){
                 
                 Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'cancelled' ]);
@@ -927,6 +933,8 @@ class QuoteController extends Controller
                 $message = "Quote Unarchived Successfully.";
             }
 
+
+      
     
             return response()->json([ 
                 'status'          => true, 
@@ -1058,10 +1066,11 @@ class QuoteController extends Controller
     }
 
     /* quote clone */
-    public function clone($id)
+    public function cloneQuote($id)
     {
         $quote      = Quote::findORFail(decrypt($id));
         $clone      = Quote::create($this->quoteArray($quote, 'clone'));
+   
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
@@ -1081,15 +1090,13 @@ class QuoteController extends Controller
             }
             
         }
-
+    
         if($quote->getPaxDetail && $quote->pax_no >= 1){
             foreach ($quote->getPaxDetail as $pax_data) {
 
                 QuotePaxDetail::create($this->getPaxDetailsArray($clone, $pax_data, 'clone'));
             }
         }
-
-       return redirect()->back()->with('success_message', 'Quote clone successfully');
     }
 
     public function getGroups($currency_id){

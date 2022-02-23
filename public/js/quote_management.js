@@ -2242,6 +2242,11 @@ $(document).ready(function () {
         buttonText = 'Book';
         break;
 
+      case "clone_quote":
+        message = 'You want to Clone this Quote?';
+        buttonText = 'Clone';
+        break;
+
       case "cancel_quote":
         message = 'You want to Cancel this Quote?';
         buttonText = 'Cancel';

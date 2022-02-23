@@ -67327,6 +67327,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.printAlertResponse = function (response) {
+    console.log(response.status);
+
     if (response && response.status) {
       $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({

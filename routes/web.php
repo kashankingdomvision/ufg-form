@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::delete('has-user-edit/{id}',array('as'=>'has-user-edit','uses'=>'QuoteController@has_user_edit'));
         
         /* quote clone route */
-        Route::patch('clone/{quote}',  'QuoteController@clone')->name('clone');
+        Route::patch('clone/{quote}', array('as' => 'clone', 'uses' => 'QuoteController@cloneQuote'));
         
         /* quote export route */
         // Route::POST('{id}/generate/export',  'QuoteDocumentsController@generateExport')->name('export');

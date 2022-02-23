@@ -306,6 +306,9 @@ $(document).ready(function($) {
 
     window.printAlertResponse = function(response) {
 
+
+        console.log(response.status);
+        
         if(response && response.status){
 
             $("#listing_card_body").load(`${location.href} #listing_card_body`);
