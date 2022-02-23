@@ -218,7 +218,7 @@ $(document).ready(function($) {
 
         if(response && response.status){
             
-            $("#listing_card_body").load(location.href + " #listing_card_body");
+            $("#listing_card_body").load(`${location.href} #listing_card_body`);
     
             Toast.fire({
                 icon: 'success',
@@ -232,7 +232,7 @@ $(document).ready(function($) {
 
         if(response && !response.status){
 
-            $("#listing_card_body").load(location.href + " #listing_card_body");
+            $("#listing_card_body").load(`${location.href} #listing_card_body`);
     
             Toast.fire({
                 icon: 'error',

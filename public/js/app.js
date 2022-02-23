@@ -67261,7 +67261,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   window.printListingSuccessMessage = function (response) {
     if (response && response.status) {
-      $("#listing_card_body").load(location.href + " #listing_card_body");
+      $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({
         icon: 'success',
         title: response.message
@@ -67271,7 +67271,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
 
     if (response && !response.status) {
-      $("#listing_card_body").load(location.href + " #listing_card_body");
+      $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({
         icon: 'error',
         title: response.message
