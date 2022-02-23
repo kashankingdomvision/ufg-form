@@ -69,7 +69,7 @@
               @if($quote->booking_status == 'quote')
                 <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="cancel_quote" action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}">
                   @csrf @method('patch')
-                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-check"></i>&nbsp;&nbsp;Cancel Quote</button>
+                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
                 </form>
               @endif
 
