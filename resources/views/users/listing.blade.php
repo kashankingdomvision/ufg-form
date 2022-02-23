@@ -91,7 +91,7 @@
                                 <input type="hidden" name="bulk_action_ids" value="">
 
                                 <div class="dropdown show btn-group">
-                                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" class="btn btn-base btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Select Action
                                     </button>
                                     <div class="dropdown-menu">

@@ -130,7 +130,7 @@
                     @endphp
                     <input type="hidden" name="params" value="{{ json_encode($currParams, TRUE) }}">
                     <div class="dropdown show">
-                        <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-base btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Select Action
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">

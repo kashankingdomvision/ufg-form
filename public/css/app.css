@@ -4729,6 +4729,26 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   border-top: 1px solid #dee2e6 !important;
 }
 
+.btn-base {
+  color: #fff;
+  background-color: #515d69;
+  border-color: #515d69;
+  box-shadow: none;
+}
+
+.btn-base:hover {
+  color: #fff;
+  background-color: #3b4956;
+  border-color: #3b4956;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  background-color: #515d69;
+  border-color: #515d69;
+}
+
 .rendered-form-parent {
   display: inline-flex;
   margin-bottom: 1rem;

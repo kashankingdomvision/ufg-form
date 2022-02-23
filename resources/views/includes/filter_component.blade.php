@@ -9,7 +9,7 @@
                 </button>
   {{ $route }}
                 <div class="float-right col-md-2">
-                    <a href="{{ route('users.create') }}" class="btn btn-secondary btn-sm  m-12 float-right">
+                    <a href="{{ route('users.create') }}" class="btn btn-base btn-sm  m-12 float-right">
                         <span class="fa fa-plus"></span>
                         <span>Add New</span>
                     </a>

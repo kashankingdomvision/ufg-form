@@ -85,7 +85,7 @@ body{
     background-color: #263544;
 }
 
-// card outline
+// card 
 .card-base.card-outline{
     border-top: 3px solid #263544;
 }
@@ -95,7 +95,28 @@ body{
     background-color: #FFFFFF !important;
     border-top: 1px solid #dee2e6!important;
 }
-// card outline
+// card 
+
+// button 
+.btn-base {
+    color: #fff;
+    background-color: #515d69;
+    border-color: #515d69;
+    box-shadow: none;
+}
+
+.btn-base:hover {
+    color: #fff;
+    background-color: #3b4956;
+    border-color: #3b4956;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    background-color: #515d69;
+    border-color: #515d69;
+}
+// button
 
 .rendered-form-parent {
     display: inline-flex;  

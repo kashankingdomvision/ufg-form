@@ -29,7 +29,7 @@
           </div>
         </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary QuotemediaModalClose">Close</button>
+        <button type="button" class="btn btn-base QuotemediaModalClose">Close</button>
         <button type="button" class="btn btn-primary"   data-dismiss="modal">Save</button>
       </div>
     </div>

@@ -138,7 +138,7 @@
                                     <input type="hidden" name="bulk_action_ids" value="">
 
                                     <div class="dropdown show btn-group">
-                                        <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn btn-base btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Select Action
                                         </button>
                                         <div class="dropdown-menu">
@@ -352,7 +352,7 @@
                 @csrf @method('PUT')
                 <input  type="hidden" name="table" value="quotes" >
                 <div class="dropdown show">
-                    <a class="btn btn-secondary btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-base btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Select Action
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
