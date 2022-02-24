@@ -385,12 +385,15 @@
                   <div id="appendPaxName" class="col-md-12">
                     @if($booking->pax_no >= 1)
                       @foreach ($booking->pax as $paxKey => $pax )
-                        @php $count = $paxKey + 1; @endphp
+                        @php 
+                          $count = $paxKey + 1; 
+                          $pax = (object) $pax;
+                        @endphp
                         <div class="mt-1 appendCount border rounded p-3 mb-1" id="appendCount{{ $count }}">
                           <div class="row">
 
                             <div class="col-md-12">
-                              <button type="button" class="remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
+                              <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
                             </div>
 
                             <div class="col-md-3">
@@ -1048,7 +1051,7 @@
                               </div>
                             @endforeach
                           @else
-                            <h3 class="mt-2 mb-1-half">Payments</h3>
+                            <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
                             <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                               <div class="col-sm-3">
                                 <div class="form-group">
@@ -1091,7 +1094,7 @@
 
                               <div class="col-sm-1 d-flex justify-content-center">
                                 <div class="form-group">
-                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class=" btn btn-outline-dark btn-sm">X</button>
+                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-outline-dark btn-sm"><i class="fa fa-times"></i></button>
                                 </div>
                               </div>
 

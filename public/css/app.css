@@ -4727,6 +4727,7 @@ form .card-footer {
   padding: 0.75rem 1.25rem;
   background-color: #FFFFFF !important;
   border-top: 1px solid #dee2e6 !important;
+  border-radius: 4px;
 }
 
 .btn-base {
