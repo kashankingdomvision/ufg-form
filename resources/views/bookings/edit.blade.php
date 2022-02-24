@@ -642,7 +642,9 @@
                               @endif
 
                               <button type="button" class="btn btn-sm btn-outline-dark add-new-service-below m-point-3"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
+                              <span class="border mr-2 ml-1 mr-1"></span>
                               <button type="button" class="btn btn-sm btn-outline-dark collapse-expand-btn m-point-3" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+
                               <button type="button" class="remove-booking-detail-service btn btn-sm btn-outline-dark m-point-3" title="Remove"><i class="fas fa-times"></i></button>
                             </div>
                           </div>
