@@ -492,13 +492,13 @@
                             </a>
                         </li>
 
-                        <li class="navin_array($route, 
+                        <li class="nav-item">
                             <a href="{{ route('reports.quote.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.quote.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Quote Report</p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a href="{{ route('reports.customer.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.customer.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
