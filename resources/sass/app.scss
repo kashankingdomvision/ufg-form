@@ -36,6 +36,31 @@ body{
  *                                layouts
  * -------------------------------------------------------------------------------------
  */
+// Table scrollbar styles
+.table-responsive::-webkit-scrollbar:hover {
+    background-color: #cfcfcf;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background-color: #cfcfcf;
+    // border-radius: 10px;
+    border-color: #cfcfcf;
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background-color: #dcdcdc;
+}
+// Table scrollbar styles
 
 // Font fixes
 .sidebar-mini .main-sidebar .nav-link, .sidebar-mini-md .main-sidebar .nav-link, .sidebar-mini-xs .main-sidebar .nav-link {
@@ -94,6 +119,13 @@ form .card-footer {
     padding: 0.75rem 1.25rem;
     background-color: #FFFFFF !important;
     border-top: 1px solid #dee2e6!important;
+    border-radius: 4px;
+}
+
+/* For Listing */
+.card-footer {
+    padding: 0.75rem 1.25rem;
+    background-color: #FFFFFF !important;
     border-radius: 4px;
 }
 // card 
