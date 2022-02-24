@@ -142,13 +142,13 @@
                                             Select Action
                                         </button>
                                         <div class="dropdown-menu">
-                                            <button type="button" data-action_type="cancel" class="dropdown-item quote-bulk-action-item">Cancel</button>
-                                            <button type="button" data-action_type="revert_cancel" class="dropdown-item quote-bulk-action-item">Revert Cancel</button>
-                                            <button type="button" data-action_type="archive" class="dropdown-item quote-bulk-action-item">Archive</button>
-                                            <button type="button" data-action_type="unarchive" class="dropdown-item quote-bulk-action-item">Unarchive</button>
+                                            <button type="button" data-action_type="cancel" class="dropdown-item quote-bulk-action-item"><i class="fa fa-times text-red mr-2"></i>Cancel</button>
+                                            <button type="button" data-action_type="revert_cancel" class="dropdown-item quote-bulk-action-item"><i class="fa fa-undo-alt text-green mr-2"></i>Revert Cancel</button>
+                                            <button type="button" data-action_type="archive" class="dropdown-item quote-bulk-action-item"><i class="fa fa-archive text-dark mr-2"></i>Archive</button>
+                                            <button type="button" data-action_type="unarchive" class="dropdown-item quote-bulk-action-item"><i class="fa fa-recycle text-secondary mr-2"></i>Unarchive</button>
 
                                             <div class="dropdown-divider"></div>
-                                            <button type="button" data-action_type="store_group_quote" class="dropdown-item quote-bulk-action-item">Create Group Quote</button>
+                                            <button type="button" data-action_type="store_group_quote" class="dropdown-item quote-bulk-action-item"><i class="fa fa-plus text-green mr-2"></i>Create Group Quote</button>
                                         </div>
                                     </div>
                                 </form>
