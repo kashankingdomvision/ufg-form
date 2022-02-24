@@ -394,8 +394,8 @@ class BookingController extends Controller
 
         $array['booking']                              = $booking_details;
         $array['booking_cancellation_refund_payments'] = $booking->getBookingCancellationRefundPaymentDetail->count() ? $booking->getBookingCancellationRefundPaymentDetail->toArray() : [];
-        $array['booking_cancellations']                = $booking->getTotalRefundAmount->count() ? $booking->getTotalRefundAmount->toArray() : [];
-        $array['pax']                                  = $booking->getBookingPaxDetail->toArray();
+        $array['booking_cancellations']                = !is_null($booking->getTotalRefundAmount) ? $booking->getTotalRefundAmount->toArray() : [];
+        $array['pax']                                  = $booking->getBookingPaxDetail->count() ? $booking->getBookingPaxDetail->toArray() : [];
 
         $data = [
             'booking_id'    => $booking->id,
