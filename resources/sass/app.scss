@@ -37,9 +37,42 @@ body{
  * -------------------------------------------------------------------------------------
  */
 
+// Dropdown Anchor Hover effect
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #f8f9fa;
+    transition: 0.7s;
+}
+// Dropdown Anchor Hover effect
+
+
+// Siderbar Anchor Hover effect
+[class*=sidebar-dark-] .nav-sidebar>.nav-item.menu-open>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item:hover>.nav-link, [class*=sidebar-dark-] .nav-sidebar>.nav-item>.nav-link:focus {
+    background-color: rgba(255,255,255,.1);
+    color: #fff;
+    transition: 0.7s;
+}
+
+[class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:focus, [class*=sidebar-dark-] .nav-treeview>.nav-item>.nav-link:hover {
+    background-color: rgba(255,255,255,.1);
+    color: #fff;
+    transition: 0.7s;
+}
+// Siderbar Anchor Hover effect
+
+// Table 
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: rgba(0,0,0,.075);
+    transition: 0.7s;
+}
+
 tr{
     border-bottom: 1px solid #dee2e6!important;
 }
+// Table 
+
 
 // Table scrollbar styles
 .table-responsive::-webkit-scrollbar:hover {
