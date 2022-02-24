@@ -166,10 +166,7 @@
                                                 <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
                                                 <label for="parent" class="custom-control-label"></label>
                                             </div>
-                                            {{-- 
-                                            <div class="icheck-primary">
-                                                <input type="checkbox" class="parent">
-                                            </div> --}}
+
                                         </th>
                                         <th></th>
                                         <th width="8"></th>
@@ -197,10 +194,6 @@
                                                                 <input type="checkbox" id="child_{{$quote->id}}" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
                                                                 <label for="child_{{$quote->id}}" class="custom-control-label"></label>
                                                             </div>
-
-                                                            {{-- <div class="icheck-primary">
-                                                                <input type="checkbox" class="child" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}">
-                                                            </div> --}}
                                                         @endif
                                                     </td>
 
@@ -282,8 +275,6 @@
                                                             </form>
                                                         @endif
 
-
-              
                                                         @if($quote->booking_status == 'quote')
                                                             <form method="POST" class="multiple-alert mr-2" data-action_type="clone_quote" action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}">
                                                                 @csrf @method('patch')
@@ -292,10 +283,9 @@
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
-
-                                                        <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
-                                                            <button type="button" class="btn btn-outline-secondary btn-xs" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i></button>
-                                                        </a>
+                                                            <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
+                                                                <button type="button" class="btn btn-outline-secondary btn-xs" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i></button>
+                                                            </a>
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
@@ -345,6 +335,15 @@
 @push('js')
   <script src="{{ asset('js/quote_management.js') }}" ></script>
 @endpush
+
+{{-- 
+<div class="icheck-primary">
+    <input type="checkbox" class="parent">
+</div> --}}
+
+{{-- <div class="icheck-primary">
+    <input type="checkbox" class="child" value="{{$quote->id}}" data-booking_currency="{{$quote->getBookingCurrency->code}}">
+</div> --}}
 
 {{-- @if($quote->booking_status == 'booked')
     <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
