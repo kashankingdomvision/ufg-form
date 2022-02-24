@@ -170,7 +170,7 @@
 
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link sidebar-border-left {{  $route == 'users.index' || $route == 'users.create' || $route == 'users.edit' ? 'active' : '' }}">
+                                <a href="{{ route('users.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['users.index', 'users.create', 'users.edit']) ? 'active' : '' }}">
                                     <i class="fa fa-eye nav-icon"></i>
                                     <p>View User</p>
                                 </a>
@@ -178,7 +178,7 @@
 
 
                             <li class="nav-item">
-                                <a href="{{ route('roles.index')}}" class="nav-link sidebar-border-left {{ $route == 'roles.index' || $route == 'roles.edit' ? 'active' : ''}}">
+                                <a href="{{ route('roles.index')}}" class="nav-link sidebar-border-left {{ in_array($route, ['roles.index', 'roles.edit']) ? 'active' : ''}}">
                                     <i class="fa fa-eye nav-icon"></i>
                                     <p>View Role</p>
                                 </a>
@@ -186,7 +186,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item {{ $route == 'commissions.index' || $route == 'commissions.create' || $route == 'commissions.edit' ||  $route == 'commission_groups.index' || $route == 'commission_groups.create' || $route == 'commission_groups.edit' || $route == 'commission_criterias.index' || $route == 'commission_criterias.create' || $route == 'commission_criterias.edit' ? 'menu-open': '' }}">
+                    <li class="nav-item {{  in_array($route, ['commissions.index', 'commissions.create', 'commissions.edit', 'commission_groups.index', 'commission_groups.create', 'commission_groups.edit', 'commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'menu-open': '' }}">
                         
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-percentage"></i>
