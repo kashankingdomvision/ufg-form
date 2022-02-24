@@ -395,131 +395,130 @@
                     </div>
 
                     <div id="appendPaxName" class="col-md-12">
-                        @if($quote->pax_no >= 1)
-                            @foreach ($quote->pax as $paxKey => $pax )
-                            @php 
-                              $count = $paxKey + 1; 
-                              $pax = (object) $pax;
-                            @endphp
+                      @if($quote->pax_no >= 1)
+                        @foreach ($quote->pax as $paxKey => $pax )
+                          @php 
+                            $count = $paxKey + 1; 
+                            $pax = (object) $pax;
+                          @endphp
 
+                          <div class="mb-2 appendCount border rounded p-3 mb-1" id="appendCount{{ $count }}">
 
-                            <div class="mb-2 appendCount border rounded p-3 mb-1" id="appendCount{{ $count }}">
-
-                              <div class="row">
-                                <div class="col-md-12">
-                                  <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
-                                </div>
-                              
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }}  Full Name  {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Email Address  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email_address }}" class="form-control" placeholder="EMAIL ADDRESS" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Date Of Birth  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label >Contact Number  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact_number }}" class="form-control phone phone{{ $count }}" placeholder="CONTACT NUMBER" >
-                                    <span class="text-danger error_msg{{ $count }}" role="alert"> </span>
-                                    <span class="text-danger valid_msg{{ $count }}" role="alert"> </span>
-                                  </div>
-                                </div>
-                    
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Nationality {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
-                                      <option selected value="">Select Nationality</option>
-                                      @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ $pax->nationality_id == $country->id ? 'selected': ''  }}> {{ $country->name }} </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Resident In {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
-                                      <option selected value="">Select Resident In</option>
-                                      @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ ($pax->resident_in == $country->id)? 'selected':null }}> {{ $country->name }} </option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Bedding Preference {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Dietary Preferences {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="text" name="pax[{{$count}}][dietary_preferences]" value="{{ $pax->dietary_preferences }}" class="form-control" placeholder="Dietary Preferences" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                  <div class="form-group">
-                                    <label>Medical Requirements {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
-                                    <input type="text" name="pax[{{$count}}][medical_requirement]" value="{{ $pax->medical_requirement }}" class="form-control" placeholder="Medical Requirements" >
-                                    <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
-                                  </div>
-                                </div>
-
-                                <div class="col-md-4">
-                                  <div class="form-group">
-                                    <label>Up To Date Covid Vaccination Status</label>
-                                    <div class="d-flex flex-row">
-    
-                                      <div class="custom-control custom-radio mr-1">
-                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_yes_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1" @if($pax->covid_vaccinated == 1) checked @endif>
-                                        <label class="custom-control-label" for="pax_cv_yes_{{$count}}"> Yes</label>
-                                      </div>
-    
-                                      <div class="custom-control custom-radio mr-1">
-                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_no_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" @if($pax->covid_vaccinated == 0) checked @endif>
-                                        <label class="custom-control-label" for="pax_cv_no_{{$count}}">No</label>
-                                      </div>
-    
-                                      <div class="custom-control custom-radio mr-1">
-                                        <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_not_sure_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2" @if($pax->covid_vaccinated == 2) checked @endif> 
-                                        <label class="custom-control-label" for="pax_cv_not_sure_{{$count}}">Not Sure</label>
-                                      </div>
-    
-                                    </div>
-                                  </div>
-                                </div>
-
+                            <div class="row">
+                              <div class="col-md-12">
+                                <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
                               </div>
+                            
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label >Passenger #{{ ($quote->agency == 1)? $count : $count +1  }}  Full Name  {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="text" name="pax[{{$count}}][full_name]" value="{{ $pax->full_name }}" class="form-control" placeholder="PASSENGER #2 FULL NAME" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Email Address  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="email" name="pax[{{$count}}][email_address]" value="{{ $pax->email_address }}" class="form-control" placeholder="EMAIL ADDRESS" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Date Of Birth  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="date" max="{{  date("Y-m-d") }}" name="pax[{{$count}}][date_of_birth]" value="{{ $pax->date_of_birth }}" class="form-control" placeholder="CONTACT NUMBER" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label >Contact Number  {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="tel" name="pax[{{$count}}][contact_number]" value="{{ $pax->contact_number }}" class="form-control phone phone{{ $count }}" placeholder="CONTACT NUMBER" >
+                                  <span class="text-danger error_msg{{ $count }}" role="alert"> </span>
+                                  <span class="text-danger valid_msg{{ $count }}" role="alert"> </span>
+                                </div>
+                              </div>
+                  
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Nationality {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <select name="pax[{{ $count }}][nationality_id]" class="form-control select2single nationality-id">
+                                    <option selected value="">Select Nationality</option>
+                                    @foreach ($countries as $country)
+                                      <option value="{{ $country->id }}" {{ $pax->nationality_id == $country->id ? 'selected': ''  }}> {{ $country->name }} </option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Resident In {!! ($loop->first && $quote->agency == 1) ? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <select name="pax[{{ $count }}][resident_in]" class="form-control select2single resident-in-id">
+                                    <option selected value="">Select Resident In</option>
+                                    @foreach ($countries as $country)
+                                      <option value="{{ $country->id }}" {{ ($pax->resident_in == $country->id)? 'selected':null }}> {{ $country->name }} </option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Bedding Preference {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="text" name="pax[{{$count}}][bedding_preference]" value="{{ $pax->bedding_preference }}" class="form-control" placeholder="BEDDING PREFERENCES" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Dietary Preferences {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="text" name="pax[{{$count}}][dietary_preferences]" value="{{ $pax->dietary_preferences }}" class="form-control" placeholder="Dietary Preferences" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Medical Requirements {!! ($loop->first && $quote->agency == 1)? '<span class="text-danger">*</span>': '' !!}</label>
+                                  <input type="text" name="pax[{{$count}}][medical_requirement]" value="{{ $pax->medical_requirement }}" class="form-control" placeholder="Medical Requirements" >
+                                  <div class="alert-danger errorpax" style="text-align:center" id="error_pax_name_'+validatecount+'"></div>
+                                </div>
+                              </div>
+
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                  <label>Up To Date Covid Vaccination Status</label>
+                                  <div class="d-flex flex-row">
+  
+                                    <div class="custom-control custom-radio mr-1">
+                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_yes_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="1" @if($pax->covid_vaccinated == 1) checked @endif>
+                                      <label class="custom-control-label" for="pax_cv_yes_{{$count}}"> Yes</label>
+                                    </div>
+  
+                                    <div class="custom-control custom-radio mr-1">
+                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_no_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="0" @if($pax->covid_vaccinated == 0) checked @endif>
+                                      <label class="custom-control-label" for="pax_cv_no_{{$count}}">No</label>
+                                    </div>
+  
+                                    <div class="custom-control custom-radio mr-1">
+                                      <input type="radio" name="pax[{{$count}}][covid_vaccinated]" id="pax_cv_not_sure_{{$count}}" class="covid-vaccinated custom-control-input custom-control-input-success custom-control-input-outline" value="2" @if($pax->covid_vaccinated == 2) checked @endif> 
+                                      <label class="custom-control-label" for="pax_cv_not_sure_{{$count}}">Not Sure</label>
+                                    </div>
+  
+                                  </div>
+                                </div>
+                              </div>
+
                             </div>
-                            @endforeach
-                        @endif
+                          </div>
+                        @endforeach
+                      @endif
                     </div>
 
                     <div class="col-md-12">
