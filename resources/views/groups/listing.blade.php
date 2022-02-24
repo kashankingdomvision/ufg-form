@@ -47,19 +47,6 @@
     </div>
   </x-page-filters>
 
-  <section class="content p-2">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-md-12">
-          <a href="" id="delete_all" class="btn btn-danger  btn-sm ">
-            <span class="fa fa-trash"></span> &nbsp;
-            <span>Delete Selected Record</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="content">
     <div class="container-fluid">
       <div class="row">
@@ -84,7 +71,7 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu">
-                      <button type="button" data-action_type="delete" class="dropdown-item group-bulk-action-item">Delete</button>
+                      <button type="button" data-action_type="delete" class="dropdown-item group-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
                     </div>
                   </div>
                 </form>
@@ -237,6 +224,18 @@
   <script src="{{ asset('js/quote_management.js') }}" ></script>
 @endpush
 
+{{-- <section class="content p-2">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <a href="" id="delete_all" class="btn btn-danger  btn-sm ">
+          <span class="fa fa-trash"></span> &nbsp;
+          <span>Delete Selected Record</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section> --}}
 {{-- <a id="collapse-anchor-{{$group->id}}" data-toggle="collapse" href="#collapse{{$group->id}}">
     <span class="text-secondary fa fa-eye"></span>
 </a> --}}

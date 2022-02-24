@@ -66,7 +66,7 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu">
-                      <button type="button" data-action_type="delete" class="dropdown-item preset-comment-bulk-action-item">Delete</button>
+                      <button type="button" data-action_type="delete" class="dropdown-item preset-comment-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
                     </div>
                   </div>
                 </form>
