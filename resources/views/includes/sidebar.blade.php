@@ -158,7 +158,7 @@
                
                 @if(Auth::user()->hasAdmin())
 
-                    <li class="nav-item {{ ($route == 'users.index' || $route == 'users.create' || $route == 'users.edit' || $route == 'roles.index' || $route == 'roles.create') || $route == 'roles.edit' ? 'menu-open': '' }}">
+                    <li class="nav-item {{ in_array($route, ['users.index', 'users.create', 'users.edit', 'roles.index', 'roles.create', 'roles.edit']) ? 'menu-open': '' }}">
                         
                         <a href="#" class="nav-link">
                             <i class="fa fa-user nav-icon"></i>
@@ -199,7 +199,7 @@
                         <ul class="nav nav-treeview">
 
                             <li class="nav-item">
-                                <a href="{{ route('commissions.index') }}" class="nav-link sidebar-border-left {{ $route == 'commissions.index' || $route == 'commissions.create' || $route == 'commissions.edit' ? 'active' : '' }}">
+                                <a href="{{ route('commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commissions.index', 'commissions.create', 'commissions.edit']) ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-percentage"></i>
                                     <p>
                                         Commissions
@@ -208,7 +208,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ route('commission_groups.index') }}" class="nav-link sidebar-border-left {{ $route == 'commission_groups.index' || $route == 'commission_groups.create' || $route == 'commission_groups.edit'  ? 'active' : '' }}">
+                                <a href="{{ route('commission_groups.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_groups.index', 'commission_groups.create', 'commission_groups.edit']) ? 'active' : '' }}">
                                     <i class="fa fa-users nav-icon"></i>
                                     <p>
                                         Commission Groups
@@ -217,7 +217,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a href="{{ route('commission_criterias.index') }}" class="nav-link sidebar-border-left {{ $route == 'commission_criterias.index' || $route == 'commission_criterias.create' || $route == 'commission_criterias.edit' ? 'active' : '' }}">
+                                <a href="{{ route('commission_criterias.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Commission Criteria
@@ -239,21 +239,21 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('suppliers.index') }}" class="nav-link sidebar-border-left {{  $route == 'suppliers.create' || $route == 'suppliers.index' || $route == 'suppliers.edit' ? 'active' : '' }}">
+                            <a href="{{ route('suppliers.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['suppliers.index', 'suppliers.create', 'suppliers.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Supplier</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('group_owners.index') }}" class="nav-link sidebar-border-left {{  $route == 'group_owners.create' || $route == 'group_owners.index' || $route == 'group_owners.edit' ? 'active' : '' }}">
+                            <a href="{{ route('group_owners.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['group_owners.index', 'group_owners.create', 'group_owners.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-users nav-icon"></i>
                                 <p>Group Owners</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('supplier_rate_sheets.index') }}" class="nav-link sidebar-border-left {{  $route == 'supplier_rate_sheets.create' || $route == 'supplier_rate_sheets.index' || $route == 'supplier_rate_sheets.edit' ? 'active' : '' }}">
+                            <a href="{{ route('supplier_rate_sheets.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['supplier_rate_sheets.index', 'supplier_rate_sheets.create', 'supplier_rate_sheets.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>Supplier Rate Sheet</p>
                             </a>
@@ -261,21 +261,21 @@
 
 
                         <li class="nav-item">
-                            <a href="{{ route('products.index')}}" class="nav-link sidebar-border-left {{ $route == 'products.create' || $route == 'products.index' || $route == 'products.edit' ? 'active' : ''}}">
+                            <a href="{{ route('products.index')}}" class="nav-link sidebar-border-left {{ in_array($route, ['products.index', 'products.create', 'products.edit']) ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Product</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('categories.index')}}" class="nav-link sidebar-border-left {{ $route == 'categories.create' || $route == 'categories.index' || $route == 'categories.edit' ? 'active' : ''}}">
+                            <a href="{{ route('categories.index')}}" class="nav-link sidebar-border-left {{ in_array($route, ['categories.index', 'categories.create', 'categories.edit']) ? 'active' : ''}}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Category</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('wallets.index') }}" class="nav-link sidebar-border-left {{ $route == 'wallets.index' ? 'active' : '' }}">
+                            <a href="{{ route('wallets.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['wallets.index']) ? 'active' : '' }}">
                                 <i class="fas fa-wallet nav-icon"></i>
                                 <p>Supplier Wallet</p>
                             </a>
@@ -283,7 +283,7 @@
                     </ul>
                 </li>
 
-                <li class="nav-item {{ $route == 'supplier-bulk-payments.index' || $route == 'supplier-bulk-payments.view' ? 'menu-open': '' }}">
+                <li class="nav-item {{ in_array($route, ['supplier-bulk-payments.index', 'supplier-bulk-payments.view']) ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="fa fa-user nav-icon"></i>
                         <p>
@@ -294,14 +294,14 @@
                 
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link sidebar-border-left {{ $route == 'supplier-bulk-payments.index' ? 'active' : '' }}">
+                            <a href="{{ route('supplier-bulk-payments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['supplier-bulk-payments.index']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Add Supplier Bulk Payments</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link sidebar-border-left d-inline-flex {{ $route == 'supplier-bulk-payments.view' ? 'active' : '' }}">
+                            <a href="{{ route('supplier-bulk-payments.view') }}" class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['supplier-bulk-payments.view']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>View Supplier Bulk Payments</p>
                             </a>
@@ -322,14 +322,14 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('airport_codes.index') }}" class="nav-link sidebar-border-left {{ $route == 'airport_codes.index' || $route == 'airport_codes.create' || $route == 'airport_codes.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('airport_codes.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['airport_codes.index', 'airport_codes.create', 'airport_codes.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-plane nav-icon"></i>
                                 <p>Airport</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('banks.index') }}" class="nav-link sidebar-border-left {{ $route == 'banks.index' || $route == 'banks.create' || $route == 'banks.edit' ? 'active' : '' }}">
+                            <a href="{{ route('banks.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['banks.index', 'banks.create', 'banks.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Banks
@@ -339,7 +339,7 @@
 
                         
                         <li class="nav-item">
-                            <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ $route == 'brands.index' || $route == 'brands.create' || $route == 'brands.edit' ? 'active' : '' }}">
+                            <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Brands
@@ -348,14 +348,14 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('countries.index') }}" class="nav-link sidebar-border-left {{ $route == 'countries.index' || $route == 'countries.create' || $route == 'countries.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('countries.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['countries.index', 'countries.create', 'countries.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-globe nav-icon"></i>
                                 <p>Countries</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('currencies.index') }}" class="nav-link sidebar-border-left {{ $route == 'currencies.index' || $route == 'currencies.create' || $route == 'currencies.edit' ? 'active' : '' }}">
+                            <a href="{{ route('currencies.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['currencies.index', 'currencies.create', 'currencies.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-money-bill-alt"></i>
                                 <p>
                                     Currencies
@@ -365,7 +365,7 @@
 
 
                         <li class="nav-item">
-                            <a  href="{{ route('currency_conversions.index') }}" class="nav-link sidebar-border-left {{ $route == 'currency_conversions.index' || $route == 'currency_conversions.edit' ? 'active' : '' }}">
+                            <a  href="{{ route('currency_conversions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['currency_conversions.index', 'currency_conversions.create', 'currency_conversions.edit']) ? 'active' : '' }}">
                                 <i class="fas fa-money-bill-alt nav-icon"></i>
                                 <p>
                                     Currency Rates
@@ -375,14 +375,14 @@
 
 
                         <li class="nav-item">
-                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link sidebar-border-left d-inline-flex  {{ $route == 'harbours.index' || $route == 'harbours.create' || $route == 'harbours.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link sidebar-border-left d-inline-flex  {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train & POI </p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('holiday_types.index') }}" class="nav-link sidebar-border-left {{ $route == 'holiday_types.index' || $route == 'holiday_types.create' || $route == 'holiday_types.edit' ? 'active' : '' }}">
+                            <a href="{{ route('holiday_types.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['holiday_types.index', 'holiday_types.create', 'holiday_types.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Holiday Types
@@ -453,7 +453,7 @@
                     <ul class="nav nav-treeview">
                         @if(Auth::user()->hasAdmin())
                             <li class="nav-item">
-                                <a href="{{ route('reports.commission.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.commission.report' ? 'active' : '' }}">
+                                <a href="{{ route('reports.commission.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.commission.report']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>Commision Report</p>
                                 </a>
@@ -461,67 +461,67 @@
                         @endif
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.transfer.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.transfer.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.transfer.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.transfer.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Transfer Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.user.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.user.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.user.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.user.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>User Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.activity.by.user') }}" class="nav-link sidebar-border-left {{  $route == 'reports.activity.by.user' ? 'active' : '' }}">
+                            <a href="{{ route('reports.activity.by.user') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.activity.by.user']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Activity By User</p>
                             </a>
-                            <a href="{{ route('reports.supplier.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.supplier.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.supplier.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.supplier.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Supplier Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.wallet.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.wallet.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.wallet.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.wallet.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Wallet Report</p>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('reports.quote.report') }}" class="nav-link sidebar-border-left {{  $route == 'reports.quote.report' ? 'active' : '' }}">
+                        <li class="navin_array($route, 
+                            <a href="{{ route('reports.quote.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.quote.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Quote Report</p>
                             </a>
                         </li>
                         
                         <li class="nav-item">
-                            <a href="{{ route('reports.customer.report') }}" class="nav-link sidebar-border-left {{ $route == 'reports.customer.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.customer.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.customer.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Customer Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.payment.method.report') }}" class="nav-link sidebar-border-left {{ $route == 'reports.payment.method.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.payment.method.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.payment.method.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Payment Method Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.refund.by.bank.report') }}" class="nav-link sidebar-border-left {{ $route == 'reports.refund.by.bank.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.refund.by.bank.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.refund.by.bank.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Refund By Bank Report</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('reports.refund.by.credit.note.report') }}" class="nav-link sidebar-border-left d-inline-flex {{ $route == 'reports.refund.by.credit.note.report' ? 'active' : '' }}">
+                            <a href="{{ route('reports.refund.by.credit.note.report') }}" class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['reports.refund.by.credit.note.report']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Refund By Credit Note Report</p>
                             </a>
