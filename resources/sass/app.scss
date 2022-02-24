@@ -36,6 +36,11 @@ body{
  *                                layouts
  * -------------------------------------------------------------------------------------
  */
+
+tr{
+    border-bottom: 1px solid #dee2e6!important;
+}
+
 // Table scrollbar styles
 .table-responsive::-webkit-scrollbar:hover {
     background-color: #cfcfcf;

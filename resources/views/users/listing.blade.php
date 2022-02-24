@@ -106,7 +106,7 @@
                         
                         <div class="card-body p-0" id="listing_card_body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-hover">
+                                <table class="table table-hover text-nowrap text-nowrap">
                                     <thead>
                                         <tr>
                                             <th>
@@ -127,7 +127,7 @@
                                     <tbody>
                                     @if($users && $users->count())
                                         @foreach ($users as $key => $value)
-                                        <tr>
+                                        <tr class="border-bottom">
                                             <td>
                                                 @if($value->getRole->id != 1)
                                                     <div class="custom-control custom-checkbox">

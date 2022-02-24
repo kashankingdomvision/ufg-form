@@ -81,7 +81,7 @@
 
             <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
                       <th>

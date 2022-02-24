@@ -29,7 +29,7 @@
               <div class="card">
                 <div class="card-body p-0">
                   <div class="table-responsive table-wrap">
-                    <table class="table table-hover">
+                    <table class="table table-hover text-nowrap">
                       <thead>
                         <tr>
                           <th class="text-center" width="12">From </th>

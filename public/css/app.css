@@ -4680,6 +4680,10 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
  * -------------------------------------------------------------------------------------
  */
 
+tr {
+  border-bottom: 1px solid #dee2e6 !important;
+}
+
 .table-responsive::-webkit-scrollbar:hover {
   background-color: #cfcfcf;
 }

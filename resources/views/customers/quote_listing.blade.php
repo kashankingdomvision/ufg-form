@@ -152,7 +152,7 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-hover">
+                                    <table class="table table-hover text-nowrap text-nowrap">
                                         <thead>
                                             <tr>
                                                 <th>Customer Name</th>
@@ -215,7 +215,7 @@
                             </div>
                             <div class="card-body p-0">
                                 <div class="table-responsive ">
-                                    <table id="example1" class="table table-hover" >
+                                    <table id="example1" class="table table-hover text-nowrap" >
                                         <thead>
                                           <tr>
                                             <th width="8">
