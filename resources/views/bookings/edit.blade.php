@@ -90,14 +90,17 @@
               </a>
 
               @if($booking->booking_status == 'confirmed')
-                <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-sm mr-2" data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
-                  <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Booking
-                </a>
+                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}">
+                  @csrf @method('patch')
+                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Booking"><i class="fa fa-times mr-2"></i>Cancel Booking</button>
+                </form>
               @endif
+
               @if($booking->booking_status == 'cancelled')
-                <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking mr-2 btn btn-success btn-sm float-right" title="Revert Cancel Booking">
-                  <i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Revert Cancel Booking
-                </a>
+                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="restore_booking" action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}">
+                  @csrf @method('patch')
+                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Restore Booking"><i class="fa fa-undo-alt mr-2"></i>Restore Booking</button>
+                </form>
               @endif
             </div>
 
@@ -2224,3 +2227,12 @@
 </div>
 </div>
 </div> --}}
+
+
+{{-- <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class="revert-cancel-booking mr-2 btn btn-success btn-sm float-right" title="Revert Cancel Booking">
+  <i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Revert Cancel Booking
+</a> --}}
+
+{{-- <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-sm mr-2" data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
+  <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Booking
+</a> --}}

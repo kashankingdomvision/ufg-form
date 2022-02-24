@@ -789,6 +789,63 @@ class BookingController extends Controller
         $booking = Booking::findOrFail(decrypt($id))->update(['cancel_date' => Carbon::now()]);
         return redirect()->back()->with('success_message', 'Booking canceled successfully');    
     }
+
+    public function multipleAlert($action_type, $id){
+        
+        try {
+
+            $message = "";
+
+            if($action_type == 'cancel_booking'){
+
+                $this->cancelBooking(decrypt($id));
+                $message = "Booking Cancelled Successfully.";
+            }
+
+            if($action_type == 'restore_booking'){
+
+                $this->restorBooking(decrypt($id));
+                $message = "Booking Restored Successfully.";
+            }
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            return response()->json([ 
+                'status'        => false, 
+                'error_message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
+
+    public function cancelBooking($id)
+    {
+        $total_refund_amount = request()->booking_net_price - request()->cancellation_charges;
+
+        BookingCancellation::create([
+
+            'booking_id'           => $id,
+            'cancellation_charges' => request()->cancellation_charges,
+            'cancellation_reason'  => request()->cancellation_reason,
+            'total_refund_amount'  => $total_refund_amount,
+            'currency_id'          => request()->booking_currency_id,
+        ]);
+
+        Booking::where('id', $id)->update([ 
+            'booking_status' => 'cancelled',
+            'cancel_date'    => Carbon::now()
+        ]);
+    }
+
+    public function restorBooking($id)
+    {
+        Booking::where('id', $id)->update([ 'booking_status' => 'confirmed' ]);
+        BookingCancellation::where('booking_id', $id)->delete();
+    }
     
     //storage url
     public function fileStore($request, $bookingID)

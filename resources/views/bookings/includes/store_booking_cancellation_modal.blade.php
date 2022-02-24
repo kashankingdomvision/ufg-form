@@ -1,4 +1,4 @@
-<div class="modal fade" id="cancel_booking">
+<div class="modal fade" id="store_booking_cancellation_modal">
     <div class="modal-dialog   modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -7,8 +7,8 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{ route('bookings.cancel.booking') }}"  method="POST"  id="cancel_booking_submit">
-          @csrf 
+        <form action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" method="POST"  id="cancel_booking_submit">
+          @csrf @method('patch')
 
           <div class="modal-body">
 
@@ -38,7 +38,7 @@
 
     
           <div class="modal-footer justify-content-right">
-            <button type="submit" class="btn btn-primary"  id="submit_cancel_booking">
+            <button type="submit" class="btn btn-primary">
               <span class="mr-2 " role="status" aria-hidden="true"></span>
               Submit
             </button>

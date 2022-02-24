@@ -358,55 +358,33 @@ $(document).ready(function() {
         reinitializedSingleSelect2();
     });
 
-    $("#cancel_booking_submit").submit(function(event) {
+    $(document).on('submit', '#cancel_booking_submit', function(event) {
 
         event.preventDefault();
 
-        var url = $(this).attr('action');
-        var formData = $(this).serialize();
+        let formID = $(this).attr('id');
 
         $.ajax({
             type: 'POST',
-            url: url,
-            data: formData,
+            url: $(this).attr('action'),
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
             beforeSend: function() {
-                $('input').removeClass('is-invalid');
-                $('.text-danger').html('');
-                $("#submit_cancel_booking").find('span').addClass('spinner-border spinner-border-sm');
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
             },
-            success: function(data) {
-                $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
+            success: function(response) {
 
-                jQuery('#cancel_booking').modal('hide');
-
-                setTimeout(function() {
-
-                    if (data.success_message) {
-                        alert(data.success_message);
-                        location.reload();
-                    }
-
-                }, 400);
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerSuccessMessage(response, "#store_booking_cancellation_modal");
             },
-            error: function(reject) {
-                if (reject.status === 422) {
+            error: function(response) {
 
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function() {
-
-                        $("#submit_cancel_booking").find('span').removeClass('spinner-border spinner-border-sm');
-
-                        jQuery.each(errors.errors, function(index, value) {
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                        });
-
-                    }, 400);
-
-                }
-            },
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(response);
+            }
         });
 
     });
@@ -523,6 +501,83 @@ $(document).ready(function() {
             });
 
         }
+    });
+
+    $(document).on('submit', ".multiple-alert", function(event) {
+
+        event.preventDefault();
+
+        let url        = $(this).attr('action');
+        let actionType = $(this).data('action_type');
+        let message    = "";
+        let buttonText = "";
+
+        switch(actionType) {
+
+            case "cancel_booking":
+                message    = 'You want to Cancel this Booking?';
+                buttonText = 'Cancel';
+                break;
+
+            case "restore_booking":
+                message    = 'You want to Restore this Booking?';
+                buttonText = 'Restore';
+                break;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes, ${buttonText} it !`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                if(actionType == "cancel_booking"){
+
+                    let booking_id = $(this).data('booking_id');
+                    let modal      = $('#store_booking_cancellation_modal');
+        
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+                        url: `${REDIRECT_BASEURL}bookings/get-booking-net-price/${booking_id}`,
+                        type: 'get',
+                        success: function(data) {
+        
+                            if (data !== null && data !== '' && data !== undefined) {
+                                
+                                modal.modal('show');
+                                modal.find('#booking_currency_id').val(data.booking_currency_id);
+                                modal.find('#booking_net_price').val(data.booking_net_price);
+                                modal.find('#booking_net_price_text').text(`Cancellation Charges should not be greater ${data.booking_net_price} ${data.booking_currency_code}`);
+                                modal.find('#booking_id').val(booking_id);
+                                modal.find('#booking_currency_code').text(data.booking_currency_code);
+                            }
+        
+                        },
+                        error: function(reject) {}
+                    });
+                }
+
+                if(actionType == "restore_booking"){
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            printAlertResponse(response);
+                        }
+                    });
+                }
+            }
+        });
     });
 
     $(document).on('click', '.view-payment_detail', function() {

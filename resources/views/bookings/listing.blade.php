@@ -117,7 +117,7 @@
                         <div class="card-header">
                             <h3 class="card-title">Booking List</h3>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body p-0" id="listing_card_body">
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap text-nowrap">
                                     <thead>
@@ -179,6 +179,21 @@
                                                     </a>
 
                                                     @if($booking->booking_status == 'confirmed')
+                                                        <form method="POST" class="multiple-alert" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}">
+                                                            @csrf @method('patch')
+                                                            <button type="submit" class="btn btn-xs btn-outline-danger" data-title="" data-target="#" title="Cancel Booking"><i class="fa fa-times"></i></button>
+                                                        </form>
+                                                    @endif
+                                        
+                                                    @if($booking->booking_status == 'cancelled')
+                                                        <form method="POST" class="multiple-alert" data-action_type="restore_booking" action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}">
+                                                            @csrf @method('patch')
+                                                            <button type="submit" class="btn btn-xs btn-outline-success" data-title="" data-target="#" title="Restore Booking"><i class="fa fa-undo-alt"></i></button>
+                                                        </form>
+                                                    @endif
+
+
+                                                    {{-- @if($booking->booking_status == 'confirmed')
                                                         <a href="javascript:void(0)" class="cancel-booking float-right btn btn-outline-danger btn-xs " data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
                                                             <span class="fa fa-times"></span>
                                                         </a>
@@ -188,7 +203,7 @@
                                                         <a href="{{ route('bookings.revert.cancel.booking',encrypt($booking->id)) }}" onclick="return confirm('Are you sure you want to Revert Cancelled Booking?');" class=" float-right btn btn-outline-success btn-xs" title="Revert Cancel Booking">
                                                             <span class="fa fa-undo-alt"></span>
                                                         </a>
-                                                    @endif
+                                                    @endif --}}
 
                                                     {{-- @if(empty($booking->cancel_date)) --}}
                                                     {{-- {{ route('bookings.cancel', encrypt($booking->id)) }} --}}

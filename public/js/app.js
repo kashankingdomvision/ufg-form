@@ -67309,6 +67309,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         icon: 'success',
         title: response.success_message
       });
+      /* Reload page if you are on edit page */
+
+      if (CURRENT_ROUTE_NAME.includes('edit')) {
+        setTimeout(function () {
+          location.reload();
+        }, 2500);
+      }
     }
   };
 
