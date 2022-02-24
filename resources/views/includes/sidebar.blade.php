@@ -92,13 +92,13 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('bookings.index') }}" class="nav-link {{ $route == 'bookings.view.seasons' || $route == 'bookings.index' || $route == 'bookings.edit' || $route == 'bookings.version' || $route == 'bookings.show' ? 'active' : '' }}">
+                    <a href="{{ route('bookings.index') }}" class="nav-link {{ in_array($route, ['bookings.view.seasons', 'bookings.index', 'bookings.edit', 'bookings.version', 'bookings.show']) ? 'active' : '' }}">
                         <i class="fas fa-pen-square nav-icon"></i>
                         <p>Bookings</p>
                     </a>
                 </li>
 
-                <li class="nav-item {{ $route == 'quotes.index' || $route == 'quotes.view.trash' || $route == 'quotes.create'  || $route == 'quotes.edit' || $route == 'roles.index' || $route == 'roles.create' || $route == 'roles.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.archive' || $route == 'groups.index' || $route == 'groups.edit' || $route == 'groups.create' || $route == 'quotes.quote.documment' || $route == 'quotes.compare.quote'  ? 'menu-open': '' }}">
+                <li class="nav-item {{ in_array($route, ['quotes.index', 'quotes.view.trash', 'quotes.create', 'quotes.edit', 'roles.index', 'roles.create', 'roles.edit', 'quotes.view.version', 'quotes.final', 'quotes.archive', 'groups.index', 'groups.edit', 'groups.create', 'quotes.quote.documment', 'quotes.compare.quote' ]) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
                         <i class="fas fa-file nav-icon"></i>
@@ -111,21 +111,21 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
-                            <a href="{{ route('quotes.index') }}" class="nav-link sidebar-border-left {{ $route == 'quotes.index' || $route == 'quotes.edit' || $route == 'quotes.view.version' || $route == 'quotes.final' || $route == 'quotes.quote.documment' ? 'active' : '' }}">
+                            <a href="{{ route('quotes.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['quotes.index', 'quotes.edit', 'quotes.view.version', 'quotes.final', 'quotes.quote.documment']) ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Quote</p>
                             </a>
                         </li>
                
                         <li class="nav-item">
-                            <a href="{{ route('quotes.archive') }}" class="nav-link sidebar-border-left {{ $route == 'quotes.view.archive' || $route == 'quotes.archive' ? 'active' : '' }}">
+                            <a href="{{ route('quotes.archive') }}" class="nav-link sidebar-border-left {{ in_array($route, ['quotes.view.archive', 'quotes.archive']) ? 'active' : '' }}">
                                 <i class="fa fa-archive nav-icon"></i>
                                 <p>Archived</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('groups.index') }}" class="nav-link sidebar-border-left {{ $route == 'groups.index' || $route == 'groups.create' || $route == 'groups.edit' ? 'active' : '' }}">
+                            <a href="{{ route('groups.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['groups.index', 'groups.create', 'groups.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-users nav-icon"></i>
                                 <p>View Group Quote</p>
                             </a>
@@ -133,7 +133,7 @@
 
                         
                         <li class="nav-item">
-                            <a href="{{ route('quotes.compare.quote') }}" class="nav-link sidebar-border-left {{ $route == 'quotes.compare.quote' ? 'active' : '' }}">
+                            <a href="{{ route('quotes.compare.quote') }}" class="nav-link sidebar-border-left {{ in_array($route, ['quotes.compare.quote']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>Compare Quote</p>
                             </a>
@@ -143,14 +143,14 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('customers.index') }}" class="nav-link {{ $route == 'customers.index' || $route == 'customers.quote.listing' || $route == 'customers.booking.listing'  ? 'active' : '' }}">
+                    <a href="{{ route('customers.index') }}" class="nav-link {{ in_array($route, ['customers.index', 'customers.quote.listing', 'customers.booking.listing']) ? 'active' : '' }}">
                         <i class="fa fa-user nav-icon"></i>
                         <p>Customers</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('templates.index') }}" class="nav-link {{ $route == 'templates.index' || $route == 'templates.edit' || $route == 'templates.create' ? 'active' : '' }}">
+                    <a href="{{ route('templates.index') }}" class="nav-link {{ in_array($route, ['templates.index', 'templates.create', 'templates.edit']) ? 'active' : '' }}">
                         <i class="fa fa-clone nav-icon"></i>
                         <p>Templates</p>
                     </a>
@@ -375,7 +375,7 @@
 
 
                         <li class="nav-item">
-                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
+                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest" class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train & POI </p>
                             </a>
@@ -392,7 +392,7 @@
            
 
                         <li class="nav-item">
-                            <a href="{{ route('hotels.index') }}" class="nav-link sidebar-border-left {{ $route == 'hotels.index' || $route == 'hotels.create' || $route == 'hotels.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('hotels.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['hotels.index', 'hotels.create', 'hotels.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-hotel nav-icon"></i>
                                 <p>Hotels</p>
                             </a>
@@ -401,14 +401,14 @@
         
 
                         <li class="nav-item">
-                            <a href="{{ route('locations.index') }}" class="nav-link sidebar-border-left {{ $route == 'locations.index' || $route == 'locations.create' || $route == 'locations.edit' ? 'active' : '' }}">
+                            <a href="{{ route('locations.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['locations.index', 'locations.create', 'locations.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Locations</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('payment_methods.index') }}" class="nav-link sidebar-border-left {{ $route == 'payment_methods.index' || $route == 'payment_methods.create' || $route == 'payment_methods.edit' ? 'active' : '' }}">
+                            <a href="{{ route('payment_methods.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['payment_methods.index', 'payment_methods.create', 'payment_methods.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-money-check-alt"></i>
                                 <p>
                                     Payment Methods
@@ -417,21 +417,21 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('preset_comments.index') }}" class="nav-link sidebar-border-left {{ $route == 'preset_comments.index' || $route == 'preset_comments.create' || $route == 'preset_comments.edit' ? 'active' : '' }}">
+                            <a href="{{ route('preset_comments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['preset_comments.index', 'preset_comments.create', 'preset_comments.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-comment nav-icon"></i>
                                 <p>Preset Comments</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('seasons.index') }}" class="nav-link sidebar-border-left {{ $route == 'seasons.index'|| $route == 'seasons.create' || $route == 'seasons.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('seasons.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['seasons.index', 'seasons.create', 'seasons.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-cloud nav-icon"></i>
                                 <p>Seasons</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('store_texts.index') }}" class="nav-link sidebar-border-left {{ $route == 'store_texts.index' || $route == 'store_texts.create' || $route == 'store_texts.edit'  ? 'active' : '' }}">
+                            <a href="{{ route('store_texts.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['store_texts.index', 'store_texts.create', 'store_texts.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-file-word nav-icon" aria-hidden="true"></i>
                                 <p>Stored Text</p>
                             </a>
@@ -440,7 +440,7 @@
                 </li>
                 @endif
 
-                <li class="nav-item {{ $route == 'reports.user.report' || $route == 'reports.activity.by.user' || $route == 'reports.supplier.report' || $route == 'reports.wallet.report' || $route == 'reports.quote.report' || $route == 'reports.customer.report' || $route == 'reports.payment.method.report' ||  $route == 'reports.refund.by.bank.report' || $route == 'reports.refund.by.credit.note.report' || $route == 'reports.transfer.report' || $route == 'reports.commission.report' ? 'menu-open': '' }}">
+                <li class="nav-item {{ in_array($route, ['reports.user.report', 'reports.activity.by.user', 'reports.supplier.report', 'reports.wallet.report', 'reports.quote.report', 'reports.customer.report', 'reports.payment.method.report', 'reports.refund.by.bank.report', 'reports.refund.by.credit.note.report', 'reports.transfer.report', 'reports.commission.report']) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
                         <i class="fa fa-chart-bar nav-icon"></i>
