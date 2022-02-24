@@ -44,6 +44,14 @@ body{
     background-color: #f8f9fa;
     transition: 0.7s;
 }
+
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #16181b;
+    text-decoration: none;
+    background-color: #e9ecef;
+    transition: 0.7s;
+}
+
 // Dropdown Anchor Hover effect
 
 

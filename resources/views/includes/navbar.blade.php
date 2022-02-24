@@ -11,19 +11,19 @@
       <a class="nav-link align-middle" data-toggle="dropdown" href="#">
         <i class="fa fa-user text-dark pr-1" aria-hidden="true"></i>
         <span class="text-dark">{{ (Auth::user()->name) }}</span> &nbsp;
-        <i class="fa fa-caret-down text-dark" aria-hidden="true"></i>
+        <i class="fa fa-caret-down text-secondary" aria-hidden="true"></i>
       </a>
 
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right shadow-sm border">
         <div class="dropdown-divider"></div>
         <a href="{{ route('users.edit', [encrypt(Auth::id()), 'profile']) }}" class="dropdown-item">
-          <i class="fas fa-user-edit mr-2"></i>Edit Profile
+          <i class="fas fa-user-edit mr-2 text-dark"></i>Edit Profile
         </a>   
         <div class="dropdown-divider"></div>
         <form id="frm-logout" action="{{ route('logout') }}" method="POST" >
           @csrf
           <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+            <i class="fas fa-sign-out-alt mr-2 text-red"></i>Logout
           </a>    
         </form>
       </div>

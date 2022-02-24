@@ -4688,6 +4688,14 @@ body.swal2-toast-shown .swal2-container.swal2-bottom-right {
   transition: 0.7s;
 }
 
+.dropdown-item:focus,
+.dropdown-item:hover {
+  color: #16181b;
+  text-decoration: none;
+  background-color: #e9ecef;
+  transition: 0.7s;
+}
+
 [class*=sidebar-dark-] .nav-sidebar > .nav-item.menu-open > .nav-link,
 [class*=sidebar-dark-] .nav-sidebar > .nav-item:hover > .nav-link,
 [class*=sidebar-dark-] .nav-sidebar > .nav-item > .nav-link:focus {
