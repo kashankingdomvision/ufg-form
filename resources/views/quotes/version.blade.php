@@ -403,7 +403,7 @@
                             @endphp
 
 
-                            <div class="mb-2 appendCount border rounded p-3" id="appendCount{{ $count }}">
+                            <div class="mb-2 appendCount border rounded p-3 mb-1" id="appendCount{{ $count }}">
 
                               <div class="row">
                                 <div class="col-md-12">
