@@ -191,7 +191,7 @@ $(document).ready(function () {
         Swal.fire({
           title: 'Are you sure?',
           text: message,
-          icon: 'warning',
+          icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#28a745',
           cancelButtonColor: '#dc3545',
@@ -343,7 +343,7 @@ $(document).ready(function () {
         Swal.fire({
           title: 'Are you sure?',
           text: message,
-          icon: 'warning',
+          icon: 'question',
           showCancelButton: true,
           confirmButtonColor: '#28a745',
           cancelButtonColor: '#dc3545',
