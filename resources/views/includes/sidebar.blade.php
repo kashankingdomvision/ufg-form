@@ -83,7 +83,7 @@
                 data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="{{ route('dashboard.index') }}" class="nav-link  {{ $route == 'dashboard.index' ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.index') }}" class="nav-link {{ in_array($route, ['dashboard.index']) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -375,7 +375,7 @@
 
 
                         <li class="nav-item">
-                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link sidebar-border-left d-inline-flex  {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
+                            <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest " class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-map-marker nav-icon"></i>
                                 <p>Harbours, Train & POI </p>
                             </a>
