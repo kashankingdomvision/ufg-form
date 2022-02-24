@@ -454,7 +454,7 @@
                     @if($quote->pax_no >= 1)
                       @foreach ($quote->getPaxDetail as $paxKey => $pax )
                         @php $count = $paxKey + 1; @endphp
-                        <div class="appendCount" id="appendCount{{ $count }}">
+                        <div class="appendCount border rounded p-3" id="appendCount{{ $count }}">
                             
                           <div class="row">
                             <div class="col-md-12">

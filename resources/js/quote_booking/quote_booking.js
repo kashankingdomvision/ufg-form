@@ -415,7 +415,7 @@ $(document).ready(function() {
         if (agencyVal == $_val) {
             var count = 1;
             var $v_html = `
-            <div class="mb-1 appendCount" id="appendCount${count}">
+            <div class="mb-1 appendCount border rounded p-3" id="appendCount${count}">
                 <div class="row">
 
                     <div class="col-md-3">
@@ -540,7 +540,7 @@ $(document).ready(function() {
                 }
 
                 const $_html = `
-                <div class="mb-1 appendCount" id="appendCount${count}">
+                <div class="mb-1 appendCount border rounded p-3" id="appendCount${count}">
                     <div class="row">
                         <div class="col-md-12">
                             <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
