@@ -469,11 +469,11 @@
                     @if($booking->pax_no >= 1)
                       @foreach ($booking->getPaxDetail as $paxKey => $pax )
                         @php $count = $paxKey + 1; @endphp
-                        <div class="mt-1 appendCount" id="appendCount{{ $count }}">
+                        <div class="mt-1 appendCount border rounded p-3 mb-1" id="appendCount{{ $count }}">
                           <div class="row">
 
                             <div class="col-md-12">
-                              <button type="button" class="remove-pax-column mt-2 btn btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
+                              <button type="button" class="remove-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-times" aria-hidden="true"></i></button>
                             </div>
 
                             <div class="col-md-3">
