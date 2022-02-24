@@ -91,11 +91,9 @@
 
 
     @if($quote->booking_status == 'quote')
-        <form class="" method="POST" action="{{ route('quotes.clone', encrypt($quote->id)) }}">
+        <form method="POST" class="multiple-alert mr-2" data-action_type="clone_quote" action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}">
             @csrf @method('patch')
-            <button type="submit" title="Quote Clone"  onclick="return confirm('Are you sure you would like to Clone this Quote?');" class="mr-2 btn btn-outline-secondary btn-xs" data-title="Clone Quotation" data-target="#clone_quote">
-                <i class="fa fa-clone"></i>
-            </button>
+            <button type="submit" title="Quote Clone" class="btn btn-outline-secondary btn-xs" data-title="Clone Quote" data-target="#clone_quote"><i class="fa fa-clone"></i></button>
         </form>
     @endif
 
