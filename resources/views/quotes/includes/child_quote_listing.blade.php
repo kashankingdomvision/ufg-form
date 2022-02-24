@@ -39,7 +39,9 @@
     <td>{{ $quote->formated_booking_date }}</td>
     <td>{{ $quote->formated_created_at }}</td>
     <td>{{ isset($quote->getCreatedBy->name) && !empty($quote->getCreatedBy->name) ? $quote->getCreatedBy->name : '' }}</td>
+    
     <td width="10%" class="d-flex">
+
         @if($quote->booking_status == 'quote')
             <a href="{{ route('quotes.edit', encrypt($quote->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="Edit" data-target="#edit" title="Edit">
                 <i class="fas fa-edit"></i>
@@ -50,7 +52,8 @@
                 <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i></button>
             </form>
         @endif
-        @if($quote->booking_status == 'quote' || $quote->booking_status == 'cancelled')
+
+        @if(in_array($quote->booking_status, ['quote', 'cancelled']))
             <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                 <span class="fa fa-eye"></span>
             </a>

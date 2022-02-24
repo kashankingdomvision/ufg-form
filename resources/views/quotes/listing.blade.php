@@ -235,7 +235,7 @@
                                                             </form>
                                                         @endif
 
-                                                        @if($quote->booking_status == 'quote' || $quote->booking_status == 'cancelled')
+                                                        @if(in_array($quote->booking_status, ['quote', 'cancelled']))
                                                             <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                                 <span class="fa fa-eye"></span>
                                                             </a>
