@@ -502,11 +502,10 @@ $(document).ready(function () {
       });
     }
   });
-  $(document).on('submit', ".multiple-alert", function (event) {
+  $(document).on('click', ".multiple-alert", function (event) {
     var _this = this;
 
-    event.preventDefault();
-    var url = $(this).attr('action');
+    var url = $(this).data('action');
     var actionType = $(this).data('action_type');
     var message = "";
     var buttonText = "";
@@ -549,6 +548,7 @@ $(document).ready(function () {
                 modal.find('#booking_net_price').val(data.booking_net_price);
                 modal.find('#booking_net_price_text').text("Cancellation Charges should not be greater ".concat(data.booking_net_price, " ").concat(data.booking_currency_code));
                 modal.find('#booking_id').val(booking_id);
+                modal.find('#action_type').val(actionType);
                 modal.find('#booking_currency_code').text(data.booking_currency_code);
               }
             },
@@ -558,9 +558,8 @@ $(document).ready(function () {
 
         if (actionType == "restore_booking") {
           $.ajax({
-            type: 'POST',
+            type: 'PATCH',
             url: url,
-            data: new FormData(_this),
             contentType: false,
             cache: false,
             processData: false,

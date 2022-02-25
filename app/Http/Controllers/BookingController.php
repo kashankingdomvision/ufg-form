@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
 use App\Airline;
@@ -813,7 +814,14 @@ class BookingController extends Controller
                 'success_message' => $message,
             ]);
           
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
+
+            if(in_array($action_type, ['cancel_booking'])){
+                
+                if(count($exception->errors()) > 0){
+                    return response()->json([ 'errors' => $exception->errors() ], 422);
+                }
+            }
 
             return response()->json([ 
                 'status'        => false, 
@@ -824,6 +832,18 @@ class BookingController extends Controller
 
     public function cancelBooking($id)
     {
+        $rules = [
+            'cancellation_charges' => 'required|numeric|lte:booking_net_price',
+            'cancellation_reason'  => 'required'
+        ];
+
+        $messages = [
+            'cancellation_charges.required'  => 'The Cancellation Charges field is required.',
+            'cancellation_reason.required'   => 'The cancellation Reason field is required.',
+        ];
+
+        Validator::make(request()->all(), $rules, $messages)->validate();
+
         $total_refund_amount = request()->booking_net_price - request()->cancellation_charges;
 
         BookingCancellation::create([

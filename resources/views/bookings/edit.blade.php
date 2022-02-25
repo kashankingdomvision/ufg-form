@@ -90,17 +90,11 @@
               </a>
 
               @if($booking->booking_status == 'confirmed')
-                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}">
-                  @csrf @method('patch')
-                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Booking"><i class="fa fa-times mr-2"></i>Cancel Booking</button>
-                </form>
+                <button type="button" class="multiple-alert mr-2 float-right btn btn-danger btn-sm" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times mr-2"></i>Cancel Booking</button>
               @endif
 
               @if($booking->booking_status == 'cancelled')
-                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="restore_booking" action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}">
-                  @csrf @method('patch')
-                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Restore Booking"><i class="fa fa-undo-alt mr-2"></i>Restore Booking</button>
-                </form>
+                <button type="button" class="multiple-alert mr-2 float-right btn btn-success btn-sm"  data-action_type="restore_booking" data-action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}" title="Restore Booking"><i class="fa fa-undo-alt mr-2"></i>Restore Booking</button>
               @endif
             </div>
 

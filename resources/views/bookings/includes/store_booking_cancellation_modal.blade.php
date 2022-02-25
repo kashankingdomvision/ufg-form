@@ -15,6 +15,7 @@
             <input type="hidden" name="booking_net_price" id="booking_net_price">
             <input type="hidden" name="booking_currency_id" id="booking_currency_id">
             <input type="hidden" name="booking_id" id="booking_id">
+            <input type="hidden" name="action_type" id="action_type">
 
             <div class="form-group">
               <label>Cancellation Charges <span style="color:red">*</span></label>

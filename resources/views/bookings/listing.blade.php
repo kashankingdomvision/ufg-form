@@ -179,17 +179,11 @@
                                                     </a>
 
                                                     @if($booking->booking_status == 'confirmed')
-                                                        <form method="POST" class="multiple-alert" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}">
-                                                            @csrf @method('patch')
-                                                            <button type="submit" class="btn btn-xs btn-outline-danger" data-title="" data-target="#" title="Cancel Booking"><i class="fa fa-times"></i></button>
-                                                        </form>
+                                                        <button type="button" class="multiple-alert float-right btn btn-outline-danger btn-xs" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times"></i></button>
                                                     @endif
                                         
                                                     @if($booking->booking_status == 'cancelled')
-                                                        <form method="POST" class="multiple-alert" data-action_type="restore_booking" action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}">
-                                                            @csrf @method('patch')
-                                                            <button type="submit" class="btn btn-xs btn-outline-success" data-title="" data-target="#" title="Restore Booking"><i class="fa fa-undo-alt"></i></button>
-                                                        </form>
+                                                        <button type="button" class="multiple-alert float-right btn btn-outline-success btn-xs" data-action_type="restore_booking" data-action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}" title="Restore Booking"><i class="fa fa-undo-alt"></i></button>
                                                     @endif
 
 
