@@ -1,5 +1,5 @@
 <div class="modal fade" id="store_booking_cancellation_modal">
-    <div class="modal-dialog   modal-lg">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Cancel Booking</h4>
@@ -32,15 +32,15 @@
 
             <div class="form-group">
               <label>Cancellation Reason <span style="color:red">*</span></label>
-              <textarea id="cancellation_reason" name="cancellation_reason" class="form-control hide-arrows"  placeholder="Enter Cancellation Reason" rows="4" cols="50"></textarea>
+              <textarea id="cancellation_reason" name="cancellation_reason" class="form-control hide-arrows"  placeholder="Enter Cancellation Reason" rows="2" cols="50"></textarea>
               <span class="text-danger" role="alert"></span>
             </div>
           </div>
 
     
           <div class="modal-footer justify-content-right">
-            <button type="submit" class="btn btn-primary">
-              <span class="mr-2 " role="status" aria-hidden="true"></span>
+            <button type="submit" class="btn btn-success">
+              <span class="" role="status" aria-hidden="true"></span>
               Submit
             </button>
 

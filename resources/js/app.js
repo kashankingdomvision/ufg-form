@@ -143,7 +143,7 @@ $(document).ready(function($) {
 
     window.addModalFormLoadingStyles = function(formSelector) {
 
-        $(`${formSelector} button[type="submit"]`).find('span').addClass(`spinner-border spinner-border-sm`);
+        $(`${formSelector} button[type="submit"]`).find('span').addClass(`mr-2 spinner-border spinner-border-sm`);
     }
 
     window.removeModalFormLoadingStyles = function(formSelector) {

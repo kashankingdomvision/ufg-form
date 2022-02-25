@@ -67200,7 +67200,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.addModalFormLoadingStyles = function (formSelector) {
-    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass("spinner-border spinner-border-sm");
+    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass("mr-2 spinner-border spinner-border-sm");
   };
 
   window.removeModalFormLoadingStyles = function (formSelector) {
