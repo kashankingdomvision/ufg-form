@@ -76,7 +76,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('category-detail-feilds', array('as' => 'category.detail.feilds', 'uses' => 'BookingController@category_detail_feilds'));
 
         /* Booking Multiple Alert Patches Route */
-        Route::patch('multiple-alert/{type}/{id}', array('as' => 'multiple.alert', 'uses' => 'BookingController@multipleAlert'));
+        Route::post('multiple-alert/{type}/{id}', array('as' => 'multiple.alert', 'uses' => 'BookingController@multipleAlert'));
     });
 
 

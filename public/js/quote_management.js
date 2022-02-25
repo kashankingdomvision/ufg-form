@@ -2227,11 +2227,8 @@ $(document).ready(function () {
       }
     }
   });
-  $(document).on('submit', ".multiple-alert", function (event) {
-    var _this = this;
-
-    event.preventDefault();
-    var url = $(this).attr('action');
+  $(document).on('click', ".multiple-alert", function (event) {
+    var url = $(this).data('action');
     var actionType = $(this).data('action_type');
     var message = "";
     var buttonText = "";
@@ -2279,9 +2276,8 @@ $(document).ready(function () {
     }).then(function (result) {
       if (result.isConfirmed) {
         $.ajax({
-          type: 'POST',
+          type: 'PATCH',
           url: url,
-          data: new FormData(_this),
           contentType: false,
           cache: false,
           processData: false,

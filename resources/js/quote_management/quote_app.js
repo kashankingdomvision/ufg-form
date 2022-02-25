@@ -691,11 +691,9 @@ $(document).ready(function() {
 
     });
 
-    $(document).on('submit', ".multiple-alert", function(event) {
+    $(document).on('click', ".multiple-alert", function(event) {
 
-        event.preventDefault();
-
-        let url        = $(this).attr('action');
+        let url        = $(this).data('action');
         let actionType = $(this).data('action_type');
         let message    = "";
         let buttonText = "";
@@ -733,7 +731,6 @@ $(document).ready(function() {
                 break;
         }
 
-
         Swal.fire({
             title: 'Are you sure?',
             text: message,
@@ -745,9 +742,8 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: 'POST',
+                    type: 'PATCH',
                     url: url,
-                    data: new FormData(this),
                     contentType: false,
                     cache: false,
                     processData: false,

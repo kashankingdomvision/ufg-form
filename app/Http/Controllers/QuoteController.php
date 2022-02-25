@@ -932,9 +932,6 @@ class QuoteController extends Controller
                 Quote::findOrFail(decrypt($id))->update([ 'is_archive' => 0 ]);
                 $message = "Quote Unarchived Successfully.";
             }
-
-
-      
     
             return response()->json([ 
                 'status'          => true, 

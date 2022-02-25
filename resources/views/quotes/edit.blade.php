@@ -67,24 +67,15 @@
               @endif
 
               @if($quote->booking_status == 'quote')
-                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="cancel_quote" action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}">
-                  @csrf @method('patch')
-                  <button type="submit" class="btn btn-danger btn-sm" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
-                </form>
+                <button type="button" class="multiple-alert btn btn-danger btn-sm float-right mr-2" data-action_type="cancel_quote" data-action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
               @endif
 
               @if($quote->booking_status == 'quote')
-                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
-                  @csrf @method('patch')
-                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
-                </form>
+                <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
               @endif
 
               @if($quote->booking_status == 'cancelled')
-                <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="restore_quote" action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}">
-                  @csrf @method('patch')
-                  <button type="submit" class="btn btn-success btn-sm" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
-                </form>
+                <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="restore_quote" data-action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
               @endif
             </div>
 
