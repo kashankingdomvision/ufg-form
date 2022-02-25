@@ -17,6 +17,7 @@ require('./asset/summernote/summernote-bs4.min');
 require('./asset/bootstrap/bootstrap.bundle.min');
 require('./asset/adminlte/adminlte');
 require('./asset/intl_tel_input/utils');
+require('./asset/pace/pace.min');
 
 $(document).ready(function($) {
 

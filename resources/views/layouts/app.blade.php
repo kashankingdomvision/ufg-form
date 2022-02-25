@@ -9,7 +9,6 @@
         <link rel="icon" href="{{ asset('images/logos/fav-icon.png') }}"  sizes="32x32">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
         <style>
             .iti__flag {background-image: url("{{ asset('images/intl-tel-input/flags.png')}}") ;}
             @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
