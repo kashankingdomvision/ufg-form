@@ -4832,6 +4832,10 @@ th {
   border-left: 2px solid #dee2e6 !important;
 }
 
+.navbar-shadow {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.025) !important;
+}
+
 [class*=sidebar-dark-] {
   background-color: #263544;
 }
