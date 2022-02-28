@@ -619,8 +619,7 @@ class ResponseController extends Controller
         return response()->json($respons);
     }
 
-    public function filter_currency_rate(Request $request)
-    {
+    public function filterCurrencyRate(Request $request){
         $query = DB::table('currency_conversions');
 
         if(!is_null($request->selected_currencies)){

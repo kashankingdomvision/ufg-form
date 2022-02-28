@@ -741,12 +741,8 @@ $(document).ready(function() {
           
     $(document).on('change', '.view-rate-booking-currency-filter', function(){
 
-        var url                = `${BASEURL}filter-currency-rate/${selectedCurrencies}`;
         var selectedCurrencies = $(this).val();
-    
-        if (selectedCurrencies == ''){
-            selectedCurrencies = [];
-        }
+        var url                = `${BASEURL}filter-currency-rate`;
     
         $.ajax({
             type: 'get',

@@ -1848,13 +1848,8 @@ $(document).ready(function () {
     }
   });
   $(document).on('change', '.view-rate-booking-currency-filter', function () {
-    var url = "".concat(BASEURL, "filter-currency-rate/").concat(selectedCurrencies);
     var selectedCurrencies = $(this).val();
-
-    if (selectedCurrencies == '') {
-      selectedCurrencies = [];
-    }
-
+    var url = "".concat(BASEURL, "filter-currency-rate");
     $.ajax({
       type: 'get',
       url: url,
