@@ -71,7 +71,7 @@
               @endif
 
               @if($quote->booking_status == 'quote')
-                <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Convert to Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Convert to Booking</button>
+                <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Confirm Booking</button>
               @endif
 
               @if($quote->booking_status == 'cancelled')

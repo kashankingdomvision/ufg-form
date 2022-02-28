@@ -49,7 +49,7 @@
 
             <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
                 @csrf @method('patch')
-                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><i class="fa fa-check"></i></button>
+                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Confirm Booking"><i class="fa fa-check"></i></button>
             </form>
         @endif
 

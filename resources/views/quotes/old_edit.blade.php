@@ -88,7 +88,7 @@
                 @if($quote->booking_status == 'quote')
                   <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                     @csrf @method('patch')
-                    <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Convert to Booking">Convert to Booking</button>
+                    <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Confirm Booking">Confirm Booking</button>
                   </form>
                 @endif
 

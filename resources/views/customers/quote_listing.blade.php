@@ -290,7 +290,7 @@
                                                             </a>
                                                             <form class="mr-2 " method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                                                                 @csrf @method('patch')
-                                                                <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Convert to Booking"><span class="fa fa-check"></span></button>
+                                                                <button type="submit" onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Confirm Booking"><span class="fa fa-check"></span></button>
                                                             </form>
                                                         @endif
                                                         @if($quote->booking_status == 'quote' || $quote->booking_status == 'cancelled')

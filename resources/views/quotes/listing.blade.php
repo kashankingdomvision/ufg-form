@@ -229,7 +229,7 @@
                                                                 <i class="fas fa-edit"></i>
                                                             </a>
 
-                                                            <button type="button" class="multiple-alert btn btn-outline-success btn-xs float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Convert to Booking"><i class="fa fa-check"></i></button>
+                                                            <button type="button" class="multiple-alert btn btn-outline-success btn-xs float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i></button>
                                                         @endif
 
                                                         @if(in_array($quote->booking_status, ['quote', 'cancelled']))
