@@ -224,7 +224,7 @@
                             <!-- Modals -->
 
                                 <!-- bookings -->
-                                @include('bookings.includes.store_booking_cancellation_modal').
+                                @include('bookings.includes.store_booking_cancellation_modal')
                             <!-- End Modals  -->
                         </div>
                         <div class="card-footer clearfix">
