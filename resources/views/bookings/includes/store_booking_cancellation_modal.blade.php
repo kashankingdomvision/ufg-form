@@ -7,7 +7,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" method="POST"  id="cancel_booking_submit">
+        <form action="" method="POST"  id="cancel_booking_submit">
           @csrf @method('patch')
 
           <div class="modal-body">
