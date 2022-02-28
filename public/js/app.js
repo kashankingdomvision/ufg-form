@@ -67441,6 +67441,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         format: 'dd/mm/yyyy'
       });
     }
+    /*  Datepicker fixed code for jQuery UI Sortable */
+
+
+    $('.datepicker').datepicker().on('hide', function (e) {
+      $(this).blur();
+    });
   }; //tel input end
   //intl-tel-input ************** Start ******************** //
   // function intTelinput(key = null, inVal = null) {

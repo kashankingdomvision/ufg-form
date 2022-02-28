@@ -403,6 +403,11 @@ $(document).ready(function($) {
         } else {
             $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
         }
+
+        /*  Datepicker fixed code for jQuery UI Sortable */
+        $('.datepicker').datepicker().on('hide', function(e) {
+            $(this).blur(); 
+        });
     }
 
     //tel input end
