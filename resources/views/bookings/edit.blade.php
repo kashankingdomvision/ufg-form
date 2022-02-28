@@ -1928,7 +1928,7 @@
                       <h3 class="card-title font-weight-bold">UFG Payment System</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
-                      <table class="table table-hover text-nowrap text-nowrap">
+                      <table class="table table-hover text-nowrap">
                         <thead>
                           <tr>
                             <th class="text-center">Ref #</th>
@@ -1990,7 +1990,7 @@
                       <h3 class="card-title font-weight-bold">Old UFG Payment System</h3>
                     </div>
                     <div class="card-body table-responsive p-0">
-                      <table class="table table-hover text-nowrap text-nowrap">
+                      <table class="table table-hover text-nowrap">
                         <thead>
                           <tr>
                             <th class="text-center">Ref #</th>

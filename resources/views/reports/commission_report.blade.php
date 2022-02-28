@@ -194,7 +194,7 @@
 
             <div class="card-body p-0">
               <div class="table-responsive">
-                <table class="table table-hover text-nowrap text-nowrap">
+                <table class="table table-hover text-nowrap">
                   <thead>
                     <tr>
                         <th>Booking Ref #	</th>
