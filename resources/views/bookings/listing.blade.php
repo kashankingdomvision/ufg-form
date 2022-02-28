@@ -179,7 +179,7 @@
                                                     </a>
 
                                                     @if($booking->booking_status == 'confirmed')
-                                                        <button type="button" class="multiple-alert float-right btn btn-outline-danger btn-xs" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" action="{{ route('bookings.multiple.alert', ['cancel_quote', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times"></i></button>
+                                                        <button type="button" class="multiple-alert float-right btn btn-outline-danger btn-xs" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" data-action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times"></i></button>
                                                     @endif
                                         
                                                     @if($booking->booking_status == 'cancelled')
@@ -220,6 +220,12 @@
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!-- Modals -->
+
+                                <!-- bookings -->
+                                @include('bookings.includes.store_booking_cancellation_modal').
+                            <!-- End Modals  -->
                         </div>
                         <div class="card-footer clearfix">
                             <ul class="pagination pagination-sm m-0 float-right">
@@ -233,10 +239,6 @@
     </section>
 </div>
 
-  <!-- Modals -->
-    <!-- bookings -->
-        @include('bookings.includes.store_booking_cancellation_modal').
-    <!-- End Modals  -->
 @endsection
 
 @push('js')

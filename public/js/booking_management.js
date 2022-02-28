@@ -544,6 +544,7 @@ $(document).ready(function () {
             success: function success(data) {
               if (data !== null && data !== '' && data !== undefined) {
                 modal.modal('show');
+                modal.find('#cancel_booking_submit').attr("action", data.form_action);
                 modal.find('#booking_currency_id').val(data.booking_currency_id);
                 modal.find('#booking_net_price').val(data.booking_net_price);
                 modal.find('#booking_net_price_text').text("Cancellation Charges should not be greater ".concat(data.booking_net_price, " ").concat(data.booking_currency_code));

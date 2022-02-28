@@ -701,16 +701,16 @@ class BookingController extends Controller
     }
     
     public function get_booking_net_price($id){
-      
+
         $booking = Booking::find($id); 
 
-        $booking_data = array(
-            'booking_net_price'  => $booking->net_price,
-            'booking_currency_id' => $booking->currency_id,
-            'booking_currency_code' => $booking->getCurrency->code,
-        );
+        return [
 
-        return $booking_data;
+            'booking_net_price'     => $booking->net_price,
+            'booking_currency_id'   => $booking->currency_id,
+            'booking_currency_code' => $booking->getCurrency->code,
+            'form_action'           => route('bookings.multiple.alert', ['cancel_booking', encrypt($id)])
+        ];
     }
 
     public function cancel_booking(CancelBookingRequest $request){ 
@@ -839,7 +839,7 @@ class BookingController extends Controller
 
         $messages = [
             'cancellation_charges.required'  => 'The Cancellation Charges field is required.',
-            'cancellation_reason.required'   => 'The cancellation Reason field is required.',
+            'cancellation_reason.required'   => 'The Cancellation Reason field is required.',
         ];
 
         Validator::make(request()->all(), $rules, $messages)->validate();
