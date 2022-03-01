@@ -51,7 +51,7 @@
                                 @foreach ($suppliers as $supplier)
                                   <option value="{{ $supplier->id }}" {{ request()->get('supplier_id') == $supplier->id  ? 'selected' : ''   }}>
                                     {{ $supplier->name }} - 
-                                    {{ $supplier->getCurrency->code }}
+                                    {{ isset($supplier->getCurrency->code) && !empty($supplier->getCurrency->code) ? $supplier->getCurrency->code : '' }}
                                   </option>
                                 @endforeach
                             </select>
