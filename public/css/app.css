@@ -4879,6 +4879,10 @@ form .card-footer {
   border-color: #515d69;
 }
 
+.dropdown-item:active > i {
+  color: #fff !important;
+}
+
 .rendered-form-parent {
   display: inline-flex;
   margin-bottom: 1rem;

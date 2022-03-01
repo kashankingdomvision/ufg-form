@@ -252,6 +252,10 @@ form .card-footer {
     background-color: #515d69;
     border-color: #515d69;
 }
+
+.dropdown-item:active > i {
+    color: #fff !important;
+}
 // button
 
 .rendered-form-parent {
