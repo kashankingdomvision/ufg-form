@@ -918,6 +918,7 @@ $(document).ready(function () {
 
       if (obj.type == 'text') elm.setAttribute('type', 'text');
       if (obj.type == 'number') elm.setAttribute('type', 'number');
+      if (obj.type == 'textarea') elm.setAttribute('rows', '1');
       elm.setAttribute('name', obj.name);
 
       if (obj.placeholder != undefined) {
