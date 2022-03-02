@@ -521,6 +521,11 @@ $(document).ready(function() {
                 message    = 'You want to Restore this Booking?';
                 buttonText = 'Restore';
                 break;
+
+            case "edit_booking":
+                message    = 'You want to Edit this Booking?';
+                buttonText = 'Edit';
+                break;
         }
 
         Swal.fire({
@@ -574,6 +579,10 @@ $(document).ready(function() {
                             printAlertResponse(response);
                         }
                     });
+                }
+
+                if(actionType == "edit_booking"){
+                    $('#show_booking :input').removeAttr('disabled');
                 }
             }
         });

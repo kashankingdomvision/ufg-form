@@ -91,6 +91,8 @@
 
               @if($booking->booking_status == 'confirmed')
                 <button type="button" class="multiple-alert mr-2 float-right btn btn-danger btn-sm" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" data-action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times mr-2"></i>Cancel Booking</button>
+
+                <button type="button" class="multiple-alert mr-2 float-right btn btn-success btn-sm" data-action_type="edit_booking" title="Edit Booking"><i class="fas fa-edit mr-2"></i>Edit Booking</button>
               @endif
 
               @if($booking->booking_status == 'cancelled')

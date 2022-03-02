@@ -67346,7 +67346,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       });
       /* Reload page if you are on edit page */
 
-      if (CURRENT_ROUTE_NAME.includes('edit')) {
+      if (!CURRENT_ROUTE_NAME.includes('index')) {
         setTimeout(function () {
           location.reload();
         }, 2500);
