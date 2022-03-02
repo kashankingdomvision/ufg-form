@@ -942,7 +942,8 @@ class QuoteController extends Controller
 
             return response()->json([ 
                 'status'        => false, 
-                'error_message' => "Something Went Wrong, Please Try Again."
+                // 'error_message' => "Something Went Wrong, Please Try Again."
+                'error_message' => $e->getMessage()
             ]);
         }
     }
@@ -954,7 +955,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));
+            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($booking, $qu_details, 'booking_details'));
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {
@@ -1080,11 +1081,11 @@ class QuoteController extends Controller
                 }
             }
 
-            if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
-                foreach ($qu_details->getQuoteDetailCountries as $detail) {
-                    QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
-                }
-            }
+            // if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
+            //     foreach ($qu_details->getQuoteDetailCountries as $detail) {
+            //         QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
+            //     }
+            // }
             
         }
     
