@@ -937,20 +937,18 @@
                               </div>
                             </div>
 
-                            @if( in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                            @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
                               <div class="col-md-3 d-flex justify-content-center">
                                 <div class="form-group">
-                                  <label>Added in Sage</label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <div class="icheck-primary">
-                                        <input type="hidden" name="quote[{{ $key }}][added_in_sage]" value="{{ $booking_detail->added_in_sage }}"><input data-name="added_in_sage" id="quote_{{ $key }}_added_in_sage" class="added-in-sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}> 
-                                      </div>
-                                    </div>
+                                  <label>Sage</label>
+                                  <div class="custom-control custom-checkbox">
+                                    <input name="quote[{{ $key }}][added_in_sage]" type="checkbox" id="quote_{{ $key }}_added_in_sage" value="{{$booking_detail->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}>
+                                    <label for="quote_{{ $key }}_added_in_sage" class="custom-control-label">Added in Sage</label>
                                   </div>
                                 </div>
                               </div>
                             @endif
+                            
                           </div>
                           <!-- End Administration row -->
 
