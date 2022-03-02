@@ -47,10 +47,7 @@
                 <i class="fas fa-edit"></i>
             </a>
 
-            <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
-                @csrf @method('patch')
-                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Confirm Booking"><i class="fa fa-check"></i></button>
-            </form>
+            <button type="button" class="multiple-alert btn btn-outline-success btn-xs float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i></button>
         @endif
 
         @if(in_array($quote->booking_status, ['quote', 'cancelled']))
