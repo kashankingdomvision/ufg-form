@@ -67643,6 +67643,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
    * -------------------------------------------------------------------------------------
    */
 
+  $(document).on('click', '.zero-one-checkbox', function () {
+    var value = $(this).val();
+
+    if (value == 0) {
+      $(this).val(1);
+    } else {
+      $(this).val(0);
+    }
+  });
   $(document).on('click', '.parent-row', function (e) {
     var parentID = $(this).data('id');
     $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');

@@ -109,10 +109,18 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="0"><input id="set_end_date_of_service"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="set_end_date_of_service"> &nbsp; Set End Date of Serive</label>
-                  </div>
+                  <div class="form-row parent mb-1">
+                    <div class="col-md-12">
+                      <label>Set Date of Service Feild</label>
+                    </div>
 
+                    <div class="col form-group">
+                      <div class="custom-control custom-checkbox">
+                        <input type="checkbox" id="set_end_date_of_service" value="0" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                        <label for="set_end_date_of_service" class="custom-control-label"> Set Same Start/End Date</label>
+                      </div>
+                    </div>
+                  </div>
                 </form>
                 
                 <div id="store_category_form_builder_div"></div>
@@ -174,3 +182,8 @@
       </div>
     </div>
   </section> --}}
+
+
+{{-- <div class="form-group">
+<input type="hidden" name="set_end_date_of_service" class="set_end_date_of_service" value="0"><input id="set_end_date_of_service"  type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"><label for="set_end_date_of_service"> &nbsp; Set Same Start/End Date of Service</label>
+</div> --}}

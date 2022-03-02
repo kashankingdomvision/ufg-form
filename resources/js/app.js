@@ -617,6 +617,17 @@ $(document).ready(function($) {
      * -------------------------------------------------------------------------------------
      */
 
+     $(document).on('click', '.zero-one-checkbox', function() {
+
+        let value = $(this).val();
+
+        if(value == 0){
+            $(this).val(1);
+        }else{
+            $(this).val(0);
+        }
+    });
+
     $(document).on('click', '.parent-row', function(e) {
         var parentID = $(this).data('id');
         $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
