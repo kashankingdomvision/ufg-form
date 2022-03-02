@@ -954,7 +954,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));
+            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($booking, $qu_details, 'booking_details'));
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {
