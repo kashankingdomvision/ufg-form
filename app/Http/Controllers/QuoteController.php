@@ -206,10 +206,16 @@ class QuoteController extends Controller
             'image'                             => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
         ];
 
-        if($type == 'quote_details' || $type == 'clone'){
+        if($type == 'quote_details'){
 
             $data['quote_id']             = $quote->id;
             $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
+        }
+
+        if($type == 'clone'){
+
+            $data['quote_id']             = $quote->id;
+            $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? $quoteD['supplier_country_ids'] : NULL ;
         }
 
         if($type == 'booking_details'){
@@ -1081,11 +1087,11 @@ class QuoteController extends Controller
                 }
             }
 
-            // if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
-            //     foreach ($qu_details->getQuoteDetailCountries as $detail) {
-            //         QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
-            //     }
-            // }
+            if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
+                foreach ($qu_details->getQuoteDetailCountries as $detail) {
+                    QuoteDetailCountry::create($this->getQuoteDetailCountryArray($clone, $quoteDetail, $detail->country_id, 'clone'));
+                }
+            }
             
         }
     
