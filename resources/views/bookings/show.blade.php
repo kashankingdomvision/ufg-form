@@ -984,7 +984,7 @@
 
                             <!-- Administration row -->
                             <hr>
-                            <h3 class="mt-1 mb-1-half"><span class="double-underline">Administration</span></h3>
+                            <h3 class="mt-1 mb-1-half"><span class="double-underline">Operations</span></h3>
                         
                             <div class="row administraion-row">
 
