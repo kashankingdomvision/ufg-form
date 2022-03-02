@@ -261,7 +261,7 @@
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
-                                                            <button type="button" class="multiple-alert btn btn-outline-secondary btn-xs mr-2" title="Quote Clones" data-action_type="clone_quote" data-action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}" data-target="#clone_quote"><i class="fa fa-clone"></i></button>
+                                                            <button type="button" class="multiple-alert btn btn-outline-secondary btn-xs mr-2" title="Clone Quote" data-action_type="clone_quote" data-action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}" data-target="#clone_quote"><i class="fa fa-clone"></i></button>
                                                         @endif
 
                                                         @if($quote->booking_status == 'quote')
