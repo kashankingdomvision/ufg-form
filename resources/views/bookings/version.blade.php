@@ -963,7 +963,7 @@
                                 $finance = (object) $finance;
                               @endphp
 
-                              <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                              <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
 
                               <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 {{ $finance->status == 'cancelled' ? 'cancelled-payment-styling' : '' }}" data-financekey="{{$fkey}}">
 
@@ -1051,7 +1051,7 @@
                               </div>
                             @endforeach
                           @else
-                            <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                            <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                             <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 mt-2" data-financekey="0">
                               <div class="col-sm-3">
                                 <div class="form-group">

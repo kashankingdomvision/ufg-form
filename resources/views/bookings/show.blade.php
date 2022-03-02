@@ -1069,7 +1069,7 @@
                             <section class="finance">
                               @php $total_deposit = 0; @endphp
                               @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
-                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                   @php
                                     $count = $fkey + 1;
@@ -1161,7 +1161,7 @@
                                   </div>
                                 @endforeach
                               @else
-                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2" data-financekey="0">
                                   
                                   <div class="col-md-12">
