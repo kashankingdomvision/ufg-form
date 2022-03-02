@@ -111,6 +111,13 @@
                     <ul class="nav nav-treeview">
 
                         <li class="nav-item">
+                            <a href="{{ route('quotes.create') }}" class="nav-link sidebar-border-left {{ in_array($route, ['quotes.create']) ? 'active' : '' }}">
+                                <i class="fa fa-plus nav-icon"></i>
+                                <p>Add Quote</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('quotes.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['quotes.index', 'quotes.edit', 'quotes.view.version', 'quotes.final', 'quotes.quote.documment']) ? 'active' : '' }}">
                                 <i class="fa fa-eye nav-icon"></i>
                                 <p>View Quote</p>
