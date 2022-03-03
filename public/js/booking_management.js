@@ -2466,25 +2466,25 @@ $(document).ready(function () {
       },
       success: function success(response) {
         if (response.category_details != '' && response.category_details != 'undefined') {
-          $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details);
-          console.log(JSON.parse(response.category_details));
+          $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details); // console.log(JSON.parse(response.category_details));
+
           createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
         } // Hide & Show Category details btn according to status
 
 
         if (response.category != "" && typeof response.category !== 'undefined') {
           if (response.category.show_tf == 1) {
-            $('.show-tf').removeClass('d-none');
+            quote.find('.show-tf').removeClass('d-none');
             quote.find('.show-tf .form-group .label-of-time-label').html(response.category.label_of_time);
           } else {
-            $('.show-tf').addClass('d-none');
+            quote.find('.show-tf').addClass('d-none');
           }
 
           if (response.category.second_tf == 1) {
-            $('.second-tf').removeClass('d-none');
+            quote.find('.second-tf').removeClass('d-none');
             quote.find('.second-tf .form-group .second-label-of-time').html(response.category.second_label_of_time);
           } else {
-            $('.second-tf').addClass('d-none');
+            quote.find('.second-tf').addClass('d-none');
           }
 
           if (response.category.quote == 1) {
