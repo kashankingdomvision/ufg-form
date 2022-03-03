@@ -133,6 +133,7 @@ class QuoteController extends Controller
             'commission_percentage'             =>  $request->commission_percentage??$request->commission_percentage,
             'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'booking_amount_per_person_in_osp'  =>  $request->booking_amount_per_person_in_osp??$request->booking_amount_per_person_in_osp,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'markup_type'                       =>  $request->markup_type??NULL,

@@ -1135,6 +1135,20 @@
                 </div>
 
                 <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text selling-price-other-currency-code">{{ isset($quote->selling_currency_oc) && !empty($quote->selling_currency_oc) ? $quote->selling_currency_oc : '' }}</span>
+                        </div>
+                        <input type="number" name="booking_amount_per_person_in_osp" value="{{ \Helper::number_format($quote->booking_amount_per_person_in_osp) }}" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
                   <div class="col-md-4"><label for="group_quote" class="col-form-label">Add into Group</label></div>
                   <div class="col-md-3 relevant-quote">
                     <select name="quote_group" class="form-control select2-single" id="group_quote">

@@ -87,6 +87,15 @@ $(document).ready(function() {
         $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
     }
 
+    window.getBookingAmountPerPersonInOtherSellingPrice = function() {
+
+        let paxNumber                     = parseFloat($(".pax-number").val());
+        let sellingPriceOtherCurrencyRate = $('.selling-price-other-currency-rate').val();
+        let bookingAmountPerPersonInOtherSellingPrice = sellingPriceOtherCurrencyRate / paxNumber;
+
+        $('.booking-amount-per-person-in-osp').val(check(bookingAmountPerPersonInOtherSellingPrice));
+    }
+
     window.getSellingPrice = function() {
 
         var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
@@ -101,6 +110,8 @@ $(document).ready(function() {
 
             $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
             $('.selling-price-other-currency-code').val(check(sellingPriceOtherCurrencyRate));
+
+            getBookingAmountPerPersonInOtherSellingPrice();
         }
 
         if (sellingPriceOtherCurrency == '') {
@@ -658,6 +669,7 @@ $(document).ready(function() {
         reinitializedSingleSelect2();
         
         getBookingAmountPerPerson();
+        getBookingAmountPerPersonInOtherSellingPrice();
     });
 
     $(document).on('click', '.add-pax-column', function () {
