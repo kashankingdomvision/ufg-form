@@ -16,6 +16,7 @@ class BookingDetailFinance extends Model
         'upload_to_calender',
         'additional_date',
         'outstanding_amount',
+        'added_in_sage',
         'status',
         'currency_id',
         'user_id'

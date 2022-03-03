@@ -626,6 +626,7 @@ $(document).ready(function($) {
         }else{
             $(this).val(0);
         }
+
     });
 
     $(document).on('click', '.parent-row', function(e) {

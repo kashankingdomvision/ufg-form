@@ -323,10 +323,21 @@ $(document).ready(function() {
                     return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
                 });
 
+                if(this.type == 'checkbox')
+                    $(this).val('0');
+                
+
             }).end().find('.depositeLabel').each(function() {
 
                 this.id = 'deposite_heading' + financeCloningLength;
                 $(this).text(`Payment #${financeCloningLength+1}`);
+
+            }).end()
+            .find('.finance-custom-control-label').each(function() {
+
+                let name = $(this).attr("data-name");
+
+                $(this).attr('for', `quote_${quoteKey}_finance_${financeCloningLength}_${name}`);
 
             }).end()
             .find("select").val("").each(function() {

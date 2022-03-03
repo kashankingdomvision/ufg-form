@@ -255,6 +255,9 @@ class BookingController extends Controller
 
     public function getFinanceBookingDetailsArray($quoteD)
     {
+
+        // dd($quoteD);
+
         return [
             "deposit_amount"        => $quoteD['deposit_amount']??NULL,
             "deposit_due_date"      => $quoteD['deposit_due_date']??NULL,
@@ -263,6 +266,7 @@ class BookingController extends Controller
             "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
             "additional_date"       => $quoteD['ab_number_of_days']??NULL,
             "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
+            "added_in_sage"         => $quoteD['added_in_sage'] ? $quoteD['added_in_sage'] : '0',
             "user_id"               => Auth::id(),
         ];
     }

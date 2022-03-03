@@ -364,9 +364,13 @@ $(document).ready(function () {
       }, function () {
         return "quote_".concat(quoteKey, "_finance_").concat(financeCloningLength, "_").concat(name);
       });
+      if (this.type == 'checkbox') $(this).val('0');
     }).end().find('.depositeLabel').each(function () {
       this.id = 'deposite_heading' + financeCloningLength;
       $(this).text("Payment #".concat(financeCloningLength + 1));
+    }).end().find('.finance-custom-control-label').each(function () {
+      var name = $(this).attr("data-name");
+      $(this).attr('for', "quote_".concat(quoteKey, "_finance_").concat(financeCloningLength, "_").concat(name));
     }).end().find("select").val("").each(function () {
       var n = 1;
       var name = $(this).attr("data-name");

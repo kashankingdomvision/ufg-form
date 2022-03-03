@@ -1046,18 +1046,6 @@
                                 </div>
                               </div>
 
-                              @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
-                                <div class="col-md-3 d-flex justify-content-center">
-                                  <div class="form-group">
-                                    <label>Sage</label>
-                                    <div class="custom-control custom-checkbox">
-                                      <input name="quote[{{ $key }}][added_in_sage]" type="checkbox" id="quote_{{ $key }}_added_in_sage" value="{{$booking_detail->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}>
-                                      <label for="quote_{{ $key }}_added_in_sage" class="custom-control-label">Added in Sage</label>
-                                    </div>
-                                  </div>
-                                </div>
-                              @endif
-
                             </div>
                             <!-- End Administration row -->
 
@@ -1154,6 +1142,20 @@
                                         </div>
                                       </div>
                                     </div>
+
+                                    @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                                      <div class="col-md-3 d-flex justify-content-center">
+                                        <div class="form-group">
+                                          <label>Sage</label>
+                                          <div class="custom-control custom-checkbox">
+                                            <input type="hidden" name="quote[{{ $key }}][finance][{{ $fkey }}][added_in_sage]" value="0"> 
+                                            <input name="quote[{{ $key }}][finance][{{$fkey}}][added_in_sage]" type="checkbox" id="quote_{{$key}}_finance_{{$fkey}}_added_in_sage" value="{{$finance->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($finance->added_in_sage == 1) ? 'checked': '' }}>
+                                            <label for="quote_{{$key}}_finance_{{$fkey}}_added_in_sage" data-name="added_in_sage" class="finance-custom-control-label custom-control-label">Added in Sage</label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    @endif
+                                    
                                   </div>
                                 @endforeach
                               @else
@@ -1203,8 +1205,6 @@
                                     </div>
                                   </div>
 
-                          
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Payment Method</label>
@@ -1239,6 +1239,20 @@
                                       </div>
                                     </div>
                                   </div>
+
+                                  @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                                    <div class="col-md-3 d-flex justify-content-center">
+                                      <div class="form-group">
+                                        <label>Sage</label>
+                                        <div class="custom-control custom-checkbox">
+                                          <input type="hidden" name="quote[{{ $key }}][finance][0][added_in_sage]" value="0"> 
+                                          <input type="checkbox" name="quote[{{ $key }}][finance][0][added_in_sage]" id="quote_{{$key}}_finance_0_added_in_sage" value="0" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                          <label for="quote_{{$key}}_finance_0_added_in_sage" data-name="added_in_sage" class="finance-custom-control-label custom-control-label">Added in Sage</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  @endif
+
                                 </div>
                               @endif
                             </section>
@@ -2090,6 +2104,18 @@
 @push('js')
   <script src="{{ asset('js/booking_management.js') }}" ></script>
 @endpush
+
+{{-- @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+  <div class="col-md-3 d-flex justify-content-center">
+    <div class="form-group">
+      <label>Sage</label>
+      <div class="custom-control custom-checkbox">
+        <input name="quote[{{ $key }}][added_in_sage]" type="checkbox" id="quote_{{ $key }}_added_in_sage" value="{{$booking_detail->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}>
+        <label for="quote_{{ $key }}_added_in_sage" class="custom-control-label">Added in Sage</label>
+      </div>
+    </div>
+  </div>
+@endif --}}
 
 {{-- <div class="col-sm-2">
   <div class="form-group">
