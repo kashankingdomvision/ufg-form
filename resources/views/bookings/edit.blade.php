@@ -1743,6 +1743,20 @@
                   </div>
                 </div>
 
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
+                        </div>
+                        <input type="number" name="booking_amount_per_person_in_osp" value="{{ \Helper::number_format($booking->booking_amount_per_person_in_osp) }}" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 @if($booking->booking_status == 'cancelled')
                   <section class="cancellation-payments-section">
 

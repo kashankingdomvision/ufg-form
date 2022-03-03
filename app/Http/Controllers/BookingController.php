@@ -198,6 +198,7 @@ class BookingController extends Controller
             'commission_percentage'             =>  $request->commission_percentage??$request->commission_percentage,
             'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'booking_amount_per_person_in_osp'  =>  $request->booking_amount_per_person_in_osp??$request->booking_amount_per_person_in_osp,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'agency_name'                       =>  (isset($request['agency_name']))? $request->agency_name : NULL,
             'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 

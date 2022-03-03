@@ -59,6 +59,7 @@ class CreateBookingsTable extends Migration
             $table->double('commission_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
+            $table->double('booking_amount_per_person_in_osp', 8, 2)->nullable();
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
