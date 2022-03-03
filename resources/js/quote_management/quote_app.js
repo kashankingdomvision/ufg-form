@@ -307,7 +307,7 @@ $(document).ready(function() {
         });
     });
 
-    $(document).on('submit', "#update_quote, #version_quote", function(event) {
+    $(document).on('submit', "#update_quote, #version_quote, #show_quote", function(event) {
 
         event.preventDefault();
         removeDisabledAttribute(".create-template [name=_method]");
@@ -729,6 +729,11 @@ $(document).ready(function() {
                 message    = 'You want to Unarchive this Quote?';
                 buttonText = 'Unarchive';
                 break;
+
+            case "edit_quote":
+                message    = 'You want to Edit this Quote?';
+                buttonText = 'Edit';
+                break;
         }
 
         Swal.fire({
@@ -741,16 +746,25 @@ $(document).ready(function() {
             confirmButtonText: `Yes, ${buttonText} it !`,
         }).then((result) => {
             if (result.isConfirmed) {
-                $.ajax({
-                    type: 'PATCH',
-                    url: url,
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    success: function(response) {
-                        printAlertResponse(response);
-                    }
-                });
+
+                if(['booked_quote', 'clone_quote', 'cancel_quote', 'restore_quote', 'archive_quote', 'unarchive_quote'].includes(actionType)){
+
+                    $.ajax({
+                        type: 'PATCH',
+                        url: url,
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        success: function(response) {
+                            printAlertResponse(response);
+                        }
+                    });
+                }
+
+                if(['edit_quote'].includes(actionType)){
+                    $('#show_quote :input').removeAttr('disabled');
+                }
+            
             }
         });
     });
