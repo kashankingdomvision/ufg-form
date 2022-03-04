@@ -674,6 +674,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::post('store-harbour', array('as' => 'response.harbours.store', 'uses' => 'ResponseController@storeHarbour'));
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
+        Route::post('store-hotel-code', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
 
 
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));

@@ -1005,7 +1005,7 @@ $(document).ready(function () {
       var modalID = {
         airport_codes: "store_airport_code_modal",
         harbours: "store_harbour_modal",
-        hotels: "store-hotel-modal"
+        hotels: "store_hotel_modal"
       };
       var icon = document.createElement('i');
       icon.setAttribute('class', 'fas fa-plus');
@@ -1454,13 +1454,14 @@ $(document).ready(function () {
   });
   var quoteKeyForCategoryFeildModal = '';
   var quoteForCategoryFeildModal = '';
-  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal', function () {
+  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     quoteKeyForCategoryFeildModal = quoteKey;
     quoteForCategoryFeildModal = quote;
     var modal_id = $(this).data('modal_id');
     var modal = $("#".concat(modal_id));
+    console.log(modal_id);
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
     var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
     var model_name = $("#model_name").val();
@@ -1469,7 +1470,7 @@ $(document).ready(function () {
     modal.find("input[name=detail_id]").val(detail_id);
     modal.find("input[name=model_name]").val(model_name);
   });
-  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form', function (event) {
+  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');

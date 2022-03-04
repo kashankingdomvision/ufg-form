@@ -173,6 +173,7 @@ $(document).ready(function($) {
             setTimeout(function() {
                 jQuery.each(errors.errors, function(index, value) {
 
+                    console.log(`${index}`);
                     index = index.replace(/\./g, '_');
 
                     /* Expand Quote Details Card */
@@ -189,9 +190,12 @@ $(document).ready(function($) {
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                     $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
 
+
+                    console.log(`#${index}`);
+            
+
                     if(flag){
-                        $('html, body').animate({ scrollTop: $(`#${index}`).parent('.form-group').offset().top }, 1000);
-                        // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                        $('html, body').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
                         flag = false;
                     }
                 });

@@ -993,7 +993,7 @@
     @include('quote_booking_includes.currency_conversion_modal')
     @include('quote_booking_includes.store_harbour_modal')
     @include('quote_booking_includes.store_airport_code_modal')
-
+    @include('quote_booking_includes.store_hotel_modal')
   <!-- End Modals  -->
 </div>
 

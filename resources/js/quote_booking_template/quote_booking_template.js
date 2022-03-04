@@ -199,7 +199,7 @@ $(document).ready(function() {
             const modalID = { 
                 airport_codes: "store_airport_code_modal",
                 harbours: "store_harbour_modal",
-                hotels: "store-hotel-modal"
+                hotels: "store_hotel_modal"
             };
 
             let icon = document.createElement('i');
@@ -768,7 +768,9 @@ $(document).ready(function() {
     var quoteKeyForCategoryFeildModal = '';
     var quoteForCategoryFeildModal = '';
 
-    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal', function() {
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal', function() {
+
+
 
         let quote = $(this).closest('.quote');
         let quoteKey   = quote.data('key');
@@ -778,6 +780,9 @@ $(document).ready(function() {
 
         let modal_id    = $(this).data('modal_id');
         let modal       = $(`#${modal_id}`);
+
+        console.log(modal_id);
+
 
         let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
         let category_id = $(`#quote_${quoteKey}_category_id`).val();
@@ -789,7 +794,7 @@ $(document).ready(function() {
         modal.find("input[name=model_name]").val(model_name);
     });
 
-    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form', function(event) {
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form', function(event) {
         
         event.preventDefault();
 

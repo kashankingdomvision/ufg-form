@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\HotelRequest;
+use App\Http\Requests\AirportCodeRequest;
+use App\Http\Requests\HarboursRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -36,6 +39,7 @@ use App\Location;
 use App\QuoteDetail;
 use App\Harbour;
 use App\AirportCode;
+use App\Hotel;
 
 class ResponseController extends Controller
 {
@@ -101,20 +105,8 @@ class ResponseController extends Controller
         return $category_details;
     }
 
-    public function storeHarbour(Request $request)
+    public function storeHarbour(HarboursRequest $request)
     {
-        $this->validate(
-            request(), 
-            [
-                'port_id'  => 'required',        
-                'name'     => 'required',
-            ],
-            [
-                'port_id.required' => 'The Port ID field is required.',
-                'name.required'    => 'The Harbours, Train and Points of Interest Name field is required.',
-            ]
-        );
-
         $harbour = Harbour::create([
             'port_id' =>  $request->port_id,
             'name'    =>  $request->name
@@ -129,31 +121,30 @@ class ResponseController extends Controller
         ]);
     }
 
-    public function storeAirportCode(Request $request)
+    public function storeAirportCode(AirportCodeRequest $request)
     {
-        $this->validate(
-            request(), 
-            [
-                'name'       => 'required',
-                'iata_code'  => 'required'   
-            ],
-            [
-                'name.required' => 'The Airport Name field is required.',
-                'iata_code.required' => 'The IATA Code field is required.'
-            ]
-        );
-
-        $airport_code = AirportCode::create([
-            'name'      => $request->name,
-            'iata_code' => $request->iata_code
-        ]);
-
         $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "airport_codes", $airport_code);
 
         return response()->json([
             'status'           => true, 
             'category_details' => $category_details,
             'success_message'  => 'Airport Created Successfully.',
+        ]);
+    }
+
+    public function storeHotel(HotelRequest $request)
+    {
+        $hotel = Hotel::create([
+            'name'       =>  $request->name,
+            'accom_code' =>  $request->accom_code
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "hotels", $hotel);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Hotel Created Successfully.',
         ]);
     }
 
@@ -791,4 +782,35 @@ class ResponseController extends Controller
     // ->get();
 
     // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+
+
+    // $this->validate(
+    //     request(), 
+    //     [
+    //         'port_id'  => 'required',        
+    //         'name'     => 'required',
+    //     ],
+    //     [
+    //         'port_id.required' => 'The Port ID field is required.',
+    //         'name.required'    => 'The Harbours, Train and Points of Interest Name field is required.',
+    //     ]
+    // );
+
+
+    // $this->validate(
+    //     request(), 
+    //     [
+    //         'name'       => 'required',
+    //         'iata_code'  => 'required'   
+    //     ],
+    //     [
+    //         'name.required' => 'The Airport Name field is required.',
+    //         'iata_code.required' => 'The IATA Code field is required.'
+    //     ]
+    // );
+
+    // $airport_code = AirportCode::create([
+    //     'name'      => $request->name,
+    //     'iata_code' => $request->iata_code
+    // ]);
 }
