@@ -641,7 +641,7 @@
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
-                                  @foreach ($countries as $country)
+                                  @foreach ($supplier_countries as $country)
                                     <option value="{{ $country->id }}" {{ in_array($country->id, json_decode($booking_detail->supplier_country_ids)) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
                                   @endforeach
                                 </select>

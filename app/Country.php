@@ -27,4 +27,14 @@ class Country extends Model
     {
         return $this->belongsToMany(Supplier::class, 'supplier_countries', 'country_id', 'supplier_id');
     }
+
+    public function scopeOrderByService($query)
+    {
+        return $query->orderBy('service_sort_order', 'ASC');
+    }
+
+    public function scopeOrderByAsc($query)
+    {
+        return $query->orderBy('name', 'ASC');
+    }
 }
