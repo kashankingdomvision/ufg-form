@@ -291,7 +291,7 @@ $(document).ready(function($) {
         }
     }
 
-    window.printModalServerValidationErrors = function(response) {
+    window.printModalServerValidationErrors = function(response, modalSelector) {
 
         if (response.status === 422) {
 
@@ -302,9 +302,9 @@ $(document).ready(function($) {
 
                     index = index.replace(/\./g, '_');
 
-                    $(`#${index}`).addClass('is-invalid');
-                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                    $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
+                    $(`${modalSelector} #${index}`).addClass('is-invalid');
+                    $(`${modalSelector} #${index}`).closest('.form-group').find('.text-danger').html(value);
+                    $(`${modalSelector} #${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
                 });
 
             }, 250);

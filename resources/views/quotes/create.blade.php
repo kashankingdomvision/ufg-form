@@ -524,7 +524,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2 d-none">
+                          <div class="col-sm-2">
                             <div class="form-group">
                               <label>Category Details</label>
                               <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -561,7 +561,7 @@
 
                           <div class="col">
                             <div class="form-group">
-                              <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
+                              <label>Product </label><button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
                                 <option selected value="">Select Product</option>
                               </select>
@@ -991,6 +991,8 @@
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')
+    @include('quote_booking_includes.store_harbour_modal')
+    @include('quote_booking_includes.store_airport_code_modal')
 
   <!-- End Modals  -->
 </div>

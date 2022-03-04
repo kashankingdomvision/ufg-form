@@ -67344,15 +67344,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
-  window.printModalServerValidationErrors = function (response) {
+  window.printModalServerValidationErrors = function (response, modalSelector) {
     if (response.status === 422) {
       var errors = response.responseJSON;
       setTimeout(function () {
         jQuery.each(errors.errors, function (index, value) {
           index = index.replace(/\./g, '_');
-          $("#".concat(index)).addClass('is-invalid');
-          $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-          $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
+          $("".concat(modalSelector, " #").concat(index)).addClass('is-invalid');
+          $("".concat(modalSelector, " #").concat(index)).closest('.form-group').find('.text-danger').html(value);
+          $("".concat(modalSelector, " #").concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
         });
       }, 250);
     }

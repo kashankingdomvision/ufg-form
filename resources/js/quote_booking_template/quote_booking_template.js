@@ -122,11 +122,11 @@ $(document).ready(function() {
                 elm.setAttribute('class', obj.className + ' prod-details-feild');
             }
 
-            if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'category_details'){
+            if(obj.className != undefined && ['select', 'autocomplete'].includes(obj.type) && type == 'category_details'){
                 elm.setAttribute('class', obj.className + ' select2single cat-details-select');
             }
 
-            if(obj.className != undefined && obj.type == 'select' || obj.type == 'autocomplete' && type == 'product_details'){
+            if(obj.className != undefined && ['select', 'autocomplete'].includes(obj.type) && type == 'product_details'){
                 elm.setAttribute('class', obj.className + ' select2single prod-details-select');
             }
         
@@ -135,7 +135,7 @@ $(document).ready(function() {
             }
         
             // set value for text and textarea
-            if( obj.value != undefined && ['text', 'textarea', 'number'].includes(obj.type) ) {
+            if( obj.value != undefined && ['text', 'textarea', 'number'].includes(obj.type)) {
                 elm.setAttribute('value', obj.value);
             }
 
@@ -145,7 +145,7 @@ $(document).ready(function() {
             }
         
             // add options to selectbox
-            else if( obj.type == 'select' || obj.type == 'autocomplete' ) {
+            else if( ['select', 'autocomplete'].includes(obj.type) ) {
                 //Create and append the options
                 for (let i = 0; i < obj.values.length; i++) {
                     let option   = document.createElement("option");
@@ -185,8 +185,35 @@ $(document).ready(function() {
 
         let label = document.createElement('label');
         label.innerHTML = `&nbsp; ${obj.label}`;
-
         formGroup.appendChild(label);
+
+        // add plus icon 
+        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels'].includes(obj.data)){
+    
+            const dynamicClass = { 
+                airport_codes: "store-airport-code-modal",
+                harbours: "store-harbour-modal",
+                hotels: "store-hotel-modal",
+            };
+
+            const modalID = { 
+                airport_codes: "store_airport_code_modal",
+                harbours: "store_harbour_modal",
+                hotels: "store-hotel-modal"
+            };
+
+            let icon = document.createElement('i');
+            icon.setAttribute('class', 'fas fa-plus');
+    
+            let button = document.createElement('button');
+            button.setAttribute('type', 'button');
+            button.setAttribute('class', `btn btn-xs btn-outline-dark ml-1 ${dynamicClass[obj.data]}`);
+            button.setAttribute('data-modal_ID', `${modalID[obj.data]}`);
+    
+            button.appendChild(icon);
+            formGroup.appendChild(button);
+        }
+
         formGroup.appendChild(elem);
         div.appendChild(formGroup);
 
@@ -736,6 +763,81 @@ $(document).ready(function() {
             return;
         }
 
+    });
+
+    var quoteKeyForCategoryFeildModal = '';
+    var quoteForCategoryFeildModal = '';
+
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal', function() {
+
+        let quote = $(this).closest('.quote');
+        let quoteKey   = quote.data('key');
+
+        quoteKeyForCategoryFeildModal = quoteKey;
+        quoteForCategoryFeildModal = quote;
+
+        let modal_id    = $(this).data('modal_id');
+        let modal       = $(`#${modal_id}`);
+
+        let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
+        let category_id = $(`#quote_${quoteKey}_category_id`).val();
+        let model_name  = $(`#model_name`).val();
+
+        modal.modal('show');
+        modal.find("input[name=category_id]").val(category_id);
+        modal.find("input[name=detail_id]").val(detail_id);
+        modal.find("input[name=model_name]").val(model_name);
+    });
+
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form', function(event) {
+        
+        event.preventDefault();
+
+        let url     = $(this).attr('action');
+        let formID  = $(this).attr('id');
+        let modalID = $(this).closest('.modal').attr('id');
+        
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+
+                if(response.status){
+
+                    $(`#${formID}`)[0].reset();
+                    $(`#${modalID}`).modal('hide');
+    
+                    Toast.fire({
+                        icon: 'success',
+                        title: response.success_message
+                    });
+    
+                    if(response.category_details != '' && response.category_details != 'undefined'){
+    
+                        $(`.quote-${quoteKeyForCategoryFeildModal} .category-details-render`).html("");
+                        $(`#quote_${quoteKeyForCategoryFeildModal}_category_details`).val(response.category_details);
+                        createAllElm(quoteForCategoryFeildModal, '.category-details-render', 'category_details', JSON.parse(response.category_details));
+                    }
+                }
+
+                // printModalServerSuccessMessage(response, "#store_harbour_modal");
+            },
+            error: function(response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(response, `#${modalID}`);
+            }
+        });
     });
 
     $(document).on('change', '.product-id', function() {
