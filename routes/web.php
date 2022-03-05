@@ -677,6 +677,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
         Route::post('store-group-owner', array('as' => 'response.group_owners.store', 'uses' => 'ResponseController@storeGroupOwner'));
 
+        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
 
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));

@@ -580,7 +580,6 @@ $(document).ready(function() {
 
     $(document).on('change', '.supplier-country-id', function(){
 
-        console.log("dsdsdsd");
         var supplier_country_ids   = $(this).val();
         var url           = BASEURL + 'country/to/supplier';
         var options       = '';
@@ -665,6 +664,29 @@ $(document).ready(function() {
             }
         })
 
+    });
+
+
+    $(document).on('change', '.supplier-id', function(){
+
+        let quote       = $(this).closest('.quote');
+        let quoteKey    = quote.data('key');
+        let supplier_id = $(this).val();
+
+        $.ajax({
+            type: 'get',
+            url: `${BASEURL}supplier-on-change`,
+            data: { 
+                'supplier_id': supplier_id
+            },
+            success: function(response) {
+
+                if(response && Object.keys(response.supplier).length > 0){
+       
+                    $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier.currency_id).change();
+                }
+            }
+        });
     });
 
     $(document).on('submit', '#form_add_product', function() {

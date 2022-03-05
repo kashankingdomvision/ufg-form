@@ -337,6 +337,14 @@ class ResponseController extends Controller
     //     return response()->json($commission_groups);
     // }
 
+    public function SupplierOnChange(Request $request)
+    {
+        $supplier = Supplier::find($request->supplier_id);
+
+        return response()->json([
+            'supplier' => $supplier,
+        ]);
+    }
     
     public function addProductWithSupplierSync(ProductRequest $request)
     {    

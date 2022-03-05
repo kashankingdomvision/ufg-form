@@ -2548,7 +2548,6 @@ $(document).ready(function () {
     });
   });
   $(document).on('change', '.supplier-country-id', function () {
-    console.log("dsdsdsd");
     var supplier_country_ids = $(this).val();
     var url = BASEURL + 'country/to/supplier';
     var options = '';
@@ -2618,6 +2617,23 @@ $(document).ready(function () {
           options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
         });
         $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+      }
+    });
+  });
+  $(document).on('change', '.supplier-id', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var supplier_id = $(this).val();
+    $.ajax({
+      type: 'get',
+      url: "".concat(BASEURL, "supplier-on-change"),
+      data: {
+        'supplier_id': supplier_id
+      },
+      success: function success(response) {
+        if (response && Object.keys(response.supplier).length > 0) {
+          $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
+        }
       }
     });
   });
