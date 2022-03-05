@@ -524,7 +524,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2 d-none">
+                          <div class="col-sm-2">
                             <div class="form-group">
                               <label>Category Details</label>
                               <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -540,7 +540,7 @@
                             <div class="form-group">
                               <label>Supplier Country <span style="color:red">*</span></label>
                               <select name="quote[0][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_0_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
-                                @foreach ($countries as $country)
+                                @foreach ($supplier_countries as $country)
                                   <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
                                 @endforeach
                               </select>
@@ -561,7 +561,7 @@
 
                           <div class="col">
                             <div class="form-group">
-                              <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
+                              <label>Product </label><button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
                                 <option selected value="">Select Product</option>
                               </select>
@@ -928,9 +928,23 @@
                       <label></label>
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text  selling-price-other-currency-code"></span>
+                          <span class="input-group-text selling-price-other-currency-code"></span>
                         </div>
                         <input type="number" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text selling-price-other-currency-code"></span>
+                        </div>
+                        <input type="number" name="booking_amount_per_person_in_osp" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -977,7 +991,10 @@
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')
-
+    @include('quote_booking_includes.store_harbour_modal')
+    @include('quote_booking_includes.store_airport_code_modal')
+    @include('quote_booking_includes.store_hotel_modal')
+    @include('quote_booking_includes.store_group_owner_modal')
   <!-- End Modals  -->
 </div>
 

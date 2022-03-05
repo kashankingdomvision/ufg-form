@@ -133,6 +133,7 @@ class QuoteController extends Controller
             'commission_percentage'             =>  $request->commission_percentage??$request->commission_percentage,
             'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'booking_amount_per_person_in_osp'  =>  $request->booking_amount_per_person_in_osp??$request->booking_amount_per_person_in_osp,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'markup_type'                       =>  $request->markup_type??NULL,
@@ -206,10 +207,16 @@ class QuoteController extends Controller
             'image'                             => isset($quoteD['image']) && !empty($quoteD['image']) ? $quoteD['image'] : NULL
         ];
 
-        if($type == 'quote_details' || $type == 'clone'){
+        if($type == 'quote_details'){
 
             $data['quote_id']             = $quote->id;
             $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL ;
+        }
+
+        if($type == 'clone'){
+
+            $data['quote_id']             = $quote->id;
+            $data['supplier_country_ids'] = isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? $quoteD['supplier_country_ids'] : NULL ;
         }
 
         if($type == 'booking_details'){
@@ -375,7 +382,8 @@ class QuoteController extends Controller
 
     public function create()
     {
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['public_templates']  = Template::where('privacy_status', 1)->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
@@ -479,6 +487,7 @@ class QuoteController extends Controller
         $quote = Quote::findOrFail(decrypt($id));
         $data['quote']            = $quote;
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['public_templates']  = Template::where('privacy_status', 1)->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
@@ -601,6 +610,7 @@ class QuoteController extends Controller
         $data['public_templates']  = Template::where('privacy_status', 1)->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -630,6 +640,7 @@ class QuoteController extends Controller
     public function finalQuote($id)
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['public_templates']  = Template::where('privacy_status', 1)->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
@@ -942,7 +953,8 @@ class QuoteController extends Controller
 
             return response()->json([ 
                 'status'        => false, 
-                'error_message' => "Something Went Wrong, Please Try Again."
+                // 'error_message' => "Something Went Wrong, Please Try Again."
+                'error_message' => $e->getMessage()
             ]);
         }
     }
@@ -954,7 +966,7 @@ class QuoteController extends Controller
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
-            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($quote, $qu_details, 'booking_details'));
+            $bookingDetail = BookingDetail::create($this->getQuoteDetailsArray($booking, $qu_details, 'booking_details'));
 
             if($qu_details->getQuoteDetailCountries && $qu_details->getQuoteDetailCountries->count()){
                 foreach ($qu_details->getQuoteDetailCountries as $detail) {

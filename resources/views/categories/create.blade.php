@@ -116,7 +116,7 @@
 
                     <div class="col form-group">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="set_end_date_of_service" value="0" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                        <input name="set_end_date_of_service" type="checkbox" id="set_end_date_of_service" value="0" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
                         <label for="set_end_date_of_service" class="custom-control-label"> Set Same Start/End Date</label>
                       </div>
                     </div>
@@ -126,7 +126,7 @@
                 <div id="store_category_form_builder_div"></div>
               </div>
 
-              <div class="card-footer">
+              <div class="card-footer border-top">
                 <button type="button" id="store_category_submit" class="btn btn-success float-right">Submit</button>
                 <a href="{{ route('categories.index') }}"><button type="button" class="btn btn-danger float-right mr-2">Cancel</button></a>
               </div>

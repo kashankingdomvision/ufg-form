@@ -151,7 +151,7 @@ $(document).ready(function($) {
 
         setTimeout(function() {
 
-            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`spinner-border spinner-border-sm`);
+            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`mr-2 spinner-border spinner-border-sm`);
         }, 250);
 
     }
@@ -173,6 +173,7 @@ $(document).ready(function($) {
             setTimeout(function() {
                 jQuery.each(errors.errors, function(index, value) {
 
+                    console.log(`${index}`);
                     index = index.replace(/\./g, '_');
 
                     /* Expand Quote Details Card */
@@ -189,9 +190,12 @@ $(document).ready(function($) {
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                     $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
 
+
+                    console.log(`#${index}`);
+            
+
                     if(flag){
-                        $('html, body').animate({ scrollTop: $(`#${index}`).parent('.form-group').offset().top }, 1000);
-                        // $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                        $('html, body').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
                         flag = false;
                     }
                 });
@@ -291,7 +295,7 @@ $(document).ready(function($) {
         }
     }
 
-    window.printModalServerValidationErrors = function(response) {
+    window.printModalServerValidationErrors = function(response, modalSelector) {
 
         if (response.status === 422) {
 
@@ -302,9 +306,9 @@ $(document).ready(function($) {
 
                     index = index.replace(/\./g, '_');
 
-                    $(`#${index}`).addClass('is-invalid');
-                    $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                    $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
+                    $(`${modalSelector} #${index}`).addClass('is-invalid');
+                    $(`${modalSelector} #${index}`).closest('.form-group').find('.text-danger').html(value);
+                    $(`${modalSelector} #${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
                 });
 
             }, 250);
@@ -327,7 +331,7 @@ $(document).ready(function($) {
             });
 
             /* Reload page if you are on edit page */
-            if(CURRENT_ROUTE_NAME.includes('edit')){
+            if(!CURRENT_ROUTE_NAME.includes('index')){
                 setTimeout(function() {
                     location.reload();
                 }, 2500);
@@ -626,6 +630,7 @@ $(document).ready(function($) {
         }else{
             $(this).val(0);
         }
+
     });
 
     $(document).on('click', '.parent-row', function(e) {

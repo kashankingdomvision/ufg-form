@@ -259,3 +259,11 @@ UPDATE `countries` SET `sort_order` = '3' WHERE `countries`.`id` = 14;
 UPDATE `countries` SET `sort_order` = '4' WHERE `countries`.`id` = 40;
 UPDATE `countries` SET `sort_order` = '5' WHERE `countries`.`id` = 161;
 UPDATE `countries` SET `sort_order` = '6' WHERE `sort_order` = 0;
+
+-- Set Sort Order for Services
+UPDATE `countries` SET `service_sort_order` = '1' WHERE `countries`.`id` = 56;
+UPDATE `countries` SET `service_sort_order` = '2' WHERE `countries`.`id` = 86;
+UPDATE `countries` SET `service_sort_order` = '3' WHERE `countries`.`id` = 150;
+UPDATE `countries` SET `service_sort_order` = '4' WHERE `countries`.`id` = 206;
+UPDATE `countries` SET `service_sort_order` = '5' WHERE `countries`.`id` = 110;
+UPDATE `countries` SET `service_sort_order` = '6' WHERE `service_sort_order` = 0;

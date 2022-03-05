@@ -198,6 +198,7 @@ class BookingController extends Controller
             'commission_percentage'             =>  $request->commission_percentage??$request->commission_percentage,
             'selling_currency_oc'               =>  $request->selling_price_other_currency??$request->selling_currency_oc,
             'selling_price_ocr'                 =>  $request->selling_price_other_currency_rate??$request->selling_price_ocr,
+            'booking_amount_per_person_in_osp'  =>  $request->booking_amount_per_person_in_osp??$request->booking_amount_per_person_in_osp,
             'amount_per_person'                 =>  $request->booking_amount_per_person??$request->amount_per_person,
             'agency_name'                       =>  (isset($request['agency_name']))? $request->agency_name : NULL,
             'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
@@ -255,6 +256,9 @@ class BookingController extends Controller
 
     public function getFinanceBookingDetailsArray($quoteD)
     {
+
+        // dd($quoteD);
+
         return [
             "deposit_amount"        => $quoteD['deposit_amount']??NULL,
             "deposit_due_date"      => $quoteD['deposit_due_date']??NULL,
@@ -263,6 +267,7 @@ class BookingController extends Controller
             "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
             "additional_date"       => $quoteD['ab_number_of_days']??NULL,
             "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
+            "added_in_sage"         => $quoteD['added_in_sage'] ? $quoteD['added_in_sage'] : '0',
             "user_id"               => Auth::id(),
         ];
     }
@@ -311,6 +316,7 @@ class BookingController extends Controller
     {
         $booking = Booking::findOrFail(decrypt($id));
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['booking']          = $booking;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -616,6 +622,7 @@ class BookingController extends Controller
     public function show($id,$status = null)
     {
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -676,6 +683,7 @@ class BookingController extends Controller
         $data['log']                = $booking_log;
         $data['booking']            = (object) $booking_log->data;
         $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
+        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
         $data['booked_by']          = User::all()->sortBy('name');

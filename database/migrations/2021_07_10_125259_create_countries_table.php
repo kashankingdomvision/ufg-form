@@ -25,6 +25,7 @@ class CreateCountriesTable extends Migration
             $table->string('continent_code', 2);
             $table->char('alpha_3', 3);
             $table->smallInteger('sort_order');
+            $table->smallInteger('service_sort_order');
             $table->timestamps();
         });
     }

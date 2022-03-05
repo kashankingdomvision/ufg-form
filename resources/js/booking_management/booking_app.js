@@ -323,10 +323,21 @@ $(document).ready(function() {
                     return `quote_${quoteKey}_finance_${financeCloningLength}_${name}`;
                 });
 
+                if(this.type == 'checkbox')
+                    $(this).val('0');
+                
+
             }).end().find('.depositeLabel').each(function() {
 
                 this.id = 'deposite_heading' + financeCloningLength;
                 $(this).text(`Payment #${financeCloningLength+1}`);
+
+            }).end()
+            .find('.finance-custom-control-label').each(function() {
+
+                let name = $(this).attr("data-name");
+
+                $(this).attr('for', `quote_${quoteKey}_finance_${financeCloningLength}_${name}`);
 
             }).end()
             .find("select").val("").each(function() {
@@ -521,6 +532,11 @@ $(document).ready(function() {
                 message    = 'You want to Restore this Booking?';
                 buttonText = 'Restore';
                 break;
+
+            case "edit_booking":
+                message    = 'You want to Edit this Booking?';
+                buttonText = 'Edit';
+                break;
         }
 
         Swal.fire({
@@ -574,6 +590,10 @@ $(document).ready(function() {
                             printAlertResponse(response);
                         }
                     });
+                }
+
+                if(actionType == "edit_booking"){
+                    $('#show_booking :input').removeAttr('disabled');
                 }
             }
         });

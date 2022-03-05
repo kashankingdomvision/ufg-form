@@ -41,14 +41,16 @@
 
               @if($quote->booking_status == 'quote')
                 <button type="button" class="multiple-alert btn btn-danger btn-sm float-right mr-2" data-action_type="cancel_quote" data-action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
-              @endif
 
-              @if($quote->booking_status == 'quote')
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Confirm Booking</button>
               @endif
 
               @if($quote->booking_status == 'cancelled')
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="restore_quote" data-action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
+              @endif
+              
+              @if($quote->booking_status == 'quote')
+                <button type="button" class="multiple-alert mr-2 float-right btn btn-teal btn-sm" data-action_type="edit_quote" title="Edit Quote"><i class="fas fa-edit mr-2"></i>Edit Quote</button>
               @endif
             </div>
 
@@ -684,7 +686,7 @@
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
-                                  @foreach ($countries as $country)
+                                  @foreach ($supplier_countries as $country)
                                     <option value="{{ $country->id }}" {{ (in_array($country->id, $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}}>{{ $country->name }} - {{ $country->code}}</option>
                                   @endforeach
                                 </select>
@@ -1108,6 +1110,20 @@
                 </div>
 
                 <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text selling-price-other-currency-code">{{ isset($quote->selling_currency_oc) && !empty($quote->selling_currency_oc) ? $quote->selling_currency_oc : '' }}</span>
+                        </div>
+                        <input type="number" name="booking_amount_per_person_in_osp" value="{{ \Helper::number_format($quote->booking_amount_per_person_in_osp) }}" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
                   <div class="col-md-4"><label for="group_quote" class="col-form-label">Add into Group</label></div>
                   <div class="col-md-3 relevant-quote">
                     <select name="quote_group" class="form-control select2-single" id="group_quote">
@@ -1146,6 +1162,10 @@
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')
+    @include('quote_booking_includes.store_harbour_modal')
+    @include('quote_booking_includes.store_airport_code_modal')
+    @include('quote_booking_includes.store_hotel_modal')
+    @include('quote_booking_includes.store_group_owner_modal')
 
   <!-- End Modals  -->
 

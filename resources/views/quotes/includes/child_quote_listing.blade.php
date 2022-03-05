@@ -47,10 +47,7 @@
                 <i class="fas fa-edit"></i>
             </a>
 
-            <form method="POST" class="multiple-alert mr-2 float-right" data-action_type="booked_quote" action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}">
-                @csrf @method('patch')
-                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Confirm Booking"><i class="fa fa-check"></i></button>
-            </form>
+            <button type="button" class="multiple-alert btn btn-outline-success btn-xs float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i></button>
         @endif
 
         @if(in_array($quote->booking_status, ['quote', 'cancelled']))
@@ -66,41 +63,23 @@
         @endif
 
         @if($quote->booking_status == 'quote')
-            <form method="POST" class="multiple-alert" data-action_type="cancel_quote" action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}">
-                @csrf @method('patch')
-                <button type="submit" class="mr-2 btn btn-outline-danger btn-xs" data-title="" data-target="#" title="Cancel Quote"><i class="fa fa-times"></i></button>
-            </form>
+            <button type="button" class="multiple-alert btn btn-outline-danger btn-xs float-right mr-2" data-action_type="cancel_quote" data-action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}" title="Cancel Quote"><i class="fa fa-times"></i></button>
         @endif
 
         @if($quote->booking_status == 'cancelled')
-            <form method="POST" class="multiple-alert" data-action_type="restore_quote" action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}">
-                @csrf @method('patch')
-                <button type="submit" class="btn btn-outline-success btn-xs" data-title="" data-target="#" title="Restore Quote"><i class="fa fa-undo-alt"></i></button>
-            </form>
+            <button type="button" class="multiple-alert btn btn-outline-success btn-xs float-right mr-2" data-action_type="restore_quote" data-action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}" title="Restore Quote"><i class="fa fa-undo-alt"></i></button>
         @endif
 
-        @if($quote->booking_status == 'booked')
-            <form class="mr-2 " method="POST" action="{{ route('quotes.archive.store', encrypt($quote->id)) }}">
-                @csrf @method('patch')
-                @if(isset($status))
-                <input type="hidden" value="true" name="status">
-                @endif
-                <input type="hidden" value="{{ $quote->is_archive }}" name="is_archive">
-                <button type="submit" class="btn btn-outline-dark btn-xs" data-title="Archive" title="{{ (isset($status) || $quote->is_archive == 1) ? 'Unarchive' : 'Archive' }}" data-target="#archive">
-                    @if(isset($status) || $quote->is_archive == 1)
-                        <i class="fa fa-recycle" ></i>
-                    @else
-                        <i class="fa fa-archive" ></i>
-                    @endif
-                    </button>
-            </form>
+        @if($quote->is_archive == 0)
+            <button type="button" class="multiple-alert btn btn-outline-dark btn-xs mr-2" data-action_type="archive_quote" data-action="{{ route('quotes.multiple.alert', ['archive_quote', encrypt($quote->id)]) }}" title="Archive Quote"><i class="fa fa-archive nav-icon"></i></button>
+        @endif
+
+        @if($quote->is_archive == 1)
+            <button type="button" class="multiple-alert btn btn-outline-dark btn-xs mr-2" data-action_type="unarchive_quote" data-action="{{ route('quotes.multiple.alert', ['unarchive_quote', encrypt($quote->id)]) }}" title="Unarchive Quote"><i class="fa fa-recycle"></i></button>
         @endif
 
         @if($quote->booking_status == 'quote')
-            <form method="POST" class="multiple-alert mr-2" data-action_type="clone_quote" action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}">
-                @csrf @method('patch')
-                <button type="submit" title="Quote Clone" class="btn btn-outline-secondary btn-xs" data-title="Clone Quote" data-target="#clone_quote"><i class="fa fa-clone"></i></button>
-            </form>
+            <button type="button" class="multiple-alert btn btn-outline-secondary btn-xs mr-2" title="Clone Quote" data-action_type="clone_quote" data-action="{{ route('quotes.multiple.alert', ['clone_quote', encrypt($quote->id)]) }}" data-target="#clone_quote"><i class="fa fa-clone"></i></button>
         @endif
 
         @if($quote->booking_status == 'quote')

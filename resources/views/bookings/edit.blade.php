@@ -729,7 +729,7 @@
                                 <div class="form-group">
                                   <label>Supplier Country <span style="color:red">*</span></label>
                                   <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
-                                    @foreach ($countries as $country)
+                                    @foreach ($supplier_countries as $country)
                                       <option value="{{ $country->id }}" 
                                         {{ (in_array($country->id, $booking_detail->getBookingDetailCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}} 
                                         >{{ $country->name }} - {{ $country->code}}</option>
@@ -984,7 +984,7 @@
 
                             <!-- Administration row -->
                             <hr>
-                            <h3 class="mt-1 mb-1-half"><span class="double-underline">Administration</span></h3>
+                            <h3 class="mt-1 mb-1-half"><span class="double-underline">Operations</span></h3>
                         
                             <div class="row administraion-row">
 
@@ -1046,22 +1046,6 @@
                                 </div>
                               </div>
 
-
-                              @if( in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
-                                <div class="col-md-3 d-flex justify-content-center">
-                                  <div class="form-group">
-                                    <label>Added in Sage</label>
-                                    <div class="input-group">
-                                      <div class="input-group-prepend">
-                                        <div class="icheck-primary">
-                                          <input type="hidden" name="quote[{{ $key }}][added_in_sage]" value="{{ $booking_detail->added_in_sage }}"><input data-name="added_in_sage" id="quote_{{ $key }}_added_in_sage" class="added-in-sage" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}> 
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              @endif
-
                             </div>
                             <!-- End Administration row -->
 
@@ -1069,7 +1053,7 @@
                             <section class="finance">
                               @php $total_deposit = 0; @endphp
                               @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
-                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                                 @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                   @php
                                     $count = $fkey + 1;
@@ -1158,10 +1142,24 @@
                                         </div>
                                       </div>
                                     </div>
+
+                                    @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                                      <div class="col-md-3 d-flex justify-content-center">
+                                        <div class="form-group">
+                                          <label>Sage</label>
+                                          <div class="custom-control custom-checkbox">
+                                            <input type="hidden" name="quote[{{ $key }}][finance][{{ $fkey }}][added_in_sage]" value="0"> 
+                                            <input name="quote[{{ $key }}][finance][{{$fkey}}][added_in_sage]" type="checkbox" id="quote_{{$key}}_finance_{{$fkey}}_added_in_sage" value="{{$finance->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($finance->added_in_sage == 1) ? 'checked': '' }}>
+                                            <label for="quote_{{$key}}_finance_{{$fkey}}_added_in_sage" data-name="added_in_sage" class="finance-custom-control-label custom-control-label">Added in Sage</label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    @endif
+                                    
                                   </div>
                                 @endforeach
                               @else
-                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Payments</span></h3>
+                                <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2" data-financekey="0">
                                   
                                   <div class="col-md-12">
@@ -1207,8 +1205,6 @@
                                     </div>
                                   </div>
 
-                          
-
                                   <div class="col-sm-3">
                                     <div class="form-group">
                                       <label>Payment Method</label>
@@ -1243,6 +1239,20 @@
                                       </div>
                                     </div>
                                   </div>
+
+                                  @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                                    <div class="col-md-3 d-flex justify-content-center">
+                                      <div class="form-group">
+                                        <label>Sage</label>
+                                        <div class="custom-control custom-checkbox">
+                                          <input type="hidden" name="quote[{{ $key }}][finance][0][added_in_sage]" value="0"> 
+                                          <input type="checkbox" name="quote[{{ $key }}][finance][0][added_in_sage]" id="quote_{{$key}}_finance_0_added_in_sage" value="0" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline">
+                                          <label for="quote_{{$key}}_finance_0_added_in_sage" data-name="added_in_sage" class="finance-custom-control-label custom-control-label">Added in Sage</label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  @endif
+
                                 </div>
                               @endif
                             </section>
@@ -1733,6 +1743,20 @@
                   </div>
                 </div>
 
+                <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text selling-price-other-currency-code">{{ isset($booking->selling_currency_oc) && !empty($booking->selling_currency_oc) ? $booking->selling_currency_oc : '' }}</span>
+                        </div>
+                        <input type="number" name="booking_amount_per_person_in_osp" value="{{ \Helper::number_format($booking->booking_amount_per_person_in_osp) }}" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 @if($booking->booking_status == 'cancelled')
                   <section class="cancellation-payments-section">
 
@@ -2084,7 +2108,10 @@
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'bookings-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'bookings-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')
-
+    @include('quote_booking_includes.store_harbour_modal')
+    @include('quote_booking_includes.store_airport_code_modal')
+    @include('quote_booking_includes.store_hotel_modal')
+    @include('quote_booking_includes.store_group_owner_modal')
   <!-- End Modals  -->
 
   {{-- @include('partials.cancel_booking_service') --}}
@@ -2094,6 +2121,18 @@
 @push('js')
   <script src="{{ asset('js/booking_management.js') }}" ></script>
 @endpush
+
+{{-- @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+  <div class="col-md-3 d-flex justify-content-center">
+    <div class="form-group">
+      <label>Sage</label>
+      <div class="custom-control custom-checkbox">
+        <input name="quote[{{ $key }}][added_in_sage]" type="checkbox" id="quote_{{ $key }}_added_in_sage" value="{{$booking_detail->added_in_sage}}" data-name="added_in_sage" class="zero-one-checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($booking_detail->added_in_sage == 1) ? 'checked': '' }}>
+        <label for="quote_{{ $key }}_added_in_sage" class="custom-control-label">Added in Sage</label>
+      </div>
+    </div>
+  </div>
+@endif --}}
 
 {{-- <div class="col-sm-2">
   <div class="form-group">

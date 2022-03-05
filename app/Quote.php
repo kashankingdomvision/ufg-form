@@ -55,6 +55,7 @@ class Quote extends Model
         'commission_percentage',
         'selling_currency_oc',
         'selling_price_ocr',
+        'booking_amount_per_person_in_osp',
         'amount_per_person',
         'rate_type',
         'booking_status',

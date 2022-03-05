@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\HotelRequest;
+use App\Http\Requests\AirportCodeRequest;
+use App\Http\Requests\HarboursRequest;
+use App\Http\Requests\GroupOwnerRequest;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
 use App\Brand;
@@ -33,9 +38,196 @@ use App\SupplierProduct;
 use App\Town;
 use App\Location;
 use App\QuoteDetail;
+use App\Harbour;
+use App\AirportCode;
+use App\Hotel;
+use App\GroupOwner;
 
 class ResponseController extends Controller
 {
+    
+    public function storeCategoryDetailsFeilds($model_name, $category_id, $detail_id, $table_name, $object){
+        
+        $category_details = '';
+        $category         = '';
+        $model_name       = 'App\\'.$model_name;
+
+        $booking_detail = $model_name::where('category_id', $category_id)->where('id', $detail_id)->first('category_details');
+        $category       = Category::where('id', $category_id)->first();
+
+        if(!is_null($booking_detail)){
+
+            $final_json_quotes = array();
+            $feilds = json_decode($booking_detail->category_details);
+
+            foreach($feilds as $key => $feild){
+
+                $final_json_quotes[$key] = $feild;
+
+                if(in_array($feild->type, ['autocomplete'])){
+                    if($feild->data == $table_name){
+
+                        $new_object = (object) [
+                            'label'    => $object->name,
+                            'value'    => $object->name,
+                            'selected' => false
+                        ];
+
+                        array_push($feild->values, $new_object);
+                    }
+                }
+
+            }
+
+            $category_details = json_encode($final_json_quotes);
+        }
+        else if(is_null($booking_detail) && !is_null($category->feilds)){
+
+            $final_json_quotes = array();
+            $feilds            = json_decode($category->feilds);
+
+            foreach($feilds as $key => $feild){
+
+                $final_json_quotes[$key] = $feild;
+
+                if(in_array($feild->type, ['autocomplete'])){
+                    if($feild->data != "none"){
+                        $feild->values = Helper::get_autocomplete_type_records($feild->data); 
+                    }
+                }
+            }
+
+            $category_details = json_encode($final_json_quotes);
+            
+        }else{
+
+            $category_details = "";
+        }
+
+        return $category_details;
+    }
+
+    public function storeHarbour(HarboursRequest $request)
+    {
+        $harbour = Harbour::create([
+            'port_id' =>  $request->port_id,
+            'name'    =>  $request->name
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "harbours", $harbour);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Harbours, Train and POI Created Successfully.',
+        ]);
+    }
+
+    public function storeAirportCode(AirportCodeRequest $request)
+    {
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "airport_codes", $airport_code);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Airport Created Successfully.',
+        ]);
+    }
+
+    public function storeHotel(HotelRequest $request)
+    {
+        $hotel = Hotel::create([
+            'name'       =>  $request->name,
+            'accom_code' =>  $request->accom_code
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "hotels", $hotel);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Hotel Created Successfully.',
+        ]);
+    }
+
+    // GroupOwnerRequest
+    public function storeGroupOwner(GroupOwnerRequest $request)
+    {
+        $group_owner = GroupOwner::create([
+            'name'       => $request->name,
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "group_owners", $group_owner);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Group Owner Created Successfully.',
+        ]);
+    }
+
+    public function getCategoryToSupplier(Request $request)
+    {
+        $category_details = '';
+        $category         = '';
+        $model_name       = 'App\\'.$request->model_name;
+ 
+        $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })->get();
+
+        $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
+        $category       = Category::where('id', $request->category_id)->first();
+
+        if(!is_null($booking_detail)){
+            $category_details = $booking_detail->category_details;
+        }
+        else if(is_null($booking_detail) && !is_null($category->feilds)){
+
+            $final_json_quotes = array();
+            $feilds            = json_decode($category->feilds);
+
+            foreach($feilds as $key => $feild){
+
+                $final_json_quotes[$key] = $feild;
+
+                if($feild->type == "autocomplete"){
+                    if($feild->data != "none"){
+                        $feild->values = Helper::get_autocomplete_type_records($feild->data); 
+                    }
+                }
+            }
+
+            $category_details = json_encode($final_json_quotes);
+            
+        }else{
+
+            $category_details = "";
+        }
+
+        /* Returning category related products*/ 
+        $products = Category::find($request->category_id)->getProducts;
+
+        // $array = [];
+        // $array['airport_codes'] = DB::table('airport_codes')->get();
+        // $array['harbours'] = DB::table('harbours')->get();
+        // $array['hotels'] = DB::table('hotels')->get();
+        // $array['all'] = DB::table('hotels')
+        //     ->select('name')
+        //     ->union(DB::table('airport_codes')->select('name'))
+        //     ->union(DB::table('harbours')->select('name'))
+        //     ->get();
+        // return $array;
+
+        return response()->json([
+            'suppliers'        => $supplier,
+            'category_details' => $category_details,
+            'category'         => $category,
+            'products'         => $products,
+        ]);
+    }
+
+
     public function removeFormBuidlerFeild(Request $request)
     {
         // dd($request->all());
@@ -222,66 +414,6 @@ class ResponseController extends Controller
         return response()->json([ 'suppliers' => $suppliers ]);
     }
 
-    public function getCategoryToSupplier(Request $request)
-    {
-        $category_details = '';
-        $category         = '';
-        $model_name       = 'App\\'.$request->model_name;
- 
-        $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
-            $query->where('id', $request->category_id);
-        })->get();
-
-        $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
-        $category       = Category::where('id', $request->category_id)->first();
-
-        if(!is_null($booking_detail)){
-            $category_details = $booking_detail->category_details;
-        }
-        else if(is_null($booking_detail) && !is_null($category->feilds)){
-
-            $final_json_quotes = array();
-            $feilds            = json_decode($category->feilds);
-
-            foreach($feilds as $key => $feild){
-
-                $final_json_quotes[$key] = $feild;
-
-                if($feild->type == "autocomplete"){
-                    if($feild->data != "none"){
-                        $feild->values = Helper::get_autocomplete_type_records($feild->data); 
-                    }
-                }
-            }
-
-            $category_details = json_encode($final_json_quotes);
-            
-        }else{
-
-            $category_details = "";
-        }
-
-        /* Returning category related products*/ 
-        $products = Category::find($request->category_id)->getProducts;
-
-        // $array = [];
-        // $array['airport_codes'] = DB::table('airport_codes')->get();
-        // $array['harbours'] = DB::table('harbours')->get();
-        // $array['hotels'] = DB::table('hotels')->get();
-        // $array['all'] = DB::table('hotels')
-        //     ->select('name')
-        //     ->union(DB::table('airport_codes')->select('name'))
-        //     ->union(DB::table('harbours')->select('name'))
-        //     ->get();
-        // return $array;
-
-        return response()->json([
-            'suppliers'        => $supplier,
-            'category_details' => $category_details,
-            'category'         => $category,
-            'products'         => $products,
-        ]);
-    }
 
     public function getProductBookingType(Request $request)
     {
@@ -668,4 +800,35 @@ class ResponseController extends Controller
     // ->get();
 
     // $response['products']          = isset($request->supplier_id) && !empty($request->supplier_id) ? Supplier::find($request->supplier_id)->getProducts : '';
+
+
+    // $this->validate(
+    //     request(), 
+    //     [
+    //         'port_id'  => 'required',        
+    //         'name'     => 'required',
+    //     ],
+    //     [
+    //         'port_id.required' => 'The Port ID field is required.',
+    //         'name.required'    => 'The Harbours, Train and Points of Interest Name field is required.',
+    //     ]
+    // );
+
+
+    // $this->validate(
+    //     request(), 
+    //     [
+    //         'name'       => 'required',
+    //         'iata_code'  => 'required'   
+    //     ],
+    //     [
+    //         'name.required' => 'The Airport Name field is required.',
+    //         'iata_code.required' => 'The IATA Code field is required.'
+    //     ]
+    // );
+
+    // $airport_code = AirportCode::create([
+    //     'name'      => $request->name,
+    //     'iata_code' => $request->iata_code
+    // ]);
 }
