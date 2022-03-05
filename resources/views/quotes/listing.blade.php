@@ -166,7 +166,6 @@
                                                 <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
                                                 <label for="parent" class="custom-control-label"></label>
                                             </div>
-
                                         </th>
                                         <th></th>
                                         <th width="8"></th>
