@@ -444,39 +444,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'BankController@bulkAction' ));
     });
 
-    /*  Banks */
-    Route::group([
-        'prefix' => 'cabins',
-        'as'     => 'cabins.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
-    });
-
-
-    /*  Stations */
-    Route::group([
-        'prefix' => 'stations',
-        'as'     => 'stations.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'StationController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'StationController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'StationController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'StationController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'StationController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'StationController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
-    });
-
-
-
     /*  Brands */
     Route::group([
         'prefix' => 'brands',
@@ -531,6 +498,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'CurrencyConversionController@index'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyConversionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyConversionController@update'));
+    });
+
+    /*  Cabins */
+    Route::group([
+        'prefix' => 'cabins',
+        'as'     => 'cabins.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
     });
     
     /*  Harbours, Train and Points of Interest */
@@ -651,6 +633,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('update/{slug}', array('as' => 'update', 'uses' => 'StoreTextController@update'));
         Route::delete('delete/{slug}', array('as' => 'destroy', 'uses' => 'StoreTextController@destroy'));
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StoreTextController@bulkAction' ));
+    });
+
+    /*  Stations */
+    Route::group([
+        'prefix' => 'stations',
+        'as'     => 'stations.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'StationController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'StationController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'StationController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'StationController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'StationController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'StationController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
     });
 
         /*

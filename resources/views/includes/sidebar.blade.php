@@ -351,25 +351,6 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Cabins
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ route('stations.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['stations.index', 'stations.create', 'stations.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Stations
-                                </p>
-                            </a>
-                        </li>
-
-                        
-                        <li class="nav-item">
                             <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
@@ -400,6 +381,15 @@
                                 <i class="fas fa-money-bill-alt nav-icon"></i>
                                 <p>
                                     Currency Rates
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Cabin Type
                                 </p>
                             </a>
                         </li>
@@ -465,6 +455,15 @@
                             <a href="{{ route('store_texts.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['store_texts.index', 'store_texts.create', 'store_texts.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-file-word nav-icon" aria-hidden="true"></i>
                                 <p>Stored Text</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('stations.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['stations.index', 'stations.create', 'stations.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Stations
+                                </p>
                             </a>
                         </li>
                     </ul>

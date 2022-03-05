@@ -14,7 +14,7 @@ class UpdateStationRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,6 +26,13 @@ class UpdateStationRequest extends FormRequest
     {
         return [
             'name' => ['required', Rule::unique('stations','name')->ignore(decrypt($this->id))],
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name'          => 'Station Name',
         ];
     }
 }

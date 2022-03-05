@@ -73,7 +73,7 @@ class StationController extends Controller
      */
     public function edit($id)
     {
-        $data['Station'] = Station::findOrFail(decrypt($id));
+        $data['station'] = Station::findOrFail(decrypt($id));
 
         return view('stations.edit', $data);
     }
