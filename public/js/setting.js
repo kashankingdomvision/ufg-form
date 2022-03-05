@@ -121,6 +121,10 @@ __webpack_require__(/*! ./setting/season_app */ "./resources/js/setting/season_a
 
 __webpack_require__(/*! ./setting/store_text_app */ "./resources/js/setting/store_text_app.js");
 
+__webpack_require__(/*! ./setting/cabintype_app */ "./resources/js/setting/cabintype_app.js");
+
+__webpack_require__(/*! ./setting/station_app */ "./resources/js/setting/station_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -468,6 +472,127 @@ $(document).ready(function () {
               type: 'POST',
               url: $('#brand_bulk_action').attr('action'),
               data: new FormData($('#brand_bulk_action')[0]),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function success(response) {
+                printListingSuccessMessage(response);
+              }
+            });
+          }
+        });
+      } else {
+        printListingErrorMessage("Please Check Atleast One Record.");
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/cabintype_app.js":
+/*!***********************************************!*\
+  !*** ./resources/js/setting/cabintype_app.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Cabin
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_cabin', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Cabin
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_cabin', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.cabin-bulk-action-item', function () {
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var bulkActionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    if (['delete'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
+        $('input[name="bulk_action_type"]').val(bulkActionType);
+        $('input[name="bulk_action_ids"]').val(checkedValues);
+
+        switch (bulkActionType) {
+          case "delete":
+            message = 'You want to Delete Cabins?';
+            buttonText = 'Delete';
+            break;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: message,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "Yes, ".concat(buttonText, " it !")
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: $('#cabin_bulk_action').attr('action'),
+              data: new FormData($('#cabin_bulk_action')[0]),
               contentType: false,
               cache: false,
               processData: false,
@@ -1603,6 +1728,127 @@ $(document).ready(function () {
               type: 'POST',
               url: $('#season_bulk_action').attr('action'),
               data: new FormData($('#season_bulk_action')[0]),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function success(response) {
+                printListingSuccessMessage(response);
+              }
+            });
+          }
+        });
+      } else {
+        printListingErrorMessage("Please Check Atleast One Record.");
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/station_app.js":
+/*!*********************************************!*\
+  !*** ./resources/js/setting/station_app.js ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Station
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_station', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Station
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_station', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.station-bulk-action-item', function () {
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var bulkActionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    if (['delete'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
+        $('input[name="bulk_action_type"]').val(bulkActionType);
+        $('input[name="bulk_action_ids"]').val(checkedValues);
+
+        switch (bulkActionType) {
+          case "delete":
+            message = 'You want to Delete Station?';
+            buttonText = 'Delete';
+            break;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: message,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "Yes, ".concat(buttonText, " it !")
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: $('#station_bulk_action').attr('action'),
+              data: new FormData($('#station_bulk_action')[0]),
               contentType: false,
               cache: false,
               processData: false,
