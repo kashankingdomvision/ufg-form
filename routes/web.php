@@ -460,6 +460,22 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
+    /*  Stations */
+    Route::group([
+        'prefix' => 'stations',
+        'as'     => 'stations.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'StationController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'StationController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'StationController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'StationController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'StationController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'StationController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
+    });
+
+
 
     /*  Brands */
     Route::group([

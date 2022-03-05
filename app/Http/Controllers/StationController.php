@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\CabinType;
+use App\Station;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CabinTypeRequest;
-use App\Http\Requests\UpdateCabinTypeRequest;
+use App\Http\Requests\StationRequest;
+use App\Http\Requests\UpdateStationRequest;
 use Illuminate\Support\Facades\DB;
 
-class CabinTypeController extends Controller
+class StationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +20,9 @@ class CabinTypeController extends Controller
 
     public function index()
     {
-        $data['cabins'] = CabinType::paginate($this->pagination);
+        $data['stations'] = Station::paginate($this->pagination);
 
-        return view('cabins.listing',$data);
+        return view('stations.listing',$data);
     }
 
     /**
@@ -32,7 +32,7 @@ class CabinTypeController extends Controller
      */
     public function create()
     {
-        return view('cabins.create');
+        return view('stations.create');
     }
 
     /**
@@ -41,16 +41,16 @@ class CabinTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CabinTypeRequest $request)
+    public function store(StationRequest $request)
     {
-        CabinType::create([
+        Station::create([
             'name'  =>  $request->name
         ]);
         
         return response()->json([ 
             'status'          => true, 
-            'success_message' => 'Cabin Type Created Successfully.',
-            'redirect_url'    => route('cabins.index') 
+            'success_message' => 'Station Created Successfully.',
+            'redirect_url'    => route('stations.index') 
         ]);
     }
 
@@ -73,9 +73,9 @@ class CabinTypeController extends Controller
      */
     public function edit($id)
     {
-        $data['cabin'] = CabinType::findOrFail(decrypt($id));
+        $data['Station'] = Station::findOrFail(decrypt($id));
 
-        return view('cabins.edit', $data);
+        return view('stations.edit', $data);
     }
 
     /**
@@ -85,16 +85,16 @@ class CabinTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCabinTypeRequest $request, $id)
+    public function update(UpdateStationRequest $request, $id)
     {
-        $cabin = CabinType::findOrFail(decrypt($id))->update([
+        $station = Station::findOrFail(decrypt($id))->update([
             'name' => $request->name,
         ]);
         
         return response()->json([ 
             'status'          => true, 
-            'success_message' => 'Cabin Type Updated Successfully.',
-            'redirect_url'    => route('cabins.index') 
+            'success_message' => 'Station Updated Successfully.',
+            'redirect_url'    => route('stations.index') 
         ]);
     }
 
@@ -106,8 +106,8 @@ class CabinTypeController extends Controller
      */
     public function destroy($id)
     {
-        CabinType::findOrFail(decrypt($id))->delete();
-        return redirect()->route('cabins.index')->with('success_message', 'Cabin Type Deleted Successfully'); 
+        Station::findOrFail(decrypt($id))->delete();
+        return redirect()->route('stations.index')->with('success_message', 'Station Deleted Successfully'); 
     }
 
     public function bulkAction(Request $request)
@@ -120,8 +120,8 @@ class CabinTypeController extends Controller
             $bulk_action_ids  = explode(",", $bulk_action_ids);
     
             if($bulk_action_type == 'delete'){
-                DB::table("cabin_types")->whereIn('id', $bulk_action_ids)->delete();
-                $message = "Cabins Deleted Successfully.";
+                DB::table("stations")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Station Deleted Successfully.";
             }
     
             return response()->json([ 
