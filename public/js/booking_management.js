@@ -2235,20 +2235,22 @@ $(document).ready(function () {
     label.innerHTML = "&nbsp; ".concat(obj.label);
     formGroup.appendChild(label); // add plus icon 
 
-    if (['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types'].includes(obj.data)) {
+    if (['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types', 'stations'].includes(obj.data)) {
       var dynamicClass = {
         airport_codes: "store-airport-code-modal",
         harbours: "store-harbour-modal",
         hotels: "store-hotel-modal",
         group_owners: "group-owner-modal",
-        cabin_types: "cabin-type-modal"
+        cabin_types: "cabin-type-modal",
+        stations: "station-modal"
       };
       var modalID = {
         airport_codes: "store_airport_code_modal",
         harbours: "store_harbour_modal",
         hotels: "store_hotel_modal",
         group_owners: "store_group_owner_modal",
-        cabin_types: "store_cabin_type_modal"
+        cabin_types: "store_cabin_type_modal",
+        stations: "store_station_modal"
       };
       var icon = document.createElement('i');
       icon.setAttribute('class', 'fas fa-plus');

@@ -188,7 +188,7 @@ $(document).ready(function() {
         formGroup.appendChild(label);
 
         // add plus icon 
-        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types'].includes(obj.data)){
+        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types', 'stations'].includes(obj.data)){
     
             const dynamicClass = { 
                 airport_codes: "store-airport-code-modal",
@@ -196,6 +196,7 @@ $(document).ready(function() {
                 hotels: "store-hotel-modal",
                 group_owners: "group-owner-modal",
                 cabin_types: "cabin-type-modal",
+                stations: "station-modal",
             };
 
             const modalID = { 
@@ -204,6 +205,7 @@ $(document).ready(function() {
                 hotels: "store_hotel_modal",
                 group_owners: "store_group_owner_modal",
                 cabin_types: "store_cabin_type_modal",
+                stations: "store_station_modal",
             };
 
             let icon = document.createElement('i');
