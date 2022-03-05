@@ -67230,7 +67230,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   window.removeModalFormLoadingStyles = function (formSelector) {
     setTimeout(function () {
-      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass("spinner-border spinner-border-sm");
+      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass("mr-2 spinner-border spinner-border-sm");
     }, 250);
   };
 

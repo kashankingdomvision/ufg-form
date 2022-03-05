@@ -151,7 +151,7 @@ $(document).ready(function($) {
 
         setTimeout(function() {
 
-            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`spinner-border spinner-border-sm`);
+            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`mr-2 spinner-border spinner-border-sm`);
         }, 250);
 
     }
