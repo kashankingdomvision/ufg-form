@@ -185,6 +185,9 @@ $(document).ready(function() {
                 $(`${quoteClass}`).find('.previewId').attr('id', `quote_${quoteKey}_holder` );
                 $(`#quote_${quoteKey}_holder`).empty();
                 
+                $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+
+                
                 callLaravelFileManger();
                 datepickerReset(1,`${quoteClass}`);
 
@@ -299,6 +302,8 @@ $(document).ready(function() {
                 $(`${quoteClass}`).find('.previewId').attr('id', `quote_${quoteKey}_holder` );
                 $(`#quote_${quoteKey}_holder`).empty();
                 
+                $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+
                 callLaravelFileManger();
                 datepickerReset(1,`${quoteClass}`);
 

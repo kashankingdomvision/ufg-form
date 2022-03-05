@@ -17,6 +17,7 @@ class Quote extends Model
         'reason_for_trip',
         'commission_id',
         'commission_group_id',
+        'default_supplier_currency_id',
         'created_by',
         'user_id',
         'season_id',

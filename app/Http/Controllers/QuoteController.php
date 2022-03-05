@@ -99,6 +99,7 @@ class QuoteController extends Controller
             'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
+            'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
             'user_id'                           =>  Auth::id(),
             'season_id'                         =>  $request->season_id,
             'brand_id'                          =>  $request->brand_id,
