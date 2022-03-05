@@ -10,6 +10,7 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Requests\HotelRequest;
 use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\HarboursRequest;
+use App\Http\Requests\GroupOwnerRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -40,6 +41,7 @@ use App\QuoteDetail;
 use App\Harbour;
 use App\AirportCode;
 use App\Hotel;
+use App\GroupOwner;
 
 class ResponseController extends Controller
 {
@@ -145,6 +147,22 @@ class ResponseController extends Controller
             'status'           => true, 
             'category_details' => $category_details,
             'success_message'  => 'Hotel Created Successfully.',
+        ]);
+    }
+
+    // GroupOwnerRequest
+    public function storeGroupOwner(GroupOwnerRequest $request)
+    {
+        $group_owner = GroupOwner::create([
+            'name'       => $request->name,
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "group_owners", $group_owner);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Group Owner Created Successfully.',
         ]);
     }
 

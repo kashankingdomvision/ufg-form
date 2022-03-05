@@ -994,6 +994,7 @@
     @include('quote_booking_includes.store_harbour_modal')
     @include('quote_booking_includes.store_airport_code_modal')
     @include('quote_booking_includes.store_hotel_modal')
+    @include('quote_booking_includes.store_group_owner_modal')
   <!-- End Modals  -->
 </div>
 
