@@ -844,6 +844,7 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
@@ -994,6 +995,7 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();

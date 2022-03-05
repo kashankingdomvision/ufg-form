@@ -741,6 +741,7 @@ $(document).ready(function () {
 
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+        $("".concat(quoteClass)).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
@@ -863,6 +864,7 @@ $(document).ready(function () {
 
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+        $("".concat(quoteClass)).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();

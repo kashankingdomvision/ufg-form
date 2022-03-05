@@ -160,6 +160,7 @@ class BookingController extends Controller
             'markup_type'                       =>  $request->markup_type??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
+            'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
             'booking_details'                   =>  $request->booking_details,
             'ref_no'                            =>  $request->ref_no,
             'tas_ref'                           =>  $request->tas_ref??NULL,
