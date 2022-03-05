@@ -444,6 +444,23 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'BankController@bulkAction' ));
     });
 
+    /*  Banks */
+    Route::group([
+        'prefix' => 'cabins',
+        'as'     => 'cabins.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
+    });
+
+
+
     /*  Brands */
     Route::group([
         'prefix' => 'brands',

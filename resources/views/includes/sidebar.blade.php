@@ -63,6 +63,9 @@
         'store_texts.create',
         'store_texts.index', 
         'store_texts.edit',
+        'cabins.create',
+        'cabins.index', 
+        'cabins.edit',
     ];
 @endphp
 
@@ -340,6 +343,15 @@
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
                                     Banks
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Cabins
                                 </p>
                             </a>
                         </li>

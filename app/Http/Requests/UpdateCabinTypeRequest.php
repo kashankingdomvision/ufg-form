@@ -5,7 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateBankRequest extends FormRequest
+
+class UpdateCabinTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +27,6 @@ class UpdateBankRequest extends FormRequest
     {
         return [
             'name' => ['required', Rule::unique('cabin_types','name')->ignore(decrypt($this->id))],
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'name'    => 'Cabin Name',
         ];
     }
 }

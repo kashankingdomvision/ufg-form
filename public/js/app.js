@@ -82112,8 +82112,8 @@ window.CURRENT_ROUTE_NAME = $('#current_route_name').attr('content');
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\KV User\Documents\GitHub\ufg-form\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\KV User\Documents\GitHub\ufg-form\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

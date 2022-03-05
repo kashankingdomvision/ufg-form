@@ -12,3 +12,4 @@ require('./setting/payment_method');
 require('./setting/preset_comment_app');
 require('./setting/season_app');
 require('./setting/store_text_app');
+require('./setting/cabintype_app');

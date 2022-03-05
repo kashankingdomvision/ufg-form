@@ -166,7 +166,7 @@ $(document).ready(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\ufg-form\resources\js\template_management.js */"./resources/js/template_management.js");
+module.exports = __webpack_require__(/*! C:\Users\KV User\Documents\GitHub\ufg-form\resources\js\template_management.js */"./resources/js/template_management.js");
 
 
 /***/ })
