@@ -29,7 +29,8 @@ class User extends Authenticatable
         'commission_group_id',
         'rate_type',
         'markup_type',
-        'group_id'
+        'group_id',
+        'supplier_currency_id'
     ];
 
     /**
