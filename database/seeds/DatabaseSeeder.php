@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             HotelTableSeeder::class,
             AirportCodeTableSeeder::class,
             HarbourTableSeeder::class,
+            CabinTypeSeeder::class,
             
         ]);
         // $users = factory(App\User::class, 5)->create();
