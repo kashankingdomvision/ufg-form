@@ -2494,8 +2494,8 @@ $(document).ready(function () {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
-    var classvalue = jQuery('#new_service_modal_below').find('.current-key').val();
-    var onQuoteClass = ".quote-".concat(classvalue);
+    var currentQuoteKey = jQuery('#new_service_modal_below').find('.current-key').val();
+    var onQuoteClass = ".quote-".concat(currentQuoteKey);
     jQuery('#new_service_modal_below').modal('hide');
     $('.parent-spinner').addClass('spinner-border');
 
@@ -2566,6 +2566,10 @@ $(document).ready(function () {
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
+        /* Set last End Date of Service */
+
+        var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
@@ -2577,6 +2581,7 @@ $(document).ready(function () {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
+    var beforeAppendLastQuoteKey = $(".quote").last().data('key');
     jQuery('#new_service_modal').modal('hide');
     $('.parent-spinner').addClass('spinner-border');
 
@@ -2647,6 +2652,10 @@ $(document).ready(function () {
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
+        /* Set last End Date of Service */
+
+        var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top
         }, 1000);

@@ -718,6 +718,7 @@ $(document).ready(function() {
 
         var category_id   = $(this).attr('data-id');
         var category_name = $(this).attr('data-name');
+        let beforeAppendLastQuoteKey = $(".quote").last().data('key');
 
         jQuery('#new_service_modal').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
@@ -850,6 +851,10 @@ $(document).ready(function() {
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
 
+                /* Set last End Date of Service */
+                let endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
 
@@ -872,8 +877,8 @@ $(document).ready(function() {
         jQuery('#new_service_modal_below').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
 
-        var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
-        var onQuoteClass = `.quote-${classvalue}`;
+        var currentQuoteKey =  jQuery('#new_service_modal_below').find('.current-key').val();
+        var onQuoteClass    = `.quote-${currentQuoteKey}`;
 
         if(category_id){
 
@@ -1000,6 +1005,10 @@ $(document).ready(function() {
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
+
+                /* Set last End Date of Service */
+                var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
