@@ -87,6 +87,7 @@ class StationController extends Controller
      */
     public function update(UpdateStationRequest $request, $id)
     {
+        // dd($id);
         $station = Station::findOrFail(decrypt($id))->update([
             'name' => $request->name,
         ]);

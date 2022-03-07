@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Edit Cabins')
+@section('title','Edit Stations')
 
 @section('content')
 
@@ -15,7 +15,7 @@
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a>Home</a></li>
               <li class="breadcrumb-item"><a>Setting</a></li>
-              <li class="breadcrumb-item active">Station</li>
+              <li class="breadcrumb-item active">Stations</li>
             </ol>
         </div>
       </div>
