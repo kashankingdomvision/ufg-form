@@ -1763,6 +1763,7 @@ $(document).ready(function () {
     event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
+    console.log(url);
     $.ajax({
       type: 'POST',
       url: url,

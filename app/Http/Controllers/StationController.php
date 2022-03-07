@@ -72,8 +72,9 @@ class StationController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $data['Station'] = Station::findOrFail(decrypt($id));
+    {   
+        // dd($id);
+        $data['station'] = Station::findOrFail(decrypt($id));
 
         return view('stations.edit', $data);
     }
@@ -87,6 +88,7 @@ class StationController extends Controller
      */
     public function update(UpdateStationRequest $request, $id)
     {
+        // dd($id);
         $station = Station::findOrFail(decrypt($id))->update([
             'name' => $request->name,
         ]);

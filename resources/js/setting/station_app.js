@@ -11,7 +11,7 @@ $(document).ready(function() {
 
         let url    = $(this).attr('action');
         let formID = $(this).attr('id');
-
+        console.log(url);
         $.ajax({
             type: 'POST',
             url: url,
