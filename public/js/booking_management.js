@@ -296,6 +296,69 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', '#store_booking_submit', function (event) {
+    event.preventDefault();
+    $('.payment-method').removeAttr('disabled');
+    var url = $('#update_booking').attr('action');
+    var formData = new FormData($('#update_booking')[0]);
+    var agency = $("input[name=agency]:checked").val();
+    var full_number = '';
+
+    if (agency == 0) {
+      full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+    } else {
+      full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+    }
+
+    formData.append('full_number', full_number);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printAlertResponse(response);
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '#show_booking_submit', function (event) {
+    event.preventDefault();
+    $('#show_booking :input').prop('disabled', false);
+    var url = $('#show_booking').attr('action');
+    /* Send the data using post */
+
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData($('#show_booking')[0]),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printAlertResponse(response);
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
   $(document).on('change', '.cancellation-refund-amount', function () {
     var cancellationRefundAmount = $(this).val();
     var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();

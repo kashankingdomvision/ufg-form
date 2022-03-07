@@ -2100,7 +2100,8 @@
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-success float-right">Submit</button>
+                <button type="submit" class="btn btn-success float-right">Save & Close</button>
+                <button type="button" id="show_booking_submit" class="btn btn-success float-right mr-2">Save</button>
                 <a href="{{ route('bookings.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>
               </div>
             </form>

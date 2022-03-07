@@ -67385,6 +67385,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
+  window.printServerAlertResponse = function (response) {
+    if (response && response.status) {
+      Toast.fire({
+        icon: 'success',
+        title: response.success_message
+      });
+      setTimeout(function () {
+        location.reload();
+      }, 2500);
+    }
+  };
+
   window.curday = function (sp) {
     var today = new Date();
     var dd = today.getDate();
