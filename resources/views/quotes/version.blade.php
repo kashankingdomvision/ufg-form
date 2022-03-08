@@ -1144,6 +1144,8 @@
     @include('quote_booking_includes.store_hotel_modal')
     @include('quote_booking_includes.store_group_owner_modal')
     @include('quote_booking_includes.store_cabin_type_modal')
+    @include('quote_booking_includes.store_station_modal')
+
   <!-- End Modals  -->
 
 @endsection

@@ -12,6 +12,7 @@ use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\HarboursRequest;
 use App\Http\Requests\GroupOwnerRequest;
 use App\Http\Requests\CabinTypeRequest;
+use App\Http\Requests\StationRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -44,6 +45,7 @@ use App\AirportCode;
 use App\Hotel;
 use App\GroupOwner;
 use App\CabinType;
+use App\Station;
 
 class ResponseController extends Controller
 {
@@ -183,6 +185,21 @@ class ResponseController extends Controller
         ]);
     }
 
+    // StationRequest
+    public function storeStation(StationRequest $request)
+    {
+        $station = Station::create([
+            'name'  =>  $request->name
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "stations", $station);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Station Created Successfully.',
+        ]);
+    }
 
     public function getCategoryToSupplier(Request $request)
     {

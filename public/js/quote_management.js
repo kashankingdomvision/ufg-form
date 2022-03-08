@@ -1476,7 +1476,7 @@ $(document).ready(function () {
   });
   var quoteKeyForCategoryFeildModal = '';
   var quoteForCategoryFeildModal = '';
-  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal', function () {
+  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     quoteKeyForCategoryFeildModal = quoteKey;
@@ -1491,7 +1491,7 @@ $(document).ready(function () {
     modal.find("input[name=detail_id]").val(detail_id);
     modal.find("input[name=model_name]").val(model_name);
   });
-  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form', function (event) {
+  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');

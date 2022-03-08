@@ -707,6 +707,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
         Route::post('store-group-owner', array('as' => 'response.group_owners.store', 'uses' => 'ResponseController@storeGroupOwner'));
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
+        Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
 
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
 

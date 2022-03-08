@@ -796,9 +796,7 @@ $(document).ready(function() {
     var quoteKeyForCategoryFeildModal = '';
     var quoteForCategoryFeildModal = '';
 
-    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal', function() {
-
-
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
 
         let quote = $(this).closest('.quote');
         let quoteKey   = quote.data('key');
@@ -820,7 +818,7 @@ $(document).ready(function() {
         modal.find("input[name=model_name]").val(model_name);
     });
 
-    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form', function(event) {
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function(event) {
         
         event.preventDefault();
 
