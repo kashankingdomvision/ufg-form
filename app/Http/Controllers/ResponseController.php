@@ -376,8 +376,11 @@ class ResponseController extends Controller
     {
         $supplier = Supplier::find($request->supplier_id);
 
+        $supplier_products = $supplier->getProducts;
+
         return response()->json([
-            'supplier' => $supplier,
+            'supplier'          => $supplier,
+            'supplier_products' => $supplier_products,
         ]);
     }
     
@@ -452,7 +455,11 @@ class ResponseController extends Controller
     {
         $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
             $query->whereIn('id', $request->supplier_country_ids);
-        })->get();
+        })
+        ->whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })
+        ->get();
 
         return response()->json([ 'suppliers' => $suppliers ]);
     }

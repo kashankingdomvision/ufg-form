@@ -1226,11 +1226,11 @@ $(document).ready(function () {
       quote.find('.badge-category-id').html(""); // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
 
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
-      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
-      $('.show-tf').addClass('d-none');
+      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change'); // $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+
+      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change'); // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+
+      quote.find('.show-tf').addClass('d-none');
       return;
     } else {
       // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
@@ -1297,55 +1297,61 @@ $(document).ready(function () {
             $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", DateOFService);
           }
           /* set product dropdown */
+          // if(response && response.products.length > 0){
+          //     options += "<option value=''>Select Product</option>";
+          //     $.each(response.products, function(key, value) {
+          //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
+          //     });
+          //     $(`#quote_${quoteKey}_product_id`).html(options);
+          // }else{
+          //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+          // }
 
-
-          if (response && response.products.length > 0) {
-            options += "<option value=''>Select Product</option>";
-            $.each(response.products, function (key, value) {
-              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
-            });
-            $("#quote_".concat(quoteKey, "_product_id")).html(options);
-          } else {
-            $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
-          }
         }
       }
     });
   });
   $(document).on('change', '.supplier-country-id', function () {
-    var supplier_country_ids = $(this).val();
-    var url = BASEURL + 'country/to/supplier';
-    var options = '';
-    var selectOption = "<option value=''>Select Supplier</option>";
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
 
     if (supplier_country_ids && supplier_country_ids.length > 0) {
-      $.ajax({
-        type: 'get',
-        url: url,
-        data: {
-          'supplier_country_ids': supplier_country_ids
-        },
-        beforeSend: function beforeSend() {
-          $('.supplier-id').html(options);
-        },
-        success: function success(response) {
-          if (response && response.suppliers.length > 0) {
-            options += selectOption;
-            $.each(response.suppliers, function (key, value) {
-              options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-            });
-          } else {
-            options = selectOption;
-          }
-
-          $('.supplier-id').html(options);
-        }
-      });
+      getSuppliers(quoteKey, supplier_country_ids, category_id);
     } else {
-      options = selectOption;
-      $('.supplier-id').html(options);
+      $("#quote_".concat(quoteKey, "_supplier_id")).html("<option value=''>Select Supplier</option>");
     }
   });
+
+  function getSuppliers(quoteKey, supplier_country_ids, category_id) {
+    var options = "";
+    var selectOption = "<option value=''>Select Supplier</option>";
+    $.ajax({
+      type: 'get',
+      url: "".concat(BASEURL, "country/to/supplier"),
+      data: {
+        'supplier_country_ids': supplier_country_ids,
+        'category_id': category_id
+      },
+      beforeSend: function beforeSend() {
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(selectOption);
+      },
+      success: function success(response) {
+        if (response && response.suppliers.length > 0) {
+          options += selectOption;
+          $.each(response.suppliers, function (key, value) {
+            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+          });
+        } else {
+          options = selectOption;
+        }
+
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+      }
+    });
+  }
+
   $(document).on('change', '.supplier-location-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -1389,18 +1395,38 @@ $(document).ready(function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var supplier_id = $(this).val();
-    $.ajax({
-      type: 'get',
-      url: "".concat(BASEURL, "supplier-on-change"),
-      data: {
-        'supplier_id': supplier_id
-      },
-      success: function success(response) {
-        if (response && Object.keys(response.supplier).length > 0) {
-          $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
+    var options = "";
+    var selectOption = "<option value=''>Select Product</option>";
+
+    if (supplier_id != "") {
+      $.ajax({
+        type: 'get',
+        url: "".concat(BASEURL, "supplier-on-change"),
+        data: {
+          'supplier_id': supplier_id
+        },
+        beforeSend: function beforeSend() {
+          $("#quote_".concat(quoteKey, "_product_id")).html(selectOption);
+        },
+        success: function success(response) {
+          if (response && Object.keys(response.supplier).length > 0) {
+            $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
+          }
+
+          if (response && response.supplier_products.length > 0) {
+            options += selectOption;
+            /* set product dropdown*/
+
+            $.each(response.supplier_products, function (key, value) {
+              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+            });
+            $("#quote_".concat(quoteKey, "_product_id")).html(options);
+          } else {
+            $("#quote_".concat(quoteKey, "_product_id")).html(selectOption);
+          }
         }
-      }
-    });
+      });
+    }
   });
   $(document).on('submit', '#form_add_product', function () {
     event.preventDefault();

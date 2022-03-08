@@ -478,12 +478,12 @@ $(document).ready(function() {
             // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
 
             $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+            // $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
 
             $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+            // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
             
-            $('.show-tf').addClass('d-none');
+            quote.find('.show-tf').addClass('d-none');
 
             return;
         }else{
@@ -560,17 +560,17 @@ $(document).ready(function() {
                     }
 
                     /* set product dropdown */
-                    if(response && response.products.length > 0){
+                    // if(response && response.products.length > 0){
 
-                        options += "<option value=''>Select Product</option>";
-                        $.each(response.products, function(key, value) {
-                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
-                        });
+                    //     options += "<option value=''>Select Product</option>";
+                    //     $.each(response.products, function(key, value) {
+                    //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
+                    //     });
 
-                        $(`#quote_${quoteKey}_product_id`).html(options);
-                    }else{
-                        $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-                    }
+                    //     $(`#quote_${quoteKey}_product_id`).html(options);
+                    // }else{
+                    //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                    // }
                     
                     
                 }
@@ -584,45 +584,55 @@ $(document).ready(function() {
 
     $(document).on('change', '.supplier-country-id', function(){
 
-        var supplier_country_ids   = $(this).val();
-        var url           = BASEURL + 'country/to/supplier';
-        var options       = '';
-        var selectOption  = "<option value=''>Select Supplier</option>";
+        let quote    = $(this).closest('.quote');
+        let quoteKey = quote.data('key');
+
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+        var category_id          = $(`#quote_${quoteKey}_category_id`).val();
 
         if(supplier_country_ids && supplier_country_ids.length > 0){
-      
-            $.ajax({
-                type: 'get',
-                url: url,
-                data: { 'supplier_country_ids': supplier_country_ids },
-                beforeSend: function() {
-                    $('.supplier-id').html(options);
-                },
-                success: function(response) {
-
-                    if(response && response.suppliers.length > 0){
-
-                        options += selectOption;
-
-                        $.each(response.suppliers, function(key, value) {
-                            options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                        });
-                        
-                    }else{
-                        options = selectOption;
-                    }
-    
-
-                    $('.supplier-id').html(options);
-                }
-            });
+            getSuppliers(quoteKey, supplier_country_ids, category_id);
+        
         }else{
-            options = selectOption;
-            $('.supplier-id').html(options);
+            $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
         }
 
         
     });
+
+    function getSuppliers(quoteKey, supplier_country_ids, category_id){
+
+        let options       = "";
+        let selectOption  = "<option value=''>Select Supplier</option>";
+
+        $.ajax({
+            type: 'get',
+            url: `${BASEURL}country/to/supplier`,
+            data: {
+                'supplier_country_ids': supplier_country_ids,
+                'category_id': category_id,
+            },
+            beforeSend: function() {
+                $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+            },
+            success: function(response) {
+
+                if(response && response.suppliers.length > 0){
+
+                    options += selectOption;
+
+                    $.each(response.suppliers, function(key, value) {
+                        options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                    });
+                    
+                }else{
+                    options = selectOption;
+                }
+
+                $(`#quote_${quoteKey}_supplier_id`).html(options);
+            }
+        });
+    }
 
     $(document).on('change', '.supplier-location-id', function(){
         
@@ -673,24 +683,47 @@ $(document).ready(function() {
 
     $(document).on('change', '.supplier-id', function(){
 
-        let quote       = $(this).closest('.quote');
-        let quoteKey    = quote.data('key');
-        let supplier_id = $(this).val();
+        let quote        = $(this).closest('.quote');
+        let quoteKey     = quote.data('key');
+        let supplier_id  = $(this).val();
+        let options      = "";
+        let selectOption = "<option value=''>Select Product</option>";
 
-        $.ajax({
-            type: 'get',
-            url: `${BASEURL}supplier-on-change`,
-            data: { 
-                'supplier_id': supplier_id
-            },
-            success: function(response) {
+        if(supplier_id != ""){
 
-                if(response && Object.keys(response.supplier).length > 0){
-       
-                    $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier.currency_id).change();
+            $.ajax({
+                type: 'get',
+                url: `${BASEURL}supplier-on-change`,
+                data: { 
+                    'supplier_id': supplier_id
+                },
+                beforeSend: function() {
+                    $(`#quote_${quoteKey}_product_id`).html(selectOption);
+                },
+                success: function(response) {
+    
+                    if(response && Object.keys(response.supplier).length > 0){
+           
+                        $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier.currency_id).change();
+                    }
+                    
+                    if(response && response.supplier_products.length > 0){
+           
+                        options += selectOption;
+    
+                        /* set product dropdown*/
+                        $.each(response.supplier_products, function(key, value) {
+                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                        });
+    
+                        $(`#quote_${quoteKey}_product_id`).html(options);
+                    }else{
+                        $(`#quote_${quoteKey}_product_id`).html(selectOption);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     });
 
     $(document).on('submit', '#form_add_product', function() {

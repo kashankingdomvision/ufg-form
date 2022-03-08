@@ -695,9 +695,17 @@
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
+                                // $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                                //   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
+                                // })->get();
+
                                 $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
-                                $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
-                              })->get();
+                                  $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
+                                })
+                                ->whereHas('getCategories', function($query) use($q_detail) {
+                                  $query->where('id', $q_detail['category_id']);
+                                })
+                                ->get();
                               @endphp
 
                               <div class="col">
@@ -720,8 +728,8 @@
                                   <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control select2single  product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if(isset($q_detail['category_id']) && !empty($q_detail['category_id']))
-                                      @foreach ($log->getQueryData($q_detail['category_id'], 'Category')->first()->getProducts()->get() as $product)
+                                    @if(isset($q_detail['supplier_id']) && !empty($q_detail['supplier_id']))
+                                      @foreach ($log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->getProducts()->get() as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail['product_id'] == $product->id) ? 'selected' : '' }}>{{ $product->name }} - {{ $product->code }}</option>
                                       @endforeach
                                     @endif
