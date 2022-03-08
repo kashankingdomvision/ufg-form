@@ -752,7 +752,11 @@
 
                                 $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
                                   $query->whereIn('id', $booking_detail->getBookingDetailCountries()->pluck('country_id')->toArray());
-                                })->get();
+                                })
+                                ->whereHas('getCategories', function($query) use($booking_detail) {
+                                  $query->where('id', $booking_detail->category_id);
+                                })
+                                ->get();
                               @endphp
 
                               <div class="col">
@@ -779,8 +783,8 @@
                                   <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if( isset($booking_detail->getCategory) && !empty($booking_detail->getCategory) )
-                                      @foreach ($booking_detail->getCategory->getProducts as $product)
+                                    @if( isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier) )
+                                      @foreach ($booking_detail->getSupplier->getProducts as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : ''}}  >{{ $product->name }} - {{ $product->code }}</option>
                                       @endforeach
                                     @endif
