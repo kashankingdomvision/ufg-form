@@ -839,6 +839,50 @@ class BookingController extends Controller
         }
     }
 
+    public function bookingDetailStatus($action_type, $id){
+        
+        try {
+
+            $message = "";
+
+            if($action_type == 'not_booked'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'not_booked' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            if($action_type == 'pending'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'pending' ]);
+                $message = "Change Status Successfully.";
+            }
+            
+            if($action_type == 'booked'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'booked' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            if($action_type == 'cancelled'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'cancelled' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => $message,
+            ]);
+          
+        } catch (\Exception $exception) {
+
+            return response()->json([ 
+                'status'        => false, 
+                'error_message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
+
     public function cancelBooking($id)
     {
         $rules = [

@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         /* Booking Multiple Alert Patches Route */
         Route::patch('multiple-alert/{type}/{id}', array('as' => 'multiple.alert', 'uses' => 'BookingController@multipleAlert'));
+        Route::patch('booking-detail-status/{type}/{id}', array('as' => 'booking.detail.status', 'uses' => 'BookingController@bookingDetailStatus'));
     });
 
 

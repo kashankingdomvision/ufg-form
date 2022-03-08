@@ -648,6 +648,57 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('click', ".booking-detail-status", function (event) {
+    var url = $(this).data('action');
+    var actionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    switch (actionType) {
+      case "not_booked":
+        message = 'You want to Change Status "Not Booked" for this Service?';
+        buttonText = 'Update';
+        break;
+
+      case "pending":
+        message = 'You want to Change Status "Pending" for this Service?';
+        buttonText = 'Update';
+        break;
+
+      case "booked":
+        message = 'You want to Change Status "Booked" for this Service?';
+        buttonText = 'Update';
+        break;
+
+      case "cancelled":
+        message = 'You want to Change Status "Cancelled" for this Service?';
+        buttonText = 'Update';
+        break;
+    }
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: message,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#28a745',
+      cancelButtonColor: '#dc3545',
+      confirmButtonText: "Yes, ".concat(buttonText, " it !")
+    }).then(function (result) {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: 'PATCH',
+          url: url,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function success(response) {
+            printAlertResponse(response);
+          }
+        });
+      }
+    });
+  });
   $(document).on('click', '.view-payment_detail', function () {
     var details = $(this).data('details');
     var tbody = '';
@@ -806,6 +857,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         $("".concat(quoteClass)).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        $("".concat(quoteClass)).find('.status-setting').addClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
@@ -933,6 +985,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.badge-service-status').html('');
         $("".concat(quoteClass)).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
         $("".concat(quoteClass)).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        $("".concat(quoteClass)).find('.status-setting').addClass('d-none');
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();

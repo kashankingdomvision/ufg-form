@@ -49,7 +49,7 @@ class CreateBookingDetailsTable extends Migration
             $table->double('markup_amount_in_booking_currency')->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0);
             $table->string('invoice')->nullable();
-            $table->enum('status', ['active', 'cancelled'])->default('active');
+            $table->enum('status', ['not_booked', 'pending', 'booked', 'cancelled'])->default('not_booked');
             $table->enum('payment_status', ['active', 'cancelled'])->default('active');
             $table->longText('category_details')->nullable();
             $table->longText('product_details')->nullable();
