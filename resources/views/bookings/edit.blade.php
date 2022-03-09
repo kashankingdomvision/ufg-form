@@ -766,6 +766,7 @@
                                     <span style="color:red">*</span>
                                     <a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
                                   </label>
+                                  <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-supplier"> <i class="fas fa-plus"></i></button>
                                   <select name="quote[{{ $key }}][supplier_id]" data-name="supplier_id" id="quote_{{ $key }}_supplier_id" class="form-control select2single supplier-id feild-supplier-id @error('supplier_id') is-invalid @enderror">
                                     <option value="">Select Supplier</option>
                                     @if(isset($suppliers) && !empty($suppliers))
