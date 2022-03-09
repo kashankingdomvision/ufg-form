@@ -134,7 +134,7 @@ class DashboardController extends Controller
             $zoho_credentials->update(['access_token' => $body['access_token']]);
         }
         
-        return "Token updated Successfully.";
+        return redirect()->route('dashboard.index')->with('success_message', 'Token Updated Successfully.');
     }
 
 }
