@@ -28,4 +28,11 @@ class UpdateStationRequest extends FormRequest
             'name' => ['required', Rule::unique('stations','name')->ignore(decrypt($this->id))],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'name'          => 'Station Name',
+        ];
+    }
 }

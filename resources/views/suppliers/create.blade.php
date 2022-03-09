@@ -105,7 +105,15 @@
                     </select>
                     <span class="text-danger" role="alert"></span>
                   </div>
-
+                                    
+                  <div class="form-group">
+                    <label for="inputEmail3" class="">Products </label>
+                    <select name="products[]" class="form-control select2-multiple" multiple="multiple">
+                      @foreach ($products as $product)
+                        <option value="{{$product->id}}" {{ in_array($product->id, old('products') ?? []) ? 'selected' : '' }} >{{$product->name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
 
                   <div class="form-group">
                     <label for="inputEmail3" class="">Currency</label>

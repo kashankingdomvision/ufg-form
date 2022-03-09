@@ -188,20 +188,24 @@ $(document).ready(function () {
         formGroup.appendChild(label);
 
         // add plus icon 
-        if (['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners'].includes(obj.data)) {
-
-            const dynamicClass = {
+        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types', 'stations'].includes(obj.data)){
+    
+            const dynamicClass = { 
                 airport_codes: "store-airport-code-modal",
                 harbours: "store-harbour-modal",
                 hotels: "store-hotel-modal",
                 group_owners: "group-owner-modal",
+                cabin_types: "cabin-type-modal",
+                stations: "station-modal",
             };
 
             const modalID = {
                 airport_codes: "store_airport_code_modal",
                 harbours: "store_harbour_modal",
                 hotels: "store_hotel_modal",
-                group_owners: "store_group_owner_modal"
+                group_owners: "store_group_owner_modal",
+                cabin_types: "store_cabin_type_modal",
+                stations: "store_station_modal",
             };
 
             let icon = document.createElement('i');
@@ -474,12 +478,12 @@ $(document).ready(function () {
             // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
 
             $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+            // $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
 
             $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
-
-            $('.show-tf').addClass('d-none');
+            // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+            
+            quote.find('.show-tf').addClass('d-none');
 
             return;
         } else {
@@ -556,19 +560,19 @@ $(document).ready(function () {
                     }
 
                     /* set product dropdown */
-                    if (response && response.products.length > 0) {
+                    // if(response && response.products.length > 0){
 
-                        options += "<option value=''>Select Product</option>";
-                        $.each(response.products, function (key, value) {
-                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
-                        });
+                    //     options += "<option value=''>Select Product</option>";
+                    //     $.each(response.products, function(key, value) {
+                    //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
+                    //     });
 
-                        $(`#quote_${quoteKey}_product_id`).html(options);
-                    } else {
-                        $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
-                    }
-
-
+                    //     $(`#quote_${quoteKey}_product_id`).html(options);
+                    // }else{
+                    //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+                    // }
+                    
+                    
                 }
 
 
@@ -580,51 +584,60 @@ $(document).ready(function () {
 
     $(document).on('change', '.supplier-country-id', function () {
 
-        console.log("dsdsdsd");
-        var supplier_country_ids = $(this).val();
-        var url = BASEURL + 'country/to/supplier';
-        var options = '';
-        var selectOption = "<option value=''>Select Supplier</option>";
+        let quote    = $(this).closest('.quote');
+        let quoteKey = quote.data('key');
 
-        if (supplier_country_ids && supplier_country_ids.length > 0) {
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+        var category_id          = $(`#quote_${quoteKey}_category_id`).val();
 
-            $.ajax({
-                type: 'get',
-                url: url,
-                data: { 'supplier_country_ids': supplier_country_ids },
-                beforeSend: function () {
-                    $('.supplier-id').html(options);
-                },
-                success: function (response) {
-
-                    if (response && response.suppliers.length > 0) {
-
-                        options += selectOption;
-
-                        $.each(response.suppliers, function (key, value) {
-                            options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                        });
-
-                    } else {
-                        options = selectOption;
-                    }
-
-
-                    $('.supplier-id').html(options);
-                }
-            });
-        } else {
-            options = selectOption;
-            $('.supplier-id').html(options);
+        if(supplier_country_ids && supplier_country_ids.length > 0){
+            getSuppliers(quoteKey, supplier_country_ids, category_id);
+        
+        }else{
+            $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
         }
 
 
     });
 
-    $(document).on('change', '.supplier-location-id', function () {
+    function getSuppliers(quoteKey, supplier_country_ids, category_id){
 
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
+        let options       = "";
+        let selectOption  = "<option value=''>Select Supplier</option>";
+
+        $.ajax({
+            type: 'get',
+            url: `${BASEURL}country/to/supplier`,
+            data: {
+                'supplier_country_ids': supplier_country_ids,
+                'category_id': category_id,
+            },
+            beforeSend: function() {
+                $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+            },
+            success: function(response) {
+
+                if(response && response.suppliers.length > 0){
+
+                    options += selectOption;
+
+                    $.each(response.suppliers, function(key, value) {
+                        options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                    });
+                    
+                }else{
+                    options = selectOption;
+                }
+
+                $(`#quote_${quoteKey}_supplier_id`).html(options);
+            }
+        });
+    }
+
+    $(document).on('change', '.supplier-location-id', function(){
+        
+        var quote                 = $(this).closest('.quote');
+        var quoteKey              = quote.data('key');
         var suppplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
         var category_id = $(`#quote_${quoteKey}_category_id`).val();
         var options = '';
@@ -667,7 +680,53 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('submit', '#form_add_product', function () {
+
+    $(document).on('change', '.supplier-id', function(){
+
+        let quote        = $(this).closest('.quote');
+        let quoteKey     = quote.data('key');
+        let supplier_id  = $(this).val();
+        let options      = "";
+        let selectOption = "<option value=''>Select Product</option>";
+
+        if(supplier_id != ""){
+
+            $.ajax({
+                type: 'get',
+                url: `${BASEURL}supplier-on-change`,
+                data: { 
+                    'supplier_id': supplier_id
+                },
+                beforeSend: function() {
+                    $(`#quote_${quoteKey}_product_id`).html(selectOption);
+                },
+                success: function(response) {
+    
+                    if(response && Object.keys(response.supplier).length > 0){
+           
+                        $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier.currency_id).change();
+                    }
+                    
+                    if(response && response.supplier_products.length > 0){
+           
+                        options += selectOption;
+    
+                        /* set product dropdown*/
+                        $.each(response.supplier_products, function(key, value) {
+                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                        });
+    
+                        $(`#quote_${quoteKey}_product_id`).html(options);
+                    }else{
+                        $(`#quote_${quoteKey}_product_id`).html(selectOption);
+                    }
+                }
+            });
+        }
+
+    });
+
+    $(document).on('submit', '#form_add_product', function() {
 
         event.preventDefault();
 
@@ -794,20 +853,30 @@ $(document).ready(function () {
 
     });
 
-    var quoteKeyForSupplier = '';
-    $(document).on('click', '.add-new-supplier', function () {
+    var quoteKeyForCategoryFeildModal = '';
+    var quoteForCategoryFeildModal = '';
+
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
+
         let quote = $(this).closest('.quote');
         let quoteKey = quote.data('key');
         quoteKeyForSupplier = quoteKey;
 
-        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+        quoteKeyForCategoryFeildModal = quoteKey;
+        quoteForCategoryFeildModal = quote;
 
-        var modal  = jQuery('#store_supplier_modal');
-        modal.modal('show');
-        modal.find("#supplier_country_id").val(supplier_country_ids);
+        let modal_id    = $(this).data('modal_id');
+        let modal       = $(`#${modal_id}`);
+
+
+        let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
+        let category_id = $(`#quote_${quoteKey}_category_id`).val();
+        let model_name  = $(`#model_name`).val();
+
     });
 
-    $(document).on('submit', '#store_supplier_modal_form', function (event) {
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function(event) {
+        
         event.preventDefault();
 
         var url     = $(this).attr('action');

@@ -29,7 +29,8 @@ class User extends Authenticatable
         'commission_group_id',
         'rate_type',
         'markup_type',
-        'group_id'
+        'group_id',
+        'supplier_currency_id'
     ];
 
     /**
@@ -65,6 +66,10 @@ class User extends Authenticatable
 
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
+    function getSupplierCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'supplier_currency_id');
     }
     
     function getBrand() {

@@ -15,6 +15,7 @@ class Booking extends Model
         'created_by',
         'commission_id',
         'commission_group_id',
+        'default_supplier_currency_id',
         'season_id',
         'brand_id',
         'currency_id',

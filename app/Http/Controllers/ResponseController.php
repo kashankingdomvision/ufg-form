@@ -12,6 +12,8 @@ use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\HarboursRequest;
 use App\Http\Requests\GroupOwnerRequest;
 use App\Http\Requests\SupplierRequest;
+use App\Http\Requests\CabinTypeRequest;
+use App\Http\Requests\StationRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -47,6 +49,8 @@ use App\SupplierCountry;
 use App\SupplierLocation;
 use App\SupplierCategory;
 
+use App\CabinType;
+use App\Station;
 
 class ResponseController extends Controller
 {
@@ -168,6 +172,37 @@ class ResponseController extends Controller
             'status'           => true, 
             'category_details' => $category_details,
             'success_message'  => 'Group Owner Created Successfully.',
+        ]);
+    }
+
+    public function storeCabinType(CabinTypeRequest $request)
+    {
+        $cabin_type = CabinType::create([
+            'name'       => $request->name,
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "cabin_types", $cabin_type);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Cabin Type Created Successfully.',
+        ]);
+    }
+
+    // StationRequest
+    public function storeStation(StationRequest $request)
+    {
+        $station = Station::create([
+            'name'  =>  $request->name
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "stations", $station);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Station Created Successfully.',
         ]);
     }
 
@@ -342,6 +377,17 @@ class ResponseController extends Controller
     //     return response()->json($commission_groups);
     // }
 
+    public function SupplierOnChange(Request $request)
+    {
+        $supplier = Supplier::find($request->supplier_id);
+
+        $supplier_products = $supplier->getProducts;
+
+        return response()->json([
+            'supplier'          => $supplier,
+            'supplier_products' => $supplier_products,
+        ]);
+    }
     
     public function addProductWithSupplierSync(ProductRequest $request)
     {    
@@ -414,7 +460,11 @@ class ResponseController extends Controller
     {
         $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
             $query->whereIn('id', $request->supplier_country_ids);
-        })->get();
+        })
+        ->whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })
+        ->get();
 
         return response()->json([ 'suppliers' => $suppliers ]);
     }

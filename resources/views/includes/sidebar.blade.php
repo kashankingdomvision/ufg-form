@@ -405,6 +405,15 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Cabin Type
+                                </p>
+                            </a>
+                        </li>
+
 
                         <li class="nav-item">
                             <a href="{{ route('harbours.index') }}" title="Harbours, Train & Points of Interest" class="nav-link sidebar-border-left d-inline-flex {{ in_array($route, ['harbours.index', 'harbours.create', 'harbours.edit']) ? 'active' : '' }}">
@@ -466,6 +475,15 @@
                             <a href="{{ route('store_texts.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['store_texts.index', 'store_texts.create', 'store_texts.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-file-word nav-icon" aria-hidden="true"></i>
                                 <p>Stored Text</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('stations.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['stations.index', 'stations.create', 'stations.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon fa fa-train"></i>
+                                <p>
+                                    Stations
+                                </p>
                             </a>
                         </li>
                     </ul>

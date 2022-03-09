@@ -290,6 +290,19 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
+                      <label>Supplier Currency <span style="color:red">*</span></label>
+                      <select name="default_supplier_currency_id" class="form-control select2single default-supplier-currency-id">
+                        <option selected value="">Select Currency</option>
+                        @foreach ($currencies as $currency)
+                          <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ $currency->id == $booking->default_supplier_currency_id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                        @endforeach
+                      </select>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
                         <div class="custom-control custom-radio mr-1">
@@ -601,13 +614,8 @@
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">
                               <div class="badge-service-status d-inline">
-                                @if($booking_detail->status == 'active')
-                                  <span class="badge badge-success">Booked</span>
-                                @elseif($booking_detail->status == 'cancelled')
-                                  <span class="badge badge-danger">Cancelled</span>
-                                @endif
-
-                                <span class="border mr-2 ml-1"></span>
+                                {!! $booking_detail->booking_detail_status !!}
+                                {{-- <span class="border mr-2 ml-1"></span> --}}
                               </div>
                                 
                               <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
@@ -622,23 +630,21 @@
                               <input type="hidden" name="quote[{{ $key }}][booking_detail_unique_ref_id]" value="{{ $booking_detail->booking_detail_unique_ref_id }}" >
                               <input type="hidden" name="quote[{{ $key }}][created_by]" id="quote_{{ $key }}_created_by" value="{{ isset($booking_detail->getBookingCancellation->cancelled_by_id) && !empty($booking_detail->getBookingCancellation->cancelled_by_id) ? $booking_detail->getBookingCancellation->cancelled_by_id : Auth::id() }}" >
                               <input type="hidden" name="quote[{{ $key }}][status]" id="quote_{{ $key }}_status" value="{{ isset($booking_detail->status) && !empty($booking_detail->status) ? $booking_detail->status : '' }}" >
+
+                              <div class="status-setting btn-group dropleft m-point-3">
+                                <button type="button" class="btn btn-sm btn-outline-dark rounded" title="Status Setting" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                  <button type="button" data-action_type="not_booked" data-action="{{ route('bookings.booking.detail.status', ['not_booked', encrypt($booking_detail->id)]) }}" class="dropdown-item booking-detail-status"><i class="fa fa-question-circle text-warning m-point-3" aria-hidden="true"></i> Not Booked</button>
+                                  <button type="button" data-action_type="pending" data-action="{{ route('bookings.booking.detail.status', ['pending', encrypt($booking_detail->id)]) }}" class="dropdown-item booking-detail-status"><i class="fa fa-clock text-info m-point-3" aria-hidden="true"></i> Pending</button>
+                                  <button type="button" data-action_type="booked" data-action="{{ route('bookings.booking.detail.status', ['booked', encrypt($booking_detail->id)]) }}" class="dropdown-item booking-detail-status"><i class="fa fa-check text-success m-point-3" aria-hidden="true"></i> Booked</button>
+                                  <button type="button" data-action_type="cancelled" data-action="{{ route('bookings.booking.detail.status', ['cancelled', encrypt($booking_detail->id)]) }}" class="dropdown-item booking-detail-status"><i class="fa fa-times text-danger m-point-3" aria-hidden="true"></i> Cancelled</button>
+                                </div>
+                              </div>
                               
-                              @if($booking_detail->status == 'active')
-                                <button type="button" class="booking-detail-cancellation btn btn-outline-danger btn-sm m-point-3" data-bookingDetialID="{{ encrypt($booking_detail->id) }}" title="Cancel Booking Detail" data-title="Booking Detail Cancel" data-target="#Booking_Detail_Cancel">
-                                  <i class="fas fa-times"></i>&nbsp;
-                                  <i class="fas fa-list"></i>
-                                </button>
-                              @elseif($booking_detail->status == 'cancelled')
-                                <button type="button" class="revert-booking-detail-cancellation btn btn-outline-success btn-sm m-point-3" data-bookingDetialID="{{ encrypt($booking_detail->id) }}" title="Restore Booking Detail" data-title="Revert Cancel Service" data-target="#Cancel_Service">
-                                  <span class="fa fa-undo-alt"></span>&nbsp;
-                                  <i class="fas fa-list"></i>
-                                </button>
-                              @endif
-
-                              <button type="button" class="btn btn-sm btn-outline-dark add-new-service-below m-point-3"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
-                              <span class="border mr-2 ml-1 mr-1"></span>
+                              <button type="button" class="btn btn-sm btn-outline-dark add-new-service-below m-point-3" title="Add New Service"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
                               <button type="button" class="btn btn-sm btn-outline-dark collapse-expand-btn m-point-3" title="Minimize/Maximize" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-
                               <button type="button" class="remove-booking-detail-service btn btn-sm btn-outline-dark m-point-3" title="Remove"><i class="fas fa-times"></i></button>
                             </div>
                           </div>
@@ -746,7 +752,11 @@
 
                                 $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
                                   $query->whereIn('id', $booking_detail->getBookingDetailCountries()->pluck('country_id')->toArray());
-                                })->get();
+                                })
+                                ->whereHas('getCategories', function($query) use($booking_detail) {
+                                  $query->where('id', $booking_detail->category_id);
+                                })
+                                ->get();
                               @endphp
 
                               <div class="col">
@@ -773,8 +783,8 @@
                                   <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
-                                    @if( isset($booking_detail->getCategory) && !empty($booking_detail->getCategory) )
-                                      @foreach ($booking_detail->getCategory->getProducts as $product)
+                                    @if( isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier) )
+                                      @foreach ($booking_detail->getSupplier->getProducts as $product)
                                         <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($booking_detail->product_id == $product->id)? 'selected' : ''}}  >{{ $product->name }} - {{ $product->code }}</option>
                                       @endforeach
                                     @endif
@@ -2073,7 +2083,8 @@
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-success float-right">Submit</button>
+                <button type="submit" class="btn btn-success float-right mr-2">Save & Close</button>
+                <button type="button" id="store_booking_submit" class="btn btn-success float-right mr-2">Save</button>
                 <a href="{{ route('bookings.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>
               </div>
             </form>
@@ -2112,6 +2123,9 @@
     @include('quote_booking_includes.store_airport_code_modal')
     @include('quote_booking_includes.store_hotel_modal')
     @include('quote_booking_includes.store_group_owner_modal')
+    @include('quote_booking_includes.store_cabin_type_modal')
+    @include('quote_booking_includes.store_station_modal')
+
   <!-- End Modals  -->
 
   {{-- @include('partials.cancel_booking_service') --}}
@@ -2121,6 +2135,12 @@
 @push('js')
   <script src="{{ asset('js/booking_management.js') }}" ></script>
 @endpush
+
+{{-- @if($booking_detail->status == 'active')
+<span class="badge badge-success">Booked</span>
+@elseif($booking_detail->status == 'cancelled')
+<span class="badge badge-danger">Cancelled</span>
+@endif --}}
 
 {{-- @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
   <div class="col-md-3 d-flex justify-content-center">

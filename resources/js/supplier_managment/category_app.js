@@ -156,6 +156,8 @@ $(document).ready(function() {
                 'hotels'        : 'Hotels',
                 'all'           : 'All',
                 'group_owners'  : 'Group Owner',
+                'cabin_types'   : 'Cabin Type',
+                'stations'      : 'Station',
                 'none'          : 'None',
                 },
             }
@@ -267,6 +269,8 @@ $(document).ready(function() {
                 'hotels'        : 'Hotels',
                 'all'           : 'All',
                 'group_owners'  : 'Group Owner',
+                'cabin_types'   : 'Cabin Type',
+                'stations'      : 'Station',
                 'none'          : 'None',
             },
             }

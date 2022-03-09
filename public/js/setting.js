@@ -121,7 +121,7 @@ __webpack_require__(/*! ./setting/season_app */ "./resources/js/setting/season_a
 
 __webpack_require__(/*! ./setting/store_text_app */ "./resources/js/setting/store_text_app.js");
 
-__webpack_require__(/*! ./setting/cabintype_app */ "./resources/js/setting/cabintype_app.js");
+__webpack_require__(/*! ./setting/cabin_type_app */ "./resources/js/setting/cabin_type_app.js");
 
 __webpack_require__(/*! ./setting/station_app */ "./resources/js/setting/station_app.js");
 
@@ -490,10 +490,10 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./resources/js/setting/cabintype_app.js":
-/*!***********************************************!*\
-  !*** ./resources/js/setting/cabintype_app.js ***!
-  \***********************************************/
+/***/ "./resources/js/setting/cabin_type_app.js":
+/*!************************************************!*\
+  !*** ./resources/js/setting/cabin_type_app.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

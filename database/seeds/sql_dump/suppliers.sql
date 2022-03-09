@@ -336,3 +336,9 @@ INSERT INTO `suppliers` (`id`, `currency_id`, `name`, `group_owner_id`, `code`, 
 (335, NULL, 'Jadrolinija', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (336, NULL, 'Kapetan Luka (Krilo)', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (337, NULL, 'Croatia Airlines', NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- Set default currency for supplier
+UPDATE `suppliers` SET `currency_id` = '1' WHERE `suppliers`.`id` = 1;
+UPDATE `suppliers` SET `currency_id` = '2' WHERE `suppliers`.`id` = 2;
+UPDATE `suppliers` SET `currency_id` = '3' WHERE `suppliers`.`id` = 3;
+UPDATE `suppliers` SET `currency_id` = '4' WHERE `suppliers`.`id` = 4;

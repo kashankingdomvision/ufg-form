@@ -51,6 +51,27 @@ class BookingDetail extends Model
         'product_details'
     ];
 
+    public function getBookingDetailStatusAttribute()
+    {
+        $status = $this->status;
+        switch ($status) {
+            case 'not_booked':
+                return '<span class="badge badge-warning">Not Booked</span>';
+                break;
+            case 'pending':
+                return '<span class="badge badge-warning">Pending</span>';
+                break;
+            case 'booked':
+                return '<span class="badge badge-success">Booked</span>';
+                break;
+            case 'cancelled':
+                return '<span class="badge badge-danger">Cancelled</span>';
+                break;
+        }
+        
+        return $status;
+    }
+
     public function getBookingDetailCountries()
     {
         return $this->hasMany(BookingDetailCountry::class, 'booking_detail_id','id');

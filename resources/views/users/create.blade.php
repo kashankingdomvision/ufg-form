@@ -109,6 +109,17 @@
                 </div>
 
                 <div class="form-group">
+                  <label>Default Supplier Currency</label>
+                  <select name="supplier_currency_id" class="form-control select2single">
+                    <option selected value="">Select Currency</option>
+                    @foreach ($currencies as $currency)
+                      <option value="{{ $currency->id }}" data-image="data:image/png;base64, {{ $currency->flag }}"> &nbsp; {{ $currency->code }} - {{ $currency->name }} </option>
+                    @endforeach
+                  </select>
+                  <span class="text-danger" role="alert"></span>
+                </div>
+
+                <div class="form-group">
                   <label>Default Currency Rate Type</label>
                   <div class="d-flex flex-row">
                     <div class="custom-control custom-radio mr-1">

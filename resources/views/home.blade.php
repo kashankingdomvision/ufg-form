@@ -23,9 +23,9 @@
     </div>
     <!-- /.content-header -->
     <div class="row">
-        <div class="col-md-12">
-            @include('includes.flash_message')
-        </div>
+      <div class="col-md-12 col-md-offset-3">
+        @include('includes.flash_message')
+      </div>
     </div>
 
     <!-- Main content -->

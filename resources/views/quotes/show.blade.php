@@ -246,6 +246,19 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
+                      <label>Supplier Currency <span style="color:red">*</span></label>
+                      <select name="default_supplier_currency_id" class="form-control select2single default-supplier-currency-id">
+                        <option selected value="">Select Currency</option>
+                        @foreach ($currencies as $currency)
+                          <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ $currency->id == $quote->default_supplier_currency_id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                        @endforeach
+                      </select>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
                         <div class="custom-control custom-radio mr-1">
@@ -701,7 +714,11 @@
 
                               $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
                                 $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
-                              })->get();
+                              })
+                              ->whereHas('getCategories', function($query) use ($q_detail) {
+                                $query->where('id', $q_detail->category_id);
+                              })
+                              ->get()
                             @endphp
 
                             <div class="col">
@@ -725,8 +742,8 @@
                                 <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                 <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                   <option value="">Select Product</option>
-                                  @if( isset($q_detail->getCategory) && !empty($q_detail->getCategory) )
-                                    @foreach ($q_detail->getCategory->getProducts as $product)
+                                  @if( isset($q_detail->getSupplier) && !empty($q_detail->getSupplier) )
+                                    @foreach ($q_detail->getSupplier->getProducts as $product)
                                       <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }} - {{ $product->code }}</option>
                                     @endforeach
                                   @endif
@@ -1126,7 +1143,7 @@
                 <div class="form-group row">
                   <div class="col-md-4"><label for="group_quote" class="col-form-label">Add into Group</label></div>
                   <div class="col-md-3 relevant-quote">
-                    <select name="quote_group" class="form-control select2-single" id="group_quote">
+                    <select name="quote_group" class="form-control select2single" id="group_quote">
                       <option value="0">Select Group</option>
                       @foreach ($groups as $group)
                         <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>
@@ -1166,6 +1183,9 @@
     @include('quote_booking_includes.store_airport_code_modal')
     @include('quote_booking_includes.store_hotel_modal')
     @include('quote_booking_includes.store_group_owner_modal')
+    @include('quote_booking_includes.store_cabin_type_modal')
+    @include('quote_booking_includes.store_station_modal')
+
 
   <!-- End Modals  -->
 

@@ -225,6 +225,19 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
+                      <label>Supplier Currency <span style="color:red">*</span></label>
+                      <select name="default_supplier_currency_id" class="form-control select2single default-supplier-currency-id">
+                        <option selected value="">Select Currency</option>
+                        @foreach ($currencies as $currency)
+                          <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ isset(Auth::user()->getSupplierCurrency->id) && !empty(Auth::user()->getSupplierCurrency->id) && Auth::user()->getSupplierCurrency->id == $currency->id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                        @endforeach
+                      </select>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
 
@@ -524,7 +537,7 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-2 d-none">
                             <div class="form-group">
                               <label>Category Details</label>
                               <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
@@ -609,7 +622,7 @@
                               <select name="quote[0][supplier_currency_id]" data-name="supplier_currency_id" id="quote_0_supplier_currency_id" class="form-control select2single supplier-currency-id @error('currency_id') is-invalid @enderror">
                                 <option selected value="" >Select Supplier Currency</option>
                                 @foreach ($currencies as $currency)
-                                  <option value="{{ $currency->id }}" data-name="{{ $currency->code.' - '.$currency->name }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                                  <option value="{{ $currency->id }}" {{ isset(Auth::user()->getSupplierCurrency->id) && !empty(Auth::user()->getSupplierCurrency->id) && Auth::user()->getSupplierCurrency->id == $currency->id ? 'selected' : '' }} data-name="{{ $currency->code.' - '.$currency->name }}" data-code="{{ $currency->code }}" data-image="data:image/png;base64, {{$currency->flag}}"> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>
@@ -621,7 +634,7 @@
                               <label>Estimated Cost <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text supplier-currency-code"></span>
+                                  <span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span>
                                 </div>
                                 <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0" value="0.00">
                               </div>
@@ -633,7 +646,7 @@
                               <label>Markup Amount <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend">
-                                  <span class="input-group-text supplier-currency-code"></span>
+                                  <span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span>
                                 </div>
                                 <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" value="0.00" min="0" step="any">
                               </div>
@@ -656,7 +669,7 @@
                             <div class="form-group">
                               <label>Selling Price <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code"></span></div>
+                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span></div>
                                 <input type="number" step="any" name="quote[0][selling_price]" data-name="selling_price" id="quote_0_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                               </div>
                             </div>
@@ -666,7 +679,7 @@
                             <div class="form-group">
                               <label>Profit % <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code"></span></div>
+                                <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span></div>
                                 <input type="number" step="any" name="quote[0][profit_percentage]" data-name="profit_percentage" id="quote_0_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
@@ -957,7 +970,7 @@
                     <label for="group_quote" class="col-form-label">Add into Group</label>
                   </div>
                   <div class="col-md-3 relevant-quote">
-                    <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
+                    <select name="quote_group" class="form-control select2single dynamic-group" id="group_quote">
                       <option value="" selected >Select Group</option>
                       @foreach($groups as $group)
                         <option value="{{ $group->id }}"> {{ $group->name }}</option>
@@ -998,6 +1011,8 @@
     @include('quote_booking_includes.store_airport_code_modal')
     @include('quote_booking_includes.store_hotel_modal')
     @include('quote_booking_includes.store_group_owner_modal')
+    @include('quote_booking_includes.store_cabin_type_modal')
+    @include('quote_booking_includes.store_station_modal')
   <!-- End Modals  -->
 </div>
 

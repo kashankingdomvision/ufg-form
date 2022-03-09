@@ -225,6 +225,81 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', '#store_booking_submit', function(event) { 
+
+        event.preventDefault();
+
+        $('.payment-method').removeAttr('disabled');
+
+        let url         = $('#update_booking').attr('action');
+        var formData    = new FormData($('#update_booking')[0]);
+        var agency      = $("input[name=agency]:checked").val();
+        var full_number = '';
+
+        if(agency == 0){
+            full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+        }else{
+            full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+        }
+
+        formData.append('full_number', full_number);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+                removeFormLoadingStyles();
+                printAlertResponse(response);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    $(document).on('click', '#show_booking_submit', function(event) { 
+
+        event.preventDefault();
+
+        $('#show_booking :input').prop('disabled', false);
+
+        let url = $('#show_booking').attr('action');
+
+        /* Send the data using post */
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData($('#show_booking')[0]),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+
+                removeFormLoadingStyles();
+                printAlertResponse(response);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
 
     $(document).on('change', '.cancellation-refund-amount', function() {
 
@@ -599,6 +674,61 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', ".booking-detail-status", function(event) {
+
+        let url        = $(this).data('action');
+        let actionType = $(this).data('action_type');
+        let message    = "";
+        let buttonText = "";
+
+        switch(actionType) {
+
+            case "not_booked":
+                message    = 'You want to Change Status "Not Booked" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "pending":
+                message    = 'You want to Change Status "Pending" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "booked":
+                message    = 'You want to Change Status "Booked" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "cancelled":
+                message    = 'You want to Change Status "Cancelled" for this Service?';
+                buttonText = 'Update';
+                break;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes, ${buttonText} it !`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: 'PATCH',
+                    url: url,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        printAlertResponse(response);
+                    }
+                });
+            }
+        });
+    });
+
     $(document).on('click', '.view-payment_detail', function() {
 
         var details = $(this).data('details');
@@ -718,6 +848,7 @@ $(document).ready(function() {
 
         var category_id   = $(this).attr('data-id');
         var category_name = $(this).attr('data-name');
+        let beforeAppendLastQuoteKey = $(".quote").last().data('key');
 
         jQuery('#new_service_modal').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
@@ -844,10 +975,16 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                $(`${quoteClass}`).find('.status-setting').addClass('d-none');
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
+
+                /* Set last End Date of Service */
+                let endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
@@ -871,8 +1008,8 @@ $(document).ready(function() {
         jQuery('#new_service_modal_below').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
 
-        var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
-        var onQuoteClass = `.quote-${classvalue}`;
+        var currentQuoteKey =  jQuery('#new_service_modal_below').find('.current-key').val();
+        var onQuoteClass    = `.quote-${currentQuoteKey}`;
 
         if(category_id){
 
@@ -994,10 +1131,17 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                $(`${quoteClass}`).find('.status-setting').addClass('d-none');
+
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
+
+                /* Set last End Date of Service */
+                var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

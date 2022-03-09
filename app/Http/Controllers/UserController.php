@@ -67,17 +67,18 @@ class UserController extends Controller
     {
         $data = [
             
-            'name'                => $request->name,
-            'email'               => $request->email,
-            'role_id'             => $request->role_id,
-            'supervisor_id'       => $request->supervisor_id,
-            'currency_id'         => $request->currency,
-            'brand_id'            => $request->brand,
-            'holiday_type_id'     => $request->holiday_type,
-            'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'rate_type'           => $request->rate_type,
-            'markup_type'         => $request->markup_type,
+            'name'                  => $request->name,
+            'email'                 => $request->email,
+            'role_id'               => $request->role_id,
+            'supervisor_id'         => $request->supervisor_id,
+            'currency_id'           => $request->currency,
+            'brand_id'              => $request->brand,
+            'holiday_type_id'       => $request->holiday_type,
+            'commission_id'         => $request->commission_id,
+            'commission_group_id'   => $request->commission_group_id,
+            'rate_type'             => $request->rate_type,
+            'markup_type'           => $request->markup_type,
+            'supplier_currency_id'  => $request->supplier_currency_id,
         ];
 
         if($method == 'store'){
@@ -112,6 +113,8 @@ class UserController extends Controller
     // UserRequest
     public function store(UserRequest $request)
     {
+        // dd(request()->all());
+
         User::create($this->userArray($request, 'store'));
 
         return response()->json([ 

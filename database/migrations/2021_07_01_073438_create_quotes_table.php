@@ -24,6 +24,7 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
             $table->unsignedBigInteger('commission_group_id');
+            $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
             $table->string('reason_for_trip');
             $table->string('ref_name');
