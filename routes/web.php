@@ -741,6 +741,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filterCurrencyRate'));
+        Route::post('add/supplier',array('as' => 'add.supplier', 'uses' => 'ResponseController@add_supplier_modal'));
+
         
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));

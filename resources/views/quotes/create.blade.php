@@ -552,6 +552,7 @@
                             <div class="form-group">
                               <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                               </label>
+                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-supplier" data-toggle="modal" data-target="#supplierModal"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single">
                                 <option selected value="">Select Supplier</option>
                               </select>
@@ -561,7 +562,8 @@
 
                           <div class="col">
                             <div class="form-group">
-                              <label>Product </label><button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
+                              <label>Product </label>
+                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
                                 <option selected value="">Select Product</option>
                               </select>
@@ -988,6 +990,7 @@
     <!-- quote_booking -->
     @include('quote_booking_includes.preset_comment_modal', [ 'preset_comments' => $preset_comments ])
     @include('quote_booking_includes.store_product_modal')
+    @include('quote_booking_includes.store_supplier_modal')
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')

@@ -11,6 +11,7 @@ use App\Http\Requests\HotelRequest;
 use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\HarboursRequest;
 use App\Http\Requests\GroupOwnerRequest;
+use App\Http\Requests\SupplierRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -42,6 +43,10 @@ use App\Harbour;
 use App\AirportCode;
 use App\Hotel;
 use App\GroupOwner;
+use App\SupplierCountry;
+use App\SupplierLocation;
+use App\SupplierCategory;
+
 
 class ResponseController extends Controller
 {
@@ -777,6 +782,85 @@ class ResponseController extends Controller
     {
         $store = StoreText::where('slug', $slug)->firstOrFail()->description;
         return response()->json($store);
+    }
+
+    public function add_supplier_modal(Request $request)
+    {
+        
+        // try {
+    
+            // $supplier = Supplier::create([
+            //     'email' => $request->email,
+            //     'name' => $request->username,
+            // ]);
+            // dd($request->all());
+            $supplier = Supplier::create([
+                'name'            => $request->username, 
+                'email'           => $request->email, 
+            ]);
+
+            if($request->has('categories') && count($request->categories) > 0){
+                foreach ($request->categories as $category) {
+                    SupplierCategory::create([
+                        'supplier_id' => $supplier->id,
+                        'category_id' => $category
+                    ]);
+                }
+            }
+            // $country_id = explode(",", $request->country_id);
+            $country_id = $request->country_id;
+            $supplier->getCountries()->sync($country_id);
+
+            // $id = $supplier->id;
+            // $new_country_array = (implode(',', $request->supplier_country_id));
+            // $new_country =  explode(',', $new_country_array);
+
+            // $country = $request->country_id;
+            // foreach($country as $key => $val)
+            // {
+            //         SupplierCountry::create([
+            //             'supplier_id'   => $id,
+            //             'country_id'   => $val,
+            //         ]);
+            // }
+
+            // $categories = $request->categories;
+            // foreach($categories as $key => $val)
+            // {
+            //         SupplierCategory::create([
+            //             'supplier_id'   => $id,
+            //             'category_id'   => $val,
+            //         ]);
+            // }
+            // $location_id = $request->location_id;
+
+            // foreach($location_id as $key => $val)
+            // {
+            //         SupplierLocation::create([
+            //             'supplier_id'   => $id,
+            //             'location_id'   => $val,
+            //         ]);
+            // }
+
+            if((!empty($country_id))) {
+                $suppliers = Supplier::whereHas('getCountries', function($query) use($country_id) {
+                    $query->whereIn('id', $country_id);
+                })->get();
+
+                // dd($suppliers);
+                return \Response::json(['status' => true, 'success_message' => 'Supplier Added Successfully.' , 'suppliers' => $suppliers], 200); // Status code here
+            }
+
+            return \Response::json(['status' => true, 'success_message' => 'Supplier Added Successfully.'], 200); // Status code here
+
+            // dd($suppliers);
+
+          
+        // } catch (\Exception $e) {
+
+        //     return \Response::json(['status' => false, 'supplier_error' => 'Something went wrong in Product Creation Please try again!' ], 422); // Status code here
+        
+        // }
     }
 
     // public function getSupplierRateSheet(Request $request)

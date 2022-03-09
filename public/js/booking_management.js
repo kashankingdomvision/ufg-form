@@ -2670,6 +2670,27 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('change', '.getCountryToLocation', function () {
+    var supplier_country_ids = $(this).val();
+    var url = BASEURL + 'country/to/location';
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'supplier_country_ids': supplier_country_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendCountryLocation').html(options);
+      },
+      success: function success(response) {
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.country_name, ") </option>");
+        });
+        $('.appendCountryLocation').html(options);
+      }
+    });
+  });
   var quoteKeyForProduct = '';
   $(document).on('click', '.add-new-product', function () {
     var quote = $(this).closest('.quote');
@@ -2691,6 +2712,56 @@ $(document).ready(function () {
       return;
     }
   });
+  var quoteKey = '';
+  $(document).on('click', '#supplierAdd', function () {
+    var quote = $(this).closest('.quote');
+    quoteKey = quote.data('key');
+    var val_id = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var modal = jQuery('.add-new-supplier-modal');
+    modal.find("#supplier_country_id").val(val_id);
+  });
+  $(document).on('submit', '#form_add_supplier', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    var modalID = $(this).closest('.modal').attr('id');
+    var options = '';
+    console.log(quoteKey);
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(data) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#".concat(formID))[0].reset();
+        $('#categories, #location_id, #country_id').val(null).trigger('change');
+        $("#".concat(modalID)).modal('hide');
+        console.log(data.suppliers.length);
+
+        if (data.suppliers.length > 0) {
+          options += "<option value=''>Select Supplier</option>";
+          $.each(data.suppliers, function (key, value) {
+            options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+          });
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        } // setTimeout(function () {
+        // }, 200);
+
+      },
+      error: function error(data) {
+        console.log("error");
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(data, "#".concat(modalID));
+      }
+    });
+  });
   var quoteKeyForCategoryFeildModal = '';
   var quoteForCategoryFeildModal = '';
   $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal', function () {
@@ -2699,8 +2770,8 @@ $(document).ready(function () {
     quoteKeyForCategoryFeildModal = quoteKey;
     quoteForCategoryFeildModal = quote;
     var modal_id = $(this).data('modal_id');
-    var modal = $("#".concat(modal_id));
-    console.log(modal_id);
+    var modal = $("#".concat(modal_id)); // console.log(modal_id);
+
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
     var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
     var model_name = $("#model_name").val();
