@@ -1168,7 +1168,7 @@
                 <div class="form-group row">
                   <div class="col-md-4"><label for="group_quote" class="col-form-label">Add into Group</label></div>
                   <div class="col-md-3 relevant-quote">
-                    <select name="quote_group" class="form-control select2-single" id="group_quote">
+                    <select name="quote_group" class="form-control select2single" id="group_quote">
                       <option value="0">Select Group</option>
                       @foreach ($groups as $group)
                         <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>

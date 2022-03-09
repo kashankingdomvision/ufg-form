@@ -968,7 +968,7 @@
                     <label for="group_quote" class="col-form-label">Add into Group</label>
                   </div>
                   <div class="col-md-3 relevant-quote">
-                    <select name="quote_group" class="form-control select2-single dynamic-group" id="group_quote">
+                    <select name="quote_group" class="form-control select2single dynamic-group" id="group_quote">
                       <option value="" selected >Select Group</option>
                       @foreach($groups as $group)
                         <option value="{{ $group->id }}"> {{ $group->name }}</option>
