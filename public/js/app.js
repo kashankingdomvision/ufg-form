@@ -67247,7 +67247,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var flag = true;
       setTimeout(function () {
         jQuery.each(errors.errors, function (index, value) {
-          console.log("".concat(index));
           index = index.replace(/\./g, '_');
           /* Expand Quote Details Card */
 
@@ -67260,7 +67259,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $("#".concat(index)).addClass('is-invalid');
           $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
           $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
-          console.log("#".concat(index));
 
           if (flag) {
             $('html, body').animate({
@@ -67360,8 +67358,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.printAlertResponse = function (response) {
-    console.log(response.status);
-
     if (response && response.status) {
       $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({
