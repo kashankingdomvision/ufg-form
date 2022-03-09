@@ -324,7 +324,7 @@ class ResponseController extends Controller
 
     public function getCountryToLocation(Request $request)
     {  
-        $locations = Location::whereIn('country_id',$request->supplier_country_ids)
+        $locations = Location::whereIn('country_id', $request->supplier_country_ids)
         ->leftJoin('countries', 'locations.country_id', '=', 'countries.id')
         ->get([
             'locations.id',
@@ -784,16 +784,11 @@ class ResponseController extends Controller
         return response()->json($store);
     }
 
-    public function add_supplier_modal(Request $request)
+    // SupplierRequest
+    public function storeSupplier(SupplierRequest $request)
     {
-        
-        // try {
-    
-            // $supplier = Supplier::create([
-            //     'email' => $request->email,
-            //     'name' => $request->username,
-            // ]);
-            // dd($request->all());
+        try {
+
             $supplier = Supplier::create([
                 'name'            => $request->username, 
                 'email'           => $request->email, 
@@ -807,60 +802,32 @@ class ResponseController extends Controller
                     ]);
                 }
             }
-            // $country_id = explode(",", $request->country_id);
-            $country_id = $request->country_id;
-            $supplier->getCountries()->sync($country_id);
+            
+            $supplier->getCountries()->sync($request->country_id);
+            $supplier->getLocations()->sync($request->location_id);
+            $supplier_country_id = explode(",", $request->supplier_country_id);
 
-            // $id = $supplier->id;
-            // $new_country_array = (implode(',', $request->supplier_country_id));
-            // $new_country =  explode(',', $new_country_array);
+            if(!empty($request->country_id)){
 
-            // $country = $request->country_id;
-            // foreach($country as $key => $val)
-            // {
-            //         SupplierCountry::create([
-            //             'supplier_id'   => $id,
-            //             'country_id'   => $val,
-            //         ]);
-            // }
-
-            // $categories = $request->categories;
-            // foreach($categories as $key => $val)
-            // {
-            //         SupplierCategory::create([
-            //             'supplier_id'   => $id,
-            //             'category_id'   => $val,
-            //         ]);
-            // }
-            // $location_id = $request->location_id;
-
-            // foreach($location_id as $key => $val)
-            // {
-            //         SupplierLocation::create([
-            //             'supplier_id'   => $id,
-            //             'location_id'   => $val,
-            //         ]);
-            // }
-
-            if((!empty($country_id))) {
-                $suppliers = Supplier::whereHas('getCountries', function($query) use($country_id) {
-                    $query->whereIn('id', $country_id);
+                $suppliers = Supplier::whereHas('getCountries', function($query) use ($supplier_country_id) {
+                    $query->whereIn('id', $supplier_country_id);
                 })->get();
 
-                // dd($suppliers);
-                return \Response::json(['status' => true, 'success_message' => 'Supplier Added Successfully.' , 'suppliers' => $suppliers], 200); // Status code here
+
+                return response()->json([ 
+                    'status' => true, 
+                    'success_message' => 'Supplier Added Successfully.', 
+                    'suppliers' => $suppliers
+                ]);
             }
 
-            return \Response::json(['status' => true, 'success_message' => 'Supplier Added Successfully.'], 200); // Status code here
+        } catch (\Exception $e) {
 
-            // dd($suppliers);
-
-          
-        // } catch (\Exception $e) {
-
-        //     return \Response::json(['status' => false, 'supplier_error' => 'Something went wrong in Product Creation Please try again!' ], 422); // Status code here
-        
-        // }
+            return response()->json([ 
+                'status' => false, 
+                'success_message' => 'Something went Wrong, Please try again later!',
+            ]);
+        }
     }
 
     // public function getSupplierRateSheet(Request $request)

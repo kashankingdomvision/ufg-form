@@ -709,6 +709,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
         Route::post('store-group-owner', array('as' => 'response.group_owners.store', 'uses' => 'ResponseController@storeGroupOwner'));
+        Route::post('store-supplier', array('as' => 'response.suppliers.store', 'uses' => 'ResponseController@storeSupplier'));
 
 
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
@@ -741,7 +742,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filterCurrencyRate'));
-        Route::post('add/supplier',array('as' => 'add.supplier', 'uses' => 'ResponseController@add_supplier_modal'));
 
         
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));

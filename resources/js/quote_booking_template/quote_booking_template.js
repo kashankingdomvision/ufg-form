@@ -794,25 +794,26 @@ $(document).ready(function () {
 
     });
 
-    var quoteKey = '';
-    $(document).on('click', '#supplierAdd', function () {
+    var quoteKeyForSupplier = '';
+    $(document).on('click', '.add-new-supplier', function () {
         let quote = $(this).closest('.quote');
-        quoteKey = quote.data('key');
-        var val_id = $(`#quote_${quoteKey}_supplier_country_ids`).val();
-        var modal = jQuery('.add-new-supplier-modal');
-        modal.find("#supplier_country_id").val(val_id);
+        let quoteKey = quote.data('key');
+        quoteKeyForSupplier = quoteKey;
+
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+
+        var modal  = jQuery('#store_supplier_modal');
+        modal.modal('show');
+        modal.find("#supplier_country_id").val(supplier_country_ids);
     });
 
-    $(document).on('submit', '#form_add_supplier', function (event) {
+    $(document).on('submit', '#store_supplier_modal_form', function (event) {
         event.preventDefault();
 
-        var url = $(this).attr('action');
-        let formID = $(this).attr('id');
+        var url     = $(this).attr('action');
+        let formID  = $(this).attr('id');
         let modalID = $(this).closest('.modal').attr('id');
         var options = '';
-
-
-        console.log(quoteKey);
 
         $.ajax({
             type: 'POST',
@@ -825,33 +826,30 @@ $(document).ready(function () {
                 removeFormValidationStyles();
                 addModalFormLoadingStyles(`#${formID}`);
             },
-            success: function (data) {
+            success: function (response) {
                 removeModalFormLoadingStyles(`#${formID}`);
+
                 $(`#${formID}`)[0].reset();
                 $('#categories, #location_id, #country_id').val(null).trigger('change');
                 $(`#${modalID}`).modal('hide');
 
-                console.log(data.suppliers.length);
+                Toast.fire({
+                    icon: 'success',
+                    title: response.success_message
+                });
 
-                if (data.suppliers.length > 0) {
+                if (response.suppliers.length > 0) {
 
                     options += "<option value=''>Select Supplier</option>";
-                    $.each(data.suppliers, function (key, value) {
+                    $.each(response.suppliers, function (key, value) {
                         options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
                     });
 
-              
-
-                    $(`#quote_${quoteKey}_supplier_id`).html(options);
-
+                    $(`#quote_${quoteKeyForSupplier}_supplier_id`).html(options);
                 }
-            
 
-                // setTimeout(function () {
-                // }, 200);
             },
             error: function (data) {
-                console.log("error");
                 removeModalFormLoadingStyles(`#${formID}`);
                 printModalServerValidationErrors(data, `#${modalID}`);
             },

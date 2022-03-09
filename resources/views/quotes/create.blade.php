@@ -552,7 +552,7 @@
                             <div class="form-group">
                               <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                               </label>
-                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-supplier" data-toggle="modal" data-target="#supplierModal"> <i class="fas fa-plus"></i></button>
+                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-supplier"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single">
                                 <option selected value="">Select Supplier</option>
                               </select>

@@ -1475,21 +1475,22 @@ $(document).ready(function () {
       return;
     }
   });
-  var quoteKey = '';
-  $(document).on('click', '#supplierAdd', function () {
+  var quoteKeyForSupplier = '';
+  $(document).on('click', '.add-new-supplier', function () {
     var quote = $(this).closest('.quote');
-    quoteKey = quote.data('key');
-    var val_id = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
-    var modal = jQuery('.add-new-supplier-modal');
-    modal.find("#supplier_country_id").val(val_id);
+    var quoteKey = quote.data('key');
+    quoteKeyForSupplier = quoteKey;
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var modal = jQuery('#store_supplier_modal');
+    modal.modal('show');
+    modal.find("#supplier_country_id").val(supplier_country_ids);
   });
-  $(document).on('submit', '#form_add_supplier', function (event) {
+  $(document).on('submit', '#store_supplier_modal_form', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
     var modalID = $(this).closest('.modal').attr('id');
     var options = '';
-    console.log(quoteKey);
     $.ajax({
       type: 'POST',
       url: url,
@@ -1501,25 +1502,25 @@ $(document).ready(function () {
         removeFormValidationStyles();
         addModalFormLoadingStyles("#".concat(formID));
       },
-      success: function success(data) {
+      success: function success(response) {
         removeModalFormLoadingStyles("#".concat(formID));
         $("#".concat(formID))[0].reset();
         $('#categories, #location_id, #country_id').val(null).trigger('change');
         $("#".concat(modalID)).modal('hide');
-        console.log(data.suppliers.length);
+        Toast.fire({
+          icon: 'success',
+          title: response.success_message
+        });
 
-        if (data.suppliers.length > 0) {
+        if (response.suppliers.length > 0) {
           options += "<option value=''>Select Supplier</option>";
-          $.each(data.suppliers, function (key, value) {
+          $.each(response.suppliers, function (key, value) {
             options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
           });
-          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
-        } // setTimeout(function () {
-        // }, 200);
-
+          $("#quote_".concat(quoteKeyForSupplier, "_supplier_id")).html(options);
+        }
       },
       error: function error(data) {
-        console.log("error");
         removeModalFormLoadingStyles("#".concat(formID));
         printModalServerValidationErrors(data, "#".concat(modalID));
       }
