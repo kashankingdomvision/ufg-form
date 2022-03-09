@@ -823,7 +823,68 @@ $(document).ready(function () {
 
     });
 
+    var quoteKeyForSupplier = '';
+    $(document).on('click', '.add-new-supplier', function () {
+        let quote = $(this).closest('.quote');
+        let quoteKey = quote.data('key');
+        quoteKeyForSupplier = quoteKey;
 
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+
+        var modal  = jQuery('#store_supplier_modal');
+        modal.modal('show');
+        modal.find("#supplier_country_id").val(supplier_country_ids);
+    });
+
+    $(document).on('submit', '#store_supplier_modal_form', function (event) {
+        event.preventDefault();
+
+        var url     = $(this).attr('action');
+        let formID  = $(this).attr('id');
+        let modalID = $(this).closest('.modal').attr('id');
+        var options = '';
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function (response) {
+                removeModalFormLoadingStyles(`#${formID}`);
+
+                $(`#${formID}`)[0].reset();
+                $('#categories, #location_id, #country_id').val(null).trigger('change');
+                $(`#${modalID}`).modal('hide');
+
+                Toast.fire({
+                    icon: 'success',
+                    title: response.success_message
+                });
+
+                if (response.suppliers.length > 0) {
+
+                    options += "<option value=''>Select Supplier</option>";
+                    $.each(response.suppliers, function (key, value) {
+                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                    });
+
+                    $(`#quote_${quoteKeyForSupplier}_supplier_id`).html(options);
+                }
+
+            },
+            error: function (data) {
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(data, `#${modalID}`);
+            },
+        });
+
+    });
 
     var quoteKeyForProduct = '';
     $(document).on('click', '.add-new-product', function () {
