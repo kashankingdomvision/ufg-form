@@ -105,6 +105,7 @@
                                                 <th>Email</th>
                                                 <th>Contact No</th>
                                                 <th>Currency</th>
+                                                <th>Country</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -122,6 +123,15 @@
                                                 <td>{{ $supplier->email }}</td>
                                                 <td>{{ $supplier->phone }}</td>
                                                 <td>{{ isset($supplier->getCurrency->name) && !empty($supplier->getCurrency->name) ? $supplier->getCurrency->code.' - '.$supplier->getCurrency->name : '' }}</td>
+                                                <td class="d-inline">
+                                                    @if(isset($supplier->getCountries) && count($supplier->getCountries) > 0 )
+                                                        @foreach ($supplier->getCountries as $country)
+                                                            <h6>
+                                                                <span class="badge badge-info m-point-3">{{ $country->name }}</span>
+                                                            </h6>
+                                                        @endforeach
+                                                    @endif
+                                                </td>
                                                 <td>
                                                 <form method="post" action="{{ route('suppliers.destroy', encrypt($supplier->id)) }}">
                                                 <a  href="{{ route('suppliers.edit', encrypt($supplier->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
