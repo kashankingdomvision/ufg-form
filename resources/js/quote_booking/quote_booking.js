@@ -973,4 +973,9 @@ $(document).ready(function() {
         onChangeAgencyCommissionType();
     });
 
+    $(document).on('change', '.agency-commission', function() {
+        getCalculatedTotalNetMarkup();
+        getCommissionRate();
+    });
+
 });

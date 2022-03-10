@@ -830,6 +830,10 @@ $(document).ready(function () {
   $(document).on('change, click', '.agency-commission-type', function () {
     onChangeAgencyCommissionType();
   });
+  $(document).on('change', '.agency-commission', function () {
+    getCalculatedTotalNetMarkup();
+    getCommissionRate();
+  });
 });
 
 /***/ }),
@@ -2330,10 +2334,6 @@ $(document).ready(function () {
         }
       }
     });
-  });
-  $(document).on('change', '.agency-commission', function () {
-    getCalculatedTotalNetMarkup();
-    getCommissionRate();
   });
   $(document).on('click', '.quote-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {

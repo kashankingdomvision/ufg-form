@@ -198,4 +198,31 @@ class BookingDetail extends Model
         $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }  
 
+    public function setEstimatedCostAttribute( $value ) {
+        $this->attributes['estimated_cost'] = str_replace( ',', '', $value );
+    }
+
+    public function setActualCostAttribute( $value ) {
+        $this->attributes['actual_cost'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setEstimatedCostBcAttribute( $value ) {
+        $this->attributes['estimated_cost_bc'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountInBookingCurrencyAttribute( $value ) {
+        $this->attributes['markup_amount_in_booking_currency'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceInBookingCurrencyAttribute( $value ) {
+        $this->attributes['selling_price_in_booking_currency'] = str_replace( ',', '', $value );
+    }
 }

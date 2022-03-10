@@ -44,6 +44,14 @@ class BookingDetailFinance extends Model
         return $this->hasOne(Booking::class, 'id', 'booking_id');   
     }
 
+    public function setDepositAmountAttribute( $value ) {
+        $this->attributes['deposit_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setOutstandingAmountAttribute( $value ) {
+        $this->attributes['outstanding_amount'] = str_replace( ',', '', $value );
+    }
+
     // public function getPaidDateAttribute( $value ) {
     //     return (new Carbon($value))->format('d/m/Y');
     // }

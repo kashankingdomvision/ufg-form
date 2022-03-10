@@ -152,14 +152,14 @@ $(document).ready(function () {
 
     if (changeFeild == 'total_markup_amount') {
       calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
-      totalSellingPrice = totalNetPrice + totalMarkupAmount;
+      totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
       $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
 
     if (changeFeild == 'total_markup_percent') {
       calculatedTotalMarkupAmount = parseFloat(totalNetPrice) / 100 * parseFloat(markupPercentage);
-      totalSellingPrice = totalNetPrice + calculatedTotalMarkupAmount;
+      totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(calculatedTotalMarkupAmount);
       $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
@@ -1009,9 +1009,9 @@ $(document).ready(function () {
   function getBookingSupplierCurrencyValues(supplierCurrency, key) {
     var rateType = $("input[name=rate_type]:checked").val();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-    var actualCost = parseFloat($("#quote_".concat(key, "_actual_cost")).val()).toFixed(2);
-    var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val()).toFixed(2);
-    var sellingPrice = parseFloat($("#quote_".concat(key, "_selling_price")).val()).toFixed(2);
+    var actualCost = removeComma($("#quote_".concat(key, "_actual_cost")).val());
+    var markupAmount = removeComma($("#quote_".concat(key, "_markup_amount")).val());
+    var sellingPrice = removeComma($("#quote_".concat(key, "_selling_price")).val());
     var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var calculatedActualCostInBookingCurrency = 0;
     var calculatedMarkupAmountInBookingCurrency = 0;
@@ -1056,9 +1056,9 @@ $(document).ready(function () {
     var supplierCurrency = $("#quote_".concat(key, "_supplier_currency_id")).find(':selected').data('code');
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
     var rateType = $('input[name="rate_type"]:checked').val();
-    var actualCost = parseFloat($("#quote_".concat(key, "_actual_cost")).val()).toFixed(2);
-    var markupPercentage = parseFloat($("#quote_".concat(key, "_markup_percentage")).val());
-    var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val());
+    var actualCost = removeComma($("#quote_".concat(key, "_actual_cost")).val());
+    var markupPercentage = removeComma($("#quote_".concat(key, "_markup_percentage")).val());
+    var markupAmount = removeComma($("#quote_".concat(key, "_markup_amount")).val());
     var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var calculatedSellingPrice = 0;
     var calculatedMarkupPercentage = 0;
@@ -1139,14 +1139,14 @@ $(document).ready(function () {
     var current_payment_methods = $(this);
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
-    var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
+    var estimatedCost = parseFloat(removeComma($(this).closest('.quote').find('.estimated-cost').val()));
     var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+    var outstanding_amount_left = parseFloat(removeComma($(this).closest('.quote').find('.outstanding_amount_left').val()));
     var wa = 0;
     var outstandingAmountLeft = estimatedCost - totalDepositAmount;
     var currentDepositAmount = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val();
@@ -1167,8 +1167,8 @@ $(document).ready(function () {
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
               $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
             } else {
-              $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+              $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(check(outstandingAmountLeft));
+              $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
             }
           }
         },
@@ -1181,8 +1181,8 @@ $(document).ready(function () {
         }
       });
     } else {
-      $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-      $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+      $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(check(outstandingAmountLeft));
+      $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
     }
   });
   $(document).on('change', '.deposit-amount', function () {
@@ -2193,6 +2193,10 @@ $(document).ready(function () {
   });
   $(document).on('change, click', '.agency-commission-type', function () {
     onChangeAgencyCommissionType();
+  });
+  $(document).on('change', '.agency-commission', function () {
+    getCalculatedTotalNetMarkup();
+    getCommissionRate();
   });
 });
 

@@ -520,10 +520,6 @@ $(document).ready(function() {
 
 
 
-    $(document).on('change', '.agency-commission', function() {
-        getCalculatedTotalNetMarkup();
-        getCommissionRate();
-    });
 
     $(document).on('click', '.quote-bulk-action-item', function() {
 
