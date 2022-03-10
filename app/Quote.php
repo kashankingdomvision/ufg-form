@@ -230,4 +230,40 @@ class Quote extends Model
     {
         return $this->belongsToMany('App\Group');
     }
+
+    public function setNetPriceAttribute( $value ) {
+        $this->attributes['net_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setAgencyCommissionAttribute( $value ) {
+        $this->attributes['agency_commission'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalNetMarginAttribute( $value ) {
+        $this->attributes['total_net_margin'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setAmountPerPersonAttribute( $value ) {
+        $this->attributes['amount_per_person'] = str_replace( ',', '', $value );
+    }
+
+    public function setCommissionAmountAttribute( $value ) {
+        $this->attributes['commission_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceOcrAttribute( $value ) {
+        $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
+    }
+
+    public function setBookingAmountPerPersonInOspAttribute( $value ) {
+        $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
+    }
 }

@@ -636,7 +636,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0" value="0.00">
+                                <input type="text" step="any" name="quote[0][estimated_cost]" data-name="estimated_cost" data-type="currency" id="quote_0_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0" value="0.00">
                               </div>
                             </div>
                           </div>
@@ -648,7 +648,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" name="quote[0][markup_amount]" data-name="markup_amount" id="quote_0_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" value="0.00" min="0" step="any">
+                                <input type="text" name="quote[0][markup_amount]" data-name="markup_amount"  data-type="currency"  id="quote_0_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" value="0.00" min="0" step="any">
                               </div>
                             </div>
                           </div>
@@ -657,7 +657,7 @@
                             <div class="form-group">
                               <label>Markup % <span style="color:red">*</span></label>
                               <div class="input-group">
-                                <input type="number" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage" id="quote_0_markup_percentage" class="form-control markup-percentage change-calculation remove-zero-values" min="0" value="0.00">
+                                <input type="text" step="any" name="quote[0][markup_percentage]" data-name="markup_percentage"  id="quote_0_markup_percentage" class="form-control markup-percentage change-calculation remove-zero-values" min="0" value="0.00">
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
                                 </div>
@@ -670,7 +670,7 @@
                               <label>Selling Price <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span></div>
-                                <input type="number" step="any" name="quote[0][selling_price]" data-name="selling_price" id="quote_0_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
+                                <input type="text" step="any" name="quote[0][selling_price]" data-name="selling_price" id="quote_0_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                               </div>
                             </div>
                           </div>
@@ -680,7 +680,7 @@
                               <label>Profit % <span style="color:red">*</span></label>
                               <div class="input-group">
                                 <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ isset(Auth::user()->getSupplierCurrency->code) && !empty(Auth::user()->getSupplierCurrency->code) ? Auth::user()->getSupplierCurrency->code : '' }}</span></div>
-                                <input type="number" step="any" name="quote[0][profit_percentage]" data-name="profit_percentage" id="quote_0_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
+                                <input type="text" step="any" name="quote[0][profit_percentage]" data-name="profit_percentage" id="quote_0_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                 <div class="input-group-append">
                                   <div class="input-group-text">%</div>
                                 </div>
@@ -695,7 +695,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_0_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
+                                <input type="text" step="any" name="quote[0][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_0_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
                               </div>
                             </div>
                           </div>
@@ -707,7 +707,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
+                                <input type="text" step="any" name="quote[0][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_0_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
                               </div>
                             </div>
                           </div>
@@ -719,7 +719,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                                <input type="text" step="any" name="quote[0][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_0_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                               </div>
                             </div>
                           </div>
@@ -789,7 +789,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="0.00" readonly>
+                        <input type="text" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -803,7 +803,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" value="0.00" {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? '' : 'readonly' }}>
+                        <input type="text" step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" data-type="currency" value="0.00" {{ isset(Auth::user()->markup_type) && !empty(Auth::user()->markup_type) && Auth::user()->markup_type == 'whole' ? '' : 'readonly' }}>
                       </div>
                     </div>
                   </div>
@@ -829,7 +829,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0" name="agency_commission" value="0.00" >
+                          <input type="text" name="agency_commission" data-type="currency" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0"  value="0.00" >
                         </div>
                       </div>
                     </div>
@@ -843,7 +843,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                           </div>
-                          <input type="number" step="any" class="form-control total-net-margin remove-zero-values" step="any" min="0" name="total_net_margin" value="0.00" readonly>
+                          <input type="text" step="any" class="form-control total-net-margin remove-zero-values" step="any" min="0" name="total_net_margin" value="0.00" readonly>
                         </div>
                       </div>
                     </div>
@@ -858,7 +858,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
+                        <input type="text" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -886,7 +886,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                        <input type="text" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -908,7 +908,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="number" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="0.00" readonly>
+                        <input type="text" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -945,7 +945,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text selling-price-other-currency-code"></span>
                         </div>
-                        <input type="number" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                        <input type="text" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
                       </div>
                     </div>
                   </div>
@@ -959,7 +959,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text selling-price-other-currency-code"></span>
                         </div>
-                        <input type="number" name="booking_amount_per_person_in_osp" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" value="0.00" readonly>
+                        <input type="text" name="booking_amount_per_person_in_osp" class="form-control booking-amount-per-person-in-osp hide-arrows" step="any" min="0" value="0.00" readonly>
                       </div>
                     </div>
                   </div>

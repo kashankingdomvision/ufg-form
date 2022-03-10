@@ -54,9 +54,9 @@ $(document).ready(function() {
         var calculatedTotalMarkupAmount     = 0;
         var calculatedProfitPercentage      = 0;
 
-        totalNetPrice               = parseFloat($('.total-net-price').val());
-        totalMarkupAmount           = parseFloat($('.total-markup-amount').val());
-        markupPercentage            = parseFloat($('.total-markup-percent').val());
+        totalNetPrice               = removeComma($('.total-net-price').val());
+        totalMarkupAmount           = removeComma($('.total-markup-amount').val());
+        markupPercentage            = removeComma($('.total-markup-percent').val());
 
         if(changeFeild == 'total_markup_amount'){
 
@@ -1188,8 +1188,8 @@ $(document).ready(function() {
         var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
         var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
         var rateType         = $('input[name="rate_type"]:checked').val();
-        var actualCost       = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var sellingPrice     = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var actualCost       = removeComma($(`#quote_${key}_actual_cost`).val());
+        var sellingPrice     = removeComma($(`#quote_${key}_selling_price`).val());
         var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
 
         var calculatedMarkupAmount     = 0;

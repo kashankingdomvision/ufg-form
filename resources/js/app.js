@@ -351,13 +351,54 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
+    $("input[data-type='currency']").on({
+        keyup: function() {
+          formatCurrency($(this));
+        }
+    });
+
     window.check = function(x) {
 
         if (isNaN(x) || !isFinite(x)) {
             return parseFloat(0).toFixed(2);
         }
+ 
+        return formatComma(x.toFixed(2));
+    }
 
-        return parseFloat(x).toFixed(2);
+    window.formatComma = function(input_val) {
+
+        if (input_val.indexOf(".") >= 0) {
+        
+            var decimal_pos = input_val.indexOf(".");
+            var left_side   = input_val.substring(0, decimal_pos);
+            var right_side  = input_val.substring(decimal_pos);
+        
+
+            left_side  = formatNumber(left_side);
+            right_side = formatNumber(right_side);
+
+            if (blur === "blur") {
+                right_side += "00";
+            }
+
+            right_side = right_side.substring(0, 2);
+            input_val = left_side + "." + right_side;
+    
+        } else {
+            input_val = formatNumber(input_val);
+            input_val = input_val;
+
+            if(blur === "blur") {
+                input_val += ".00";
+            }
+        }
+
+        return input_val;
+    }
+
+    window.removeComma = function(n) {
+        return n.replace(/,/g, '');
     }
 
     window.checkForInt = function(x) {
@@ -367,6 +408,23 @@ $(document).ready(function($) {
         }
 
         return parseInt(x);
+    }
+
+    window.formatNumber = function(n) {
+
+        return n
+        .replace(/(?!-)[^0-9]/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+      
+    window.formatCurrency = function(input, blur) {
+     
+        var input_val = input.val();
+  
+        if (input_val === "") { return; }
+
+        // send updated string to input
+        input.val(formatComma(input_val));
     }
 
     window.isEmpty = function(value) {
