@@ -1351,13 +1351,11 @@
 
                                       <div class="col d-flex justify-content-center">
                                         <div class="form-group">
-                                          <label>Refund Recieved</label>
-                                          <div class="input-group">
-                                            <div class="input-group-prepend">
-                                              <div class="icheck-primary">
-                                                <input type="hidden" name="quote[{{ $key }}][refund][{{ $rpkey }}][refund_recieved]" value="{{ $payment->refund_recieved }}"><input data-name="refund_recieved" id="quote_{{$key}}_refund_{{$rpkey}}_refund_recieved" class="checkbox" type="checkbox" onclick="this.previousSibling.value=1-this.previousSibling.value"  {{ ($payment->refund_recieved == 1)? 'checked': NULL }}> 
-                                              </div>
-                                            </div>
+                                          <label></label>
+                                          <div class="custom-control custom-checkbox">
+                                            <input type="hidden" name="quote[{{ $key }}][refund][{{ $rpkey }}][refund_recieved]" value="0"> 
+                                            <input name="quote[{{ $key }}][refund][{{ $rpkey }}][refund_recieved]" type="checkbox" id="quote_{{$key}}_refund_{{$fkey}}_refund_recieved" value="{{$payment->refund_recieved}}" data-name="refund_recieved" class="zero-one-checkbox checkbox custom-control-input custom-control-input-success custom-control-input-outline" {{ ($payment->refund_recieved == 1) ? 'checked': '' }}>
+                                            <label for="quote_{{$key}}_refund_{{$fkey}}_refund_recieved" data-name="refund_recieved" class="finance-custom-control-label custom-control-label">Refund Recieved</label>
                                           </div>
                                         </div>
                                       </div>
