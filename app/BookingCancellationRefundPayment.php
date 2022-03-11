@@ -16,4 +16,8 @@ class BookingCancellationRefundPayment extends Model
         "refund_processed_by",   
         "bank_id",               
     ];
+
+    public function setRefundAmountAttribute( $value ) {
+        $this->attributes['refund_amount'] = str_replace( ',', '', $value );
+    }
 }

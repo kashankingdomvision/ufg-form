@@ -351,10 +351,8 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
-    $("input[data-type='currency']").on({
-        keyup: function() {
-          formatCurrency($(this));
-        }
+    $(document).on('keyup', "input[data-type='currency']", function() {
+        formatCurrency($(this));
     });
 
     window.check = function(x) {

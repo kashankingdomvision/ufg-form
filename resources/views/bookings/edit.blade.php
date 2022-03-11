@@ -1291,7 +1291,7 @@
                                           <div class="input-group">
                                             <div class="input-group-prepend">
                                               <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
-                                              <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount"  class="form-control refund_amount amount remove-zero-values hide-arrows" step="any">
+                                              <input type="text" value="{{ Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount" data-type="currency" class="form-control refund_amount amount remove-zero-values hide-arrows" step="any">
                                             </div>
                                             <span class="text-danger" role="alert"></span>
                                           </div>
@@ -1365,7 +1365,7 @@
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                           </div>
-                                          <input type="number" value="" name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount" id="quote_{{$key}}_refund_0_refund_amount" class="form-control refund_amount amount remove-zero-values hide-arrows" step="any" >
+                                          <input type="text" value="" name="quote[{{ $key }}][refund][0][refund_amount]" data-name="refund_amount" data-type="currency" id="quote_{{$key}}_refund_0_refund_amount" class="form-control refund_amount amount remove-zero-values hide-arrows" step="any" >
                                         </div>
                                       </div>
                                     </div>
@@ -1434,7 +1434,7 @@
                                             <div class="input-group-prepend">
                                               <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                             </div>
-                                            <input type="number" value="{{ \Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_amount]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_amount" data-name="credit_note_amount" class="form-control credit-note-amount amount hide-arrows" step="any">
+                                            <input type="text" value="{{ Helper::number_format($payment->credit_note_amount) }}" name="quote[{{ $key }}][credit_note][{{$cnkey}}][credit_note_amount]" id="quote_{{ $key }}_credit_note_{{$cnkey}}_credit_note_amount" data-name="credit_note_amount" data-type="currency" class="form-control credit-note-amount amount hide-arrows" step="any">
                                           </div>
                                         </div>
                                       </div>
@@ -1481,7 +1481,7 @@
                                           <div class="input-group-prepend">
                                             <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
                                           </div>
-                                          <input type="number" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount amount remove-zero-values hide-arrows" step="any" >
+                                          <input type="text" value="" name="quote[{{ $key }}][credit_note][0][credit_note_amount]" data-name="credit_note_amount" data-type="currency" id="quote_{{ $key }}_credit_note_0_credit_note_amount" class="form-control credit-note-amount amount remove-zero-values hide-arrows" step="any" >
                                         </div>
                                       </div>
                                     </div>
@@ -1782,7 +1782,7 @@
                               <div class="input-group-prepend">
                                 <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                               </div>
-                              <input type="number" value="{{ isset($booking->getTotalRefundAmount->total_refund_amount) && !empty($booking->getTotalRefundAmount->total_refund_amount) ? $booking->getTotalRefundAmount->total_refund_amount : '' }}" name="cancellation_refund_total_amount" data-name="cancellation_refund_total_amount" id="cancellation_refund_total_amount" class="form-control cancellation-refund-total-amount amount hide-arrows" step="any" readonly disabled>
+                              <input type="text" value="{{ isset($booking->getTotalRefundAmount->total_refund_amount) && !empty($booking->getTotalRefundAmount->total_refund_amount) ? Helper::number_format($booking->getTotalRefundAmount->total_refund_amount) : '' }}" name="cancellation_refund_total_amount" data-name="cancellation_refund_total_amount" id="cancellation_refund_total_amount" class="form-control cancellation-refund-total-amount amount hide-arrows" step="any" readonly disabled>
                             </div>
                           </div>
                         </div>
@@ -1809,7 +1809,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="number" value="{{ \Helper::number_format($payment->refund_amount) }}" name="cancellation_refund[{{$bcrpdKey}}][refund_amount]" data-name="refund_amount" id="cancellation_refund_{{$bcrpdKey}}_refund_amount" class="form-control cancellation-refund-amount amount remove-zero-values hide-arrows" step="any">
+                                  <input type="text" value="{{ Helper::number_format($payment->refund_amount) }}" name="cancellation_refund[{{$bcrpdKey}}][refund_amount]" data-name="refund_amount" data-type="currency" id="cancellation_refund_{{$bcrpdKey}}_refund_amount" class="form-control cancellation-refund-amount amount remove-zero-values hide-arrows" step="any">
                                 </div>
                               </div>
                             </div>
@@ -1889,7 +1889,7 @@
                                 <div class="input-group-prepend">
                                   <span class="input-group-text supplier-currency-code">{{ ($booking->getCurrency && $booking->getCurrency->count()) ? $booking->getCurrency->code : '' }}</span>
                                 </div>
-                                <input type="number" value=""  name="cancellation_refund[0][refund_amount]" data-name="refund_amount" id="cancellation_refund_0_refund_amount" class="form-control cancellation-refund-amount amount remove-zero-values hide-arrows" step="any">
+                                <input type="text" name="cancellation_refund[0][refund_amount]" data-name="refund_amount" data-type="currency" id="cancellation_refund_0_refund_amount" class="form-control cancellation-refund-amount amount remove-zero-values hide-arrows">
                               </div>
                             </div>
                           </div>
@@ -1897,7 +1897,7 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Refund Date </label>
-                              <input type="date" value="{{ date('Y-m-d') }}" name="cancellation_refund[0][refund_date]" id="cancellation_refund_0_refund_date" data-name="refund_date"  class="form-control">
+                              <input type="date" value="{{ date('Y-m-d') }}" name="cancellation_refund[0][refund_date]" id="cancellation_refund_0_refund_date" data-name="refund_date" class="form-control">
                             </div>
                           </div>
   

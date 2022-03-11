@@ -46,4 +46,8 @@ class BookingRefundPayment extends Model
     public function setRefundDateAttribute( $value ) {
         $this->attributes['refund_date']    = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
+
+    public function setRefundAmountAttribute( $value ) {
+        $this->attributes['refund_amount'] = str_replace( ',', '', $value );
+    }
 }

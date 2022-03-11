@@ -109,8 +109,8 @@ __webpack_require__(/*! ./booking_management/booking_app */ "./resources/js/book
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  $('#version_booking :input').prop('disabled', true);
-  $('#show_booking :input').attr('disabled', 'disabled');
+  $('#version_booking :input').prop('disabled', true); // $('#show_booking :input').attr('disabled', 'disabled');
+
   var pageStatus = $('#show_booking').data('page_status');
 
   if (typeof pageStatus !== 'undefined' && pageStatus != "") {
@@ -153,7 +153,7 @@ $(document).ready(function () {
     if (changeFeild == 'total_markup_amount') {
       calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
       totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
-      $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
+      $('.total-markup-percent').val(calculatedTotalMarkupPercentage.toFixed(2));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
 
@@ -360,19 +360,22 @@ $(document).ready(function () {
     });
   });
   $(document).on('change', '.cancellation-refund-amount', function () {
-    var cancellationRefundAmount = $(this).val();
-    var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();
-    console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
-    console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
+    var cancellationRefundAmount = removeComma($(this).val());
+    var cancellationRefundTotalAmount = removeComma($('#cancellation_refund_total_amount').val()); // console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
+    // console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
+
     var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var totalCancellationRefundAmount = totalCancellationRefundAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
 
     if (totalCancellationRefundAmount > cancellationRefundTotalAmount) {
-      alert("Please Enter Correct Refund Amount.");
+      Toast.fire({
+        icon: 'warning',
+        title: "Please Enter Correct Refund Amount."
+      });
       $(this).val("0.00");
     }
   });
@@ -1189,17 +1192,17 @@ $(document).ready(function () {
     var quoteKey = $(this).closest('.quote').data('key');
     var financeKey = $(this).closest('.finance-clonning').data('financekey');
     var closestFinance = $(this).closest('.finance');
-    var depositAmount = parseFloat($(this).val()).toFixed(2);
-    var estimated_cost = parseFloat($("#quote_".concat(quoteKey, "_estimated_cost")).val()).toFixed(2);
+    var depositAmount = removeComma($(this).val());
+    var estimated_cost = removeComma($("#quote_".concat(quoteKey, "_estimated_cost")).val());
     var payment_method = $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_payment_method")).val();
     var supplier_id = $("#quote_".concat(quoteKey, "_supplier_id")).val();
     var totalDepositAmountArray = closestFinance.find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+    var outstandingAmountLeft = parseFloat(estimated_cost) - parseFloat(totalDepositAmount);
     var walletAmount = 0;
 
     if (payment_method && payment_method == 3) {
@@ -1207,7 +1210,7 @@ $(document).ready(function () {
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+        url: "".concat(REDIRECT_BASEURL, "wallets/get-supplier-wallet-amount/").concat(supplier_id),
         type: 'get',
         success: function success(data) {
           if (data.response == true) {
@@ -1223,8 +1226,8 @@ $(document).ready(function () {
                 $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
                 $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
               } else {
-                $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+                $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(check(outstandingAmountLeft));
+                $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
               }
             }
           }
@@ -1232,11 +1235,14 @@ $(document).ready(function () {
         error: function error(reject) {}
       });
     } else {
-      if (outstandingAmountLeft >= 0 && payment_method != '') {
-        $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(outstandingAmountLeft.toFixed(2));
-        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(outstandingAmountLeft.toFixed(2));
+      if (outstandingAmountLeft >= 0 && payment_method !== null) {
+        $("#quote_".concat(quoteKey, "_outstanding_amount_left")).val(check(outstandingAmountLeft));
+        $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val(check(outstandingAmountLeft));
       } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-        alert("Please Enter Correct Deposit Amount");
+        Toast.fire({
+          icon: 'warning',
+          title: "Please Enter Correct Deposit Amount."
+        });
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_deposit_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_finance_").concat(financeKey, "_outstanding_amount")).val('');
       }
@@ -1245,13 +1251,13 @@ $(document).ready(function () {
 
   function getActualCost(quote) {
     var totalDepositAmountArray = quote.find('.deposit-amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var totalDepositAmount = totalDepositAmountArray.reduce(function (a, b) {
       return a + b;
     }, 0);
     var amountArray = quote.find('.amount').map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var amountTotalArray = amountArray.filter(function (value) {
       return !Number.isNaN(value);
@@ -1259,7 +1265,7 @@ $(document).ready(function () {
     var totalAmount = amountTotalArray.reduce(function (a, b) {
       return a + b;
     }, 0);
-    var actualCost = totalDepositAmount - totalAmount;
+    var actualCost = parseFloat(totalDepositAmount) - parseFloat(totalAmount);
     return actualCost;
   }
 
@@ -1280,7 +1286,10 @@ $(document).ready(function () {
     var actualCost = parseFloat(getActualCost(quote));
 
     if (actualCost < 0) {
-      alert("Please Enter Correct Amount");
+      Toast.fire({
+        icon: 'warning',
+        title: "Please Enter Correct Amount"
+      });
       $(this).val('0.00');
     } else {
       $("#quote_".concat(quoteKey, "_actual_cost")).val(check(actualCost));
@@ -1299,7 +1308,10 @@ $(document).ready(function () {
     var actualCost = parseFloat(getActualCost(quote));
 
     if (actualCost < 0) {
-      alert("Please Enter Correct Paid Amount");
+      Toast.fire({
+        icon: 'warning',
+        title: "Please Enter Correct Amount"
+      });
       $(this).val('0.00');
     } else {
       $("#quote_".concat(quoteKey, "_actual_cost")).val(check(actualCost));

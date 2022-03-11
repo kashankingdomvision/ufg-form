@@ -36,6 +36,10 @@ class BookingCreditNote extends Model
         return $this->hasOne(BookingDetail::class, 'id','booking_detail_id');
     }
 
+    public function setCreditNoteAmountAttribute( $value ) {
+        $this->attributes['credit_note_amount'] = str_replace( ',', '', $value );
+    }
+
     // public function getCreditNoteRecievedDateAttribute( $value ) {
     //     return (new Carbon($this->value))->format('d/m/Y');
     // }

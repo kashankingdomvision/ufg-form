@@ -49,7 +49,7 @@ class WalletController extends Controller
 
         if($total <= 0){
             // return "This Supplier Has no Credit Notes";
-            return \Response::json(['response' => false ,'message' => "This Supplier Has no Credit Notes"], 422);
+            return \Response::json(['response' => false , 'message' => "This Supplier Has no Credit Notes"], 422);
         }
         
         else{

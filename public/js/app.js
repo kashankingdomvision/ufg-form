@@ -67393,10 +67393,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return today = dd + '/' + mm + '/' + yyyy;
   };
 
-  $("input[data-type='currency']").on({
-    keyup: function keyup() {
-      formatCurrency($(this));
-    }
+  $(document).on('keyup', "input[data-type='currency']", function () {
+    formatCurrency($(this));
   });
 
   window.check = function (x) {
