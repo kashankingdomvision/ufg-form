@@ -169,6 +169,7 @@ $(document).ready(function () {
     getCommissionRate();
     getBookingAmountPerPerson();
     getCalculatedTotalNetMarkup();
+    getSellingPrice();
   }
 
   $(document).on('click', '.increment', function () {
