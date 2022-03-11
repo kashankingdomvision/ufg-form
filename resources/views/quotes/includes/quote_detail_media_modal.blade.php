@@ -8,7 +8,7 @@
       <div class="modal-body">
         <div class="input-group">
           <span class="input-group-btn">
-            <button data-input="quote_{{ $val_ }}_image" data-preview="quote_{{ $val_ }}_holder" class="btn btn-primary fileManger">
+            <button type="button" data-input="quote_{{ $val_ }}_image" data-preview="quote_{{ $val_ }}_holder" class="btn btn-primary fileManger">
               <i class="fa fa-picture-o"></i> Choose
             </button>
           </span>
