@@ -1906,7 +1906,7 @@ $(document).ready(function () {
 
     if (changeFeild == 'total_markup_amount') {
       calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
-      totalSellingPrice = totalNetPrice + totalMarkupAmount;
+      totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
       $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
