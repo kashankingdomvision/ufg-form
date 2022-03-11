@@ -1291,10 +1291,10 @@
                                           <div class="input-group">
                                             <div class="input-group-prepend">
                                               <span class="input-group-text supplier-currency-code">{{ ($booking_detail->getSupplierCurrency && $booking_detail->getSupplierCurrency->count()) ? $booking_detail->getSupplierCurrency->code : '' }}</span>
-                                              <input type="text" value="{{ Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount" data-type="currency" class="form-control refund_amount amount remove-zero-values hide-arrows" step="any">
                                             </div>
-                                            <span class="text-danger" role="alert"></span>
+                                            <input type="text" value="{{ Helper::number_format($payment->refund_amount) }}" name="quote[{{ $key }}][refund][{{$rpkey}}][refund_amount]" id="quote_{{$key}}_refund_{{$rpkey}}_refund_amount" data-name="refund_amount" data-type="currency" class="form-control refund_amount amount remove-zero-values hide-arrows" step="any">
                                           </div>
+                                          <span class="text-danger" role="alert"></span>
                                         </div>
                                       </div>
 
