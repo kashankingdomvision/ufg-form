@@ -67102,6 +67102,13 @@ __webpack_require__(/*! ./asset/intl_tel_input/utils */ "./resources/js/asset/in
 __webpack_require__(/*! ./asset/pace/pace.min */ "./resources/js/asset/pace/pace.min.js");
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
+  // set autofocus on search
+  $(document).on('select2:open', function (e) {
+    var selectId = e.target.id;
+    $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (key, value) {
+      value.focus();
+    });
+  });
   window.Toast = Swal.mixin({
     toast: true,
     icon: 'success',

@@ -20,6 +20,18 @@ require('./asset/intl_tel_input/utils');
 require('./asset/pace/pace.min');
 
 $(document).ready(function($) {
+
+    // set autofocus on search
+    $(document).on('select2:open', (e) => {
+        const selectId = e.target.id
+    
+        $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+            key,
+            value,
+        ){
+            value.focus();
+        })
+    })
  
     window.Toast = Swal.mixin({
         toast: true,
