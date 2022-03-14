@@ -1147,11 +1147,11 @@
                                         <label>Alert before the following days </label>
                                         <div class="input-group">
                                           <div class="input-group-prepend">
-                                            <button type="button" class="input-group-text minus increment">-</button>
+                                            <button type="button" class="input-group-text minus increment"><i class="fas fa-minus"></i></button>
                                           </div>
                                           <input type="text"  name="quote[{{ $key }}][finance][{{$fkey}}][ab_number_of_days]" step="any" name="ab_number_of_days" class="form-control ab_number_of_days remove-zero-values"  size="10" value="{{ $finance->additional_date??0 }}" {{ isset($finance->deposit_due_date) && !empty($finance->deposit_due_date) ? 'readonly' : '' }}>
                                             <div class="input-group-append">
-                                            <button type="button" class="input-group-text plus increment">+</button>
+                                            <button type="button" class="input-group-text plus increment"><i class="fas fa-plus"></i></button>
                                           </div>
                                         </div>
                                       </div>
@@ -1249,9 +1249,9 @@
                                     <div class="form-group">
                                       <label>Alert before the following days </label>
                                       <div class="input-group">
-                                        <div class="input-group-prepend"><span class="input-group-text minus increment">-</span></div>
+                                        <div class="input-group-prepend"><span class="input-group-text minus increment"><i class="fas fa-minus"></i></span></div>
                                         <input type="text" name="quote[{{ $key }}][finance][0][ab_number_of_days]" step="any" name="ab_number_of_days" id="quote_{{$key}}_finance_0_ab_number_of_days" class="form-control ab_number_of_days remove-zero-values" size="10" value="0">
-                                        <div class="input-group-append"><span class="input-group-text plus increment">+</span></div>
+                                        <div class="input-group-append"><span class="input-group-text plus increment"><i class="fas fa-plus"></i></span></div>
                                       </div>
                                     </div>
                                   </div>
