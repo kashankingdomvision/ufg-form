@@ -363,8 +363,9 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
-    $(document).on('keyup', "input[data-type='currency']", function() {
+    $(document).on('keyup, blur', "input[data-type='currency']", function(e) {
         formatCurrency($(this));
+        formatCurrency($(this), "blur");
     });
 
     window.check = function(x) {
@@ -376,7 +377,7 @@ $(document).ready(function($) {
         return formatComma(x.toFixed(2));
     }
 
-    window.formatComma = function(input_val) {
+    window.formatComma = function(input_val, blur) {
 
         if (input_val.indexOf(".") >= 0) {
         
@@ -434,7 +435,7 @@ $(document).ready(function($) {
         if (input_val === "") { return; }
 
         // send updated string to input
-        input.val(formatComma(input_val));
+        input.val(formatComma(input_val, blur));
     }
 
     window.isEmpty = function(value) {
