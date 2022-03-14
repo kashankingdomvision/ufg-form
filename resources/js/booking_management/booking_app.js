@@ -471,7 +471,7 @@ $(document).ready(function() {
             error: function(response) {
 
                 removeModalFormLoadingStyles(`#${formID}`);
-                printModalServerValidationErrors(response);
+                printModalServerValidationErrors(response, `#${formID}`);
             }
         });
 
