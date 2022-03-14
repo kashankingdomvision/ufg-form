@@ -823,7 +823,7 @@
                 <div class="paid-net-commission-on-departure d-none">
                   <div class="form-group row">
                     <label for="inputEmail3" class="col-md-4 col-form-label">Agency Commission</label>
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
@@ -837,7 +837,7 @@
 
                   <div class="form-group row">
                     <label for="inputEmail3" class="col-md-4 col-form-label">Net Margin</label>
-                    <div class="col-sm-2">
+                    <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
