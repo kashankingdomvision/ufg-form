@@ -363,8 +363,11 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
-    $(document).on('keyup, blur', "input[data-type='currency']", function(e) {
+    $(document).on('keyup', "input[data-type='currency']", function(e) {
         formatCurrency($(this));
+    });
+    
+    $(document).on('blur', "input[data-type='currency']", function(e) {
         formatCurrency($(this), "blur");
     });
 
