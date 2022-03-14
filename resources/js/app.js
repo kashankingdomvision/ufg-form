@@ -28,7 +28,6 @@ $(document).ready(function($) {
             key,
             value,
         ){
-            console.log(value);
             value.focus();
         })
     });

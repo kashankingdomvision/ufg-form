@@ -67105,7 +67105,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // set autofocus on search
   $(document).on('select2:open', function (e) {
     $(".select2-search__field").each(function (key, value) {
-      console.log(value);
       value.focus();
     });
   }); // $(document).on('select2:open', (e) => {
