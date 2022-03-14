@@ -37,7 +37,7 @@
                       <table>
                         @foreach ($quote->getQuotelogs as $logKey =>  $logs)
                           <thead>
-                            <th><a href="{{ route('quotes.view.version', encrypt($logs->id)) }}"  target="_blank">Quote Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></th>
+                            <div><a href="{{ route('quotes.view.version', encrypt($logs->id)) }}"  target="_blank" class="font-weight-bold">Quote Version {{ $logs->log_no }} : {{ $logs->version_no }}</a></div>
                           </thead>
                         @endforeach
                       </table>
