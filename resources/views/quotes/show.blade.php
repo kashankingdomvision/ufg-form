@@ -96,7 +96,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                     <label>Booking Details <span style="color:red">*</span></label>
-                      <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $quote->booking_details }}" placeholder="Enter Booking Details">
+                      <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $quote->booking_details }}" placeholder="Enter Booking Details" autofocus>
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
