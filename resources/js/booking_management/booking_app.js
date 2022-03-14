@@ -2,7 +2,7 @@ $(document).ready(function() {
    
 
     $('#version_booking :input').prop('disabled', true);
-    // $('#show_booking :input').attr('disabled', 'disabled');
+    $('#show_booking :input').attr('disabled', 'disabled');
 
     var pageStatus = $('#show_booking').data('page_status');
 
