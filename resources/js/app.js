@@ -23,16 +23,27 @@ $(document).ready(function($) {
 
     // set autofocus on search
     $(document).on('select2:open', (e) => {
-        const selectId = e.target.id
     
-        $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+        $(".select2-search__field").each(function (
             key,
             value,
         ){
+            console.log(value);
             value.focus();
         })
-    })
- 
+    });
+
+    // $(document).on('select2:open', (e) => {
+    //     const selectId = e.target.id
+    
+    //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+    //         key,
+    //         value,
+    //     ){
+    //         value.focus();
+    //     })
+    // })
+
     window.Toast = Swal.mixin({
         toast: true,
         icon: 'success',

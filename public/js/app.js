@@ -67104,11 +67104,20 @@ __webpack_require__(/*! ./asset/pace/pace.min */ "./resources/js/asset/pace/pace
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // set autofocus on search
   $(document).on('select2:open', function (e) {
-    var selectId = e.target.id;
-    $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (key, value) {
+    $(".select2-search__field").each(function (key, value) {
+      console.log(value);
       value.focus();
     });
-  });
+  }); // $(document).on('select2:open', (e) => {
+  //     const selectId = e.target.id
+  //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+  //         key,
+  //         value,
+  //     ){
+  //         value.focus();
+  //     })
+  // })
+
   window.Toast = Swal.mixin({
     toast: true,
     icon: 'success',
