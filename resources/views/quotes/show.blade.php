@@ -247,7 +247,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Supplier Currency <span style="color:red">*</span></label>
-                      <select name="default_supplier_currency_id" class="form-control select2single default-supplier-currency-id">
+                      <select name="default_supplier_currency_id" id="default_supplier_currency_id" class="form-control select2single default-supplier-currency-id">
                         <option selected value="">Select Currency</option>
                         @foreach ($currencies as $currency)
                           <option value="{{ $currency->id }}" data-code="{{$currency->code}}" data-image="data:image/png;base64, {{$currency->flag}}" {{ $currency->id == $quote->default_supplier_currency_id ? 'selected' : '' }}> &nbsp; {{$currency->code}} - {{$currency->name}} </option>
