@@ -233,10 +233,7 @@ $(document).ready(function () {
         });
     }
 
-    function convertDate(date) {
-        var dateParts = date.split("/");
-        return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    }
+
 
     $(".quote").each(function () {
 

@@ -67400,6 +67400,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return today = dd + '/' + mm + '/' + yyyy;
   };
 
+  window.convertDate = function (date) {
+    var dateParts = date.split("/");
+    return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+  };
+
   $(document).on('keyup', "input[data-type='currency']", function (e) {
     formatCurrency($(this));
   });
