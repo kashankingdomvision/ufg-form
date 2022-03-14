@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\QuoteDelete::class,
         Commands\ZohoCredentials::class,
+        Commands\UpdateCurrencies::class,
     ];
 
     /**
@@ -28,6 +29,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('quotation:delete')->monthly();
         $schedule->command('zoho:credentials')->hourly();
+        $schedule->command('update:currencies')->daily();
     }
 
     /**
