@@ -147,13 +147,18 @@ class UserController extends Controller
         $user = User::find(decrypt($request->id))->update($this->userArray($request, 'update'));
         
         if($status == 'profile'){
-            return redirect()->route('dashboard.index')->with('success_message', 'profile updated successfully');
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Profile Updated Successfully.',
+                'redirect_url'    => route('users.index')
+            ]);
         }
 
         return response()->json([ 
             'status'          => true, 
             'success_message' => 'User Updated Successfully.',
-            'redirect_url'    => route('users.index') 
+            'redirect_url'    => route('users.index')
         ]);
     }
 
