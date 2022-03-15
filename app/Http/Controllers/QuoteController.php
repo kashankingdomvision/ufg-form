@@ -390,9 +390,7 @@ class QuoteController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         // whereHas('getRole', function($query){
         //     $query->where('slug', 'sales-agent');
@@ -494,9 +492,7 @@ class QuoteController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -615,9 +611,7 @@ class QuoteController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -649,9 +643,7 @@ class QuoteController extends Controller
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -1011,9 +1003,7 @@ class QuoteController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();

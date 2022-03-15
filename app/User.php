@@ -109,4 +109,11 @@ class User extends Authenticatable
     {
         return $this->getRole()->where('slug', 'admin')->exists();
     }
+
+    public function scopeRole($query, $value)
+    {
+        return $query->whereHas('getRole', function($query) use ($value){
+            $query->whereIn('slug', $value);
+        });
+    }
 }

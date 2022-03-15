@@ -322,9 +322,7 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -627,9 +625,7 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
@@ -777,12 +773,8 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
         $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
