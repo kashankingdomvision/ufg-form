@@ -625,12 +625,12 @@ $(document).ready(function () {
     });
   });
 
-  window.findReferenceData = function (reference_no) {
+  function findReferenceData(reference_no) {
     $.ajax({
       headers: {
         'X-CSRF-TOKEN': CSRFTOKEN
       },
-      url: BASEURL + 'find/reference',
+      url: "".concat(BASEURL, "find/reference"),
       data: {
         ref_no: reference_no
       },
@@ -668,13 +668,7 @@ $(document).ready(function () {
           }
 
           if (data.response.currency) {
-            // $('#currency_id option[data-code="'+data.response.currency+'"]').prop('selected','selected').change()
-            $("#currency_id option[data-code=\"".concat(data.response.currency, "\"]")).prop('selected', 'selected').change(); // $("#currency_id").find('option').each(function() {
-            //     console.log($(this).data('code') == data.response.currency);
-            //     if ($(this).data('code') == data.response.currency) {
-            //         $(this).attr("selected", "selected").change();
-            //     }
-            // });
+            $("#currency_id option[data-code=\"".concat(data.response.currency, "\"]")).prop('selected', 'selected').change();
           }
 
           if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
@@ -706,17 +700,16 @@ $(document).ready(function () {
         $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
       }
     });
-  };
+  }
 
   $(document).on('click', '.search-reference', function () {
-    var searchRef = $(this);
     var reference_no = $('.reference-name').val();
 
     if (reference_no == '') {
       Toast.fire({
         icon: 'error',
         title: 'Reference Number is not found.'
-      }); // searchRef.text('Search').prop('disabled', false);
+      });
     } else {
       $('#ref_no').closest('.form-group').find('.text-danger').html(''); //check refrence is already exist in system
 
@@ -724,14 +717,14 @@ $(document).ready(function () {
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: BASEURL + 'find/reference/' + reference_no + '/exist',
+        url: "".concat(BASEURL, "find/reference/").concat(reference_no, "/exist"),
         type: 'get',
         dataType: "json",
         success: function success(data) {
           if (data.response == true) {
             Swal.fire({
               title: 'Are you sure?',
-              text: "The reference number is already exists. Are you sure! you want to create quote again on same reference",
+              text: "The Reference number is already exists. You want to Create it Again?",
               icon: 'question',
               showCancelButton: true,
               confirmButtonColor: '#28a745',
@@ -749,7 +742,7 @@ $(document).ready(function () {
         error: function error(reject) {
           $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
         }
-      }); //ajax for references
+      });
     }
   });
   $(document).on('change', '.selling-price-other-currency', function () {

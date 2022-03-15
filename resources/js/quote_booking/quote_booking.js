@@ -743,7 +743,7 @@ $(document).ready(function() {
     });
 
 
-    window.findReferenceData = function(reference_no) {
+    function findReferenceData(reference_no) {
 
         $.ajax({
             headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
@@ -850,7 +850,7 @@ $(document).ready(function() {
 
                         Swal.fire({
                             title: 'Are you sure?',
-                            text: "The reference number is already exists. Are you sure! you want to create quote again on same reference",
+                            text: "The Reference number is already exists. You want to Create it Again?",
                             icon: 'question',
                             showCancelButton: true,
                             confirmButtonColor: '#28a745',
