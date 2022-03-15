@@ -293,14 +293,14 @@ $(document).ready(function() {
 
     window.getBookingBookingCurrencyValues = function() {
 
-        var rateType = $("input[name=rate_type]:checked").val();
-        var actualCostArray = $(".actual-cost").map((i, e) => parseFloat(removeComma(e.value))).get();
-        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(removeComma(e.value))).get();
-        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(removeComma(e.value))).get();
-        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
+        var rateType              = $("input[name=rate_type]:checked").val();
+        var actualCostArray       = $(".actual-cost").map((i, e) => parseFloat(removeComma(e.value))).get();
+        var sellingPriceArray     = $(".selling-price").map((i, e) => parseFloat(removeComma(e.value))).get();
+        var markupAmountArray     = $(".markup-amount").map((i, e) => parseFloat(removeComma(e.value))).get();
+        var bookingCurrency       = $(".booking-currency-id").find(":selected").data("code");
         var supplierCurrencyArray = $(".booking-supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
         var quoteSize = parseInt($(".quote").length);
-        var calculatedActualCostInBookingCurrency = 0;
+        var calculatedActualCostInBookingCurrency   = 0;
         var calculatedSellingPriceInBookingCurrency = 0;
         var calculatedMarkupAmountInBookingCurrency = 0;
         var key = 0;
@@ -398,8 +398,8 @@ $(document).ready(function() {
 
                 var rate = getRate(supplierCurrency, bookingCurrency, rateType);
                 calculatedEstimatedCostInBookingCurrency = parseFloat(estimatedCost) * parseFloat(rate);
-                calculatedSellingPriceInBookingCurrency = parseFloat(sellingPrice) * parseFloat(rate);
-                calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * parseFloat(rate);
+                calculatedSellingPriceInBookingCurrency  = parseFloat(sellingPrice) * parseFloat(rate);
+                calculatedMarkupAmountInBookingCurrency  = parseFloat(markupAmount) * parseFloat(rate);
 
             } else {
 
@@ -710,37 +710,12 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('change', '.getBrandtoHoliday', function() {
-        let brand_id = $(this).val();
-        var options = '';
-        var url = BASEURL + 'brand/to/holidays'
-        $.ajax({
-            type: 'get',
-            url: url,
-            data: { 'brand_id': brand_id },
-            success: function(response) {
-                options += '<option value="">Select Type Of Holiday</option>';
-                $.each(response, function(key, value) {
-                    options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
-                });
-                $('.appendHolidayType').html(options);
-            }
-        });
-
-        getCommissionRate();
-    });
-
     /* Hide Potentail Commission for another Behalf User */
     $(document).on('change', '.sales-person-id', function() {
         console.log("sales  salessalessales");
 
         var salesPersonID = $(this).val();
         var userID        = $('.user-id').val();
-
-
-        console.log(salesPersonID);
-        console.log(userID);
-
 
         if(salesPersonID != userID){
             $('#potential_commission_feild').addClass('d-none');
@@ -919,13 +894,11 @@ $(document).ready(function() {
 
 
     $(document).on('click', '#add_more, #add_more_booking', function(e) {
-        jQuery('#new_service_modal').modal('show');
+        $('#new_service_modal').modal('show');
     });
 
     $(document).on('change', '.season-id', function() {
-
         getCommissionRate();
-        // $('.datepicker').datepicker("setDate", '');
     });
 
     $(document).on('change', '.holiday-type-id', function() {
@@ -979,3 +952,5 @@ $(document).ready(function() {
     });
 
 });
+
+// $('.datepicker').datepicker("setDate", '');

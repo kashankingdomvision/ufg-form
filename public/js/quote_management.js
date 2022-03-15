@@ -595,34 +595,12 @@ $(document).ready(function () {
       $('#' + ids[i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
     }
   });
-  $(document).on('change', '.getBrandtoHoliday', function () {
-    var brand_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_id': brand_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-        });
-        $('.appendHolidayType').html(options);
-      }
-    });
-    getCommissionRate();
-  });
   /* Hide Potentail Commission for another Behalf User */
 
   $(document).on('change', '.sales-person-id', function () {
     console.log("sales  salessalessales");
     var salesPersonID = $(this).val();
     var userID = $('.user-id').val();
-    console.log(salesPersonID);
-    console.log(userID);
 
     if (salesPersonID != userID) {
       $('#potential_commission_feild').addClass('d-none');
@@ -787,10 +765,10 @@ $(document).ready(function () {
     getCommissionRate();
   });
   $(document).on('click', '#add_more, #add_more_booking', function (e) {
-    jQuery('#new_service_modal').modal('show');
+    $('#new_service_modal').modal('show');
   });
   $(document).on('change', '.season-id', function () {
-    getCommissionRate(); // $('.datepicker').datepicker("setDate", '');
+    getCommissionRate();
   });
   $(document).on('change', '.holiday-type-id', function () {
     getCommissionRate();
@@ -834,7 +812,7 @@ $(document).ready(function () {
     getCalculatedTotalNetMarkup();
     getCommissionRate();
   });
-});
+}); // $('.datepicker').datepicker("setDate", '');
 
 /***/ }),
 
