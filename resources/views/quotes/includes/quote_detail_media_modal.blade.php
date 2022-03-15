@@ -20,17 +20,16 @@
             <button type="button" class="btn btn-sm remove-img">X</button>
             @endif
           </div>  
-          <div class="input-group mt-2">
+          <div class="input-group">
             <div class="form-group">
               <label>Service Details</label>
-             
                 <textarea  name="quote[{{ $val_ }}][service_details]" data-name="service_details" id="quote_{{ $val_ }}_service_details" class="form-control service-details summernote " rows="2" placeholder="Enter Service Details">{!! (isset($q_detail['service_details']) && $q_detail['service_details'] != null)? $q_detail['service_details'] : NULL !!}</textarea>
              </div>
           </div>
         </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-base QuotemediaModalClose">Close</button>
-        <button type="button" class="btn btn-primary"   data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-danger QuotemediaModalClose">Close</button>
+        <button type="button" class="btn btn-success" data-dismiss="modal">Save Changes</button>
       </div>
     </div>
   </div>
