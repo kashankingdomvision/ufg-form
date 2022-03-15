@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('quotation:delete')->monthly();
         $schedule->command('zoho:credentials')->hourly();
-        $schedule->command('update:currencies')->daily();
+        // $schedule->command('update:currencies')->daily();
     }
 
     /**
