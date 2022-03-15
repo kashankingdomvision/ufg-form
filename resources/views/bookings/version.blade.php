@@ -984,7 +984,7 @@
                               <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 {{ $finance->status == 'cancelled' ? 'cancelled-payment-styling' : '' }}" data-financekey="{{$fkey}}">
 
                                 <div class="col-md-12">
-                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class="finance-clonning-btn btn btn-outline-dark btn-sm float-right {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" ><i class="fas fa-times"></i></button>
+                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class="finance-clonning-btn btn btn-outline-dark btn-xs float-right {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" ><i class="fas fa-times"></i></button>
                                 </div>
 
                                 <div class="col-sm-3">
@@ -1124,7 +1124,7 @@
 
                               <div class="col-sm-1 d-flex justify-content-center">
                                 <div class="form-group">
-                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-outline-dark btn-sm"><i class="fa fa-times"></i></button>
+                                  <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-outline-dark btn-xs"><i class="fa fa-times"></i></button>
                                 </div>
                               </div>
 
@@ -1197,7 +1197,7 @@
                                   <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2">
 
                                     <div class="col-md-12">
-                                      <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm float-right d-none"><i class="fas fa-times"></i></button>
+                                      <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-xs float-right d-none"><i class="fas fa-times"></i></button>
                                     </div>
 
                                     <div class="col">

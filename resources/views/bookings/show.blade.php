@@ -1088,7 +1088,7 @@
                                   <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 {{ $finance->status == 'cancelled' ? 'cancelled-payment-styling' : '' }}" data-financekey="{{$fkey}}">
 
                                     <div class="col-md-12">
-                                      <button type="button" onclick="this.closest('.finance-clonning').remove()" class="finance-clonning-btn btn btn-outline-dark btn-sm float-right {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" ><i class="fas fa-times"></i></button>
+                                      <button type="button" onclick="this.closest('.finance-clonning').remove()" class="finance-clonning-btn btn btn-outline-dark btn-xs float-right {{ $finance->status == 'cancelled' ? 'd-none' : '' }}" ><i class="fas fa-times"></i></button>
                                     </div>
 
                                     <div class="col-md-3">
@@ -1189,7 +1189,7 @@
                                 <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2" data-financekey="0">
                                   
                                   <div class="col-md-12">
-                                    <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-outline-dark btn-sm float-right"><i class="fas fa-times"></i></button>
+                                    <button type="button" onclick="this.closest('.finance-clonning').remove()" class="btn btn-outline-dark btn-xs float-right"><i class="fas fa-times"></i></button>
                                   </div>
 
                                   <div class="col-md-3">
@@ -1299,7 +1299,7 @@
                                     <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2">
 
                                       <div class="col-md-12">
-                                        <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm float-right d-none"><i class="fas fa-times"></i></button>
+                                        <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-xs float-right d-none"><i class="fas fa-times"></i></button>
                                       </div>
 
                                       <div class="col">
@@ -1370,7 +1370,7 @@
                                   <div class="row refund-payment-row row-cols-lg-7 g-0 g-lg-2 mb-1">
 
                                     <div class="col-md-12">
-                                      <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-sm float-right"><i class="fas fa-times"></i></button>
+                                      <button type="button" class="refund-payment-hidden-btn btn btn-outline-dark btn-xs float-right"><i class="fas fa-times"></i></button>
                                     </div>
 
                                     <div class="col">
@@ -1439,7 +1439,7 @@
                                     <div class="row credit-note-row else-here row-cols-lg-7 g-0 g-lg-2 mb-1">
 
                                       <div class="col-md-12">
-                                        <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm float-right d-none"><i class="fas fa-times"></i></button>
+                                        <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-xs float-right d-none"><i class="fas fa-times"></i></button>
                                       </div>
 
                                       <div class="col">
@@ -1486,7 +1486,7 @@
                                   <div class="row credit-note-row else-here row-cols-lg-7 mb-1 g-0 g-lg-2">
 
                                     <div class="col-md-12">
-                                      <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-sm float-right"><i class="fas fa-times"></i></button>
+                                      <button type="button" class="credit-note-hidden-btn btn btn-outline-dark btn-xs float-right"><i class="fas fa-times"></i></button>
                                     </div>
 
                                     <div class="col">
