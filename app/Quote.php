@@ -11,6 +11,7 @@ use Carbon\Carbon;
 class Quote extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [ 
         
         'booking_details',
@@ -91,6 +92,68 @@ class Quote extends Model
     {
         return $this->hasMany(QuoteDetail::class,'quote_id','id');
     }
+
+    function getBrand() {
+        return $this->hasOne(Brand::class,'id', 'brand_id' );
+    }
+
+    function getHolidayType() {
+        return $this->hasOne(HolidayType::class,'id', 'holiday_type_id' );
+    }
+
+    function getCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
+    function getBookingCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
+    public function getPaxDetail()
+    {
+        return $this->hasMany(QuotePaxDetail::class, 'quote_id', 'id');
+    }
+
+    public function getQuoteUpdateDetail()
+    {
+        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','quotes');
+    }
+
+    public function getBooking()
+    {
+        return $this->hasOne(Booking::class, 'quote_id', 'id');
+    }
+    
+    public function getLeadPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
+    }
+
+    public function getLeadPassengerResidentIn()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
+    }
+
+    public function getCommission(){
+    	return $this->hasOne(Commission::class, 'id' ,'commission_id');
+    }
+
+    public function getCommissionGroup(){
+    	return $this->hasOne(CommissionGroup::class, 'id' ,'commission_group_id');
+    }
+
+    public function getNationality(){
+    	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
+    }
+
+    /**
+     * The groups that belong to the shop.
+    */
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group');
+    }
+
     
     public function getBookingFormatedStatusAttribute()
     {
@@ -138,35 +201,9 @@ class Quote extends Model
         return Carbon::parse($this->lead_passenger_dbo)->format('d/m/Y');
     }
     
-    function getBrand() {
-        return $this->hasOne(Brand::class,'id', 'brand_id' );
-    }
-
-    function getHolidayType() {
-        return $this->hasOne(HolidayType::class,'id', 'holiday_type_id' );
-    }
-
-    function getCurrency() {
-        return $this->hasOne(Currency::class, 'id', 'currency_id');
-    }
-    
-    function getBookingCurrency() {
-        return $this->hasOne(Currency::class, 'id', 'currency_id');
-    }
-    
-    public function getPaxDetail()
-    {
-        return $this->hasMany(QuotePaxDetail::class, 'quote_id', 'id');
-    }
-    
     public function getVersionAttribute()
     {
         return  'UFG-'.rand(23, 200).''.Str::random(5).' '.date('d/m/Y', strtotime(now())).' By '.Auth::user()->name; 
-    }
-
-    public function getQuoteUpdateDetail()
-    {
-        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','quotes');
     }
 
     public function getHasUserEditAttribute()
@@ -177,22 +214,7 @@ class Quote extends Model
             // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
         }
     }
-    
-    public function getBooking()
-    {
-        return $this->hasOne(Booking::class, 'quote_id', 'id');
-    }
-    
-    public function getLeadPassengerNationality()
-    {
-        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
-    }
 
-    public function getLeadPassengerResidentIn()
-    {
-        return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
-    }
-    
     public function setRevelantQuoteAttribute($value)
     {
         $this->attributes['revelant_quote'] = json_encode($value);
@@ -203,32 +225,12 @@ class Quote extends Model
         return json_decode($value);
     }
 
-    public function getCommission(){
-    	return $this->hasOne(Commission::class, 'id' ,'commission_id');
-    }
-
-    public function getCommissionGroup(){
-    	return $this->hasOne(CommissionGroup::class, 'id' ,'commission_group_id');
-    }
-
-    public function getNationality(){
-    	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
-    }
-
     public function getStoredTextAttribute( $value ) {
         return json_decode($value);
     }
     
     public function setStoredTextAttribute( $value ) {
         $this->attributes['stored_text']    = json_encode($value);
-    }
-
-    /**
-     * The groups that belong to the shop.
-     */
-    public function groups()
-    {
-        return $this->belongsToMany('App\Group');
     }
 
     public function setNetPriceAttribute( $value ) {
