@@ -22,8 +22,8 @@ require('./asset/pace/pace.min');
 $(document).ready(function($) {
 
     // set autofocus on search
-    $(document).on('select2:open', (e) => {
-    
+    $(document).on('select2:open', '.select2single', function(e) {
+
         $(".select2-search__field").each(function (
             key,
             value,
