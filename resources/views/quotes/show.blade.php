@@ -927,7 +927,7 @@
                 </div>
 
                 <div class="row d-flex justify-content-end">
-                  <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half">+ Add more </button>
+                  <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half"><i class="fa fa-plus" aria-hidden="true"></i> Add more </button>
                   <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
                 </div>
 

@@ -75,11 +75,6 @@ class Quote extends Model
         return $this->hasOne(User::class, 'id', 'created_by');
     }
     
-    public function getQuotelogs()
-    {
-        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
-    }
-    
     public function getSeason(){
     	return $this->hasOne(Season::class, 'id' ,'season_id');
     }
@@ -146,6 +141,11 @@ class Quote extends Model
     	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
     }
 
+    public function getQuotelogs()
+    {
+        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
+    }
+
     /**
      * The groups that belong to the shop.
     */
@@ -153,7 +153,6 @@ class Quote extends Model
     {
         return $this->belongsToMany('App\Group');
     }
-
     
     public function getBookingFormatedStatusAttribute()
     {
