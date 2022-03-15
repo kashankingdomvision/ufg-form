@@ -624,13 +624,99 @@ $(document).ready(function () {
       }
     });
   });
+
+  window.findReferenceData = function (reference_no) {
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': CSRFTOKEN
+      },
+      url: BASEURL + 'find/reference',
+      data: {
+        ref_no: reference_no
+      },
+      type: 'POST',
+      dataType: "json",
+      beforeSend: function beforeSend() {
+        $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        if (data.response) {
+          if (data.response.tas_ref) {
+            $("#tas_ref").val(data.response.tas_ref);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+            $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
+          }
+
+          if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
+            $('#brand_id').val(data.response.brand.brand_id).change();
+          }
+
+          if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
+            setTimeout(function () {
+              $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+            }, 500);
+          }
+
+          if (data.response.sale_person) {
+            $('#sale_person_id').val(data.response.sale_person).trigger('change');
+          }
+
+          if (data.response.pax) {
+            $('#pax_no').val(data.response.pax).trigger('change');
+          }
+
+          if (data.response.currency) {
+            // $('#currency_id option[data-code="'+data.response.currency+'"]').prop('selected','selected').change()
+            $("#currency_id option[data-code=\"".concat(data.response.currency, "\"]")).prop('selected', 'selected').change(); // $("#currency_id").find('option').each(function() {
+            //     console.log($(this).data('code') == data.response.currency);
+            //     if ($(this).data('code') == data.response.currency) {
+            //         $(this).attr("selected", "selected").change();
+            //     }
+            // });
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
+            $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
+            $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+          } // Passengers Details
+
+
+          if (data.response.passengers.passengers.length > 0) {
+            data.response.passengers.passengers.forEach(function ($_value, $key) {
+              var $_count = $key + 1;
+              $("input[name=\"pax[".concat($_count, "][full_name]\"]")).val($_value.passenger_name);
+              $("input[name=\"pax[".concat($_count, "][email_address]\"]")).val($_value.passenger_email);
+              $("input[name=\"pax[".concat($_count, "][contact_number]\"]")).val($_value.passenger_contact);
+              $("input[name=\"pax[".concat($_count, "][date_of_birth]\"]")).val($_value.passenger_dbo);
+              $("input[name=\"pax[".concat($_count, "][bedding_preference]\"]")).val($_value.bedding_prefrences);
+              $("input[name=\"pax[".concat($_count, "][dietary_preferences]\"]")).val($_value.dinning_prefrences);
+            });
+          }
+        }
+
+        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+      },
+      error: function error(reject) {
+        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+        $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+      }
+    });
+  };
+
   $(document).on('click', '.search-reference', function () {
     var searchRef = $(this);
     var reference_no = $('.reference-name').val();
 
     if (reference_no == '') {
-      alert('Reference number is not found');
-      searchRef.text('Search').prop('disabled', false);
+      Toast.fire({
+        icon: 'error',
+        title: 'Reference Number is not found.'
+      }); // searchRef.text('Search').prop('disabled', false);
     } else {
       $('#ref_no').closest('.form-group').find('.text-danger').html(''); //check refrence is already exist in system
 
@@ -642,105 +728,25 @@ $(document).ready(function () {
         type: 'get',
         dataType: "json",
         success: function success(data) {
-          var r = true;
-
           if (data.response == true) {
-            r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
-          }
-
-          if (r == true) {
-            $.ajax({
-              headers: {
-                'X-CSRF-TOKEN': CSRFTOKEN
-              },
-              url: BASEURL + 'find/reference',
-              data: {
-                ref_no: reference_no
-              },
-              type: 'POST',
-              dataType: "json",
-              beforeSend: function beforeSend() {
-                $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
-                searchRef.prop('disabled', true);
-              },
-              success: function success(data) {
-                // console.log(data);
-                var tbody = '';
-
-                if (data.response) {
-                  if (data.response.tas_ref) {
-                    $("#tas_ref").val(data.response.tas_ref);
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
-                    $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
-                  }
-
-                  if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
-                    $('#brand_id').val(data.response.brand.brand_id).change();
-                  }
-
-                  if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
-                    setTimeout(function () {
-                      $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                    }, 500);
-                  }
-
-                  if (data.response.sale_person) {
-                    $('#sale_person_id').val(data.response.sale_person).trigger('change');
-                  }
-
-                  if (data.response.pax) {
-                    $('#pax_no').val(data.response.pax).trigger('change');
-                  }
-
-                  if (data.response.currency) {
-                    $("#currency_id").find('option').each(function () {
-                      if ($(this).data('code') == data.response.currency) {
-                        $(this).attr("selected", "selected").change();
-                      }
-                    });
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
-                    $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
-                    $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                  } // Passengers Details
-
-
-                  if (data.response.passengers.passengers.length > 0) {
-                    data.response.passengers.passengers.forEach(function ($_value, $key) {
-                      var $_count = $key + 1;
-                      $('input[name="pax[' + $_count + '][full_name]"]').val($_value.passenger_name);
-                      $('input[name="pax[' + $_count + '][email_address]"]').val($_value.passenger_email);
-                      $('input[name="pax[' + $_count + '][contact_number]"]').val($_value.passenger_contact);
-                      $('input[name="pax[' + $_count + '][date_of_birth]"]').val($_value.passenger_dbo);
-                      $('input[name="pax[' + $_count + '][bedding_preference]"]').val($_value.bedding_prefrences);
-                      $('input[name="pax[' + $_count + '][dietary_preferences]"]').val($_value.dinning_prefrences);
-                    });
-                  }
-                } else {
-                  alert(data.error);
-                }
-
-                searchRef.prop('disabled', false);
-                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-              },
-              error: function error(reject) {
-                searchRef.prop('disabled', false);
-                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "The reference number is already exists. Are you sure! you want to create quote again on same reference",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#28a745',
+              cancelButtonColor: '#dc3545',
+              confirmButtonText: "Yes, Create it !"
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                findReferenceData(reference_no);
               }
             });
+          } else {
+            findReferenceData(reference_no);
           }
         },
         error: function error(reject) {
-          alert(reject);
-          searchRef.text('Search').prop('disabled', false);
-          searchRef.prop('disabled', false);
           $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
         }
       }); //ajax for references
