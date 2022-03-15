@@ -63,7 +63,7 @@ class QuoteController extends Controller
         $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
         $data['booking_seasons']  = Season::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['users']            = User::get();
 
         return view('quotes.listing', $data);
@@ -81,7 +81,7 @@ class QuoteController extends Controller
         $data['booking_seasons']  = Season::all();
         $data['users']            = User::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
 
         return view('quotes.listing', $data);
     }
@@ -396,7 +396,7 @@ class QuoteController extends Controller
         //     $query->where('slug', 'sales-agent');
         // })
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
@@ -495,7 +495,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
@@ -614,7 +614,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
@@ -646,7 +646,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $quote                    = Quote::findOrFail(decrypt($id));
@@ -1006,7 +1006,7 @@ class QuoteController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();

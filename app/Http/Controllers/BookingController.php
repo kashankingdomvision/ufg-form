@@ -144,7 +144,7 @@ class BookingController extends Controller
         }
         
         $data['bookings']            = $booking->paginate($this->pagination);
-        $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']          = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']              = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']     = Season::all();
         $data['users']               = User::all();
@@ -325,7 +325,7 @@ class BookingController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
@@ -628,7 +628,7 @@ class BookingController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['booking']            = Booking::findOrFail(decrypt($id));
@@ -687,7 +687,7 @@ class BookingController extends Controller
         $data['supervisors']        = User::get();
         $data['sale_persons']       = User::get();
         $data['booking_methods']    = BookingMethod::all()->sortBy('id');
-        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']         = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']             = Brand::orderBy('id','ASC')->get();
         $data['booking_types']      = BookingType::all();
         $data['payment_methods']    = PaymentMethod::all();
@@ -776,7 +776,7 @@ class BookingController extends Controller
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
