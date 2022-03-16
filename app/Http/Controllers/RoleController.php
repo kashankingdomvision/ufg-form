@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Http\Requests\RoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-
 use App\Role;
 
 class RoleController extends Controller
