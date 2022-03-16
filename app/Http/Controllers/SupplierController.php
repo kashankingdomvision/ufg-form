@@ -48,7 +48,7 @@ class SupplierController extends Controller
             }
         }
         
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
         $data['suppliers'] = $supplier->paginate($this->pagination);       
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
         

@@ -57,7 +57,7 @@ class UserController extends Controller
         
         $data['users']      = $user->paginate($this->pagination);
         $data['roles']      = Role::orderBy('name', 'ASC')->get();
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']     = Brand::orderBy('id', 'ASC')->get();
 
         return view('users.listing', $data);
@@ -99,7 +99,7 @@ class UserController extends Controller
     {
         $data['supervisors']       = User::role(['supervisor'])->get();
         $data['roles']             = Role::orderBy('name', 'ASC')->get();
-        $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
         $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
@@ -125,7 +125,7 @@ class UserController extends Controller
     {
         $data['user']              = User::findOrFail(decrypt($id));
         $data['roles']             = Role::orderBy('name', 'ASC')->get();
-        $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
         $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();

@@ -52,7 +52,7 @@ class ReportController extends Controller
 
         $data['roles']      = Role::orderBy('name', 'ASC')->get();
         $data['brands']     = Brand::orderBy('id', 'ASC')->get();
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
 
         $user = User::orderBy('id', 'ASC');
 
@@ -130,7 +130,7 @@ class ReportController extends Controller
 
         $data['commissions']       = Commission::all();
         $data['commission_groups'] = CommissionGroup::all();
-        $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['bookings']          = $query->get();
         $data['users']             = User::get();
         $data['brands']            = Brand::orderBy('id','ASC')->get();
@@ -307,7 +307,7 @@ class ReportController extends Controller
     public function supplier_report(Request $request)
     {
         $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
 
         $supplier = Supplier::with('getCategories','getCurrency')->orderBy('id', 'ASC');
 
@@ -810,7 +810,7 @@ class ReportController extends Controller
             $passedParams = json_decode(request()->params, true);
             $data['roles']      = Role::orderBy('name', 'ASC')->get();
             $data['brands']     = Brand::orderBy('id', 'ASC')->get();
-            $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
 
             $user = User::orderBy('id', 'ASC');
 
@@ -1521,7 +1521,7 @@ class ReportController extends Controller
         try {
             $passedParams = json_decode(request()->params, true);
             $data['categories'] = Category::orderby('sort_order', 'ASC')->get();
-            $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
             $supplier = Supplier::with('getCategories','getCurrency')->orderBy('id', 'ASC');
 
             if (!empty($passedParams)) {
@@ -1929,7 +1929,7 @@ class ReportController extends Controller
 
             $data['commissions']       = Commission::all();
             $data['commission_groups'] = CommissionGroup::all();
-            $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+            $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
             $data['bookings']          = $query->get();
             $data['users']             = User::get();
             $data['brands']            = Brand::orderBy('id','ASC')->get();
