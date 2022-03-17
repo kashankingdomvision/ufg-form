@@ -66,7 +66,7 @@ class CustomerController extends Controller
         $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagination);
         $data['booking_seasons']  = Season::all();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['users']            = User::get();
         $data['customer']         = Quote::where('lead_passenger_email', decrypt($email))->select('lead_passenger_name','lead_passenger_email','lead_passenger_contact','lead_passenger_dbo','lead_passsenger_nationailty_id')->first();
        
@@ -197,7 +197,7 @@ class CustomerController extends Controller
         }
         
         $data['bookings']            = $booking->paginate($this->pagination);
-        $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']          = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']              = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']     = Season::all();
         $data['users']               = User::all();

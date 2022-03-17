@@ -46,7 +46,7 @@ class CommissionController extends Controller
     {
         $data['brands']             = Brand::orderBy('id','ASC')->get();
         $data['commission_groups']  = CommissionGroup::orderBy('id','ASC')->get();
-        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']         = Currency::active()->orderBy('id', 'ASC')->get();
         $data['booking_seasons']    = Season::all();
 
         return view('commissions.create', $data);

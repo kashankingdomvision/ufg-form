@@ -96,7 +96,7 @@ class QuoteDocumentsController extends Controller
     //                                 })->get();
     //     $data['sale_persons']     = User::get();
     //     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-    //     $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    //     $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
     //     $data['brands']           = Brand::orderBy('id','ASC')->get();
     //     $data['booking_types']    = BookingType::all();
     //     $data['commission_types'] = Commission::all();

@@ -396,7 +396,7 @@ class ReportController extends Controller
         $data['brands']           = Brand::orderBy('id', 'ASC')->get();
         $data['users']            = User::orderBy('name', 'ASC')->get();
         $data['booking_seasons']  = Season::all();
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['commission_types'] = Commission::all();
 
         $quote = Quote::orderBy('created_at','DESC');
@@ -1574,7 +1574,7 @@ class ReportController extends Controller
             $data['brands']           = Brand::orderBy('id', 'ASC')->get();
             $data['users']            = User::orderBy('name', 'ASC')->get();
             $data['booking_seasons']  = Season::all();
-            $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+            $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
             $data['commission_types'] = Commission::all();
 
             $quote = Quote::orderBy('created_at','DESC');

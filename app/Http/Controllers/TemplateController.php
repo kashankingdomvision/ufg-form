@@ -149,7 +149,7 @@ class TemplateController extends Controller
     $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-    $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
     $data['users']            = User::all()->sortBy('name');
     $data['seasons']          = Season::all();
     $data['booked_by']        = User::all()->sortBy('name');
@@ -216,7 +216,7 @@ class TemplateController extends Controller
   {
     $template = Template::findOrFail(decrypt($id));
     $data['template']   = $template;
-    $data['currencies'] = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
 
     return view('templates.details',$data);
   }
@@ -234,7 +234,7 @@ class TemplateController extends Controller
     $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-    $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
     $data['users']            = User::all()->sortBy('name');
     $data['seasons']          = Season::all();
     $data['booked_by']        = User::all()->sortBy('name');

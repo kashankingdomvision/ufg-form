@@ -144,7 +144,7 @@ class BookingController extends Controller
         }
         
         $data['bookings']            = $booking->paginate($this->pagination);
-        $data['currencies']          = Currency::active()->orderBy('id', 'ASC')->get();;
+        $data['currencies']          = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']              = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']     = Season::all();
         $data['users']               = User::all();
