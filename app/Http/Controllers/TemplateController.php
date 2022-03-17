@@ -72,8 +72,8 @@ class TemplateController extends Controller
   
   public function index(Request $request)
   {
-    $template          = Template::orderBy('id', 'DESC')->where('privacy_status', 1);
-    $private_templates = Template::orderBy('id', 'DESC')->where('user_id', Auth::id())->where('privacy_status', 0);
+    $template          = Template::public()->orderBy('id', 'DESC');
+    $private_templates = Template::private()->orderBy('id', 'DESC');
 
     if(count($request->all())> 0){
       if($request->has('search') && !empty($request->search)){
