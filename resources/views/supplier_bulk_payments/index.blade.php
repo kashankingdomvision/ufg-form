@@ -169,8 +169,8 @@
 
                           <td> {{ $booking->ref_no }} </td>
                           <td> {{ $booking->quote_ref }} </td>
-                          <td> {{ $selected_supplier_currency }} {{ $booking->actual_cost_bc }} </td>
-                          <td> {{ $selected_supplier_currency }} {{$booking->outstanding_amount_left}} </td>
+                          <td> {{ $selected_supplier_currency }} {{ Helper::number_format($booking->actual_cost_bc) }} </td>
+                          <td> {{ $selected_supplier_currency }} {{ Helper::number_format($booking->outstanding_amount_left) }} </td>
 
                           <td class="d-none">
                             <input type="hidden" name="finance[{{$key}}][booking_detail_unique_ref_id]" value="{{ isset($booking->booking_detail_unique_ref_id) && !empty($booking->booking_detail_unique_ref_id) ? $booking->booking_detail_unique_ref_id : '' }}">

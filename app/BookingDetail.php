@@ -206,6 +206,14 @@ class BookingDetail extends Model
         $this->attributes['actual_cost'] = str_replace( ',', '', $value );
     }
 
+    public function setActualCostBcAttribute( $value ) {
+        $this->attributes['actual_cost_bc'] = str_replace( ',', '', $value );
+    }
+
+    public function setOutstandingAmountLeftAttribute( $value ) {
+        $this->attributes['outstanding_amount_left'] = str_replace( ',', '', $value );
+    }
+
     public function setMarkupAmountAttribute( $value ) {
         $this->attributes['markup_amount'] = str_replace( ',', '', $value );
     }
