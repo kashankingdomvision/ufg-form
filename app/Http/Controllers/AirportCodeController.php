@@ -24,15 +24,22 @@ class AirportCodeController extends Controller
         $query = AirportCode::orderBy('id', 'ASC');
 
         if(count($request->all()) > 0){
-            if($request->has('search') && !empty($request->search)){
-                $query->where('name', 'like', '%'.$request->search.'%');
-                $query->orWhere('iata_code', 'like', '%'.$request->search.'%');
-            }
+            $query = $this->searchFilters($query, $request);
         }
 
         $data['airport_codes'] = $query->paginate($this->pagination);
 
         return view('airport_codes.listing',$data);
+    }
+
+    public function searchFilters($query, $request)
+    {
+        if($request->has('search') && !empty($request->search)){
+            $query->where('name', 'like', '%'.$request->search.'%');
+            $query->orWhere('iata_code', 'like', '%'.$request->search.'%');
+        }
+
+        return $query;
     }
 
     /**
