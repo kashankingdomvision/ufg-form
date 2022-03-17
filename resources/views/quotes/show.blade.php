@@ -806,7 +806,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="text" step="any" value="{{ \Helper::number_format($q_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-type="currency" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0">
+                                  <input type="text" name="quote[{{ $key }}][estimated_cost]" value="{{ Helper::number_format($q_detail->estimated_cost) }}"  data-name="estimated_cost" data-type="currency" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0">
                                 </div>
                               </div>
                             </div>
@@ -818,7 +818,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="text" step="any" value="{{ \Helper::number_format($q_detail->markup_amount) }}" name="quote[{{ $key }}][markup_amount]" data-name="markup_amount" data-type="currency" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" min="0">
+                                  <input type="text" name="quote[{{ $key }}][markup_amount]" value="{{ Helper::number_format($q_detail->markup_amount) }}" data-name="markup_amount" data-type="currency" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change-calculation remove-zero-values">
                                 </div>
                               </div>
                             </div>
@@ -827,7 +827,7 @@
                               <div class="form-group">
                                 <label>Markup % <span style="color:red">*</span></label>
                                 <div class="input-group">
-                                  <input type="number" step="any" value="{{ \Helper::number_format($q_detail->markup_percentage) }}" name="quote[{{ $key }}][markup_percentage]" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change-calculation remove-zero-values" min="0" value="0.00">
+                                  <input type="number" name="quote[{{ $key }}][markup_percentage]"  value="{{ Helper::number_format($q_detail->markup_percentage) }}" data-name="markup_percentage" id="quote_{{ $key }}_markup_percentage" class="form-control markup-percentage change-calculation remove-zero-values">
                                   <div class="input-group-append">
                                       <div class="input-group-text">%</div>
                                   </div>
@@ -842,7 +842,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="text" step="any" value="{{ \Helper::number_format($q_detail->selling_price) }}" name="quote[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
+                                  <input type="text" name="quote[{{ $key }}][selling_price]" value="{{ Helper::number_format($q_detail->selling_price) }}" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" readonly>
                                 </div>
                               </div>
                             </div>
@@ -881,7 +881,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="text" step="any" value="{{ \Helper::number_format($q_detail->markup_amount_in_booking_currency) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
+                                  <input type="text" step="any" value="{{ Helper::number_format($q_detail->markup_amount_in_booking_currency) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
                                 </div>
                               </div>
                             </div>
@@ -893,7 +893,7 @@
                                   <div class="input-group-prepend">
                                     <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                                   </div>
-                                  <input type="text" step="any" value="{{ \Helper::number_format($q_detail->selling_price_in_booking_currency) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
+                                  <input type="text"  name="quote[{{ $key }}][selling_price_in_booking_currency]" value="{{ Helper::number_format($q_detail->selling_price_in_booking_currency) }}" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" readonly>
                                 </div>
                               </div>
                             </div>
@@ -965,7 +965,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="text" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="{{ \Helper::number_format($quote->net_price) }}" readonly>
+                        <input type="text" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0" value="{{ Helper::number_format($quote->net_price) }}" readonly>
                       </div>
                     </div>
                   </div>
@@ -979,7 +979,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="text" value="{{ \Helper::number_format($quote->markup_amount) }}"  step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" data-type="currency" value="0.00" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
+                        <input type="text" value="{{ Helper::number_format($quote->markup_amount) }}" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" data-type="currency" value="0.00" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
                       </div>
                     </div>
                   </div>
@@ -987,7 +987,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <div class="input-group">
-                        <input type="number" value="{{ \Helper::number_format($quote->markup_percentage) }}"  step="any" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" min="0" name="total_markup_percent" data-name="total_markup_percent" value="0.00" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
+                        <input type="number" name="total_markup_percent" value="{{ Helper::number_format($quote->markup_percentage) }}" data-name="total_markup_percent" class="form-control total-markup-percent total-markup-change remove-zero-values hide-arrows" step="any" min="0" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
                         </div>
