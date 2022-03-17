@@ -70,6 +70,8 @@ class UserController extends Controller
                 $q->where('id', $request->brand);
             });
         }
+
+        return $user;
     }
 
     public function userArray($request, $method)
