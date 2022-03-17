@@ -146,12 +146,6 @@ class Booking extends Model
     function getTotalRefundAmount() {
         return $this->hasOne(BookingCancellation::class, 'booking_id', 'id');
     }
-
-
-
-    // function getSupplierCurrency() {
-    //     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
-    // }
     
     function getBrand() {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
@@ -220,18 +214,15 @@ class Booking extends Model
         return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
     }
    
-   
     public function setRevelantQuoteAttribute($value)
     {
         $this->attributes['revelant_quote'] = json_encode($value);
     }
     
-    
     public function getRevelantQuoteAttribute($value)
     {
         return json_decode($value);
     }
-
 
     public function setNetPriceAttribute( $value ) {
         $this->attributes['net_price'] = str_replace( ',', '', $value );
@@ -269,3 +260,7 @@ class Booking extends Model
         $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
     }
 }
+
+// function getSupplierCurrency() {
+//     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
+// }
