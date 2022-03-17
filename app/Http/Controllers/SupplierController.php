@@ -28,24 +28,7 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::orderBy('id', 'ASC');
         if (count($request->all()) > 0) {
-            if ($request->has('search') && !empty($request->search)) {
-                $supplier = $supplier->where(function ($query) use ($request) {
-                    $query->where('name', 'like', '%'.$request->search.'%')
-                    ->orWhere('email', 'like', '%'.$request->search.'%')
-                    ->orWhere('phone', 'like', '%'.$request->search.'%');
-                });
-            }
-                             
-            if ($request->has('currency') && !empty($request->currency)) {
-                $supplier = $supplier->whereHas('getCurrency', function ($q) use($request) {
-                    $q->where('name', 'like', '%'.$request->currency.'%');
-                });
-            }
-            if ($request->has('category') && !empty($request->category)) {
-                $supplier = $supplier->whereHas('getCategories', function ($q) use($request) {
-                    $q->where('name', 'like', '%'.$request->category.'%');
-                });
-            }
+            $user = $this->searchFilters($supplier, $request);
         }
         
         $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
@@ -54,6 +37,31 @@ class SupplierController extends Controller
         
         return view('suppliers.listing', $data);
     }
+
+    public function searchFilters($supplier, $request){
+
+        if ($request->has('search') && !empty($request->search)) {
+            $supplier = $supplier->where(function ($query) use ($request) {
+                $query->where('name', 'like', '%'.$request->search.'%')
+                ->orWhere('email', 'like', '%'.$request->search.'%')
+                ->orWhere('phone', 'like', '%'.$request->search.'%');
+            });
+        }
+                         
+        if ($request->has('currency') && !empty($request->currency)) {
+            $supplier = $supplier->whereHas('getCurrency', function ($q) use($request) {
+                $q->where('name', 'like', '%'.$request->currency.'%');
+            });
+        }
+        if ($request->has('category') && !empty($request->category)) {
+            $supplier = $supplier->whereHas('getCategories', function ($q) use($request) {
+                $q->where('name', 'like', '%'.$request->category.'%');
+            });
+        }
+
+        return $supplier;
+    }
+
 
     /**
      * Show the form for creating a new resource.
