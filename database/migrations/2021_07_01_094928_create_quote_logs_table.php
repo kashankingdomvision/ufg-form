@@ -14,6 +14,7 @@ class CreateQuoteLogsTable extends Migration
     public function up()
     {
         Schema::create('quote_logs', function (Blueprint $table) {
+         
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
             $table->bigInteger('log_no')->nullalbe();
@@ -21,7 +22,6 @@ class CreateQuoteLogsTable extends Migration
             $table->longText('data');
             $table->timestamps();
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
-            
         });
     }
 

@@ -26,7 +26,6 @@ class AlterQuoteTableForeignKeys extends Migration
             $table->foreign('sale_person_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('lead_passsenger_nationailty_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('lead_passenger_resident')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
-            
         });
     }
 

@@ -15,7 +15,6 @@ class CreateQuoteDetailsCountriesTable extends Migration
     {
         Schema::create('quote_detail_countries', function (Blueprint $table) {
             $table->id();
-            // $table->primary(['quote_id', 'quote_detail_id','country_id']);
 
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('quote_detail_id');
@@ -24,8 +23,6 @@ class CreateQuoteDetailsCountriesTable extends Migration
             $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('quote_detail_id')->references('id')->on('quote_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
-
-            // $table->timestamps();
         });
     }
 
@@ -39,3 +36,6 @@ class CreateQuoteDetailsCountriesTable extends Migration
         Schema::dropIfExists('quote_details_countries');
     }
 }
+
+// $table->primary(['quote_id', 'quote_detail_id','country_id']);
+// $table->timestamps();

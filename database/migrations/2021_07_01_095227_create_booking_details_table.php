@@ -21,7 +21,6 @@ class CreateBookingDetailsTable extends Migration
             $table->string('supplier_country_ids')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
-            // $table->string('product_id')->nullable();
             $table->unsignedBigInteger('booking_method_id')->nullable();
             $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('supervisor_id')->nullable();
@@ -67,3 +66,6 @@ class CreateBookingDetailsTable extends Migration
         Schema::dropIfExists('booking_details');
     }
 }
+
+// $table->string('product_id')->nullable();
+
