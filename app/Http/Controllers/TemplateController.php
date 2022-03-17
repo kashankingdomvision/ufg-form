@@ -231,7 +231,7 @@ class TemplateController extends Controller
   {
     $data['template']         = Template::findOrFail(decrypt($id));
     $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-    $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
+    $data['supervisors']      = User::role(['supervisor'])->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
     $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
