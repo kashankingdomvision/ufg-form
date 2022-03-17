@@ -1003,7 +1003,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="text" value="{{ \Helper::number_format($quote->selling_price) }}" step="any" name="total_selling_price" class="form-control total-selling-price hide-arrows" min="0.00" step="any"  value="0.00" readonly>
+                          <input type="text" name="total_selling_price" value="{{ Helper::number_format($quote->selling_price) }}" class="form-control total-selling-price hide-arrows" readonly>
                         </div>
                       </div>
                     </div>
@@ -1014,7 +1014,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="number" value="{{ \Helper::number_format($quote->profit_percentage) }}" step="any" name="total_profit_percentage" class="form-control total-profit-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
+                          <input type="number" name="total_profit_percentage" value="{{ Helper::number_format($quote->profit_percentage) }}" class="form-control total-profit-percentage hide-arrows" min="0" step="any" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
@@ -1031,7 +1031,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="text" value="{{ \Helper::number_format($quote->amount_per_person) }}" step="any" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" name="booking_amount_per_person" value="0.00" readonly>
+                          <input type="text" name="booking_amount_per_person" value="{{ Helper::number_format($quote->amount_per_person) }}" class="form-control booking-amount-per-person hide-arrows" readonly>
                         </div>
                       </div>
                     </div>
@@ -1053,7 +1053,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
                           </div>
-                          <input type="text" step="any" name="commission_amount" class="form-control commission-amount hide-arrows" min="0" step="any" value="{{ \Helper::number_format($quote->commission_amount) }}" readonly>
+                          <input type="text" name="commission_amount" value="{{ Helper::number_format($quote->commission_amount) }}"  class="form-control commission-amount hide-arrows" readonly>
                         </div>
                       </div>
                     </div>
@@ -1061,7 +1061,7 @@
                     <div class="col-sm-2 d-none">
                       <div class="form-group">
                         <div class="input-group">
-                          <input type="number" step="any" name="commission_percentage" value="{{ \Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
+                          <input type="number" name="commission_percentage" value="{{ Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" step="any" min="0" readonly>
                           <div class="input-group-append">
                             <div class="input-group-text">%</div>
                           </div>
