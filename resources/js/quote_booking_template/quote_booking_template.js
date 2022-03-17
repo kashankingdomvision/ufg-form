@@ -316,7 +316,12 @@ $(document).ready(function () {
         quote.find('.badge-date-of-service').removeClass('d-none');
 
         if (convertDate(DateOFService) < convertDate(nowDate)) {
-            alert('Please select valid Date, The date you select is already Passed.');
+
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please Select Valid Date, Selected Date is already Passed.'
+            });
+        
             $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('');
         }
@@ -327,7 +332,12 @@ $(document).ready(function () {
         }
 
         if ((convertDate(EndDateOFService) < convertDate(DateOFService)) && category_enddateofservice != 1) {
-            alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+            
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please Select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.'
+            });
+
             $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('')
         } else {
@@ -352,13 +362,22 @@ $(document).ready(function () {
         var category_enddateofservice = $(`#quote_${quoteKey}_category_id`).find(':selected').attr('data-enddateofservice');
 
         if (convertDate(EndDateOFService) < convertDate(nowDate)) {
-            alert('Please select valid Date, The date you select is already Passed.');
+
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please Select Valid Date, Selected Date is already Passed.'
+            });
+
             $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('');
         }
         if ((convertDate(EndDateOFService) < convertDate(DateOFService)) && category_enddateofservice != 1) {
 
-            alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+            Toast.fire({
+                icon: 'warning',
+                title: 'Please Select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.'
+            });
+
             $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", '');
             $(`#quote_${quoteKey}_number_of_nights`).val('');
         } else {
