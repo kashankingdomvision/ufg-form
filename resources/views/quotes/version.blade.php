@@ -1074,10 +1074,10 @@
                     <div class="col-md-4">
                       <div class="form-group">
                         <label>Selling Price in Other Currency</label>
-                        <select name="selling_price_other_currency" class="form-control selling-price-other-currency @error('selling_price_other_currency') is-invalid @enderror">
+                        <select name="selling_price_other_currency" class="form-control selling-price-other-currency">
                           <option value="">Select Currency</option>
                           @foreach ($currencies as $currency)
-                            <option value="{{ $currency->code }}" {{ ($quote->selling_currency_oc == $currency->code)? 'selected':NULL }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
+                            <option value="{{ $currency->code }}" {{ ($quote->selling_currency_oc == $currency->code) ? 'selected':'' }} data-image="data:image/png;base64, {{$currency->flag}}" > &nbsp; {{$currency->code}} - {{$currency->name}} </option>
                           @endforeach
                         </select>
                       </div>
@@ -1090,7 +1090,7 @@
                           <div class="input-group-prepend">
                             <span class="input-group-text selling-price-other-currency-code">{{ isset($quote->selling_currency_oc) && !empty($quote->selling_currency_oc) ? $quote->selling_currency_oc : '' }}</span>
                           </div>
-                          <input type="text" value="{{ \Helper::number_format($quote->selling_price_ocr) }}" step="any" name="selling_price_other_currency_rate" min="0" step="any" class="form-control selling-price-other-currency-rate hide-arrows" value="0.00" readonly>
+                          <input type="text" name="selling_price_other_currency_rate" value="{{ Helper::number_format($quote->selling_price_ocr) }}" class="form-control selling-price-other-currency-rate hide-arrows" readonly>
                         </div>
                       </div>
                     </div>
