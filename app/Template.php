@@ -56,4 +56,9 @@ class Template extends Model
         return $this->hasMany(TemplateDetail::class, 'template_id', 'id');
     }
 
+    public function scopePublic($query)
+    {
+        return $query->where('privacy_status', 1);
+    }
+
 }

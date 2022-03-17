@@ -385,7 +385,7 @@ class QuoteController extends Controller
     {
         $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
-        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -487,7 +487,7 @@ class QuoteController extends Controller
         $data['quote']            = $quote;
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
-        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
@@ -604,7 +604,7 @@ class QuoteController extends Controller
         $quote                    = $log->data;
         $data['quote']            = (object) $quote;
         $data['log']              = $log;
-        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
@@ -637,7 +637,7 @@ class QuoteController extends Controller
         $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-        $data['public_templates']  = Template::where('privacy_status', 1)->get();
+        $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::where('user_id', Auth::id())->where('privacy_status', 0)->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
