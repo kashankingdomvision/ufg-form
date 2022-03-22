@@ -41,6 +41,7 @@ class Handler extends ExceptionHandler
         ErrorLog::create([
             'file'    => $Throwable->getFile(),
             'line'    => $Throwable->getLine(),
+            'url'     => url()->current(),
             'message' => $Throwable->getMessage(),
         ]);
     }

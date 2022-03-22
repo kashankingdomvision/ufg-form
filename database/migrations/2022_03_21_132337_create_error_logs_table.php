@@ -17,6 +17,7 @@ class CreateErrorLogsTable extends Migration
             $table->id();
             $table->string('file');
             $table->unsignedInteger('line');
+            $table->string('url');
             $table->text('message');
             $table->timestamps();
         });

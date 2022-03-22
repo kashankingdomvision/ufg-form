@@ -9,6 +9,7 @@ class ErrorLog extends Model
     protected $fillable = [
         'file',
         'line',
+        'url',
         'message'
     ];
 }
