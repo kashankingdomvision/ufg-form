@@ -23,19 +23,65 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $user = User::orderBy('id', 'ASC');
+        $user = User::select([
+            'id',
+            'role_id',
+            'name',
+            'email',
+            'currency_id',
+            'brand_id',
+            'supervisor_id'
+        ])
+        ->with([
+            'getRole',
+            'getCurrency',
+            'getBrand',
+            'getSupervisor'
+        ]) 
+        ->orderBy('id', 'ASC');
 
         if (count($request->all()) > 0) {
             $user = $this->searchFilters($user, $request);
         }
-        
+
         $data['users']      = $user->paginate($this->pagination);
-        $data['roles']      = Role::orderBy('name', 'ASC')->get();
-        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
-        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+        $data['roles']      = Role::orderBy('id', 'ASC')->get(['id','name']);
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get(['id','name','code','flag','status']);
+        $data['brands']     = Brand::orderBy('id', 'ASC')->get(['id','name']);
 
         return view('users.listing', $data);
     }
+
+    // public function index(Request $request)
+    // {
+    //     $user = User::orderBy('id', 'ASC');
+
+    //     if (count($request->all()) > 0) {
+    //         $user = $this->searchFilters($user, $request);
+    //     }
+        
+    //     $data['users']      = $user->paginate($this->pagination);
+    //     $data['roles']      = Role::orderBy('name', 'ASC')->get();
+    //     $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
+    //     $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+
+    //     return view('users.listing', $data);
+    // }
+
+    // ->with([
+    //     'getRole' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getCurrency' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getBrand' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getSupervisor' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    // ]) 
 
     
     public function searchFilters($user, $request)
