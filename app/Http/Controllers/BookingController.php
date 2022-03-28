@@ -163,7 +163,7 @@ class BookingController extends Controller
             'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
             'booking_details'                   =>  $request->booking_details,
             'ref_no'                            =>  $request->ref_no,
-            'tas_ref'                           =>  $request->tas_ref??NULL,
+            // 'tas_ref'                           =>  $request->tas_ref??NULL,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'quote_ref'                         =>  $request->quote_no,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',

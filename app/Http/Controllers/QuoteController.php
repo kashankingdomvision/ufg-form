@@ -169,7 +169,7 @@ class QuoteController extends Controller
 
             'booking_details'                   =>  $request->booking_details,
             'reason_for_trip'                   =>  $request->reason_for_trip,
-            'tas_ref'                           =>  $request->tas_ref??NULL,
+            // 'tas_ref'                           =>  $request->tas_ref??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
             'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
