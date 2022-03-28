@@ -1,6 +1,8 @@
 
 -- Transfer
 UPDATE `categories` SET `feilds` = '[{\"type\":\"autocomplete\",\"label\":\"Pick up Location \",\"className\":\"form-control\",\"name\":\"autocomplete-1643896315062-0\",\"requireValidOption\":false,\"data\":\"harbours\",\"values\":[]},{\"type\":\"autocomplete\",\"label\":\"Drop off Location\",\"className\":\"form-control\",\"name\":\"autocomplete-1643896316045-0\",\"requireValidOption\":false,\"data\":\"harbours\",\"values\":[]}]' WHERE `categories`.`id` = 1;
+UPDATE `categories` SET `show_tf` = '1' WHERE `categories`.`id` = 1;
+UPDATE `categories` SET `label_of_time` = 'Time of Service' WHERE `categories`.`id` = 1;
 
 -- Accommodation
 UPDATE `categories` SET `feilds` = '[{\"type\":\"text\",\"label\":\"Room Type\",\"className\":\"form-control\",\"name\":\"text-1643891680692-0\",\"subtype\":\"text\"}]' WHERE `categories`.`id` = 2;
