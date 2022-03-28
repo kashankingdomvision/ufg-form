@@ -15,6 +15,7 @@ class Booking extends Model
         'created_by',
         'commission_id',
         'commission_group_id',
+        'country_destination_ids',
         'default_supplier_currency_id',
         'season_id',
         'brand_id',
@@ -121,6 +122,12 @@ class Booking extends Model
         return $status;
     }
     
+    
+    public function getCountryDestinations()
+    {
+        return $this->belongsToMany(Country::class, 'booking_country_destinations', 'booking_id', 'country_id');
+    }
+
     public function getBookingDetail()
     {
         return $this->hasMany(BookingDetail::class, 'booking_id', 'id');

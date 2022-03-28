@@ -88,13 +88,17 @@
                     </div>
                   </div>
 
-                  {{-- <div class="col-sm-3">
+                  <div class="col-sm-3">
                     <div class="form-group">
-                      <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
-                      <input type="text" name="tas_ref" class="form-control" value="{{ isset($booking->tas_ref) & !empty($booking->tas_ref) ? $booking->tas_ref : '' }}"  placeholder="TAS Reference Number" >
+                      <label>Country Destination <span style="color:red">*</span></label>
+                      <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Country Destination" multiple>
+                        @foreach ($supplier_countries as $country)
+                          <option value="{{ $country->id }}" {{ in_array($country->id, json_decode($booking->country_destination_ids)) ? 'selected' : NULL}} >{{ $country->name }} - {{ $country->code}}</option>
+                        @endforeach
+                      </select>
                       <span class="text-danger" role="alert"></span>
                     </div>
-                  </div> --}}
+                  </div>
 
                   <div class="col-sm-5">
                     <div class="form-group">
@@ -1658,6 +1662,14 @@
 @push('js')
   <script src="{{ asset('js/booking_management.js') }}" ></script>
 @endpush
+
+  {{-- <div class="col-sm-3">
+    <div class="form-group">
+      <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
+      <input type="text" name="tas_ref" class="form-control" value="{{ isset($booking->tas_ref) & !empty($booking->tas_ref) ? $booking->tas_ref : '' }}"  placeholder="TAS Reference Number" >
+      <span class="text-danger" role="alert"></span>
+    </div>
+  </div> --}}
 
 {{-- @if($booking_detail->status == 'active')
 <span class="badge badge-success">Booked</span>

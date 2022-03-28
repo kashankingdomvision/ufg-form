@@ -216,6 +216,7 @@ class QuoteController extends Controller
 
         if($type == 'quotes'){
 
+            $data['country_destination_ids']   = isset($request['country_destination_ids']) && !empty($request['country_destination_ids']) ? json_encode($request['country_destination_ids']) : NULL ;
             $data['quote_ref']              = $request->quote_no??$request->quote_ref;
             $data['agency_contact']         = isset($request->agency_contact) && !empty($request->agency_contact) ? $request->full_number : NULL;
             $data['lead_passenger_contact'] = isset($request->lead_passenger_contact) && !empty($request->lead_passenger_contact) ? $request->full_number : NULL;
@@ -229,6 +230,7 @@ class QuoteController extends Controller
 
         if($type == 'clone'){
 
+            $data['country_destination_ids']   = isset($request['country_destination_ids']) && !empty($request['country_destination_ids']) ? $request['country_destination_ids'] : NULL ;
             $data['quote_ref']              = Helper::getQuoteID();
             $data['agency_contact']         = $request->agency_contact??NULL;
             $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
@@ -238,6 +240,7 @@ class QuoteController extends Controller
 
         if($type == 'bookings'){
 
+            $data['country_destination_ids'] = isset($request['country_destination_ids']) && !empty($request['country_destination_ids']) ? $request['country_destination_ids'] : NULL ;
             $data['quote_id']               = $request->id;
             $data['quote_ref']              = $request->quote_no??$request->quote_ref;
             $data['agency_contact']         = $request->agency_contact??NULL;
@@ -493,6 +496,7 @@ class QuoteController extends Controller
         // dd($request->all());
 
         $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
+        $quote->getCountryDestinations()->sync($request->country_destination_ids);
 
         if($request->has('quote') && count($request->quote) > 0){
             foreach ($request->quote as $quote_detail) {
@@ -596,6 +600,7 @@ class QuoteController extends Controller
         // }
 
         $quote = Quote::findOrFail(decrypt($id));
+        $quote->getCountryDestinations()->sync($request->country_destination_ids);
 
         /* store quote log*/ 
         QuoteLog::create($this->getQuoteLogArray($quote));
@@ -956,6 +961,7 @@ class QuoteController extends Controller
 
         $quote   = Quote::findORFail(decrypt($id));
         $booking = Booking::create($this->quoteArray($quote, 'bookings'));
+        $booking->getCountryDestinations()->sync($quote->getCountryDestinations()->pluck('country_id')->toArray());
 
         foreach ($quote->getQuoteDetails as $qu_details) {
 
@@ -1070,7 +1076,8 @@ class QuoteController extends Controller
     {
         $quote      = Quote::findORFail(decrypt($id));
         $clone      = Quote::create($this->quoteArray($quote, 'clone'));
-   
+        $clone->getCountryDestinations()->sync($quote->getCountryDestinations()->pluck('country_id')->toArray());
+
         foreach ($quote->getQuoteDetails as $qu_details) {
 
             $quoteDetail = QuoteDetail::create($this->getQuoteDetailsArray($clone, $qu_details, 'clone'));

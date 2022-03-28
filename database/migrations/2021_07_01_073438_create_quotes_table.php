@@ -31,6 +31,7 @@ class CreateQuotesTable extends Migration
             $table->string('ref_no');
             $table->string('quote_ref');
             // $table->string('tas_ref')->nullable();
+            $table->string('country_destination_ids');
             $table->enum('agency', [0, 1])->default(0);
             $table->enum('agency_commission_type',['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
             $table->double('agency_commission')->nullable();

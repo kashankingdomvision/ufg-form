@@ -18,6 +18,7 @@ class Quote extends Model
         'reason_for_trip',
         'commission_id',
         'commission_group_id',
+        'country_destination_ids',
         'default_supplier_currency_id',
         'created_by',
         'user_id',
@@ -69,7 +70,12 @@ class Quote extends Model
         'stored_text',
         'markup_type',
     ];
-    
+
+    public function getCountryDestinations()
+    {
+        return $this->belongsToMany(Country::class, 'quote_country_destinations', 'quote_id', 'country_id');
+    }
+
     public function getCreatedBy()
     {
         return $this->hasOne(User::class, 'id', 'created_by');

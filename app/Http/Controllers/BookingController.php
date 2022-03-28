@@ -163,6 +163,7 @@ class BookingController extends Controller
             'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
             'booking_details'                   =>  $request->booking_details,
             'ref_no'                            =>  $request->ref_no,
+            'country_destination_ids'           => isset($request['country_destination_ids']) && !empty($request['country_destination_ids']) ? json_encode($request['country_destination_ids']) : NULL,
             // 'tas_ref'                           =>  $request->tas_ref??NULL,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'quote_ref'                         =>  $request->quote_no,
@@ -447,6 +448,7 @@ class BookingController extends Controller
         //- check update access
 
         $booking = Booking::findOrFail(decrypt($id));
+        $booking->getCountryDestinations()->sync($request->country_destination_ids);
 
         /* store booking log */ 
         BookingLog::create($this->getBookingLogArray($booking));
