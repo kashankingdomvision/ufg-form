@@ -100,13 +100,13 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-3">
+                  {{-- <div class="col-sm-3">
                     <div class="form-group">
                       <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                       <input type="text" id="tas_ref" name="tas_ref" class="form-control" value="{{ isset($tas_ref) & !empty($tas_ref) ? $tas_ref : '' }}"  placeholder="TAS Reference Number" >
                       <span class="text-danger" role="alert"></span>
                     </div>
-                  </div>
+                  </div> --}}
 
                   <div class="col-md-5">
                     <div class="form-group">

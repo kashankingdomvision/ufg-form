@@ -88,13 +88,13 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-3">
+                  {{-- <div class="col-sm-3">
                     <div class="form-group">
                       <label>TAS Reference <span class="text-secondary">(Optional)</span></label>
                       <input type="text" name="tas_ref" class="form-control" value="{{ isset($booking->tas_ref) & !empty($booking->tas_ref) ? $booking->tas_ref : '' }}"  placeholder="TAS Reference Number" >
                       <span class="text-danger" role="alert"></span>
                     </div>
-                  </div>
+                  </div> --}}
 
                   <div class="col-sm-5">
                     <div class="form-group">
