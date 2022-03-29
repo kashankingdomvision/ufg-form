@@ -3,6 +3,8 @@
 use Illuminate\Database\Seeder;
 use App\Brand;
 use App\HolidayType;
+use App\BrandSupplierCountry;
+use Illuminate\Support\Facades\DB;
 
 class BrandAndHolidayTableSeeder extends Seeder
 {
@@ -126,5 +128,9 @@ class BrandAndHolidayTableSeeder extends Seeder
                 ]);
             }
         }
+
+        DB::table('brands')->update(['phone' => '+923413108106']);
+
+
     }
 }
