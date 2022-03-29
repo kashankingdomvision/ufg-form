@@ -313,7 +313,7 @@ $(document).ready(function () {
       },
       success: function success(response) {
         options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
+        $.each(response.holiday_types, function (key, value) {
           options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
         });
         $('.appendHolidayType').html(options);

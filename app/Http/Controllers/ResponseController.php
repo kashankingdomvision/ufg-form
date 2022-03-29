@@ -212,9 +212,17 @@ class ResponseController extends Controller
         $category         = '';
         $model_name       = 'App\\'.$request->model_name;
  
-        $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
+        // $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
+        //     $query->where('id', $request->category_id);
+        // })->get();
+
+        $supplier = Supplier::whereHas('getCountries', function($query) use ($request) {
+            $query->whereIn('id', $request->supplier_country_ids);
+        })
+        ->whereHas('getCategories', function($query) use ($request) {
             $query->where('id', $request->category_id);
-        })->get();
+        })
+        ->get();
 
         $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
         $category       = Category::where('id', $request->category_id)->first();
@@ -333,7 +341,15 @@ class ResponseController extends Controller
 
     public function getBrandToHoliday(Request $request)
     {    
-        $holiday_types = HolidayType::where('brand_id',$request->brand_id)->get();
+        $holiday_types = HolidayType::where('brand_id', $request->brand_id)->get();
+
+        $brand_supplier_countries = Brand::find($request->brand_id)->getSupplierCountries()->pluck('country_id')->toArray();
+
+        return response()->json([
+            'holiday_types'     => $holiday_types,
+            'brand_supplier_countries' => $brand_supplier_countries,
+        ]);
+
         return response()->json($holiday_types);
     }
 

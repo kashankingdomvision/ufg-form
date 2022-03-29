@@ -210,6 +210,10 @@ $(document).ready(function() {
                 var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
                 // console.log(currentDate);
                 
+                // set default supplier country
+                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
+
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
 
@@ -333,6 +337,11 @@ $(document).ready(function() {
                 // quote_8_end_date_of_service
                 var stringDate = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
                 // console.log(stringDate);
+
+
+                // set default supplier country
+                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
 
                 $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

@@ -484,6 +484,7 @@ $(document).ready(function () {
         var category_id = $(this).val();
         var category_name = $(this).find(':selected').attr('data-name');
         var category_slug = $(this).find(':selected').attr('data-slug');
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
         var options = '';
         var formData = '';
 
@@ -527,8 +528,30 @@ $(document).ready(function () {
         $.ajax({
             type: 'get',
             url: `${BASEURL}category/to/supplier`,
-            data: { 'category_id': category_id, 'detail_id': detail_id, 'model_name': model_name },
+            data: { 
+                'category_id': category_id, 
+                'detail_id': detail_id, 
+                'model_name': model_name,
+                'supplier_country_ids': supplier_country_ids
+            },
             success: function (response) {
+
+
+                if(response && response.suppliers.length > 0){
+
+                    options += "<option value=''>Select Supplier</option>";
+
+                    $.each(response.suppliers, function(key, value) {
+                        options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                    });
+                    
+                    $(`#quote_${quoteKey}_supplier_id`).html(options);
+
+                }else{
+                    options = "<option value=''>Select Supplier</option>";
+                }
+
+                $(`#quote_${quoteKey}_supplier_id`).html(options);
 
 
                 if (response.category_details != '' && response.category_details != 'undefined') {
