@@ -558,7 +558,11 @@
                               <label>Supplier Country <span style="color:red">*</span></label>
                               <select name="quote[0][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_0_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                 @foreach ($supplier_countries as $country)
-                                  <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
+                                  <option value="{{ $country->id }}" 
+                                    @if(!empty(Auth::user()->brand_id) && count(Auth::user()->getBrand->getSupplierCountries) > 0)
+                                    {{ (in_array($country->id, Auth::user()->getBrand->getSupplierCountries()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}
+                                    @endif
+                                  >{{ $country->name }} - {{ $country->code}}</option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>

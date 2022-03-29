@@ -924,10 +924,12 @@ $(document).ready(function() {
             data: { 'brand_id': brand_id },
             success: function(response) {
                 options += '<option value="">Select Type Of Holiday</option>';
-                $.each(response, function(key, value) {
+                $.each(response.holiday_types, function(key, value) {
                     options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
                 });
                 $('.appendHolidayType').html(options);
+
+                $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
             }
         });
 
