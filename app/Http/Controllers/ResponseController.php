@@ -210,19 +210,26 @@ class ResponseController extends Controller
     {
         $category_details = '';
         $category         = '';
+        $supplier         = '';
         $model_name       = 'App\\'.$request->model_name;
  
         // $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
         //     $query->where('id', $request->category_id);
         // })->get();
 
-        $supplier = Supplier::whereHas('getCountries', function($query) use ($request) {
-            $query->whereIn('id', $request->supplier_country_ids);
-        })
-        ->whereHas('getCategories', function($query) use ($request) {
-            $query->where('id', $request->category_id);
-        })
-        ->get();
+
+        // dd($request->supplier_country_ids);
+
+        if(!is_null($request->supplier_country_ids) && !is_null($request->supplier_country_ids)){
+
+            $supplier = Supplier::whereHas('getCountries', function($query) use ($request) {
+                $query->whereIn('id', $request->supplier_country_ids);
+            })
+            ->whereHas('getCategories', function($query) use ($request) {
+                $query->where('id', $request->category_id);
+            })
+            ->get();
+        }
 
         $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
         $category       = Category::where('id', $request->category_id)->first();
