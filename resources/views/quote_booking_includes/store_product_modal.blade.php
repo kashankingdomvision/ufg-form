@@ -32,18 +32,6 @@
                             <span class="text-danger" role="alert"></span>
                         </div>
 
-                        <div class="form-group">
-                            <label>Inclusions</label>
-                            <textarea name="inclusions" id="inclusions" class="form-control summernote"></textarea>
-                            <span class="text-danger" role="alert"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Packing List</label>
-                            <textarea name="packing_list" id="packing_list" class="form-control summernote"></textarea>
-                            <span class="text-danger" role="alert"></span>
-                        </div>
-
                     </div>
                 </div>
 
@@ -58,3 +46,16 @@
         </div>
     </div>
 </div>
+
+
+{{-- <div class="form-group">
+    <label>Inclusions</label>
+    <textarea name="inclusions" id="inclusions" class="form-control summernote"></textarea>
+    <span class="text-danger" role="alert"></span>
+</div>
+
+<div class="form-group">
+    <label>Packing List</label>
+    <textarea name="packing_list" id="packing_list" class="form-control summernote"></textarea>
+    <span class="text-danger" role="alert"></span>
+</div> --}}
