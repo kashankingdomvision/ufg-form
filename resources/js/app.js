@@ -217,6 +217,7 @@ $(document).ready(function($) {
             }, 2500);
         }
     }
+    
 
     window.printListingSuccessMessage = function(response) {
 

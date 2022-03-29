@@ -9,6 +9,7 @@
         <link rel="icon" href="{{ asset('images/logos/fav-icon.png') }}"  sizes="32x32">
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet"/>
         <style>
             .iti__flag {background-image: url("{{ asset('images/intl-tel-input/flags.png')}}") ;}
             @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
@@ -31,7 +32,10 @@
                 @yield('content')
             </div>
         @endauth
-    
+        
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script> --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <script src="{{ asset('js/app.js') }}" ></script>
         @stack('js')
     </body>

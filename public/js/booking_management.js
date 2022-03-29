@@ -2458,6 +2458,10 @@ $(document).ready(function () {
     quote.find('.badge-date-of-service').html($(this).val());
     quote.find('.badge-date-of-service').removeClass('d-none');
 
+    if (convertDate(DateOFService) != null) {
+      $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setStartDate", DateOFService);
+    }
+
     if (convertDate(DateOFService) < convertDate(nowDate)) {
       Toast.fire({
         icon: 'warning',

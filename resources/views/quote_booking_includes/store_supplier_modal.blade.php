@@ -23,7 +23,8 @@
 
                         <div class="form-group">
                             <label for="inputEmail3" class="">Email <span style="color:red">*</span></label>
-                            <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+                            <span class="text-danger" role="alert"></span>
                         </div>
 
                         <div class="form-group">

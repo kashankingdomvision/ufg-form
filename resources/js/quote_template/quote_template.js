@@ -197,8 +197,19 @@ $(document).ready(function() {
 
                 /* Set last End Date of Service */
                 var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
-                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+                var currentDate = convertDate(endDateOfService);
+                // console.log("New Date "+currentDate);
 
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+                $(`#quote_${quoteKey}_date_of_service`).datepicker({
+                    format: 'dd-mm-yyyy',
+                    autoclose: true,
+                })
+                $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+                
+                var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+                // console.log(currentDate);
+                
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
 
@@ -208,9 +219,6 @@ $(document).ready(function() {
 
 
     });
-
-
-
 
     $(document).on('click', '.quotes-service-category-btn', function(e) {
 
@@ -317,8 +325,14 @@ $(document).ready(function() {
                 reinitializedMultipleSelect2();
 
                 /* Set last End Date of Service */
-                let endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
+                var endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+
+                var stringDate = convertDate(endDateOfService);
+                // console.log("Add More "+stringDate);
+                // quote_8_end_date_of_service
+                var stringDate = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+                // console.log(stringDate);
 
                 $('html, body').animate({ scrollTop: $('.quote:last').offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
