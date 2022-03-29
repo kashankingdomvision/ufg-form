@@ -21,5 +21,9 @@ class Brand extends Model
     {
         return url(Storage::url($this->logo));
     }
-    
+
+    public function getSupplierCountries()
+    {
+        return $this->belongsToMany(Country::class, 'brand_supplier_countries', 'brand_id', 'country_id');
+    }
 }

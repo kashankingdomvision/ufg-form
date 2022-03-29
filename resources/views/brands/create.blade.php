@@ -52,6 +52,16 @@
                 </div>
 
                 <div class="form-group">
+                  <label>Supplier Country </label>
+                  <select name="supplier_country_ids[]" id="supplier_country_ids" class="form-control select2-multiple supplier-country-ids" data-placeholder="Select Country Destination" multiple>
+                    @foreach ($countries as $country)
+                      <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
+                    @endforeach
+                  </select>
+                  <span class="text-danger" role="alert"></span>
+                </div>
+
+                <div class="form-group">
                   <label>Contact Number <span style="color:red">*</span></label>
                   <input type="tel" name="phone" id="phone" class="form-control phone phone0">
                   <span class="text-danger error_msg0" role="alert"></span>
