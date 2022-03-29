@@ -53,7 +53,7 @@
 
                 <div class="form-group">
                   <label>Supplier Country </label>
-                  <select name="supplier_country_ids[]" id="supplier_country_ids" class="form-control select2-multiple supplier-country-ids" data-placeholder="Select Country Destination" multiple>
+                  <select name="supplier_country_ids[]" id="supplier_country_ids" class="form-control select2-multiple" data-placeholder="Select Supplier Country" multiple>
                     @foreach ($countries as $country)
                       <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
                     @endforeach
