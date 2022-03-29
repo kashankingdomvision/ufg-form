@@ -351,6 +351,15 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Brands
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-box"></i>
                                 {{-- <i class="fa-solid fa-cabinet-filing"></i> --}}
@@ -360,24 +369,8 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('stations.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['stations.index', 'stations.create', 'stations.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-train"></i>
-                                <p>
-                                    Stations
-                                </p>
-                            </a>
-                        </li>
 
-                        
-                        <li class="nav-item">
-                            <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Brands
-                                </p>
-                            </a>
-                        </li>
+
 
                         <li class="nav-item">
                             <a href="{{ route('countries.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['countries.index', 'countries.create', 'countries.edit']) ? 'active' : '' }}">
