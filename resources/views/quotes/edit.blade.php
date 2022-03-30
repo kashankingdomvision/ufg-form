@@ -792,7 +792,7 @@
                               </div>
                             </div>
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 d-none">
                               <div class="form-group">
                                 <label>Product Details</label>
                                 <input type="text" name="quote[{{ $key }}][product_details]" value="{{ $q_detail->product_details }}" id="quote_{{ $key }}_product_details" class="form-control product-details">
