@@ -869,7 +869,10 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
+
+        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
+        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);
@@ -998,7 +1001,10 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
+
+        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
+        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
