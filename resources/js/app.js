@@ -375,7 +375,6 @@ $(document).ready(function($) {
     }
 
     window.convertDate = function(date) {
-
         var dateParts = date.split("/");
         return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     }
@@ -499,6 +498,7 @@ $(document).ready(function($) {
         var iti = intlTelInput(input, {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
             separateDialCode: true,
+            preferredCountries:["gb","us","au","ca","nz"],
             formatOnDisplay: true,
             initialCountry: "US",
             nationalMode: true,

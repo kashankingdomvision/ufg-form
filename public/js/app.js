@@ -67544,6 +67544,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
       separateDialCode: true,
+      preferredCountries: ["gb", "us", "au", "ca", "nz"],
       formatOnDisplay: true,
       initialCountry: "US",
       nationalMode: true,

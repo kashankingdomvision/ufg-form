@@ -2880,6 +2880,21 @@ $(document).ready(function () {
     $(this).closest('.modal-body').children('.input-group').find('input').val("");
     $(this).parent().html("<img src=\"\" class=\"img-fluid\">"); // console.log($(this).closest('.modal-body').find('.image').html());
   });
+  $(document).on('change', '#lead_passenger_dbo', function () {
+    var dob = $('#lead_passenger_dbo').val();
+    var today = new Date();
+    var birthDate = convertDate(dob);
+    var dayDiff = Math.ceil(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365);
+    var age = parseInt(dayDiff);
+
+    if (age != null && age <= 18) {
+      $(this).parent().children('.text-danger').html("Your age is less than 18 years old");
+    }
+
+    if (age != null && age > 18) {
+      $(this).parent().children('.text-danger').empty($(this).text());
+    }
+  });
 });
 
 /***/ }),
