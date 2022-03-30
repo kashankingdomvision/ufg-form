@@ -6,7 +6,7 @@ $(document).ready(function () {
     |--------------------------------------------------------------------------------
     */
 
-    function createElm(quote, selector, type, obj) {
+    function createElm(quote, selector, type, obj, key) {
 
         let inputTypes = ['text', 'textarea', 'number', 'select', 'autocomplete'];
         var appendHTML = '';
@@ -160,22 +160,26 @@ $(document).ready(function () {
                 }
             }
 
-            appendHTML = createParentDivOfElm(elm, type, obj);
+            appendHTML = createParentDivOfElm(elm, type, obj, key);
         }
 
-        quote.find(selector).append(appendHTML);
+        // quote.find('.supplier-id-feild').insertAfter(appendHTML);
+        $(appendHTML).insertBefore(quote.find(selector));
 
         reinitializedSingleSelect2();
         // insElment.appendChild(div);
-        // $(div).insertAfter(quote.find('.product-id-col'));
+        // $(appendHTML).insertAfter(quote.find('.supplier-id-feild'));
     }
 
-    function createParentDivOfElm(elem, type, obj) {
+    function createParentDivOfElm(elem, type, obj, key) {
 
         var div = document.createElement('div');
 
         if (type == 'category_details')
             div.setAttribute('class', 'col-md-3 cat-feild-col');
+
+        if (['category_details', 'product_details'].includes(type))
+            div.setAttribute('data-key', key);
 
         if (type == 'product_details')
             div.setAttribute('class', 'col-md-3 prod-feild-col');
@@ -228,9 +232,10 @@ $(document).ready(function () {
 
     function createAllElm(location, selector, type, obj) {
 
-        obj.forEach(function (item) {
-            createElm(location, selector, type, item);
+        obj.forEach(function (item, index) {
+            createElm(location, selector, type, item, index);
         });
+        
     }
 
 
@@ -243,11 +248,11 @@ $(document).ready(function () {
         var productFormData = $(`#quote_${quoteKey}_product_details`).val();
 
         if (categoryFormData != '' && typeof categoryFormData != 'undefined') {
-            createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(categoryFormData));
+            createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(categoryFormData));
         }
 
         if (productFormData != '' && typeof productFormData != 'undefined') {
-            createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
+            createAllElm(quote, '.payment-type-feild', 'product_details', JSON.parse(productFormData));
         }
 
     });
@@ -400,7 +405,7 @@ $(document).ready(function () {
         var quote = $(this).closest('.quote');
         var quoteKey = quote.data('key');
         var formData = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
-        var feildIndex = $(this).parents('.cat-feild-col').index();
+        var feildIndex = $(this).parents('.cat-feild-col').data('key');
 
         formData[feildIndex].userData = [$(this).val()];
         formData[feildIndex].value = $(this).val();
@@ -415,19 +420,32 @@ $(document).ready(function () {
         var quote = $(this).closest('.quote');
         var quoteKey = quote.data('key');
         var formData = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
-        var feildIndex = $(this).parents('.cat-feild-col').index();
+        var feildIndex = $(this).parents('.cat-feild-col').data('key');
         var optionIndex = $(this).find(":selected").index();
         // formData[feildIndex].values[optionIndex].selected = true;
 
-        var formData = formData.map(function (obj) {
-            if (obj.type == 'select' || obj.type == 'autocomplete') {
+        let obj = formData[feildIndex];
+
+        // var formData = formData[feildIndex].map(function (obj) {
+
+            // if (obj.type == 'select' || obj.type == 'autocomplete') {
+
+            //     obj.values.map(function (obj) {
+            //         obj.selected = false;
+            //         return obj;
+            //     });
+            // }
+            // return obj;
+        // });
+
+            if (['select', 'autocomplete'].includes(obj.type)) {
+
                 obj.values.map(function (obj) {
                     obj.selected = false;
                     return obj;
                 });
             }
-            return obj;
-        });
+
 
         formData[feildIndex].values[optionIndex].selected = true;
 
@@ -506,7 +524,8 @@ $(document).ready(function () {
             // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
             
             quote.find('.show-tf').addClass('d-none');
-
+            quote.find('.group-owner-feild').addClass('d-none');
+            
             return;
         } else {
 
@@ -523,6 +542,13 @@ $(document).ready(function () {
             $(`#quote_${quoteKey}_booking_type_id`).val(refundable).trigger('change');
         } else {
             $(`#quote_${quoteKey}_booking_type_id`).val('').change();
+        }
+
+        if (category_slug == 'cruise') {
+            quote.find('.group-owner-feild').removeClass('d-none');
+        } else {
+            
+            quote.find('.group-owner-feild').addClass('d-none');
         }
 
         $.ajax({
@@ -560,7 +586,7 @@ $(document).ready(function () {
 
                     // console.log(JSON.parse(response.category_details));
 
-                    createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
+                    createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
                 }
 
                 // Hide & Show Category details btn according to status
@@ -757,7 +783,7 @@ $(document).ready(function () {
     
                         /* set product dropdown*/
                         $.each(response.supplier_products, function(key, value) {
-                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+                            options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
                         });
     
                         $(`#quote_${quoteKey}_product_id`).html(options);
@@ -1152,7 +1178,7 @@ $(document).ready(function () {
                 if (response.product_details != '' && response.product_details != 'undefined') {
 
                     $(`#quote_${quoteKey}_product_details`).val(response.product_details);
-                    createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(response.product_details));
+                    createAllElm(quote, '.payment-type-feild', 'product_details', JSON.parse(response.product_details));
                 }
 
             }
@@ -1164,17 +1190,16 @@ $(document).ready(function () {
 
     $(document).on('keyup', '.prod-details-feild', function (e) {
 
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
-        var formData = JSON.parse($(`#quote_${quoteKey}_product_details`).val());
-        var feildIndex = $(this).parents('.prod-feild-col').index();
+        var quote      = $(this).closest('.quote');
+        var quoteKey   = quote.data('key');
+        var formData   = JSON.parse($(`#quote_${quoteKey}_product_details`).val());
+        var feildIndex = $(this).parents('.prod-feild-col').data('key');
 
         formData[feildIndex].userData = [$(this).val()];
-        formData[feildIndex].value = $(this).val();
+        formData[feildIndex].value    = $(this).val();
 
         quote.find(`#quote_${quoteKey}_product_details`).val(JSON.stringify(formData));
 
-        console.log(JSON.stringify(formData));
     });
 
     $(document).on('change', '.prod-details-select', function (e) {

@@ -14,6 +14,7 @@ class BookingDetail extends Model
         'category_id',
         'supplier_country_ids',
         // 'supplier_location_id',
+        'group_owner_id',
         'supplier_id',
         'product_location_id',
         'product_id',

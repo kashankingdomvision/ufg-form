@@ -49,6 +49,8 @@ use App\Supplier;
 use App\StoreText;
 use App\Template;
 use App\User;
+use App\Harbour;
+use App\GroupOwner;
 
 class QuoteController extends Controller
 {
@@ -260,6 +262,7 @@ class QuoteController extends Controller
             
             'category_id'                       => $quoteD['category_id'],
             'supplier_id'                       => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
+            'group_owner_id'                    => isset($quoteD['group_owner_id']) ? $quoteD['group_owner_id'] : NULL,
             'product_id'                        => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
             'date_of_service'                   => $quoteD['date_of_service'],
             'end_date_of_service'               => $quoteD['end_date_of_service'],
@@ -480,10 +483,12 @@ class QuoteController extends Controller
         $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('created_at','DESC')->get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
 
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
+        $data['harbours']          = Harbour::get();
 
         return view('quotes.create', $data);
     }
@@ -493,7 +498,7 @@ class QuoteController extends Controller
     public function store(QuoteRequest $request)
     {
 
-        // dd($request->all());
+        
 
         $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
         $quote->getCountryDestinations()->sync($request->country_destination_ids);
@@ -583,7 +588,8 @@ class QuoteController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
-        
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+
         return view('quotes.edit',$data);
     }
 
@@ -702,6 +708,7 @@ class QuoteController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
 
         if($type != NULL){
             $data['type'] = $type;
@@ -734,6 +741,7 @@ class QuoteController extends Controller
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('id','ASC')->get();
         $data['locations']        = Location::get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
 
         return view('quotes.show',$data);
     }

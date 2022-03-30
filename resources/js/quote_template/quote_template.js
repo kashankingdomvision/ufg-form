@@ -161,7 +161,8 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
-           
+                quote.find('.prod-feild-col').remove();
+
                 // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                 $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
                 $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');
@@ -295,7 +296,8 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
-           
+                quote.find('.prod-feild-col').remove();
+
                 // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                 $(`#quote_${quoteKey}_estimated_cost, #quote_${quoteKey}_markup_amount`).val('0.00');
                 $(`#quote_${quoteKey}_markup_percentage, #quote_${quoteKey}_selling_price`).val('0.00');

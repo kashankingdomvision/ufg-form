@@ -904,6 +904,7 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
+                quote.find('.prod-feild-col').remove();
 
                 $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                 $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
@@ -1062,6 +1063,7 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
+                quote.find('.prod-feild-col').remove();
 
                 $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                 $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");

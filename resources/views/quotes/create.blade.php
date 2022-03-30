@@ -481,7 +481,7 @@
                             </div>
                           </div>
 
-                          <div class="col">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Date of Service <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -492,9 +492,8 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-
                     
-                          <div class="col">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>End Date of Service <span style="color:red">*</span></label>
                               <div class="input-group">
@@ -506,7 +505,7 @@
                             </div>
                           </div>
 
-                          <div class="col">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Number of Nights</label>
                               <input type="text" name="quote[0][number_of_nights]" id="quote_0_number_of_nights" class="form-control number-of-nights" readonly>
@@ -514,21 +513,21 @@
                             </div>
                           </div>
 
-                          <div class="col d-none show-tf">
+                          <div class="col-md-3 d-none show-tf">
                             <div class="form-group">
                               <label class="label-of-time-label"></label>
                               <input type="time" name="quote[0][time_of_service]" data-name="time_of_service" id="quote_0_time_of_service" class="form-control time-of-service"  autocomplete="off">
                             </div>
                           </div>
 
-                          <div class="col d-none second-tf">
+                          <div class="col-md-3 d-none second-tf">
                             <div class="form-group">
                               <label class="second-label-of-time"></label>
                               <input type="time" name="quote[0][second_time_of_service]" data-name="second_time_of_service" id="quote_0_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
                             </div>
                           </div>
 
-                          <div class="col">
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Category <span style="color:red">*</span></label>
                               <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
@@ -541,19 +540,17 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2 d-none">
+                          <div class="col-md-3 d-none">
                             <div class="form-group">
                               <label>Category Details</label>
                               <input type="text" name="quote[0][category_details]" value="" id="quote_0_category_details" class="form-control category-details">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="category-details-render col-12 row"></div>
-
-                        <div class="row">
-                          <div class="col">
+                          {{-- <div class="category-details-render col-12 row"></div> --}}
+                        
+                          <div class="col-md-4">
                             <div class="form-group">
                               <label>Supplier Country <span style="color:red">*</span></label>
                               <select name="quote[0][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_0_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
@@ -569,7 +566,20 @@
                             </div>
                           </div>
 
-                          <div class="col">
+                          <div class="col-md-3 group-owner-feild d-none">
+                            <div class="form-group">
+                              <label>Group Owner <span style="color:red">*</span></label>
+                              <select name="quote[0][group_owner_id]" data-name="group_owner_id" id="quote_0_group_owner_id" class="form-control group-owner-id select2single">
+                                <option value="">Select Group Owner</option>
+                                @foreach ($group_owners as $group_owner)
+                                  <option value="{{ $group_owner->id }}" >{{ $group_owner->name }}</option>
+                                @endforeach
+                              </select>
+                              <span class="text-danger" role="alert"></span>
+                            </div>
+                          </div>
+
+                          <div class="col-md-3">
                             <div class="form-group">
                               <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
                               </label>
@@ -581,7 +591,7 @@
                             </div>
                           </div>
 
-                          <div class="col">
+                          <div class="col-md-3 product-id-feild">
                             <div class="form-group">
                               <label>Product </label>
                               <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
@@ -592,19 +602,17 @@
                             </div>
                           </div>
 
-                          <div class="col-sm-2 d-none">
+                          <div class="col-md-3 d-none">
                             <div class="form-group">
                               <label>Product Details</label>
                               <input type="text" name="quote[0][product_details]" value="" id="quote_0_product_details" class="form-control product-details">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="product-details-render col-12 row"></div>
+                          {{-- <div class="product-details-render col-12 row"></div> --}}
 
-                        <div class="row">
-                          <div class="col-md-3">
+                          <div class="col-md-3 payment-type-feild">
                             <div class="form-group">
                               <label>Payment Type </label>
                               <select name="quote[0][booking_type_id]" data-name="booking_type_id" id="quote_0_booking_type_id" class="form-control select2single booking-type-id">
@@ -751,16 +759,16 @@
                           </div>
 
                         </div>
+
                       </div>
-
                     </div>
-                  </div>
-                  <div class="parent-spinner text-gray spinner-border-sm "></div>
-                </div><!-- End parent -->
+                    <div class="parent-spinner text-gray spinner-border-sm "></div>
+                  </div><!-- End parent -->
 
-                <div class="row d-flex justify-content-end">
-                  <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half"><i class="fa fa-plus" aria-hidden="true"></i> Add more </button>
-                  <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
+                  <div class="row d-flex justify-content-end">
+                    <button type="button" id="add_more" class="btn btn-outline-dark btn-sm pull-right mr-half"><i class="fa fa-plus" aria-hidden="true"></i> Add more </button>
+                    <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
+                  </div>
                 </div>
 
                 <div class="row">

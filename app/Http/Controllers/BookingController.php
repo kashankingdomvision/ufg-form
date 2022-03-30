@@ -215,6 +215,7 @@ class BookingController extends Controller
 
             'category_id'                       => $quoteD['category_id'],
             'supplier_country_ids'              => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
+            'group_owner_id'                    => isset($quoteD['group_owner_id']) ? $quoteD['group_owner_id'] : NULL,
             'supplier_id'                       => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'                        => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
             'booking_detail_unique_ref_id'      => isset($quoteD['booking_detail_unique_ref_id']) && !empty($quoteD['booking_detail_unique_ref_id']) ? $quoteD['booking_detail_unique_ref_id'] : Helper::getBDUniqueRefID(), 

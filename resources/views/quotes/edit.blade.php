@@ -648,7 +648,7 @@
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Date of Service <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -662,7 +662,7 @@
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>End Date of Service <span style="color:red">*</span></label>
                                 <div class="input-group">
@@ -676,7 +676,7 @@
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Number of Nights</label>
                                 <input type="text" name="quote[{{ $key }}][number_of_nights]" value="{{ $q_detail->number_of_nights }}" id="quote_{{ $key }}_number_of_nights" class="form-control number-of-nights" readonly>
@@ -684,21 +684,21 @@
                               </div>
                             </div>
 
-                            <div class="col show-tf {{ isset($q_detail->getCategory->show_tf) && ($q_detail->getCategory->show_tf == 0) ? 'd-none' : '' }}">
+                            <div class="col-md-3 show-tf {{ isset($q_detail->getCategory->show_tf) && ($q_detail->getCategory->show_tf == 0) ? 'd-none' : '' }}">
                               <div class="form-group">
                                 <label class="label-of-time-label">{{ isset($q_detail->getCategory->label_of_time) && !empty($q_detail->getCategory->label_of_time) ? $q_detail->getCategory->label_of_time : '' }}</label>
                                 <input type="time" value="{{ $q_detail->time_of_service }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
                               </div>
                             </div>
 
-                            <div class="col {{ isset($q_detail->getCategory->second_tf) && ($q_detail->getCategory->second_tf == 0) ? 'd-none' : '' }} second-tf">
+                            <div class="col-md-3 {{ isset($q_detail->getCategory->second_tf) && ($q_detail->getCategory->second_tf == 0) ? 'd-none' : '' }} second-tf">
                               <div class="form-group">
                                 <label class="second-label-of-time">{{ isset($q_detail->getCategory->second_label_of_time) && !empty($q_detail->getCategory->second_label_of_time) ? $q_detail->getCategory->second_label_of_time : '' }}</label>
                                 <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $q_detail->second_time_of_service }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Category <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-select2 category-id @error('category_id') is-invalid @enderror">
@@ -711,25 +711,35 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-none">
+                            <div class="col-md-3 d-none">
                               <div class="form-group">
                                 <label>Category Details</label>
-                                
                                 <input type="text" name="quote[{{ $key }}][category_details]" value="{{ $q_detail->category_details }}" id="quote_{{ $key }}_category_details" class="form-control category-details">
                                 <span class="text-danger" role="alert"></span>
                               </div>
                             </div>
 
-                            <div class="category-details-render col-12 row"></div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col">
+                            {{-- <div class="category-details-render col-12 row"></div> --}}
+ 
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                   @foreach ($supplier_countries as $country)
-                                    <option value="{{ $country->id }}" {{ (in_array($country->id, $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray()) )? 'selected' : NULL}}>{{ $country->name }} - {{ $country->code}}</option>
+                                    <option value="{{ $country->id }}" {{ (in_array($country->id, $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray()) ) ? 'selected' : NULL}}>{{ $country->name }} - {{ $country->code}}</option>
+                                  @endforeach
+                                </select>
+                                <span class="text-danger" role="alert"></span>
+                              </div>
+                            </div>
+
+                            <div class="col-md-3 group-owner-feild {{ !isset($q_detail->group_owner_id) && empty($q_detail->group_owner_id) ? 'd-none' : '' }} ">
+                              <div class="form-group">
+                                <label>Group Owner <span style="color:red">*</span></label>
+                                <select name="quote[{{ $key }}][group_owner_id]" data-name="group_owner_id" id="quote_{{ $key }}_group_owner_id" class="form-control group-owner-id select2single">
+                                  <option value="">Select Group Owner</option>
+                                  @foreach ($group_owners as $group_owner)
+                                    <option value="{{ $group_owner->id }}" {{ $q_detail->group_owner_id == $group_owner->id ? 'selected' : '' }}>{{ $group_owner->name }}</option>
                                   @endforeach
                                 </select>
                                 <span class="text-danger" role="alert"></span>
@@ -750,7 +760,7 @@
                               ->get();
                             @endphp
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Supplier <span style="color:red">*</span><a href="{{ $url }}" target="_blank" class="ml-1 view-supplier-rate">{{ $text }}</a>
                                 </label>
@@ -767,14 +777,14 @@
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3 product-id-feild">
                               <div class="form-group">
                                 <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
                                 <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                   <option value="">Select Product</option>
                                   @if(isset($q_detail->getSupplier) && !empty($q_detail->getSupplier))
                                     @foreach ($q_detail->getSupplier->getProducts as $product)
-                                      <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id)? 'selected' : NULL}}  >{{ $product->name }} - {{ $product->code }}</option>
+                                      <option value="{{ $product->id }}" data-name="{{ $product->name }}" {{ ($q_detail->product_id == $product->id) ? 'selected' : NULL}}  >{{ $product->name }} - {{ $product->code }}</option>
                                     @endforeach
                                   @endif
                                 </select>
@@ -782,7 +792,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-2 d-none">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Product Details</label>
                                 <input type="text" name="quote[{{ $key }}][product_details]" value="{{ $q_detail->product_details }}" id="quote_{{ $key }}_product_details" class="form-control product-details">
@@ -790,11 +800,9 @@
                               </div>
                             </div>
 
-                            <div class="product-details-render col-12 row"></div>
-                          </div>
-
-                          <div class="row">
-                            <div class="col-md-3">
+                            {{-- <div class="product-details-render col-12 row"></div> --}}
+          
+                            <div class="col-md-3 payment-type-feild">
                               <div class="form-group">
                                 <label>Payment Type</label>
                                 <select name="quote[{{ $key }}][booking_type_id]" data-name="booking_type_id" id="quote_{{ $key }}_booking_type_id" class="form-control select2single   booking-type-id @error('booking_type_id') is-invalid @enderror">

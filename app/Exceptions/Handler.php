@@ -38,12 +38,12 @@ class Handler extends ExceptionHandler
     {
         parent::report($Throwable);
 
-        ErrorLog::create([
-            'file'    => $Throwable->getFile(),
-            'line'    => $Throwable->getLine(),
-            'url'     => url()->current(),
-            'message' => $Throwable->getMessage(),
-        ]);
+        // ErrorLog::create([
+        //     'file'    => $Throwable->getFile(),
+        //     'line'    => $Throwable->getLine(),
+        //     'url'     => url()->current(),
+        //     'message' => $Throwable->getMessage(),
+        // ]);
     }
 
     /**

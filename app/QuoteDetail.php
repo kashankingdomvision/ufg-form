@@ -13,6 +13,7 @@ class QuoteDetail extends Model
         // 'supplier_location_id',
         'supplier_country_ids',
         'supplier_id',
+        'group_owner_id',
         // 'product_location_id',
         'product_id',
         'booking_method_id',
