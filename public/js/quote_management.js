@@ -2888,11 +2888,11 @@ $(document).ready(function () {
     var age = parseInt(dayDiff);
 
     if (age != null && age <= 18) {
-      $(this).parent().children('.text-danger').html("Your age is less than 18 years old");
+      $(this).parent('.form-group').find('.text-danger').html("Your age is less than 18 years old");
     }
 
     if (age != null && age > 18) {
-      $(this).parent().children('.text-danger').empty($(this).text());
+      $(this).parent('.form-group').find('.text-danger').html('');
     }
   });
 });
