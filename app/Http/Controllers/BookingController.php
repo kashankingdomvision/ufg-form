@@ -55,6 +55,7 @@ use App\Wallet;
 use App\TotalWallet;
 use App\PresetComment; 
 use App\ReferenceCredential;
+use App\GroupOwner;
 
 class BookingController extends Controller
 {
@@ -337,6 +338,7 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -641,6 +643,7 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -698,7 +701,8 @@ class BookingController extends Controller
         $data['banks']              = Bank::all();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
-
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        
         return view('bookings.version', $data);
     }
 
