@@ -623,11 +623,24 @@
                               </div>
                                 
                               <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
+                              <span class="badge badge-info badge-end-date-of-service">{{ isset($booking_detail->end_date_of_service) && !empty($booking_detail->end_date_of_service) ? $booking_detail->end_date_of_service : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : ''}}</span>
                               <span class="badge badge-info badge-product-id">{{ isset($booking_detail->getProduct->name) && !empty($booking_detail->getProduct->name) ? $booking_detail->getProduct->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span>
+                              <span class="badge badge-info badge-pick-up-location"></span>
+                              <span class="badge badge-info badge-drop-off-location"></span>
+                              <span class="badge badge-info badge-room-type"></span>
+                              <span class="badge badge-info badge-group-owner-id"></span>
+                              <span class="badge badge-info badge-departure-harbour"></span>
+                              <span class="badge badge-info badge-arrival-harbour"></span>
+                              <span class="badge badge-info badge-departure-airport"></span>
+                              <span class="badge badge-info badge-arrival-airport"></span>
+                              <span class="badge badge-info badge-misc-details"></span>
+                              <span class="badge badge-info badge-departure-station"></span>
+                              <span class="badge badge-info badge-arrival-station"></span>
+                            
                             </h3>
 
                             <div class="card-tools">

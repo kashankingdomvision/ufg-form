@@ -450,13 +450,23 @@
                       <div class="card-header">
                         <h3 class="card-title card-title-style quote-title">
                           <span class="badge badge-info badge-date-of-service"></span>
+                          <span class="badge badge-info badge-end-date-of-service"></span>
                           <span class="badge badge-info badge-time-of-service"></span>
                           <span class="badge badge-info badge-category-id"></span>
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
                           <span class="badge badge-info badge-supplier-currency-id"></span>
-
-                          <span class="badge badge-info badge-pickup-location"></span>
+                          <span class="badge badge-info badge-pick-up-location"></span>
+                          <span class="badge badge-info badge-drop-off-location"></span>
+                          <span class="badge badge-info badge-room-type"></span>
+                          <span class="badge badge-info badge-group-owner-id"></span>
+                          <span class="badge badge-info badge-departure-harbour"></span>
+                          <span class="badge badge-info badge-arrival-harbour"></span>
+                          <span class="badge badge-info badge-departure-airport"></span>
+                          <span class="badge badge-info badge-arrival-airport"></span>
+                          <span class="badge badge-info badge-misc-details"></span>
+                          <span class="badge badge-info badge-departure-station"></span>
+                          <span class="badge badge-info badge-arrival-station"></span>
                         </h3>
 
                         <div class="card-tools">

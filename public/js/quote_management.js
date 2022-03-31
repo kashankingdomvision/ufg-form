@@ -827,11 +827,13 @@ $(document).ready(function () {
 $(document).ready(function () {
   /*
   |--------------------------------------------------------------------------------
-  | Functions
+  | 
   |--------------------------------------------------------------------------------
   */
   function createElm(quote, selector, type, obj, key) {
     var inputTypes = ['text', 'textarea', 'number', 'select', 'autocomplete'];
+    console.log(obj.label);
+    console.log(obj.label.trim().toLowerCase().replace(/ /g, "-"));
     var appendHTML = '';
 
     if (obj.type == 'radio-group') {
@@ -908,10 +910,15 @@ $(document).ready(function () {
       if (['text', 'number'].includes(obj.type)) element = 'input';else if (['autocomplete', 'select'].includes(obj.type)) element = 'select';else element = obj.type;
       var elm = document.createElement(element); // Set attributes
 
-      if (obj.type == 'text') elm.setAttribute('type', 'text');
+      if (obj.type == 'text') {
+        elm.setAttribute('type', 'text');
+        var selectedValue = obj.value;
+      }
+
       if (obj.type == 'number') elm.setAttribute('type', 'number');
       if (obj.type == 'textarea') elm.setAttribute('rows', '1');
       elm.setAttribute('name', obj.name);
+      elm.setAttribute('data-title_name', "badge-".concat(obj.label.trim().toLowerCase().replace(/ /g, "-")));
 
       if (obj.placeholder != undefined) {
         elm.setAttribute('placeholder', obj.placeholder);
@@ -954,6 +961,7 @@ $(document).ready(function () {
           option.text = obj.values[_i2].value;
 
           if (obj.values[_i2].selected) {
+            var selectedValue = obj.values[_i2].label;
             option.setAttribute('selected', 'selected');
           }
 
@@ -962,8 +970,9 @@ $(document).ready(function () {
       }
 
       appendHTML = createParentDivOfElm(elm, type, obj, key);
-    } // quote.find('.supplier-id-feild').insertAfter(appendHTML);
+    }
 
+    quote.find(".badge-".concat(obj.label.trim().toLowerCase().replace(/ /g, "-"))).html(selectedValue); // quote.find('.supplier-id-feild').insertAfter(appendHTML);
 
     $(appendHTML).insertBefore(quote.find(selector));
     reinitializedSingleSelect2(); // insElment.appendChild(div);
@@ -1013,9 +1022,9 @@ $(document).ready(function () {
     return div;
   }
 
-  function createAllElm(location, selector, type, obj) {
+  function createAllElm(quote, selector, type, obj) {
     obj.forEach(function (item, index) {
-      createElm(location, selector, type, item, index);
+      createElm(quote, selector, type, item, index);
     });
   }
 
@@ -1123,6 +1132,7 @@ $(document).ready(function () {
     var EndDateOFService = $("#quote_".concat(quoteKey, "_end_date_of_service")).val();
     var nowDate = todayDate();
     var category_enddateofservice = $("#quote_".concat(quoteKey, "_category_id")).find(':selected').attr('data-enddateofservice');
+    quote.find('.badge-end-date-of-service').html($(this).val());
 
     if (convertDate(EndDateOFService) < convertDate(nowDate)) {
       Toast.fire({
@@ -1151,10 +1161,12 @@ $(document).ready(function () {
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
     var feildIndex = $(this).parents('.cat-feild-col').data('key');
+    var labelName = $(this).data('title_name');
+    var selectedValue = $(this).val();
     formData[feildIndex].userData = [$(this).val()];
     formData[feildIndex].value = $(this).val();
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
-    console.log(JSON.stringify(formData));
+    quote.find(".".concat(labelName)).html(selectedValue);
   }); // formData[feildIndex].values[optionIndex].selected = true;
   // var formData = formData[feildIndex].map(function (obj) {
   // if (obj.type == 'select' || obj.type == 'autocomplete') {
@@ -1172,9 +1184,9 @@ $(document).ready(function () {
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
     var feildIndex = $(this).parents('.cat-feild-col').data('key');
     var optionIndex = $(this).find(":selected").index();
+    var labelName = $(this).data('title_name');
     var obj = formData[feildIndex];
-    var currentValue = $(this).find(":selected").val();
-    console.log(currentValue);
+    var selectedValue = $(this).find(":selected").val();
 
     if (['select', 'autocomplete'].includes(obj.type)) {
       obj.values.map(function (obj) {
@@ -1185,7 +1197,7 @@ $(document).ready(function () {
 
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
-    quote.find('.badge-pickup-location').html("");
+    quote.find(".".concat(labelName)).html(selectedValue);
   });
   $(document).on('change', '.cat-details-checkbox', function (e) {
     var quote = $(this).closest('.quote');
@@ -1245,7 +1257,7 @@ $(document).ready(function () {
       // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
       // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
-      quote.find('.badge-category-id').html(category_name);
+      quote.find('.badge-category-id').html(category_name); // getCatSetLabel(quote, category_slug);
     } // set Payment type (Booking Type) refundable when category is fligt
 
 
@@ -1338,6 +1350,47 @@ $(document).ready(function () {
         }
       }
     });
+  });
+
+  function getCatSetLabel(quote, category_slug) {
+    if (category_slug != 'transfer') {
+      quote.find('.badge-pick-up-location').html('');
+      quote.find('.badge-drop-off-location').html('');
+    }
+
+    if (category_slug != 'accommodation') {
+      quote.find('.badge-room-type').html('');
+    }
+
+    if (category_slug != 'cruise') {
+      quote.find('.badge-group-owner-id').html('');
+    }
+
+    if (category_slug != 'flights') {
+      quote.find('.badge-departure-airport').html('');
+      quote.find('.badge-arrival-airport').html('');
+    }
+
+    if (category_slug != 'ferry-catamaran') {
+      quote.find('.badge-departure-harbour').html('');
+      quote.find('.badge-arrival-harbour').html('');
+    }
+
+    if (category_slug != 'misc') {
+      quote.find('.badge-misc-details').html('');
+    }
+
+    if (category_slug != 'misc') {
+      quote.find('.badge-departure-station').html('');
+      quote.find('.badge-arrival-station').html('');
+    }
+  }
+
+  $(document).on('change', '.group-owner-id', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var value = $(this).find(':selected').data('name');
+    quote.find('.badge-group-owner-id').html(value);
   });
   $(document).on('change', '.supplier-country-id', function () {
     var quote = $(this).closest('.quote');
