@@ -2198,6 +2198,25 @@ $(document).ready(function () {
     getCalculatedTotalNetMarkup();
     getCommissionRate();
   });
+  $(document).on('change', '#lead_passenger_dbo', function () {
+    var dob = $('#lead_passenger_dbo').val();
+    ageCheck(dob);
+  });
+
+  function ageCheck(dob) {
+    var today = new Date();
+    var birthDate = convertDate(dob);
+    var dayDiff = Math.ceil(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365);
+    var age = parseInt(dayDiff);
+
+    if (age != null) {
+      if (age < 18) {
+        $('#lead_passenger_dbo').parent('.form-group').find('.text-danger').html("Your age is less than 18 years old");
+      } else {
+        $('#lead_passenger_dbo').parent('.form-group').find('.text-danger').html('');
+      }
+    }
+  }
 }); // $('.datepicker').datepicker("setDate", '');
 
 /***/ }),
