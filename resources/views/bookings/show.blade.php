@@ -139,25 +139,8 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-sm-6">
-                    <label>Booking Details <span style="color:red">*</span></label>
-                    <div class="form-group">
-                      <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $booking->booking_details }}" placeholder="Enter Booking Details" autofocus>
-                      <span class="text-danger" role="alert"></span>
-                    </div>
-                  </div>
 
-                  <div class="col-sm-6">
-                    <label>Reason for Trip <span style="color:red">*</span></label>
-                    <div class="form-group">
-                      <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" value="{{ $booking->reason_for_trip }}" placeholder="Enter Reason for Trip">
-                      <span class="text-danger" role="alert"></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-4">
+                  <div class="col-md-6">
                     <label>Zoho Reference <span style="color:red">*</span></label>
                     <div class="form-group">
                       <div class="input-group ">
@@ -170,7 +153,30 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-3">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Quote Reference <span style="color:red">*</span></label>
+                      <input type="text" value="{{ $booking->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Booking Details <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" name="booking_details" id="booking_details" class="form-control" value="{{ $booking->booking_details }}" placeholder="Enter Booking Details" autofocus>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label>Reason for Trip <span style="color:red">*</span></label>
+                    <div class="form-group">
+                      <input type="text" name="reason_for_trip" id="reason_for_trip" class="form-control" value="{{ $booking->reason_for_trip }}" placeholder="Enter Reason for Trip">
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Destination Country <span style="color:red">*</span></label>
                       <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
@@ -182,7 +188,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-5">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Markup Type <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
@@ -198,17 +204,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Quote Reference <span style="color:red">*</span></label>
-                      <input type="text" value="{{ $booking->quote_ref }}" name="quote_no" class="form-control" placeholder="Quote Reference Number" readonly>
-                    </div>
-                  </div>
                 
-                  <div class="col-sm-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
                       <div class="d-flex flex-row">
