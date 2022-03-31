@@ -68,6 +68,29 @@
                   </div>
                 </div>
 
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Zoho Reference <span style="color:red">*</span></label>
+                      <div class="input-group">
+                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                          <div class="input-group-append">
+                          <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
+                        </div>
+                      </div>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Quote Reference <span style="color:red">*</span></label>
+                      <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
@@ -84,25 +107,10 @@
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label>Zoho Reference <span style="color:red">*</span></label>
-                      <div class="input-group">
-                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                          <div class="input-group-append">
-                          <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
-                        </div>
-                      </div>
-                      <span class="text-danger" role="alert"></span>
-                    </div>
-                  </div>
-
-                  <div class="col-sm-3">
-                    <div class="form-group">
-                      <label>Destination Country<span style="color:red">*</span></label>
+                      <label>Destination Country <span style="color:red">*</span></label>
                       <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
                         @foreach ($supplier_countries as $country)
                           <option value="{{ $country->id }}" >{{ $country->name }} - {{ $country->code}}</option>
@@ -112,7 +120,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-5">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Markup Type <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
@@ -128,17 +136,8 @@
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <label>Quote Reference <span style="color:red">*</span></label>
-                      <input type="text" name="quote_no" class="form-control" value="{{ isset($quote_id) & !empty($quote_id) ? $quote_id : '' }}"  placeholder="Quote Reference Number" readonly>
-                    </div>
-                  </div>
-                  
-                  <div class="col-sm-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Currency Rate Type <span style="color:red">*</span><a href="javascript:void(0);" class="ml-2 view-rates"> (View Rates)</a> </label>
 
