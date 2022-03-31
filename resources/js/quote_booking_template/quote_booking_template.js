@@ -415,41 +415,44 @@ $(document).ready(function () {
         console.log(JSON.stringify(formData));
     });
 
+
+    // formData[feildIndex].values[optionIndex].selected = true;
+
+    // var formData = formData[feildIndex].map(function (obj) {
+
+    // if (obj.type == 'select' || obj.type == 'autocomplete') {
+
+    //     obj.values.map(function (obj) {
+    //         obj.selected = false;
+    //         return obj;
+    //     });
+    // }
+    // return obj;
+    // });
+
     $(document).on('change', '.cat-details-select', function (e) {
 
         var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
-        var formData = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
-        var feildIndex = $(this).parents('.cat-feild-col').data('key');
+        var quoteKey    = quote.data('key');
+        var formData    = JSON.parse($(`#quote_${quoteKey}_category_details`).val());
+        var feildIndex  = $(this).parents('.cat-feild-col').data('key');
         var optionIndex = $(this).find(":selected").index();
-        // formData[feildIndex].values[optionIndex].selected = true;
+        let obj         = formData[feildIndex];
 
-        let obj = formData[feildIndex];
+        var currentValue = $(this).find(":selected").val();
 
-        // var formData = formData[feildIndex].map(function (obj) {
+        console.log(currentValue);
 
-            // if (obj.type == 'select' || obj.type == 'autocomplete') {
-
-            //     obj.values.map(function (obj) {
-            //         obj.selected = false;
-            //         return obj;
-            //     });
-            // }
-            // return obj;
-        // });
-
-            if (['select', 'autocomplete'].includes(obj.type)) {
-
-                obj.values.map(function (obj) {
-                    obj.selected = false;
-                    return obj;
-                });
-            }
-
+        if (['select', 'autocomplete'].includes(obj.type)) {
+            obj.values.map(function (obj) {
+                obj.selected = false;
+                return obj;
+            });
+        }
 
         formData[feildIndex].values[optionIndex].selected = true;
-
         quote.find(`#quote_${quoteKey}_category_details`).val(JSON.stringify(formData));
+        quote.find('.badge-pickup-location').html("");
     });
 
     $(document).on('change', '.cat-details-checkbox', function (e) {

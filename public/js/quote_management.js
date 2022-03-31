@@ -660,7 +660,8 @@ $(document).ready(function () {
           }
 
           if (data.response.sale_person) {
-            $('#sale_person_id').val(data.response.sale_person).trigger('change');
+            // $('#sale_person_id').val(data.response.sale_person).trigger('change');
+            $("#sale_person_id option[data-email=\"".concat(data.response.sale_person, "\"]")).prop('selected', 'selected').change();
           }
 
           if (data.response.pax) {
@@ -1154,23 +1155,26 @@ $(document).ready(function () {
     formData[feildIndex].value = $(this).val();
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
     console.log(JSON.stringify(formData));
-  });
+  }); // formData[feildIndex].values[optionIndex].selected = true;
+  // var formData = formData[feildIndex].map(function (obj) {
+  // if (obj.type == 'select' || obj.type == 'autocomplete') {
+  //     obj.values.map(function (obj) {
+  //         obj.selected = false;
+  //         return obj;
+  //     });
+  // }
+  // return obj;
+  // });
+
   $(document).on('change', '.cat-details-select', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
     var feildIndex = $(this).parents('.cat-feild-col').data('key');
-    var optionIndex = $(this).find(":selected").index(); // formData[feildIndex].values[optionIndex].selected = true;
-
-    var obj = formData[feildIndex]; // var formData = formData[feildIndex].map(function (obj) {
-    // if (obj.type == 'select' || obj.type == 'autocomplete') {
-    //     obj.values.map(function (obj) {
-    //         obj.selected = false;
-    //         return obj;
-    //     });
-    // }
-    // return obj;
-    // });
+    var optionIndex = $(this).find(":selected").index();
+    var obj = formData[feildIndex];
+    var currentValue = $(this).find(":selected").val();
+    console.log(currentValue);
 
     if (['select', 'autocomplete'].includes(obj.type)) {
       obj.values.map(function (obj) {
@@ -1181,6 +1185,7 @@ $(document).ready(function () {
 
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+    quote.find('.badge-pickup-location').html("");
   });
   $(document).on('change', '.cat-details-checkbox', function (e) {
     var quote = $(this).closest('.quote');

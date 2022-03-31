@@ -778,7 +778,8 @@ $(document).ready(function() {
                     }
 
                     if (data.response.sale_person) {
-                        $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                        // $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                        $(`#sale_person_id option[data-email="${data.response.sale_person}"]`).prop('selected','selected').change();
                     }
 
                     if (data.response.pax) {

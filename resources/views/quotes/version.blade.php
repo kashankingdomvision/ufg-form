@@ -165,7 +165,7 @@
                         <select name="sale_person_id" id="sale_person_id" class="form-control  select2single sales-person-id @error('sales_person_id') is-invalid @enderror">
                           <option value="">Select Sales Person</option>
                           @foreach ($sale_persons as $person)
-                            <option  value="{{ $person->id }}" {{  (old('sale_person_id') == $person->id)? "selected" : ($quote->sale_person_id == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
+                            <option  value="{{ $person->id }}" data-email="{{ $person->email }}"  {{  (old('sale_person_id') == $person->id)? "selected" : ($quote->sale_person_id == $person->id ? 'selected' : '') }}>{{ $person->name }}</option>
                           @endforeach
                         </select>
                         <span class="text-danger" role="alert"></span>

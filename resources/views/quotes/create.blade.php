@@ -164,7 +164,7 @@
                       <select name="sale_person_id" id="sale_person_id" class="form-control select2single sales-person-id">
                         <option selected value="">Select Sales Person</option>
                         @foreach ($sale_persons as $person)
-                          <option value="{{ $person->id }}" {{ $person->id == Auth::id() ? 'selected' : '' }}>{{ $person->name }}</option>
+                          <option value="{{ $person->id }}" data-email="{{ $person->email }}" {{ $person->id == Auth::id() ? 'selected' : '' }}>{{ $person->name }}</option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
@@ -455,6 +455,8 @@
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
                           <span class="badge badge-info badge-supplier-currency-id"></span>
+
+                          <span class="badge badge-info badge-pickup-location"></span>
                         </h3>
 
                         <div class="card-tools">
