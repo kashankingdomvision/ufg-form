@@ -105,8 +105,8 @@
 
                     <div class="col-sm-3">
                       <div class="form-group">
-                        <label>Country Destination <span style="color:red">*</span></label>
-                        <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Country Destination" multiple>
+                        <label>Destination Country <span style="color:red">*</span></label>
+                        <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
                           @foreach ($supplier_countries as $country)
                             <option value="{{ $country->id }}" {{ in_array($country->id, json_decode($quote->country_destination_ids)) ? 'selected' : NULL}} >{{ $country->name }} - {{ $country->code}}</option>
                           @endforeach
