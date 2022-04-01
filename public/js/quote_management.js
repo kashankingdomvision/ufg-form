@@ -851,8 +851,6 @@ $(document).ready(function () {
   */
   function createElm(quote, selector, type, obj, key) {
     var inputTypes = ['text', 'textarea', 'number', 'select', 'autocomplete'];
-    console.log(obj.label);
-    console.log(obj.label.trim().toLowerCase().replace(/ /g, "-"));
     var appendHTML = '';
 
     if (obj.type == 'radio-group') {
