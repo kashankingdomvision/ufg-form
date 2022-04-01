@@ -25,9 +25,9 @@ class QuoteRequest extends FormRequest
     {
         return [
 
+            'ref_no'                                    => 'required',
             'booking_details'                           => 'required',
             'reason_for_trip'                           => 'required',
-            'ref_no'                                    => 'required',
             'country_destination_ids'                   => 'required',
             'quote_no'                                  => 'required',
             'rate_type'                                 => 'required',
