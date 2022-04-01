@@ -976,8 +976,14 @@ $(document).ready(function () {
         //Create and append the options
         for (var _i2 = 0; _i2 < obj.values.length; _i2++) {
           var option = document.createElement("option");
-          option.value = obj.values[_i2].label;
-          option.text = obj.values[_i2].value;
+
+          if (_i2 == 0) {
+            option.value = "";
+            option.text = "Select ".concat(obj.label);
+          } else {
+            option.value = obj.values[_i2].label;
+            option.text = obj.values[_i2].value;
+          }
 
           if (obj.values[_i2].selected) {
             var selectedValue = obj.values[_i2].label;

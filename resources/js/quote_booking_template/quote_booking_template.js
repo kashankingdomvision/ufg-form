@@ -156,8 +156,15 @@ $(document).ready(function () {
                 //Create and append the options
                 for (let i = 0; i < obj.values.length; i++) {
                     let option = document.createElement("option");
-                    option.value = obj.values[i].label;
-                    option.text = obj.values[i].value;
+
+                    if(i == 0){
+                        option.value = "";
+                        option.text = `Select ${obj.label}`;
+                    }else{
+                        option.value = obj.values[i].label;
+                        option.text = obj.values[i].value;
+
+                    }
 
                     if (obj.values[i].selected) {
                         var selectedValue = obj.values[i].label;
