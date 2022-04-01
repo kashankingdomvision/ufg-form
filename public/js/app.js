@@ -67488,6 +67488,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   window.datepickerReset = function () {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var quoteClass = arguments.length > 1 ? arguments[1] : undefined;
+    // var today;
+    // today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    // console.log(today);
+    var date = new Date();
+    date.setDate(date.getDate());
     var $season = $("#season_id");
     var season_start_date = new Date($season.find(':selected').data('start'));
     var season_end_date = new Date($season.find(':selected').data('end'));
@@ -67497,17 +67502,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass, " .bookingDateOfService")).datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-
+          startDate: date
+        });
         $("".concat(quoteClass, " .bookingEndDateOfService")).datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        });
+          startDate: date
+        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        // $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
+
         $('.stored-text-date').datepicker("destroy").datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy'
@@ -67516,13 +67520,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
         $('.datepicker').datepicker("destroy").datepicker({
           autoclose: true,
-          format: 'dd/mm/yyyy'
+          format: 'dd/mm/yyyy',
+          startDate: date
         });
       }
     } else {
       $('.datepicker').datepicker('destroy').datepicker({
         autoclose: true,
-        format: 'dd/mm/yyyy'
+        format: 'dd/mm/yyyy',
+        startDate: date
       });
     }
     /*  Datepicker fixed code for jQuery UI Sortable */

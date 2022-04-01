@@ -462,24 +462,33 @@ $(document).ready(function($) {
     }
 
     window.datepickerReset = function(key = null, quoteClass) {
-
+        // var today;
+        // today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        // console.log(today);
+        var date = new Date();
+        date.setDate(date.getDate());
         var $season = $("#season_id");
         var season_start_date = new Date($season.find(':selected').data('start'));
         var season_end_date = new Date($season.find(':selected').data('end'));
+
         if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
             if (key != null) {
-                $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
+                $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+               
+                // $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
             } else {
+
                 // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
  
             }
         } else {
-            $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+
+            $('.datepicker').datepicker('destroy').datepicker({autoclose: true, format: 'dd/mm/yyyy', startDate: date});
         }
 
         /*  Datepicker fixed code for jQuery UI Sortable */
