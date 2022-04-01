@@ -15,6 +15,8 @@ class Booking extends Model
         'created_by',
         'commission_id',
         'commission_group_id',
+        'country_destination_ids',
+        'default_supplier_currency_id',
         'season_id',
         'brand_id',
         'currency_id',
@@ -120,6 +122,12 @@ class Booking extends Model
         return $status;
     }
     
+    
+    public function getCountryDestinations()
+    {
+        return $this->belongsToMany(Country::class, 'booking_country_destinations', 'booking_id', 'country_id');
+    }
+
     public function getBookingDetail()
     {
         return $this->hasMany(BookingDetail::class, 'booking_id', 'id');
@@ -145,12 +153,6 @@ class Booking extends Model
     function getTotalRefundAmount() {
         return $this->hasOne(BookingCancellation::class, 'booking_id', 'id');
     }
-
-
-
-    // function getSupplierCurrency() {
-    //     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
-    // }
     
     function getBrand() {
         return $this->hasOne(Brand::class, 'id', 'brand_id');
@@ -219,15 +221,53 @@ class Booking extends Model
         return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
     }
    
-   
     public function setRevelantQuoteAttribute($value)
     {
         $this->attributes['revelant_quote'] = json_encode($value);
     }
     
-    
     public function getRevelantQuoteAttribute($value)
     {
         return json_decode($value);
     }
+
+    public function setNetPriceAttribute( $value ) {
+        $this->attributes['net_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setAgencyCommissionAttribute( $value ) {
+        $this->attributes['agency_commission'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalNetMarginAttribute( $value ) {
+        $this->attributes['total_net_margin'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setAmountPerPersonAttribute( $value ) {
+        $this->attributes['amount_per_person'] = str_replace( ',', '', $value );
+    }
+
+    public function setCommissionAmountAttribute( $value ) {
+        $this->attributes['commission_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceOcrAttribute( $value ) {
+        $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
+    }
+
+    public function setBookingAmountPerPersonInOspAttribute( $value ) {
+        $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
+    }
 }
+
+// function getSupplierCurrency() {
+//     return $this->hasOne(Currency::class, 'supplier_currency_id', 'currency_id');
+// }

@@ -11,12 +11,15 @@ use Carbon\Carbon;
 class Quote extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [ 
         
         'booking_details',
         'reason_for_trip',
         'commission_id',
         'commission_group_id',
+        'country_destination_ids',
+        'default_supplier_currency_id',
         'created_by',
         'user_id',
         'season_id',
@@ -67,15 +70,15 @@ class Quote extends Model
         'stored_text',
         'markup_type',
     ];
-    
+
+    public function getCountryDestinations()
+    {
+        return $this->belongsToMany(Country::class, 'quote_country_destinations', 'quote_id', 'country_id');
+    }
+
     public function getCreatedBy()
     {
         return $this->hasOne(User::class, 'id', 'created_by');
-    }
-    
-    public function getQuotelogs()
-    {
-        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
     }
     
     public function getSeason(){
@@ -89,6 +92,72 @@ class Quote extends Model
     public function getQuoteDetails()
     {
         return $this->hasMany(QuoteDetail::class,'quote_id','id');
+    }
+
+    function getBrand() {
+        return $this->hasOne(Brand::class,'id', 'brand_id' );
+    }
+
+    function getHolidayType() {
+        return $this->hasOne(HolidayType::class,'id', 'holiday_type_id' );
+    }
+
+    function getCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
+    function getBookingCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
+    public function getPaxDetail()
+    {
+        return $this->hasMany(QuotePaxDetail::class, 'quote_id', 'id');
+    }
+
+    public function getQuoteUpdateDetail()
+    {
+        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','quotes');
+    }
+
+    public function getBooking()
+    {
+        return $this->hasOne(Booking::class, 'quote_id', 'id');
+    }
+    
+    public function getLeadPassengerNationality()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
+    }
+
+    public function getLeadPassengerResidentIn()
+    {
+        return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
+    }
+
+    public function getCommission(){
+    	return $this->hasOne(Commission::class, 'id' ,'commission_id');
+    }
+
+    public function getCommissionGroup(){
+    	return $this->hasOne(CommissionGroup::class, 'id' ,'commission_group_id');
+    }
+
+    public function getNationality(){
+    	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
+    }
+
+    public function getQuotelogs()
+    {
+        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
+    }
+
+    /**
+     * The groups that belong to the shop.
+    */
+    public function groups()
+    {
+        return $this->belongsToMany('App\Group');
     }
     
     public function getBookingFormatedStatusAttribute()
@@ -137,35 +206,9 @@ class Quote extends Model
         return Carbon::parse($this->lead_passenger_dbo)->format('d/m/Y');
     }
     
-    function getBrand() {
-        return $this->hasOne(Brand::class,'id', 'brand_id' );
-    }
-
-    function getHolidayType() {
-        return $this->hasOne(HolidayType::class,'id', 'holiday_type_id' );
-    }
-
-    function getCurrency() {
-        return $this->hasOne(Currency::class, 'id', 'currency_id');
-    }
-    
-    function getBookingCurrency() {
-        return $this->hasOne(Currency::class, 'id', 'currency_id');
-    }
-    
-    public function getPaxDetail()
-    {
-        return $this->hasMany(QuotePaxDetail::class, 'quote_id', 'id');
-    }
-    
     public function getVersionAttribute()
     {
         return  'UFG-'.rand(23, 200).''.Str::random(5).' '.date('d/m/Y', strtotime(now())).' By '.Auth::user()->name; 
-    }
-
-    public function getQuoteUpdateDetail()
-    {
-        return $this->hasOne(QuoteUpdateDetail::class, 'foreign_id', 'id')->where('status','quotes');
     }
 
     public function getHasUserEditAttribute()
@@ -176,22 +219,7 @@ class Quote extends Model
             // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
         }
     }
-    
-    public function getBooking()
-    {
-        return $this->hasOne(Booking::class, 'quote_id', 'id');
-    }
-    
-    public function getLeadPassengerNationality()
-    {
-        return $this->hasOne(Country::class, 'id', 'lead_passsenger_nationailty_id');
-    }
 
-    public function getLeadPassengerResidentIn()
-    {
-        return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
-    }
-    
     public function setRevelantQuoteAttribute($value)
     {
         $this->attributes['revelant_quote'] = json_encode($value);
@@ -202,18 +230,6 @@ class Quote extends Model
         return json_decode($value);
     }
 
-    public function getCommission(){
-    	return $this->hasOne(Commission::class, 'id' ,'commission_id');
-    }
-
-    public function getCommissionGroup(){
-    	return $this->hasOne(CommissionGroup::class, 'id' ,'commission_group_id');
-    }
-
-    public function getNationality(){
-    	return $this->hasOne(Country::class, 'id' ,'lead_passsenger_nationailty_id');
-    }
-
     public function getStoredTextAttribute( $value ) {
         return json_decode($value);
     }
@@ -222,11 +238,39 @@ class Quote extends Model
         $this->attributes['stored_text']    = json_encode($value);
     }
 
-    /**
-     * The groups that belong to the shop.
-     */
-    public function groups()
-    {
-        return $this->belongsToMany('App\Group');
+    public function setNetPriceAttribute( $value ) {
+        $this->attributes['net_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setAgencyCommissionAttribute( $value ) {
+        $this->attributes['agency_commission'] = str_replace( ',', '', $value );
+    }
+
+    public function setTotalNetMarginAttribute( $value ) {
+        $this->attributes['total_net_margin'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setAmountPerPersonAttribute( $value ) {
+        $this->attributes['amount_per_person'] = str_replace( ',', '', $value );
+    }
+
+    public function setCommissionAmountAttribute( $value ) {
+        $this->attributes['commission_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceOcrAttribute( $value ) {
+        $this->attributes['selling_price_ocr'] = str_replace( ',', '', $value );
+    }
+
+    public function setBookingAmountPerPersonInOspAttribute( $value ) {
+        $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
     }
 }

@@ -24,12 +24,14 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
             $table->unsignedBigInteger('commission_group_id');
+            $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
             $table->string('reason_for_trip');
             $table->string('ref_name');
             $table->string('ref_no');
             $table->string('quote_ref');
-            $table->string('tas_ref')->nullable();
+            // $table->string('tas_ref')->nullable();
+            $table->string('country_destination_ids');
             $table->enum('agency', [0, 1])->default(0);
             $table->enum('agency_commission_type',['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
             $table->double('agency_commission')->nullable();

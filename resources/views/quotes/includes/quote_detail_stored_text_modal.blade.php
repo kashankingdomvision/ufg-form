@@ -24,8 +24,8 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-base QuotemediaModalClose">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+            <button type="button" class="btn btn-danger QuotemediaModalClose">Close</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal">Save changes</button>
         </div>
     </div>
 </div>

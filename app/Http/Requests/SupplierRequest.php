@@ -29,7 +29,7 @@ class SupplierRequest extends FormRequest
             'location_id'   => 'required',
             'categories'    => 'required|array',
             // 'products'      => 'required|array',
-            // 'email'         => 'required|email|unique:suppliers',
+            'email'         => 'required|email|unique:suppliers',
             // 'town_id'       => 'required',
         ];
     }
@@ -43,7 +43,7 @@ class SupplierRequest extends FormRequest
             'location_id'  => 'Location',
             'categories'   => 'Categories',
             // 'products'     =>  'Products',
-            // 'email'        =>  'Email address',
+            'email'        =>  'Email Address',
             // 'town_id'      =>  'Town',
         ];
     }

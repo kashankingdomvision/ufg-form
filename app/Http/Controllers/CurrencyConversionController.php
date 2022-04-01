@@ -42,7 +42,7 @@ class CurrencyConversionController extends Controller
     public function edit(Request $request, $id){
         
         $data['currency']        = CurrencyConversion::findOrFail(decrypt($id));
-        $data['currencies']      = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']      = Currency::active()->orderBy('id', 'ASC')->get();
 
         return view('currency_conversions.edit',$data);
     }

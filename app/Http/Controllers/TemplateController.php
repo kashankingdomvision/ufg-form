@@ -72,8 +72,8 @@ class TemplateController extends Controller
   
   public function index(Request $request)
   {
-    $template          = Template::orderBy('id', 'DESC')->where('privacy_status', 1);
-    $private_templates = Template::orderBy('id', 'DESC')->where('user_id', Auth::id())->where('privacy_status', 0);
+    $template          = Template::public()->orderBy('id', 'DESC');
+    $private_templates = Template::private()->orderBy('id', 'DESC');
 
     if(count($request->all())> 0){
       if($request->has('search') && !empty($request->search)){
@@ -149,7 +149,7 @@ class TemplateController extends Controller
     $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-    $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
     $data['users']            = User::all()->sortBy('name');
     $data['seasons']          = Season::all();
     $data['booked_by']        = User::all()->sortBy('name');
@@ -216,7 +216,7 @@ class TemplateController extends Controller
   {
     $template = Template::findOrFail(decrypt($id));
     $data['template']   = $template;
-    $data['currencies'] = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
 
     return view('templates.details',$data);
   }
@@ -231,10 +231,10 @@ class TemplateController extends Controller
   {
     $data['template']         = Template::findOrFail(decrypt($id));
     $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
-    $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
+    $data['supervisors']      = User::role(['supervisor'])->get()->sortBy('name');
     $data['suppliers']        = Supplier::all()->sortBy('name');
     $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-    $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+    $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
     $data['users']            = User::all()->sortBy('name');
     $data['seasons']          = Season::all();
     $data['booked_by']        = User::all()->sortBy('name');

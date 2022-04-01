@@ -45,7 +45,7 @@ class CommissionCriteriaController extends Controller
         $data['brands']             = Brand::orderBy('id','ASC')->get();
         $data['commission_types']   = Commission::orderBy('id','ASC')->get();
         $data['commission_groups']  = CommissionGroup::orderBy('id','ASC')->get();
-        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']         = Currency::active()->orderBy('id', 'ASC')->get();
         $data['booking_seasons']    = Season::all();
 
         return view('commission_criterias.create', $data);
@@ -115,7 +115,7 @@ class CommissionCriteriaController extends Controller
         $data['brands']               = Brand::orderBy('id','ASC')->get();
         $data['commission_types']     = Commission::orderBy('id','ASC')->get();
         $data['commission_groups']    = CommissionGroup::orderBy('id','ASC')->get();
-        $data['currencies']           = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']           = Currency::active()->orderBy('id', 'ASC')->get();
         $data['booking_seasons']      = Season::all();
         $data['commission_criteria']  = $commission_criteria;
         $data['holiday_types']        = HolidayType::whereIn('brand_id', $commission_criteria->getBrands()->pluck('brand_id')->toArray())->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')->get(['holiday_types.id','brands.name as brand_name','holiday_types.name']);

@@ -49,10 +49,10 @@
 
                   <div class="form-group">
                     <label>Country <span style="color:red">*</span></label>
-                    <select name="country_id" class="form-control select2single @error('country_id') is-invalid @enderror" >
+                    <select name="country_id" class="form-control select2single @error('country_id') is-invalid @enderror">
                       <option value="">Select Country</option>
                         @foreach ($countries as $country)
-                            <option value="{{$country->id}}" {{ ($town->country_id == $country->id)? 'selected': ((old('country_id') == $country->id) ? 'selected' : '') }}> {{$country->name}} </option>
+                            <option value="{{$country->id}}" {{ ($town->country_id == $country->id) ? 'selected': ((old('country_id') == $country->id) ? 'selected' : '') }}> {{$country->name}} </option>
                         @endforeach
                     </select>
 

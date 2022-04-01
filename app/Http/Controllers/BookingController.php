@@ -55,6 +55,7 @@ use App\Wallet;
 use App\TotalWallet;
 use App\PresetComment; 
 use App\ReferenceCredential;
+use App\GroupOwner;
 
 class BookingController extends Controller
 {
@@ -144,7 +145,7 @@ class BookingController extends Controller
         }
         
         $data['bookings']            = $booking->paginate($this->pagination);
-        $data['currencies']          = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']          = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']              = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']     = Season::all();
         $data['users']               = User::all();
@@ -160,9 +161,11 @@ class BookingController extends Controller
             'markup_type'                       =>  $request->markup_type??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
+            'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,
             'booking_details'                   =>  $request->booking_details,
             'ref_no'                            =>  $request->ref_no,
-            'tas_ref'                           =>  $request->tas_ref??NULL,
+            'country_destination_ids'           => isset($request['country_destination_ids']) && !empty($request['country_destination_ids']) ? json_encode($request['country_destination_ids']) : NULL,
+            // 'tas_ref'                           =>  $request->tas_ref??NULL,
             'ref_name'                          =>  $request->ref_name??'zoho',
             'quote_ref'                         =>  $request->quote_no,
             'agency'                            =>  ((int)$request->agency == '1')? '1' : '0',
@@ -213,6 +216,7 @@ class BookingController extends Controller
 
             'category_id'                       => $quoteD['category_id'],
             'supplier_country_ids'              => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
+            'group_owner_id'                    => isset($quoteD['group_owner_id']) ? $quoteD['group_owner_id'] : NULL,
             'supplier_id'                       => (isset($quoteD['supplier_id']))? $quoteD['supplier_id'] : NULL ,
             'product_id'                        => (isset($quoteD['product_id']))? $quoteD['product_id'] : NULL,
             'booking_detail_unique_ref_id'      => isset($quoteD['booking_detail_unique_ref_id']) && !empty($quoteD['booking_detail_unique_ref_id']) ? $quoteD['booking_detail_unique_ref_id'] : Helper::getBDUniqueRefID(), 
@@ -321,12 +325,10 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['payment_methods']  = PaymentMethod::all();
@@ -336,6 +338,7 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -448,6 +451,7 @@ class BookingController extends Controller
         //- check update access
 
         $booking = Booking::findOrFail(decrypt($id));
+        $booking->getCountryDestinations()->sync($request->country_destination_ids);
 
         /* store booking log */ 
         BookingLog::create($this->getBookingLogArray($booking));
@@ -626,12 +630,10 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['booking']            = Booking::findOrFail(decrypt($id));
@@ -641,6 +643,7 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -690,7 +693,7 @@ class BookingController extends Controller
         $data['supervisors']        = User::get();
         $data['sale_persons']       = User::get();
         $data['booking_methods']    = BookingMethod::all()->sortBy('id');
-        $data['currencies']         = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']         = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']             = Brand::orderBy('id','ASC')->get();
         $data['booking_types']      = BookingType::all();
         $data['payment_methods']    = PaymentMethod::all();
@@ -698,7 +701,8 @@ class BookingController extends Controller
         $data['banks']              = Bank::all();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
-
+        $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        
         return view('bookings.version', $data);
     }
 
@@ -776,14 +780,10 @@ class BookingController extends Controller
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
-        $data['supervisors']      = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'supervisor');
-                                    })->get();
-        $data['sale_persons']     = User::whereHas('getRole', function($query){
-                                        $query->where('slug', 'sales-agent');
-                                    })->get();
+        $data['supervisors']      = User::role(['supervisor'])->get();
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
         $data['commission_types'] = Commission::all();
@@ -830,6 +830,50 @@ class BookingController extends Controller
                     return response()->json([ 'errors' => $exception->errors() ], 422);
                 }
             }
+
+            return response()->json([ 
+                'status'        => false, 
+                'error_message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
+    }
+
+    public function bookingDetailStatus($action_type, $id){
+        
+        try {
+
+            $message = "";
+
+            if($action_type == 'not_booked'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'not_booked' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            if($action_type == 'pending'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'pending' ]);
+                $message = "Change Status Successfully.";
+            }
+            
+            if($action_type == 'booked'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'booked' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            if($action_type == 'cancelled'){
+
+                BookingDetail::findOrFail(decrypt($id))->update([ 'status' => 'cancelled' ]);
+                $message = "Change Status Successfully.";
+            }
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => $message,
+            ]);
+          
+        } catch (\Exception $exception) {
 
             return response()->json([ 
                 'status'        => false, 

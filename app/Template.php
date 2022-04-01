@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Template extends Model
 {
@@ -54,6 +55,16 @@ class Template extends Model
     public function getDetails()
     {
         return $this->hasMany(TemplateDetail::class, 'template_id', 'id');
+    }
+
+    public function scopePublic($query)
+    {
+        return $query->where('privacy_status', 1);
+    }
+
+    public function scopePrivate($query)
+    {
+        return $query->where('user_id', Auth::id())->where('privacy_status', 0);
     }
 
 }

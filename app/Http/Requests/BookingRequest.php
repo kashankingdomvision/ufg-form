@@ -26,9 +26,9 @@ class BookingRequest extends FormRequest
     
         return [
 
+            'ref_no'                                          => 'required',
             'booking_details'                                 => 'required',
             'reason_for_trip'                                 => 'required',
-            'ref_no'                                          => 'required',
             'quote_no'                                        => 'required',
             'rate_type'                                       => 'required',
             'markup_type'                                     => 'required',

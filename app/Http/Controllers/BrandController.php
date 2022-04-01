@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Brand;
+use App\Country;
 
 class BrandController extends Controller
 {
@@ -23,6 +24,9 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
+        
+
+
         $Brand = Brand::orderBy('id', 'ASC');
 
         if(count($request->all()) > 0){
@@ -48,7 +52,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view('brands.create');
+        $data['countries'] = Country::orderByService()->orderByAsc()->get();
+
+        return view('brands.create', $data);
     }
 
     public function brandArray($request, $method, $brand = null)
@@ -103,7 +109,8 @@ class BrandController extends Controller
         //     $data['logo'] = $this->fileStore($request);
         // }
 
-        Brand::create($this->brandArray($request, 'store'));
+        $brand = Brand::create($this->brandArray($request, 'store'));
+        $brand->getSupplierCountries()->sync($request->supplier_country_ids);
 
         return response()->json([ 
             'status'          => true, 
@@ -131,7 +138,8 @@ class BrandController extends Controller
      */
     public function edit($id)
     {
-        $data['brand'] = Brand::findOrFail(decrypt($id));
+        $data['brand']     = Brand::findOrFail(decrypt($id));
+        $data['countries'] = Country::orderByService()->orderByAsc()->get();
 
         return view('brands.edit',$data);
     }
@@ -147,6 +155,7 @@ class BrandController extends Controller
     {
 
         $brand = Brand::find(decrypt($id));
+        $brand->getSupplierCountries()->sync($request->supplier_country_ids);
 
         $brand->update($this->brandArray($request, 'update', $brand));
 

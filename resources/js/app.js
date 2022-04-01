@@ -21,39 +21,40 @@ require('./asset/pace/pace.min');
 
 $(document).ready(function($) {
 
-    $(document).on('click', '.removeChild', function() {
-        var id = $(this).data('show');
-        $(id).removeAttr("style");
-        $($(this).data('append')).empty();
-        $(this).attr("style", "display:none");
+    // set autofocus on search
+    $(document).on('select2:open', '.select2single', function(e) {
+
+        $(".select2-search__field").each(function (
+            key,
+            value,
+        ){
+            value.focus();
+        })
     });
 
-    $(document).on('click', '.addChild', function() {
-        $('.append').empty();
-        var id = $(this).data('id');
-        var refNumber = $(this).data('ref');
-        var appendId = $(this).data('append');
-        var url = '{{ route("get.child.reference", ":id") }}';
-        url = url.replace(':id', refNumber);
-        var removeBtnId = $(this).data('remove');
-        var showBtnId = $(this).data('show');
-        $('.addChild').removeAttr("style");
-        $('.removeChild').attr("style", "display:none");
+    // $(document).on('select2:open', (e) => {
+    //     const selectId = e.target.id
+    
+    //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+    //         key,
+    //         value,
+    //     ){
+    //         value.focus();
+    //     })
+    // })
 
-        $(this).attr("style", "display:none")
-            // $(appendId).empty();
-
-        $.ajax({
-            url: BASEURL + 'quotes/child/reference',
-            data: { id: id, ref_no: refNumber },
-            type: 'get',
-            success: function(response) {
-                $(appendId).append(response);
-                $(removeBtnId).removeAttr("style");
-            }
-        });
+    window.Toast = Swal.mixin({
+        toast: true,
+        icon: 'success',
+        position: 'top-right',
+        showConfirmButton: false,
+        timer: 2200,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
     });
- 
 
     window.calltextEditorSummerNote = function(val = null) {
 
@@ -173,7 +174,6 @@ $(document).ready(function($) {
             setTimeout(function() {
                 jQuery.each(errors.errors, function(index, value) {
 
-                    console.log(`${index}`);
                     index = index.replace(/\./g, '_');
 
                     /* Expand Quote Details Card */
@@ -189,10 +189,6 @@ $(document).ready(function($) {
                     $(`#${index}`).addClass('is-invalid');
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                     $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
-
-
-                    console.log(`#${index}`);
-            
 
                     if(flag){
                         $('html, body').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
@@ -221,6 +217,7 @@ $(document).ready(function($) {
             }, 2500);
         }
     }
+    
 
     window.printListingSuccessMessage = function(response) {
 
@@ -317,9 +314,6 @@ $(document).ready(function($) {
     }
 
     window.printAlertResponse = function(response) {
-
-
-        console.log(response.status);
         
         if(response && response.status){
 
@@ -347,6 +341,21 @@ $(document).ready(function($) {
         }
     }
 
+    window.printServerAlertResponse = function(response) {
+
+        if(response && response.status){
+
+            Toast.fire({
+                icon: 'success',
+                title: response.success_message
+            });
+
+            setTimeout(function() {
+                location.reload();
+            }, 2500);
+        }
+    }
+
     window.curday = function(sp) {
         var today = new Date();
         var dd = today.getDate();
@@ -365,13 +374,61 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
+    window.convertDate = function(date) {
+        var dateParts = date.split("/");
+        return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    }
+
+    $(document).on('keyup', "input[data-type='currency']", function(e) {
+        formatCurrency($(this));
+    });
+    
+    $(document).on('blur', "input[data-type='currency']", function(e) {
+        formatCurrency($(this), "blur");
+    });
+
     window.check = function(x) {
 
         if (isNaN(x) || !isFinite(x)) {
             return parseFloat(0).toFixed(2);
         }
+ 
+        return formatComma(x.toFixed(2));
+    }
 
-        return parseFloat(x).toFixed(2);
+    window.formatComma = function(input_val, blur) {
+
+        if (input_val.indexOf(".") >= 0) {
+        
+            var decimal_pos = input_val.indexOf(".");
+            var left_side   = input_val.substring(0, decimal_pos);
+            var right_side  = input_val.substring(decimal_pos);
+        
+
+            left_side  = formatNumber(left_side);
+            right_side = formatNumber(right_side);
+
+            if (blur === "blur") {
+                right_side += "00";
+            }
+
+            right_side = right_side.substring(0, 2);
+            input_val = left_side + "." + right_side;
+    
+        } else {
+            input_val = formatNumber(input_val);
+            input_val = input_val;
+
+            if(blur === "blur") {
+                input_val += ".00";
+            }
+        }
+
+        return input_val;
+    }
+
+    window.removeComma = function(n) {
+        return n.replace(/,/g, '');
     }
 
     window.checkForInt = function(x) {
@@ -383,29 +440,55 @@ $(document).ready(function($) {
         return parseInt(x);
     }
 
+    window.formatNumber = function(n) {
+
+        return n
+        .replace(/(?!-)[^0-9]/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+      
+    window.formatCurrency = function(input, blur) {
+     
+        var input_val = input.val();
+  
+        if (input_val === "") { return; }
+
+        // send updated string to input
+        input.val(formatComma(input_val, blur));
+    }
+
     window.isEmpty = function(value) {
         return (value == null || value == '' || value == 'undefined' ? 'N/A' : value);
     }
 
     window.datepickerReset = function(key = null, quoteClass) {
-
+        // var today;
+        // today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        // console.log(today);
+        var date = new Date();
+        date.setDate(date.getDate());
         var $season = $("#season_id");
         var season_start_date = new Date($season.find(':selected').data('start'));
         var season_end_date = new Date($season.find(':selected').data('end'));
+
         if (season_start_date != 'Invalid Date' && season_end_date != 'Invalid Date') {
             if (key != null) {
-                $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+                $(`${quoteClass} .bookingDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
+                $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+               
+                // $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
             } else {
+
                 // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+                $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
  
             }
         } else {
-            $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
+
+            $('.datepicker').datepicker('destroy').datepicker({autoclose: true, format: 'dd/mm/yyyy', startDate: date});
         }
 
         /*  Datepicker fixed code for jQuery UI Sortable */
@@ -414,56 +497,70 @@ $(document).ready(function($) {
         });
     }
 
-    //tel input end
-    //intl-tel-input ************** Start ******************** //
     // function intTelinput(key = null, inVal = null) {
     window.intTelinput = function(key = null, inVal = null) {
 
-    // console.log(key);
-    var input = document.querySelector('.phone' + key);
-    var errorMsg = document.querySelector('.error_msg' + key);
-    var validMsg = document.querySelector('.valid_msg' + key);
-    var iti = intlTelInput(input, {
-    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
-    separateDialCode: true,
-    formatOnDisplay: true,
-    initialCountry: "US",
-    nationalMode: true,
-    hiddenInput: "full_number",
-    autoPlaceholder: "polite",
-    placeholderNumberType: "MOBILE",
-    });
-    input.nextElementSibling.value = iti.getNumber();
-    // iti.setCountry("US");
-    // on blur: validate
-    var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-    input.addEventListener('blur', function() {
-    input.nextElementSibling.value = iti.getNumber();
-    reset();
-    if (input.value.trim()) {
-    if (iti.isValidNumber()) {
-        $('.buttonSumbit').removeAttr('disabled');
-        input.classList.add("is-valid");
-        validMsg.innerHTML = 'The number is valid';
-    } else {
-        $('.buttonSumbit').attr('disabled', 'disabled');
-        input.classList.add("is-invalid");
-        validMsg.innerHTML = '';
-        var errorCode = iti.getValidationError();
-        errorMsg.innerHTML = errorMap[errorCode];
-        errorMsg.classList.remove("hide");
-    }
-    }
-    });
+        // console.log(key);
+        var input = document.querySelector('.phone' + key);
+        var errorMsg = document.querySelector('.error_msg' + key);
+        var validMsg = document.querySelector('.valid_msg' + key);
+        var iti = intlTelInput(input, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+            separateDialCode: true,
+            preferredCountries:["gb","us","au","ca","nz"],
+            formatOnDisplay: true,
+            initialCountry: "US",
+            nationalMode: true,
+            hiddenInput: "full_number",
+            autoPlaceholder: "polite",
+            placeholderNumberType: "MOBILE",
+        });
+
+        input.nextElementSibling.value = iti.getNumber();
+        // iti.setCountry("US");
+        // on blur: validate
+        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+        
+        input.addEventListener('blur', function() {
+            input.nextElementSibling.value = iti.getNumber();
+            reset();
+            if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                    $('.buttonSumbit').removeAttr('disabled');
+                    input.classList.add("is-valid");
+                    validMsg.innerHTML = 'The number is valid';
+                } else {
+                    $('.buttonSumbit').attr('disabled', 'disabled');
+                    input.classList.add("is-invalid");
+                    validMsg.innerHTML = '';
+                    var errorCode = iti.getValidationError();
+                    errorMsg.innerHTML = errorMap[errorCode];
+                    errorMsg.classList.remove("hide");
+                }
+            }
+        });
 
 
-    var reset = function() {
-    input.classList.remove("is-invalid");
-    errorMsg.innerHTML = "";
-    errorMsg.classList.add("hide");
-    };
+        var reset = function() {
+            input.classList.remove("is-invalid");
+            errorMsg.innerHTML = "";
+            errorMsg.classList.add("hide");
+        };
     }
-    //intl-tel-input ************** End ******************** //
+
+    // tel input  start
+    if ($('.phone').length > 0) {
+        for (let i = 0; i < $('.phone').length; i++) {
+            if ($('.phone' + i).length != 0) {
+                intTelinput(i);
+            }
+        }
+    }
+
+    if ($('#agency_contact').length > 0) {
+        intTelinput('gc');
+        // console.log(inTelinput);
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -492,23 +589,11 @@ $(document).ready(function($) {
         templateSelection: formatState,
     });
 
-    // $('.nationality-select2').select2({
-    //     width: '100%',
-    //     theme: "bootstrap",
-    //     templateResult: formatState,
-    //     templateSelection: formatState,
-    // });
-
     $('.select2-multiple').select2({
         width: '100%',
         theme: "classic",
         templateResult: formatState,
         templateSelection: formatState,
-    });
-
-    $('.select2-single').select2({
-        width: '90%',
-        theme: "bootstrap",
     });
 
     $('.summernote').summernote({
@@ -646,443 +731,448 @@ $(document).ready(function($) {
     $(".collapse-all-btn").removeAttr('disabled');
     $(".expand-all-btn").removeAttr('disabled');
 
-            // transfer report
-            function createFilter(type,label,data){
+    // transfer report
+    function createFilter(type,label,data){
 
-                var options;
+        var options;
 
-                if(label == null){
-                    $('.filter-col').remove();
-                    return;
-                }
+        if(label == null){
+            $('.filter-col').remove();
+            return;
+        }
 
-                $.ajax({
-                    type: "GET",
-                    url: `${BASEURL}category-details-filter`,
-                    data: { 'type': type, 'label': label, 'data': data },
-                    datatype: "json",
-                    async: false,
-                    success: function(response){
+        $.ajax({
+            type: "GET",
+            url: `${BASEURL}category-details-filter`,
+            data: { 'type': type, 'label': label, 'data': data },
+            datatype: "json",
+            async: false,
+            success: function(response){
 
-                        var result = '';
-                        $.each(response.label_results, function(key, value) {
-                            result += `<option value="${value.value}"> ${value.value} </option>`;
-                        });
-
-                        options = result;
-                    }
+                var result = '';
+                $.each(response.label_results, function(key, value) {
+                    result += `<option value="${value.value}"> ${value.value} </option>`;
                 });
 
-                var multipleSelect2HTML = 
-                `<div class="col-md-3 filter-col">
-                    <div class="d-flex bd-highlight">
-                        <div class="w-100 bd-highlight"><label>${label}</label></div>
-                        <div class="flex-shrink-1 bd-highlight" style="font-size: 11px;"><i class="fas fa-times text-danger border border-danger remove-col" style="padding: 4px; border-radius: 4px; cursor: pointer;"></i></div>
-                    </div>
-                    <select class="form-control select2-multiple" multiple name="columns[${label}][]">${options}</select>
-                </div>`;
-          
-                return multipleSelect2HTML;
+                options = result;
             }
+        });
 
- 
-            // transfer report
-            $(document).on('change', '.transfer-detail-feild', function() {
-
-                var feild = $(this).val();
-
-                if(typeof feild === 'undefined' || feild == ""){
-                    $('#search_transfer_detail').addClass('d-none');
-                }else{
-                    $('#search_transfer_detail').removeClass('d-none');
-                }
-
-                var type  = $(this).find(':selected').attr('data-optionType');
-                var label = $(this).find(':selected').attr('data-optionLable');
-                var data  = $(this).find(':selected').attr('data-optionData');
-
-                $(createFilter(type,label,data)).insertBefore("#more_filter");
-                reinitializedMultipleSelect2();
-            });
-
-            // transfer report
-            $(document).on('click', '.remove-col', function() {
-                $(this).closest('.filter-col').remove();
-            });
-
-            $(document).on('click', '.parent', function() {
-
-                if ($(this).is(':checked', true)) {
-                    $(".child").prop('checked', true);
-
-                } else {
-
-                    $(".child").prop('checked', false);
-                }
-            });
-
-            $('.sbp-parent').on('click', function(e) {
-
-                if ($(this).is(':checked', true)) {
-
-                    $(".credit").prop('checked', false);
-                    $('.credit').trigger('click');
-
-                } else {
-           
-                    $('.credit').trigger('click');
-                    $('.total-paid-amount').val(parseFloat(0).toFixed(2));
-            
-                }
-            });
-
-            // Supplier Bulk Payments
-            $('.credit').change(function(){
-
-                var currencyCode          = $(this).attr('data-currencyCode');
-                var value                 = parseFloat($(this).attr('data-value')).toFixed(2);
-                var row                   = $(this).closest('.credit-row');
-
-                if($(this).is(':checked')){
-
-                    $(this).val('1');
-
-                    row.find('.row-paid-amount').val(value);
-                    row.find('.row-total-paid-amount').val(value);
-
-                    getTotalPaidAmount();
+        var multipleSelect2HTML = 
+        `<div class="col-md-3 filter-col">
+            <div class="d-flex bd-highlight">
+                <div class="w-100 bd-highlight"><label>${label}</label></div>
+                <div class="flex-shrink-1 bd-highlight" style="font-size: 11px;"><i class="fas fa-times text-danger border border-danger remove-col" style="padding: 4px; border-radius: 4px; cursor: pointer;"></i></div>
+            </div>
+            <select class="form-control select2-multiple" multiple name="columns[${label}][]">${options}</select>
+        </div>`;
     
+        return multipleSelect2HTML;
+    }
+
+
+    // transfer report
+    $(document).on('change', '.transfer-detail-feild', function() {
+
+        var feild = $(this).val();
+
+        if(typeof feild === 'undefined' || feild == ""){
+            $('#search_transfer_detail').addClass('d-none');
+        }else{
+            $('#search_transfer_detail').removeClass('d-none');
+        }
+
+        var type  = $(this).find(':selected').attr('data-optionType');
+        var label = $(this).find(':selected').attr('data-optionLable');
+        var data  = $(this).find(':selected').attr('data-optionData');
+
+        $(createFilter(type,label,data)).insertBefore("#more_filter");
+        reinitializedMultipleSelect2();
+    });
+
+    // transfer report
+    $(document).on('click', '.remove-col', function() {
+    $(this).closest('.filter-col').remove();
+    });
+
+    $(document).on('click', '.parent', function() {
+
+    if ($(this).is(':checked', true)) {
+        $(".child").prop('checked', true);
+
+    } else {
+
+        $(".child").prop('checked', false);
+    }
+    });
+
+    $('.sbp-parent').on('click', function(e) {
+
+    if ($(this).is(':checked', true)) {
+
+        $(".credit").prop('checked', false);
+        $('.credit').trigger('click');
+
+    } else {
+
+        $('.credit').trigger('click');
+        $('.total-paid-amount').val(parseFloat(0).toFixed(2));
+
+    }
+    });
+
+    // Supplier Bulk Payments
+    $('.credit').change(function(){
+
+    var currencyCode          = $(this).attr('data-currencyCode');
+    var value                 = parseFloat($(this).attr('data-value')).toFixed(2);
+    var row                   = $(this).closest('.credit-row');
+
+    if($(this).is(':checked')){
+
+        $(this).val('1');
+
+        row.find('.row-paid-amount').val(value);
+        row.find('.row-total-paid-amount').val(value);
+
+        getTotalPaidAmount();
+
+    }
+    else {
+
+        $(this).val('0');
+
+        row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
+        row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
+        getTotalPaidAmount();
+        // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
+    }
+
+    });
+
+    // Supplier Bulk Payments
+    $(document).on("change", '.row-paid-amount', function(event) {
+
+    var row                        = $(this).closest('.credit-row');
+    var currentPaidAmountValue     = parseFloat($(this).val());
+
+    var rowCreditNoteAmount        = row.find('.row-credit-note-amount').val();
+    var rowTotalPaidAmount         = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+
+    var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+
+    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+
+    if(rowTotalPaidAmount > totalOutstandingAmountLeft){
+        alert("Please Enter Correct Amount");
+        $(this).val('0.00');
+
+
+        row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
+    }
+
+    getTotalPaidAmount();
+
+    // var value                 = parseFloat($(this).val());
+    // var row                   = $(this).closest('.credit-row');
+    // var outstandingAmountLeft = row.find('.credit').val();
+
+    // if(value > outstandingAmountLeft){
+    //     alert("Please Enter Correct Amount");
+    //     $(this).val('0.00');
+    // }
+
+    // getTotalPaidAmount();
+    });
+
+    function getTotalPaidAmount(){
+
+    var paidAmountValues = parseFloat(getPaidAmountValues());
+    $('.total-paid-amount').val(getFloat(paidAmountValues));
+    }
+
+    function getRemainingCreditNoteAmount(){
+
+    var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+    var result                = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+
+    $('.remaining-credit-amount').html(getFloat(result));
+    $('.remaining-credit-amount').val(getFloat(result));
+    }
+
+    function getPaidAmountValues(){
+    var checkedValuesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(e.value)).get();
+    var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+    }
+
+    function getCreditNoteValues(){
+    var checkedValuesArray = $('.row-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+    var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+    return parseFloat(checkedValuesTotal).toFixed(2);
+    }
+
+    function getFloat(value){
+    // console.log(parseFloat(value).toFixed(2));
+    return parseFloat(value).toFixed(2);
+    }
+
+    // Supplier Bulk Payments
+    $(document).on("change", '.row-credit-note-amount', function(event) {
+
+    var totalWalletAmount      = parseFloat($('.total-credit-amount').val());
+    var currentCreditNoteValue = parseFloat($(this).val());
+
+    var row                    = $(this).closest('.credit-row');
+    var rowOutstandingAmount   = row.find('.credit').attr('data-value');
+
+    var rowPaidAmount          = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+    var rowTotalPaidAmount     = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+
+    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+    if(row.find('.credit').is(':checked')){
+
+        row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+        row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+        if(currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount ){
+
+            alert("Please Enter Correct Amount");
+            $(this).val('0.00');
+
+            row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+            row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+        }
+
+
+        getTotalPaidAmount();
+        getRemainingCreditNoteAmount();
+    }
+    else {
+        $(this).val('0.00');
+    }
+    });
+
+    // Supplier Bulk Payments
+    $("#bulk_payment").submit(function(event) {
+
+    event.preventDefault();
+
+    var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
+    if (checkedValues.length == 0) {
+        alert("Please Check any Record First");
+        return;
+    }
+
+    var url = $(this).attr('action');
+
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+        beforeSend: function() {
+            $('input, select').removeClass('is-invalid');
+            $('.text-danger').html('');
+            $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
+        },
+        success: function(data) {
+            $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+            setTimeout(function() {
+
+                if(data && data.status == true){
+                    alert(data.success_message);
+                    location.reload();
                 }
-                else {
-                
-                    $(this).val('0');
+            }, 200);
+        },
+        error: function(reject) {
 
-                    row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
-                    row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
-                    getTotalPaidAmount();
-                    // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
-                }
+            if (reject.status === 422) {
 
-            });
+                var errors = $.parseJSON(reject.responseText);
 
-            // Supplier Bulk Payments
-            $(document).on("change", '.row-paid-amount', function(event) {
+                setTimeout(function() {
+                    $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
 
-                var row                        = $(this).closest('.credit-row');
-                var currentPaidAmountValue     = parseFloat($(this).val());
+                    if (errors.hasOwnProperty("payment_error")) {
+                        alert(errors.payment_error);
+                        location.reload();
 
-                var rowCreditNoteAmount        = row.find('.row-credit-note-amount').val();
-                var rowTotalPaidAmount         = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+                    } else {
 
-                var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+                        var flag = true;
 
-                row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+                        jQuery.each(errors.errors, function(index, value) {
 
+                            index = index.replace(/\./g, '_');
+                            $(`#${index}`).addClass('is-invalid');
+                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
 
-                if(rowTotalPaidAmount > totalOutstandingAmountLeft){
-                    alert("Please Enter Correct Amount");
-                    $(this).val('0.00');
+                            if (flag) {
 
-
-                    row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
-                }
-
-                getTotalPaidAmount();
-
-                // var value                 = parseFloat($(this).val());
-                // var row                   = $(this).closest('.credit-row');
-                // var outstandingAmountLeft = row.find('.credit').val();
-
-                // if(value > outstandingAmountLeft){
-                //     alert("Please Enter Correct Amount");
-                //     $(this).val('0.00');
-                // }
-
-                // getTotalPaidAmount();
-            });
-
-            function getTotalPaidAmount(){
-
-                var paidAmountValues = parseFloat(getPaidAmountValues());
-                $('.total-paid-amount').val(getFloat(paidAmountValues));
-            }
-
-            function getRemainingCreditNoteAmount(){
-
-                var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
-                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-                var result                = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
-
-                $('.remaining-credit-amount').html(getFloat(result));
-                $('.remaining-credit-amount').val(getFloat(result));
-            }
-
-            function getPaidAmountValues(){
-                var checkedValuesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(e.value)).get();
-                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
-                return parseFloat(checkedValuesTotal).toFixed(2);
-            }
-
-            function getCreditNoteValues(){
-                var checkedValuesArray = $('.row-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
-                var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
-                return parseFloat(checkedValuesTotal).toFixed(2);
-            }
-
-
-            function getFloat(value){
-                // console.log(parseFloat(value).toFixed(2));
-                return parseFloat(value).toFixed(2);
-            }
-
-            // Supplier Bulk Payments
-            $(document).on("change", '.row-credit-note-amount', function(event) {
-
-                var totalWalletAmount      = parseFloat($('.total-credit-amount').val());
-                var currentCreditNoteValue = parseFloat($(this).val());
-
-                var row                    = $(this).closest('.credit-row');
-                var rowOutstandingAmount   = row.find('.credit').attr('data-value');
-
-                var rowPaidAmount          = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
-                var rowTotalPaidAmount     = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
-
-                var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-
-                if(row.find('.credit').is(':checked')){
-
-                    row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
-                    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
-
-                    if(currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount ){
-
-                        alert("Please Enter Correct Amount");
-                        $(this).val('0.00');
-    
-                        row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
-                        row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
-                    }
-
-
-                    getTotalPaidAmount();
-                    getRemainingCreditNoteAmount();
-                }
-                else {
-                    $(this).val('0.00');
-                }
-            });
-
-            // Supplier Bulk Payments
-            $("#bulk_payment").submit(function(event) {
-
-                event.preventDefault();
-            
-                var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
-                if (checkedValues.length == 0) {
-                    alert("Please Check any Record First");
-                    return;
-                }
-
-                var url = $(this).attr('action');
-
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    data: new FormData(this),
-                    contentType: false,
-                    cache: false,
-                    processData: false,
-                    beforeSend: function() {
-                        $('input, select').removeClass('is-invalid');
-                        $('.text-danger').html('');
-                        $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
-                    },
-                    success: function(data) {
-                        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-
-                        setTimeout(function() {
-
-                            if(data && data.status == true){
-                                alert(data.success_message);
-                                location.reload();
+                                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                flag = false;
                             }
-                        }, 200);
-                    },
-                    error: function(reject) {
-
-                        if (reject.status === 422) {
-
-                            var errors = $.parseJSON(reject.responseText);
-
-                            setTimeout(function() {
-                                $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-
-                                if (errors.hasOwnProperty("payment_error")) {
-                                    alert(errors.payment_error);
-                                    location.reload();
-
-                                } else {
-
-                                    var flag = true;
-
-                                    jQuery.each(errors.errors, function(index, value) {
-
-                                        index = index.replace(/\./g, '_');
-                                        $(`#${index}`).addClass('is-invalid');
-                                        $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                                        if (flag) {
-
-                                            $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                            flag = false;
-                                        }
-                                    });
-                                }
-
-                            }, 400);
-
- 
-                        }
-                    },
-                });
-            });
-
-
-           
-
-            $('#delete_all').on('click', function(e) {
-                e.preventDefault();
-                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
-
-                if (checkedValues.length > 0) {
-                    jQuery('#multiple_delete_modal').modal('show');
-                } else {
-                    alert("Please Check any Record First");
-                }
-
-            });
-
-            $('#multiple_delete').on('click', function(e) {
-                e.preventDefault();
-
-                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
-                var tableName = $('.table-name').val();
-                $.ajax({
-                    url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
-                    type: 'Delete',
-                    dataType: "JSON",
-                    data: { "checkedValues": checkedValues, "tableName": tableName },
-                    beforeSend: function() {
-                        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-                    },
-                    success: function(response) {
-
-                        if (response.status == true) {
-
-
-                            $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-                            jQuery('#multiple_delete_modal').modal('hide');
-
-                            setTimeout(function() {
-
-                                alert(response.message);
-                                location.reload();
-
-                            }, 600);
-
-                        }
-                    },
-                    error: function(xhr) {
-                        console.log(xhr.responseText);
+                        });
                     }
-                });
 
-            });
-
-            $('.multiple-action').on('change', function(e) {
-
-                var action = $(this).val();
-                var checkedValues = $('.child:checked').map((i, e) => e.value).get();
-                if (checkedValues.length > 0) {
-                    jQuery('#multiple_delete_modal').modal('show');
-                    $('.action_name').val(action);
-                    $('#multiple_delete').addClass('btn btn-danger');
-                    $("#multiple_delete").html(action);
-                    $('#multiple_delete').removeClass();
-                    $('#multiple_delete').addClass('btn btn-primary');
-                    if (action == 'Delete') {
-                        $('#multiple_delete').addClass('btn btn-danger');
-                    }
-                } else {
-                    alert("Please Check any Record First");
-                    $('.multiple-action').val("");
-                }
-
-                // if(action && checkedValues.length > 0){
-
-                //     $.ajax({
-                //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-                //         type: 'delete',
-                //         dataType: "JSON",
-                //         data: { "checkedValues": checkedValues, "action": action },
-                //         beforeSend: function() {
-                //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-                //         },
-                //         success: function (response)
-                //         {
-
-                //             if(response.status == true){
+                }, 400);
 
 
-                //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-                //                 jQuery('#multiple_delete_modal').modal('hide');
-
-                //                 setTimeout(function() {
-
-                //                     alert(response.message);
-                //                     location.reload();
-
-                //                 }, 600);
-
-                //             }
-                //         },
-                //         error: function(xhr) {
-                //           console.log(xhr.responseText);
-                //         }
-                //     });
-
-
-                // }
-
-            });
-
-            // booking incremnet and
-
-
-
-            // tel input  start
-            if ($('.phone').length > 0) {
-                for (let i = 0; i < $('.phone').length; i++) {
-                    if ($('.phone' + i).length != 0) {
-                        intTelinput(i);
-                    }
-                }
             }
+        },
+    });
+    });
 
-            if ($('#agency_contact').length > 0) {
-                intTelinput('gc');
-                // console.log(inTelinput);
+    $(document).on('change', '.selectStoredText', function() {
+
+        var slug = $(this).val();
+        var quote = jQuery(this).closest('.quote');
+        var key = quote.data('key');
+        $.ajax({
+            url: `${BASEURL}stored/${slug}/text`,
+            type: 'get',
+            dataType: "json",
+            success: function(data) {
+                console.log(key);
+                var id ='#quote_'+key+'_stored_text';
+                setTextEditorValue(id, data);
+            },
+            error: function(reject) {
+                alert(reject);
+            },
+        });
+    
+    });
+    
+    $(document).on('click', '.addmodalforquote', function() {
+    
+        var quote = $(this).closest('.quote');
+        var key = quote.data('key');
+        var target = '.'+$(this).data('show');
+        // console.log(target);
+        quote.find(target).modal('show');
+        quote.find(target+':input').removeAttr('disabled');
+        // jQuery('#accomadation_modal').modal('show').find('input').val('');
+    });
+
+    
+    $(document).on('click', '.removeChild', function() {
+        var id = $(this).data('show');
+        $(id).removeAttr("style");
+        $($(this).data('append')).empty();
+        $(this).attr("style", "display:none");
+    });
+
+    $(document).on('click', '.addChild', function() {
+        $('.append').empty();
+        var id = $(this).data('id');
+        var refNumber = $(this).data('ref');
+        var appendId = $(this).data('append');
+        var url = '{{ route("get.child.reference", ":id") }}';
+        url = url.replace(':id', refNumber);
+        var removeBtnId = $(this).data('remove');
+        var showBtnId = $(this).data('show');
+        $('.addChild').removeAttr("style");
+        $('.removeChild').attr("style", "display:none");
+
+        $(this).attr("style", "display:none")
+            // $(appendId).empty();
+
+        $.ajax({
+            url: BASEURL + 'quotes/child/reference',
+            data: { id: id, ref_no: refNumber },
+            type: 'get',
+            success: function(response) {
+                $(appendId).append(response);
+                $(removeBtnId).removeAttr("style");
             }
+        });
+    });
+
+    // $('#cloneRelevantquote').on('click', function() {
+    //     $('.relevant-quote').eq(0).clone().find("input").val("") .each(function(){
+    //         this.name = this.name.replace(/\[(\d+)\]/, function(){
+    //             return '[' + ($('.quote').length) + ']';
+    //         });
+    //         this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+    //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+    //         });
+    //     }).end().show().insertAfter(".relevant-quote:last");
+    // });
+
+
+            // $('#delete_all').on('click', function(e) {
+            //     e.preventDefault();
+            //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+
+            //     if (checkedValues.length > 0) {
+            //         jQuery('#multiple_delete_modal').modal('show');
+            //     } else {
+            //         alert("Please Check any Record First");
+            //     }
+
+            // });
+
+            // $('#multiple_delete').on('click', function(e) {
+            //     e.preventDefault();
+
+            //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+            //     var tableName = $('.table-name').val();
+            //     $.ajax({
+            //         url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
+            //         type: 'Delete',
+            //         dataType: "JSON",
+            //         data: { "checkedValues": checkedValues, "tableName": tableName },
+            //         beforeSend: function() {
+            //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+            //         },
+            //         success: function(response) {
+
+            //             if (response.status == true) {
+
+
+            //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+            //                 jQuery('#multiple_delete_modal').modal('hide');
+
+            //                 setTimeout(function() {
+
+            //                     alert(response.message);
+            //                     location.reload();
+
+            //                 }, 600);
+
+            //             }
+            //         },
+            //         error: function(xhr) {
+            //             console.log(xhr.responseText);
+            //         }
+            //     });
+
+            // });
+
+        
+
+
+
+   
 
 
 
 
 
-    var btnname = null;
-    //BUlk DATA DELETE
-    $('.btnbulkClick').on('click', function (e) {
-        btnname = $(this).attr('name');
-    })
+    // var btnname = null;
+    // //BUlk DATA DELETE
+    // $('.btnbulkClick').on('click', function (e) {
+    //     btnname = $(this).attr('name');
+    // })
 
 
     // var bulkActionType = null;
@@ -1202,85 +1292,46 @@ $(document).ready(function($) {
 
     ///////////////// RELEVANT QUOTE FIELD
 
-    $('#cloneRelevantquote').on('click', function() {
-    $('.relevant-quote').eq(0).clone().find("input").val("") .each(function(){
-                    this.name = this.name.replace(/\[(\d+)\]/, function(){
-                        return '[' + ($('.quote').length) + ']';
-                    });
-                    this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
-                        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
-                    });
-                }).end().show().insertAfter(".relevant-quote:last");
-    });
+
     ///////////////// RELEVANT QUOTE FIELD
 
 
-//////////// quote media modal close
+    //////////// quote media modal close
 
 
-// remove image work
+    // remove image work
 
 
-// $(document).on('click', '#add_storeText', function () {
-//     var x = document.getElementById("storedText");
-//     if (x.style.display === "none") {
-//         x.style.display = "block";
-//         $('#selectstoretext').removeAttr('disabled');
-//         console.log('show');
-//         $(this).text('x Remove Stored Text')
-//     } else {
-//         console.log('hide');
+    // $(document).on('click', '#add_storeText', function () {
+    //     var x = document.getElementById("storedText");
+    //     if (x.style.display === "none") {
+    //         x.style.display = "block";
+    //         $('#selectstoretext').removeAttr('disabled');
+    //         console.log('show');
+    //         $(this).text('x Remove Stored Text')
+    //     } else {
+    //         console.log('hide');
 
-//         x.style.display = "none";
-//         $(this).text('+ Add Stored Text')
-//         $('#selectstoretext').attr('disabled', true);
+    //         x.style.display = "none";
+    //         $(this).text('+ Add Stored Text')
+    //         $('#selectstoretext').attr('disabled', true);
 
-//     }
-// })
+    //     }
+    // })
 
 
-//////////// quote media modal close
+    //////////// quote media modal close
 
-////////////////////// Stored Text
+    ////////////////////// Stored Text
 
-$(document).on('change', '.selectStoredText', function() {
 
-    var slug = $(this).val();
-    var quote = jQuery(this).closest('.quote');
-    var key = quote.data('key');
-    $.ajax({
-        url: `${BASEURL}stored/${slug}/text`,
-        type: 'get',
-        dataType: "json",
-        success: function(data) {
-            console.log(key);
-            var id ='#quote_'+key+'_stored_text';
-            setTextEditorValue(id, data);
-        },
-        error: function(reject) {
-            alert(reject);
-        },
-    });
 
-});
-
-$(document).on('click', '.addmodalforquote', function() {
-
-    var quote = $(this).closest('.quote');
-    var key = quote.data('key');
-    var target = '.'+$(this).data('show');
-    // console.log(target);
-    quote.find(target).modal('show');
-    quote.find(target+':input').removeAttr('disabled');
-    // jQuery('#accomadation_modal').modal('show').find('input').val('');
-});
-
-/////////////////// Stored Text End
+    /////////////////// Stored Text End
 
 });
 
 // CreateGroupQuote //
-    var checkedQuoteValues = null;
+    // var checkedQuoteValues = null;
     // window.Toast = Swal.mixin({
     //     toast: true,
     //     position: 'top-end',
@@ -1293,31 +1344,19 @@ $(document).on('click', '.addmodalforquote', function() {
     //     }
     // });
 
-    window.Toast = Swal.mixin({
-        toast: true,
-        icon: 'success',
-        position: 'top-right',
-        showConfirmButton: false,
-        timer: 2200,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      });
 
     //Create group quote
-    $('.createGroupQuote').on('click', function (e) {
-        checkedQuoteValues = $('.child:checked').map((i, e) => e.value ).get();
+    // $('.createGroupQuote').on('click', function (e) {
+    //     checkedQuoteValues = $('.child:checked').map((i, e) => e.value ).get();
 
-        /*console.log(checkedQuoteValues);
-        return false;*/
-        if(checkedQuoteValues.length > 1){
-            jQuery('#group-quote-modal').modal('show');
-        }else{
-            alert('Please check atleat two records.');
-        }
-    });
+    //     /*console.log(checkedQuoteValues);
+    //     return false;*/
+    //     if(checkedQuoteValues.length > 1){
+    //         jQuery('#group-quote-modal').modal('show');
+    //     }else{
+    //         alert('Please check atleat two records.');
+    //     }
+    // });
 
     // $(".create-group-quote").submit(function(e) {
     //     e.preventDefault();
@@ -1379,3 +1418,75 @@ $(document).on('click', '.addmodalforquote', function() {
     //         });
     //     });
     // });
+
+
+// $('.nationality-select2').select2({
+//     width: '100%',
+//     theme: "bootstrap",
+//     templateResult: formatState,
+//     templateSelection: formatState,
+// });
+
+// $('.select2-single').select2({
+//     width: '90%',
+//     theme: "bootstrap",
+// });
+
+    // $('.multiple-action').on('change', function(e) {
+
+            //     var action = $(this).val();
+            //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+            //     if (checkedValues.length > 0) {
+            //         jQuery('#multiple_delete_modal').modal('show');
+            //         $('.action_name').val(action);
+            //         $('#multiple_delete').addClass('btn btn-danger');
+            //         $("#multiple_delete").html(action);
+            //         $('#multiple_delete').removeClass();
+            //         $('#multiple_delete').addClass('btn btn-primary');
+            //         if (action == 'Delete') {
+            //             $('#multiple_delete').addClass('btn btn-danger');
+            //         }
+            //     } else {
+            //         alert("Please Check any Record First");
+            //         $('.multiple-action').val("");
+            //     }
+
+                // if(action && checkedValues.length > 0){
+
+                //     $.ajax({
+                //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+                //         type: 'delete',
+                //         dataType: "JSON",
+                //         data: { "checkedValues": checkedValues, "action": action },
+                //         beforeSend: function() {
+                //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+                //         },
+                //         success: function (response)
+                //         {
+
+                //             if(response.status == true){
+
+
+                //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+                //                 jQuery('#multiple_delete_modal').modal('hide');
+
+                //                 setTimeout(function() {
+
+                //                     alert(response.message);
+                //                     location.reload();
+
+                //                 }, 600);
+
+                //             }
+                //         },
+                //         error: function(xhr) {
+                //           console.log(xhr.responseText);
+                //         }
+                //     });
+
+
+                // }
+
+            // });
+
+            // booking incremnet and

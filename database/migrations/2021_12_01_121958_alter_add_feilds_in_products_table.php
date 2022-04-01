@@ -15,7 +15,7 @@ class AlterAddFeildsInProductsTable extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             
-            $table->unsignedBigInteger('category_id')->after('name'); 
+            $table->unsignedBigInteger('category_id')->after('name')->nullable(); 
             $table->unsignedBigInteger('country_id')->after('category_id')->nullable(); 
             $table->unsignedBigInteger('location_id')->after('country_id')->nullable(); 
             $table->unsignedBigInteger('currency_id')->after('location_id')->nullable(); 

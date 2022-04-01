@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         /* Booking Multiple Alert Patches Route */
         Route::patch('multiple-alert/{type}/{id}', array('as' => 'multiple.alert', 'uses' => 'BookingController@multipleAlert'));
+        Route::patch('booking-detail-status/{type}/{id}', array('as' => 'booking.detail.status', 'uses' => 'BookingController@bookingDetailStatus'));
     });
 
 
@@ -499,6 +500,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyConversionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyConversionController@update'));
     });
+
+    /*  Cabins */
+    Route::group([
+        'prefix' => 'cabins',
+        'as'     => 'cabins.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
+    });
     
     /*  Harbours, Train and Points of Interest */
     Route::group([
@@ -620,6 +636,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StoreTextController@bulkAction' ));
     });
 
+    /*  Stations */
+    Route::group([
+        'prefix' => 'stations',
+        'as'     => 'stations.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'StationController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'StationController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'StationController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'StationController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'StationController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'StationController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
+    });
+
         /*
     |--------------------------------------------------------------------------
     | Report
@@ -676,7 +707,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
         Route::post('store-group-owner', array('as' => 'response.group_owners.store', 'uses' => 'ResponseController@storeGroupOwner'));
+        Route::post('store-supplier', array('as' => 'response.suppliers.store', 'uses' => 'ResponseController@storeSupplier'));
+        Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
+        Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
 
+        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
 
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
@@ -708,6 +743,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         Route::get('filter-currency-rate', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filterCurrencyRate'));
+
         
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));

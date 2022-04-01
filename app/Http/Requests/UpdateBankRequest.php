@@ -25,14 +25,14 @@ class UpdateBankRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('banks','name')->ignore(decrypt($this->id))],
+            'name' => ['required', Rule::unique('cabin_types','name')->ignore(decrypt($this->id))],
         ];
     }
 
     public function attributes()
     {
         return [
-            'name'    => 'Bank Name',
+            'name'    => 'Cabin Name',
         ];
     }
 }

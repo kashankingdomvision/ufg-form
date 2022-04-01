@@ -173,15 +173,15 @@ $(document).ready(function () {
 
   window.getBookingAmountPerPerson = function () {
     var paxNumber = parseFloat($(".pax-number").val());
-    var totalSellingPriceInBookingCurrency = parseFloat($(".total-selling-price").val());
+    var totalSellingPriceInBookingCurrency = removeComma($(".total-selling-price").val());
     var bookingAmountPerPerson = parseFloat(totalSellingPriceInBookingCurrency) / parseFloat(paxNumber);
     $('.booking-amount-per-person').val(check(bookingAmountPerPerson));
   };
 
   window.getBookingAmountPerPersonInOtherSellingPrice = function () {
-    var paxNumber = parseFloat($(".pax-number").val());
-    var sellingPriceOtherCurrencyRate = $('.selling-price-other-currency-rate').val();
-    var bookingAmountPerPersonInOtherSellingPrice = sellingPriceOtherCurrencyRate / paxNumber;
+    var paxNumber = $(".pax-number").val();
+    var sellingPriceOtherCurrencyRate = removeComma($('.selling-price-other-currency-rate').val());
+    var bookingAmountPerPersonInOtherSellingPrice = parseFloat(sellingPriceOtherCurrencyRate) / parseFloat(paxNumber);
     $('.booking-amount-per-person-in-osp').val(check(bookingAmountPerPersonInOtherSellingPrice));
   };
 
@@ -191,7 +191,7 @@ $(document).ready(function () {
     if (sellingPriceOtherCurrency) {
       var rateType = $('input[name="rate_type"]:checked').val();
       var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
-      var totalSellingPrice = parseFloat($('.total-selling-price').val());
+      var totalSellingPrice = removeComma($('.total-selling-price').val());
       var rate = getRate(bookingCurrency, sellingPriceOtherCurrency, rateType);
       var sellingPriceOtherCurrencyRate = parseFloat(totalSellingPrice) * parseFloat(rate);
       $('.selling-price-other-currency-rate').val(check(sellingPriceOtherCurrencyRate));
@@ -210,7 +210,7 @@ $(document).ready(function () {
     var commissionPercentage = 0;
     var agency = $("input[name=agency]:checked").val();
     var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
-    var netValue = $('.total-markup-amount').val();
+    var netValue = removeComma($('.total-markup-amount').val());
     var commissionID = $('.commission-id').val();
     var commissionGroupID = $('.commission-group-id').val();
     var brandID = $('.brand-id').val();
@@ -225,7 +225,7 @@ $(document).ready(function () {
     // console.log(currencyID);
 
     if (agency == 1 && agencyCommissionType == 'paid-net-of-commission' || agency == 1 && agencyCommissionType == 'we-pay-commission-on-departure') {
-      netValue = $('.total-net-margin').val();
+      netValue = removeComma($('.total-net-margin').val());
     }
 
     if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID) {
@@ -273,8 +273,8 @@ $(document).ready(function () {
   };
 
   window.getCalculatedTotalNetMarkup = function () {
-    var agencyCommission = $('.agency-commission').val();
-    var agencyTotalMarkup = $('.total-markup-amount').val();
+    var agencyCommission = removeComma($('.agency-commission').val());
+    var agencyTotalMarkup = removeComma($('.total-markup-amount').val());
     var totalAgencyNetMarkup = parseFloat(agencyTotalMarkup) - parseFloat(agencyCommission);
     $('.total-net-margin').val(check(totalAgencyNetMarkup));
   };
@@ -282,13 +282,13 @@ $(document).ready(function () {
   window.getBookingRateTypeValues = function () {
     var rateType = $("input[name=rate_type]:checked").val();
     var actualCostArray = $(".actual-cost").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var sellingPriceArray = $(".selling-price").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var markupAmountArray = $(".markup-amount").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
     var supplierCurrencyArray = $(".booking-supplier-currency-id").map(function (i, e) {
@@ -328,7 +328,7 @@ $(document).ready(function () {
   window.getBookingTotalValues = function () {
     var markupType = $("input[name=markup_type]:checked").val();
     var actualCostInBookingCurrencyArray = $(".actual-cost-in-booking-currency").map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var actualCostInBookingCurrency = actualCostInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
@@ -337,13 +337,13 @@ $(document).ready(function () {
 
     if (markupType == 'itemised') {
       var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map(function (i, e) {
-        return parseFloat(e.value);
+        return parseFloat(removeComma(e.value));
       }).get();
       var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce(function (a, b) {
         return a + b;
       }, 0);
       var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
-        return parseFloat(e.value);
+        return parseFloat(removeComma(e.value));
       }).get();
       var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
         return a + b;
@@ -382,13 +382,13 @@ $(document).ready(function () {
   window.getBookingBookingCurrencyValues = function () {
     var rateType = $("input[name=rate_type]:checked").val();
     var actualCostArray = $(".actual-cost").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var sellingPriceArray = $(".selling-price").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var markupAmountArray = $(".markup-amount").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
     var supplierCurrencyArray = $(".booking-supplier-currency-id").map(function (i, e) {
@@ -460,13 +460,13 @@ $(document).ready(function () {
   function getQuoteBookingCurrencyValues() {
     var rateType = $("input[name=rate_type]:checked").val();
     var estimatedCostArray = $(".estimated-cost").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var sellingPriceArray = $(".selling-price").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var markupAmountArray = $(".markup-amount").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
     var supplierCurrencyArray = $(".supplier-currency-id").map(function (i, e) {
@@ -595,34 +595,12 @@ $(document).ready(function () {
       $('#' + ids[i]).find('.mainLabel').text('Passenger #' + count + ' Full Name');
     }
   });
-  $(document).on('change', '.getBrandtoHoliday', function () {
-    var brand_id = $(this).val();
-    var options = '';
-    var url = BASEURL + 'brand/to/holidays';
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_id': brand_id
-      },
-      success: function success(response) {
-        options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-        });
-        $('.appendHolidayType').html(options);
-      }
-    });
-    getCommissionRate();
-  });
   /* Hide Potentail Commission for another Behalf User */
 
   $(document).on('change', '.sales-person-id', function () {
     console.log("sales  salessalessales");
     var salesPersonID = $(this).val();
     var userID = $('.user-id').val();
-    console.log(salesPersonID);
-    console.log(userID);
 
     if (salesPersonID != userID) {
       $('#potential_commission_feild').addClass('d-none');
@@ -646,13 +624,93 @@ $(document).ready(function () {
       }
     });
   });
+
+  function findReferenceData(reference_no) {
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': CSRFTOKEN
+      },
+      url: "".concat(BASEURL, "find/reference"),
+      data: {
+        ref_no: reference_no
+      },
+      type: 'POST',
+      dataType: "json",
+      beforeSend: function beforeSend() {
+        $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
+      },
+      success: function success(data) {
+        if (data.response) {
+          if (data.response.tas_ref) {
+            $("#tas_ref").val(data.response.tas_ref);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+            $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
+          }
+
+          if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
+            $('#brand_id').val(data.response.brand.brand_id).change();
+          }
+
+          if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
+            setTimeout(function () {
+              $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+            }, 500);
+          }
+
+          if (data.response.sale_person) {
+            // $('#sale_person_id').val(data.response.sale_person).trigger('change');
+            $("#sale_person_id option[data-email=\"".concat(data.response.sale_person, "\"]")).prop('selected', 'selected').change();
+          }
+
+          if (data.response.pax) {
+            $('#pax_no').val(data.response.pax).trigger('change');
+          }
+
+          if (data.response.currency) {
+            $("#currency_id option[data-code=\"".concat(data.response.currency, "\"]")).prop('selected', 'selected').change();
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
+            $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
+            $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+          } // Passengers Details
+
+
+          if (data.response.passengers.passengers.length > 0) {
+            data.response.passengers.passengers.forEach(function ($_value, $key) {
+              var $_count = $key + 1;
+              $("input[name=\"pax[".concat($_count, "][full_name]\"]")).val($_value.passenger_name);
+              $("input[name=\"pax[".concat($_count, "][email_address]\"]")).val($_value.passenger_email);
+              $("input[name=\"pax[".concat($_count, "][contact_number]\"]")).val($_value.passenger_contact);
+              $("input[name=\"pax[".concat($_count, "][date_of_birth]\"]")).val($_value.passenger_dbo);
+              $("input[name=\"pax[".concat($_count, "][bedding_preference]\"]")).val($_value.bedding_prefrences);
+              $("input[name=\"pax[".concat($_count, "][dietary_preferences]\"]")).val($_value.dinning_prefrences);
+            });
+          }
+        }
+
+        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+      },
+      error: function error(reject) {
+        $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
+        $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+      }
+    });
+  }
+
   $(document).on('click', '.search-reference', function () {
-    var searchRef = $(this);
     var reference_no = $('.reference-name').val();
 
     if (reference_no == '') {
-      alert('Reference number is not found');
-      searchRef.text('Search').prop('disabled', false);
+      Toast.fire({
+        icon: 'error',
+        title: 'Reference Number is not found.'
+      });
     } else {
       $('#ref_no').closest('.form-group').find('.text-danger').html(''); //check refrence is already exist in system
 
@@ -660,112 +718,32 @@ $(document).ready(function () {
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: BASEURL + 'find/reference/' + reference_no + '/exist',
+        url: "".concat(BASEURL, "find/reference/").concat(reference_no, "/exist"),
         type: 'get',
         dataType: "json",
         success: function success(data) {
-          var r = true;
-
           if (data.response == true) {
-            r = confirm('The reference number is already exists. Are you sure! you want to create quote again on same reference');
-          }
-
-          if (r == true) {
-            $.ajax({
-              headers: {
-                'X-CSRF-TOKEN': CSRFTOKEN
-              },
-              url: BASEURL + 'find/reference',
-              data: {
-                ref_no: reference_no
-              },
-              type: 'POST',
-              dataType: "json",
-              beforeSend: function beforeSend() {
-                $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
-                searchRef.prop('disabled', true);
-              },
-              success: function success(data) {
-                // console.log(data);
-                var tbody = '';
-
-                if (data.response) {
-                  if (data.response.tas_ref) {
-                    $("#tas_ref").val(data.response.tas_ref);
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
-                    $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
-                  }
-
-                  if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
-                    $('#brand_id').val(data.response.brand.brand_id).change();
-                  }
-
-                  if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
-                    setTimeout(function () {
-                      $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change(); // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                    }, 500);
-                  }
-
-                  if (data.response.sale_person) {
-                    $('#sale_person_id').val(data.response.sale_person).trigger('change');
-                  }
-
-                  if (data.response.pax) {
-                    $('#pax_no').val(data.response.pax).trigger('change');
-                  }
-
-                  if (data.response.currency) {
-                    $("#currency_id").find('option').each(function () {
-                      if ($(this).data('code') == data.response.currency) {
-                        $(this).attr("selected", "selected").change();
-                      }
-                    });
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
-                    $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                  }
-
-                  if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
-                    $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                  } // Passengers Details
-
-
-                  if (data.response.passengers.passengers.length > 0) {
-                    data.response.passengers.passengers.forEach(function ($_value, $key) {
-                      var $_count = $key + 1;
-                      $('input[name="pax[' + $_count + '][full_name]"]').val($_value.passenger_name);
-                      $('input[name="pax[' + $_count + '][email_address]"]').val($_value.passenger_email);
-                      $('input[name="pax[' + $_count + '][contact_number]"]').val($_value.passenger_contact);
-                      $('input[name="pax[' + $_count + '][date_of_birth]"]').val($_value.passenger_dbo);
-                      $('input[name="pax[' + $_count + '][bedding_preference]"]').val($_value.bedding_prefrences);
-                      $('input[name="pax[' + $_count + '][dietary_preferences]"]').val($_value.dinning_prefrences);
-                    });
-                  }
-                } else {
-                  alert(data.error);
-                }
-
-                searchRef.prop('disabled', false);
-                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-              },
-              error: function error(reject) {
-                searchRef.prop('disabled', false);
-                $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
-                $('#ref_no').closest('.form-group').find('.text-danger').html(reject.responseJSON.errors);
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "The Reference number is already exists. You want to Create it Again?",
+              icon: 'question',
+              showCancelButton: true,
+              confirmButtonColor: '#28a745',
+              cancelButtonColor: '#dc3545',
+              confirmButtonText: "Yes, Create it !"
+            }).then(function (result) {
+              if (result.isConfirmed) {
+                findReferenceData(reference_no);
               }
             });
+          } else {
+            findReferenceData(reference_no);
           }
         },
         error: function error(reject) {
-          alert(reject);
-          searchRef.text('Search').prop('disabled', false);
-          searchRef.prop('disabled', false);
           $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
         }
-      }); //ajax for references
+      });
     }
   });
   $(document).on('change', '.selling-price-other-currency', function () {
@@ -787,10 +765,10 @@ $(document).ready(function () {
     getCommissionRate();
   });
   $(document).on('click', '#add_more, #add_more_booking', function (e) {
-    jQuery('#new_service_modal').modal('show');
+    $('#new_service_modal').modal('show');
   });
   $(document).on('change', '.season-id', function () {
-    getCommissionRate(); // $('.datepicker').datepicker("setDate", '');
+    getCommissionRate();
   });
   $(document).on('change', '.holiday-type-id', function () {
     getCommissionRate();
@@ -807,10 +785,11 @@ $(document).ready(function () {
       },
       success: function success(response) {
         options += '<option value="">Select Type Of Holiday</option>';
-        $.each(response, function (key, value) {
+        $.each(response.holiday_types, function (key, value) {
           options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
         });
         $('.appendHolidayType').html(options);
+        $(".supplier-country-id").val(response.brand_supplier_countries).change();
       }
     });
     getCommissionRate();
@@ -830,7 +809,30 @@ $(document).ready(function () {
   $(document).on('change, click', '.agency-commission-type', function () {
     onChangeAgencyCommissionType();
   });
-});
+  $(document).on('change', '.agency-commission', function () {
+    getCalculatedTotalNetMarkup();
+    getCommissionRate();
+  });
+  $(document).on('change', '#lead_passenger_dbo', function () {
+    var dob = $('#lead_passenger_dbo').val();
+    ageCheck(dob);
+  });
+
+  function ageCheck(dob) {
+    var today = new Date();
+    var birthDate = convertDate(dob);
+    var dayDiff = Math.ceil(today.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365);
+    var age = parseInt(dayDiff);
+
+    if (age != null) {
+      if (age < 18) {
+        $('#lead_passenger_dbo').parent('.form-group').find('.text-danger').html("Your age is less than 18 years old");
+      } else {
+        $('#lead_passenger_dbo').parent('.form-group').find('.text-danger').html('');
+      }
+    }
+  }
+}); // $('.datepicker').datepicker("setDate", '');
 
 /***/ }),
 
@@ -844,10 +846,10 @@ $(document).ready(function () {
 $(document).ready(function () {
   /*
   |--------------------------------------------------------------------------------
-  | Functions
+  | 
   |--------------------------------------------------------------------------------
   */
-  function createElm(quote, selector, type, obj) {
+  function createElm(quote, selector, type, obj, key) {
     var inputTypes = ['text', 'textarea', 'number', 'select', 'autocomplete'];
     var appendHTML = '';
 
@@ -925,10 +927,15 @@ $(document).ready(function () {
       if (['text', 'number'].includes(obj.type)) element = 'input';else if (['autocomplete', 'select'].includes(obj.type)) element = 'select';else element = obj.type;
       var elm = document.createElement(element); // Set attributes
 
-      if (obj.type == 'text') elm.setAttribute('type', 'text');
+      if (obj.type == 'text') {
+        elm.setAttribute('type', 'text');
+        var selectedValue = obj.value;
+      }
+
       if (obj.type == 'number') elm.setAttribute('type', 'number');
       if (obj.type == 'textarea') elm.setAttribute('rows', '1');
       elm.setAttribute('name', obj.name);
+      elm.setAttribute('data-title_name', "badge-".concat(obj.label.trim().toLowerCase().replace(/ /g, "-")));
 
       if (obj.placeholder != undefined) {
         elm.setAttribute('placeholder', obj.placeholder);
@@ -967,10 +974,17 @@ $(document).ready(function () {
         //Create and append the options
         for (var _i2 = 0; _i2 < obj.values.length; _i2++) {
           var option = document.createElement("option");
-          option.value = obj.values[_i2].label;
-          option.text = obj.values[_i2].value;
+
+          if (_i2 == 0) {
+            option.value = "";
+            option.text = "Select ".concat(obj.label);
+          } else {
+            option.value = obj.values[_i2].label;
+            option.text = obj.values[_i2].value;
+          }
 
           if (obj.values[_i2].selected) {
+            var selectedValue = obj.values[_i2].label;
             option.setAttribute('selected', 'selected');
           }
 
@@ -978,17 +992,20 @@ $(document).ready(function () {
         }
       }
 
-      appendHTML = createParentDivOfElm(elm, type, obj);
+      appendHTML = createParentDivOfElm(elm, type, obj, key);
     }
 
-    quote.find(selector).append(appendHTML);
+    quote.find(".badge-".concat(obj.label.trim().toLowerCase().replace(/ /g, "-"))).html(selectedValue); // quote.find('.supplier-id-feild').insertAfter(appendHTML);
+
+    $(appendHTML).insertBefore(quote.find(selector));
     reinitializedSingleSelect2(); // insElment.appendChild(div);
-    // $(div).insertAfter(quote.find('.product-id-col'));
+    // $(appendHTML).insertAfter(quote.find('.supplier-id-feild'));
   }
 
-  function createParentDivOfElm(elem, type, obj) {
+  function createParentDivOfElm(elem, type, obj, key) {
     var div = document.createElement('div');
     if (type == 'category_details') div.setAttribute('class', 'col-md-3 cat-feild-col');
+    if (['category_details', 'product_details'].includes(type)) div.setAttribute('data-key', key);
     if (type == 'product_details') div.setAttribute('class', 'col-md-3 prod-feild-col');
     var formGroup = document.createElement('div');
     formGroup.setAttribute('class', 'form-group');
@@ -996,18 +1013,22 @@ $(document).ready(function () {
     label.innerHTML = "&nbsp; ".concat(obj.label);
     formGroup.appendChild(label); // add plus icon 
 
-    if (['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners'].includes(obj.data)) {
+    if (['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types', 'stations'].includes(obj.data)) {
       var dynamicClass = {
         airport_codes: "store-airport-code-modal",
         harbours: "store-harbour-modal",
         hotels: "store-hotel-modal",
-        group_owners: "group-owner-modal"
+        group_owners: "group-owner-modal",
+        cabin_types: "cabin-type-modal",
+        stations: "station-modal"
       };
       var modalID = {
         airport_codes: "store_airport_code_modal",
         harbours: "store_harbour_modal",
         hotels: "store_hotel_modal",
-        group_owners: "store_group_owner_modal"
+        group_owners: "store_group_owner_modal",
+        cabin_types: "store_cabin_type_modal",
+        stations: "store_station_modal"
       };
       var icon = document.createElement('i');
       icon.setAttribute('class', 'fas fa-plus');
@@ -1024,15 +1045,10 @@ $(document).ready(function () {
     return div;
   }
 
-  function createAllElm(location, selector, type, obj) {
-    obj.forEach(function (item) {
-      createElm(location, selector, type, item);
+  function createAllElm(quote, selector, type, obj) {
+    obj.forEach(function (item, index) {
+      createElm(quote, selector, type, item, index);
     });
-  }
-
-  function convertDate(date) {
-    var dateParts = date.split("/");
-    return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
   }
 
   $(".quote").each(function () {
@@ -1042,11 +1058,11 @@ $(document).ready(function () {
     var productFormData = $("#quote_".concat(quoteKey, "_product_details")).val();
 
     if (categoryFormData != '' && typeof categoryFormData != 'undefined') {
-      createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(categoryFormData));
+      createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(categoryFormData));
     }
 
     if (productFormData != '' && typeof productFormData != 'undefined') {
-      createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(productFormData));
+      createAllElm(quote, '.payment-type-feild', 'product_details', JSON.parse(productFormData));
     }
   });
   /* Expand Collapse Script */
@@ -1101,8 +1117,15 @@ $(document).ready(function () {
     quote.find('.badge-date-of-service').html($(this).val());
     quote.find('.badge-date-of-service').removeClass('d-none');
 
+    if (convertDate(DateOFService) != null) {
+      $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setStartDate", DateOFService);
+    }
+
     if (convertDate(DateOFService) < convertDate(nowDate)) {
-      alert('Please select valid Date, The date you select is already Passed.');
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please Select Valid Date, Selected Date is already Passed.'
+      });
       $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", '');
       $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
     }
@@ -1113,7 +1136,10 @@ $(document).ready(function () {
     }
 
     if (convertDate(EndDateOFService) < convertDate(DateOFService) && category_enddateofservice != 1) {
-      alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please Select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.'
+      });
       $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", '');
       $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
     } else {
@@ -1129,15 +1155,22 @@ $(document).ready(function () {
     var EndDateOFService = $("#quote_".concat(quoteKey, "_end_date_of_service")).val();
     var nowDate = todayDate();
     var category_enddateofservice = $("#quote_".concat(quoteKey, "_category_id")).find(':selected').attr('data-enddateofservice');
+    quote.find('.badge-end-date-of-service').html($(this).val());
 
     if (convertDate(EndDateOFService) < convertDate(nowDate)) {
-      alert('Please select valid Date, The date you select is already Passed.');
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please Select Valid Date, Selected Date is already Passed.'
+      });
       $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", '');
       $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
     }
 
     if (convertDate(EndDateOFService) < convertDate(DateOFService) && category_enddateofservice != 1) {
-      alert('Please select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.');
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please Select Valid Date\nEnd Date of Service should be equal or greater than Start Date of Service.'
+      });
       $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", '');
       $("#quote_".concat(quoteKey, "_number_of_nights")).val('');
     } else {
@@ -1150,31 +1183,44 @@ $(document).ready(function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
-    var feildIndex = $(this).parents('.cat-feild-col').index();
+    var feildIndex = $(this).parents('.cat-feild-col').data('key');
+    var labelName = $(this).data('title_name');
+    var selectedValue = $(this).val();
     formData[feildIndex].userData = [$(this).val()];
     formData[feildIndex].value = $(this).val();
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
-    console.log(JSON.stringify(formData));
-  });
+    quote.find(".".concat(labelName)).html(selectedValue);
+  }); // formData[feildIndex].values[optionIndex].selected = true;
+  // var formData = formData[feildIndex].map(function (obj) {
+  // if (obj.type == 'select' || obj.type == 'autocomplete') {
+  //     obj.values.map(function (obj) {
+  //         obj.selected = false;
+  //         return obj;
+  //     });
+  // }
+  // return obj;
+  // });
+
   $(document).on('change', '.cat-details-select', function (e) {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_category_details")).val());
-    var feildIndex = $(this).parents('.cat-feild-col').index();
-    var optionIndex = $(this).find(":selected").index(); // formData[feildIndex].values[optionIndex].selected = true;
+    var feildIndex = $(this).parents('.cat-feild-col').data('key');
+    var optionIndex = $(this).find(":selected").index();
+    var labelName = $(this).data('title_name');
+    var obj = formData[feildIndex];
+    var selectedValue = $(this).find(":selected").val();
 
-    var formData = formData.map(function (obj) {
-      if (obj.type == 'select' || obj.type == 'autocomplete') {
-        obj.values.map(function (obj) {
-          obj.selected = false;
-          return obj;
-        });
-      }
+    if (['select', 'autocomplete'].includes(obj.type)) {
+      obj.values.map(function (obj) {
+        obj.selected = false;
+        return obj;
+      });
+    }
 
-      return obj;
-    });
     formData[feildIndex].values[optionIndex].selected = true;
     quote.find("#quote_".concat(quoteKey, "_category_details")).val(JSON.stringify(formData));
+    quote.find(".".concat(labelName)).html(selectedValue);
   });
   $(document).on('change', '.cat-details-checkbox', function (e) {
     var quote = $(this).closest('.quote');
@@ -1212,6 +1258,7 @@ $(document).ready(function () {
     var category_id = $(this).val();
     var category_name = $(this).find(':selected').attr('data-name');
     var category_slug = $(this).find(':selected').attr('data-slug');
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
     var options = '';
     var formData = ''; // remove already appended feild
 
@@ -1222,17 +1269,18 @@ $(document).ready(function () {
       quote.find('.badge-category-id').html(""); // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       // $(`#quote_${quoteKey}_supplier_location_id`).attr('disabled', 'disabled');
 
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
-      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
-      $('.show-tf').addClass('d-none');
+      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change'); // $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+
+      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change'); // $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+
+      quote.find('.show-tf').addClass('d-none');
+      quote.find('.group-owner-feild').addClass('d-none');
       return;
     } else {
       // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
       // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
-      quote.find('.badge-category-id').html(category_name);
+      quote.find('.badge-category-id').html(category_name); // getCatSetLabel(quote, category_slug);
     } // set Payment type (Booking Type) refundable when category is fligt
 
 
@@ -1243,19 +1291,38 @@ $(document).ready(function () {
       $("#quote_".concat(quoteKey, "_booking_type_id")).val('').change();
     }
 
+    if (category_slug == 'cruise') {
+      quote.find('.group-owner-feild').removeClass('d-none');
+    } else {
+      quote.find('.group-owner-feild').addClass('d-none');
+    }
+
     $.ajax({
       type: 'get',
       url: "".concat(BASEURL, "category/to/supplier"),
       data: {
         'category_id': category_id,
         'detail_id': detail_id,
-        'model_name': model_name
+        'model_name': model_name,
+        'supplier_country_ids': supplier_country_ids
       },
       success: function success(response) {
+        if (response && response.suppliers.length > 0) {
+          options += "<option value=''>Select Supplier</option>";
+          $.each(response.suppliers, function (key, value) {
+            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+          });
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        } else {
+          options = "<option value=''>Select Supplier</option>";
+        }
+
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+
         if (response.category_details != '' && response.category_details != 'undefined') {
           $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details); // console.log(JSON.parse(response.category_details));
 
-          createAllElm(quote, '.category-details-render', 'category_details', JSON.parse(response.category_details));
+          createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
         } // Hide & Show Category details btn according to status
 
 
@@ -1293,56 +1360,102 @@ $(document).ready(function () {
             $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker("setDate", DateOFService);
           }
           /* set product dropdown */
+          // if(response && response.products.length > 0){
+          //     options += "<option value=''>Select Product</option>";
+          //     $.each(response.products, function(key, value) {
+          //         options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
+          //     });
+          //     $(`#quote_${quoteKey}_product_id`).html(options);
+          // }else{
+          //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
+          // }
 
-
-          if (response && response.products.length > 0) {
-            options += "<option value=''>Select Product</option>";
-            $.each(response.products, function (key, value) {
-              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
-            });
-            $("#quote_".concat(quoteKey, "_product_id")).html(options);
-          } else {
-            $("#quote_".concat(quoteKey, "_product_id")).html("<option value=''>Select Product</option>");
-          }
         }
       }
     });
   });
+
+  function getCatSetLabel(quote, category_slug) {
+    if (category_slug != 'transfer') {
+      quote.find('.badge-pick-up-location').html('');
+      quote.find('.badge-drop-off-location').html('');
+    }
+
+    if (category_slug != 'accommodation') {
+      quote.find('.badge-room-type').html('');
+    }
+
+    if (category_slug != 'cruise') {
+      quote.find('.badge-group-owner-id').html('');
+    }
+
+    if (category_slug != 'flights') {
+      quote.find('.badge-departure-airport').html('');
+      quote.find('.badge-arrival-airport').html('');
+    }
+
+    if (category_slug != 'ferry-catamaran') {
+      quote.find('.badge-departure-harbour').html('');
+      quote.find('.badge-arrival-harbour').html('');
+    }
+
+    if (category_slug != 'misc') {
+      quote.find('.badge-misc-details').html('');
+    }
+
+    if (category_slug != 'misc') {
+      quote.find('.badge-departure-station').html('');
+      quote.find('.badge-arrival-station').html('');
+    }
+  }
+
+  $(document).on('change', '.group-owner-id', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var value = $(this).find(':selected').data('name');
+    quote.find('.badge-group-owner-id').html(value);
+  });
   $(document).on('change', '.supplier-country-id', function () {
-    console.log("dsdsdsd");
-    var supplier_country_ids = $(this).val();
-    var url = BASEURL + 'country/to/supplier';
-    var options = '';
-    var selectOption = "<option value=''>Select Supplier</option>";
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
 
     if (supplier_country_ids && supplier_country_ids.length > 0) {
-      $.ajax({
-        type: 'get',
-        url: url,
-        data: {
-          'supplier_country_ids': supplier_country_ids
-        },
-        beforeSend: function beforeSend() {
-          $('.supplier-id').html(options);
-        },
-        success: function success(response) {
-          if (response && response.suppliers.length > 0) {
-            options += selectOption;
-            $.each(response.suppliers, function (key, value) {
-              options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
-            });
-          } else {
-            options = selectOption;
-          }
-
-          $('.supplier-id').html(options);
-        }
-      });
+      getSuppliers(quoteKey, supplier_country_ids, category_id);
     } else {
-      options = selectOption;
-      $('.supplier-id').html(options);
+      $("#quote_".concat(quoteKey, "_supplier_id")).html("<option value=''>Select Supplier</option>");
     }
   });
+
+  function getSuppliers(quoteKey, supplier_country_ids, category_id) {
+    var options = "";
+    var selectOption = "<option value=''>Select Supplier</option>";
+    $.ajax({
+      type: 'get',
+      url: "".concat(BASEURL, "country/to/supplier"),
+      data: {
+        'supplier_country_ids': supplier_country_ids,
+        'category_id': category_id
+      },
+      beforeSend: function beforeSend() {
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(selectOption);
+      },
+      success: function success(response) {
+        if (response && response.suppliers.length > 0) {
+          options += selectOption;
+          $.each(response.suppliers, function (key, value) {
+            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+          });
+        } else {
+          options = selectOption;
+        }
+
+        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+      }
+    });
+  }
+
   $(document).on('change', '.supplier-location-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -1381,6 +1494,43 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
       }
     });
+  });
+  $(document).on('change', '.supplier-id', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    var supplier_id = $(this).val();
+    var options = "";
+    var selectOption = "<option value=''>Select Product</option>";
+
+    if (supplier_id != "") {
+      $.ajax({
+        type: 'get',
+        url: "".concat(BASEURL, "supplier-on-change"),
+        data: {
+          'supplier_id': supplier_id
+        },
+        beforeSend: function beforeSend() {
+          $("#quote_".concat(quoteKey, "_product_id")).html(selectOption);
+        },
+        success: function success(response) {
+          if (response && Object.keys(response.supplier).length > 0) {
+            $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
+          }
+
+          if (response && response.supplier_products.length > 0) {
+            options += selectOption;
+            /* set product dropdown*/
+
+            $.each(response.supplier_products, function (key, value) {
+              options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
+            });
+            $("#quote_".concat(quoteKey, "_product_id")).html(options);
+          } else {
+            $("#quote_".concat(quoteKey, "_product_id")).html(selectOption);
+          }
+        }
+      });
+    }
   });
   $(document).on('submit', '#form_add_product', function () {
     event.preventDefault();
@@ -1433,6 +1583,78 @@ $(document).ready(function () {
       }
     });
   });
+  $(document).on('change', '.getCountryToLocation', function () {
+    var supplier_country_ids = $(this).val();
+    var url = BASEURL + 'country/to/location';
+    var options = '';
+    $.ajax({
+      type: 'get',
+      url: url,
+      data: {
+        'supplier_country_ids': supplier_country_ids
+      },
+      beforeSend: function beforeSend() {
+        $('.appendCountryLocation').html(options);
+      },
+      success: function success(response) {
+        $.each(response, function (key, value) {
+          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.country_name, ") </option>");
+        });
+        $('.appendCountryLocation').html(options);
+      }
+    });
+  });
+  var quoteKeyForSupplier = '';
+  $(document).on('click', '.add-new-supplier', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    quoteKeyForSupplier = quoteKey;
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var modal = jQuery('#store_supplier_modal');
+    modal.modal('show');
+    modal.find("#supplier_country_id").val(supplier_country_ids);
+  });
+  $(document).on('submit', '#store_supplier_modal_form', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    var modalID = $(this).closest('.modal').attr('id');
+    var options = '';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#".concat(formID))[0].reset();
+        $('#categories, #location_id, #country_id').val(null).trigger('change');
+        $("#".concat(modalID)).modal('hide');
+        Toast.fire({
+          icon: 'success',
+          title: response.success_message
+        });
+
+        if (response.suppliers.length > 0) {
+          options += "<option value=''>Select Supplier</option>";
+          $.each(response.suppliers, function (key, value) {
+            options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+          });
+          $("#quote_".concat(quoteKeyForSupplier, "_supplier_id")).html(options);
+        }
+      },
+      error: function error(data) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(data, "#".concat(modalID));
+      }
+    });
+  });
   var quoteKeyForProduct = '';
   $(document).on('click', '.add-new-product', function () {
     var quote = $(this).closest('.quote');
@@ -1456,14 +1678,69 @@ $(document).ready(function () {
   });
   var quoteKeyForCategoryFeildModal = '';
   var quoteForCategoryFeildModal = '';
+  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function () {
+    var quote = $(this).closest('.quote');
+    var quoteKey = quote.data('key');
+    quoteKeyForSupplier = quoteKey;
+    quoteKeyForCategoryFeildModal = quoteKey;
+    quoteForCategoryFeildModal = quote;
+    var modal_id = $(this).data('modal_id');
+    var modal = $("#".concat(modal_id));
+    var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
+    var model_name = $("#model_name").val();
+  });
+  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    var modalID = $(this).closest('.modal').attr('id');
+    var options = '';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#".concat(formID))[0].reset();
+        $('#categories, #location_id, #country_id').val(null).trigger('change');
+        $("#".concat(modalID)).modal('hide');
+        Toast.fire({
+          icon: 'success',
+          title: response.success_message
+        });
+
+        if (response.suppliers.length > 0) {
+          options += "<option value=''>Select Supplier</option>";
+          $.each(response.suppliers, function (key, value) {
+            options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
+          });
+          $("#quote_".concat(quoteKeyForSupplier, "_supplier_id")).html(options);
+        }
+      },
+      error: function error(data) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(data, "#".concat(modalID));
+      }
+    });
+  });
+  var quoteKeyForCategoryFeildModal = '';
+  var quoteForCategoryFeildModal = '';
   $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     quoteKeyForCategoryFeildModal = quoteKey;
     quoteForCategoryFeildModal = quote;
     var modal_id = $(this).data('modal_id');
-    var modal = $("#".concat(modal_id));
-    console.log(modal_id);
+    var modal = $("#".concat(modal_id)); // console.log(modal_id);
+
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
     var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
     var model_name = $("#model_name").val();
@@ -1545,7 +1822,7 @@ $(document).ready(function () {
 
         if (response.product_details != '' && response.product_details != 'undefined') {
           $("#quote_".concat(quoteKey, "_product_details")).val(response.product_details);
-          createAllElm(quote, '.product-details-render', 'product_details', JSON.parse(response.product_details));
+          createAllElm(quote, '.payment-type-feild', 'product_details', JSON.parse(response.product_details));
         }
       }
     });
@@ -1556,11 +1833,10 @@ $(document).ready(function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var formData = JSON.parse($("#quote_".concat(quoteKey, "_product_details")).val());
-    var feildIndex = $(this).parents('.prod-feild-col').index();
+    var feildIndex = $(this).parents('.prod-feild-col').data('key');
     formData[feildIndex].userData = [$(this).val()];
     formData[feildIndex].value = $(this).val();
     quote.find("#quote_".concat(quoteKey, "_product_details")).val(JSON.stringify(formData));
-    console.log(JSON.stringify(formData));
   });
   $(document).on('change', '.prod-details-select', function (e) {
     var quote = $(this).closest('.quote');
@@ -1723,20 +1999,20 @@ $(document).ready(function () {
     var totalSellingPrice = 0;
     var calculatedTotalMarkupAmount = 0;
     var calculatedProfitPercentage = 0;
-    totalNetPrice = parseFloat($('.total-net-price').val());
-    totalMarkupAmount = parseFloat($('.total-markup-amount').val());
-    markupPercentage = parseFloat($('.total-markup-percent').val());
+    totalNetPrice = removeComma($('.total-net-price').val());
+    totalMarkupAmount = removeComma($('.total-markup-amount').val());
+    markupPercentage = removeComma($('.total-markup-percent').val());
 
     if (changeFeild == 'total_markup_amount') {
       calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
-      totalSellingPrice = totalNetPrice + totalMarkupAmount;
+      totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
       $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
 
     if (changeFeild == 'total_markup_percent') {
       calculatedTotalMarkupAmount = parseFloat(totalNetPrice) / 100 * parseFloat(markupPercentage);
-      totalSellingPrice = totalNetPrice + calculatedTotalMarkupAmount;
+      totalSellingPrice = parseFloat(totalNetPrice) + parseFloat(calculatedTotalMarkupAmount);
       $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
       $('.total-selling-price').val(check(totalSellingPrice));
     }
@@ -1752,7 +2028,7 @@ $(document).ready(function () {
   window.getQuoteTotalValues = function () {
     var markupType = $("input[name=markup_type]:checked").val();
     var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map(function (i, e) {
-      return parseFloat(e.value);
+      return parseFloat(removeComma(e.value));
     }).get();
     var estimatedCostInBookingCurrency = estimatedCostInBookingCurrencyArray.reduce(function (a, b) {
       return a + b;
@@ -1761,13 +2037,13 @@ $(document).ready(function () {
 
     if (markupType == 'itemised') {
       var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map(function (i, e) {
-        return parseFloat(e.value);
+        return parseFloat(removeComma(e.value));
       }).get();
       var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce(function (a, b) {
         return a + b;
       }, 0);
       var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map(function (i, e) {
-        return parseFloat(e.value);
+        return parseFloat(removeComma(e.value));
       }).get();
       var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce(function (a, b) {
         return a + b;
@@ -1808,9 +2084,9 @@ $(document).ready(function () {
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
     var rateType = $("input[name=rate_type]:checked").val();
     var markupType = $("input[name=markup_type]:checked").val();
-    var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
-    var markupPercentage = parseFloat($("#quote_".concat(key, "_markup_percentage")).val());
-    var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val());
+    var estimatedCost = removeComma($("#quote_".concat(key, "_estimated_cost")).val());
+    var markupPercentage = removeComma($("#quote_".concat(key, "_markup_percentage")).val());
+    var markupAmount = removeComma($("#quote_".concat(key, "_markup_amount")).val());
     var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var calculatedSellingPrice = 0;
     var calculatedMarkupPercentage = 0;
@@ -1867,13 +2143,13 @@ $(document).ready(function () {
   window.getQuoteRateTypeValues = function () {
     var rateType = $("input[name=rate_type]:checked").val();
     var estimatedCostArray = $(".estimated-cost").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var sellingPriceArray = $(".selling-price").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var markupAmountArray = $(".markup-amount").map(function (i, e) {
-      return parseFloat(e.value).toFixed(2);
+      return parseFloat(removeComma(e.value));
     }).get();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
     var supplierCurrencyArray = $(".supplier-currency-id").map(function (i, e) {
@@ -1913,9 +2189,9 @@ $(document).ready(function () {
   window.getQuoteSupplierCurrencyValues = function (supplierCurrency, key) {
     var rateType = $("input[name=rate_type]:checked").val();
     var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-    var estimatedCost = parseFloat($("#quote_".concat(key, "_estimated_cost")).val()).toFixed(2);
-    var markupAmount = parseFloat($("#quote_".concat(key, "_markup_amount")).val()).toFixed(2);
-    var sellingPrice = parseFloat($("#quote_".concat(key, "_selling_price")).val()).toFixed(2);
+    var estimatedCost = removeComma($("#quote_".concat(key, "_estimated_cost")).val());
+    var markupAmount = removeComma($("#quote_".concat(key, "_markup_amount")).val());
+    var sellingPrice = removeComma($("#quote_".concat(key, "_selling_price")).val());
     var rate = getRate(supplierCurrency, bookingCurrency, rateType);
     var calculatedEstimatedCostInBookingCurrency = 0;
     var calculatedMarkupAmountInBookingCurrency = 0;
@@ -2157,10 +2433,6 @@ $(document).ready(function () {
         }
       }
     });
-  });
-  $(document).on('change', '.agency-commission', function () {
-    getCalculatedTotalNetMarkup();
-    getCommissionRate();
   });
   $(document).on('click', '.quote-bulk-action-item', function () {
     var checkedValues = $('.child:checked').map(function (i, e) {
@@ -2475,8 +2747,8 @@ $(document).ready(function () {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
-    var classvalue = jQuery('#new_service_modal_below').find('.current-key').val();
-    var onQuoteClass = ".quote-".concat(classvalue);
+    var currentQuoteKey = jQuery('#new_service_modal_below').find('.current-key').val();
+    var onQuoteClass = ".quote-".concat(currentQuoteKey);
     jQuery('#new_service_modal_below').modal('hide');
     $('.parent-spinner').addClass('spinner-border');
 
@@ -2520,7 +2792,8 @@ $(document).ready(function () {
         var quoteClass = ".quote-".concat(quoteKey);
         quote.attr('data-key', quoteKey);
         quote.removeClass("quote-0");
-        quote.addClass("quote-".concat(quoteKey)); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+        quote.addClass("quote-".concat(quoteKey));
+        quote.find('.prod-feild-col').remove(); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
 
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
@@ -2541,11 +2814,28 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.fileManger').attr('data-preview', "quote_".concat(quoteKey, "_holder"));
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
+        $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
+        /* Set last End Date of Service */
+
+        var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
+        var currentDate = convertDate(endDateOfService); // console.log("New Date "+currentDate);
+
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", currentDate);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker({
+          format: 'dd-mm-yyyy',
+          autoclose: true
+        });
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker('setDate', currentDate);
+        var currentDate = $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker('setStartDate', currentDate); // console.log(currentDate);
+        // set default supplier country
+
+        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
+        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
@@ -2557,6 +2847,7 @@ $(document).ready(function () {
     e.preventDefault();
     var category_id = $(this).attr('data-id');
     var category_name = $(this).attr('data-name');
+    var beforeAppendLastQuoteKey = $(".quote").last().data('key');
     jQuery('#new_service_modal').modal('hide');
     $('.parent-spinner').addClass('spinner-border');
 
@@ -2600,7 +2891,8 @@ $(document).ready(function () {
         var quoteClass = ".quote-".concat(quoteKey);
         quote.attr('data-key', quoteKey);
         quote.removeClass("quote-0");
-        quote.addClass("quote-".concat(quoteKey)); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
+        quote.addClass("quote-".concat(quoteKey));
+        quote.find('.prod-feild-col').remove(); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
 
         $("#quote_".concat(quoteKey, "_estimated_cost, #quote_").concat(quoteKey, "_markup_amount")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_percentage, #quote_").concat(quoteKey, "_selling_price")).val('0.00');
@@ -2621,11 +2913,24 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.fileManger').attr('data-preview', "quote_".concat(quoteKey, "_holder"));
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
+        $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
         reinitializedSingleSelect2();
         reinitializedMultipleSelect2();
+        /* Set last End Date of Service */
+
+        var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
+        var stringDate = convertDate(endDateOfService); // console.log("Add More "+stringDate);
+        // quote_8_end_date_of_service
+
+        var stringDate = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).datepicker("setStartDate", stringDate); // console.log(stringDate);
+        // set default supplier country
+
+        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
+        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top
         }, 1000);

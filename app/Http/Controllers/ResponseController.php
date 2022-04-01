@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\HotelRequest;
 use App\Http\Requests\AirportCodeRequest;
 use App\Http\Requests\HarboursRequest;
 use App\Http\Requests\GroupOwnerRequest;
+use App\Http\Requests\SupplierRequest;
+use App\Http\Requests\CabinTypeRequest;
+use App\Http\Requests\StationRequest;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Helper;
 
@@ -42,6 +45,12 @@ use App\Harbour;
 use App\AirportCode;
 use App\Hotel;
 use App\GroupOwner;
+use App\SupplierCountry;
+use App\SupplierLocation;
+use App\SupplierCategory;
+
+use App\CabinType;
+use App\Station;
 
 class ResponseController extends Controller
 {
@@ -166,15 +175,61 @@ class ResponseController extends Controller
         ]);
     }
 
+    public function storeCabinType(CabinTypeRequest $request)
+    {
+        $cabin_type = CabinType::create([
+            'name'       => $request->name,
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "cabin_types", $cabin_type);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Cabin Type Created Successfully.',
+        ]);
+    }
+
+    // StationRequest
+    public function storeStation(StationRequest $request)
+    {
+        $station = Station::create([
+            'name'  =>  $request->name
+        ]);
+
+        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "stations", $station);
+
+        return response()->json([
+            'status'           => true, 
+            'category_details' => $category_details,
+            'success_message'  => 'Station Created Successfully.',
+        ]);
+    }
+
     public function getCategoryToSupplier(Request $request)
     {
         $category_details = '';
         $category         = '';
+        $supplier         = '';
         $model_name       = 'App\\'.$request->model_name;
  
-        $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
-            $query->where('id', $request->category_id);
-        })->get();
+        // $supplier = Supplier::whereHas('getCategories', function($query) use($request) {
+        //     $query->where('id', $request->category_id);
+        // })->get();
+
+
+        // dd($request->supplier_country_ids);
+
+        if(!is_null($request->supplier_country_ids) && !is_null($request->supplier_country_ids)){
+
+            $supplier = Supplier::whereHas('getCountries', function($query) use ($request) {
+                $query->whereIn('id', $request->supplier_country_ids);
+            })
+            ->whereHas('getCategories', function($query) use ($request) {
+                $query->where('id', $request->category_id);
+            })
+            ->get();
+        }
 
         $booking_detail = $model_name::where('category_id', $request->category_id)->where('id', $request->detail_id)->first('category_details');
         $category       = Category::where('id', $request->category_id)->first();
@@ -293,7 +348,15 @@ class ResponseController extends Controller
 
     public function getBrandToHoliday(Request $request)
     {    
-        $holiday_types = HolidayType::where('brand_id',$request->brand_id)->get();
+        $holiday_types = HolidayType::where('brand_id', $request->brand_id)->get();
+
+        $brand_supplier_countries = Brand::find($request->brand_id)->getSupplierCountries()->pluck('country_id')->toArray();
+
+        return response()->json([
+            'holiday_types'     => $holiday_types,
+            'brand_supplier_countries' => $brand_supplier_countries,
+        ]);
+
         return response()->json($holiday_types);
     }
 
@@ -319,7 +382,7 @@ class ResponseController extends Controller
 
     public function getCountryToLocation(Request $request)
     {  
-        $locations = Location::whereIn('country_id',$request->supplier_country_ids)
+        $locations = Location::whereIn('country_id', $request->supplier_country_ids)
         ->leftJoin('countries', 'locations.country_id', '=', 'countries.id')
         ->get([
             'locations.id',
@@ -337,6 +400,17 @@ class ResponseController extends Controller
     //     return response()->json($commission_groups);
     // }
 
+    public function SupplierOnChange(Request $request)
+    {
+        $supplier = Supplier::find($request->supplier_id);
+
+        $supplier_products = $supplier->getProducts;
+
+        return response()->json([
+            'supplier'          => $supplier,
+            'supplier_products' => $supplier_products,
+        ]);
+    }
     
     public function addProductWithSupplierSync(ProductRequest $request)
     {    
@@ -409,7 +483,11 @@ class ResponseController extends Controller
     {
         $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
             $query->whereIn('id', $request->supplier_country_ids);
-        })->get();
+        })
+        ->whereHas('getCategories', function($query) use($request) {
+            $query->where('id', $request->category_id);
+        })
+        ->get();
 
         return response()->json([ 'suppliers' => $suppliers ]);
     }
@@ -702,7 +780,7 @@ class ResponseController extends Controller
         $data['supervisors']      = User::where('role_id', 5)->get()->sortBy('name');
         $data['suppliers']        = Supplier::all()->sortBy('name');
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
-        $data['currencies']       = Currency::where('status', 1)->orderBy('id', 'ASC')->get();
+        $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['users']            = User::all()->sortBy('name');
         $data['seasons']          = Season::all();
         $data['booked_by']        = User::all()->sortBy('name');
@@ -777,6 +855,52 @@ class ResponseController extends Controller
     {
         $store = StoreText::where('slug', $slug)->firstOrFail()->description;
         return response()->json($store);
+    }
+
+    // SupplierRequest
+    public function storeSupplier(SupplierRequest $request)
+    {
+        try {
+
+            $supplier = Supplier::create([
+                'name'            => $request->username, 
+                'email'           => $request->email, 
+            ]);
+
+            if($request->has('categories') && count($request->categories) > 0){
+                foreach ($request->categories as $category) {
+                    SupplierCategory::create([
+                        'supplier_id' => $supplier->id,
+                        'category_id' => $category
+                    ]);
+                }
+            }
+            
+            $supplier->getCountries()->sync($request->country_id);
+            $supplier->getLocations()->sync($request->location_id);
+            $supplier_country_id = explode(",", $request->supplier_country_id);
+
+            if(!empty($request->country_id)){
+
+                $suppliers = Supplier::whereHas('getCountries', function($query) use ($supplier_country_id) {
+                    $query->whereIn('id', $supplier_country_id);
+                })->get();
+
+
+                return response()->json([ 
+                    'status' => true, 
+                    'success_message' => 'Supplier Added Successfully.', 
+                    'suppliers' => $suppliers
+                ]);
+            }
+
+        } catch (\Exception $e) {
+
+            return response()->json([ 
+                'status' => false, 
+                'success_message' => 'Something went Wrong, Please try again later!',
+            ]);
+        }
     }
 
     // public function getSupplierRateSheet(Request $request)

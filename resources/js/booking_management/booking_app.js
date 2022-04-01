@@ -38,10 +38,7 @@ $(document).ready(function() {
             $('.total-markup-amount').prop('readonly', true);
             $('.total-markup-percent').prop('readonly', true);  
             getBookingTotalValues();
-
         }
-
-
     }
 
     function getBookingTotalValuesOnMarkupChange(changeFeild){
@@ -54,23 +51,23 @@ $(document).ready(function() {
         var calculatedTotalMarkupAmount     = 0;
         var calculatedProfitPercentage      = 0;
 
-        totalNetPrice               = parseFloat($('.total-net-price').val());
-        totalMarkupAmount           = parseFloat($('.total-markup-amount').val());
-        markupPercentage            = parseFloat($('.total-markup-percent').val());
+        totalNetPrice               = removeComma($('.total-net-price').val());
+        totalMarkupAmount           = removeComma($('.total-markup-amount').val());
+        markupPercentage            = removeComma($('.total-markup-percent').val());
 
         if(changeFeild == 'total_markup_amount'){
 
             calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
-            totalSellingPrice               = totalNetPrice + totalMarkupAmount;
+            totalSellingPrice               = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
 
-            $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
+            $('.total-markup-percent').val((calculatedTotalMarkupPercentage).toFixed(2));
             $('.total-selling-price').val(check(totalSellingPrice));
         }
 
         if(changeFeild == 'total_markup_percent'){
 
             calculatedTotalMarkupAmount = (parseFloat(totalNetPrice) / 100) * parseFloat(markupPercentage);
-            totalSellingPrice           = totalNetPrice + calculatedTotalMarkupAmount;
+            totalSellingPrice           = parseFloat(totalNetPrice) + parseFloat(calculatedTotalMarkupAmount);
 
             $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
             $('.total-selling-price').val(check(totalSellingPrice));
@@ -82,6 +79,7 @@ $(document).ready(function() {
         getCommissionRate();
         getBookingAmountPerPerson();
         getCalculatedTotalNetMarkup();
+        getSellingPrice();
     }
 
 
@@ -225,21 +223,100 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', '#store_booking_submit', function(event) { 
+
+        event.preventDefault();
+
+        $('.payment-method').removeAttr('disabled');
+
+        let url         = $('#update_booking').attr('action');
+        var formData    = new FormData($('#update_booking')[0]);
+        var agency      = $("input[name=agency]:checked").val();
+        var full_number = '';
+
+        if(agency == 0){
+            full_number = $('#lead_passenger_contact').closest('.form-group').find("input[name='full_number']").val();
+        }else{
+            full_number = $('#agency_contact').closest('.form-group').find("input[name='full_number']").val();
+        }
+
+        formData.append('full_number', full_number);
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: formData,
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+                removeFormLoadingStyles();
+                printAlertResponse(response);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    $(document).on('click', '#show_booking_submit', function(event) { 
+
+        event.preventDefault();
+
+        $('#show_booking :input').prop('disabled', false);
+
+        let url = $('#show_booking').attr('action');
+
+        /* Send the data using post */
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData($('#show_booking')[0]),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+                addFormLoadingStyles();
+            },
+            success: function(response) {
+
+                removeFormLoadingStyles();
+                printAlertResponse(response);
+            },
+            error: function(response) {
+                
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
 
     $(document).on('change', '.cancellation-refund-amount', function() {
 
-        var cancellationRefundAmount = $(this).val();
-        var cancellationRefundTotalAmount = $('#cancellation_refund_total_amount').val();
+        var cancellationRefundAmount = removeComma($(this).val());
+        var cancellationRefundTotalAmount = removeComma($('#cancellation_refund_total_amount').val());
 
-        console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
-        console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
+        // console.log(" cancellationRefundAmount: " + cancellationRefundAmount);
+        // console.log(" cancellationRefundTotalAmount: " + cancellationRefundTotalAmount);
 
-
-        var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map((i, e) => parseFloat(e.value)).get();
+        var totalCancellationRefundAmountArray = $('.cancellation-payments').find('.cancellation-refund-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
         var totalCancellationRefundAmount = totalCancellationRefundAmountArray.reduce((a, b) => (a + b), 0);
 
         if (totalCancellationRefundAmount > cancellationRefundTotalAmount) {
-            alert("Please Enter Correct Refund Amount.");
+
+            Toast.fire({
+                icon: 'warning',
+                title: "Please Enter Correct Refund Amount."
+            });
+
             $(this).val("0.00");
         }
 
@@ -394,7 +471,7 @@ $(document).ready(function() {
             error: function(response) {
 
                 removeModalFormLoadingStyles(`#${formID}`);
-                printModalServerValidationErrors(response);
+                printModalServerValidationErrors(response, `#${formID}`);
             }
         });
 
@@ -599,6 +676,61 @@ $(document).ready(function() {
         });
     });
 
+    $(document).on('click', ".booking-detail-status", function(event) {
+
+        let url        = $(this).data('action');
+        let actionType = $(this).data('action_type');
+        let message    = "";
+        let buttonText = "";
+
+        switch(actionType) {
+
+            case "not_booked":
+                message    = 'You want to Change Status "Not Booked" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "pending":
+                message    = 'You want to Change Status "Pending" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "booked":
+                message    = 'You want to Change Status "Booked" for this Service?';
+                buttonText = 'Update';
+                break;
+
+            case "cancelled":
+                message    = 'You want to Change Status "Cancelled" for this Service?';
+                buttonText = 'Update';
+                break;
+        }
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: `Yes, ${buttonText} it !`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: 'PATCH',
+                    url: url,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function(response) {
+                        printAlertResponse(response);
+                    }
+                });
+            }
+        });
+    });
+
     $(document).on('click', '.view-payment_detail', function() {
 
         var details = $(this).data('details');
@@ -718,6 +850,7 @@ $(document).ready(function() {
 
         var category_id   = $(this).attr('data-id');
         var category_name = $(this).attr('data-name');
+        let beforeAppendLastQuoteKey = $(".quote").last().data('key');
 
         jQuery('#new_service_modal').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
@@ -771,6 +904,7 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
+                quote.find('.prod-feild-col').remove();
 
                 $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                 $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
@@ -844,10 +978,20 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                $(`${quoteClass}`).find('.status-setting').addClass('d-none');
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
+
+                /* Set last End Date of Service */
+                let endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+
+                // set default supplier country
+                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
 
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
@@ -871,8 +1015,8 @@ $(document).ready(function() {
         jQuery('#new_service_modal_below').modal('hide');
         $('.parent-spinner').addClass('spinner-border');
 
-        var classvalue =  jQuery('#new_service_modal_below').find('.current-key').val();
-        var onQuoteClass = `.quote-${classvalue}`;
+        var currentQuoteKey =  jQuery('#new_service_modal_below').find('.current-key').val();
+        var onQuoteClass    = `.quote-${currentQuoteKey}`;
 
         if(category_id){
 
@@ -923,6 +1067,7 @@ $(document).ready(function() {
                 quote.attr('data-key', quoteKey);
                 quote.removeClass(`quote-0`);
                 quote.addClass(`quote-${quoteKey}`);
+                quote.find('.prod-feild-col').remove();
 
                 $(`${quoteClass}`).find('.finance .row:not(:first):not(:last)').remove();
                 $(`${quoteClass}`).find('.actual-cost').attr("data-status", "");
@@ -994,10 +1139,21 @@ $(document).ready(function() {
                 // $(`${quoteClass}`).find('.badge-date-of-service').html(todayDate());
                 $(`${quoteClass}`).find('.badge-service-status').html('');
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
+                $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                $(`${quoteClass}`).find('.status-setting').addClass('d-none');
+
 
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
+
+                /* Set last End Date of Service */
+                var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+
+                // set default supplier country
+                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
@@ -1022,9 +1178,9 @@ $(document).ready(function() {
 
         var rateType        = $("input[name=rate_type]:checked").val();
         var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-        var actualCost      = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var markupAmount    = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-        var sellingPrice    = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var actualCost      = removeComma($(`#quote_${key}_actual_cost`).val());
+        var markupAmount    = removeComma($(`#quote_${key}_markup_amount`).val());
+        var sellingPrice    = removeComma($(`#quote_${key}_selling_price`).val());
         var rate            = getRate(supplierCurrency, bookingCurrency, rateType);
         var calculatedActualCostInBookingCurrency   = 0;
         var calculatedMarkupAmountInBookingCurrency = 0;
@@ -1044,8 +1200,8 @@ $(document).ready(function() {
         var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
         var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
         var rateType         = $('input[name="rate_type"]:checked').val();
-        var actualCost       = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var sellingPrice     = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var actualCost       = removeComma($(`#quote_${key}_actual_cost`).val());
+        var sellingPrice     = removeComma($(`#quote_${key}_selling_price`).val());
         var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
 
         var calculatedMarkupAmount     = 0;
@@ -1077,9 +1233,9 @@ $(document).ready(function() {
         var supplierCurrency = $(`#quote_${key}_supplier_currency_id`).find(':selected').data('code');
         var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
         var rateType         = $('input[name="rate_type"]:checked').val();
-        var actualCost       = parseFloat($(`#quote_${key}_actual_cost`).val()).toFixed(2);
-        var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
-        var markupAmount     = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var actualCost       = removeComma($(`#quote_${key}_actual_cost`).val());
+        var markupPercentage = removeComma($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount     = removeComma($(`#quote_${key}_markup_amount`).val());
         var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
         var calculatedSellingPrice     = 0;
         var calculatedMarkupPercentage = 0;
@@ -1105,7 +1261,7 @@ $(document).ready(function() {
 
         if (changeFeild == 'markup_amount') {
 
-            calculatedSellingPrice = parseFloat(markupAmount) + parseFloat(actualCost);
+            calculatedSellingPrice     = parseFloat(markupAmount) + parseFloat(actualCost);
             calculatedMarkupPercentage = parseFloat(markupAmount) / parseFloat(actualCost / 100);
             calculatedProfitPercentage = ((parseFloat(calculatedSellingPrice) - parseFloat(actualCost)) / parseFloat(calculatedSellingPrice)) * 100;
             calculatedMarkupAmountInBookingCurrency = parseFloat(markupAmount) * rate;
@@ -1174,10 +1330,10 @@ $(document).ready(function() {
         var quoteKey = $(this).closest('.quote').data('key');
         var financeKey = $(this).closest('.finance-clonning').data('financekey');
 
-        var estimatedCost = parseFloat($(this).closest('.quote').find('.estimated-cost').val()).toFixed(2);
-        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
+        var estimatedCost = parseFloat(removeComma($(this).closest('.quote').find('.estimated-cost').val()));
+        var totalDepositAmountArray = $(this).closest('.finance').find('.deposit-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
         var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var outstanding_amount_left = parseFloat($(this).closest('.quote').find('.outstanding_amount_left').val());
+        var outstanding_amount_left = parseFloat(removeComma($(this).closest('.quote').find('.outstanding_amount_left').val()));
 
         var wa = 0;
         var outstandingAmountLeft = estimatedCost - totalDepositAmount;
@@ -1202,8 +1358,8 @@ $(document).ready(function() {
                             $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
                             $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
                         } else {
-                            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+                            $(`#quote_${quoteKey}_outstanding_amount_left`).val(check(outstandingAmountLeft));
+                            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(check(outstandingAmountLeft));
                         }
 
                     }
@@ -1219,30 +1375,30 @@ $(document).ready(function() {
             });
 
         } else {
-            $(`#quote_${quoteKey}_outstanding_amount_left`).val((outstandingAmountLeft.toFixed(2)));
-            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val((outstandingAmountLeft.toFixed(2)));
+            $(`#quote_${quoteKey}_outstanding_amount_left`).val(check(outstandingAmountLeft));
+            $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(check(outstandingAmountLeft));
         }
     });
 
     $(document).on('change', '.deposit-amount', function() {
 
-        var quoteKey = $(this).closest('.quote').data('key');
-        var financeKey = $(this).closest('.finance-clonning').data('financekey');
+        var quoteKey       = $(this).closest('.quote').data('key');
+        var financeKey     = $(this).closest('.finance-clonning').data('financekey');
         var closestFinance = $(this).closest('.finance');
-        var depositAmount = parseFloat($(this).val()).toFixed(2);
-        var estimated_cost = parseFloat($(`#quote_${quoteKey}_estimated_cost`).val()).toFixed(2);
+        var depositAmount  = removeComma($(this).val());
+        var estimated_cost = removeComma($(`#quote_${quoteKey}_estimated_cost`).val());
         var payment_method = $(`#quote_${quoteKey}_finance_${financeKey}_payment_method`).val();
-        var supplier_id = $(`#quote_${quoteKey}_supplier_id`).val();
-        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var outstandingAmountLeft = estimated_cost - totalDepositAmount;
+        var supplier_id    = $(`#quote_${quoteKey}_supplier_id`).val();
+        var totalDepositAmountArray = closestFinance.find('.deposit-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var outstandingAmountLeft   = parseFloat(estimated_cost) - parseFloat(totalDepositAmount);
         var walletAmount = 0;
 
         if (payment_method && payment_method == 3) {
 
             $.ajax({
                 headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                url: REDIRECT_BASEURL + 'wallets/get-supplier-wallet-amount/' + supplier_id,
+                url: `${REDIRECT_BASEURL}wallets/get-supplier-wallet-amount/${supplier_id}`,
                 type: 'get',
                 success: function(data) {
 
@@ -1261,8 +1417,8 @@ $(document).ready(function() {
                                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
                             } else {
 
-                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                                $(`#quote_${quoteKey}_outstanding_amount_left`).val(check(outstandingAmountLeft));
+                                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(check(outstandingAmountLeft));
                             }
                         }
                     }
@@ -1271,13 +1427,18 @@ $(document).ready(function() {
             });
         } else {
 
-            if (outstandingAmountLeft >= 0 && payment_method != '') {
+            if (outstandingAmountLeft >= 0 && payment_method !== null) {
 
-                $(`#quote_${quoteKey}_outstanding_amount_left`).val(outstandingAmountLeft.toFixed(2));
-                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(outstandingAmountLeft.toFixed(2));
+                $(`#quote_${quoteKey}_outstanding_amount_left`).val(check(outstandingAmountLeft));
+                $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val(check(outstandingAmountLeft));
 
             } else if (outstandingAmountLeft < 0 && payment_method != 3) {
-                alert("Please Enter Correct Deposit Amount");
+
+                Toast.fire({
+                    icon: 'warning',
+                    title: "Please Enter Correct Deposit Amount."
+                });
+
                 $(`#quote_${quoteKey}_finance_${financeKey}_deposit_amount`).val('0.00');
                 $(`#quote_${quoteKey}_finance_${financeKey}_outstanding_amount`).val('');
             }
@@ -1288,12 +1449,12 @@ $(document).ready(function() {
 
     function getActualCost(quote) {
 
-        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(e.value)).get();
-        var totalDepositAmount = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
-        var amountArray = quote.find('.amount').map((i, e) => parseFloat(e.value)).get();
-        var amountTotalArray = amountArray.filter(function(value) { return !Number.isNaN(value); });
-        var totalAmount = amountTotalArray.reduce((a, b) => (a + b), 0);
-        var actualCost = totalDepositAmount - totalAmount;
+        var totalDepositAmountArray = quote.find('.deposit-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        var totalDepositAmount      = totalDepositAmountArray.reduce((a, b) => (a + b), 0);
+        var amountArray             = quote.find('.amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+        var amountTotalArray        = amountArray.filter(function(value) { return !Number.isNaN(value); });
+        var totalAmount             = amountTotalArray.reduce((a, b) => (a + b), 0);
+        var actualCost              = parseFloat(totalDepositAmount) - parseFloat(totalAmount);
 
         return actualCost;
     }
@@ -1301,9 +1462,9 @@ $(document).ready(function() {
     function getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey) {
 
         var supplierCurrency = $(`#quote_${quoteKey}_supplier_currency_id`).find(":selected").data("code");
-        var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-        var rateType = $("input[name=rate_type]:checked").val();
-        var rate = getRate(supplierCurrency, bookingCurrency, rateType);
+        var bookingCurrency  = $(".booking-currency-id").find(":selected").data("code");
+        var rateType         = $("input[name=rate_type]:checked").val();
+        var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
 
         var calculatedActualCostInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
         var calculatedSellingPriceInBookingCurrency = parseFloat(actualCost) * parseFloat(rate);
@@ -1314,13 +1475,17 @@ $(document).ready(function() {
 
     $(document).on('change', '.refund_amount', function() {
 
-        var quote = $(this).closest('.quote');
-        var quoteKey = $(this).closest('.quote').data('key');
+        var quote      = $(this).closest('.quote');
+        var quoteKey   = $(this).closest('.quote').data('key');
         var actualCost = parseFloat(getActualCost(quote));
 
-
         if (actualCost < 0) {
-            alert("Please Enter Correct Amount");
+
+            Toast.fire({
+                icon: 'warning',
+                title: "Please Enter Correct Amount"
+            });
+
             $(this).val('0.00');
         } else {
 
@@ -1332,7 +1497,6 @@ $(document).ready(function() {
             $(`#quote_${quoteKey}_selling_price`).val(check(actualCost));
 
             getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey)
-
             getBookingTotalValues();
         }
 
@@ -1340,13 +1504,16 @@ $(document).ready(function() {
 
     $(document).on('change', '.credit-note-amount', function() {
 
-        var quote = $(this).closest('.quote');
-        var quoteKey = $(this).closest('.quote').data('key');
+        var quote      = $(this).closest('.quote');
+        var quoteKey   = $(this).closest('.quote').data('key');
         var actualCost = parseFloat(getActualCost(quote));
 
 
         if (actualCost < 0) {
-            alert("Please Enter Correct Paid Amount");
+            Toast.fire({
+                icon: 'warning',
+                title: "Please Enter Correct Amount"
+            });
             $(this).val('0.00');
         } else {
 

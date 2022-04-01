@@ -14,6 +14,7 @@ class CreateQuoteDetailsTable extends Migration
     public function up()
     {
         Schema::create('quote_details', function (Blueprint $table) {
+       
             $table->bigIncrements('id');
             $table->unsignedBigInteger('quote_id');
             $table->date('date_of_service')->nullable();
@@ -25,13 +26,6 @@ class CreateQuoteDetailsTable extends Migration
             $table->string('supplier_country_ids')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
-            // $table->string('product_id')->nullable();
-            // $table->unsignedBigInteger('supervisor_id')->nullable();
-            // $table->date('booking_date')->nullable();
-            // $table->date('booking_due_date')->nullable();
-            // $table->string('booking_reference')->nullable();
-            // $table->unsignedBigInteger('booking_method_id')->nullable();
-            // $table->unsignedBigInteger('booked_by_id')->nullable();
             $table->unsignedBigInteger('booking_type_id')->nullable();
             $table->double('refundable_percentage')->nullable();
             $table->unsignedBigInteger('supplier_currency_id')->nullable();
@@ -43,7 +37,6 @@ class CreateQuoteDetailsTable extends Migration
             $table->double('estimated_cost_bc')->nullable();
             $table->double('markup_amount_in_booking_currency')->nullable();
             $table->double('selling_price_in_booking_currency')->nullable();
-            // $table->enum('added_in_sage', [0, 1])->default(0);
             $table->text('service_details')->nullable();
             $table->text('comments')->nullable();
             $table->string('image')->nullable();
@@ -51,8 +44,6 @@ class CreateQuoteDetailsTable extends Migration
             $table->longText('product_details')->nullable();
             $table->enum('status', ['active', 'cancelled'])->default('active');
             $table->timestamps();
-            
-
         });
     }
 
@@ -66,3 +57,12 @@ class CreateQuoteDetailsTable extends Migration
         Schema::dropIfExists('quote_details');
     }
 }
+
+// $table->string('product_id')->nullable();
+// $table->unsignedBigInteger('supervisor_id')->nullable();
+// $table->date('booking_date')->nullable();
+// $table->date('booking_due_date')->nullable();
+// $table->string('booking_reference')->nullable();
+// $table->unsignedBigInteger('booking_method_id')->nullable();
+// $table->unsignedBigInteger('booked_by_id')->nullable();
+// $table->enum('added_in_sage', [0, 1])->default(0);

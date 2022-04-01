@@ -14,6 +14,7 @@ class BookingDetail extends Model
         'category_id',
         'supplier_country_ids',
         // 'supplier_location_id',
+        'group_owner_id',
         'supplier_id',
         'product_location_id',
         'product_id',
@@ -50,6 +51,27 @@ class BookingDetail extends Model
         'category_details',
         'product_details'
     ];
+
+    public function getBookingDetailStatusAttribute()
+    {
+        $status = $this->status;
+        switch ($status) {
+            case 'not_booked':
+                return '<span class="badge badge-warning">Not Booked</span>';
+                break;
+            case 'pending':
+                return '<span class="badge badge-warning">Pending</span>';
+                break;
+            case 'booked':
+                return '<span class="badge badge-success">Booked</span>';
+                break;
+            case 'cancelled':
+                return '<span class="badge badge-danger">Cancelled</span>';
+                break;
+        }
+        
+        return $status;
+    }
 
     public function getBookingDetailCountries()
     {
@@ -177,4 +199,39 @@ class BookingDetail extends Model
         $this->attributes['booking_due_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }  
 
+    public function setEstimatedCostAttribute( $value ) {
+        $this->attributes['estimated_cost'] = str_replace( ',', '', $value );
+    }
+
+    public function setActualCostAttribute( $value ) {
+        $this->attributes['actual_cost'] = str_replace( ',', '', $value );
+    }
+
+    public function setActualCostBcAttribute( $value ) {
+        $this->attributes['actual_cost_bc'] = str_replace( ',', '', $value );
+    }
+
+    public function setOutstandingAmountLeftAttribute( $value ) {
+        $this->attributes['outstanding_amount_left'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountAttribute( $value ) {
+        $this->attributes['markup_amount'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceAttribute( $value ) {
+        $this->attributes['selling_price'] = str_replace( ',', '', $value );
+    }
+
+    public function setEstimatedCostBcAttribute( $value ) {
+        $this->attributes['estimated_cost_bc'] = str_replace( ',', '', $value );
+    }
+
+    public function setMarkupAmountInBookingCurrencyAttribute( $value ) {
+        $this->attributes['markup_amount_in_booking_currency'] = str_replace( ',', '', $value );
+    }
+
+    public function setSellingPriceInBookingCurrencyAttribute( $value ) {
+        $this->attributes['selling_price_in_booking_currency'] = str_replace( ',', '', $value );
+    }
 }

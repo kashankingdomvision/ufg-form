@@ -16,10 +16,7 @@ class AlterAddLocationFeildsInTemplateDetailsTable extends Migration
         Schema::table('template_details', function (Blueprint $table) {
 
             $table->unsignedBigInteger('supplier_location_id')->after('category_id')->nullable(); 
-            // $table->unsignedBigInteger('product_location_id')->after('supplier_id')->nullable(); 
-
             $table->foreign('supplier_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
-            // $table->foreign('product_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -38,3 +35,6 @@ class AlterAddLocationFeildsInTemplateDetailsTable extends Migration
         });
     }
 }
+
+// $table->unsignedBigInteger('product_location_id')->after('supplier_id')->nullable(); 
+// $table->foreign('product_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');

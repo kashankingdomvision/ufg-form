@@ -16,14 +16,14 @@ $(document).ready(function() {
         var calculatedTotalMarkupAmount     = 0;
         var calculatedProfitPercentage      = 0;
 
-        totalNetPrice               = parseFloat($('.total-net-price').val());
-        totalMarkupAmount           = parseFloat($('.total-markup-amount').val());
-        markupPercentage            = parseFloat($('.total-markup-percent').val());
+        totalNetPrice               = removeComma($('.total-net-price').val());
+        totalMarkupAmount           = removeComma($('.total-markup-amount').val());
+        markupPercentage            = removeComma($('.total-markup-percent').val());
 
         if(changeFeild == 'total_markup_amount'){
 
             calculatedTotalMarkupPercentage = parseFloat(totalMarkupAmount) / parseFloat(totalNetPrice / 100);
-            totalSellingPrice               = totalNetPrice + totalMarkupAmount;
+            totalSellingPrice               = parseFloat(totalNetPrice) + parseFloat(totalMarkupAmount);
 
             $('.total-markup-percent').val(check(calculatedTotalMarkupPercentage));
             $('.total-selling-price').val(check(totalSellingPrice));
@@ -32,7 +32,7 @@ $(document).ready(function() {
         if(changeFeild == 'total_markup_percent'){
 
             calculatedTotalMarkupAmount = (parseFloat(totalNetPrice) / 100) * parseFloat(markupPercentage);
-            totalSellingPrice           = totalNetPrice + calculatedTotalMarkupAmount;
+            totalSellingPrice           = parseFloat(totalNetPrice) + parseFloat(calculatedTotalMarkupAmount);
 
             $('.total-markup-amount').val(check(calculatedTotalMarkupAmount));
             $('.total-selling-price').val(check(totalSellingPrice));
@@ -53,17 +53,17 @@ $(document).ready(function() {
 
         var markupType = $("input[name=markup_type]:checked").val();
 
-        var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+        var estimatedCostInBookingCurrencyArray = $(".estimated-cost-in-booking-currency").map((i, e) => parseFloat(removeComma(e.value))).get();
         var estimatedCostInBookingCurrency      = estimatedCostInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
         $(".total-net-price").val(check(estimatedCostInBookingCurrency));
 
         if(markupType == 'itemised'){
 
-            var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var sellingPriceInBookingCurrencyArray = $(".selling-price-in-booking-currency").map((i, e) => parseFloat(removeComma(e.value))).get();
             var sellingPriceInBookingCurrency = sellingPriceInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
-            var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(e.value)).get();
+            var markupAmountInBookingCurrencyArray = $(".markup-amount-in-booking-currency").map((i, e) => parseFloat(removeComma(e.value))).get();
             var markupAmountInBookingCurrency = markupAmountInBookingCurrencyArray.reduce((a, b) => (a + b), 0);
 
             var markupPercentageArray = $(".markup-percentage").map((i, e) => parseFloat(e.value)).get();
@@ -100,9 +100,9 @@ $(document).ready(function() {
         var bookingCurrency  = $(".booking-currency-id").find(':selected').data('code');
         var rateType         = $("input[name=rate_type]:checked").val();
         var markupType       = $("input[name=markup_type]:checked").val();
-        var estimatedCost    = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-        var markupPercentage = parseFloat($(`#quote_${key}_markup_percentage`).val());
-        var markupAmount     = parseFloat($(`#quote_${key}_markup_amount`).val());
+        var estimatedCost    = removeComma($(`#quote_${key}_estimated_cost`).val());
+        var markupPercentage = removeComma($(`#quote_${key}_markup_percentage`).val());
+        var markupAmount     = removeComma($(`#quote_${key}_markup_amount`).val());
         var rate             = getRate(supplierCurrency, bookingCurrency, rateType);
         var calculatedSellingPrice     = 0;
         var calculatedMarkupPercentage = 0;
@@ -168,9 +168,9 @@ $(document).ready(function() {
     window.getQuoteRateTypeValues = function() {
 
         var rateType = $("input[name=rate_type]:checked").val();
-        var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(e.value).toFixed(2)).get();
-        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(e.value).toFixed(2)).get();
+        var estimatedCostArray = $(".estimated-cost").map((i, e) => parseFloat(removeComma(e.value))).get();
+        var sellingPriceArray = $(".selling-price").map((i, e) => parseFloat(removeComma(e.value))).get();
+        var markupAmountArray = $(".markup-amount").map((i, e) => parseFloat(removeComma(e.value))).get();
         var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
         var supplierCurrencyArray = $(".supplier-currency-id").map((i, e) => $(e).find(":selected").data("code")).get();
         var quoteSize = parseInt($('.quote').length);
@@ -212,9 +212,9 @@ $(document).ready(function() {
 
         var rateType        = $("input[name=rate_type]:checked").val();
         var bookingCurrency = $(".booking-currency-id").find(":selected").data("code");
-        var estimatedCost   = parseFloat($(`#quote_${key}_estimated_cost`).val()).toFixed(2);
-        var markupAmount    = parseFloat($(`#quote_${key}_markup_amount`).val()).toFixed(2);
-        var sellingPrice    = parseFloat($(`#quote_${key}_selling_price`).val()).toFixed(2);
+        var estimatedCost   = removeComma($(`#quote_${key}_estimated_cost`).val());
+        var markupAmount    = removeComma($(`#quote_${key}_markup_amount`).val());
+        var sellingPrice    = removeComma($(`#quote_${key}_selling_price`).val());
         var rate            = getRate(supplierCurrency, bookingCurrency, rateType);
         var calculatedEstimatedCostInBookingCurrency = 0;
         var calculatedMarkupAmountInBookingCurrency  = 0;
@@ -520,10 +520,6 @@ $(document).ready(function() {
 
 
 
-    $(document).on('change', '.agency-commission', function() {
-        getCalculatedTotalNetMarkup();
-        getCommissionRate();
-    });
 
     $(document).on('click', '.quote-bulk-action-item', function() {
 

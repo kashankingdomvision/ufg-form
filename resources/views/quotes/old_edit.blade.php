@@ -1262,7 +1262,7 @@
                       <div class="col-md-9">
                         <div class="row">
                           <div class="col-sm-3 relevant-quote">
-                            <select name="quote_group" class="form-control select2-single" id="group_quote">
+                            <select name="quote_group" class="form-control select2single" id="group_quote">
                               <option value="0">Select Group</option>
                               @foreach ($groups as $group)
                                 <option value="{{ $group->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : null }}> {{ $group->name }} </option>

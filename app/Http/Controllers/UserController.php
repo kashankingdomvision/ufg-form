@@ -23,61 +23,119 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $user = User::orderBy('id', 'ASC');
+        $user = User::select([
+            'id',
+            'role_id',
+            'name',
+            'email',
+            'currency_id',
+            'brand_id',
+            'supervisor_id'
+        ])
+        ->with([
+            'getRole',
+            'getCurrency',
+            'getBrand',
+            'getSupervisor'
+        ]) 
+        ->orderBy('id', 'ASC');
 
         if (count($request->all()) > 0) {
-            if ($request->has('search') && !empty($request->search)) {
-                $user = $user->where(function ($query) use($request) {
-                    $query->where('name', 'like', '%'.$request->search.'%')
+            $user = $this->searchFilters($user, $request);
+        }
+
+        $data['users']      = $user->paginate($this->pagination);
+        $data['roles']      = Role::orderBy('id', 'ASC')->get(['id','name']);
+        $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get(['id','name','code','flag','status']);
+        $data['brands']     = Brand::orderBy('id', 'ASC')->get(['id','name']);
+
+        return view('users.listing', $data);
+    }
+
+    // public function index(Request $request)
+    // {
+    //     $user = User::orderBy('id', 'ASC');
+
+    //     if (count($request->all()) > 0) {
+    //         $user = $this->searchFilters($user, $request);
+    //     }
+        
+    //     $data['users']      = $user->paginate($this->pagination);
+    //     $data['roles']      = Role::orderBy('name', 'ASC')->get();
+    //     $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get();
+    //     $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+
+    //     return view('users.listing', $data);
+    // }
+
+    // ->with([
+    //     'getRole' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getCurrency' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getBrand' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    //     'getSupervisor' => function ($query) {
+    //         $query->select('id','name');
+    //     },
+    // ]) 
+
+    
+    public function searchFilters($user, $request)
+    {
+        if ($request->has('search') && !empty($request->search)) {
+            $user = $user->where(function ($query) use($request) {
+                $query->where('name', 'like', '%'.$request->search.'%')
                     ->orWhere('email', 'like', '%'.$request->search.'%')
                     ->orWhereHas('getBrand', function ($query) use($request) {
                         $query->where('name', 'like', '%'.$request->search.'%');
-                    })->orWhereHas('getSupervisor', function ($query) use($request) {
+                    })
+                    ->orWhereHas('getSupervisor', function ($query) use($request) {
                         $query->where('name', 'like', '%'.$request->search.'%');
                     });
-                });
-            }
-                             
-            if ($request->has('role') && !empty($request->role)) {
-                $user = $user->whereHas('getRole', function ($q) use($request) {
-                    $q->where('id', $request->role);
-                });
-            }
-            if ($request->has('currency') && !empty($request->currency)) {
-                $user = $user->whereHas('getCurrency', function ($q) use($request) {
-                    $q->where('id', $request->currency);
-                });
-            }
-            if ($request->has('brand') && !empty($request->brand)) {
-                $user = $user->whereHas('getBrand', function ($q) use($request) {
-                    $q->where('id', $request->brand);
-                });
-            }
+            });
         }
-        
-        $data['users']      = $user->paginate($this->pagination);
-        $data['roles']      = Role::orderBy('name', 'ASC')->get();
-        $data['currencies'] = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
-        $data['brands']     = Brand::orderBy('id', 'ASC')->get();
+                         
+        if ($request->has('role') && !empty($request->role)) {
+            $user = $user->whereHas('getRole', function ($q) use($request) {
+                $q->where('id', $request->role);
+            });
+        }
 
-        return view('users.listing', $data);
+        if ($request->has('currency') && !empty($request->currency)) {
+            $user = $user->whereHas('getCurrency', function ($q) use($request) {
+                $q->where('id', $request->currency);
+            });
+        }
+
+        if ($request->has('brand') && !empty($request->brand)) {
+            $user = $user->whereHas('getBrand', function ($q) use($request) {
+                $q->where('id', $request->brand);
+            });
+        }
+
+        return $user;
     }
 
     public function userArray($request, $method)
     {
         $data = [
             
-            'name'                => $request->name,
-            'email'               => $request->email,
-            'role_id'             => $request->role_id,
-            'supervisor_id'       => $request->supervisor_id,
-            'currency_id'         => $request->currency,
-            'brand_id'            => $request->brand,
-            'holiday_type_id'     => $request->holiday_type,
-            'commission_id'       => $request->commission_id,
-            'commission_group_id' => $request->commission_group_id,
-            'rate_type'           => $request->rate_type,
-            'markup_type'         => $request->markup_type,
+            'name'                  => $request->name,
+            'email'                 => $request->email,
+            'role_id'               => $request->role_id,
+            'supervisor_id'         => $request->supervisor_id,
+            'currency_id'           => $request->currency,
+            'brand_id'              => $request->brand,
+            'holiday_type_id'       => $request->holiday_type,
+            'commission_id'         => $request->commission_id,
+            'commission_group_id'   => $request->commission_group_id,
+            'rate_type'             => $request->rate_type,
+            'markup_type'           => $request->markup_type,
+            'supplier_currency_id'  => $request->supplier_currency_id,
         ];
 
         if($method == 'store'){
@@ -96,12 +154,9 @@ class UserController extends Controller
 
     public function create()
     {
-        $data['supervisors'] = User::whereHas('getRole', function ($query) {
-            $query->where('slug', 'supervisor');
-        })->orderBy('name', 'ASC')->get();
-
+        $data['supervisors']       = User::role(['supervisor'])->get();
         $data['roles']             = Role::orderBy('name', 'ASC')->get();
-        $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
         $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
@@ -112,6 +167,8 @@ class UserController extends Controller
     // UserRequest
     public function store(UserRequest $request)
     {
+        // dd(request()->all());
+
         User::create($this->userArray($request, 'store'));
 
         return response()->json([ 
@@ -125,13 +182,11 @@ class UserController extends Controller
     {
         $data['user']              = User::findOrFail(decrypt($id));
         $data['roles']             = Role::orderBy('name', 'ASC')->get();
-        $data['currencies']        = Currency::where('status', 1)->orderBy('name', 'ASC')->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
         $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
-        $data['supervisors']       = User::whereHas('getRole', function ($query) {
-            $query->where('slug', 'supervisor');
-        })->orderBy('name', 'ASC')->get();
+        $data['supervisors']       = User::role(['supervisor'])->get();
 
         $data['status']     = $status;
         
@@ -144,13 +199,18 @@ class UserController extends Controller
         $user = User::find(decrypt($request->id))->update($this->userArray($request, 'update'));
         
         if($status == 'profile'){
-            return redirect()->route('dashboard.index')->with('success_message', 'profile updated successfully');
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Profile Updated Successfully.',
+                'redirect_url'    => route('users.index')
+            ]);
         }
 
         return response()->json([ 
             'status'          => true, 
             'success_message' => 'User Updated Successfully.',
-            'redirect_url'    => route('users.index') 
+            'redirect_url'    => route('users.index')
         ]);
     }
 

@@ -27,9 +27,7 @@ class CreateSupplierBulkPaymentDetails extends Migration
 
             $table->foreign('supplier_bulk_payment_id')->references('id')->on('supplier_bulk_payments')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            // $table->foreign('bd_reference_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
-
             $table->timestamps();
         });
     }
@@ -44,3 +42,5 @@ class CreateSupplierBulkPaymentDetails extends Migration
         Schema::dropIfExists('supplier_bulk_payment_details');
     }
 }
+
+// $table->foreign('bd_reference_id')->references('id')->on('booking_details')->onUpdate('cascade')->onDelete('cascade');

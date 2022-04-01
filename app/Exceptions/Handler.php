@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\ErrorLog;
 
 class Handler extends ExceptionHandler
 {
@@ -36,6 +37,13 @@ class Handler extends ExceptionHandler
     public function report(Throwable $Throwable)
     {
         parent::report($Throwable);
+
+        // ErrorLog::create([
+        //     'file'    => $Throwable->getFile(),
+        //     'line'    => $Throwable->getLine(),
+        //     'url'     => url()->current(),
+        //     'message' => $Throwable->getMessage(),
+        // ]);
     }
 
     /**

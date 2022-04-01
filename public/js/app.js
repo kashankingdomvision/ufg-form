@@ -67102,37 +67102,32 @@ __webpack_require__(/*! ./asset/intl_tel_input/utils */ "./resources/js/asset/in
 __webpack_require__(/*! ./asset/pace/pace.min */ "./resources/js/asset/pace/pace.min.js");
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
-  $(document).on('click', '.removeChild', function () {
-    var id = $(this).data('show');
-    $(id).removeAttr("style");
-    $($(this).data('append')).empty();
-    $(this).attr("style", "display:none");
-  });
-  $(document).on('click', '.addChild', function () {
-    $('.append').empty();
-    var id = $(this).data('id');
-    var refNumber = $(this).data('ref');
-    var appendId = $(this).data('append');
-    var url = '{{ route("get.child.reference", ":id") }}';
-    url = url.replace(':id', refNumber);
-    var removeBtnId = $(this).data('remove');
-    var showBtnId = $(this).data('show');
-    $('.addChild').removeAttr("style");
-    $('.removeChild').attr("style", "display:none");
-    $(this).attr("style", "display:none"); // $(appendId).empty();
-
-    $.ajax({
-      url: BASEURL + 'quotes/child/reference',
-      data: {
-        id: id,
-        ref_no: refNumber
-      },
-      type: 'get',
-      success: function success(response) {
-        $(appendId).append(response);
-        $(removeBtnId).removeAttr("style");
-      }
+  // set autofocus on search
+  $(document).on('select2:open', '.select2single', function (e) {
+    $(".select2-search__field").each(function (key, value) {
+      value.focus();
     });
+  }); // $(document).on('select2:open', (e) => {
+  //     const selectId = e.target.id
+  //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+  //         key,
+  //         value,
+  //     ){
+  //         value.focus();
+  //     })
+  // })
+
+  window.Toast = Swal.mixin({
+    toast: true,
+    icon: 'success',
+    position: 'top-right',
+    showConfirmButton: false,
+    timer: 2200,
+    timerProgressBar: true,
+    didOpen: function didOpen(toast) {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
   });
 
   window.calltextEditorSummerNote = function () {
@@ -67247,7 +67242,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       var flag = true;
       setTimeout(function () {
         jQuery.each(errors.errors, function (index, value) {
-          console.log("".concat(index));
           index = index.replace(/\./g, '_');
           /* Expand Quote Details Card */
 
@@ -67260,7 +67254,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           $("#".concat(index)).addClass('is-invalid');
           $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
           $("#".concat(index)).closest('.form-group').find('.note-editor').css('border-color', 'red');
-          console.log("#".concat(index));
 
           if (flag) {
             $('html, body').animate({
@@ -67360,8 +67353,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.printAlertResponse = function (response) {
-    console.log(response.status);
-
     if (response && response.status) {
       $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
       Toast.fire({
@@ -67385,6 +67376,18 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
+  window.printServerAlertResponse = function (response) {
+    if (response && response.status) {
+      Toast.fire({
+        icon: 'success',
+        title: response.success_message
+      });
+      setTimeout(function () {
+        location.reload();
+      }, 2500);
+    }
+  };
+
   window.curday = function (sp) {
     var today = new Date();
     var dd = today.getDate();
@@ -67405,12 +67408,54 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return today = dd + '/' + mm + '/' + yyyy;
   };
 
+  window.convertDate = function (date) {
+    var dateParts = date.split("/");
+    return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+  };
+
+  $(document).on('keyup', "input[data-type='currency']", function (e) {
+    formatCurrency($(this));
+  });
+  $(document).on('blur', "input[data-type='currency']", function (e) {
+    formatCurrency($(this), "blur");
+  });
+
   window.check = function (x) {
     if (isNaN(x) || !isFinite(x)) {
       return parseFloat(0).toFixed(2);
     }
 
-    return parseFloat(x).toFixed(2);
+    return formatComma(x.toFixed(2));
+  };
+
+  window.formatComma = function (input_val, blur) {
+    if (input_val.indexOf(".") >= 0) {
+      var decimal_pos = input_val.indexOf(".");
+      var left_side = input_val.substring(0, decimal_pos);
+      var right_side = input_val.substring(decimal_pos);
+      left_side = formatNumber(left_side);
+      right_side = formatNumber(right_side);
+
+      if (blur === "blur") {
+        right_side += "00";
+      }
+
+      right_side = right_side.substring(0, 2);
+      input_val = left_side + "." + right_side;
+    } else {
+      input_val = formatNumber(input_val);
+      input_val = input_val;
+
+      if (blur === "blur") {
+        input_val += ".00";
+      }
+    }
+
+    return input_val;
+  };
+
+  window.removeComma = function (n) {
+    return n.replace(/,/g, '');
   };
 
   window.checkForInt = function (x) {
@@ -67421,6 +67466,21 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     return parseInt(x);
   };
 
+  window.formatNumber = function (n) {
+    return n.replace(/(?!-)[^0-9]/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  window.formatCurrency = function (input, blur) {
+    var input_val = input.val();
+
+    if (input_val === "") {
+      return;
+    } // send updated string to input
+
+
+    input.val(formatComma(input_val, blur));
+  };
+
   window.isEmpty = function (value) {
     return value == null || value == '' || value == 'undefined' ? 'N/A' : value;
   };
@@ -67428,6 +67488,11 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   window.datepickerReset = function () {
     var key = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
     var quoteClass = arguments.length > 1 ? arguments[1] : undefined;
+    // var today;
+    // today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    // console.log(today);
+    var date = new Date();
+    date.setDate(date.getDate());
     var $season = $("#season_id");
     var season_start_date = new Date($season.find(':selected').data('start'));
     var season_end_date = new Date($season.find(':selected').data('end'));
@@ -67437,17 +67502,16 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         $("".concat(quoteClass, " .bookingDateOfService")).datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-
+          startDate: date
+        });
         $("".concat(quoteClass, " .bookingEndDateOfService")).datepicker('destroy').datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy',
-          startDate: season_start_date,
-          endDate: season_end_date
-        });
+          startDate: date
+        }); // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
+        // $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
+
         $('.stored-text-date').datepicker("destroy").datepicker({
           autoclose: true,
           format: 'dd/mm/yyyy'
@@ -67456,13 +67520,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
         $('.datepicker').datepicker("destroy").datepicker({
           autoclose: true,
-          format: 'dd/mm/yyyy'
+          format: 'dd/mm/yyyy',
+          startDate: date
         });
       }
     } else {
       $('.datepicker').datepicker('destroy').datepicker({
         autoclose: true,
-        format: 'dd/mm/yyyy'
+        format: 'dd/mm/yyyy',
+        startDate: date
       });
     }
     /*  Datepicker fixed code for jQuery UI Sortable */
@@ -67471,9 +67537,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.datepicker').datepicker().on('hide', function (e) {
       $(this).blur();
     });
-  }; //tel input end
-  //intl-tel-input ************** Start ******************** //
-  // function intTelinput(key = null, inVal = null) {
+  }; // function intTelinput(key = null, inVal = null) {
 
 
   window.intTelinput = function () {
@@ -67486,6 +67550,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
       separateDialCode: true,
+      preferredCountries: ["gb", "us", "au", "ca", "nz"],
       formatOnDisplay: true,
       initialCountry: "US",
       nationalMode: true,
@@ -67522,8 +67587,20 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       errorMsg.innerHTML = "";
       errorMsg.classList.add("hide");
     };
-  }; //intl-tel-input ************** End ******************** //
+  }; // tel input  start
 
+
+  if ($('.phone').length > 0) {
+    for (var i = 0; i < $('.phone').length; i++) {
+      if ($('.phone' + i).length != 0) {
+        intTelinput(i);
+      }
+    }
+  }
+
+  if ($('#agency_contact').length > 0) {
+    intTelinput('gc'); // console.log(inTelinput);
+  }
   /*
   |--------------------------------------------------------------------------
   | Invoke Global Functions
@@ -67548,22 +67625,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     theme: "bootstrap",
     templateResult: formatState,
     templateSelection: formatState
-  }); // $('.nationality-select2').select2({
-  //     width: '100%',
-  //     theme: "bootstrap",
-  //     templateResult: formatState,
-  //     templateSelection: formatState,
-  // });
-
+  });
   $('.select2-multiple').select2({
     width: '100%',
     theme: "classic",
     templateResult: formatState,
     templateSelection: formatState
-  });
-  $('.select2-single').select2({
-    width: '90%',
-    theme: "bootstrap"
   });
   $('.summernote').summernote({
     height: 70,
@@ -67713,7 +67780,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         options = result;
       }
     });
-    var multipleSelect2HTML = "<div class=\"col-md-3 filter-col\">\n                    <div class=\"d-flex bd-highlight\">\n                        <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                        <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n                    </div>\n                    <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n                </div>");
+    var multipleSelect2HTML = "<div class=\"col-md-3 filter-col\">\n            <div class=\"d-flex bd-highlight\">\n                <div class=\"w-100 bd-highlight\"><label>".concat(label, "</label></div>\n                <div class=\"flex-shrink-1 bd-highlight\" style=\"font-size: 11px;\"><i class=\"fas fa-times text-danger border border-danger remove-col\" style=\"padding: 4px; border-radius: 4px; cursor: pointer;\"></i></div>\n            </div>\n            <select class=\"form-control select2-multiple\" multiple name=\"columns[").concat(label, "][]\">").concat(options, "</select>\n        </div>");
     return multipleSelect2HTML;
   } // transfer report
 
@@ -67924,116 +67991,115 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       }
     });
   });
-  $('#delete_all').on('click', function (e) {
-    e.preventDefault();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-
-    if (checkedValues.length > 0) {
-      jQuery('#multiple_delete_modal').modal('show');
-    } else {
-      alert("Please Check any Record First");
-    }
-  });
-  $('#multiple_delete').on('click', function (e) {
-    e.preventDefault();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var tableName = $('.table-name').val();
+  $(document).on('change', '.selectStoredText', function () {
+    var slug = $(this).val();
+    var quote = jQuery(this).closest('.quote');
+    var key = quote.data('key');
     $.ajax({
-      url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
-      type: 'Delete',
-      dataType: "JSON",
-      data: {
-        "checkedValues": checkedValues,
-        "tableName": tableName
+      url: "".concat(BASEURL, "stored/").concat(slug, "/text"),
+      type: 'get',
+      dataType: "json",
+      success: function success(data) {
+        console.log(key);
+        var id = '#quote_' + key + '_stored_text';
+        setTextEditorValue(id, data);
       },
-      beforeSend: function beforeSend() {
-        $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(response) {
-        if (response.status == true) {
-          $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-          jQuery('#multiple_delete_modal').modal('hide');
-          setTimeout(function () {
-            alert(response.message);
-            location.reload();
-          }, 600);
-        }
-      },
-      error: function error(xhr) {
-        console.log(xhr.responseText);
+      error: function error(reject) {
+        alert(reject);
       }
     });
   });
-  $('.multiple-action').on('change', function (e) {
-    var action = $(this).val();
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
+  $(document).on('click', '.addmodalforquote', function () {
+    var quote = $(this).closest('.quote');
+    var key = quote.data('key');
+    var target = '.' + $(this).data('show'); // console.log(target);
 
-    if (checkedValues.length > 0) {
-      jQuery('#multiple_delete_modal').modal('show');
-      $('.action_name').val(action);
-      $('#multiple_delete').addClass('btn btn-danger');
-      $("#multiple_delete").html(action);
-      $('#multiple_delete').removeClass();
-      $('#multiple_delete').addClass('btn btn-primary');
+    quote.find(target).modal('show');
+    quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
+  });
+  $(document).on('click', '.removeChild', function () {
+    var id = $(this).data('show');
+    $(id).removeAttr("style");
+    $($(this).data('append')).empty();
+    $(this).attr("style", "display:none");
+  });
+  $(document).on('click', '.addChild', function () {
+    $('.append').empty();
+    var id = $(this).data('id');
+    var refNumber = $(this).data('ref');
+    var appendId = $(this).data('append');
+    var url = '{{ route("get.child.reference", ":id") }}';
+    url = url.replace(':id', refNumber);
+    var removeBtnId = $(this).data('remove');
+    var showBtnId = $(this).data('show');
+    $('.addChild').removeAttr("style");
+    $('.removeChild').attr("style", "display:none");
+    $(this).attr("style", "display:none"); // $(appendId).empty();
 
-      if (action == 'Delete') {
-        $('#multiple_delete').addClass('btn btn-danger');
+    $.ajax({
+      url: BASEURL + 'quotes/child/reference',
+      data: {
+        id: id,
+        ref_no: refNumber
+      },
+      type: 'get',
+      success: function success(response) {
+        $(appendId).append(response);
+        $(removeBtnId).removeAttr("style");
       }
-    } else {
-      alert("Please Check any Record First");
-      $('.multiple-action').val("");
-    } // if(action && checkedValues.length > 0){
-    //     $.ajax({
-    //         url: REDIRECT_BASEURL+'quotes/multiple-delete',
-    //         type: 'delete',
-    //         dataType: "JSON",
-    //         data: { "checkedValues": checkedValues, "action": action },
-    //         beforeSend: function() {
-    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-    //         },
-    //         success: function (response)
-    //         {
-    //             if(response.status == true){
-    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-    //                 jQuery('#multiple_delete_modal').modal('hide');
-    //                 setTimeout(function() {
-    //                     alert(response.message);
-    //                     location.reload();
-    //                 }, 600);
-    //             }
-    //         },
-    //         error: function(xhr) {
-    //           console.log(xhr.responseText);
-    //         }
-    //     });
-    // }
-
-  }); // booking incremnet and
-  // tel input  start
-
-  if ($('.phone').length > 0) {
-    for (var i = 0; i < $('.phone').length; i++) {
-      if ($('.phone' + i).length != 0) {
-        intTelinput(i);
-      }
-    }
-  }
-
-  if ($('#agency_contact').length > 0) {
-    intTelinput('gc'); // console.log(inTelinput);
-  }
-
-  var btnname = null; //BUlk DATA DELETE
-
-  $('.btnbulkClick').on('click', function (e) {
-    btnname = $(this).attr('name');
-  }); // var bulkActionType = null;
+    });
+  }); // $('#cloneRelevantquote').on('click', function() {
+  //     $('.relevant-quote').eq(0).clone().find("input").val("") .each(function(){
+  //         this.name = this.name.replace(/\[(\d+)\]/, function(){
+  //             return '[' + ($('.quote').length) + ']';
+  //         });
+  //         this.id = this.id.replace(/\d+/g, $('.quote').length, function(){
+  //             return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name")
+  //         });
+  //     }).end().show().insertAfter(".relevant-quote:last");
+  // });
+  // $('#delete_all').on('click', function(e) {
+  //     e.preventDefault();
+  //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+  //     if (checkedValues.length > 0) {
+  //         jQuery('#multiple_delete_modal').modal('show');
+  //     } else {
+  //         alert("Please Check any Record First");
+  //     }
+  // });
+  // $('#multiple_delete').on('click', function(e) {
+  //     e.preventDefault();
+  //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+  //     var tableName = $('.table-name').val();
+  //     $.ajax({
+  //         url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
+  //         type: 'Delete',
+  //         dataType: "JSON",
+  //         data: { "checkedValues": checkedValues, "tableName": tableName },
+  //         beforeSend: function() {
+  //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+  //         },
+  //         success: function(response) {
+  //             if (response.status == true) {
+  //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+  //                 jQuery('#multiple_delete_modal').modal('hide');
+  //                 setTimeout(function() {
+  //                     alert(response.message);
+  //                     location.reload();
+  //                 }, 600);
+  //             }
+  //         },
+  //         error: function(xhr) {
+  //             console.log(xhr.responseText);
+  //         }
+  //     });
+  // });
+  // var btnname = null;
+  // //BUlk DATA DELETE
+  // $('.btnbulkClick').on('click', function (e) {
+  //     btnname = $(this).attr('name');
+  // })
+  // var bulkActionType = null;
   // $(document).on('submit', '#update_role', function(event) {  
   // });
   // $(".bulk-action").submit(function(e) {
@@ -68137,17 +68203,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   /// Update Currency Status
   //BUlk DATA DELETE
   ///////////////// RELEVANT QUOTE FIELD
-
-  $('#cloneRelevantquote').on('click', function () {
-    $('.relevant-quote').eq(0).clone().find("input").val("").each(function () {
-      this.name = this.name.replace(/\[(\d+)\]/, function () {
-        return '[' + $('.quote').length + ']';
-      });
-      this.id = this.id.replace(/\d+/g, $('.quote').length, function () {
-        return 'quote_' + parseInt($('.quote').length) + '_' + $(this).attr("data-name");
-      });
-    }).end().show().insertAfter(".relevant-quote:last");
-  }); ///////////////// RELEVANT QUOTE FIELD
+  ///////////////// RELEVANT QUOTE FIELD
   //////////// quote media modal close
   // remove image work
   // $(document).on('click', '#add_storeText', function () {
@@ -68166,36 +68222,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // })
   //////////// quote media modal close
   ////////////////////// Stored Text
-
-  $(document).on('change', '.selectStoredText', function () {
-    var slug = $(this).val();
-    var quote = jQuery(this).closest('.quote');
-    var key = quote.data('key');
-    $.ajax({
-      url: "".concat(BASEURL, "stored/").concat(slug, "/text"),
-      type: 'get',
-      dataType: "json",
-      success: function success(data) {
-        console.log(key);
-        var id = '#quote_' + key + '_stored_text';
-        setTextEditorValue(id, data);
-      },
-      error: function error(reject) {
-        alert(reject);
-      }
-    });
-  });
-  $(document).on('click', '.addmodalforquote', function () {
-    var quote = $(this).closest('.quote');
-    var key = quote.data('key');
-    var target = '.' + $(this).data('show'); // console.log(target);
-
-    quote.find(target).modal('show');
-    quote.find(target + ':input').removeAttr('disabled'); // jQuery('#accomadation_modal').modal('show').find('input').val('');
-  }); /////////////////// Stored Text End
+  /////////////////// Stored Text End
 }); // CreateGroupQuote //
-
-var checkedQuoteValues = null; // window.Toast = Swal.mixin({
+// var checkedQuoteValues = null;
+// window.Toast = Swal.mixin({
 //     toast: true,
 //     position: 'top-end',
 //     showConfirmButton: false,
@@ -68206,33 +68236,18 @@ var checkedQuoteValues = null; // window.Toast = Swal.mixin({
 //       toast.addEventListener('mouseleave', Swal.resumeTimer)
 //     }
 // });
-
-window.Toast = Swal.mixin({
-  toast: true,
-  icon: 'success',
-  position: 'top-right',
-  showConfirmButton: false,
-  timer: 2200,
-  timerProgressBar: true,
-  didOpen: function didOpen(toast) {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  }
-}); //Create group quote
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', function (e) {
-  checkedQuoteValues = jquery__WEBPACK_IMPORTED_MODULE_0___default()('.child:checked').map(function (i, e) {
-    return e.value;
-  }).get();
-  /*console.log(checkedQuoteValues);
-  return false;*/
-
-  if (checkedQuoteValues.length > 1) {
-    jQuery('#group-quote-modal').modal('show');
-  } else {
-    alert('Please check atleat two records.');
-  }
-}); // $(".create-group-quote").submit(function(e) {
+//Create group quote
+// $('.createGroupQuote').on('click', function (e) {
+//     checkedQuoteValues = $('.child:checked').map((i, e) => e.value ).get();
+//     /*console.log(checkedQuoteValues);
+//     return false;*/
+//     if(checkedQuoteValues.length > 1){
+//         jQuery('#group-quote-modal').modal('show');
+//     }else{
+//         alert('Please check atleat two records.');
+//     }
+// });
+// $(".create-group-quote").submit(function(e) {
 //     e.preventDefault();
 //     var url            = $(this).attr('action');
 //     /*var formData       = $(this).serializeArray();
@@ -68284,6 +68299,60 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()('.createGroupQuote').on('click', f
 //         });
 //     });
 // });
+// $('.nationality-select2').select2({
+//     width: '100%',
+//     theme: "bootstrap",
+//     templateResult: formatState,
+//     templateSelection: formatState,
+// });
+// $('.select2-single').select2({
+//     width: '90%',
+//     theme: "bootstrap",
+// });
+// $('.multiple-action').on('change', function(e) {
+//     var action = $(this).val();
+//     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+//     if (checkedValues.length > 0) {
+//         jQuery('#multiple_delete_modal').modal('show');
+//         $('.action_name').val(action);
+//         $('#multiple_delete').addClass('btn btn-danger');
+//         $("#multiple_delete").html(action);
+//         $('#multiple_delete').removeClass();
+//         $('#multiple_delete').addClass('btn btn-primary');
+//         if (action == 'Delete') {
+//             $('#multiple_delete').addClass('btn btn-danger');
+//         }
+//     } else {
+//         alert("Please Check any Record First");
+//         $('.multiple-action').val("");
+//     }
+// if(action && checkedValues.length > 0){
+//     $.ajax({
+//         url: REDIRECT_BASEURL+'quotes/multiple-delete',
+//         type: 'delete',
+//         dataType: "JSON",
+//         data: { "checkedValues": checkedValues, "action": action },
+//         beforeSend: function() {
+//             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+//         },
+//         success: function (response)
+//         {
+//             if(response.status == true){
+//                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+//                 jQuery('#multiple_delete_modal').modal('hide');
+//                 setTimeout(function() {
+//                     alert(response.message);
+//                     location.reload();
+//                 }, 600);
+//             }
+//         },
+//         error: function(xhr) {
+//           console.log(xhr.responseText);
+//         }
+//     });
+// }
+// });
+// booking incremnet and
 
 /***/ }),
 
