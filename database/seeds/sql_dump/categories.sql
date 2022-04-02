@@ -10,7 +10,9 @@ UPDATE `categories` SET `feilds` = '[{\"type\":\"text\",\"label\":\"Room Type\",
 --  Tour
 UPDATE `categories` SET `set_end_date_of_service` = '1' WHERE `categories`.`id` = 3;
 UPDATE `categories` SET `show_tf` = '1' WHERE `categories`.`id` = 3;
-UPDATE `categories` SET `label_of_time` = 'Time of Service' WHERE `categories`.`id` = 3;
+UPDATE `categories` SET `second_tf` = '1' WHERE `categories`.`id` = 3;
+UPDATE `categories` SET `label_of_time` = 'Start Time of Service' WHERE `categories`.`id` = 3;
+UPDATE `categories` SET `second_label_of_time` = 'End Time of Service' WHERE `categories`.`id` = 3;
 
 --  Cruise
 UPDATE `categories` SET `feilds` = '[{\"type\":\"autocomplete\",\"label\":\"Cabin Type\",\"className\":\"form-control\",\"name\":\"autocomplete-1646486244787-0\",\"requireValidOption\":false,\"data\":\"cabin_types\",\"values\":[{\"label\":\"Option 1\",\"value\":\"option-1\",\"selected\":true},{\"label\":\"Option 2\",\"value\":\"option-2\",\"selected\":false},{\"label\":\"Option 3\",\"value\":\"option-3\",\"selected\":false}]}]' WHERE `categories`.`id` = 4;
