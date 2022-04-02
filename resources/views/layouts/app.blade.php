@@ -15,6 +15,18 @@
             @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
                 .iti__flag {background-image: url("{{ asset('images/intl-tel-input/flags@2x.png')}}") !important;}
             }
+
+            #sticky-btn {
+                padding: 30px;
+                position: -webkit-sticky;
+                position: sticky;
+                bottom: 15%;
+            }
+
+            #sticky-button {
+                padding: 25px;
+            }
+
         </style>
 
     </head>

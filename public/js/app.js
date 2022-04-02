@@ -67266,6 +67266,17 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   };
 
+  window.stickyValidationErrors = function (response) {
+    if (response.status === 422) {
+      console.log(response);
+      var errors = response.responseJSON;
+
+      if (Object.keys(errors).length > 0) {
+        $('#sticky-button').removeClass('d-none');
+      }
+    }
+  };
+
   window.printServerSuccessMessage = function (data, formSelector) {
     if (data && data.status) {
       $("".concat(formSelector))[0].reset();

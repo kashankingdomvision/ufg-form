@@ -201,6 +201,18 @@ $(document).ready(function($) {
         }
     }
 
+    window.stickyValidationErrors = function(response) {
+
+        if (response.status === 422) {
+            console.log(response);
+            let errors = response.responseJSON;
+            if((Object.keys(errors).length) > 0 )
+            {
+                $('#sticky-button').removeClass('d-none');
+            }
+        }
+    }
+
     window.printServerSuccessMessage = function(data, formSelector) {
 
         if(data && data.status){

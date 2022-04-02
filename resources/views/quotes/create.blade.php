@@ -1008,11 +1008,14 @@
 
               </div><!-- End card body -->
 
+              <div class="sticky" id="sticky-btn">
+                <button type="submit" id="sticky-button" class="btn btn-danger d-none rounded-circle buttonSumbit float-right"></button>
+              </div>
+
               <div class="card-footer">
                 <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
                 <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>
               </div>
-
             </form><!-- End form -->
 
             <div id="overlay" class=""></div>
