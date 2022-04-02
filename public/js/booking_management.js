@@ -2034,6 +2034,14 @@ $(document).ready(function () {
             $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
           }
 
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
+            $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
+            $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+          }
+
           if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
             $('#brand_id').val(data.response.brand.brand_id).change();
           }
