@@ -583,7 +583,7 @@
                               <select name="quote[0][group_owner_id]" data-name="group_owner_id" id="quote_0_group_owner_id" class="form-control group-owner-id select2single">
                                 <option value="">Select Group Owner</option>
                                 @foreach ($group_owners as $group_owner)
-                                  <option value="{{ $group_owner->id }}" >{{ $group_owner->name }}</option>
+                                  <option value="{{ $group_owner->id }}" data-name="{{ $group_owner->name }}">{{ $group_owner->name }}</option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>

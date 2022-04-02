@@ -693,17 +693,33 @@
                             </div>
 
                             @php
+                        
                               $supplier_url = \Helper::getSupplierRateSheetUrl($booking_detail->supplier_id, $booking->season_id);
                               $url          = !empty($supplier_url) ? $supplier_url : '';
                               $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                              $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
+                              // $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                              //   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
+                              // })->get();
+
+                              $query = App\Supplier::orderBy('id', 'ASC');
+
+                              $query->whereHas('getCountries', function($query) use ($booking_detail) {
                                 $query->whereIn('id', json_decode($booking_detail->supplier_country_ids));
-                              })
-                              ->whereHas('getCategories', function($query) use ($booking_detail) {
+                              });
+                              $query->whereHas('getCategories', function($query) use ($booking_detail) {
                                 $query->where('id', $booking_detail->category_id);
-                              })
-                              ->get();
+                              });
+
+                              if(isset($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug) && !empty($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug) && ($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug == 'cruise') && is_null($booking_detail->group_owner_id)){
+                                $query->whereNull('group_owner_id');
+                              }
+
+                              if(isset($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug) && !empty($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug) && ($log->getQueryData($booking_detail->category_id, 'Category')->first()->slug == 'cruise') && !is_null($booking_detail->group_owner_id)){
+                                $query->where('group_owner_id', $booking_detail->group_owner_id);
+                              }
+
+                              $suppliers = $query->get();
                             @endphp
 
                             <div class="col">

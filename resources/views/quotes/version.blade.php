@@ -723,13 +723,24 @@
                                 //   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
                                 // })->get();
 
-                                $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                                $query = App\Supplier::orderBy('id', 'ASC');
+                                
+                                $query->whereHas('getCountries', function($query) use ($q_detail) {
                                   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
-                                })
-                                ->whereHas('getCategories', function($query) use($q_detail) {
+                                });
+                                $query->whereHas('getCategories', function($query) use($q_detail) {
                                   $query->where('id', $q_detail['category_id']);
-                                })
-                                ->get();
+                                });
+
+                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && is_null($q_detail['group_owner_id'])){
+                                  $query->whereNull('group_owner_id');
+                                }
+
+                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && !is_null($q_detail['group_owner_id'])){
+                                  $query->where('group_owner_id', $q_detail['group_owner_id']);
+                                }
+
+                                $suppliers = $query->get();
                               @endphp
 
                               <div class="col-md-3">

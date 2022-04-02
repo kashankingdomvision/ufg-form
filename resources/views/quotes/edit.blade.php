@@ -742,7 +742,7 @@
                               </div>
                             </div>
 
-                            <div class="col-md-3 group-owner-feild {{ !isset($q_detail->group_owner_id) && empty($q_detail->group_owner_id) ? 'd-none' : '' }} ">
+                            <div class="col-md-3 group-owner-feild {{ isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') ? '' : 'd-none' }} ">
                               <div class="form-group">
                                 <label>Group Owner <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][group_owner_id]" data-name="group_owner_id" id="quote_{{ $key }}_group_owner_id" class="form-control group-owner-id select2single">
@@ -760,13 +760,25 @@
                               $url          = !empty($supplier_url) ? $supplier_url : '';
                               $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                              $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                              $query = App\Supplier::orderBy('id', 'ASC');
+
+                              $query->whereHas('getCountries', function($query) use ($q_detail) {
                                 $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
-                              })
-                              ->whereHas('getCategories', function($query) use($q_detail) {
+                              });
+  
+                              $query->whereHas('getCategories', function($query) use ($q_detail) {
                                 $query->where('id', $q_detail->category_id);
-                              })
-                              ->get();
+                              });
+
+                              if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && is_null($q_detail->group_owner_id)){
+                                $query->whereNull('group_owner_id');
+                              }
+
+                              if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && !is_null($q_detail->group_owner_id)){
+                                $query->where('group_owner_id', $q_detail->group_owner_id);
+                              }
+
+                              $suppliers = $query->get();
                             @endphp
 
                             <div class="col-md-3">

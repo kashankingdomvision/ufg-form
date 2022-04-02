@@ -2703,7 +2703,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += "<option value=''>Select Supplier</option>";
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
           $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
         } else {
@@ -2805,8 +2805,40 @@ $(document).ready(function () {
   $(document).on('change', '.group-owner-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
-    var value = $(this).find(':selected').data('name');
-    quote.find('.badge-group-owner-id').html(value);
+    var group_owner_name = $(this).find(':selected').data('name');
+    var group_owner_id = $(this).val();
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
+    var selectOption = "<option value=''>Select Supplier</option>";
+    var options = "";
+    quote.find('.badge-group-owner-id').html(group_owner_name);
+
+    if (group_owner_id != '') {
+      /* get suppliers according to location */
+      $.ajax({
+        type: 'get',
+        url: "".concat(BASEURL, "group-owner-on-change"),
+        data: {
+          'group_owner_id': group_owner_id,
+          'supplier_country_ids': supplier_country_ids,
+          'category_id': category_id
+        },
+        beforeSend: function beforeSend() {// $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+        },
+        success: function success(response) {
+          if (response && response.suppliers.length > 0) {
+            options += selectOption;
+            $.each(response.suppliers, function (key, value) {
+              options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            });
+          } else {
+            options = selectOption;
+          }
+
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        }
+      });
+    }
   });
   $(document).on('change', '.supplier-country-id', function () {
     var quote = $(this).closest('.quote');
@@ -2838,7 +2870,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += selectOption;
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
         } else {
           options = selectOption;
@@ -2894,8 +2926,10 @@ $(document).ready(function () {
     var supplier_id = $(this).val();
     var options = "";
     var selectOption = "<option value=''>Select Product</option>";
+    var supplier_name = $(this).find(':selected').data('name');
 
     if (supplier_id != "") {
+      quote.find('.badge-supplier-id').html(supplier_name);
       $.ajax({
         type: 'get',
         url: "".concat(BASEURL, "supplier-on-change"),
@@ -2907,6 +2941,7 @@ $(document).ready(function () {
         },
         success: function success(response) {
           if (response && Object.keys(response.supplier).length > 0) {
+            // $(`#quote_${quoteKey}_group_owner_id`).val(response.supplier.group_owner_id).change();
             $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
           }
 
@@ -2923,6 +2958,8 @@ $(document).ready(function () {
           }
         }
       });
+    } else {
+      quote.find('.badge-supplier-id').html("");
     }
   });
   $(document).on('submit', '#form_add_product', function () {

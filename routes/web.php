@@ -731,7 +731,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
 
         Route::get('country/to/supplier',array('as'=>'country.supplier','uses'=>'ResponseController@getCountryToSupplier'));
-
+        Route::get('group-owner-on-change',array('as'=>'country.supplier','uses'=>'ResponseController@groupOwnerOnChange'));
 
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));

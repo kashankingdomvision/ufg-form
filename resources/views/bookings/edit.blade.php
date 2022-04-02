@@ -777,14 +777,26 @@
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                                $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
+                                $query = App\Supplier::orderBy('id', 'ASC');
+
+                                $query->whereHas('getCountries', function($query) use ($booking_detail) {
                                   $query->whereIn('id', $booking_detail->getBookingDetailCountries()->pluck('country_id')->toArray());
-                                })
-                                ->whereHas('getCategories', function($query) use($booking_detail) {
+                                });
+    
+                                $query->whereHas('getCategories', function($query) use ($booking_detail) {
                                   $query->where('id', $booking_detail->category_id);
-                                })
-                                ->get();
-                              @endphp
+                                });
+
+                                if(isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'cruise') && is_null($booking_detail->group_owner_id)){
+                                  $query->whereNull('group_owner_id');
+                                }
+
+                                if(isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'cruise') && !is_null($booking_detail->group_owner_id)){
+                                  $query->where('group_owner_id', $booking_detail->group_owner_id);
+                                }
+
+                              $suppliers = $query->get();
+                            @endphp
 
                               <div class="col-md-3">
                                 <div class="form-group">

@@ -228,6 +228,7 @@ class ResponseController extends Controller
             ->whereHas('getCategories', function($query) use ($request) {
                 $query->where('id', $request->category_id);
             })
+            ->whereNull('group_owner_id')
             ->get();
         }
 
@@ -409,6 +410,28 @@ class ResponseController extends Controller
         return response()->json([
             'supplier'          => $supplier,
             'supplier_products' => $supplier_products,
+        ]);
+    }
+
+    public function groupOwnerOnChange(Request $request)
+    {
+
+        $query = Supplier::orderBy('id', 'ASC');
+
+        $query->whereHas('getCountries', function($query) use ($request) {
+          $query->whereIn('id', $request->supplier_country_ids);
+        });
+
+        $query->whereHas('getCategories', function($query) use ($request) {
+          $query->where('id', $request->category_id);
+        });
+
+        $query->where('group_owner_id', $request->group_owner_id);
+        
+        $suppliers = $query->get();
+
+        return response()->json([
+            'suppliers'          => $suppliers,
         ]);
     }
     

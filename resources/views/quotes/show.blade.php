@@ -731,18 +731,30 @@
                             </div>
 
                             @php
-                              $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
-                              $url          = !empty($supplier_url) ? $supplier_url : '';
-                              $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
+                            $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
+                            $url          = !empty($supplier_url) ? $supplier_url : '';
+                            $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                              $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
-                                $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
-                              })
-                              ->whereHas('getCategories', function($query) use ($q_detail) {
-                                $query->where('id', $q_detail->category_id);
-                              })
-                              ->get()
-                            @endphp
+                            $query = App\Supplier::orderBy('id', 'ASC');
+
+                            $query->whereHas('getCountries', function($query) use ($q_detail) {
+                              $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
+                            });
+
+                            $query->whereHas('getCategories', function($query) use ($q_detail) {
+                              $query->where('id', $q_detail->category_id);
+                            });
+
+                            if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && is_null($q_detail->group_owner_id)){
+                              $query->whereNull('group_owner_id');
+                            }
+
+                            if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && !is_null($q_detail->group_owner_id)){
+                              $query->where('group_owner_id', $q_detail->group_owner_id);
+                            }
+
+                            $suppliers = $query->get();
+                          @endphp
 
                             <div class="col-md-3">
                               <div class="form-group">
