@@ -453,13 +453,13 @@
                           <span class="badge badge-info badge-end-date-of-service"></span>
                           <span class="badge badge-info badge-time-of-service"></span>
                           <span class="badge badge-info badge-category-id"></span>
+                          <span class="badge badge-info badge-group-owner-id"></span>
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
                           {{-- <span class="badge badge-info badge-supplier-currency-id"></span> --}}
                           <span class="badge badge-info badge-pick-up-location"></span>
                           <span class="badge badge-info badge-drop-off-location"></span>
                           <span class="badge badge-info badge-room-type"></span>
-                          <span class="badge badge-info badge-group-owner-id"></span>
                           <span class="badge badge-info badge-departure-harbour"></span>
                           <span class="badge badge-info badge-arrival-harbour"></span>
                           <span class="badge badge-info badge-departure-airport"></span>
