@@ -415,7 +415,6 @@ class ResponseController extends Controller
 
     public function groupOwnerOnChange(Request $request)
     {
-
         $query = Supplier::orderBy('id', 'ASC');
 
         $query->whereHas('getCountries', function($query) use ($request) {

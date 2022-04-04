@@ -728,7 +728,6 @@ $(document).ready(function () {
 
         if(group_owner_id != ''){
 
-            /* get suppliers according to location */
             $.ajax({
                 type: 'get',
                 url: `${BASEURL}group-owner-on-change`,
@@ -737,14 +736,13 @@ $(document).ready(function () {
                     'supplier_country_ids': supplier_country_ids,
                     'category_id': category_id
                 },
-
-                beforeSend: function () {
-                    // $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+                beforeSend: function() {
+                    $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
                 },
-                success: function (response) {
-
+                success: function(response) {
+    
                     if(response && response.suppliers.length > 0){
-
+    
                         options += selectOption;
     
                         $.each(response.suppliers, function(key, value) {
@@ -757,7 +755,8 @@ $(document).ready(function () {
     
                     $(`#quote_${quoteKey}_supplier_id`).html(options);
                 }
-            })
+            });
+
         }
     });
 

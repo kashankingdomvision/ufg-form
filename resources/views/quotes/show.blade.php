@@ -135,7 +135,7 @@
                       <label>Destination Country <span style="color:red">*</span></label>
                       <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
                         @foreach ($supplier_countries as $country)
-                          <option value="{{ $country->id }}" data-email="{{ $person->email }}"  {{ (in_array($country->id, $quote->getCountryDestinations()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
+                          <option value="{{ $country->id }}" {{ (in_array($country->id, $quote->getCountryDestinations()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
