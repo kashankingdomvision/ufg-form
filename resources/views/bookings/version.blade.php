@@ -67,7 +67,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Zoho Reference <span class="text-danger">*</span></label>
-                      <input type="text" value="{{ $booking->ref_no }}" name="ref_no" class="form-control" placeholder="Enter Reference Number">
+                      <input type="text" value="{{ $booking->ref_no }}" name="ref_no" class="form-control" placeholder="Enter Reference Number" autofocus>
                     </div>
                   </div>
 

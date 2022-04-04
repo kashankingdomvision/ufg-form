@@ -74,7 +74,7 @@
                     <div class="form-group">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group">
-                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2" autofocus>
                           <div class="input-group-append">
                           <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                         </div>
@@ -95,7 +95,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Booking Details <span style="color:red">*</span></label>
-                      <input type="text" name="booking_details" id="booking_details" class="form-control" placeholder="Enter Booking Details" autofocus>
+                      <input type="text" name="booking_details" id="booking_details" class="form-control" placeholder="Enter Booking Details" >
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>

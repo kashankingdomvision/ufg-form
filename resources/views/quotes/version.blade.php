@@ -77,7 +77,7 @@
                       <div class="form-group">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                         <div class="input-group">
-                          <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" id="ref_no" class="form-control reference-name" placeholder="Enter Reference Number">
+                          <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" id="ref_no" class="form-control reference-name" placeholder="Enter Reference Number" autofocus>
                             <div class="input-group-append">
                               <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                             </div>
