@@ -618,13 +618,13 @@
                             <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail->end_date_of_service) && !empty($q_detail->end_date_of_service) ? $q_detail->end_date_of_service : '' }}</span>
                             <span class="badge badge-info badge-time-of-service">{{ isset($q_detail->time_of_service) && !empty($q_detail->time_of_service) ? $q_detail->time_of_service : '' }}</span>
                             <span class="badge badge-info badge-category-id">{{ isset($q_detail->getCategory->name) && !empty($q_detail->getCategory->name) ? $q_detail->getCategory->name : '' }}</span>
+                            <span class="badge badge-info badge-group-owner-id">{{ isset($q_detail->getGroupOwner->name) && !empty($q_detail->getGroupOwner->name) ? $q_detail->getGroupOwner->name : '' }}</span>
                             <span class="badge badge-info badge-supplier-id">{{ isset($q_detail->getSupplier->name) && !empty($q_detail->getSupplier->name) ? $q_detail->getSupplier->name : ''}}</span>
                             <span class="badge badge-info badge-product-id">{{ isset($q_detail->getProduct->name) && !empty($q_detail->getProduct->name) ? $q_detail->getProduct->name : '' }}</span>
                             {{-- <span class="badge badge-info badge-supplier-currency-id">{{ isset($q_detail->getSupplierCurrency->name) && !empty($q_detail->getSupplierCurrency->name) ? $q_detail->getSupplierCurrency->code.' - '.$q_detail->getSupplierCurrency->name : '' }}</span> --}}
                             <span class="badge badge-info badge-pick-up-location"></span>
                             <span class="badge badge-info badge-drop-off-location"></span>
                             <span class="badge badge-info badge-room-type"></span>
-                            <span class="badge badge-info badge-group-owner-id"></span>
                             <span class="badge badge-info badge-departure-harbour"></span>
                             <span class="badge badge-info badge-arrival-harbour"></span>
                             <span class="badge badge-info badge-departure-airport"></span>

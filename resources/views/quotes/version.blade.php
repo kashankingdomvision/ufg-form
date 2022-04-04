@@ -576,13 +576,13 @@
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail['end_date_of_service']) && !empty($q_detail['end_date_of_service']) ? $q_detail['end_date_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-group-owner-id">{{ (isset($q_detail['group_owner_id']) && $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->count() > 0 ) ? $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
                               {{-- <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span> --}}
                               <span class="badge badge-info badge-pick-up-location"></span>
                               <span class="badge badge-info badge-drop-off-location"></span>
                               <span class="badge badge-info badge-room-type"></span>
-                              <span class="badge badge-info badge-group-owner-id"></span>
                               <span class="badge badge-info badge-departure-harbour"></span>
                               <span class="badge badge-info badge-arrival-harbour"></span>
                               <span class="badge badge-info badge-departure-airport"></span>
