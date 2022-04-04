@@ -169,7 +169,7 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                 $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
                 // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
-
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                 $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                 $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -187,7 +187,6 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_holder`).empty();
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
-                quote.find('.card-header .card-title .badge-info').html('');
 
 
                 callLaravelFileManger();
@@ -305,7 +304,7 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                 $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
                 // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
-
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                 $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                 $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -323,8 +322,6 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_holder`).empty();
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
-                
-                quote.find('.card-header .card-title .badge-info').html('');
 
 
                 callLaravelFileManger();

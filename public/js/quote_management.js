@@ -2873,6 +2873,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
@@ -2888,7 +2889,6 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
-        quote.find('.card-header .card-title .badge-info').html('');
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
@@ -2973,6 +2973,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
@@ -2988,7 +2989,6 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
-        quote.find('.card-header .card-title .badge-info').html('');
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
