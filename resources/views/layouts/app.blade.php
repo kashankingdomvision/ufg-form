@@ -20,11 +20,30 @@
                 padding: 30px;
                 position: -webkit-sticky;
                 position: sticky;
-                bottom: 15%;
+                bottom: 5%;
             }
 
             #sticky-button {
                 padding: 25px;
+                position: absolute;
+                right: 31px;
+                bottom: 4px;
+                border-radius: 50%;
+                height: 25px;
+                width: 25px;
+                /* background-color: #bbb; */
+                /* border-radius: 50%; */
+                display: inline-block;
+                /* background-color: #263544; */
+                /* right: 18px;
+                bottom: 20px; */
+                /* margin: 20%; */
+            }
+
+            div#sticky-btn i.fa.fa-arrow-right {
+                position: absolute;
+                bottom: 16px;
+                right: 15px;
             }
 
         </style>

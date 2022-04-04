@@ -1005,11 +1005,10 @@
                     </select>
                   </div>
                 </div>
-
               </div><!-- End card body -->
 
               <div class="sticky" id="sticky-btn">
-                <button type="submit" id="sticky-button" class="btn btn-danger d-none rounded-circle buttonSumbit float-right"></button>
+                <button type="submit" id="sticky-button" class="btn btn-secondary d-none buttonSumbit float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
               </div>
 
               <div class="card-footer">
