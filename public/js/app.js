@@ -67067,21 +67067,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery_ui_ui_widgets_sortable_js__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
 /* harmony import */ var select2__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(select2__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
-/* harmony import */ var intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(intl_tel_input__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
-/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
-/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap-datepicker */ "./node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js");
+/* harmony import */ var bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_datepicker__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! daterangepicker */ "./node_modules/daterangepicker/daterangepicker.js");
+/* harmony import */ var daterangepicker__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(daterangepicker__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_5__);
 
 window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.$ = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.Swal = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+window.intlTelInput = __webpack_require__(/*! intl-tel-input */ "./node_modules/intl-tel-input/index.js");
 
-
- // import Swal from 'sweetalert2';
+ // import intlTelInput from 'intl-tel-input';
+// import Swal from 'sweetalert2';
 
 
 
@@ -67547,7 +67546,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var input = document.querySelector('.phone' + key);
     var errorMsg = document.querySelector('.error_msg' + key);
     var validMsg = document.querySelector('.valid_msg' + key);
-    var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(input, {
+    var iti = intlTelInput(input, {
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
       separateDialCode: true,
       preferredCountries: ["gb", "us", "au", "ca", "nz"],
@@ -67690,7 +67689,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       // $('#lead_passenger_contact').removeClass('phone');
       // $('#lead_passenger_contact').removeClass('phone0');
 
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#lead_passenger_contact'), {
+      var iti = intlTelInput(document.querySelector('#lead_passenger_contact'), {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
       });
       iti.destroy(); // intTelinput('gc');
@@ -67700,7 +67699,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       agency_.addClass('d-none');
       passenger_.removeClass('d-none');
       passenger_.find('input, select').removeAttr('disabled');
-      var iti = intl_tel_input__WEBPACK_IMPORTED_MODULE_3___default()(document.querySelector('#agency_contact'), {
+      var iti = intlTelInput(document.querySelector('#agency_contact'), {
         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js"
       });
       iti.destroy(); // $('#lead_passenger_contact').addClass('phone phone0');

@@ -2040,6 +2040,34 @@ $(document).ready(function () {
 
           if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
             $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+            var input = document.querySelector('#lead_passenger_contact');
+            var validMsg = document.querySelector('.valid_msg0');
+            var iti = intlTelInput(input, {
+              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+              separateDialCode: true,
+              preferredCountries: ["gb", "us", "au", "ca", "nz"],
+              formatOnDisplay: true,
+              initialCountry: "US",
+              nationalMode: true,
+              hiddenInput: "full_number",
+              autoPlaceholder: "polite",
+              placeholderNumberType: "MOBILE"
+            });
+
+            if (input.value.trim()) {
+              if (iti.isValidNumber()) {
+                $('.buttonSumbit').removeAttr('disabled');
+                input.classList.add("is-valid");
+                validMsg.innerHTML = 'The number is valid';
+              } else {
+                $('.buttonSumbit').attr('disabled', 'disabled');
+                input.classList.add("is-invalid");
+                validMsg.innerHTML = '';
+                var errorCode = iti.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+              }
+            }
           }
 
           if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
@@ -2814,7 +2842,6 @@ $(document).ready(function () {
     quote.find('.badge-group-owner-id').html(group_owner_name);
 
     if (group_owner_id != '') {
-      /* get suppliers according to location */
       $.ajax({
         type: 'get',
         url: "".concat(BASEURL, "group-owner-on-change"),
@@ -2823,7 +2850,8 @@ $(document).ready(function () {
           'supplier_country_ids': supplier_country_ids,
           'category_id': category_id
         },
-        beforeSend: function beforeSend() {// $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+        beforeSend: function beforeSend() {
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(selectOption);
         },
         success: function success(response) {
           if (response && response.suppliers.length > 0) {
