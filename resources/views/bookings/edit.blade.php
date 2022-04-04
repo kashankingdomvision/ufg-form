@@ -2117,6 +2117,10 @@
                 @endif
            
               </div>
+              
+              <div class="sticky" id="sticky-btn">
+                <button type="submit" id="sticky-button" class="btn btn-secondary d-none buttonSumbit float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success float-right mr-2">Save & Close</button>

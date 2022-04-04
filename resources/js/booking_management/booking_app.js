@@ -218,6 +218,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
@@ -260,6 +261,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });

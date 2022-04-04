@@ -1155,6 +1155,10 @@
                   </div>
                 </div>
 
+                <div class="sticky" id="sticky-btn">
+                  <button type="submit" id="sticky-button" class="btn btn-secondary d-none buttonSumbit float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+                </div>
+
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                   <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>
