@@ -67535,7 +67535,8 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         });
         $('.lead-passenger-dbo').datepicker("destroy").datepicker({
           autoclose: true,
-          format: 'dd/mm/yyyy'
+          format: 'dd/mm/yyyy',
+          endDate: date
         });
       }
     } else {
