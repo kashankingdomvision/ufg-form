@@ -455,7 +455,7 @@
                           <span class="badge badge-info badge-category-id"></span>
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
-                          <span class="badge badge-info badge-supplier-currency-id"></span>
+                          {{-- <span class="badge badge-info badge-supplier-currency-id"></span> --}}
                           <span class="badge badge-info badge-pick-up-location"></span>
                           <span class="badge badge-info badge-drop-off-location"></span>
                           <span class="badge badge-info badge-room-type"></span>
