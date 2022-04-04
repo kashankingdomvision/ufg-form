@@ -187,6 +187,7 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_holder`).empty();
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                quote.find('.card-header .card-title .badge-info').html('');
 
 
                 callLaravelFileManger();
@@ -322,6 +323,9 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_holder`).empty();
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+                
+                quote.find('.card-header .card-title .badge-info').html('');
+
 
                 callLaravelFileManger();
                 datepickerReset(1, `${quoteClass}`);

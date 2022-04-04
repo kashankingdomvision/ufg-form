@@ -94,6 +94,11 @@ class BookingDetail extends Model
         return $this->hasOne(Supplier::class,'id','supplier_id');
     }
 
+    public function getGroupOwner()
+    {
+        return $this->hasOne(GroupOwner::class, 'id', 'group_owner_id');
+    }
+
     public function getProduct()
     {
         return $this->hasOne(Product::class, 'id', 'product_id');

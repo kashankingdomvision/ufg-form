@@ -626,13 +626,13 @@
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($booking_detail->end_date_of_service) && !empty($booking_detail->end_date_of_service) ? $booking_detail->end_date_of_service : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
+                              <span class="badge badge-info badge-group-owner-id">{{ isset($booking_detail->getGroupOwner->name) && !empty($booking_detail->getGroupOwner->name) ? $booking_detail->getGroupOwner->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : ''}}</span>
                               <span class="badge badge-info badge-product-id">{{ isset($booking_detail->getProduct->name) && !empty($booking_detail->getProduct->name) ? $booking_detail->getProduct->name : '' }}</span>
                               {{-- <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span> --}}
                               <span class="badge badge-info badge-pick-up-location"></span>
                               <span class="badge badge-info badge-drop-off-location"></span>
                               <span class="badge badge-info badge-room-type"></span>
-                              <span class="badge badge-info badge-group-owner-id"></span>
                               <span class="badge badge-info badge-departure-harbour"></span>
                               <span class="badge badge-info badge-arrival-harbour"></span>
                               <span class="badge badge-info badge-departure-airport"></span>
@@ -766,7 +766,7 @@
                                   <select name="quote[{{ $key }}][group_owner_id]" data-name="group_owner_id" id="quote_{{ $key }}_group_owner_id" class="form-control group-owner-id select2single">
                                     <option value="">Select Group Owner</option>
                                     @foreach ($group_owners as $group_owner)
-                                      <option value="{{ $group_owner->id }}" {{ $booking_detail->group_owner_id == $group_owner->id ? 'selected' : '' }}>{{ $group_owner->name }}</option>
+                                      <option value="{{ $group_owner->id }}"  data-name="{{ $group_owner->name }}"  {{ $booking_detail->group_owner_id == $group_owner->id ? 'selected' : '' }}>{{ $group_owner->name }}</option>
                                     @endforeach
                                   </select>
                                   <span class="text-danger" role="alert"></span>

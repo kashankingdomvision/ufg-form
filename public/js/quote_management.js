@@ -2888,6 +2888,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        quote.find('.card-header .card-title .badge-info').html('');
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
@@ -2987,6 +2988,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        quote.find('.card-header .card-title .badge-info').html('');
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
