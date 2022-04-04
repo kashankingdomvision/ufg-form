@@ -67533,6 +67533,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           format: 'dd/mm/yyyy',
           startDate: date
         });
+        $('.lead-passenger-dbo').datepicker("destroy").datepicker({
+          autoclose: true,
+          format: 'dd/mm/yyyy'
+        });
       }
     } else {
       $('.datepicker').datepicker('destroy').datepicker({

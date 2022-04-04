@@ -497,7 +497,7 @@ $(document).ready(function($) {
 
                 // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
- 
+                $('.lead-passenger-dbo').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
             }
         } else {
 

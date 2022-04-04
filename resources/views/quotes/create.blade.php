@@ -316,7 +316,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Date Of Birth</label>
-                          <input type="text" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control datepicker" placeholder="Date Of Birth" >
+                          <input type="text" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control lead-passenger-dbo" placeholder="Date Of Birth" >
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>

@@ -302,7 +302,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Date Of Birth </label> 
-                          <input type="text" name="lead_passenger_dbo" id="lead_passenger_dbo"  value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" class="form-control datepicker" placeholder="Date Of Birth">
+                          <input type="text" name="lead_passenger_dbo" id="lead_passenger_dbo"  value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" class="form-control lead-passenger-dbo" placeholder="Date Of Birth">
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
