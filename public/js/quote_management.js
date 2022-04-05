@@ -2899,15 +2899,16 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
-        var currentDate = convertDate(endDateOfService); // console.log("New Date "+currentDate);
-
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", currentDate);
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker({
-          format: 'dd-mm-yyyy',
-          autoclose: true
-        });
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker('setDate', currentDate);
-        var currentDate = $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker('setStartDate', currentDate); // console.log(currentDate);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var currentDate = convertDate(endDateOfService);
+        // console.log("New Date "+currentDate);
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker({
+        //     format: 'dd-mm-yyyy',
+        //     autoclose: true,
+        // })
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+        // var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+        // console.log(currentDate);
         // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
@@ -2999,11 +3000,11 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
-        var stringDate = convertDate(endDateOfService); // console.log("Add More "+stringDate);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var stringDate = convertDate(endDateOfService);
+        // console.log("Add More "+stringDate);
         // quote_8_end_date_of_service
-
-        var stringDate = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).datepicker("setStartDate", stringDate); // console.log(stringDate);
+        // var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+        // console.log(stringDate);
         // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
