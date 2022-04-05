@@ -18,10 +18,7 @@ $(document).ready(function () {
         });
     }
 
-
     function getMarkupTypeFeildAttribute() {
-
-        console.log("working");
 
         var markupType = $("input[name=markup_type]:checked").val();
 
@@ -52,7 +49,6 @@ $(document).ready(function () {
         }
     });
 
-
     $(document).on("keyup change", '.change-calculation', function (event) {
         var key = $(this).closest('.quote').data('key');
         var changeFeild = $(this).attr("data-name");
@@ -61,13 +57,12 @@ $(document).ready(function () {
 
     $(document).on('change', '.supplier-currency-id', function () {
 
-        var code = $(this).find(':selected').data('code');
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
-        var bookingCurrency = $('#currency_id').val();
-        var currency_name = $(this).find(':selected').attr('data-name');
+        var code             = $(this).find(':selected').data('code');
+        var quote            = $(this).closest('.quote');
+        var quoteKey         = quote.data('key');
+        var bookingCurrency  = $('#currency_id').val();
+        var currency_name    = $(this).find(':selected').attr('data-name');
         var supplierCurrency = $(this).val();
-
 
         if (typeof supplierCurrency === 'undefined' || supplierCurrency == "") {
             quote.find("[class*=supplier-currency-code]").html("");
@@ -355,7 +350,6 @@ $(document).ready(function () {
 
         }
     });
-
 
     callLaravelFileManger();
     function callLaravelFileManger() {

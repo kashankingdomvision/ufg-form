@@ -2764,7 +2764,6 @@ $(document).ready(function () {
   }
 
   function getMarkupTypeFeildAttribute() {
-    console.log("working");
     var markupType = $("input[name=markup_type]:checked").val();
 
     if (markupType == 'whole') {
