@@ -2133,6 +2133,10 @@
            
               </div>
 
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+
               <div class="card-footer">
                 <button type="submit" class="btn btn-success float-right">Save & Close</button>
                 <button type="button" id="show_booking_submit" class="btn btn-success float-right mr-2">Save</button>

@@ -1187,6 +1187,10 @@
                 </div>
               </div>
 
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
+
               @if($quote->booking_status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>

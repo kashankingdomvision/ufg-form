@@ -202,17 +202,49 @@ $(document).ready(function($) {
         }
     }
 
+    // Used in Quote & Booking
+
     window.stickyValidationErrors = function(response) {
 
         if (response.status === 422) {
-            console.log(response);
+
             let errors = response.responseJSON;
+
             if((Object.keys(errors).length) > 0 )
             {
-                $('#sticky-button').removeClass('d-none');
+                $('#sticky_button').removeClass('d-none');
             }
         }
     }
+
+    $(document).on('click', '#sticky_button', function() {
+
+        event.preventDefault();
+
+        let url    = $(this).closest("form").attr('action');
+        let formID = $(this).closest("form").attr('id');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData($(`#${formID}`)[0]),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+            },
+            success: function(response) {
+                printServerSuccessMessage(response, `#${formID}`);
+            },
+            error: function(response) {
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    //- Used in Quote & Booking
 
     window.printServerSuccessMessage = function(data, formSelector) {
 

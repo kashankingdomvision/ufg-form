@@ -306,6 +306,8 @@ $(document).ready(function() {
         });
     });
 
+
+
     $(document).on('submit', "#update_quote, #version_quote, #show_quote", function(event) {
 
         event.preventDefault();

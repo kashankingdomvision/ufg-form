@@ -1211,9 +1211,9 @@
                   </div>
                 </div>
               </div>
-              <! sticky validation button -->
-              <div class="sticky" id="sticky-btn">
-                <button type="submit" id="sticky-button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+ 
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
               </div>
 
               
