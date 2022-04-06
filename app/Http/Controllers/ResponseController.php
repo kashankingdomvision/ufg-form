@@ -134,6 +134,11 @@ class ResponseController extends Controller
 
     public function storeAirportCode(AirportCodeRequest $request)
     {
+        $airport_code = AirportCode::create([
+            'name'      => $request->name,
+            'iata_code' => $request->iata_code
+        ]);
+
         $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "airport_codes", $airport_code);
 
         return response()->json([

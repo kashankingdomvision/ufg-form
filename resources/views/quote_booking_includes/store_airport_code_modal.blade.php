@@ -12,9 +12,9 @@
                 @csrf
                 <div class="modal-body">
 
-                    <input type="text" name="model_name" value="" class="form-control">
-                    <input type="text" name="category_id" value="" class="form-control">
-                    <input type="text" name="detail_id"   value="" class="form-control">
+                    <input type="hidden" name="model_name" value="" class="form-control">
+                    <input type="hidden" name="category_id" value="" class="form-control">
+                    <input type="hidden" name="detail_id"   value="" class="form-control">
 
                     <div class="form-group">
                         <label>Airport Name <span style="color:red">*</span></label>

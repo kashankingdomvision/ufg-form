@@ -2398,24 +2398,24 @@ $(document).ready(function () {
         elm.innerHTML = obj.value;
       } // add options to selectbox
       else if (['select', 'autocomplete'].includes(obj.type)) {
-        //Create and append the options
-        for (var _i2 = 0; _i2 < obj.values.length; _i2++) {
-          var option = document.createElement("option");
+        var option = document.createElement("option");
+        option.value = "";
+        option.text = "Select ".concat(obj.label);
+        elm.appendChild(option); //Create and append the options
 
-          if (_i2 == 0) {
-            option.value = "";
-            option.text = "Select ".concat(obj.label);
-          } else {
-            option.value = obj.values[_i2].label;
-            option.text = obj.values[_i2].value;
-          }
+        for (var _i2 = 0; _i2 < obj.values.length; _i2++) {
+          var _option = document.createElement("option");
+
+          _option.value = obj.values[_i2].label;
+          _option.text = obj.values[_i2].value;
 
           if (obj.values[_i2].selected) {
             var selectedValue = obj.values[_i2].label;
-            option.setAttribute('selected', 'selected');
+
+            _option.setAttribute('selected', 'selected');
           }
 
-          elm.appendChild(option);
+          elm.appendChild(_option);
         }
       }
 
@@ -2748,8 +2748,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
 
         if (response.category_details != '' && response.category_details != 'undefined') {
-          $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details); // console.log(JSON.parse(response.category_details));
-
+          $("#quote_".concat(quoteKey, "_category_details")).val(response.category_details);
           createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
         } // Hide & Show Category details btn according to status
 
@@ -3138,72 +3137,70 @@ $(document).ready(function () {
       alert("Please select Supplier first");
       return;
     }
-  });
+  }); // $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
+  //     let quote = $(this).closest('.quote');
+  //     let quoteKey = quote.data('key');
+  //     quoteKeyForSupplier = quoteKey;
+  //     quoteKeyForCategoryFeildModal = quoteKey;
+  //     quoteForCategoryFeildModal = quote;
+  //     let modal_id    = $(this).data('modal_id');
+  //     let modal       = $(`#${modal_id}`);
+  //     console.log(modal);
+  //     let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
+  //     let category_id = $(`#quote_${quoteKey}_category_id`).val();
+  //     let model_name  = $(`#model_name`).val();
+  // });
+  // $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function(event) {
+  //     event.preventDefault();
+  //     var url     = $(this).attr('action');
+  //     let formID  = $(this).attr('id');
+  //     let modalID = $(this).closest('.modal').attr('id');
+  //     var options = '';
+  //     $.ajax({
+  //         type: 'POST',
+  //         url: url,
+  //         data: new FormData(this),
+  //         contentType: false,
+  //         cache: false,
+  //         processData: false,
+  //         beforeSend: function () {
+  //             removeFormValidationStyles();
+  //             addModalFormLoadingStyles(`#${formID}`);
+  //         },
+  //         success: function (response) {
+  //             removeModalFormLoadingStyles(`#${formID}`);
+  //             $(`#${formID}`)[0].reset();
+  //             $('#categories, #location_id, #country_id').val(null).trigger('change');
+  //             $(`#${modalID}`).modal('hide');
+  //             Toast.fire({
+  //                 icon: 'success',
+  //                 title: response.success_message
+  //             });
+  //             if (response.suppliers.length > 0) {
+  //                 options += "<option value=''>Select Supplier</option>";
+  //                 $.each(response.suppliers, function (key, value) {
+  //                     options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //                 });
+  //                 $(`#quote_${quoteKeyForSupplier}_supplier_id`).html(options);
+  //             }
+  //         },
+  //         error: function (data) {
+  //             removeModalFormLoadingStyles(`#${formID}`);
+  //             printModalServerValidationErrors(data, `#${modalID}`);
+  //         },
+  //     });
+  // });
+
   var quoteKeyForCategoryFeildModal = '';
   var quoteForCategoryFeildModal = '';
   $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
-    quoteKeyForSupplier = quoteKey;
     quoteKeyForCategoryFeildModal = quoteKey;
     quoteForCategoryFeildModal = quote;
     var modal_id = $(this).data('modal_id');
     var modal = $("#".concat(modal_id));
-    var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
-    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
-    var model_name = $("#model_name").val();
-  });
-  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    var formID = $(this).attr('id');
-    var modalID = $(this).closest('.modal').attr('id');
-    var options = '';
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addModalFormLoadingStyles("#".concat(formID));
-      },
-      success: function success(response) {
-        removeModalFormLoadingStyles("#".concat(formID));
-        $("#".concat(formID))[0].reset();
-        $('#categories, #location_id, #country_id').val(null).trigger('change');
-        $("#".concat(modalID)).modal('hide');
-        Toast.fire({
-          icon: 'success',
-          title: response.success_message
-        });
-
-        if (response.suppliers.length > 0) {
-          options += "<option value=''>Select Supplier</option>";
-          $.each(response.suppliers, function (key, value) {
-            options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
-          });
-          $("#quote_".concat(quoteKeyForSupplier, "_supplier_id")).html(options);
-        }
-      },
-      error: function error(data) {
-        removeModalFormLoadingStyles("#".concat(formID));
-        printModalServerValidationErrors(data, "#".concat(modalID));
-      }
-    });
-  });
-  var quoteKeyForCategoryFeildModal = '';
-  var quoteForCategoryFeildModal = '';
-  $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal', function () {
-    var quote = $(this).closest('.quote');
-    var quoteKey = quote.data('key');
-    quoteKeyForCategoryFeildModal = quoteKey;
-    quoteForCategoryFeildModal = quote;
-    var modal_id = $(this).data('modal_id');
-    var modal = $("#".concat(modal_id)); // console.log(modal_id);
-
+    console.log(modal_id);
     var detail_id = $("#quote_".concat(quoteKey, "_detail_id")).val();
     var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
     var model_name = $("#model_name").val();
@@ -3212,7 +3209,7 @@ $(document).ready(function () {
     modal.find("input[name=detail_id]").val(detail_id);
     modal.find("input[name=model_name]").val(model_name);
   });
-  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form', function (event) {
+  $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
     event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
@@ -3240,9 +3237,9 @@ $(document).ready(function () {
           });
 
           if (response.category_details != '' && response.category_details != 'undefined') {
-            $(".quote-".concat(quoteKeyForCategoryFeildModal, " .category-details-render")).html("");
+            $(".quote-".concat(quoteKeyForCategoryFeildModal, " .cat-feild-col")).remove();
             $("#quote_".concat(quoteKeyForCategoryFeildModal, "_category_details")).val(response.category_details);
-            createAllElm(quoteForCategoryFeildModal, '.category-details-render', 'category_details', JSON.parse(response.category_details));
+            createAllElm(quoteForCategoryFeildModal, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
           }
         } // printModalServerSuccessMessage(response, "#store_harbour_modal");
 

@@ -150,18 +150,19 @@ $(document).ready(function () {
 
             // add options to selectbox
             else if (['select', 'autocomplete'].includes(obj.type)) {
+
+                let option = document.createElement("option");
+                option.value = "";
+                option.text = `Select ${obj.label}`;
+                elm.appendChild(option);
+
                 //Create and append the options
                 for (let i = 0; i < obj.values.length; i++) {
+
                     let option = document.createElement("option");
 
-                    if(i == 0){
-                        option.value = "";
-                        option.text = `Select ${obj.label}`;
-                    }else{
-                        option.value = obj.values[i].label;
-                        option.text = obj.values[i].value;
-
-                    }
+                    option.value = obj.values[i].label;
+                    option.text = obj.values[i].value;
 
                     if (obj.values[i].selected) {
                         var selectedValue = obj.values[i].label;
@@ -607,7 +608,6 @@ $(document).ready(function () {
 
                     $(`#quote_${quoteKey}_category_details`).val(response.category_details);
 
-                    // console.log(JSON.parse(response.category_details));
 
                     createAllElm(quote, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
                 }
@@ -1093,88 +1093,83 @@ $(document).ready(function () {
 
     });
 
-    var quoteKeyForCategoryFeildModal = '';
-    var quoteForCategoryFeildModal = '';
+ 
 
-    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
+    // $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
 
-        let quote = $(this).closest('.quote');
-        let quoteKey = quote.data('key');
-        quoteKeyForSupplier = quoteKey;
+    //     let quote = $(this).closest('.quote');
+    //     let quoteKey = quote.data('key');
+    //     quoteKeyForSupplier = quoteKey;
 
-        quoteKeyForCategoryFeildModal = quoteKey;
-        quoteForCategoryFeildModal = quote;
+    //     quoteKeyForCategoryFeildModal = quoteKey;
+    //     quoteForCategoryFeildModal = quote;
 
-        let modal_id    = $(this).data('modal_id');
-        let modal       = $(`#${modal_id}`);
+    //     let modal_id    = $(this).data('modal_id');
+    //     let modal       = $(`#${modal_id}`);
 
+    //     console.log(modal);
 
-        let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
-        let category_id = $(`#quote_${quoteKey}_category_id`).val();
-        let model_name  = $(`#model_name`).val();
+    //     let detail_id   = $(`#quote_${quoteKey}_detail_id`).val();
+    //     let category_id = $(`#quote_${quoteKey}_category_id`).val();
+    //     let model_name  = $(`#model_name`).val();
 
-    });
+    // });
 
-    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function(event) {
+    // $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function(event) {
         
-        event.preventDefault();
+    //     event.preventDefault();
 
-        var url     = $(this).attr('action');
-        let formID  = $(this).attr('id');
-        let modalID = $(this).closest('.modal').attr('id');
-        var options = '';
+    //     var url     = $(this).attr('action');
+    //     let formID  = $(this).attr('id');
+    //     let modalID = $(this).closest('.modal').attr('id');
+    //     var options = '';
 
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: new FormData(this),
-            contentType: false,
-            cache: false,
-            processData: false,
-            beforeSend: function () {
-                removeFormValidationStyles();
-                addModalFormLoadingStyles(`#${formID}`);
-            },
-            success: function (response) {
-                removeModalFormLoadingStyles(`#${formID}`);
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: url,
+    //         data: new FormData(this),
+    //         contentType: false,
+    //         cache: false,
+    //         processData: false,
+    //         beforeSend: function () {
+    //             removeFormValidationStyles();
+    //             addModalFormLoadingStyles(`#${formID}`);
+    //         },
+    //         success: function (response) {
+    //             removeModalFormLoadingStyles(`#${formID}`);
 
-                $(`#${formID}`)[0].reset();
-                $('#categories, #location_id, #country_id').val(null).trigger('change');
-                $(`#${modalID}`).modal('hide');
+    //             $(`#${formID}`)[0].reset();
+    //             $('#categories, #location_id, #country_id').val(null).trigger('change');
+    //             $(`#${modalID}`).modal('hide');
 
-                Toast.fire({
-                    icon: 'success',
-                    title: response.success_message
-                });
+    //             Toast.fire({
+    //                 icon: 'success',
+    //                 title: response.success_message
+    //             });
 
-                if (response.suppliers.length > 0) {
+    //             if (response.suppliers.length > 0) {
 
-                    options += "<option value=''>Select Supplier</option>";
-                    $.each(response.suppliers, function (key, value) {
-                        options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-                    });
+    //                 options += "<option value=''>Select Supplier</option>";
+    //                 $.each(response.suppliers, function (key, value) {
+    //                     options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+    //                 });
 
-                    $(`#quote_${quoteKeyForSupplier}_supplier_id`).html(options);
-                }
+    //                 $(`#quote_${quoteKeyForSupplier}_supplier_id`).html(options);
+    //             }
 
-            },
-            error: function (data) {
-                removeModalFormLoadingStyles(`#${formID}`);
-                printModalServerValidationErrors(data, `#${modalID}`);
-            },
-        });
+    //         },
+    //         error: function (data) {
+    //             removeModalFormLoadingStyles(`#${formID}`);
+    //             printModalServerValidationErrors(data, `#${modalID}`);
+    //         },
+    //     });
 
-    });
-
-
-
-
+    // });
 
     var quoteKeyForCategoryFeildModal = '';
     var quoteForCategoryFeildModal = '';
 
-    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal', function () {
-
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function () {
 
 
         let quote = $(this).closest('.quote');
@@ -1186,7 +1181,7 @@ $(document).ready(function () {
         let modal_id = $(this).data('modal_id');
         let modal = $(`#${modal_id}`);
 
-        // console.log(modal_id);
+        console.log(modal_id);
 
 
         let detail_id = $(`#quote_${quoteKey}_detail_id`).val();
@@ -1199,7 +1194,7 @@ $(document).ready(function () {
         modal.find("input[name=model_name]").val(model_name);
     });
 
-    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form', function (event) {
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
 
         event.preventDefault();
 
@@ -1235,9 +1230,10 @@ $(document).ready(function () {
 
                     if (response.category_details != '' && response.category_details != 'undefined') {
 
-                        $(`.quote-${quoteKeyForCategoryFeildModal} .category-details-render`).html("");
+                        $(`.quote-${quoteKeyForCategoryFeildModal} .cat-feild-col`).remove();
                         $(`#quote_${quoteKeyForCategoryFeildModal}_category_details`).val(response.category_details);
-                        createAllElm(quoteForCategoryFeildModal, '.category-details-render', 'category_details', JSON.parse(response.category_details));
+
+                        createAllElm(quoteForCategoryFeildModal, '.product-id-feild', 'category_details', JSON.parse(response.category_details));
                     }
                 }
 
