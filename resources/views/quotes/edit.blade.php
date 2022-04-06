@@ -5,7 +5,6 @@
 @section('content')
 
 <div class="content-wrapper">
-  {{-- @include('includes.print_errors') --}}
 
   <section class="content-header">
     <div class="container-fluid">
@@ -981,7 +980,7 @@
                     @endforeach
                   </div>
 
-                  <div class="parent-spinner text-gray spinner-border-sm "></div>
+                  <div class="parent-spinner text-gray spinner-border-sm"></div>
                 </div>
 
                 <div class="row d-flex justify-content-end">
@@ -1021,7 +1020,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text" name="total_net_price" value="{{ \Helper::number_format($quote->net_price) }}" class="form-control total-net-price hide-arrows" readonly>
                       </div>

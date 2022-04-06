@@ -5,7 +5,6 @@
 @section('content')
 
 <div class="content-wrapper">
-  {{-- @include('includes.print_errors') --}}
 
   <section class="content-header">
     <div class="container-fluid">
@@ -67,7 +66,6 @@
                     </div>
                   </div>
                 </div>
-
 
                 <div class="row">
                   <div class="col-md-6">
@@ -152,7 +150,6 @@
                           <label class="custom-control-label" for="manual_rate">Manual Rate</label>
                         </div>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
@@ -243,7 +240,6 @@
                     <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
-
                         <div class="custom-control custom-radio mr-1">
                           <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="1" name="agency" id="agency_yes"> 
                           <label class="custom-control-label" for="agency_yes">Yes</label>
@@ -253,7 +249,6 @@
                           <input type="radio" class="select-agency custom-control-input custom-control-input-success custom-control-input-outline" value="0" name="agency" id="agency_no" checked>
                           <label class="custom-control-label" for="agency_no">No</label>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -340,7 +335,7 @@
                           <select name="lead_passenger_resident" id="lead_passsenger_resident" class="form-control select2single resident-id">
                             <option selected value="" >Select Resident</option>
                             @foreach ($countries as $country)
-                              <option value="{{ $country->id }}" {{ (old('lead_passsenger_resident') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                              <option value="{{ $country->id }}"> {{ $country->name }} </option>
                             @endforeach
                           </select>
                           <span class="text-danger" role="alert"></span>
@@ -401,7 +396,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Pax No. <span style="color:red">*</span></label>
-                      <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number @error('pax_no') is-invalid @enderror">
+                      <select name="pax_no" id="pax_no" class="form-control select2single paxNumber pax-number">
                         <option selected value="">Select Pax No</option>
                         @for($i=1;$i<=30;$i++)
                           <option value={{$i}} {{ $i == 1 ? 'selected' : '' }}>{{$i}}</option>
@@ -511,7 +506,6 @@
                                 <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
                                 <input type="text" placeholder="DD/MM/YYYY"  name="quote[0][end_date_of_service]" data-name="end_date_of_service" id="quote_0_end_date_of_service" class="form-control end-date-of-service bookingEndDateOfService datepicker" autocomplete="off">
                               </div>
-                              
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>

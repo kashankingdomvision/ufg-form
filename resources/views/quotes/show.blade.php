@@ -996,7 +996,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ isset(Auth::user()->getCurrency->code) && !empty(Auth::user()->getCurrency->code) ? Auth::user()->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0" value="{{ Helper::number_format($quote->net_price) }}" readonly>
                       </div>
