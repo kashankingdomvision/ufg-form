@@ -2746,9 +2746,14 @@ $(document).ready(function () {
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  $(document).on('change', '.markup-type', function () {
-    getMarkupTypeFeildAttribute();
-  });
+  callLaravelFileManger();
+
+  function callLaravelFileManger() {
+    var route_prefix = FILE_MANAGER_URL;
+    jQuery('.fileManger').filemanager('image', {
+      prefix: route_prefix
+    });
+  }
 
   function reinitializedSummerNote(quoteClass) {
     jQuery("".concat(quoteClass)).find('.note-editor').remove();
@@ -2779,6 +2784,9 @@ $(document).ready(function () {
     }
   }
 
+  $(document).on('change', '.markup-type', function () {
+    getMarkupTypeFeildAttribute();
+  });
   $(document).on('click', '.remove-quote-detail-service', function (e) {
     e.preventDefault();
 
@@ -2898,17 +2906,7 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var currentDate = convertDate(endDateOfService);
-        // console.log("New Date "+currentDate);
-        // $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
-        // $(`#quote_${quoteKey}_date_of_service`).datepicker({
-        //     format: 'dd-mm-yyyy',
-        //     autoclose: true,
-        // })
-        // $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
-        // var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
-        // console.log(currentDate);
-        // set default supplier country
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
         $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
@@ -2999,12 +2997,7 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var stringDate = convertDate(endDateOfService);
-        // console.log("Add More "+stringDate);
-        // quote_8_end_date_of_service
-        // var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
-        // console.log(stringDate);
-        // set default supplier country
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
         $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
@@ -3015,16 +3008,7 @@ $(document).ready(function () {
       }, 180);
     }
   });
-  callLaravelFileManger();
-
-  function callLaravelFileManger() {
-    var route_prefix = FILE_MANAGER_URL;
-    jQuery('.fileManger').filemanager('image', {
-      prefix: route_prefix
-    });
-  }
   /* Quote Medial Modal  */
-
 
   $(document).on('click', '.QuotemediaModalClose', function () {
     $(this).closest('.modal-body').children('.input-group').find('input').val("");
@@ -3038,7 +3022,21 @@ $(document).ready(function () {
     $(this).closest('.modal-body').children('.input-group').find('input').val("");
     $(this).parent().html("<img src=\"\" class=\"img-fluid\">"); // console.log($(this).closest('.modal-body').find('.image').html());
   });
-});
+}); // var currentDate = convertDate(endDateOfService);
+// console.log("New Date "+currentDate);
+// $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+// $(`#quote_${quoteKey}_date_of_service`).datepicker({
+//     format: 'dd-mm-yyyy',
+//     autoclose: true,
+// })
+// $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+// var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+// console.log(currentDate);
+// var stringDate = convertDate(endDateOfService);
+// console.log("Add More "+stringDate);
+// quote_8_end_date_of_service
+// var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+// console.log(stringDate);
 
 /***/ }),
 

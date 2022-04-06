@@ -1,10 +1,11 @@
 $(document).ready(function () {
 
+    callLaravelFileManger();
 
-
-    $(document).on('change', '.markup-type', function () {
-        getMarkupTypeFeildAttribute();
-    });
+    function callLaravelFileManger() {
+        var route_prefix = FILE_MANAGER_URL;
+        jQuery('.fileManger').filemanager('image', { prefix: route_prefix });
+    }
 
     function reinitializedSummerNote(quoteClass) {
 
@@ -38,6 +39,9 @@ $(document).ready(function () {
         }
     }
 
+    $(document).on('change', '.markup-type', function () {
+        getMarkupTypeFeildAttribute();
+    });
 
     $(document).on('click', '.remove-quote-detail-service', function (e) {
         e.preventDefault();
@@ -195,19 +199,6 @@ $(document).ready(function () {
                 var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
-                // var currentDate = convertDate(endDateOfService);
-                // console.log("New Date "+currentDate);
-
-                // $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
-                // $(`#quote_${quoteKey}_date_of_service`).datepicker({
-                //     format: 'dd-mm-yyyy',
-                //     autoclose: true,
-                // })
-                // $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
-
-                // var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
-                // console.log(currentDate);
-
                 // set default supplier country
                 let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
                 $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
@@ -332,13 +323,6 @@ $(document).ready(function () {
                 var endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
-                // var stringDate = convertDate(endDateOfService);
-                // console.log("Add More "+stringDate);
-                // quote_8_end_date_of_service
-                // var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
-                // console.log(stringDate);
-
-
                 // set default supplier country
                 let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
                 $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
@@ -350,12 +334,6 @@ $(document).ready(function () {
 
         }
     });
-
-    callLaravelFileManger();
-    function callLaravelFileManger() {
-        var route_prefix = FILE_MANAGER_URL;
-        jQuery('.fileManger').filemanager('image', { prefix: route_prefix });
-    }
 
     /* Quote Medial Modal  */
     $(document).on('click', '.QuotemediaModalClose', function () {
@@ -374,3 +352,23 @@ $(document).ready(function () {
     });
 
 });
+
+// var currentDate = convertDate(endDateOfService);
+// console.log("New Date "+currentDate);
+
+// $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+// $(`#quote_${quoteKey}_date_of_service`).datepicker({
+//     format: 'dd-mm-yyyy',
+//     autoclose: true,
+// })
+// $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+
+// var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+// console.log(currentDate);
+
+
+// var stringDate = convertDate(endDateOfService);
+// console.log("Add More "+stringDate);
+// quote_8_end_date_of_service
+// var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+// console.log(stringDate);

@@ -67106,16 +67106,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $(".select2-search__field").each(function (key, value) {
       value.focus();
     });
-  }); // $(document).on('select2:open', (e) => {
-  //     const selectId = e.target.id
-  //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
-  //         key,
-  //         value,
-  //     ){
-  //         value.focus();
-  //     })
-  // })
-
+  });
   window.Toast = Swal.mixin({
     toast: true,
     icon: 'success',
@@ -67146,8 +67137,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
   window.setTextEditorValue = function (id, Text) {
     $(id).summernote('code', Text);
-  }; // function formatState(option) {
-
+  };
 
   window.formatState = function (option) {
     var optionImage = $(option.element).attr('data-image');
@@ -68392,6 +68382,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 // }
 // });
 // booking incremnet and
+// $(document).on('select2:open', (e) => {
+//     const selectId = e.target.id
+//     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+//         key,
+//         value,
+//     ){
+//         value.focus();
+//     })
+// })
 
 /***/ }),
 
