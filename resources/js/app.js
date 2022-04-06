@@ -33,17 +33,6 @@ $(document).ready(function($) {
         })
     });
 
-    // $(document).on('select2:open', (e) => {
-    //     const selectId = e.target.id
-    
-    //     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
-    //         key,
-    //         value,
-    //     ){
-    //         value.focus();
-    //     })
-    // })
-
     window.Toast = Swal.mixin({
         toast: true,
         icon: 'success',
@@ -74,8 +63,6 @@ $(document).ready(function($) {
         $(id).summernote('code', Text);
     }
 
-
-    // function formatState(option) {
     window.formatState = function(option) {
         var optionImage = $(option.element).attr('data-image');
         if (!optionImage) {
@@ -203,7 +190,6 @@ $(document).ready(function($) {
     }
 
     // Used in Quote & Booking
-
     window.stickyValidationErrors = function(response) {
 
         if (response.status === 422) {
@@ -245,7 +231,6 @@ $(document).ready(function($) {
     });
 
     //- Used in Quote & Booking
-
     window.printServerSuccessMessage = function(data, formSelector) {
 
         if(data && data.status){
@@ -1535,3 +1520,14 @@ $(document).ready(function($) {
             // });
 
             // booking incremnet and
+
+// $(document).on('select2:open', (e) => {
+//     const selectId = e.target.id
+
+//     $(".select2-search__field[aria-controls='select2-" + selectId + "-results']").each(function (
+//         key,
+//         value,
+//     ){
+//         value.focus();
+//     })
+// })
