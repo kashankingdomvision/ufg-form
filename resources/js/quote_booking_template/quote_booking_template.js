@@ -514,15 +514,15 @@ $(document).ready(function () {
 
     $(document).on('change', '.category-id', function () {
 
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
+        var quote         = $(this).closest('.quote');
+        var quoteKey      = quote.data('key');
 
-        var detail_id = $(`#quote_${quoteKey}_detail_id`).val();
-        var model_name = $(`#model_name`).val();
+        var detail_id     = $(`#quote_${quoteKey}_detail_id`).val();
+        var model_name    = $(`#model_name`).val();
 
-        var category_id = $(this).val();
-        var category_name = $(this).find(':selected').attr('data-name');
-        var category_slug = $(this).find(':selected').attr('data-slug');
+        var category_id          = $(this).val();
+        var category_name        = $(this).find(':selected').attr('data-name');
+        var category_slug        = $(this).find(':selected').attr('data-slug');
         var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
         var options = '';
         var formData = '';
@@ -633,20 +633,6 @@ $(document).ready(function () {
                         quote.find('.second-tf').addClass('d-none');
                     }
 
-                    if (response.category.quote == 1) {
-                        quote.find('.build-wrap-parent').removeClass('d-none').addClass('d-flex');
-                    } else {
-                        quote.find('.build-wrap-parent').removeClass('d-flex').addClass('d-none');
-                    }
-
-                    if (response.category.booking == 1) {
-                        quote.find('.booking-category-detail-btn-parent').removeClass('d-none');
-                        quote.find('.booking-category-detail-btn-parent').addClass('d-flex');
-                    } else {
-                        quote.find('.booking-category-detail-btn-parent').removeClass('d-flex');
-                        quote.find('.booking-category-detail-btn-parent').addClass('d-none');
-                    }
-
                     if (response.category.set_end_date_of_service == 1) {
                         var DateOFService = $(`#quote_${quoteKey}_date_of_service`).val();
                         $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setDate", DateOFService);
@@ -665,6 +651,19 @@ $(document).ready(function () {
                     //     $(`#quote_${quoteKey}_product_id`).html("<option value=''>Select Product</option>");
                     // }
                     
+                    // if (response.category.quote == 1) {
+                    //     quote.find('.build-wrap-parent').removeClass('d-none').addClass('d-flex');
+                    // } else {
+                    //     quote.find('.build-wrap-parent').removeClass('d-flex').addClass('d-none');
+                    // }
+
+                    // if (response.category.booking == 1) {
+                    //     quote.find('.booking-category-detail-btn-parent').removeClass('d-none');
+                    //     quote.find('.booking-category-detail-btn-parent').addClass('d-flex');
+                    // } else {
+                    //     quote.find('.booking-category-detail-btn-parent').removeClass('d-flex');
+                    //     quote.find('.booking-category-detail-btn-parent').addClass('d-none');
+                    // }
                     
                 }
 
