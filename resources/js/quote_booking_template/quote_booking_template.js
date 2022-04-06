@@ -591,7 +591,7 @@ $(document).ready(function () {
                     options += "<option value=''>Select Supplier</option>";
 
                     $.each(response.suppliers, function(key, value) {
-                        options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                        options += `<option data-name="${value.name}" value="${value.id}"> ${value.name} </option>`;
                     });
                     
                     $(`#quote_${quoteKey}_supplier_id`).html(options);
@@ -713,12 +713,51 @@ $(document).ready(function () {
 
     $(document).on('change', '.group-owner-id', function () {
 
-        let quote    = $(this).closest('.quote');
-        let quoteKey = quote.data('key');
+        let quote          = $(this).closest('.quote');
+        let quoteKey       = quote.data('key');
+        var group_owner_name = $(this).find(':selected').data('name');
+        var group_owner_id   = $(this).val();
 
-        var value = $(this).find(':selected').data('name');
+        var supplier_country_ids = $(`#quote_${quoteKey}_supplier_country_ids`).val();
+        var category_id          = $(`#quote_${quoteKey}_category_id`).val();
+        
+        let selectOption  = "<option value=''>Select Supplier</option>";
+        let options       = "";
 
-        quote.find('.badge-group-owner-id').html(value);
+        quote.find('.badge-group-owner-id').html(group_owner_name);
+
+        if(group_owner_id != ''){
+
+            $.ajax({
+                type: 'get',
+                url: `${BASEURL}group-owner-on-change`,
+                data: { 
+                    'group_owner_id': group_owner_id,
+                    'supplier_country_ids': supplier_country_ids,
+                    'category_id': category_id
+                },
+                beforeSend: function() {
+                    $(`#quote_${quoteKey}_supplier_id`).html(selectOption);
+                },
+                success: function(response) {
+    
+                    if(response && response.suppliers.length > 0){
+    
+                        options += selectOption;
+    
+                        $.each(response.suppliers, function(key, value) {
+                            options += `<option data-name="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                        });
+                        
+                    }else{
+                        options = selectOption;
+                    }
+    
+                    $(`#quote_${quoteKey}_supplier_id`).html(options);
+                }
+            });
+
+        }
     });
 
     $(document).on('change', '.supplier-country-id', function () {
@@ -761,7 +800,7 @@ $(document).ready(function () {
                     options += selectOption;
 
                     $.each(response.suppliers, function(key, value) {
-                        options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
+                        options += `<option data-name="${value.name}" value="${value.id}"> ${value.name} </option>`;
                     });
                     
                 }else{
@@ -819,7 +858,7 @@ $(document).ready(function () {
 
     });
 
-
+    
     $(document).on('change', '.supplier-id', function(){
 
         let quote        = $(this).closest('.quote');
@@ -827,8 +866,10 @@ $(document).ready(function () {
         let supplier_id  = $(this).val();
         let options      = "";
         let selectOption = "<option value=''>Select Product</option>";
-
+        var supplier_name = $(this).find(':selected').data('name');
+        
         if(supplier_id != ""){
+            quote.find('.badge-supplier-id').html(supplier_name);
 
             $.ajax({
                 type: 'get',
@@ -842,7 +883,8 @@ $(document).ready(function () {
                 success: function(response) {
     
                     if(response && Object.keys(response.supplier).length > 0){
-           
+
+                        // $(`#quote_${quoteKey}_group_owner_id`).val(response.supplier.group_owner_id).change();
                         $(`#quote_${quoteKey}_supplier_currency_id`).val(response.supplier.currency_id).change();
                     }
                     
@@ -861,6 +903,9 @@ $(document).ready(function () {
                     }
                 }
             });
+        }else{
+            
+            quote.find('.badge-supplier-id').html("");
         }
 
     });

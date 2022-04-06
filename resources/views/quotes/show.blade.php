@@ -98,7 +98,7 @@
                     <div class="form-group">
                     <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group ">
-                        <input type="text" name="ref_no" id="ref_no" value="{{ $quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
+                        <input type="text" name="ref_no" id="ref_no" value="{{ $quote->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number" autofocus>
                           <div class="input-group-append">
                           <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                         </div>
@@ -135,7 +135,7 @@
                       <label>Destination Country <span style="color:red">*</span></label>
                       <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
                         @foreach ($supplier_countries as $country)
-                          <option value="{{ $country->id }}" data-email="{{ $person->email }}"  {{ (in_array($country->id, $quote->getCountryDestinations()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
+                          <option value="{{ $country->id }}" {{ (in_array($country->id, $quote->getCountryDestinations()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
@@ -336,7 +336,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Date Of Birth </label>
-                          <input type="date" name="lead_passenger_dbo" value="{{ $quote->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo"  class="form-control" placeholder="Date Of Birth" >
+                          <input type="date" name="lead_passenger_dbo" value="{{ $quote->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo"  class="form-control lead-passenger-dbo" placeholder="Date Of Birth" >
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
@@ -593,13 +593,13 @@
                             <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail->end_date_of_service) && !empty($q_detail->end_date_of_service) ? $q_detail->end_date_of_service : '' }}</span>
                             <span class="badge badge-info badge-time-of-service">{{ isset($q_detail->time_of_service) && !empty($q_detail->time_of_service) ? $q_detail->time_of_service : '' }}</span>
                             <span class="badge badge-info badge-category-id">{{ isset($q_detail->getCategory->name) && !empty($q_detail->getCategory->name) ? $q_detail->getCategory->name : '' }}</span>
+                            <span class="badge badge-info badge-group-owner-id">{{ isset($q_detail->getGroupOwner->name) && !empty($q_detail->getGroupOwner->name) ? $q_detail->getGroupOwner->name : '' }}</span>
                             <span class="badge badge-info badge-supplier-id">{{ isset($q_detail->getSupplier->name) && !empty($q_detail->getSupplier->name) ? $q_detail->getSupplier->name : ''}}</span>
                             <span class="badge badge-info badge-product-id">{{ isset($q_detail->getProduct->name) && !empty($q_detail->getProduct->name) ? $q_detail->getProduct->name : '' }}</span>
-                            <span class="badge badge-info badge-supplier-currency-id">{{ isset($q_detail->getSupplierCurrency->name) && !empty($q_detail->getSupplierCurrency->name) ? $q_detail->getSupplierCurrency->code.' - '.$q_detail->getSupplierCurrency->name : '' }}</span>
+                            {{-- <span class="badge badge-info badge-supplier-currency-id">{{ isset($q_detail->getSupplierCurrency->name) && !empty($q_detail->getSupplierCurrency->name) ? $q_detail->getSupplierCurrency->code.' - '.$q_detail->getSupplierCurrency->name : '' }}</span> --}}
                             <span class="badge badge-info badge-pick-up-location"></span>
                             <span class="badge badge-info badge-drop-off-location"></span>
                             <span class="badge badge-info badge-room-type"></span>
-                            <span class="badge badge-info badge-group-owner-id"></span>
                             <span class="badge badge-info badge-departure-harbour"></span>
                             <span class="badge badge-info badge-arrival-harbour"></span>
                             <span class="badge badge-info badge-departure-airport"></span>
@@ -731,18 +731,30 @@
                             </div>
 
                             @php
-                              $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
-                              $url          = !empty($supplier_url) ? $supplier_url : '';
-                              $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
+                            $supplier_url = \Helper::getSupplierRateSheetUrl($q_detail->supplier_id, $quote->season_id);
+                            $url          = !empty($supplier_url) ? $supplier_url : '';
+                            $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                              $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
-                                $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
-                              })
-                              ->whereHas('getCategories', function($query) use ($q_detail) {
-                                $query->where('id', $q_detail->category_id);
-                              })
-                              ->get()
-                            @endphp
+                            $query = App\Supplier::orderBy('id', 'ASC');
+
+                            $query->whereHas('getCountries', function($query) use ($q_detail) {
+                              $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
+                            });
+
+                            $query->whereHas('getCategories', function($query) use ($q_detail) {
+                              $query->where('id', $q_detail->category_id);
+                            });
+
+                            if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && is_null($q_detail->group_owner_id)){
+                              $query->whereNull('group_owner_id');
+                            }
+
+                            if(isset($q_detail->getCategory->slug) && !empty($q_detail->getCategory->slug) && ($q_detail->getCategory->slug == 'cruise') && !is_null($q_detail->group_owner_id)){
+                              $query->where('group_owner_id', $q_detail->group_owner_id);
+                            }
+
+                            $suppliers = $query->get();
+                          @endphp
 
                             <div class="col-md-3">
                               <div class="form-group">
@@ -1173,6 +1185,10 @@
                     </select>
                   </div>
                 </div>
+              </div>
+
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
               </div>
 
               @if($quote->booking_status == 'quote')

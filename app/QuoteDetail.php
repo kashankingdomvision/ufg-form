@@ -81,6 +81,11 @@ class QuoteDetail extends Model
         return $this->hasOne(Supplier::class, 'id', 'supplier_id');
     }
 
+    public function getGroupOwner()
+    {
+        return $this->hasOne(GroupOwner::class, 'id', 'group_owner_id');
+    }
+
     function getSupervisor() {
         return $this->hasOne(User::class, 'id', 'supervisor_id');
     }

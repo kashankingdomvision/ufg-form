@@ -18,10 +18,7 @@ $(document).ready(function () {
         });
     }
 
-
     function getMarkupTypeFeildAttribute() {
-
-        console.log("working");
 
         var markupType = $("input[name=markup_type]:checked").val();
 
@@ -52,7 +49,6 @@ $(document).ready(function () {
         }
     });
 
-
     $(document).on("keyup change", '.change-calculation', function (event) {
         var key = $(this).closest('.quote').data('key');
         var changeFeild = $(this).attr("data-name");
@@ -61,13 +57,12 @@ $(document).ready(function () {
 
     $(document).on('change', '.supplier-currency-id', function () {
 
-        var code = $(this).find(':selected').data('code');
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
-        var bookingCurrency = $('#currency_id').val();
-        var currency_name = $(this).find(':selected').attr('data-name');
+        var code             = $(this).find(':selected').data('code');
+        var quote            = $(this).closest('.quote');
+        var quoteKey         = quote.data('key');
+        var bookingCurrency  = $('#currency_id').val();
+        var currency_name    = $(this).find(':selected').attr('data-name');
         var supplierCurrency = $(this).val();
-
 
         if (typeof supplierCurrency === 'undefined' || supplierCurrency == "") {
             quote.find("[class*=supplier-currency-code]").html("");
@@ -169,7 +164,7 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                 $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
                 // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
-
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                 $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                 $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -198,17 +193,19 @@ $(document).ready(function () {
 
                 /* Set last End Date of Service */
                 var endDateOfService = $(`#quote_${currentQuoteKey}_end_date_of_service`).val();
-                var currentDate = convertDate(endDateOfService);
+                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
+
+                // var currentDate = convertDate(endDateOfService);
                 // console.log("New Date "+currentDate);
 
-                $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
-                $(`#quote_${quoteKey}_date_of_service`).datepicker({
-                    format: 'dd-mm-yyyy',
-                    autoclose: true,
-                })
-                $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+                // $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+                // $(`#quote_${quoteKey}_date_of_service`).datepicker({
+                //     format: 'dd-mm-yyyy',
+                //     autoclose: true,
+                // })
+                // $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
 
-                var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+                // var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
                 // console.log(currentDate);
 
                 // set default supplier country
@@ -304,7 +301,7 @@ $(document).ready(function () {
                 $(`#quote_${quoteKey}_profit_percentage, #quote_${quoteKey}_estimated_cost_in_booking_currency`).val('0.00');
                 $(`#quote_${quoteKey}_markup_amount_in_booking_currency, #quote_${quoteKey}_selling_price_in_booking_currency`).val('0.00');
                 // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
-
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.supplier-id').html("<option value=''>Select Supplier</option>");
                 $(`${quoteClass}`).find('.text-danger, .supplier-currency-code').html('');
                 $(`${quoteClass}`).find('input, select').removeClass('is-invalid');
@@ -323,6 +320,7 @@ $(document).ready(function () {
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
 
+
                 callLaravelFileManger();
                 datepickerReset(1, `${quoteClass}`);
 
@@ -334,10 +332,10 @@ $(document).ready(function () {
                 var endDateOfService = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).val();
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
-                var stringDate = convertDate(endDateOfService);
+                // var stringDate = convertDate(endDateOfService);
                 // console.log("Add More "+stringDate);
                 // quote_8_end_date_of_service
-                var stringDate = $(`#quote_${beforeAppendLastQuoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+                // var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
                 // console.log(stringDate);
 
 
@@ -352,7 +350,6 @@ $(document).ready(function () {
 
         }
     });
-
 
     callLaravelFileManger();
     function callLaravelFileManger() {

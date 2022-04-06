@@ -175,6 +175,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
@@ -218,6 +219,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
@@ -260,6 +262,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
@@ -293,6 +296,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
@@ -951,6 +955,7 @@ $(document).ready(function() {
 
                 // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                 $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
                 $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
                 $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);
@@ -1112,6 +1117,7 @@ $(document).ready(function() {
 
                 // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
                 $(`#quote_${quoteKey}_table_name`).val('BookingDetail');
+                $(`${quoteClass} .card-header .card-title .badge-info`).html('');
                 $(`${quoteClass}`).find('.mediaModal').find('a').attr('id', '');
                 $(`${quoteClass}`).find('.refund-payment-hidden-section').attr("hidden", true);
                 $(`${quoteClass}`).find('.refund-by-credit-note-section').attr("hidden", true);

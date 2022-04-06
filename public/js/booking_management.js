@@ -256,6 +256,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -293,6 +294,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -329,6 +331,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -356,6 +359,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -834,6 +838,7 @@ $(document).ready(function () {
         }); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
 
         $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
         $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
         $("".concat(quoteClass)).find('.refund-by-credit-note-section').attr("hidden", true);
@@ -966,6 +971,7 @@ $(document).ready(function () {
         }); // $(`#quote_${quoteKey}_date_of_service`).val(todayDate());
 
         $("#quote_".concat(quoteKey, "_table_name")).val('BookingDetail');
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.mediaModal').find('a').attr('id', '');
         $("".concat(quoteClass)).find('.refund-payment-hidden-section').attr("hidden", true);
         $("".concat(quoteClass)).find('.refund-by-credit-note-section').attr("hidden", true);
@@ -2034,6 +2040,42 @@ $(document).ready(function () {
             $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
           }
 
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
+            $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
+            $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+            var input = document.querySelector('#lead_passenger_contact');
+            var validMsg = document.querySelector('.valid_msg0');
+            var iti = intlTelInput(input, {
+              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+              separateDialCode: true,
+              preferredCountries: ["gb", "us", "au", "ca", "nz"],
+              formatOnDisplay: true,
+              initialCountry: "US",
+              nationalMode: true,
+              hiddenInput: "full_number",
+              autoPlaceholder: "polite",
+              placeholderNumberType: "MOBILE"
+            });
+
+            if (input.value.trim()) {
+              if (iti.isValidNumber()) {
+                $('.buttonSumbit').removeAttr('disabled');
+                input.classList.add("is-valid");
+                validMsg.innerHTML = 'The number is valid';
+              } else {
+                $('.buttonSumbit').attr('disabled', 'disabled');
+                input.classList.add("is-invalid");
+                validMsg.innerHTML = '';
+                var errorCode = iti.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+              }
+            }
+          }
+
           if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
             $('#brand_id').val(data.response.brand.brand_id).change();
           }
@@ -2695,7 +2737,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += "<option value=''>Select Supplier</option>";
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
           $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
         } else {
@@ -2797,8 +2839,40 @@ $(document).ready(function () {
   $(document).on('change', '.group-owner-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
-    var value = $(this).find(':selected').data('name');
-    quote.find('.badge-group-owner-id').html(value);
+    var group_owner_name = $(this).find(':selected').data('name');
+    var group_owner_id = $(this).val();
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
+    var selectOption = "<option value=''>Select Supplier</option>";
+    var options = "";
+    quote.find('.badge-group-owner-id').html(group_owner_name);
+
+    if (group_owner_id != '') {
+      $.ajax({
+        type: 'get',
+        url: "".concat(BASEURL, "group-owner-on-change"),
+        data: {
+          'group_owner_id': group_owner_id,
+          'supplier_country_ids': supplier_country_ids,
+          'category_id': category_id
+        },
+        beforeSend: function beforeSend() {
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(selectOption);
+        },
+        success: function success(response) {
+          if (response && response.suppliers.length > 0) {
+            options += selectOption;
+            $.each(response.suppliers, function (key, value) {
+              options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            });
+          } else {
+            options = selectOption;
+          }
+
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        }
+      });
+    }
   });
   $(document).on('change', '.supplier-country-id', function () {
     var quote = $(this).closest('.quote');
@@ -2830,7 +2904,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += selectOption;
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
         } else {
           options = selectOption;
@@ -2886,8 +2960,10 @@ $(document).ready(function () {
     var supplier_id = $(this).val();
     var options = "";
     var selectOption = "<option value=''>Select Product</option>";
+    var supplier_name = $(this).find(':selected').data('name');
 
     if (supplier_id != "") {
+      quote.find('.badge-supplier-id').html(supplier_name);
       $.ajax({
         type: 'get',
         url: "".concat(BASEURL, "supplier-on-change"),
@@ -2899,6 +2975,7 @@ $(document).ready(function () {
         },
         success: function success(response) {
           if (response && Object.keys(response.supplier).length > 0) {
+            // $(`#quote_${quoteKey}_group_owner_id`).val(response.supplier.group_owner_id).change();
             $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
           }
 
@@ -2915,6 +2992,8 @@ $(document).ready(function () {
           }
         }
       });
+    } else {
+      quote.find('.badge-supplier-id').html("");
     }
   });
   $(document).on('submit', '#form_add_product', function () {

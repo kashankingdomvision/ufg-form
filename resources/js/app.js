@@ -2,10 +2,11 @@ import $ from 'jquery';
 window.jQuery = $;
 window.$ = $;
 window.Swal = require('sweetalert2');
+window.intlTelInput = require('intl-tel-input');
 
 import 'jquery-ui/ui/widgets/sortable.js';
 import select2 from 'select2';
-import intlTelInput from 'intl-tel-input';
+// import intlTelInput from 'intl-tel-input';
 // import Swal from 'sweetalert2';
 import datepicker from 'bootstrap-datepicker';
 import daterangepicker from 'daterangepicker';
@@ -200,6 +201,50 @@ $(document).ready(function($) {
 
         }
     }
+
+    // Used in Quote & Booking
+
+    window.stickyValidationErrors = function(response) {
+
+        if (response.status === 422) {
+
+            let errors = response.responseJSON;
+
+            if((Object.keys(errors).length) > 0 )
+            {
+                $('#sticky_button').removeClass('d-none');
+            }
+        }
+    }
+
+    $(document).on('click', '#sticky_button', function() {
+
+        event.preventDefault();
+
+        let url    = $(this).closest("form").attr('action');
+        let formID = $(this).closest("form").attr('id');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData($(`#${formID}`)[0]),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function() {
+                removeFormValidationStyles();
+            },
+            success: function(response) {
+                printServerSuccessMessage(response, `#${formID}`);
+            },
+            error: function(response) {
+                removeFormLoadingStyles();
+                printServerValidationErrors(response);
+            }
+        });
+    });
+
+    //- Used in Quote & Booking
 
     window.printServerSuccessMessage = function(data, formSelector) {
 
@@ -484,7 +529,7 @@ $(document).ready(function($) {
 
                 // $('.datepicker').datepicker('destroy').datepicker({  autoclose: true, format:'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 $('.datepicker').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
- 
+                $('.lead-passenger-dbo').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy', endDate: date });
             }
         } else {
 

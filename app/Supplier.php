@@ -54,4 +54,10 @@ class Supplier extends Model
     {
         return $this->hasOne(Town::class, 'id', 'town_id');
     }
+
+    public function getGroupOwner()
+    {
+        return $this->hasOne(GroupOwner::class, 'id', 'group_owner_id');
+    }
+
 }

@@ -766,6 +766,45 @@ $(document).ready(function() {
                         $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
                     }
 
+                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
+                        $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+                    }
+         
+                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
+                        $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+                        
+                        var input = document.querySelector('#lead_passenger_contact');
+                        var validMsg = document.querySelector('.valid_msg0');
+
+                        var iti = intlTelInput(input, {
+                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+                            separateDialCode: true,
+                            preferredCountries:["gb","us","au","ca","nz"],
+                            formatOnDisplay: true,
+                            initialCountry: "US",
+                            nationalMode: true,
+                            hiddenInput: "full_number",
+                            autoPlaceholder: "polite",
+                            placeholderNumberType: "MOBILE",
+                        });
+
+                        if (input.value.trim()) {
+                            if (iti.isValidNumber()) {
+                                $('.buttonSumbit').removeAttr('disabled');
+                                input.classList.add("is-valid");
+                                validMsg.innerHTML = 'The number is valid';
+                            } else {
+                                $('.buttonSumbit').attr('disabled', 'disabled');
+                                input.classList.add("is-invalid");
+                                validMsg.innerHTML = '';
+                                var errorCode = iti.getValidationError();
+                                errorMsg.innerHTML = errorMap[errorCode];
+                                errorMsg.classList.remove("hide");
+                            }
+                        }
+
+                    }
+
                     if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
                         $('#brand_id').val(data.response.brand.brand_id).change();
                     }

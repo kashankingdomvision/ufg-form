@@ -295,17 +295,18 @@ $(document).ready(function() {
                 addFormLoadingStyles();
             },
             success: function(response) {
-
                 removeFormLoadingStyles();
                 printServerSuccessMessage(response, `#${formID}`);
             },
             error: function(response) {
-                
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });
     });
+
+
 
     $(document).on('submit', "#update_quote, #version_quote, #show_quote", function(event) {
 
@@ -345,6 +346,7 @@ $(document).ready(function() {
             error: function(response) {
                 
                 removeFormLoadingStyles();
+                stickyValidationErrors(response);
                 printServerValidationErrors(response);
             }
         });

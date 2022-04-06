@@ -74,7 +74,7 @@
                     <div class="form-group">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group">
-                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2" autofocus>
                           <div class="input-group-append">
                           <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                         </div>
@@ -95,7 +95,7 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Booking Details <span style="color:red">*</span></label>
-                      <input type="text" name="booking_details" id="booking_details" class="form-control" placeholder="Enter Booking Details" autofocus>
+                      <input type="text" name="booking_details" id="booking_details" class="form-control" placeholder="Enter Booking Details" >
                       <span class="text-danger" role="alert"></span>
                     </div>
                   </div>
@@ -316,7 +316,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Date Of Birth</label>
-                          <input type="text" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control datepicker" placeholder="Date Of Birth" >
+                          <input type="text" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control lead-passenger-dbo" placeholder="Date Of Birth" >
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
@@ -453,13 +453,13 @@
                           <span class="badge badge-info badge-end-date-of-service"></span>
                           <span class="badge badge-info badge-time-of-service"></span>
                           <span class="badge badge-info badge-category-id"></span>
+                          <span class="badge badge-info badge-group-owner-id"></span>
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
-                          <span class="badge badge-info badge-supplier-currency-id"></span>
+                          {{-- <span class="badge badge-info badge-supplier-currency-id"></span> --}}
                           <span class="badge badge-info badge-pick-up-location"></span>
                           <span class="badge badge-info badge-drop-off-location"></span>
                           <span class="badge badge-info badge-room-type"></span>
-                          <span class="badge badge-info badge-group-owner-id"></span>
                           <span class="badge badge-info badge-departure-harbour"></span>
                           <span class="badge badge-info badge-arrival-harbour"></span>
                           <span class="badge badge-info badge-departure-airport"></span>
@@ -583,7 +583,7 @@
                               <select name="quote[0][group_owner_id]" data-name="group_owner_id" id="quote_0_group_owner_id" class="form-control group-owner-id select2single">
                                 <option value="">Select Group Owner</option>
                                 @foreach ($group_owners as $group_owner)
-                                  <option value="{{ $group_owner->id }}" >{{ $group_owner->name }}</option>
+                                  <option value="{{ $group_owner->id }}" data-name="{{ $group_owner->name }}">{{ $group_owner->name }}</option>
                                 @endforeach
                               </select>
                               <span class="text-danger" role="alert"></span>
@@ -1005,14 +1005,16 @@
                     </select>
                   </div>
                 </div>
-
               </div><!-- End card body -->
+
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
+              </div>
 
               <div class="card-footer">
                 <button type="submit" class="btn btn-success buttonSumbit float-right">Submit</button>
                 <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>
               </div>
-
             </form><!-- End form -->
 
             <div id="overlay" class=""></div>

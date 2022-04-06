@@ -649,6 +649,42 @@ $(document).ready(function () {
             $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
           }
 
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
+            $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+          }
+
+          if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
+            $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+            var input = document.querySelector('#lead_passenger_contact');
+            var validMsg = document.querySelector('.valid_msg0');
+            var iti = intlTelInput(input, {
+              utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+              separateDialCode: true,
+              preferredCountries: ["gb", "us", "au", "ca", "nz"],
+              formatOnDisplay: true,
+              initialCountry: "US",
+              nationalMode: true,
+              hiddenInput: "full_number",
+              autoPlaceholder: "polite",
+              placeholderNumberType: "MOBILE"
+            });
+
+            if (input.value.trim()) {
+              if (iti.isValidNumber()) {
+                $('.buttonSumbit').removeAttr('disabled');
+                input.classList.add("is-valid");
+                validMsg.innerHTML = 'The number is valid';
+              } else {
+                $('.buttonSumbit').attr('disabled', 'disabled');
+                input.classList.add("is-invalid");
+                validMsg.innerHTML = '';
+                var errorCode = iti.getValidationError();
+                errorMsg.innerHTML = errorMap[errorCode];
+                errorMsg.classList.remove("hide");
+              }
+            }
+          }
+
           if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
             $('#brand_id').val(data.response.brand.brand_id).change();
           }
@@ -1310,7 +1346,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += "<option value=''>Select Supplier</option>";
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
           $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
         } else {
@@ -1412,8 +1448,40 @@ $(document).ready(function () {
   $(document).on('change', '.group-owner-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
-    var value = $(this).find(':selected').data('name');
-    quote.find('.badge-group-owner-id').html(value);
+    var group_owner_name = $(this).find(':selected').data('name');
+    var group_owner_id = $(this).val();
+    var supplier_country_ids = $("#quote_".concat(quoteKey, "_supplier_country_ids")).val();
+    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
+    var selectOption = "<option value=''>Select Supplier</option>";
+    var options = "";
+    quote.find('.badge-group-owner-id').html(group_owner_name);
+
+    if (group_owner_id != '') {
+      $.ajax({
+        type: 'get',
+        url: "".concat(BASEURL, "group-owner-on-change"),
+        data: {
+          'group_owner_id': group_owner_id,
+          'supplier_country_ids': supplier_country_ids,
+          'category_id': category_id
+        },
+        beforeSend: function beforeSend() {
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(selectOption);
+        },
+        success: function success(response) {
+          if (response && response.suppliers.length > 0) {
+            options += selectOption;
+            $.each(response.suppliers, function (key, value) {
+              options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            });
+          } else {
+            options = selectOption;
+          }
+
+          $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
+        }
+      });
+    }
   });
   $(document).on('change', '.supplier-country-id', function () {
     var quote = $(this).closest('.quote');
@@ -1445,7 +1513,7 @@ $(document).ready(function () {
         if (response && response.suppliers.length > 0) {
           options += selectOption;
           $.each(response.suppliers, function (key, value) {
-            options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
+            options += "<option data-name=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
           });
         } else {
           options = selectOption;
@@ -1501,8 +1569,10 @@ $(document).ready(function () {
     var supplier_id = $(this).val();
     var options = "";
     var selectOption = "<option value=''>Select Product</option>";
+    var supplier_name = $(this).find(':selected').data('name');
 
     if (supplier_id != "") {
+      quote.find('.badge-supplier-id').html(supplier_name);
       $.ajax({
         type: 'get',
         url: "".concat(BASEURL, "supplier-on-change"),
@@ -1514,6 +1584,7 @@ $(document).ready(function () {
         },
         success: function success(response) {
           if (response && Object.keys(response.supplier).length > 0) {
+            // $(`#quote_${quoteKey}_group_owner_id`).val(response.supplier.group_owner_id).change();
             $("#quote_".concat(quoteKey, "_supplier_currency_id")).val(response.supplier.currency_id).change();
           }
 
@@ -1530,6 +1601,8 @@ $(document).ready(function () {
           }
         }
       });
+    } else {
+      quote.find('.badge-supplier-id').html("");
     }
   });
   $(document).on('submit', '#form_add_product', function () {
@@ -2265,6 +2338,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -2302,6 +2376,7 @@ $(document).ready(function () {
       },
       error: function error(response) {
         removeFormLoadingStyles();
+        stickyValidationErrors(response);
         printServerValidationErrors(response);
       }
     });
@@ -2689,7 +2764,6 @@ $(document).ready(function () {
   }
 
   function getMarkupTypeFeildAttribute() {
-    console.log("working");
     var markupType = $("input[name=markup_type]:checked").val();
 
     if (markupType == 'whole') {
@@ -2800,6 +2874,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
@@ -2823,15 +2898,16 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
-        var currentDate = convertDate(endDateOfService); // console.log("New Date "+currentDate);
-
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", currentDate);
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker({
-          format: 'dd-mm-yyyy',
-          autoclose: true
-        });
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker('setDate', currentDate);
-        var currentDate = $("#quote_".concat(quoteKey, "_end_date_of_service")).datepicker('setStartDate', currentDate); // console.log(currentDate);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var currentDate = convertDate(endDateOfService);
+        // console.log("New Date "+currentDate);
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", currentDate);
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker({
+        //     format: 'dd-mm-yyyy',
+        //     autoclose: true,
+        // })
+        // $(`#quote_${quoteKey}_date_of_service`).datepicker('setDate', currentDate);
+        // var currentDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker('setStartDate', currentDate);
+        // console.log(currentDate);
         // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
@@ -2899,6 +2975,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_profit_percentage, #quote_").concat(quoteKey, "_estimated_cost_in_booking_currency")).val('0.00');
         $("#quote_".concat(quoteKey, "_markup_amount_in_booking_currency, #quote_").concat(quoteKey, "_selling_price_in_booking_currency")).val('0.00'); // $(`#quote_${quoteKey}_table_name`).val('QuoteDetail');
 
+        $("".concat(quoteClass, " .card-header .card-title .badge-info")).html('');
         $("".concat(quoteClass)).find('.supplier-id').html("<option value=''>Select Supplier</option>");
         $("".concat(quoteClass)).find('.text-danger, .supplier-currency-code').html('');
         $("".concat(quoteClass)).find('input, select').removeClass('is-invalid');
@@ -2922,11 +2999,11 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
-        var stringDate = convertDate(endDateOfService); // console.log("Add More "+stringDate);
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // var stringDate = convertDate(endDateOfService);
+        // console.log("Add More "+stringDate);
         // quote_8_end_date_of_service
-
-        var stringDate = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).datepicker("setStartDate", stringDate); // console.log(stringDate);
+        // var stringDate = $(`#quote_${quoteKey}_end_date_of_service`).datepicker("setStartDate", stringDate);
+        // console.log(stringDate);
         // set default supplier country
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();

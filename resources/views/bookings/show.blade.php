@@ -144,7 +144,7 @@
                     <label>Zoho Reference <span style="color:red">*</span></label>
                     <div class="form-group">
                       <div class="input-group ">
-                        <input type="text" name="ref_no" id="ref_no" value="{{ $booking->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number">
+                        <input type="text" name="ref_no" id="ref_no" value="{{ $booking->ref_no }}" class="form-control reference-name" placeholder="Enter Reference Number" autofocus>
                           <div class="input-group-append">
                           <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                         </div>
@@ -384,7 +384,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Date Of Birth </label> 
-                          <input type="text" name="lead_passenger_dbo" id="lead_passenger_dbo"  value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" class="form-control datepicker" placeholder="Date Of Birth">
+                          <input type="text" name="lead_passenger_dbo" id="lead_passenger_dbo"  value="{{ $booking->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" class="form-control lead-passenger-dbo" placeholder="Date Of Birth">
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
@@ -626,13 +626,13 @@
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($booking_detail->end_date_of_service) && !empty($booking_detail->end_date_of_service) ? $booking_detail->end_date_of_service : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($booking_detail->time_of_service) && !empty($booking_detail->time_of_service) ? $booking_detail->time_of_service : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($booking_detail->getCategory->name) && !empty($booking_detail->getCategory->name) ? $booking_detail->getCategory->name : '' }}</span>
+                              <span class="badge badge-info badge-group-owner-id">{{ isset($booking_detail->getGroupOwner->name) && !empty($booking_detail->getGroupOwner->name) ? $booking_detail->getGroupOwner->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ isset($booking_detail->getSupplier->name) && !empty($booking_detail->getSupplier->name) ? $booking_detail->getSupplier->name : ''}}</span>
                               <span class="badge badge-info badge-product-id">{{ isset($booking_detail->getProduct->name) && !empty($booking_detail->getProduct->name) ? $booking_detail->getProduct->name : '' }}</span>
-                              <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span>
+                              {{-- <span class="badge badge-info badge-supplier-currency-id">{{ isset($booking_detail->getSupplierCurrency->name) && !empty($booking_detail->getSupplierCurrency->name) ? $booking_detail->getSupplierCurrency->code.' - '.$booking_detail->getSupplierCurrency->name : '' }}</span> --}}
                               <span class="badge badge-info badge-pick-up-location"></span>
                               <span class="badge badge-info badge-drop-off-location"></span>
                               <span class="badge badge-info badge-room-type"></span>
-                              <span class="badge badge-info badge-group-owner-id"></span>
                               <span class="badge badge-info badge-departure-harbour"></span>
                               <span class="badge badge-info badge-arrival-harbour"></span>
                               <span class="badge badge-info badge-departure-airport"></span>
@@ -766,7 +766,7 @@
                                   <select name="quote[{{ $key }}][group_owner_id]" data-name="group_owner_id" id="quote_{{ $key }}_group_owner_id" class="form-control group-owner-id select2single">
                                     <option value="">Select Group Owner</option>
                                     @foreach ($group_owners as $group_owner)
-                                      <option value="{{ $group_owner->id }}" {{ $booking_detail->group_owner_id == $group_owner->id ? 'selected' : '' }}>{{ $group_owner->name }}</option>
+                                      <option value="{{ $group_owner->id }}"  data-name="{{ $group_owner->name }}"  {{ $booking_detail->group_owner_id == $group_owner->id ? 'selected' : '' }}>{{ $group_owner->name }}</option>
                                     @endforeach
                                   </select>
                                   <span class="text-danger" role="alert"></span>
@@ -778,13 +778,25 @@
                                 $url          = !empty($supplier_url) ? $supplier_url : '';
                                 $text         = !empty($supplier_url) ? "(View Rate Sheet)" : '';
 
-                                $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($booking_detail) {
+                                $query = App\Supplier::orderBy('id', 'ASC');
+
+                                $query->whereHas('getCountries', function($query) use ($booking_detail) {
                                   $query->whereIn('id', $booking_detail->getBookingDetailCountries()->pluck('country_id')->toArray());
-                                })
-                                ->whereHas('getCategories', function($query) use($booking_detail) {
+                                });
+    
+                                $query->whereHas('getCategories', function($query) use ($booking_detail) {
                                   $query->where('id', $booking_detail->category_id);
-                                })
-                                ->get();
+                                });
+
+                                if(isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'cruise') && is_null($booking_detail->group_owner_id)){
+                                  $query->whereNull('group_owner_id');
+                                }
+
+                                if(isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'cruise') && !is_null($booking_detail->group_owner_id)){
+                                  $query->where('group_owner_id', $booking_detail->group_owner_id);
+                                }
+
+                                $suppliers = $query->get();
                               @endphp
 
                               <div class="col-md-3">
@@ -2119,6 +2131,10 @@
                   </div>
                 @endif
            
+              </div>
+
+              <div class="sticky" id="sticky_btn">
+                <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
               </div>
 
               <div class="card-footer">

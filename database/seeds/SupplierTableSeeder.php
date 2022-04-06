@@ -53,6 +53,11 @@ class SupplierTableSeeder extends Seeder
             'location_id' => 1,
         ]);
 
+        DB::unprepared("UPDATE `suppliers` SET `currency_id` = '1';
+        UPDATE `suppliers` SET `currency_id` = '2' WHERE `suppliers`.`id` = 2;
+        UPDATE `suppliers` SET `currency_id` = '3' WHERE `suppliers`.`id` = 3;
+        UPDATE `suppliers` SET `currency_id` = '4' WHERE `suppliers`.`id` = 4;");
+
         // $data = [
         //     [
         //         'currency_id'   => 1,

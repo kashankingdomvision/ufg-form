@@ -105,6 +105,7 @@
                                                 <th>Email</th>
                                                 <th>Contact No</th>
                                                 <th>Currency</th>
+                                                <th>Group Owner</th>
                                                 <th>Country</th>
                                                 <th>Action</th>
                                             </tr>
@@ -123,6 +124,7 @@
                                                 <td>{{ $supplier->email }}</td>
                                                 <td>{{ $supplier->phone }}</td>
                                                 <td>{{ isset($supplier->getCurrency->name) && !empty($supplier->getCurrency->name) ? $supplier->getCurrency->code.' - '.$supplier->getCurrency->name : '' }}</td>
+                                                <td>{{ isset($supplier->getGroupOwner->name) && !empty($supplier->getGroupOwner->name) ? $supplier->getGroupOwner->name : '' }}</td>
                                                 <td class="d-inline">
                                                     @if(isset($supplier->getCountries) && count($supplier->getCountries) > 0 )
                                                         @foreach ($supplier->getCountries as $country)

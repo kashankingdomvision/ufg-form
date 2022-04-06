@@ -77,7 +77,7 @@
                       <div class="form-group">
                       <label>Zoho Reference <span style="color:red">*</span></label>
                         <div class="input-group">
-                          <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" id="ref_no" class="form-control reference-name" placeholder="Enter Reference Number">
+                          <input type="text" value="{{ old('ref_no')??$quote->ref_no }}" name="ref_no" id="ref_no" class="form-control reference-name" placeholder="Enter Reference Number" autofocus>
                             <div class="input-group-append">
                               <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                             </div>
@@ -314,7 +314,7 @@
                         <div class="col-md-3">
                           <div class="form-group">
                             <label>Date Of Birth </label>
-                            <input type="date" value="{{ $quote->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control" placeholder="Date Of Birth" >
+                            <input type="date" value="{{ $quote->lead_passenger_dbo }}" max="{{ date('Y-m-d') }}" id="lead_passenger_dbo" name="lead_passenger_dbo" class="form-control lead-passenger-dbo" placeholder="Date Of Birth" >
                             <span class="text-danger" role="alert"></span>
                           </div>
                         </div>
@@ -576,13 +576,13 @@
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail['end_date_of_service']) && !empty($q_detail['end_date_of_service']) ? $q_detail['end_date_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-group-owner-id">{{ (isset($q_detail['group_owner_id']) && $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->count() > 0 ) ? $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
-                              <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span>
+                              {{-- <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span> --}}
                               <span class="badge badge-info badge-pick-up-location"></span>
                               <span class="badge badge-info badge-drop-off-location"></span>
                               <span class="badge badge-info badge-room-type"></span>
-                              <span class="badge badge-info badge-group-owner-id"></span>
                               <span class="badge badge-info badge-departure-harbour"></span>
                               <span class="badge badge-info badge-arrival-harbour"></span>
                               <span class="badge badge-info badge-departure-airport"></span>
@@ -723,13 +723,24 @@
                                 //   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
                                 // })->get();
 
-                                $suppliers = App\Supplier::whereHas('getCountries', function($query) use ($q_detail) {
+                                $query = App\Supplier::orderBy('id', 'ASC');
+                                
+                                $query->whereHas('getCountries', function($query) use ($q_detail) {
                                   $query->whereIn('id', json_decode($q_detail['supplier_country_ids']));
-                                })
-                                ->whereHas('getCategories', function($query) use($q_detail) {
+                                });
+                                $query->whereHas('getCategories', function($query) use($q_detail) {
                                   $query->where('id', $q_detail['category_id']);
-                                })
-                                ->get();
+                                });
+
+                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && is_null($q_detail['group_owner_id'])){
+                                  $query->whereNull('group_owner_id');
+                                }
+
+                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && !is_null($q_detail['group_owner_id'])){
+                                  $query->where('group_owner_id', $q_detail['group_owner_id']);
+                                }
+
+                                $suppliers = $query->get();
                               @endphp
 
                               <div class="col-md-3">
@@ -1142,6 +1153,10 @@
                         </select>
                     </div>
                   </div>
+                </div>
+
+                <div class="sticky" id="sticky_btn">
+                  <button type="button" id="sticky_button" class="btn btn-secondary d-none float-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                 </div>
 
                 <div class="card-footer">
