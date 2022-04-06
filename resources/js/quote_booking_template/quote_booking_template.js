@@ -1251,17 +1251,17 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '.product-id', function () {
-        var quote = $(this).closest('.quote');
-        var quoteKey = quote.data('key');
+        
+        var quote        = $(this).closest('.quote');
+        var quoteKey     = quote.data('key');
         var product_name = $(this).find(':selected').attr('data-name');
-        var product_id = $(this).val();
-
-        var detail_id = $(`#quote_${quoteKey}_detail_id`).val();
-        var model_name = $(`#model_name`).val();
+        var product_id   = $(this).val();
+        var detail_id    = $(`#quote_${quoteKey}_detail_id`).val();
+        var model_name   = $(`#model_name`).val();
 
         quote.find('.prod-feild-col').remove();
-
-        var formData = '';
+        quote.find('.badge-product-id').html(product_name);
+        quote.find('.badge-product-id').removeClass('d-none');
 
         if (typeof product_name === 'undefined' || product_name == '') {
             quote.find('.badge-product-id').html('');
@@ -1279,7 +1279,6 @@ $(document).ready(function () {
             },
             success: function (response) {
 
-                // set category details feilds 
                 if (response.product != null && response.product.booking_type_id != null) {
                     $(`#quote_${quoteKey}_booking_type_id`).val(response.product.booking_type_id).change();
                 }
@@ -1292,9 +1291,6 @@ $(document).ready(function () {
 
             }
         });
-
-        quote.find('.badge-product-id').html(product_name);
-        quote.find('.badge-product-id').removeClass('d-none');
     });
 
     $(document).on('keyup', '.prod-details-feild', function (e) {
