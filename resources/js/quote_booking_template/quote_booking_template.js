@@ -556,7 +556,7 @@ $(document).ready(function () {
             $(`#quote_${quoteKey}_product_id`).removeAttr('disabled');
             quote.find('.badge-category-id').html(category_name);
 
-            // getCatSetLabel(quote, category_slug);
+            getCatSetLabel(quote, category_slug);
         }
 
         // set Payment type (Booking Type) refundable when category is fligt
@@ -773,8 +773,6 @@ $(document).ready(function () {
         }else{
             $(`#quote_${quoteKey}_supplier_id`).html("<option value=''>Select Supplier</option>");
         }
-
-
     });
 
     function getSuppliers(quoteKey, supplier_country_ids, category_id){
@@ -832,8 +830,6 @@ $(document).ready(function () {
 
             return;
         }
-
-
 
         /* get suppliers according to location */
         $.ajax({

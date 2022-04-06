@@ -1316,7 +1316,8 @@ $(document).ready(function () {
       // $(`#quote_${quoteKey}_supplier_location_id`).removeAttr('disabled');
       // $(`#quote_${quoteKey}_supplier_location_id`).val("").trigger('change');
       $("#quote_".concat(quoteKey, "_product_id")).removeAttr('disabled');
-      quote.find('.badge-category-id').html(category_name); // getCatSetLabel(quote, category_slug);
+      quote.find('.badge-category-id').html(category_name);
+      getCatSetLabel(quote, category_slug);
     } // set Payment type (Booking Type) refundable when category is fligt
 
 
