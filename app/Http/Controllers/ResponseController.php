@@ -167,15 +167,15 @@ class ResponseController extends Controller
     // GroupOwnerRequest
     public function storeGroupOwner(GroupOwnerRequest $request)
     {
-        $group_owner = GroupOwner::create([
+        GroupOwner::create([
             'name'       => $request->name,
         ]);
 
-        $category_details = Helper::storeCategoryDetailsFeilds($request->model_name, $request->category_id, $request->detail_id, "group_owners", $group_owner);
+        $group_owners = GroupOwner::orderBy('id', 'ASC')->get();
 
         return response()->json([
             'status'           => true, 
-            'category_details' => $category_details,
+            'group_owners'     => $group_owners,
             'success_message'  => 'Group Owner Created Successfully.',
         ]);
     }

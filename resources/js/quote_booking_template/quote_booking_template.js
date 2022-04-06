@@ -207,13 +207,13 @@ $(document).ready(function () {
         formGroup.appendChild(label);
 
         // add plus icon 
-        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'group_owners', 'cabin_types', 'stations'].includes(obj.data)){
+        if(['select', 'autocomplete'].includes(obj.type) && ['airport_codes', 'harbours', 'hotels', 'cabin_types', 'stations'].includes(obj.data)){
     
             const dynamicClass = { 
                 airport_codes: "store-airport-code-modal",
                 harbours: "store-harbour-modal",
                 hotels: "store-hotel-modal",
-                group_owners: "group-owner-modal",
+                // group_owners: "group-owner-modal",
                 cabin_types: "cabin-type-modal",
                 stations: "station-modal",
             };
@@ -222,7 +222,7 @@ $(document).ready(function () {
                 airport_codes: "store_airport_code_modal",
                 harbours: "store_harbour_modal",
                 hotels: "store_hotel_modal",
-                group_owners: "store_group_owner_modal",
+                // group_owners: "store_group_owner_modal",
                 cabin_types: "store_cabin_type_modal",
                 stations: "store_station_modal",
             };
@@ -977,6 +977,58 @@ $(document).ready(function () {
 
     });
 
+    
+    $(document).on('submit', '#store_group_owner_modal_form', function() {
+
+        event.preventDefault();
+
+        let url     = $(this).attr('action');
+        let formID  = $(this).attr('id');
+        let modalID = $(this).closest('.modal').attr('id');
+        options     = '';
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function (data) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+
+                setTimeout(function () {
+
+                    if (data && data.status == true) {
+
+                        $(`#${modalID}`).modal('hide');
+
+                        if (data.group_owners.length != 0) {
+
+                            options += "<option value=''>Select Group Owner</option>";
+                            $.each(data.group_owners, function (key, value) {
+                                options += `<option value='${value.id}' data-name='${value.name}'> ${value.name} </option>`;
+                            });
+
+                            $(`#quote_${quoteKeyForGroupOwner}_group_owner_id`).html(options);
+                        }
+                    }
+
+                }, 200);
+            },
+            error: function (data) {
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(data, `#${modalID}`);
+            },
+        });
+
+    });
+
     $(document).on('change', '.getCountryToLocation', function () {
 
         var supplier_country_ids = $(this).val();
@@ -1093,6 +1145,17 @@ $(document).ready(function () {
 
     });
 
+    var quoteKeyForGroupOwner = '';
+    $(document).on('click', '.group-owner-modal', function () {
+
+        var quote             = $(this).closest('.quote');
+        quoteKeyForGroupOwner = quote.data('key');
+        var modal             = jQuery('#store_group_owner_modal');
+
+        modal.modal('show');
+
+    });
+
  
 
     // $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function() {
@@ -1169,7 +1232,7 @@ $(document).ready(function () {
     var quoteKeyForCategoryFeildModal = '';
     var quoteForCategoryFeildModal = '';
 
-    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .group-owner-modal, .cabin-type-modal, .station-modal', function () {
+    $(document).on('click', '.store-harbour-modal, .store-airport-code-modal, .store-hotel-modal, .cabin-type-modal, .station-modal', function () {
 
 
         let quote = $(this).closest('.quote');
@@ -1194,7 +1257,7 @@ $(document).ready(function () {
         modal.find("input[name=model_name]").val(model_name);
     });
 
-    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_group_owner_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
+    $(document).on('submit', '#store_harbour_modal_form, #store_airport_code_modal_form, #store_hotel_modal_form, #store_cabin_type_modal_form, #store_station_modal_form', function (event) {
 
         event.preventDefault();
 

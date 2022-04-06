@@ -573,7 +573,7 @@
 
                           <div class="col-md-3 group-owner-feild d-none">
                             <div class="form-group">
-                              <label>Group Owner </label>
+                              <label>Group Owner <button type="button" class="btn btn-xs btn-outline-dark ml-1 group-owner-modal"> <i class="fas fa-plus"></i></button></label>
                               <select name="quote[0][group_owner_id]" data-name="group_owner_id" id="quote_0_group_owner_id" class="form-control group-owner-id select2single">
                                 <option value="">Select Group Owner</option>
                                 @foreach ($group_owners as $group_owner)
