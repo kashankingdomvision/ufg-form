@@ -561,6 +561,14 @@ $(document).ready(function () {
             quote.find('.group-owner-feild').addClass('d-none');
         }
 
+        if (category_slug == 'tours') {
+            quote.find('.tour-feilds').removeClass('d-none');
+        } else {
+            
+            quote.find('.tour-feilds').addClass('d-none');
+        }
+
+
         $.ajax({
             type: 'get',
             url: `${BASEURL}category/to/supplier`,

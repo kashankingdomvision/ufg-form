@@ -842,6 +842,34 @@
                                 </div>
                               </div>
 
+                              <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
+                                <div class="form-group">
+                                  <label>Meeting Point</label>
+                                  <input type="text" name="quote[{{ $key }}][tour_meeting_point]" data-name="tour_meeting_point" id="quote_{{ $key }}_tour_meeting_point" value="{{ $booking_detail->tour_meeting_point }}" class="form-control tour-meeting-point">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
+                                <div class="form-group">
+                                  <label>Contact</label>
+                                  <input type="text" name="quote[{{ $key }}][tour_contact]" data-name="tour_meeting_point" id="quote_{{ $key }}_tour_contact" value="{{ $booking_detail->tour_contact }}" class="form-control tour-contact">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
+                                <div class="form-group">
+                                  <label>Telephone</label>
+                                  <input type="tel" name="quote[{{ $key }}][tour_telephone]" data-name="tour_telephone" id="quote_{{ $key }}_tour_telephone" value="{{ $booking_detail->tour_telephone }}" class="form-control tour-telephone">
+                                </div>
+                              </div>
+                              
+                              <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
+                                <div class="form-group">
+                                  <label>Address</label>
+                                  <textarea name="quote[{{ $key }}][tour_address]" data-name="tour_address" id="quote_{{ $key }}_tour_address" rows="1" class="form-control tour-address">{{ !empty($booking_detail->tour_address) ? $booking_detail->tour_address : '' }}</textarea>
+                                </div>
+                              </div>
+
                               {{-- <div class="product-details-render col-12 row"></div> --}}
              
                               <div class="col-md-3 payment-type-feild">

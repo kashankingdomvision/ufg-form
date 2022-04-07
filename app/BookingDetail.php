@@ -49,7 +49,11 @@ class BookingDetail extends Model
         'status',
         'payment_status',
         'category_details',
-        'product_details'
+        'product_details',
+        'tour_meeting_point',
+        'tour_contact',
+        'tour_telephone',
+        'tour_address',
     ];
 
     public function getBookingDetailStatusAttribute()
