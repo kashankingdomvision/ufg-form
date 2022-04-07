@@ -703,7 +703,7 @@ $(document).ready(function () {
             quote.find('.badge-misc-details').html('');
         }
 
-        if(category_slug != 'misc'){
+        if(category_slug != 'train'){
             quote.find('.badge-departure-station').html('');
             quote.find('.badge-arrival-station').html('');
         }

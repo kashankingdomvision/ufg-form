@@ -2148,7 +2148,7 @@ $(document).ready(function () {
         type: 'get',
         dataType: "json",
         success: function success(data) {
-          if (data.response == true) {
+          if (data.response) {
             Swal.fire({
               title: 'Are you sure?',
               text: "The Reference number is already exists. You want to Create it Again?",
@@ -2827,7 +2827,7 @@ $(document).ready(function () {
       quote.find('.badge-misc-details').html('');
     }
 
-    if (category_slug != 'misc') {
+    if (category_slug != 'train') {
       quote.find('.badge-departure-station').html('');
       quote.find('.badge-arrival-station').html('');
     }

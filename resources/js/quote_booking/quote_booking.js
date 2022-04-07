@@ -885,7 +885,7 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
 
-                    if (data.response == true) {
+                    if (data.response) {
 
                         Swal.fire({
                             title: 'Are you sure?',
