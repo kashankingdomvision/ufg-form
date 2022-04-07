@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','View Airport')
+@section('title','View Contacts')
 
 @section('content')
 <div class="content-wrapper">
@@ -10,14 +10,14 @@
       <div class="row">
         <div class="col-sm-6">
           <div class="d-flex">
-            <h4>View Airport<x-add-new-button :route="route('airport_codes.create')" /> </h4>
+            <h4>View Contacts <x-add-new-button :route="route('tour_contacts.create')" /> </h4>
           </div>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
             <li class="breadcrumb-item"><a>Setting</a></li>
-            <li class="breadcrumb-item active">Airports</li>
+            <li class="breadcrumb-item active">Tour Contacts</li>
           </ol>
         </div>
       </div>
@@ -30,15 +30,15 @@
     </div>
   </section>
   
-  <x-page-filters :route="route('airport_codes.index')">
-      <div class="row">
-          <div class="col-md-12">
-              <div class="form-group">
-                  <label>Search</label>
-                  <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
-              </div>
-          </div>
+  <x-page-filters :route="route('tour_contacts.index')">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Search</label>
+          <input type="text" name="search" value="{{ old('search')??request()->get('search') }}" class="form-control" placeholder="what are you looking for .....">
+        </div>
       </div>
+    </div>
   </x-page-filters>
   
   <section class="content">
@@ -48,14 +48,14 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Airport List
+                Tour Contacts List
               </h3>
             </div>
 
             <!-- Multi Actions -->
             <div class="card-header">
               <div class="row">
-                <form method="POST" id="airport_code_bulk_action" action="{{ route('airport_codes.bulk.action') }}" >
+                <form method="POST" id="tour_contact_bulk_action" action="{{ route('tour_contacts.bulk.action') }}" >
                   @csrf
                   <input type="hidden" name="bulk_action_type" value="">
                   <input type="hidden" name="bulk_action_ids" value="">
@@ -65,7 +65,7 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu">
-                      <button type="button" data-action_type="delete" class="dropdown-item airport-code-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
+                      <button type="button" data-action_type="delete" class="dropdown-item tour_contact-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
                     </div>
                   </div>
                 </form>
@@ -84,26 +84,24 @@
                           <label for="parent" class="custom-control-label"></label>
                         </div>
                       </th>
-                      <th>Airport Name</th>
-                      <th>IATA Code</th>
+                      <th>Tour Contacts</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                  @if($airport_codes && $airport_codes->count())
-                    @foreach ($airport_codes as $key => $value)
+                  @if($contacts && $contacts->count())
+                    @foreach ($contacts as $key => $contact)
                     <tr>
                       <td>
                         <div class="custom-control custom-checkbox">
-                          <input type="checkbox" id="child_{{$value->id}}" value="{{$value->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
-                          <label for="child_{{$value->id}}" class="custom-control-label"></label>
+                          <input type="checkbox" id="child_{{$contact->id}}" value="{{$contact->id}}" class="child custom-control-input custom-control-input-success custom-control-input-outline">
+                          <label for="child_{{$contact->id}}" class="custom-control-label"></label>
                         </div>
                       </td>
-                      <td>{{ $value->name }}</td>
-                      <td>{{ $value->iata_code }}</td>
+                      <td>{{ $contact->name }}</td>
                       <td>
-                        <form method="post" action="{{ route('airport_codes.destroy', encrypt($value->id)) }}">
-                        <a href="{{ route('airport_codes.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                        <form method="post" action="{{ route('tour_contacts.destroy', encrypt($contact->id)) }}">
+                        <a href="{{ route('tour_contacts.edit', encrypt($contact->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           @csrf
                           @method('delete')
                           <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
@@ -123,7 +121,7 @@
 
             <div class="card-footer clearfix">
               <ul class="pagination pagination-sm m-0 float-right">
-                {{ $airport_codes->links() }}
+                {{ $contacts->links() }}
               </ul>
             </div>
           </div>
@@ -137,17 +135,17 @@
 @push('js')
   <script src="{{ asset('js/setting.js') }}" ></script>
 @endpush
-{{-- @include('includes.multiple_delete',['table_name' => 'airport_codes']) --}}
+            {{-- @include('includes.multiple_delete',['table_name' => 'contacts']) --}}
 
-{{-- <section class="content p-2">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <a href="" id="delete_all" class="btn btn-danger btn btn-sm">
-          <span class="fa fa-trash"></span> &nbsp;
-          <span>Delete Selected Record</span>
-        </a>
+  {{-- <section class="content p-2">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="" id="delete_all" class="btn btn-danger btn btn-sm">
+            <span class="fa fa-trash"></span> &nbsp;
+            <span>Delete Selected Record</span>
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</section> --}}
+  </section> --}}

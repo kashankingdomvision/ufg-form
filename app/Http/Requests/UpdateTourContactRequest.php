@@ -5,7 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateBankRequest extends FormRequest
+
+class UpdateTourContactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +26,14 @@ class UpdateBankRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('banks','name')->ignore(decrypt($this->id))],
+            'name' => ['required', Rule::unique('tour_contacts','name')->ignore(decrypt($this->id))],
         ];
     }
 
     public function attributes()
     {
         return [
-            'name'    => 'Bank Name',
+            'name'    => 'Tour Contact Name',
         ];
     }
 }

@@ -460,6 +460,36 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'BrandController@bulkAction' ));
     });
 
+    /*  Cabins */
+    Route::group([
+        'prefix' => 'cabins',
+        'as'     => 'cabins.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
+    });
+
+    /*  Contacts */
+    Route::group([
+        'prefix' => 'tour_contacts',
+        'as'     => 'tour_contacts.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'TourContactController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'TourContactController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'TourContactController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TourContactController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TourContactController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'TourContactController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'TourContactController@bulkAction' ));
+    });
+
     /*  Countries */
     Route::group([
         'prefix' => 'countries',
@@ -499,21 +529,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'CurrencyConversionController@index'));
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CurrencyConversionController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CurrencyConversionController@update'));
-    });
-
-    /*  Cabins */
-    Route::group([
-        'prefix' => 'cabins',
-        'as'     => 'cabins.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'CabinTypeController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'CabinTypeController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'CabinTypeController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CabinTypeController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CabinTypeController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CabinTypeController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
     });
     
     /*  Harbours, Train and Points of Interest */
