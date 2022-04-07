@@ -729,7 +729,7 @@
 
                             {{-- <div class="category-details-render col-12 row"></div> --}}
  
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
