@@ -1186,7 +1186,7 @@
 
                 <div class="form-group row">
                   <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
-                  <div class="col-md-3 d-flex align-items-end">
+                  <div class="col-md-3 align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">

@@ -667,7 +667,7 @@
                               </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-3">
                               <div class="form-group">
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
@@ -1523,7 +1523,7 @@
                     </h5>
                   </label>
 
-                  <div class="col-md-3 d-flex align-items-end">
+                  <div class="col-md-3 align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -1574,7 +1574,7 @@
 
                 <div class="form-group row">
                   <label for="inputEmail3" class="col-md-4 col-form-label">Booking Amount Per Person In Other Currency</label>
-                  <div class="col-md-3 d-flex align-items-end">
+                  <div class="col-md-3 align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
