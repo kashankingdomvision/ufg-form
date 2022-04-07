@@ -598,7 +598,6 @@ $(document).ready(function () {
   /* Hide Potentail Commission for another Behalf User */
 
   $(document).on('change', '.sales-person-id', function () {
-    console.log("sales  salessalessales");
     var salesPersonID = $(this).val();
     var userID = $('.user-id').val();
 
