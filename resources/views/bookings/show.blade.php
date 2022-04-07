@@ -1123,7 +1123,7 @@
                                 </div>
                               </div>
 
-                              @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
+                              {{-- @if(isset(Auth::user()->getRole->slug) && in_array(Auth::user()->getRole->slug, ['admin', 'accountant']) )
                                 <div class="col-md-3 d-flex justify-content-center">
                                   <div class="form-group">
                                     <label>Sage</label>
@@ -1133,7 +1133,7 @@
                                     </div>
                                   </div>
                                 </div>
-                              @endif
+                              @endif --}}
 
                             </div>
                             <!-- End Administration row -->
