@@ -733,8 +733,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
         
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
-        Route::get('brand-on-change',array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
-        Route::get('multiple-brand-on-change',array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
+        Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
+        Route::get('multiple-brand-on-change', array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
         Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
         Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
         Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
