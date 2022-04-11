@@ -394,6 +394,10 @@ class ResponseController extends Controller
         return response()->json($towns);
     }
 
+    public function getCurrencyConversion(){
+        return CurrencyConversion::all();
+    }
+
     public function countryOnChange(Request $request)
     {  
         $locations = Location::whereIn('country_id', $request->supplier_country_ids)

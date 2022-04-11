@@ -14,7 +14,7 @@ $(document).ready(function() {
     function getJson() {
         return JSON.parse($.ajax({
             type: 'GET',
-            url: `${BASEURL}get-currency-conversion`,
+            url: `${BASEURL}get-currency-conversions`,
             dataType: 'json',
             global: false,
             async: false,
