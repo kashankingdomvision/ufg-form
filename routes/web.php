@@ -731,6 +731,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@get_commissions'));
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
+        Route::get('get-filter-currency-rate', array('as' => 'get.filter.currency.rate', 'uses' => 'ResponseController@getFilterCurrencyRates'));
         
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
         Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
@@ -739,7 +740,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
         Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
         Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
-        Route::get('get-filter-currency-rate', array('as' => 'get.filter.currency.rate', 'uses' => 'ResponseController@getFilterCurrencyRates'));
 
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
@@ -753,7 +753,7 @@ Route::group(['middleware' => ['auth']], function(){
         
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
-        Route::post('add-product-with-supplier-sync',array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
+        Route::post('add-product-with-supplier-sync', array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
 
         Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
         Route::get('location/to/product',array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
