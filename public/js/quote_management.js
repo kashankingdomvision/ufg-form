@@ -611,7 +611,7 @@ $(document).ready(function () {
   });
   $(document).on('change', '.view-rate-booking-currency-filter', function () {
     var selectedCurrencies = $(this).val();
-    var url = "".concat(BASEURL, "filter-currency-rate");
+    var url = "".concat(BASEURL, "get-filter-currency-rate");
     $.ajax({
       type: 'get',
       url: url,

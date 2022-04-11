@@ -739,6 +739,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
         Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
         Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
+        Route::get('get-filter-currency-rate', array('as' => 'get.filter.currency.rate', 'uses' => 'ResponseController@getFilterCurrencyRates'));
 
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
@@ -749,8 +750,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
         Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
-        Route::get('filter-currency-rate', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filterCurrencyRate'));
-
         
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
