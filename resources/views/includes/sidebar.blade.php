@@ -373,17 +373,6 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('tour_contacts.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['tour_contacts.index', 'tour_contacts.create', 'tour_contacts.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-address-book"></i>
-                                {{-- <i class="fa-solid fa-cabinet-filing"></i> --}}
-                                <p>
-                                    Tour Contacts
-                                </p>
-                            </a>
-                        </li>
-
-
-                        <li class="nav-item">
                             <a href="{{ route('countries.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['countries.index', 'countries.create', 'countries.edit']) ? 'active' : '' }}">
                                 <i class="fa fa-globe nav-icon"></i>
                                 <p>Countries</p>
@@ -487,6 +476,15 @@
                                 <i class="nav-icon fa fa-train"></i>
                                 <p>
                                     Stations
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('tour_contacts.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['tour_contacts.index', 'tour_contacts.create', 'tour_contacts.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-address-book"></i>
+                                <p>
+                                    Tour Contacts
                                 </p>
                             </a>
                         </li>
