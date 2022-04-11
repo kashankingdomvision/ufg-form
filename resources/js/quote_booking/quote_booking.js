@@ -880,7 +880,7 @@ $(document).ready(function() {
             //check refrence is already exist in system
             $.ajax({
                 headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                url:  `${BASEURL}find/reference/${reference_no}/exist`,
+                url:  `${BASEURL}is/reference/${reference_no}/exist`,
                 type: 'get',
                 dataType: "json",
                 success: function(data) {

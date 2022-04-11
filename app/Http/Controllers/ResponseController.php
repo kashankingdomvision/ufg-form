@@ -300,14 +300,10 @@ class ResponseController extends Controller
 
     public function removeFormBuidlerFeild(Request $request)
     {
-        // dd($request->all());
 
         $id           = decrypt($request->id);
         $element_name = $request->element_name;
-        // dd($element_name);
-
-        $json_quotes = QuoteDetail::where('category_id', $id)->whereNotNull('category_details')->get(['category_details','id']);
-
+        $json_quotes  = QuoteDetail::where('category_id', $id)->whereNotNull('category_details')->get(['category_details','id']);
 
         foreach($json_quotes as $Qkey => $json_quote){
 
@@ -315,32 +311,27 @@ class ResponseController extends Controller
 
             foreach($category_details as $key => $category_detail){
  
-
                 if(($category_detail->name == $element_name) && isset($category_detail->userData)){
-
-                    // return "a";
-
                     return response()->json([ "status" => true, "success_message" => "You Can Not Remove this feild." ]);
                 }
-                // dd(isset($category_detail->userData));
             }
            
         }
+
         return response()->json([ 'status' => false, 'success_message' => 'Product Added Successfully.' ]);
     }
 
-    public function get_commissions(){
-        $commissions = Commission::all();
-        return $commissions;
+    public function getCommissions(){
+        return Commission::all();
     }
 
-    public function get_commission_groups(){
-        $commission_groups = CommissionGroup::all();
-        return $commission_groups;
+    public function getCommissionGroups(){
+        return CommissionGroup::all();
     }
 
-    public function get_commission_criterias(){
-        $commission_criterias = CommissionCriteria::
+    public function getCommissionCriterias(){
+
+        return CommissionCriteria::
         leftJoin('commission_criteria_seasons', 'commission_criterias.id', '=', 'commission_criteria_seasons.commission_criteria_id')
         ->leftJoin('commission_criteria_groups', 'commission_criterias.id', '=', 'commission_criteria_groups.commission_criteria_id')
         ->leftJoin('commission_criteria_brands', 'commission_criterias.id', '=', 'commission_criteria_brands.commission_criteria_id')
@@ -356,8 +347,6 @@ class ResponseController extends Controller
             'commission_criteria_currencies.currency_id',
             'commission_criteria_seasons.season_id'
         ]);
-
-        return $commission_criterias;
     }
 
 
@@ -606,16 +595,19 @@ class ResponseController extends Controller
 
         return response()->json(View::make('quotes.includes.child_quote_listing', $data)->render());
     }
-    // FIND QUOTE REFERENCES
+
+    // Find Reference from Zoho Crm 
     public function findReference(Request $request)
     {
         $zoho_credentials = ReferenceCredential::where('type', 'zoho')->first();
-        if($zoho_credentials == null){ 
+        
+        if(is_null($zoho_credentials)){ 
             return response()->json([
                 'status' => 'false',
                 'errors'  => 'Something went wrong with reference number Please try again!',
             ], 400);           
         }
+
         $ajax_response = [];
         $ref = $request->ref_no;
         // $refresh_token = '1000.18cb2e5fbe397a6422d8fcece9b67a06.d71539ff6e5fa8364879574343ab799a';
@@ -630,17 +622,21 @@ class ResponseController extends Controller
             ),
         );
         $response = $this->cf_remote_request($url, $args);
+
         if ($response['status'] == 200) {
             
             $responses_data = array_shift($response['body']['data']);
-            $passenger_id = $responses_data['id'];
-            $url = "https://www.zohoapis.com/crm/v2/Passengers/search?criteria=(Deal:equals:{$passenger_id})";
+            $passenger_id   = $responses_data['id'];
+            $url            = "https://www.zohoapis.com/crm/v2/Passengers/search?criteria=(Deal:equals:{$passenger_id})";
+
             $passenger_response = $this->cf_remote_request($url, $args);
+
             if ($passenger_response['status'] == 200) {
                 $pax_no = count($passenger_response['body']['data']);
             }
-            $holidayName = isset($responses_data['Holiday_Type']) && !empty($responses_data['Holiday_Type']) ? $responses_data['Holiday_Type'] : null;
-            $holiday = HolidayType::where('name', $holidayName)->first();
+
+            $holidayName  = isset($responses_data['Holiday_Type']) && !empty($responses_data['Holiday_Type']) ? $responses_data['Holiday_Type'] : null;
+            $holiday      = HolidayType::where('name', $holidayName)->first();
             $holidayTypes = NULL;
             if($holiday){
                 $holidayTypes = HolidayType::where('brand_id', $holiday->brand_id)->get();
@@ -648,11 +644,15 @@ class ResponseController extends Controller
             
             $passenger_data = [];
             $passengerArray = [];
+
             if(isset($passenger_response['body']['data']) && count($passenger_response['body']['data']) > 0 ){
                 foreach ($passenger_response['body']['data'] as $key => $passenger) {
-                        if($key == 0){    
+
+                    if($key == 0){    
                         $passengerArray['lead_passenger'] = $this->getPassenger($passenger);
-                    }else{                            
+
+                    }else{            
+
                         $x = $this->getPassenger($passenger);
                         array_push($passenger_data, $x);
                     }
@@ -671,7 +671,7 @@ class ResponseController extends Controller
                 'tas_ref'       => (isset($responses_data['TAS_REF_No']) && !empty($responses_data['TAS_REF_No']))? $responses_data['TAS_REF_No'] : NULL,
             ];
 
-            $payment_detial_response = \Helper::get_payment_detial_by_ref_no($ref);
+            $payment_detial_response = Helper::get_payment_detial_by_ref_no($ref);
             if ($payment_detial_response['status'] == 200) {
                 $response['payment_details'] = $payment_detial_response['body']['old_records'];
             }
@@ -703,14 +703,11 @@ class ResponseController extends Controller
         ];
     }
 
-
     public function isReferenceExists($ref_no)
     {
         $response['response'] = Quote::where('ref_no', $ref_no)->exists();
         return response()->json($response);
     }
-    
-    
     
     public function cf_remote_request($url, $_args = array())
     {

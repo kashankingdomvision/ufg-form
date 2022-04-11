@@ -753,7 +753,7 @@ $(document).ready(function () {
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: "".concat(BASEURL, "find/reference/").concat(reference_no, "/exist"),
+        url: "".concat(BASEURL, "is/reference/").concat(reference_no, "/exist"),
         type: 'get',
         dataType: "json",
         success: function success(data) {
@@ -1492,47 +1492,41 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
       }
     });
-  }
+  } // $(document).on('change', '.supplier-location-id', function(){
+  //     var quote                 = $(this).closest('.quote');
+  //     var quoteKey              = quote.data('key');
+  //     var suppplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+  //     var category_id = $(`#quote_${quoteKey}_category_id`).val();
+  //     var options = '';
+  //     $(`#quote_${quoteKey}_supplier_id`).removeAttr('disabled');
+  //     /* set supplier dropdown null when supplier location become null */
+  //     if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
+  //         $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+  //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+  //         return;
+  //     }
+  //     /* get suppliers according to location */
+  //     $.ajax({
+  //         type: 'get',
+  //         url: `${BASEURL}location/to/supplier`,
+  //         data: { 'suppplier_location_id': suppplier_location_id, 'category_id': category_id },
+  //         beforeSend: function () {
+  //             $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+  //         },
+  //         success: function (response) {
+  //             /* set supplier dropdown*/
+  //             options += `<option value="">Select Supplier</option>`;
+  //             $.each(response.suppliers, function (key, value) {
+  //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //             });
+  //             $(`#quote_${quoteKey}_supplier_id`).html(options);
+  //         }
+  //     })
+  // });
 
-  $(document).on('change', '.supplier-location-id', function () {
-    var quote = $(this).closest('.quote');
-    var quoteKey = quote.data('key');
-    var suppplier_location_id = $("#quote_".concat(quoteKey, "_supplier_location_id")).val();
-    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
-    var options = '';
-    $("#quote_".concat(quoteKey, "_supplier_id")).removeAttr('disabled');
-    /* set supplier dropdown null when supplier location become null */
 
-    if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
-      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
-      return;
-    }
-    /* get suppliers according to location */
-
-
-    $.ajax({
-      type: 'get',
-      url: "".concat(BASEURL, "location/to/supplier"),
-      data: {
-        'suppplier_location_id': suppplier_location_id,
-        'category_id': category_id
-      },
-      beforeSend: function beforeSend() {
-        $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      },
-      success: function success(response) {
-        /* set supplier dropdown*/
-        options += "<option value=\"\">Select Supplier</option>";
-        $.each(response.suppliers, function (key, value) {
-          options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
-        });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
-      }
-    });
-  });
   $(document).on('change', '.supplier-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -1843,7 +1837,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "get-product-booking-type"),
+      url: "".concat(BASEURL, "product-on-change"),
       data: {
         'product_id': product_id,
         'detail_id': detail_id,
