@@ -19,7 +19,7 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function(){
     
     /* Zoho Crm Refresh Token */
-	Route::get('refresh-token' ,array('before' => 'csrf', 'as' => 'refresh-token', 'uses' => 'DashboardController@refresh_token'));
+	Route::get('refresh-token' , array('before' => 'csrf', 'as' => 'refresh_token', 'uses' => 'DashboardController@refresh_token'));
 
     /* Laravel File manager */
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
