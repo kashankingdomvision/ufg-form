@@ -954,9 +954,11 @@ $(document).ready(function() {
     });
 
     $(document).on('change', '.getBrandtoHoliday', function() {
+
         let brand_id = $(this).val();
-        var options = '';
-        var url = BASEURL + 'brand/to/holidays'
+        let options  = '';
+        let url      = `${BASEURL}brand-on-change`;
+
         $.ajax({
             type: 'get',
             url: url,
@@ -966,8 +968,8 @@ $(document).ready(function() {
                 $.each(response.holiday_types, function(key, value) {
                     options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
                 });
-                $('.appendHolidayType').html(options);
 
+                $('.appendHolidayType').html(options);
                 $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
             }
         });

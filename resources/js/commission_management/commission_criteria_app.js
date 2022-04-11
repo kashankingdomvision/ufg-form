@@ -77,8 +77,8 @@ $(document).ready(function() {
     $(document).on('change', '.getMultipleBrandtoHoliday', function() {
 
         let brand_ids = $(this).val();
-        var options = '';
-        var url = BASEURL + 'multiple/brand/to/holidays'
+        var options   = '';
+        var url       = `${BASEURL}multiple-brand-on-change`
         
         $.ajax({
             type: 'get',

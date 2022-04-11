@@ -360,7 +360,7 @@ class ResponseController extends Controller
     }
 
 
-    public function getBrandToHoliday(Request $request)
+    public function brandOnChange(Request $request)
     {    
         $holiday_types = HolidayType::where('brand_id', $request->brand_id)->get();
 
@@ -374,7 +374,7 @@ class ResponseController extends Controller
         return response()->json($holiday_types);
     }
 
-    public function getMultipleBrandToHoliday(Request $request)
+    public function multipleBrandOnChange(Request $request)
     {    
         $holiday_types = HolidayType::whereIn('brand_id',$request->brand_ids)
         ->leftJoin('brands', 'holiday_types.brand_id', '=', 'brands.id')

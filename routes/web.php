@@ -718,7 +718,6 @@ Route::group(['middleware' => ['auth']], function(){
     */
     Route::prefix('json')->group(function () {
 
-        Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
 
         Route::post('store-harbour', array('as' => 'response.harbours.store', 'uses' => 'ResponseController@storeHarbour'));
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
@@ -728,9 +727,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
 
-        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
 
-        Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
+        Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
+        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
         Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
         
         /* calculate commission routes */
@@ -739,8 +738,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
         /* calculate commission routes */
 
-        Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
-        Route::get('multiple/brand/to/holidays',array('as'=>'multiple.brand.holidays','uses'=>'ResponseController@getMultipleBrandToHoliday'));
+        Route::get('brand-on-change',array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
+        Route::get('multiple-brand-on-change',array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
 
         Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
         Route::get('country/to/location',array('as'=>'country.locations','uses'=>'ResponseController@getCountryToLocation'));
@@ -776,6 +775,10 @@ Route::group(['middleware' => ['auth']], function(){
 
 
         Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
+
+
+        Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
+
     });
 
 
@@ -829,10 +832,10 @@ Route::group(['middleware' => ['auth']], function(){
 // ]]);
 
   
-Route::group([
-    'prefix' => 'setting',
-    'as'     => 'setting.'
-],function (){
+// Route::group([
+//     'prefix' => 'setting',
+//     'as'     => 'setting.'
+// ],function (){
 
     /* Harbours, Train and Points of Interest */
     // Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
@@ -860,9 +863,9 @@ Route::group([
     // ]]);
 
     /* Airlines */
-    Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /* Booking methods */
     // Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
@@ -901,16 +904,16 @@ Route::group([
     // ]]);
 
     /* Towns */
-    Route::resource('towns', 'SettingControllers\TownController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('towns', 'SettingControllers\TownController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /* Locations */
     // Route::resource('locations', 'SettingControllers\LocationController',['only' => [
     //     'index','create', 'store', 'edit', 'update', 'destroy'
     // ]]);
 
-});
+// });
 
 /*
 |--------------------------------------------------------------------------
