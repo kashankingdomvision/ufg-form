@@ -730,7 +730,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
-        Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
+        Route::get('get-currency-conversion', array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
         
         /* calculate commission routes */
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
@@ -741,9 +741,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('brand-on-change',array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
         Route::get('multiple-brand-on-change',array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
 
-        Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
-        Route::get('country/to/location',array('as'=>'country.locations','uses'=>'ResponseController@getCountryToLocation'));
+        Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
 
+
+
+        
         Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
 
         Route::get('country/to/supplier',array('as'=>'country.supplier','uses'=>'ResponseController@getCountryToSupplier'));
@@ -779,6 +781,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
 
+
+        // Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
     });
 
 

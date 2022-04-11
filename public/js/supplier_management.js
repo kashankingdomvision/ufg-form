@@ -28185,7 +28185,7 @@ $(document).ready(function () {
   });
   $(document).on('change', '.getCountryToLocation', function () {
     var supplier_country_ids = $(this).val();
-    var url = BASEURL + 'country/to/location';
+    var url = "".concat(BASEURL, "country-on-change");
     var options = '';
     $.ajax({
       type: 'get',

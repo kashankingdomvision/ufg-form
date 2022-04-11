@@ -394,7 +394,7 @@ class ResponseController extends Controller
         return response()->json($towns);
     }
 
-    public function getCountryToLocation(Request $request)
+    public function countryOnChange(Request $request)
     {  
         $locations = Location::whereIn('country_id', $request->supplier_country_ids)
         ->leftJoin('countries', 'locations.country_id', '=', 'countries.id')
