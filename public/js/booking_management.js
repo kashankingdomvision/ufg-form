@@ -109,6 +109,18 @@ __webpack_require__(/*! ./booking_management/booking_app */ "./resources/js/book
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  tourContactAutoCompleteInitialize();
+
+  function tourContactAutoCompleteInitialize() {
+    $(".tour-contact").autocomplete({
+      source: "".concat(BASEURL, "tour-contacts")
+    });
+  }
+
+  function touContactrAutoCompleteDestroy() {
+    $(".tour-contact").autocomplete("destroy");
+  }
+
   $('#version_booking :input').prop('disabled', true);
   $('#show_booking :input').attr('disabled', 'disabled');
   var pageStatus = $('#show_booking').data('page_status');
@@ -764,6 +776,7 @@ $(document).ready(function () {
       setTimeout(function () {
         destroySingleSelect2();
         destroyMultipleSelect2();
+        touContactrAutoCompleteDestroy();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -878,6 +891,11 @@ $(document).ready(function () {
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
         $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
+        tourContactAutoCompleteInitialize(); // $( ".tour-contact" ).autocomplete( "destroy" );
+        // $(".tour-contact").autocomplete({
+        //     source: `${BASEURL}tour-contacts`,
+        // });
+
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);

@@ -5,6 +5,7 @@ window.Swal = require('sweetalert2');
 window.intlTelInput = require('intl-tel-input');
 
 import 'jquery-ui/ui/widgets/sortable.js';
+import 'jquery-ui/ui/widgets/autocomplete.js';
 import select2 from 'select2';
 // import intlTelInput from 'intl-tel-input';
 // import Swal from 'sweetalert2';

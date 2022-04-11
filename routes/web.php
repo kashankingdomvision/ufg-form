@@ -718,6 +718,8 @@ Route::group(['middleware' => ['auth']], function(){
     */
     Route::prefix('json')->group(function () {
 
+        Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
+
         Route::post('store-harbour', array('as' => 'response.harbours.store', 'uses' => 'ResponseController@storeHarbour'));
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));

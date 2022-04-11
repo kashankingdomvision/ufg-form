@@ -1,5 +1,17 @@
 $(document).ready(function() {
-   
+
+
+    tourContactAutoCompleteInitialize();
+
+    function tourContactAutoCompleteInitialize(){
+        $(".tour-contact").autocomplete({
+            source: `${BASEURL}tour-contacts`,
+        });
+    }
+
+    function touContactrAutoCompleteDestroy(){
+        $( ".tour-contact" ).autocomplete( "destroy" );
+    }
 
     $('#version_booking :input').prop('disabled', true);
     $('#show_booking :input').attr('disabled', 'disabled');
@@ -865,6 +877,7 @@ $(document).ready(function() {
 
                 destroySingleSelect2();
                 destroyMultipleSelect2();
+                touContactrAutoCompleteDestroy();
 
                 var quote = $(".quote").eq(0).clone()
                     .find("input").val("").each(function() {
@@ -997,6 +1010,13 @@ $(document).ready(function() {
                 // set default supplier country
                 let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
                 $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
+
+                tourContactAutoCompleteInitialize();
+
+                // $( ".tour-contact" ).autocomplete( "destroy" );
+                // $(".tour-contact").autocomplete({
+                //     source: `${BASEURL}tour-contacts`,
+                // });
 
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

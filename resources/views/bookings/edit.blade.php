@@ -853,7 +853,7 @@
                               <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
                                 <div class="form-group">
                                   <label>Contact</label>
-                                  <input type="text" name="quote[{{ $key }}][tour_contact]" data-name="tour_meeting_point" id="quote_{{ $key }}_tour_contact" value="{{ $booking_detail->tour_contact }}" class="form-control tour-contact">
+                                  <input type="text" name="quote[{{ $key }}][tour_contact]" data-name="tour_contact" id="quote_{{ $key }}_tour_contact" value="{{ $booking_detail->tour_contact }}" class="form-control tour-contact">
                                 </div>
                               </div>
 

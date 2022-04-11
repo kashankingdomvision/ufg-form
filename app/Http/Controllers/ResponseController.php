@@ -51,6 +51,7 @@ use App\SupplierCategory;
 
 use App\CabinType;
 use App\Station;
+use App\TourContact;
 
 class ResponseController extends Controller
 {
@@ -211,6 +212,13 @@ class ResponseController extends Controller
         ]);
     }
 
+    public function tourContacts()
+    {
+        $tour_contacts = TourContact::pluck('name')->toArray();
+
+        return response()->json($tour_contacts);
+    }
+    
     public function getCategoryToSupplier(Request $request)
     {
         $category_details = '';
