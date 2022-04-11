@@ -727,8 +727,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
 
         Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
-        Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversion'));
-      
+        Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@get_commissions'));
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
@@ -738,13 +737,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('multiple-brand-on-change',array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
         Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
         Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
-
-
-
-        
-        Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
-
-        Route::get('country/to/supplier',array('as'=>'country.supplier','uses'=>'ResponseController@getCountryToSupplier'));
+        Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
+        Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
 
         Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));

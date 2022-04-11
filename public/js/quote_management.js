@@ -1331,7 +1331,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "category/to/supplier"),
+      url: "".concat(BASEURL, "category-on-change"),
       data: {
         'category_id': category_id,
         'detail_id': detail_id,
@@ -1471,7 +1471,7 @@ $(document).ready(function () {
     var selectOption = "<option value=''>Select Supplier</option>";
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "country/to/supplier"),
+      url: "".concat(BASEURL, "supplier-countries-on-change"),
       data: {
         'supplier_country_ids': supplier_country_ids,
         'category_id': category_id

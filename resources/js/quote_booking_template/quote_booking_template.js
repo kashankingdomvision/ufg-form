@@ -571,7 +571,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            url: `${BASEURL}category/to/supplier`,
+            url: `${BASEURL}category-on-change`,
             data: { 
                 'category_id': category_id, 
                 'detail_id': detail_id, 
@@ -746,7 +746,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            url: `${BASEURL}country/to/supplier`,
+            url: `${BASEURL}supplier-countries-on-change`,
             data: {
                 'supplier_country_ids': supplier_country_ids,
                 'category_id': category_id,

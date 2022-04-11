@@ -52,6 +52,7 @@ use App\SupplierCategory;
 use App\CabinType;
 use App\Station;
 use App\TourContact;
+use App\CurrencyConversion;
 
 class ResponseController extends Controller
 {
@@ -219,7 +220,7 @@ class ResponseController extends Controller
         return response()->json($tour_contacts);
     }
     
-    public function getCategoryToSupplier(Request $request)
+    public function categoryOnChange(Request $request)
     {
         $category_details = '';
         $category         = '';
@@ -394,7 +395,7 @@ class ResponseController extends Controller
         return response()->json($towns);
     }
 
-    public function getCurrencyConversion(){
+    public function getCurrencyConversions(){
         return CurrencyConversion::all();
     }
 
@@ -518,7 +519,7 @@ class ResponseController extends Controller
         return $response;
     }
 
-    public function getCountryToSupplier(Request $request)
+    public function supplierCountriesOnChange(Request $request)
     {
         $suppliers = Supplier::whereHas('getCountries', function($query) use($request) {
             $query->whereIn('id', $request->supplier_country_ids);
