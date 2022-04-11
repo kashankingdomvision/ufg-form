@@ -533,9 +533,8 @@ class ResponseController extends Controller
     }
 
 
-    public function getProductBookingType(Request $request)
+    public function productOnChange(Request $request)
     {
-        // dd($request->all());
 
         $product_details = '';
         $model_name       = 'App\\'.$request->model_name;

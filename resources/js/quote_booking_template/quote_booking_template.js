@@ -773,49 +773,49 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on('change', '.supplier-location-id', function(){
+    // $(document).on('change', '.supplier-location-id', function(){
         
-        var quote                 = $(this).closest('.quote');
-        var quoteKey              = quote.data('key');
-        var suppplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
-        var category_id = $(`#quote_${quoteKey}_category_id`).val();
-        var options = '';
+    //     var quote                 = $(this).closest('.quote');
+    //     var quoteKey              = quote.data('key');
+    //     var suppplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+    //     var category_id = $(`#quote_${quoteKey}_category_id`).val();
+    //     var options = '';
 
-        $(`#quote_${quoteKey}_supplier_id`).removeAttr('disabled');
+    //     $(`#quote_${quoteKey}_supplier_id`).removeAttr('disabled');
 
-        /* set supplier dropdown null when supplier location become null */
-        if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
+    //     /* set supplier dropdown null when supplier location become null */
+    //     if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
 
-            $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+    //         $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+    //         $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
 
-            $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
-            $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+    //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+    //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
 
-            return;
-        }
+    //         return;
+    //     }
 
-        /* get suppliers according to location */
-        $.ajax({
-            type: 'get',
-            url: `${BASEURL}location/to/supplier`,
-            data: { 'suppplier_location_id': suppplier_location_id, 'category_id': category_id },
-            beforeSend: function () {
-                $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
-            },
-            success: function (response) {
+    //     /* get suppliers according to location */
+    //     $.ajax({
+    //         type: 'get',
+    //         url: `${BASEURL}location/to/supplier`,
+    //         data: { 'suppplier_location_id': suppplier_location_id, 'category_id': category_id },
+    //         beforeSend: function () {
+    //             $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+    //         },
+    //         success: function (response) {
 
-                /* set supplier dropdown*/
-                options += `<option value="">Select Supplier</option>`;
-                $.each(response.suppliers, function (key, value) {
-                    options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
-                });
-                $(`#quote_${quoteKey}_supplier_id`).html(options);
+    //             /* set supplier dropdown*/
+    //             options += `<option value="">Select Supplier</option>`;
+    //             $.each(response.suppliers, function (key, value) {
+    //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+    //             });
+    //             $(`#quote_${quoteKey}_supplier_id`).html(options);
 
-            }
-        })
+    //         }
+    //     })
 
-    });
+    // });
 
     $(document).on('change', '.supplier-id', function(){
 
@@ -1220,7 +1220,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: 'get',
-            url: `${BASEURL}get-product-booking-type`,
+            url: `${BASEURL}product-on-change`,
             data: {
                 'product_id': product_id,
                 'detail_id': detail_id,
