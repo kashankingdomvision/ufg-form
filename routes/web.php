@@ -17,9 +17,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function(){
+
+
+    // Route::get('pdf', function()
+    // {
+    //     return view('quote_documents.index');
+    // });
     
     /* Zoho Crm Refresh Token */
-	Route::get('refresh-token' , array('before' => 'csrf', 'as' => 'refresh_token', 'uses' => 'DashboardController@refresh_token'));
+	Route::get('refresh-token', array('before' => 'csrf', 'as' => 'refresh_token', 'uses' => 'DashboardController@refresh_token'));
 
     /* Laravel File manager */
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
@@ -764,10 +770,7 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
 
-    Route::get('pdf', function()
-    {
-        return view('quote_documents.index');
-    });
+
 });
 
 // Route::group([
