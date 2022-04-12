@@ -612,7 +612,7 @@ class ResponseController extends Controller
     */
 
     public function getCurrencyConversions(){
-        return CurrencyConversion::all();
+        return DB::table('currency_conversions')->get();
     }
 
     public function getCommissionCriterias(){
@@ -636,11 +636,11 @@ class ResponseController extends Controller
     }
 
     public function getCommissions(){
-        return Commission::all();
+        return DB::table('commissions')->get();
     }
 
     public function getCommissionGroups(){
-        return CommissionGroup::all();
+        return DB::table('commission_groups')->get();
     }
 
     public function getFilterCurrencyRates(Request $request){
