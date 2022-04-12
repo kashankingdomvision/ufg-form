@@ -655,28 +655,7 @@ class ReportController extends Controller
         return $label_results;
     }
 
-    /* used in transfer report*/ 
-    public function categoryDetailsFilter(Request $request) {
 
-        // dd($request->all());
-
-        $type          = $request->type;
-        $label         = $request->label;
-        $data          = $request->data;
-        $dataTypes     = ['airport_codes', 'harbours', 'hotels', 'all'];
-        $label_results = '';
-
-        if($type == 'autocomplete' && in_array($data, $dataTypes)){
-
-            $label_results = $this->get_autocomplete_data($data);
-
-        }else{
-
-            $label_results = BookingCategoryDetail::where('label', $request->label )->get(['value' , 'id']);
-        }
-    
-        return response()->json([ 'label_results' => $label_results ]);
-    }
 
     public function transfer_report(Request $request) {
 

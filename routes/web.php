@@ -737,7 +737,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
         Route::get('product-on-change', array('as'=>'product.on.change', 'uses'=> 'ResponseController@productOnChange'));
 
-        Route::get('get-tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
+        Route::get('get-tour-contacts', array('as' => 'get.tour.contacts', 'uses' => 'ResponseController@getTourContacts'));
         Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@getCommissionCriterias'));
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@getCommissions'));
@@ -747,7 +747,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('is/reference/{id}/exist', array('as' => 'is.reference.exist', 'uses' => 'ResponseController@isReferenceExists'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('call-template/{id}', array('as' => 'call.template', 'uses' => 'ResponseController@callTemplate'));
-        Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
+        Route::get('stored/{slug}/text', array('as' => 'stored.text', 'uses' => 'ResponseController@getStoredText'));
         Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@categoryDetailsFilter'));
         Route::get('remove-form-builder-feild', array('as' => 'remove.form.builder.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
         

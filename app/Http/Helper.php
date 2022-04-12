@@ -22,66 +22,7 @@ use Illuminate\Support\Facades\Storage;
 class Helper
 {
 
-	public static function storeCategoryDetailsFeilds($model_name, $category_id, $detail_id, $table_name, $object){
-        
-        $category_details = '';
-        $category         = '';
-        $model_name       = 'App\\'.$model_name;
 
-        $booking_detail = $model_name::where('category_id', $category_id)->where('id', $detail_id)->first('category_details');
-        $category       = Category::where('id', $category_id)->first();
-
-        if(!is_null($booking_detail)){
-
-            $final_json_quotes = array();
-            $feilds = json_decode($booking_detail->category_details);
-
-            foreach($feilds as $key => $feild){
-
-                $final_json_quotes[$key] = $feild;
-
-                if(in_array($feild->type, ['autocomplete'])){
-                    if($feild->data == $table_name){
-
-                        $new_object = (object) [
-                            'label'    => $object->name,
-                            'value'    => $object->name,
-                            'selected' => false
-                        ];
-
-                        array_push($feild->values, $new_object);
-                    }
-                }
-
-            }
-
-            $category_details = json_encode($final_json_quotes);
-        }
-        else if(is_null($booking_detail) && !is_null($category->feilds)){
-
-            $final_json_quotes = array();
-            $feilds            = json_decode($category->feilds);
-
-            foreach($feilds as $key => $feild){
-
-                $final_json_quotes[$key] = $feild;
-
-                if(in_array($feild->type, ['autocomplete'])){
-                    if($feild->data != "none"){
-                        $feild->values = Helper::get_autocomplete_type_records($feild->data); 
-                    }
-                }
-            }
-
-            $category_details = json_encode($final_json_quotes);
-            
-        }else{
-
-            $category_details = "";
-        }
-
-        return $category_details;
-    }
 
 	public static function get_autocomplete_type_records($autocomplete_type){
 
@@ -197,7 +138,7 @@ class Helper
             'headers' => array( "Content-Type: application/json" ),
         );
 
-        return \Helper::cf_remote_request($url, $args);
+        return Helper::cf_remote_request($url, $args);
 	}
 
 	public static function dates($dates)
