@@ -317,8 +317,6 @@ class ResponseController extends Controller
             }
            
         }
-
-        return response()->json([ 'status' => false, 'success_message' => 'Product Added Successfully.' ]);
     }
 
     public function getCommissions(){

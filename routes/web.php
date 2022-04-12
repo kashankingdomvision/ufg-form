@@ -726,10 +726,16 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
         Route::post('store-product-with-supplier', array('as'=>'store.product.with.supplier','uses'=>'ResponseController@storeProductWithSupplier'));
-
-
         Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
 
+        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
+        Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
+        Route::get('multiple-brand-on-change', array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
+        Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
+        Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
+        Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
+        Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
+        Route::get('product-on-change', array('as'=>'product.on.change', 'uses'=> 'ResponseController@productOnChange'));
 
         Route::get('get-tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
         Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
@@ -742,23 +748,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('call-template/{id}', array('as' => 'call.template', 'uses' => 'ResponseController@callTemplate'));
         Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
-
-        Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
-        Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
-        Route::get('multiple-brand-on-change', array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
-        Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
-        Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
-        Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
-        Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
-        Route::get('product-on-change', array('as'=>'product.on.change', 'uses'=> 'ResponseController@productOnChange'));
+        Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@categoryDetailsFilter'));
+        Route::get('remove-form-builder-feild', array('as' => 'remove.form.builder.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
         
-        
-        Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
-        Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
-        
-        Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
-        Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
-        
+        // Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
+        // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         // Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         // Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
         // Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);

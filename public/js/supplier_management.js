@@ -27440,7 +27440,7 @@ $(document).ready(function () {
       if (typeof categoryID !== 'undefined' && categoryID != "") {
         $.ajax({
           type: 'GET',
-          url: "".concat(BASEURL, "remove-form-buidler-feild"),
+          url: "".concat(BASEURL, "remove-form-builder-feild"),
           data: data,
           success: function success(data) {
             if (data && data.status == true) {
@@ -27477,7 +27477,7 @@ $(document).ready(function () {
       if (typeof _categoryID !== 'undefined' && _categoryID != "") {
         $.ajax({
           type: 'GET',
-          url: "".concat(BASEURL, "remove-form-buidler-feild"),
+          url: "".concat(BASEURL, "remove-form-builder-feild"),
           data: _data,
           success: function success(data) {
             if (data && data.status == true) {

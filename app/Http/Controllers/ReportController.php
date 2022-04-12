@@ -656,7 +656,7 @@ class ReportController extends Controller
     }
 
     /* used in transfer report*/ 
-    public function category_details_filter(Request $request) {
+    public function categoryDetailsFilter(Request $request) {
 
         // dd($request->all());
 
