@@ -481,21 +481,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
     });
 
-    /*  Contacts */
-    Route::group([
-        'prefix' => 'tour_contacts',
-        'as'     => 'tour_contacts.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'TourContactController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'TourContactController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'TourContactController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TourContactController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TourContactController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'TourContactController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'TourContactController@bulkAction' ));
-    });
-
     /*  Countries */
     Route::group([
         'prefix' => 'countries',
@@ -672,7 +657,22 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
     });
 
-        /*
+    /*  Tour Contacts */
+    Route::group([
+        'prefix' => 'tour-contacts',
+        'as'     => 'tour_contacts.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'TourContactController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'TourContactController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'TourContactController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TourContactController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TourContactController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'TourContactController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'TourContactController@bulkAction' ));
+    });
+
+    /*
     |--------------------------------------------------------------------------
     | Report
     |--------------------------------------------------------------------------
