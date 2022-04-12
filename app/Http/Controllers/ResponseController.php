@@ -441,20 +441,8 @@ class ResponseController extends Controller
         ]);
     }
     
-    public function addProductWithSupplierSync(ProductRequest $request)
+    public function storeProductWithSupplier(ProductRequest $request)
     {    
-        // $this->validate(
-        //     $request, 
-        //     [
-        //         'code' => 'required',
-        //         'name' => 'required'
-        //     ],
-        //     [
-        //         'code.required' => 'The Product Code field is required.',
-        //         'name.required' => 'The Product Name field is required.'
-        //     ]
-        // );
-
         try {
 
             $product = Product::create([
@@ -472,14 +460,22 @@ class ResponseController extends Controller
     
             $supplierProducts = $supplier->getProducts;
 
-            return \Response::json(['status' => true, 'success_message' => 'Product Added Successfully.' , 'products' => $supplierProducts], 200); // Status code here
+            return response()->json([
+                'status'          => true,
+                'success_message' => 'Product Added Successfully.',
+                'products'        => $supplierProducts
+            ], 200);
+
           
         } catch (\Exception $e) {
 
-            return \Response::json(['status' => false, 'product_error' => 'Something went wrong in Product Creation Please try again!' ], 422); // Status code here
-        
+            return response()->json([
+                'status'          => false,
+                'product_error'   => 'Something went wrong in Product Creation Please try again!',
+                'products'        => $supplierProducts
+            ], 422);
+
         }
- 
     }
     
     public function getSupplierProductAndSheet(Request $request)
@@ -938,6 +934,19 @@ class ResponseController extends Controller
             ]);
         }
     }
+
+
+    // $this->validate(
+    //     $request, 
+    //     [
+    //         'code' => 'required',
+    //         'name' => 'required'
+    //     ],
+    //     [
+    //         'code.required' => 'The Product Code field is required.',
+    //         'name.required' => 'The Product Name field is required.'
+    //     ]
+    // );
 
     // public function getSupplierRateSheet(Request $request)
     // {

@@ -725,6 +725,8 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-supplier', array('as' => 'response.suppliers.store', 'uses' => 'ResponseController@storeSupplier'));
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
+        Route::post('store-product-with-supplier', array('as'=>'store.product.with.supplier','uses'=>'ResponseController@storeProductWithSupplier'));
+
 
         Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
 
@@ -753,7 +755,6 @@ Route::group(['middleware' => ['auth']], function(){
         
         Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
-        Route::post('add-product-with-supplier-sync', array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
         
         Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
         Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));

@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <form action="{{ route('add.product.with.supplier.sync') }}"  method="POST" id="store_product_modal_form">
+            <form action="{{ route('store.product.with.supplier') }}" method="POST" id="store_product_modal_form">
                 @csrf
 
                 <div class="modal-header">
