@@ -807,7 +807,7 @@ class ResponseController extends Controller
     // FIND QUOTE REFERENCES\
     
     
-    public function call_template($id)
+    public function callTemplate($id)
     {
         $template = Template::find(decrypt($id));
         
