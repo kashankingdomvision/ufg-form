@@ -868,77 +868,7 @@ $(document).ready(function () {
 
     });
 
-    $(document).on('submit', '#form_add_product', function() {
 
-        event.preventDefault();
-
-        var url = $(this).attr('action');
-        var formData = $(this).serialize();
-        var options = '';
-
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: formData,
-            beforeSend: function () {
-                $('input').removeClass('is-invalid');
-                $('.text-danger').html('');
-                $("#submit_add_product").find('span').addClass('spinner-border spinner-border-sm');
-            },
-            success: function (data) {
-                $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-
-                jQuery('.add-new-product-modal').modal('hide');
-
-                setTimeout(function () {
-
-                    if (data && data.status == true) {
-                        alert(data.success_message);
-
-                        if (data.products.length != 0) {
-
-                            options += "<option value=''>Select Product</option>";
-                            $.each(data.products, function (key, value) {
-                                options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
-                            });
-
-                            $(`#quote_${quoteKeyForProduct}_product_id`).html(options);
-                        }
-                    }
-
-
-                }, 200);
-            },
-            error: function (reject) {
-                if (reject.status === 422) {
-
-                    var errors = $.parseJSON(reject.responseText);
-
-                    setTimeout(function () {
-
-                        $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-
-                        if (errors.hasOwnProperty("product_error")) {
-                            alert(errors.product_error);
-
-                        } else {
-
-                            jQuery.each(errors.errors, function (index, value) {
-                                index = index.replace(/\./g, '_');
-
-                                $(`#${index}`).addClass('is-invalid');
-                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-                            });
-
-                        }
-
-                    }, 200);
-
-                }
-            },
-        });
-
-    });
 
     
     $(document).on('submit', '#store_group_owner_modal_form', function() {
@@ -1081,22 +1011,19 @@ $(document).ready(function () {
     });
 
     var quoteKeyForProduct = '';
-    $(document).on('click', '.add-new-product', function () {
+    $(document).on('click', '.store-product', function () {
 
-        var quote = $(this).closest('.quote');
+        var quote          = $(this).closest('.quote');
         quoteKeyForProduct = quote.data('key');
-        var supplier_id = quote.find('.supplier-id').val();
-        var modal = jQuery('.add-new-product-modal');
+        var supplier_id    = quote.find('.supplier-id').val();
+        var modal          = jQuery('.store-product-modal');
 
-        if ((supplier_id != "") && (typeof supplier_id !== 'undefined')) {
+        if (supplier_id != "" && typeof supplier_id !== 'undefined'){
 
             modal.modal('show');
 
             // reset modal feilds
-            $('#form_add_product').trigger("reset");
-            modal.find('#form_add_product #description').summernote("reset");
-            modal.find('#form_add_product #inclusions').summernote("reset");
-            modal.find('#form_add_product #packing_list').summernote("reset");
+            resetModalForm('#store_product_modal_form');
 
             // set supplier id
             modal.find('.product-supplier-id').val(supplier_id);
@@ -1105,8 +1032,61 @@ $(document).ready(function () {
             alert("Please select Supplier first");
             return;
         }
-
     });
+
+    $(document).on('submit', '#store_product_modal_form', function(event) {
+
+        event.preventDefault();
+
+        var url      = $(this).attr('action');
+        let formID   = $(this).attr('id');
+        let modalID  = $(this).closest('.modal').attr('id');
+        let options  = '';
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                removeFormValidationStyles();
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function (data) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                jQuery('.store-product-modal').modal('hide');
+
+                setTimeout(function () {
+                    if (data && data.status) {
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: data.success_message
+                        });
+
+                        if (data.products.length != 0) {
+
+                            options += "<option value=''>Select Product</option>";
+                            $.each(data.products, function (key, value) {
+                                options += `<option value='${value.id}' data-name='${value.name}'>${value.name} - ${value.code}</option>`;
+                            });
+
+                            $(`#quote_${quoteKeyForProduct}_product_id`).html(options);
+                        }
+                    }
+
+                }, 200);
+            },
+            error: function (data) {
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerValidationErrors(data, `#${modalID}`);
+            },
+        });
+    });
+
 
     var quoteKeyForGroupOwner = '';
     $(document).on('click', '.group-owner-modal', function () {
@@ -1116,7 +1096,6 @@ $(document).ready(function () {
         var modal             = jQuery('#store_group_owner_modal');
 
         modal.modal('show');
-
     });
  
     var quoteKeyForCategoryFeildModal = '';
