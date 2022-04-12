@@ -357,7 +357,7 @@ $(document).ready(function() {
         var templateID = $(this).val();
 
         $.ajax({
-            url: `${BASEURL}template/${templateID}/partial`,
+            url: `${BASEURL}call-template/${templateID}`,
             type: 'get',
             dataType: "json",
             success: function(data) {

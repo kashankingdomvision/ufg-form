@@ -2422,7 +2422,7 @@ $(document).ready(function () {
   $('.tempalte-id').on('change', function () {
     var templateID = $(this).val();
     $.ajax({
-      url: "".concat(BASEURL, "template/").concat(templateID, "/partial"),
+      url: "".concat(BASEURL, "call-template/").concat(templateID),
       type: 'get',
       dataType: "json",
       success: function success(data) {

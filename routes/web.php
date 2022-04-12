@@ -726,6 +726,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
 
+        Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
+
+
         Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
         Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@getCommissionCriterias'));
@@ -735,7 +738,8 @@ Route::group(['middleware' => ['auth']], function(){
         
         Route::get('is/reference/{id}/exist', array('as' => 'is.reference.exist', 'uses' => 'ResponseController@isReferenceExists'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
-
+        Route::get('call-template/{id}', array('as' => 'call.template', 'uses' => 'ResponseController@callTemplate'));
+        Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
 
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
         Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
@@ -746,21 +750,17 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
         Route::get('product-on-change', array('as'=>'product.on.change', 'uses'=> 'ResponseController@productOnChange'));
         
-        Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
-        Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
-        Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
-        Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
-        Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
-        Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
         
         Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
         Route::post('add-product-with-supplier-sync', array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
-
+        
         Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
         Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
         
-        
+        // Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
+        // Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
+        // Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
         // Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
         // Route::get('location/to/product', array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
         // Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
