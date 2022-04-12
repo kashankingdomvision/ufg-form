@@ -731,7 +731,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
 
 
-        Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
+        Route::get('get-tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
         Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
         Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@getCommissionCriterias'));
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@getCommissions'));

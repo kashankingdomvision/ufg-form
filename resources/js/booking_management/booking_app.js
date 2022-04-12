@@ -1,15 +1,14 @@
 $(document).ready(function() {
 
-
     tourContactAutoCompleteInitialize();
 
     function tourContactAutoCompleteInitialize(){
         $(".tour-contact").autocomplete({
-            source: `${BASEURL}tour-contacts`,
+            source: `${BASEURL}get-tour-contacts`,
         });
     }
 
-    function touContactrAutoCompleteDestroy(){
+    function tourContactAutoCompleteDestroy(){
         $( ".tour-contact" ).autocomplete( "destroy" );
     }
 
@@ -877,7 +876,7 @@ $(document).ready(function() {
 
                 destroySingleSelect2();
                 destroyMultipleSelect2();
-                touContactrAutoCompleteDestroy();
+                tourContactAutoCompleteDestroy();
 
                 var quote = $(".quote").eq(0).clone()
                     .find("input").val("").each(function() {

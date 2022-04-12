@@ -113,11 +113,11 @@ $(document).ready(function () {
 
   function tourContactAutoCompleteInitialize() {
     $(".tour-contact").autocomplete({
-      source: "".concat(BASEURL, "tour-contacts")
+      source: "".concat(BASEURL, "get-tour-contacts")
     });
   }
 
-  function touContactrAutoCompleteDestroy() {
+  function tourContactAutoCompleteDestroy() {
     $(".tour-contact").autocomplete("destroy");
   }
 
@@ -776,7 +776,7 @@ $(document).ready(function () {
       setTimeout(function () {
         destroySingleSelect2();
         destroyMultipleSelect2();
-        touContactrAutoCompleteDestroy();
+        tourContactAutoCompleteDestroy();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
