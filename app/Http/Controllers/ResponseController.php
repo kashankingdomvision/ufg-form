@@ -55,6 +55,14 @@ use App\TourContact;
 
 class ResponseController extends Controller
 {
+    public function salesPersonOnChange(Request $request){
+
+        $supervisor  = User::find($request->sales_person_id)->getSupervisor;
+
+        return response()->json([
+            'supervisor'    => $supervisor,
+        ]);
+    }
     
     public function storeCategoryDetailsFeilds($model_name, $category_id, $detail_id, $table_name, $object){
         

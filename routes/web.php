@@ -718,6 +718,9 @@ Route::group(['middleware' => ['auth']], function(){
     */
     Route::prefix('json')->group(function () {
 
+        Route::get('sales-person-on-change', array('as'=>'sales.person.on.change','uses'=>'ResponseController@salesPersonOnChange'));
+
+
         Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
 
         Route::post('store-harbour', array('as' => 'response.harbours.store', 'uses' => 'ResponseController@storeHarbour'));

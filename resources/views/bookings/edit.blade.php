@@ -1113,7 +1113,11 @@
                                   <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control select2single supervisor-id">
                                     <option value="">Select Supervisor</option>
                                     @foreach ($supervisors as $supervisor)
-                                      <option value="{{ $supervisor->id }}" {{ ($booking_detail->supervisor_id == $supervisor->id) ? 'selected' : NULL }}> {{ $supervisor->name }} </option>
+                                      <option value="{{ $supervisor->id }}" 
+                                        @if(isset($booking_detail->supervisor_id) && !empty($booking_detail->supervisor_id) && $booking_detail->supervisor_id == $supervisor->id || isset($booking->getSalePerson->getSupervisor->id) && !empty($booking->getSalePerson->getSupervisor->id) && $booking->getSalePerson->getSupervisor->id == $supervisor->id)
+                                        selected
+                                        @endif
+                                      > {{ $supervisor->name }} </option>
                                     @endforeach
                                   </select>
                                 </div>

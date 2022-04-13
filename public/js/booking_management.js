@@ -2010,6 +2010,10 @@ $(document).ready(function () {
     var salesPersonID = $(this).val();
     var userID = $('.user-id').val();
 
+    if (typeof salesPersonID === 'undefined' || salesPersonID == "") {
+      return;
+    }
+
     if (salesPersonID != userID) {
       $('#potential_commission_feild').addClass('d-none');
     }
@@ -2017,6 +2021,19 @@ $(document).ready(function () {
     if (salesPersonID == userID) {
       $('#potential_commission_feild').removeClass('d-none');
     }
+
+    $.ajax({
+      type: 'get',
+      url: "".concat(BASEURL, "sales-person-on-change"),
+      data: {
+        'sales_person_id': salesPersonID
+      },
+      success: function success(response) {
+        if (response && Object.keys(response.supervisor).length > 0) {
+          $('.supervisor-id').val(response.supervisor.id).change();
+        }
+      }
+    });
   });
   $(document).on('change', '.view-rate-booking-currency-filter', function () {
     var selectedCurrencies = $(this).val();
