@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Edit Booking')
+@section('title', 'Show Booking')
 @section('content')
 
 <div class="content-wrapper">
@@ -2033,10 +2033,10 @@
                             </div>
                           </div>
                         </div>
-  
                         <div class="row d-flex justify-content-end">
                           <button type="button" id="add_more_cancellation_payments" class="add-more-cancellation-payments btn btn-outline-dark btn-sm  pull-right"><i class="fa fa-plus" aria-hidden="true"></i> Add more</button>
                         </div>
+  
     
                       @endif
                     </div>

@@ -123,6 +123,8 @@ $(document).ready(function () {
 
   $('#version_booking :input').prop('disabled', true);
   $('#show_booking :input').attr('disabled', 'disabled');
+  $('#show_booking .cancellation-refund-payment-row :input').removeAttr('disabled');
+  $('#show_booking button[type="submit"], #show_booking #show_booking_submit, #add_more_cancellation_payments').removeAttr('disabled');
   var pageStatus = $('#show_booking').data('page_status');
 
   if (typeof pageStatus !== 'undefined' && pageStatus != "") {
