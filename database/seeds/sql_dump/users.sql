@@ -9,3 +9,6 @@ INSERT INTO `users` (`id`, `role_id`, `supervisor_id`, `currency_id`, `brand_id`
 (8, 2, NULL, 1, 1, 1, 1, 1, NULL, 'Gemma D’Souza', 'gemma.d’souza@gmail.com', '2022-04-13 02:30:09', '$2y$10$fRMZpDmkf2TmV6XX5RPrcOh2Lf36Ry3AaKAnnE2ELXxHI.9oq0b1e', 'live', 'whole', NULL, 0, NULL, '2022-04-13 02:30:09', '2022-04-13 02:30:09'),
 (9, 2, NULL, 1, 1, 1, 1, 1, NULL, 'Nora Frohberg', 'nora.frohberg@gmail.com', '2022-04-13 02:30:09', '$2y$10$/ozmaUDVgVDMsGTWPVNP0eRNzIBU04yPN5wfJogXpW3Tf.1cZn/a6', 'live', 'whole', NULL, 0, NULL, '2022-04-13 02:30:09', '2022-04-13 02:30:09'),
 (10, 2, NULL, 1, 1, 1, 1, 1, NULL, 'Graham Carter', 'graham.carter@gmail.com', '2022-04-13 02:30:09', '$2y$10$S12.4NDbQQS4XhFPD0KlK.1pMag3vbV9JXrLSqgbOVQR/Ck7snnQq', 'live', 'whole', NULL, 0, NULL, '2022-04-13 02:30:09', '2022-04-13 02:30:09');
+
+-- set currency rate type manual for all users
+UPDATE `users` SET `rate_type` = 'manual';
