@@ -1097,8 +1097,12 @@
                                   <label>Booked By</label>
                                   <select name="quote[{{ $key }}][booked_by_id]" databooking="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control select2single booked-by-id">
                                     <option value="">Select Booked By</option>
-                                    @foreach ($booked_by as $book_id)
-                                        <option value="{{ $book_id->id }}" {{ $booking_detail->booked_by_id == $book_id->id  ? "selected" : "" }}> {{ $book_id->name }} </option>
+                                    @foreach ($users as $user)
+                                      <option value="{{ $user->id }}" 
+                                        @if(isset($booking_detail->booked_by_id) && !empty($booking_detail->booked_by_id) && $booking_detail->booked_by_id == $user->id || auth()->user()->id == $user->id)
+                                        selected
+                                        @endif
+                                      > {{ $user->name }} </option>
                                     @endforeach
                                   </select>
                                 </div>
