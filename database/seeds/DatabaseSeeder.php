@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             StationSeeder::class,
             BrandSupplierCountryTableSeeder::class,
             TourContactTableSeeder::class,
+            StoreTextTableSeeder::class,
         ]);
         // $users = factory(App\User::class, 5)->create();
     }

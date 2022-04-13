@@ -126,6 +126,14 @@ $(document).ready(function($) {
         $('.text-danger').html('');
     }
 
+    window.resetModalForm = function(modalID) {
+
+        $(`${modalID}`).trigger("reset");
+        $(`${modalID} .summernote`).summernote("reset");
+        $(`${modalID} input, select, textarea`).removeClass('is-invalid');
+        $(`${modalID} .text-danger`).html('');
+    }
+
     window.addFormLoadingStyles = function() {
         $("#overlay").addClass('overlay');
         $(".note-editor").css('border-color', '');

@@ -821,7 +821,7 @@
 
                               <div class="col-md-3 product-id-feild">
                                 <div class="form-group">
-                                  <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
+                                  <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 store-product"> <i class="fas fa-plus"></i></button></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
                                     @if( isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier) )

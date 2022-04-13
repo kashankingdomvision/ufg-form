@@ -94,8 +94,9 @@ $(document).ready(function() {
 
     $(document).on('change', '.getBrandtoHoliday', function() {
         let brand_id = $(this).val();
-        var options = '';
-        var url = BASEURL + 'brand/to/holidays'
+        let options  = '';
+        let url      = `${BASEURL}brand-on-change`;
+
         $.ajax({
             type: 'get',
             url: url,

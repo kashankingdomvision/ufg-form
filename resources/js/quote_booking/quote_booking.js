@@ -14,7 +14,7 @@ $(document).ready(function() {
     function getJson() {
         return JSON.parse($.ajax({
             type: 'GET',
-            url: `${BASEURL}get-currency-conversion`,
+            url: `${BASEURL}get-currency-conversions`,
             dataType: 'json',
             global: false,
             async: false,
@@ -746,7 +746,7 @@ $(document).ready(function() {
     $(document).on('change', '.view-rate-booking-currency-filter', function(){
 
         var selectedCurrencies = $(this).val();
-        var url                = `${BASEURL}filter-currency-rate`;
+        var url                = `${BASEURL}get-filter-currency-rate`;
     
         $.ajax({
             type: 'get',
@@ -898,7 +898,7 @@ $(document).ready(function() {
             //check refrence is already exist in system
             $.ajax({
                 headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
-                url:  `${BASEURL}find/reference/${reference_no}/exist`,
+                url:  `${BASEURL}is/reference/${reference_no}/exist`,
                 type: 'get',
                 dataType: "json",
                 success: function(data) {
@@ -972,9 +972,11 @@ $(document).ready(function() {
     });
 
     $(document).on('change', '.getBrandtoHoliday', function() {
+
         let brand_id = $(this).val();
-        var options = '';
-        var url = BASEURL + 'brand/to/holidays'
+        let options  = '';
+        let url      = `${BASEURL}brand-on-change`;
+
         $.ajax({
             type: 'get',
             url: url,
@@ -984,8 +986,8 @@ $(document).ready(function() {
                 $.each(response.holiday_types, function(key, value) {
                     options += `<option data-value="${value.name}" value="${value.id}"> ${value.name} </option>`;
                 });
-                $('.appendHolidayType').html(options);
 
+                $('.appendHolidayType').html(options);
                 $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
             }
         });

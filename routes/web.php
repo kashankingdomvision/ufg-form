@@ -17,9 +17,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth']], function(){
+
+
+    // Route::get('pdf', function()
+    // {
+    //     return view('quote_documents.index');
+    // });
     
     /* Zoho Crm Refresh Token */
-	Route::get('refresh-token' , array('before' => 'csrf', 'as' => 'refresh_token', 'uses' => 'DashboardController@refresh_token'));
+	Route::get('refresh-token', array('before' => 'csrf', 'as' => 'refresh_token', 'uses' => 'DashboardController@refresh_token'));
 
     /* Laravel File manager */
     Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
@@ -475,21 +481,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CabinTypeController@bulkAction' ));
     });
 
-    /*  Contacts */
-    Route::group([
-        'prefix' => 'tour_contacts',
-        'as'     => 'tour_contacts.'
-    ], function () {
-        
-        Route::get('index', array('as' => 'index', 'uses' => 'TourContactController@index'));
-        Route::get('create', array('as' => 'create', 'uses' => 'TourContactController@create'));
-        Route::post('store', array('as' => 'store', 'uses' => 'TourContactController@store'));
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TourContactController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TourContactController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'TourContactController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'TourContactController@bulkAction' ));
-    });
-
     /*  Countries */
     Route::group([
         'prefix' => 'countries',
@@ -666,7 +657,22 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'StationController@bulkAction' ));
     });
 
-        /*
+    /*  Tour Contacts */
+    Route::group([
+        'prefix' => 'tour-contacts',
+        'as'     => 'tour_contacts.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'TourContactController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'TourContactController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'TourContactController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'TourContactController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'TourContactController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'TourContactController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'TourContactController@bulkAction' ));
+    });
+
+    /*
     |--------------------------------------------------------------------------
     | Report
     |--------------------------------------------------------------------------
@@ -718,11 +724,6 @@ Route::group(['middleware' => ['auth']], function(){
     */
     Route::prefix('json')->group(function () {
 
-        Route::get('sales-person-on-change', array('as'=>'sales.person.on.change','uses'=>'ResponseController@salesPersonOnChange'));
-
-
-        Route::get('tour-contacts', array('as' => 'tour.contacts', 'uses' => 'ResponseController@tourContacts'));
-
         Route::post('store-harbour', array('as' => 'response.harbours.store', 'uses' => 'ResponseController@storeHarbour'));
         Route::post('store-airport-code', array('as' => 'response.airport_codes.store', 'uses' => 'ResponseController@storeAirportCode'));
         Route::post('store-hotel', array('as' => 'response.hotels.store', 'uses' => 'ResponseController@storeHotel'));
@@ -730,62 +731,47 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-supplier', array('as' => 'response.suppliers.store', 'uses' => 'ResponseController@storeSupplier'));
         Route::post('store-cabin-type', array('as' => 'response.cabin_types.store', 'uses' => 'ResponseController@storeCabinType'));
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
+        Route::post('store-product-with-supplier', array('as'=>'store.product.with.supplier','uses'=>'ResponseController@storeProductWithSupplier'));
+        Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
 
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
-
-        Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
-        Route::get('get-currency-conversion',array('as'=>'get-currency-conversion','uses'=>'QuoteController@get_currency_conversion'));
-        
-        /* calculate commission routes */
-        Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@get_commission_criterias'));
-        Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@get_commissions'));
-        Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@get_commission_groups'));
-        /* calculate commission routes */
-
-        Route::get('brand/to/holidays',array('as'=>'brand.holidays','uses'=>'ResponseController@getBrandToHoliday'));
-        Route::get('multiple/brand/to/holidays',array('as'=>'multiple.brand.holidays','uses'=>'ResponseController@getMultipleBrandToHoliday'));
-
-        Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
-        Route::get('country/to/location',array('as'=>'country.locations','uses'=>'ResponseController@getCountryToLocation'));
-
-        Route::get('category/to/supplier',array('as'=>'category.supplier','uses'=>'ResponseController@getCategoryToSupplier'));
-
-        Route::get('country/to/supplier',array('as'=>'country.supplier','uses'=>'ResponseController@getCountryToSupplier'));
+        Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
+        Route::get('multiple-brand-on-change', array('as'=>'multiple.brand.on.change','uses'=>'ResponseController@multipleBrandOnChange'));
+        Route::get('country-on-change', array('as'=>'country.on.change','uses'=>'ResponseController@countryOnChange'));
         Route::get('group-owner-on-change', array('as'=>'group_owner.on.change','uses'=>'ResponseController@groupOwnerOnChange'));
+        Route::get('category-on-change', array('as'=>'category.on.change','uses'=>'ResponseController@categoryOnChange'));
+        Route::get('supplier-countries-on-change',array('as'=>'supplier.countries.on.change','uses'=>'ResponseController@supplierCountriesOnChange'));
+        Route::get('product-on-change', array('as'=>'product.on.change', 'uses'=> 'ResponseController@productOnChange'));
+        Route::get('sales-person-on-change', array('as'=>'sales.person.on.change','uses'=>'ResponseController@salesPersonOnChange'));
 
-        Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
+        Route::get('get-tour-contacts', array('as' => 'get.tour.contacts', 'uses' => 'ResponseController@getTourContacts'));
+        Route::get('get-currency-conversions', array('as'=>'get.currency.conversions','uses'=>'ResponseController@getCurrencyConversions'));
+        Route::get('get-commission-criteriass',array('as'=>'get.commission.criterias','uses'=>'ResponseController@getCommissionCriterias'));
+        Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@getCommissions'));
+        Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@getCommissionGroups'));
+        Route::get('get-filter-currency-rate', array('as' => 'get.filter.currency.rate', 'uses' => 'ResponseController@getFilterCurrencyRates'));
+        
+        Route::get('is/reference/{id}/exist', array('as' => 'is.reference.exist', 'uses' => 'ResponseController@isReferenceExists'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
-        Route::get('find/reference/{id}/exist', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@isReferenceExists'));
-        Route::post('find/reference', array('as' => 'quotes.ref.exit', 'uses' => 'ResponseController@findReference'));
-        Route::get('template/{id}/partial', ['as' => 'partial', 'uses' => 'ResponseController@call_template']);
-        Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
-        Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
-        Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
-        Route::get('stored/{slug}/text', ['as' => 'stored.text', 'uses' => 'ResponseController@getStoredText']);
-        Route::get('filter-currency-rate', array('as' => 'filter.currency.rate', 'uses' => 'ResponseController@filterCurrencyRate'));
-
+        Route::get('call-template/{id}', array('as' => 'call.template', 'uses' => 'ResponseController@callTemplate'));
+        Route::get('stored/{slug}/text', array('as' => 'stored.text', 'uses' => 'ResponseController@getStoredText'));
+        Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@categoryDetailsFilter'));
+        Route::get('remove-form-builder-feild', array('as' => 'remove.form.builder.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
         
+        // Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
-        Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
-        Route::post('add-product-with-supplier-sync',array('as'=>'add.product.with.supplier.sync','uses'=>'ResponseController@addProductWithSupplierSync'));
-
-        Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
-        Route::get('location/to/product',array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
-        
-        Route::get('get-product-booking-type',array('as'=>'get.product.booking.type','uses'=>'ResponseController@getProductBookingType'));
-
-        
-        Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@category_details_filter'));
-
-
-        Route::get('remove-form-buidler-feild', array('as' => 'remove.form.buidler.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
+        // Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
+        // Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
+        // Route::get('pax/{count}/partial', ['as' => 'partial', 'uses' => 'ResponseController@getPaxPartial']);
+        // Route::get('supplier/to/product/currency',array('as'=>'supplier.product','uses'=>'ResponseController@getSupplierToProductORCurrency'));
+        // Route::get('location/to/product', array('as'=>'location.product','uses'=>'ResponseController@getLocationToProduct'));
+        // Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
+        // Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
+        // Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
     });
 
 
-    Route::get('pdf', function()
-    {
-        return view('quote_documents.index');
-    });
+
 });
 
 // Route::group([
@@ -832,10 +818,10 @@ Route::group(['middleware' => ['auth']], function(){
 // ]]);
 
   
-Route::group([
-    'prefix' => 'setting',
-    'as'     => 'setting.'
-],function (){
+// Route::group([
+//     'prefix' => 'setting',
+//     'as'     => 'setting.'
+// ],function (){
 
     /* Harbours, Train and Points of Interest */
     // Route::resource('harbours', 'SettingControllers\HarbourController',['only' => [
@@ -863,9 +849,9 @@ Route::group([
     // ]]);
 
     /* Airlines */
-    Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('airlines', 'SettingControllers\AirlineController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /* Booking methods */
     // Route::resource('booking_methods', 'SettingControllers\BookingMethodController',['only' => [
@@ -904,16 +890,16 @@ Route::group([
     // ]]);
 
     /* Towns */
-    Route::resource('towns', 'SettingControllers\TownController',['only' => [
-        'index','create', 'store', 'edit', 'update', 'destroy'
-    ]]);
+    // Route::resource('towns', 'SettingControllers\TownController',['only' => [
+    //     'index','create', 'store', 'edit', 'update', 'destroy'
+    // ]]);
 
     /* Locations */
     // Route::resource('locations', 'SettingControllers\LocationController',['only' => [
     //     'index','create', 'store', 'edit', 'update', 'destroy'
     // ]]);
 
-});
+// });
 
 /*
 |--------------------------------------------------------------------------

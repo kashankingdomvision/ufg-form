@@ -69307,6 +69307,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     $('.text-danger').html('');
   };
 
+  window.resetModalForm = function (modalID) {
+    $("".concat(modalID)).trigger("reset");
+    $("".concat(modalID, " .summernote")).summernote("reset");
+    $("".concat(modalID, " input, select, textarea")).removeClass('is-invalid');
+    $("".concat(modalID, " .text-danger")).html('');
+  };
+
   window.addFormLoadingStyles = function () {
     $("#overlay").addClass('overlay');
     $(".note-editor").css('border-color', '');
