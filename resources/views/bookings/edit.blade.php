@@ -1138,12 +1138,12 @@
                             {{-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                               <i class="fas fa-minus"></i>
                             </button> --}}
-                            <div class="card card-outline card-primary">
+                            <div class="card card-outline card-primary payment-section">
                               <div class="card-header">
                                 <h1 class="card-title"><b>Payments Section</b></h1>
                                 <div class="card-tools">
                                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                  <i class="fas fa-plus"></i>
+                                    <i class="fas fa-plus"></i>
                                   </button>
                                 </div>
                               </div>

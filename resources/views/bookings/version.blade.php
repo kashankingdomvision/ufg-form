@@ -1058,6 +1058,16 @@
                           <!-- End Administration row -->
 
                           <!-- Payments section -->
+                          <div class="card card-outline card-primary payment-section">
+                            <div class="card-header">
+                              <h1 class="card-title"><b>Payments Section</b></h1>
+                              <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                  <i class="fas fa-plus"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div class="card-body" style="display: none;">
                           @if($booking_detail->finance && count($booking_detail->finance) > 0)
                             @foreach ($booking_detail->finance as $fkey => $finance)
 
@@ -1404,6 +1414,7 @@
                           @endif
 
                         </div>
+                      </div>
 
                       </div>
                     @endforeach
