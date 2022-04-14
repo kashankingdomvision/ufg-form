@@ -820,7 +820,7 @@
 
                               <div class="col-md-3 product-id-feild">
                                 <div class="form-group">
-                                  <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button></label>
+                                  <label>Product <button type="button" class="btn btn-xs btn-outline-dark ml-1 store-product"> <i class="fas fa-plus"></i></button></label>
                                   <select name="quote[{{ $key }}][product_id]" data-name="product_id" id="quote_{{ $key }}_product_id" class="form-control  select2single   product-id @error('product_id') is-invalid @enderror">
                                     <option value="">Select Product</option>
                                     @if( isset($booking_detail->getSupplier) && !empty($booking_detail->getSupplier) )
@@ -853,7 +853,7 @@
                               <div class="col-md-3 tour-feilds {{ isset($booking_detail->getCategory->slug) && !empty($booking_detail->getCategory->slug) && ($booking_detail->getCategory->slug == 'tours') ? '' : 'd-none' }}">
                                 <div class="form-group">
                                   <label>Contact</label>
-                                  <input type="text" name="quote[{{ $key }}][tour_contact]" data-name="tour_meeting_point" id="quote_{{ $key }}_tour_contact" value="{{ $booking_detail->tour_contact }}" class="form-control tour-contact">
+                                  <input type="text" name="quote[{{ $key }}][tour_contact]" data-name="tour_contact" id="quote_{{ $key }}_tour_contact" value="{{ $booking_detail->tour_contact }}" class="form-control tour-contact">
                                 </div>
                               </div>
 
@@ -1093,11 +1093,15 @@
 
                               <div class="col-md-3">
                                 <div class="form-group">
-                                  <label>Booked By</label>
+                                  <label>Booked By </label>
                                   <select name="quote[{{ $key }}][booked_by_id]" databooking="booked_by_id" id="quote_{{ $key }}_booked_by_id" class="form-control select2single booked-by-id">
                                     <option value="">Select Booked By</option>
-                                    @foreach ($booked_by as $book_id)
-                                        <option value="{{ $book_id->id }}" {{ $booking_detail->booked_by_id == $book_id->id  ? "selected" : "" }}> {{ $book_id->name }} </option>
+                                    @foreach ($users as $user)
+                                      <option value="{{ $user->id }}" 
+                                        @if(isset($booking_detail->booked_by_id) && !empty($booking_detail->booked_by_id) && $booking_detail->booked_by_id == $user->id || auth()->user()->id == $user->id)
+                                        selected
+                                        @endif
+                                      > {{ $user->name }} </option>
                                     @endforeach
                                   </select>
                                 </div>
@@ -1109,7 +1113,11 @@
                                   <select name="quote[{{ $key }}][supervisor_id]" data-name="supervisor_id" id="quote_{{ $key }}_supervisor_id" class="form-control select2single supervisor-id">
                                     <option value="">Select Supervisor</option>
                                     @foreach ($supervisors as $supervisor)
-                                      <option value="{{ $supervisor->id }}" {{ ($booking_detail->supervisor_id == $supervisor->id) ? 'selected' : NULL }}> {{ $supervisor->name }} </option>
+                                      <option value="{{ $supervisor->id }}" 
+                                        @if(isset($booking_detail->supervisor_id) && !empty($booking_detail->supervisor_id) && $booking_detail->supervisor_id == $supervisor->id || isset($booking->getSalePerson->getSupervisor->id) && !empty($booking->getSalePerson->getSupervisor->id) && $booking->getSalePerson->getSupervisor->id == $supervisor->id)
+                                        selected
+                                        @endif
+                                      > {{ $supervisor->name }} </option>
                                     @endforeach
                                   </select>
                                 </div>

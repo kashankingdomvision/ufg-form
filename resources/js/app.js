@@ -5,6 +5,7 @@ window.Swal = require('sweetalert2');
 window.intlTelInput = require('intl-tel-input');
 
 import 'jquery-ui/ui/widgets/sortable.js';
+import 'jquery-ui/ui/widgets/autocomplete.js';
 import select2 from 'select2';
 // import intlTelInput from 'intl-tel-input';
 // import Swal from 'sweetalert2';
@@ -123,6 +124,14 @@ $(document).ready(function($) {
     window.removeFormValidationStyles = function() {
         $('input, select, textarea').removeClass('is-invalid');
         $('.text-danger').html('');
+    }
+
+    window.resetModalForm = function(modalID) {
+
+        $(`${modalID}`).trigger("reset");
+        $(`${modalID} .summernote`).summernote("reset");
+        $(`${modalID} input, select, textarea`).removeClass('is-invalid');
+        $(`${modalID} .text-danger`).html('');
     }
 
     window.addFormLoadingStyles = function() {

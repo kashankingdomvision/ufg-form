@@ -109,8 +109,22 @@ __webpack_require__(/*! ./booking_management/booking_app */ "./resources/js/book
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
+  tourContactAutoCompleteInitialize();
+
+  function tourContactAutoCompleteInitialize() {
+    $(".tour-contact").autocomplete({
+      source: "".concat(BASEURL, "get-tour-contacts")
+    });
+  }
+
+  function tourContactAutoCompleteDestroy() {
+    $(".tour-contact").autocomplete("destroy");
+  }
+
   $('#version_booking :input').prop('disabled', true);
   $('#show_booking :input').attr('disabled', 'disabled');
+  $('#show_booking .cancellation-refund-payment-row :input').removeAttr('disabled');
+  $('#show_booking button[type="submit"], #show_booking #show_booking_submit, #add_more_cancellation_payments').removeAttr('disabled');
   var pageStatus = $('#show_booking').data('page_status');
 
   if (typeof pageStatus !== 'undefined' && pageStatus != "") {
@@ -764,6 +778,7 @@ $(document).ready(function () {
       setTimeout(function () {
         destroySingleSelect2();
         destroyMultipleSelect2();
+        tourContactAutoCompleteDestroy();
         var quote = $(".quote").eq(0).clone().find("input").val("").each(function () {
           this.name = this.name.replace(/\[(\d+)\]/, function () {
             var quoteLength = $('.quote').length;
@@ -878,6 +893,11 @@ $(document).ready(function () {
 
         var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
         $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
+        tourContactAutoCompleteInitialize(); // $( ".tour-contact" ).autocomplete( "destroy" );
+        // $(".tour-contact").autocomplete({
+        //     source: `${BASEURL}tour-contacts`,
+        // });
+
         $('html, body').animate({
           scrollTop: $("".concat(quoteClass)).offset().top
         }, 1000);
@@ -1498,7 +1518,7 @@ $(document).ready(function () {
   function getJson() {
     return JSON.parse($.ajax({
       type: 'GET',
-      url: "".concat(BASEURL, "get-currency-conversion"),
+      url: "".concat(BASEURL, "get-currency-conversions"),
       dataType: 'json',
       global: false,
       async: false,
@@ -1992,6 +2012,10 @@ $(document).ready(function () {
     var salesPersonID = $(this).val();
     var userID = $('.user-id').val();
 
+    if (typeof salesPersonID === 'undefined' || salesPersonID == "") {
+      return;
+    }
+
     if (salesPersonID != userID) {
       $('#potential_commission_feild').addClass('d-none');
     }
@@ -1999,10 +2023,23 @@ $(document).ready(function () {
     if (salesPersonID == userID) {
       $('#potential_commission_feild').removeClass('d-none');
     }
+
+    $.ajax({
+      type: 'get',
+      url: "".concat(BASEURL, "sales-person-on-change"),
+      data: {
+        'sales_person_id': salesPersonID
+      },
+      success: function success(response) {
+        if (response && Object.keys(response.supervisor).length > 0) {
+          $('.supervisor-id').val(response.supervisor.id).change();
+        }
+      }
+    });
   });
   $(document).on('change', '.view-rate-booking-currency-filter', function () {
     var selectedCurrencies = $(this).val();
-    var url = "".concat(BASEURL, "filter-currency-rate");
+    var url = "".concat(BASEURL, "get-filter-currency-rate");
     $.ajax({
       type: 'get',
       url: url,
@@ -2144,7 +2181,7 @@ $(document).ready(function () {
         headers: {
           'X-CSRF-TOKEN': CSRFTOKEN
         },
-        url: "".concat(BASEURL, "find/reference/").concat(reference_no, "/exist"),
+        url: "".concat(BASEURL, "is/reference/").concat(reference_no, "/exist"),
         type: 'get',
         dataType: "json",
         success: function success(data) {
@@ -2202,7 +2239,7 @@ $(document).ready(function () {
   $(document).on('change', '.getBrandtoHoliday', function () {
     var brand_id = $(this).val();
     var options = '';
-    var url = BASEURL + 'brand/to/holidays';
+    var url = "".concat(BASEURL, "brand-on-change");
     $.ajax({
       type: 'get',
       url: url,
@@ -2722,7 +2759,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "category/to/supplier"),
+      url: "".concat(BASEURL, "category-on-change"),
       data: {
         'category_id': category_id,
         'detail_id': detail_id,
@@ -2862,7 +2899,7 @@ $(document).ready(function () {
     var selectOption = "<option value=''>Select Supplier</option>";
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "country/to/supplier"),
+      url: "".concat(BASEURL, "supplier-countries-on-change"),
       data: {
         'supplier_country_ids': supplier_country_ids,
         'category_id': category_id
@@ -2883,47 +2920,41 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
       }
     });
-  }
+  } // $(document).on('change', '.supplier-location-id', function(){
+  //     var quote                 = $(this).closest('.quote');
+  //     var quoteKey              = quote.data('key');
+  //     var suppplier_location_id = $(`#quote_${quoteKey}_supplier_location_id`).val();
+  //     var category_id = $(`#quote_${quoteKey}_category_id`).val();
+  //     var options = '';
+  //     $(`#quote_${quoteKey}_supplier_id`).removeAttr('disabled');
+  //     /* set supplier dropdown null when supplier location become null */
+  //     if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
+  //         $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_supplier_id`).attr('disabled', 'disabled');
+  //         $(`#quote_${quoteKey}_product_id`).val("").trigger('change');
+  //         $(`#quote_${quoteKey}_product_id`).attr('disabled', 'disabled');
+  //         return;
+  //     }
+  //     /* get suppliers according to location */
+  //     $.ajax({
+  //         type: 'get',
+  //         url: `${BASEURL}location/to/supplier`,
+  //         data: { 'suppplier_location_id': suppplier_location_id, 'category_id': category_id },
+  //         beforeSend: function () {
+  //             $(`#quote_${quoteKey}_supplier_id`).val("").trigger('change');
+  //         },
+  //         success: function (response) {
+  //             /* set supplier dropdown*/
+  //             options += `<option value="">Select Supplier</option>`;
+  //             $.each(response.suppliers, function (key, value) {
+  //                 options += `<option value='${value.id}' data-name='${value.name}'>${value.name}</option>`;
+  //             });
+  //             $(`#quote_${quoteKey}_supplier_id`).html(options);
+  //         }
+  //     })
+  // });
 
-  $(document).on('change', '.supplier-location-id', function () {
-    var quote = $(this).closest('.quote');
-    var quoteKey = quote.data('key');
-    var suppplier_location_id = $("#quote_".concat(quoteKey, "_supplier_location_id")).val();
-    var category_id = $("#quote_".concat(quoteKey, "_category_id")).val();
-    var options = '';
-    $("#quote_".concat(quoteKey, "_supplier_id")).removeAttr('disabled');
-    /* set supplier dropdown null when supplier location become null */
 
-    if (typeof suppplier_location_id === 'undefined' || suppplier_location_id == "") {
-      $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_supplier_id")).attr('disabled', 'disabled');
-      $("#quote_".concat(quoteKey, "_product_id")).val("").trigger('change');
-      $("#quote_".concat(quoteKey, "_product_id")).attr('disabled', 'disabled');
-      return;
-    }
-    /* get suppliers according to location */
-
-
-    $.ajax({
-      type: 'get',
-      url: "".concat(BASEURL, "location/to/supplier"),
-      data: {
-        'suppplier_location_id': suppplier_location_id,
-        'category_id': category_id
-      },
-      beforeSend: function beforeSend() {
-        $("#quote_".concat(quoteKey, "_supplier_id")).val("").trigger('change');
-      },
-      success: function success(response) {
-        /* set supplier dropdown*/
-        options += "<option value=\"\">Select Supplier</option>";
-        $.each(response.suppliers, function (key, value) {
-          options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, "</option>");
-        });
-        $("#quote_".concat(quoteKey, "_supplier_id")).html(options);
-      }
-    });
-  });
   $(document).on('change', '.supplier-id', function () {
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
@@ -2965,57 +2996,6 @@ $(document).ready(function () {
     } else {
       quote.find('.badge-supplier-id').html("");
     }
-  });
-  $(document).on('submit', '#form_add_product', function () {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    var formData = $(this).serialize();
-    var options = '';
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: formData,
-      beforeSend: function beforeSend() {
-        $('input').removeClass('is-invalid');
-        $('.text-danger').html('');
-        $("#submit_add_product").find('span').addClass('spinner-border spinner-border-sm');
-      },
-      success: function success(data) {
-        $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-        jQuery('.add-new-product-modal').modal('hide');
-        setTimeout(function () {
-          if (data && data.status == true) {
-            alert(data.success_message);
-
-            if (data.products.length != 0) {
-              options += "<option value=''>Select Product</option>";
-              $.each(data.products, function (key, value) {
-                options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
-              });
-              $("#quote_".concat(quoteKeyForProduct, "_product_id")).html(options);
-            }
-          }
-        }, 200);
-      },
-      error: function error(reject) {
-        if (reject.status === 422) {
-          var errors = $.parseJSON(reject.responseText);
-          setTimeout(function () {
-            $("#submit_add_product").find('span').removeClass('spinner-border spinner-border-sm');
-
-            if (errors.hasOwnProperty("product_error")) {
-              alert(errors.product_error);
-            } else {
-              jQuery.each(errors.errors, function (index, value) {
-                index = index.replace(/\./g, '_');
-                $("#".concat(index)).addClass('is-invalid');
-                $("#".concat(index)).closest('.form-group').find('.text-danger').html(value);
-              });
-            }
-          }, 200);
-        }
-      }
-    });
   });
   $(document).on('submit', '#store_group_owner_modal_form', function () {
     event.preventDefault();
@@ -3129,25 +3109,65 @@ $(document).ready(function () {
     });
   });
   var quoteKeyForProduct = '';
-  $(document).on('click', '.add-new-product', function () {
+  $(document).on('click', '.store-product', function () {
     var quote = $(this).closest('.quote');
     quoteKeyForProduct = quote.data('key');
     var supplier_id = quote.find('.supplier-id').val();
-    var modal = jQuery('.add-new-product-modal');
+    var modal = jQuery('.store-product-modal');
 
     if (supplier_id != "" && typeof supplier_id !== 'undefined') {
       modal.modal('show'); // reset modal feilds
 
-      $('#form_add_product').trigger("reset");
-      modal.find('#form_add_product #description').summernote("reset");
-      modal.find('#form_add_product #inclusions').summernote("reset");
-      modal.find('#form_add_product #packing_list').summernote("reset"); // set supplier id
+      resetModalForm('#store_product_modal_form'); // set supplier id
 
       modal.find('.product-supplier-id').val(supplier_id);
     } else {
       alert("Please select Supplier first");
       return;
     }
+  });
+  $(document).on('submit', '#store_product_modal_form', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    var modalID = $(this).closest('.modal').attr('id');
+    var options = '';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(data) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        jQuery('.store-product-modal').modal('hide');
+        setTimeout(function () {
+          if (data && data.status) {
+            Toast.fire({
+              icon: 'success',
+              title: data.success_message
+            });
+
+            if (data.products.length != 0) {
+              options += "<option value=''>Select Product</option>";
+              $.each(data.products, function (key, value) {
+                options += "<option value='".concat(value.id, "' data-name='").concat(value.name, "'>").concat(value.name, " - ").concat(value.code, "</option>");
+              });
+              $("#quote_".concat(quoteKeyForProduct, "_product_id")).html(options);
+            }
+          }
+        }, 200);
+      },
+      error: function error(data) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(data, "#".concat(modalID));
+      }
+    });
   });
   var quoteKeyForGroupOwner = '';
   $(document).on('click', '.group-owner-modal', function () {
@@ -3234,7 +3254,7 @@ $(document).ready(function () {
 
     $.ajax({
       type: 'get',
-      url: "".concat(BASEURL, "get-product-booking-type"),
+      url: "".concat(BASEURL, "product-on-change"),
       data: {
         'product_id': product_id,
         'detail_id': detail_id,

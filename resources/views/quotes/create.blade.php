@@ -599,7 +599,7 @@
                           <div class="col-md-3 product-id-feild">
                             <div class="form-group">
                               <label>Product </label>
-                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-product"> <i class="fas fa-plus"></i></button>
+                              <button type="button" class="btn btn-xs btn-outline-dark ml-1 store-product"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][product_id]" data-name="product_id" id="quote_0_product_id" class="form-control select2single product-id" disabled>
                                 <option selected value="">Select Product</option>
                               </select>

@@ -55,7 +55,7 @@ $(document).ready(function() {
     
                 $.ajax({
                     type: 'GET',
-                    url: `${BASEURL}remove-form-buidler-feild`,
+                    url: `${BASEURL}remove-form-builder-feild`,
                     data: data,
                     success: function(data){
                         if(data && data.status == true){
@@ -95,7 +95,7 @@ $(document).ready(function() {
     
                 $.ajax({
                     type: 'GET',
-                    url: `${BASEURL}remove-form-buidler-feild`,
+                    url: `${BASEURL}remove-form-builder-feild`,
                     data: data,
                     success: function(data){
                         if(data && data.status == true){

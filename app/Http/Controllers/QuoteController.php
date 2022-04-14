@@ -161,10 +161,6 @@ class QuoteController extends Controller
         return view('quotes.listing', $data);
     }
 
-    public function get_currency_conversion(){
-        return CurrencyConversion::all();
-    }
-
     public function quoteArray($request, $type, $action = null)
     {
         $data = [

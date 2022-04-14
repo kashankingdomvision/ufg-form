@@ -294,7 +294,7 @@ $(document).ready(function () {
   $(document).on('change', '.getMultipleBrandtoHoliday', function () {
     var brand_ids = $(this).val();
     var options = '';
-    var url = BASEURL + 'multiple/brand/to/holidays';
+    var url = "".concat(BASEURL, "multiple-brand-on-change");
     $.ajax({
       type: 'get',
       url: url,

@@ -328,7 +328,7 @@ class BookingController extends Controller
         $data['booking']          = $booking;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
+        $data['users']            = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
@@ -633,7 +633,7 @@ class BookingController extends Controller
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
+        $data['users']            = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
         $data['sale_persons']     = User::get();
         $data['booking_methods']  = BookingMethod::all()->sortBy('id');
@@ -693,7 +693,7 @@ class BookingController extends Controller
         $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
-        $data['booked_by']          = User::all()->sortBy('name');
+        $data['users']              = User::all()->sortBy('name');
         $data['supervisors']        = User::get();
         $data['sale_persons']       = User::get();
         $data['booking_methods']    = BookingMethod::all()->sortBy('id');

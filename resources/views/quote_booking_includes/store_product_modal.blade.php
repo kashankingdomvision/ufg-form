@@ -1,12 +1,14 @@
-<div class="modal fade add-new-product-modal">
+<div class="modal fade store-product-modal" id="store_product_modal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="{{ route('add.product.with.supplier.sync') }}"  method="POST"  id="form_add_product">
-                @csrf 
+
+            <form action="{{ route('store.product.with.supplier') }}" method="POST" id="store_product_modal_form">
+                @csrf
+
                 <div class="modal-header">
                     <h4 class="modal-title">Add New Product</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
 
@@ -36,11 +38,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="submit_add_product">
-                        <span class="mr-2 " role="status" aria-hidden="true"></span>
+                    <button type="submit" class="btn btn-success" id="submit_add_product">
+                        <span class="" role="status" aria-hidden="true"></span>
                         Submit
-                      </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>

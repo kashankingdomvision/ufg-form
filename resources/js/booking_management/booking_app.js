@@ -1,8 +1,22 @@
 $(document).ready(function() {
-   
+
+    tourContactAutoCompleteInitialize();
+
+    function tourContactAutoCompleteInitialize(){
+        $(".tour-contact").autocomplete({
+            source: `${BASEURL}get-tour-contacts`,
+        });
+    }
+
+    function tourContactAutoCompleteDestroy(){
+        $( ".tour-contact" ).autocomplete( "destroy" );
+    }
 
     $('#version_booking :input').prop('disabled', true);
     $('#show_booking :input').attr('disabled', 'disabled');
+    $('#show_booking .cancellation-refund-payment-row :input').removeAttr('disabled');
+    $('#show_booking button[type="submit"], #show_booking #show_booking_submit, #add_more_cancellation_payments').removeAttr('disabled');
+
 
     var pageStatus = $('#show_booking').data('page_status');
 
@@ -865,6 +879,7 @@ $(document).ready(function() {
 
                 destroySingleSelect2();
                 destroyMultipleSelect2();
+                tourContactAutoCompleteDestroy();
 
                 var quote = $(".quote").eq(0).clone()
                     .find("input").val("").each(function() {
@@ -997,6 +1012,13 @@ $(document).ready(function() {
                 // set default supplier country
                 let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
                 $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
+
+                tourContactAutoCompleteInitialize();
+
+                // $( ".tour-contact" ).autocomplete( "destroy" );
+                // $(".tour-contact").autocomplete({
+                //     source: `${BASEURL}tour-contacts`,
+                // });
 
                 $('html, body').animate({ scrollTop: $(`${quoteClass}`).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');
