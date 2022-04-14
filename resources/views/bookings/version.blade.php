@@ -1058,11 +1058,11 @@
                           <!-- End Administration row -->
 
                           <!-- Payments section -->
-                          <div class="card card-outline card-primary payment-section">
+                          <div class="card card-outline card-base payment-section">
                             <div class="card-header">
                               <h1 class="card-title"><b>Payments Section</b></h1>
                               <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <button type="button" class="btn btn-tool version-payment-section" data-card-widget="collapse">
                                   <i class="fas fa-plus"></i>
                                 </button>
                               </div>
@@ -1076,7 +1076,7 @@
                                 $finance = (object) $finance;
                               @endphp
 
-                              <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
+                              <h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
 
                               <div class="row finance-clonning row-cols-lg-7 g-0 g-lg-2 {{ $finance->status == 'cancelled' ? 'cancelled-payment-styling' : '' }}" data-financekey="{{$fkey}}">
 

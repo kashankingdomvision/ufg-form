@@ -1138,7 +1138,7 @@
                             {{-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                               <i class="fas fa-minus"></i>
                             </button> --}}
-                            <div class="card card-outline card-primary payment-section">
+                            <div class="card card-outline card-base payment-section">
                               <div class="card-header">
                                 <h1 class="card-title"><b>Payments Section</b></h1>
                                 <div class="card-tools">
@@ -1153,7 +1153,7 @@
                                 <section class="finance">
                                   @php $total_deposit = 0; @endphp
                                   @if($booking_detail->getBookingFinance && count($booking_detail->getBookingFinance) > 0)
-                                    <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
+                                    <h3 class="mt-1 mb-1-half"><span class="double-underline">Finance</span></h3>
                                     @foreach ($booking_detail->getBookingFinance as $fkey => $finance)
                                       @php
                                         $count = $fkey + 1;
