@@ -312,6 +312,35 @@ class ResponseController extends Controller
         ];
     }
 
+    public function getLeadPassengerData($response, $zoho_credentials)
+    {   
+        $contact_id = $response['Contact_Name']['id'];
+        $url = "https://www.zohoapis.com/crm/v2/Contacts/{$contact_id}";
+        $args = array(
+            'method' 	=> 'GET',
+            'ssl' 		=> false,
+            'format' 	=> 'ARRAY',
+            'headers' 	=> array(
+                "Authorization:" . 'Zoho-oauthtoken ' . $zoho_credentials->access_token,
+                "Content-Type: application/json",
+            )
+        );
+
+        $contact_response = Helper::cf_remote_request($url, $args);
+
+        if ($contact_response['status'] == 200) {
+
+            $contact_response = array_shift($contact_response['body']['data']);
+
+            return [
+                'name'   => $contact_response['Full_Name'],
+                'email'  => $contact_response['Email'],
+                'phone'  => $contact_response['Phone'],
+            ];
+
+        }
+    }
+
     // Find Reference from Zoho Crm 
     public function findReference(Request $request)
     {
@@ -343,14 +372,14 @@ class ResponseController extends Controller
         if ($response['status'] == 200) {
             
             $responses_data = array_shift($response['body']['data']);
-            $passenger_id   = $responses_data['id'];
-            $url            = "https://www.zohoapis.com/crm/v2/Passengers/search?criteria=(Deal:equals:{$passenger_id})";
+            // $passenger_id   = $responses_data['id'];
+            // $url            = "https://www.zohoapis.com/crm/v2/Passengers/search?criteria=(Deal:equals:{$passenger_id})";
 
-            $passenger_response = Helper::cf_remote_request($url, $args);
+            // $passenger_response = Helper::cf_remote_request($url, $args);
 
-            if ($passenger_response['status'] == 200) {
-                $pax_no = count($passenger_response['body']['data']);
-            }
+            // if ($passenger_response['status'] == 200) {
+            //     $pax_no = count($passenger_response['body']['data']);
+            // }
 
             $holidayName  = isset($responses_data['Holiday_Type']) && !empty($responses_data['Holiday_Type']) ? $responses_data['Holiday_Type'] : null;
             $holiday      = HolidayType::where('name', $holidayName)->first();
@@ -359,39 +388,41 @@ class ResponseController extends Controller
                 $holidayTypes = HolidayType::where('brand_id', $holiday->brand_id)->get();
             }
             
-            $passenger_data = [];
-            $passengerArray = [];
+            // $passenger_data = [];
+            // $passengerArray = [];
 
-            if(isset($passenger_response['body']['data']) && count($passenger_response['body']['data']) > 0 ){
-                foreach ($passenger_response['body']['data'] as $key => $passenger) {
+            // if(isset($passenger_response['body']['data']) && count($passenger_response['body']['data']) > 0 ){
+            //     foreach ($passenger_response['body']['data'] as $key => $passenger) {
 
-                    if($key == 0){    
-                        $passengerArray['lead_passenger'] = $this->getPassenger($passenger);
+            //         if($key == 0){    
+            //             $passengerArray['lead_passenger'] = $this->getPassenger($passenger);
 
-                    }else{            
+            //         }else{            
 
-                        $x = $this->getPassenger($passenger);
-                        array_push($passenger_data, $x);
-                    }
-                }
-            }
+            //             $x = $this->getPassenger($passenger);
+            //             array_push($passenger_data, $x);
+            //         }
+            //     }
+            // }
 
-            $passengerArray['passengers'] = $passenger_data;
+            // $passengerArray['passengers'] = $passenger_data;
 
             $response = [
                 "brand"         => $holiday,
                 "holidayTypes"  => $holidayTypes,
                 "sale_person"   => isset($responses_data['Owner']['email']) && !empty($responses_data['Owner']['email']) ? $responses_data['Owner']['email'] : null,
                 "currency"      => isset($responses_data['Currency']) && !empty($responses_data['Currency']) ? $responses_data['Currency'] : null,
-                "pax"           => isset($pax_no) && !empty($pax_no) ? $pax_no : null,
-                'passengers'    => $passengerArray,
+                // "pax"           => isset($pax_no) && !empty($pax_no) ? $pax_no : null,
+                // 'passengers'    => $passengerArray,
+
+                'lead_passenger' => $this->getLeadPassengerData($responses_data, $zoho_credentials),
                 'tas_ref'       => (isset($responses_data['TAS_REF_No']) && !empty($responses_data['TAS_REF_No']))? $responses_data['TAS_REF_No'] : NULL,
             ];
 
-            $payment_detial_response = Helper::get_payment_detial_by_ref_no($ref);
-            if ($payment_detial_response['status'] == 200) {
-                $response['payment_details'] = $payment_detial_response['body']['old_records'];
-            }
+            // $payment_detial_response = Helper::get_payment_detial_by_ref_no($ref);
+            // if ($payment_detial_response['status'] == 200) {
+            //     $response['payment_details'] = $payment_detial_response['body']['old_records'];
+            // }
 
             $ajax_response['status']    = true;
             $ajax_response['response']  = $response;
@@ -404,8 +435,9 @@ class ResponseController extends Controller
                 'errors'  => 'Something went wrong with reference number Please try again!',
             ], 402);    
             
-        return response()->json($ajax_response);
+        // return response()->json($ajax_response);
     }
+
 
     /*
     |--------------------------------------------------------------------------

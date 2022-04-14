@@ -779,19 +779,25 @@ $(document).ready(function() {
                         $("#tas_ref").val(data.response.tas_ref);
                     }
 
-                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
-                        $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
+                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('name')) {
+                        $('#lead_passenger_name').val(data.response.lead_passenger.name);
                     }
 
-                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
-                        $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('email')) {
+                        $('#lead_passenger_email').val(data.response.lead_passenger.email);
                     }
-         
-                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
-                        $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+
+                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('phone')) {
+                        $('#lead_passenger_contact').val('');
                         
                         var input = document.querySelector('#lead_passenger_contact');
+                        input.classList.remove("is-valid");
+
                         var validMsg = document.querySelector('.valid_msg0');
+                        validMsg.innerHTML = "";
+
+                        var errorMsg = document.querySelector('.error_msg0');
+                        errorMsg.innerHTML = "";
 
                         var iti = intlTelInput(input, {
                             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
@@ -805,6 +811,10 @@ $(document).ready(function() {
                             placeholderNumberType: "MOBILE",
                         });
 
+                        iti.setNumber(data.response.lead_passenger.phone);
+
+                        var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
+
                         if (input.value.trim()) {
                             if (iti.isValidNumber()) {
                                 $('.buttonSumbit').removeAttr('disabled');
@@ -815,12 +825,56 @@ $(document).ready(function() {
                                 input.classList.add("is-invalid");
                                 validMsg.innerHTML = '';
                                 var errorCode = iti.getValidationError();
+                                console.log(errorCode);
                                 errorMsg.innerHTML = errorMap[errorCode];
                                 errorMsg.classList.remove("hide");
                             }
                         }
 
                     }
+
+                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+                    //     $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
+                    // }
+
+                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_email')) {
+                    //     $('#lead_passenger_email').val(data.response.passengers.lead_passenger.passenger_email);
+                    // }
+         
+                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_contact')) {
+                    //     $('#lead_passenger_contact').val(data.response.passengers.lead_passenger.passenger_contact);
+                        
+                    //     var input = document.querySelector('#lead_passenger_contact');
+                    //     var validMsg = document.querySelector('.valid_msg0');
+
+                    //     var iti = intlTelInput(input, {
+                    //         utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
+                    //         separateDialCode: true,
+                    //         preferredCountries:["gb","us","au","ca","nz"],
+                    //         formatOnDisplay: true,
+                    //         initialCountry: "US",
+                    //         nationalMode: true,
+                    //         hiddenInput: "full_number",
+                    //         autoPlaceholder: "polite",
+                    //         placeholderNumberType: "MOBILE",
+                    //     });
+
+                    //     if (input.value.trim()) {
+                    //         if (iti.isValidNumber()) {
+                    //             $('.buttonSumbit').removeAttr('disabled');
+                    //             input.classList.add("is-valid");
+                    //             validMsg.innerHTML = 'The number is valid';
+                    //         } else {
+                    //             $('.buttonSumbit').attr('disabled', 'disabled');
+                    //             input.classList.add("is-invalid");
+                    //             validMsg.innerHTML = '';
+                    //             var errorCode = iti.getValidationError();
+                    //             errorMsg.innerHTML = errorMap[errorCode];
+                    //             errorMsg.classList.remove("hide");
+                    //         }
+                    //     }
+
+                    // }
 
                     if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
                         $('#brand_id').val(data.response.brand.brand_id).change();
@@ -838,34 +892,34 @@ $(document).ready(function() {
                         $(`#sale_person_id option[data-email="${data.response.sale_person}"]`).prop('selected','selected').change();
                     }
 
-                    if (data.response.pax) {
-                        $('#pax_no').val(data.response.pax).trigger('change');
-                    }
+                    // if (data.response.pax) {
+                    //     $('#pax_no').val(data.response.pax).trigger('change');
+                    // }
 
                     if (data.response.currency) {
                         $(`#currency_id option[data-code="${data.response.currency}"]`).prop('selected','selected').change();
                     }
 
-                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
-                        $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
-                    }
+                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
+                    //     $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
+                    // }
 
-                    if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
-                        $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
-                    }
+                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('bedding_prefrences')) {
+                    //     $('#bedding_preference').val(data.response.passengers.lead_passenger.bedding_prefrences);
+                    // }
 
                     // Passengers Details
-                    if (data.response.passengers.passengers.length > 0) {
-                        data.response.passengers.passengers.forEach(($_value, $key) => {
-                            var $_count = $key + 1;
-                            $(`input[name="pax[${$_count}][full_name]"]`).val($_value.passenger_name);
-                            $(`input[name="pax[${$_count}][email_address]"]`).val($_value.passenger_email);
-                            $(`input[name="pax[${$_count}][contact_number]"]`).val($_value.passenger_contact);
-                            $(`input[name="pax[${$_count}][date_of_birth]"]`).val($_value.passenger_dbo);
-                            $(`input[name="pax[${$_count}][bedding_preference]"]`).val($_value.bedding_prefrences);
-                            $(`input[name="pax[${$_count}][dietary_preferences]"]`).val($_value.dinning_prefrences);
-                        });
-                    }
+                    // if (data.response.passengers.passengers.length > 0) {
+                    //     data.response.passengers.passengers.forEach(($_value, $key) => {
+                    //         var $_count = $key + 1;
+                    //         $(`input[name="pax[${$_count}][full_name]"]`).val($_value.passenger_name);
+                    //         $(`input[name="pax[${$_count}][email_address]"]`).val($_value.passenger_email);
+                    //         $(`input[name="pax[${$_count}][contact_number]"]`).val($_value.passenger_contact);
+                    //         $(`input[name="pax[${$_count}][date_of_birth]"]`).val($_value.passenger_dbo);
+                    //         $(`input[name="pax[${$_count}][bedding_preference]"]`).val($_value.bedding_prefrences);
+                    //         $(`input[name="pax[${$_count}][dietary_preferences]"]`).val($_value.dinning_prefrences);
+                    //     });
+                    // }
 
                 }
            
