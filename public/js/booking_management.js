@@ -2099,7 +2099,7 @@ $(document).ready(function () {
               autoPlaceholder: "polite",
               placeholderNumberType: "MOBILE"
             });
-            iti.setNumber(data.response.lead_passenger.phone);
+            iti.setNumber(data.response.lead_passenger.phone.replace(/^0+/, '+'));
             var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
             if (input.value.trim()) {
