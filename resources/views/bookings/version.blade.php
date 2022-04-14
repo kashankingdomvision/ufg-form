@@ -1058,7 +1058,7 @@
                           <!-- End Administration row -->
 
                           <!-- Payments section -->
-                          <div class="card card-outline card-base payment-section">
+                          <div class="card card-outline card-base payment-section collapsed-card">
                             <div class="card-header">
                               <h1 class="card-title"><b>Payments Section</b></h1>
                               <div class="card-tools">
@@ -1364,7 +1364,8 @@
                           <!-- refund-by-credit-note-section -->
                           @if($booking_detail->credit_notes && count($booking_detail->credit_notes) > 0)
                             <section class="refund-by-credit-note-section" >
-                              <h3 class="mt-2 mb-1-half">Refund - By Credit Notes</h3>
+                              <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Refund - By Credit Notes</span></h3>
+
                               @foreach ($booking_detail->credit_notes as $cnkey => $payment)
                                 @php 
                                   $payment = (object) $payment;

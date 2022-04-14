@@ -1138,7 +1138,7 @@
                             {{-- <button type="button" class="btn btn-tool" data-card-widget="collapse">
                               <i class="fas fa-minus"></i>
                             </button> --}}
-                            <div class="card card-outline card-base payment-section">
+                            <div class="card card-outline card-base payment-section collapsed-card">
                               <div class="card-header">
                                 <h1 class="card-title"><b>Payments Section</b></h1>
                                 <div class="card-tools">
