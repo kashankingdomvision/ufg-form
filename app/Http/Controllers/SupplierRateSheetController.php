@@ -146,7 +146,7 @@ class SupplierRateSheetController extends Controller
         if($request->hasFile('file')) {
             $data['file'] = $this->fileStore($request, $supplier_rate_sheet);
         }
-      
+        
         $supplier_rate_sheet->update($data);
 
         return response()->json([ 
@@ -167,7 +167,7 @@ class SupplierRateSheetController extends Controller
         SupplierRateSheet::destroy(decrypt($id));
         return redirect()->route('supplier_rate_sheets.index')->with('success_message', 'Supplier Rate Sheet Deleted Successfully');
     }
-
+    
     public function bulkAction(Request $request)
     {
         try {

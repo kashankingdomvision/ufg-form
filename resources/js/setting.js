@@ -15,3 +15,4 @@ require('./setting/store_text_app');
 require('./setting/cabin_type_app');
 require('./setting/station_app');
 require('./setting/contact_app');
+require('./setting/tour_contact_app');

@@ -33,6 +33,10 @@
                 <span class="fa fa-arrow-left"></span>&nbsp;&nbsp;Back to  Listing
               </a>
 
+              <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="btn btn-success btn-sm float-right mr-2" title="View Booking" >
+                <span class="fa fa-eye"></span>&nbsp;&nbsp;View Booking
+              </a>
+
               @if($quote->booking_status == 'quote')
                 <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
                   <button type="button" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>

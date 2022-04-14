@@ -31,7 +31,6 @@ class TourContactController extends Controller
         }
 
         $data['contacts'] = TourContact::paginate($this->pagination);
-
         return view('tour_contacts.listing',$data);
     }
 
