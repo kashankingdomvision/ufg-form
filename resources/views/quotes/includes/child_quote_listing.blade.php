@@ -57,9 +57,12 @@
         @endif
 
         @if($quote->booking_status == 'booked')
-            <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
-                <i class="fas fa-eye"></i>
+            <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
+                <span class="fa fa-eye"></span>
             </a>
+            {{-- <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
+                <i class="fas fa-eye"></i>
+            </a> --}}
         @endif
 
         @if($quote->booking_status == 'quote')
