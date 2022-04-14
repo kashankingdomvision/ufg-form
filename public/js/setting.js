@@ -127,6 +127,8 @@ __webpack_require__(/*! ./setting/station_app */ "./resources/js/setting/station
 
 __webpack_require__(/*! ./setting/contact_app */ "./resources/js/setting/contact_app.js");
 
+__webpack_require__(/*! ./setting/tour_contact_app */ "./resources/js/setting/tour_contact_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/setting/airport_code_app.js":
@@ -2094,6 +2096,128 @@ $(document).ready(function () {
               type: 'POST',
               url: $('#store_text_bulk_action').attr('action'),
               data: new FormData($('#store_text_bulk_action')[0]),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function success(response) {
+                printListingSuccessMessage(response);
+              }
+            });
+          }
+        });
+      } else {
+        printListingErrorMessage("Please Check Atleast One Record.");
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/tour_contact_app.js":
+/*!**************************************************!*\
+  !*** ./resources/js/setting/tour_contact_app.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Tour Contact
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_tour_contact', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Tour Contact
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_tour_contact', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.tour-contact-bulk-action-item', function () {
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var bulkActionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+    console.log(bulkActionType + checkedValues + message + buttonText);
+
+    if (['delete'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
+        $('input[name="bulk_action_type"]').val(bulkActionType);
+        $('input[name="bulk_action_ids"]').val(checkedValues);
+
+        switch (bulkActionType) {
+          case "delete":
+            message = 'You want to Delete Tour Contacts?';
+            buttonText = 'Delete';
+            break;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: message,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "Yes, ".concat(buttonText, " it !")
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: $('#tour_contact_bulk_action').attr('action'),
+              data: new FormData($('#tour_contact_bulk_action')[0]),
               contentType: false,
               cache: false,
               processData: false,

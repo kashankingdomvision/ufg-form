@@ -79,10 +79,12 @@
                   <thead>
                     <tr>
                       <th>
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
-                          <label for="parent" class="custom-control-label"></label>
-                        </div>
+                        @if(count($cabins) > 0)
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                            <label for="parent" class="custom-control-label"></label>
+                          </div>
+                        @endif
                       </th>
                       <th>Cabins</th>
                       <th>Action</th>

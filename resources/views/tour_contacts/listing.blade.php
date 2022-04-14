@@ -65,7 +65,7 @@
                       Select Action
                     </button>
                     <div class="dropdown-menu">
-                      <button type="button" data-action_type="delete" class="dropdown-item tour_contact-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
+                      <button type="button" data-action_type="delete" class="dropdown-item tour-contact-bulk-action-item"><i class="fa fa-trash text-red mr-2"></i>Delete</button>
                     </div>
                   </div>
                 </form>
@@ -79,10 +79,12 @@
                   <thead>
                     <tr>
                       <th>
-                        <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
-                          <label for="parent" class="custom-control-label"></label>
-                        </div>
+                        @if(count($contacts) > 0)
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="parent custom-control-input custom-control-input-success custom-control-input-outline" id="parent">
+                            <label for="parent" class="custom-control-label"></label>
+                          </div>
+                        @endif
                       </th>
                       <th>Tour Contacts</th>
                       <th>Action</th>
