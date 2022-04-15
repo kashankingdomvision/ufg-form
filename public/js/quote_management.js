@@ -880,7 +880,8 @@ $(document).ready(function () {
           options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " </option>");
         });
         $('.appendHolidayType').html(options);
-        $(".supplier-country-id").val(response.brand_supplier_countries).change();
+        /* Brand supplier countries change code */
+        // $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
       }
     });
     getCommissionRate();

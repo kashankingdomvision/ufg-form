@@ -461,11 +461,11 @@ class ResponseController extends Controller
     {    
         $holiday_types = HolidayType::where('brand_id', $request->brand_id)->get();
 
-        $brand_supplier_countries = Brand::find($request->brand_id)->getSupplierCountries()->pluck('country_id')->toArray();
+        // $brand_supplier_countries = Brand::find($request->brand_id)->getSupplierCountries()->pluck('country_id')->toArray();
+        // 'brand_supplier_countries' => $brand_supplier_countries,
 
         return response()->json([
             'holiday_types'     => $holiday_types,
-            'brand_supplier_countries' => $brand_supplier_countries,
         ]);
 
         return response()->json($holiday_types);

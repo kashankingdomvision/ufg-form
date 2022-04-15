@@ -51,7 +51,7 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <label>Supplier Country </label>
                   <select name="supplier_country_ids[]" id="supplier_country_ids" class="form-control select2-multiple" data-placeholder="Select Supplier Country" multiple>
                     @foreach ($countries as $country)
@@ -59,7 +59,7 @@
                     @endforeach
                   </select>
                   <span class="text-danger" role="alert"></span>
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                   <label>Contact Number <span style="color:red">*</span></label>

@@ -52,9 +52,9 @@ class BrandController extends Controller
      */
     public function create()
     {
-        $data['countries'] = Country::orderByService()->orderByAsc()->get();
+        // $data['countries'] = Country::orderByService()->orderByAsc()->get();
 
-        return view('brands.create', $data);
+        return view('brands.create');
     }
 
     public function brandArray($request, $method, $brand = null)
@@ -139,7 +139,7 @@ class BrandController extends Controller
     public function edit($id)
     {
         $data['brand']     = Brand::findOrFail(decrypt($id));
-        $data['countries'] = Country::orderByService()->orderByAsc()->get();
+        // $data['countries'] = Country::orderByService()->orderByAsc()->get();
 
         return view('brands.edit',$data);
     }

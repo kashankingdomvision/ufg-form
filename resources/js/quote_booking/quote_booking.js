@@ -1042,7 +1042,9 @@ $(document).ready(function() {
                 });
 
                 $('.appendHolidayType').html(options);
-                $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
+
+                /* Brand supplier countries change code */ 
+                // $(`.supplier-country-id`).val(response.brand_supplier_countries).change();
             }
         });
 
