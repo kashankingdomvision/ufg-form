@@ -118,7 +118,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-4 d-flex justify-content-end">
                     <div class="form-group">
                       <label>Markup Type <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
