@@ -561,8 +561,8 @@
                               <select name="quote[0][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_0_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                 @foreach ($supplier_countries as $country)
                                   <option value="{{ $country->id }}" 
-                                    @if(!empty(Auth::user()->brand_id) && count(Auth::user()->getBrand->getSupplierCountries) > 0)
-                                    {{ (in_array($country->id, Auth::user()->getBrand->getSupplierCountries()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}
+                                    @if(!empty(Auth::user()->brand_id) && count($user_brand_supplier_countries) > 0)
+                                    {{ (in_array($country->id, $user_brand_supplier_countries)) ? 'selected' : '' }}
                                     @endif
                                   >{{ $country->name }} - {{ $country->code}}</option>
                                 @endforeach
@@ -1202,9 +1202,9 @@
     <div class="form-group">
       <label " class="col-sm-3 col-form-label">Stored Text</label>
       <select multiple="multiple" name="stored_text[]" class="form-control select2-multiple" id="selectstoretext" disabled>
-        @foreach ($storetexts as $text )
-          <option value="{{$text->id}}" >{{ $text->name }}</option>
-        @endforeach
+        {{-- @foreach ($storetexts as $text ) --}}
+          {{-- <option value="{{$text->id}}" >{{ $text->name }}</option> --}}
+        {{-- @endforeach --}}
       </select>
     </div>
   </div>

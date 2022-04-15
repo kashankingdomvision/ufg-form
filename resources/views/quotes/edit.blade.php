@@ -160,7 +160,7 @@
                       <label>Destination Country <span style="color:red">*</span></label>
                       <select name="country_destination_ids[]" id="country_destination_ids" class="form-control select2-multiple country-destination" data-placeholder="Select Destination Country" multiple>
                         @foreach ($supplier_countries as $country)
-                          <option value="{{ $country->id }}" {{ (in_array($country->id, $quote->getCountryDestinations()->pluck('country_id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
+                          <option value="{{ $country->id }}" {{ (in_array($country->id, $quote->getCountryDestinations->pluck('id')->toArray()) ) ? 'selected' : '' }}>{{ $country->name }} - {{ $country->code}}</option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
@@ -734,7 +734,7 @@
                                 <label>Supplier Country <span style="color:red">*</span></label>
                                 <select name="quote[{{ $key }}][supplier_country_ids][]" data-name="supplier_country_ids" id="quote_{{ $key }}_supplier_country_ids" class="form-control select2-multiple supplier-country-id" data-placeholder="Select Supplier Country" multiple>
                                   @foreach ($supplier_countries as $country)
-                                    <option value="{{ $country->id }}" {{ (in_array($country->id, $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray()) ) ? 'selected' : NULL}}>{{ $country->name }} - {{ $country->code}}</option>
+                                    <option value="{{ $country->id }}" {{ (in_array($country->id, $q_detail->getQuoteDetailCountries->pluck('country_id')->toArray()) ) ? 'selected' : NULL}}>{{ $country->name }} - {{ $country->code}}</option>
                                   @endforeach
                                 </select>
                                 <span class="text-danger" role="alert"></span>
@@ -762,7 +762,7 @@
                               $query = App\Supplier::orderBy('id', 'ASC');
 
                               $query->whereHas('getCountries', function($query) use ($q_detail) {
-                                $query->whereIn('id', $q_detail->getQuoteDetailCountries()->pluck('country_id')->toArray());
+                                $query->whereIn('id', $q_detail->getQuoteDetailCountries->pluck('country_id')->toArray());
                               });
   
                               $query->whereHas('getCategories', function($query) use ($q_detail) {
@@ -861,7 +861,7 @@
                                 <label>Estimated Cost <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
+                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency->code && $q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->estimated_cost) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-type="currency" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" min="0">
                                 </div>
@@ -873,7 +873,7 @@
                                 <label>Markup Amount <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
+                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency->code && $q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->markup_amount) }}" name="quote[{{ $key }}][markup_amount]" data-name="markup_amount" data-type="currency" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" min="0">
                                 </div>
@@ -897,7 +897,7 @@
                                 <label>Selling Price <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
+                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency->code && $q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->selling_price) }}" name="quote[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                                 </div>
@@ -909,7 +909,7 @@
                                 <label>Profit % <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency && $q_detail->getSupplierCurrency->count()) ? $q_detail->getSupplierCurrency->code : '' }}</span>
+                                    <span class="input-group-text supplier-currency-code">{{ ($q_detail->getSupplierCurrency->code && $q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '' }}</span>
                                   </div>
                                   <input type="number" step="any" value="{{ \Helper::number_format($q_detail->profit_percentage) }}" name="quote[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                   <div class="input-group-append">
@@ -924,7 +924,7 @@
                                 <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->estimated_cost_bc) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
                                 </div>
@@ -936,7 +936,7 @@
                                 <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->markup_amount_in_booking_currency) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
                                 </div>
@@ -948,7 +948,7 @@
                                 <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                 <div class="input-group">
                                   <div class="input-group-prepend">
-                                    <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                                    <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                                   </div>
                                   <input type="text" step="any" value="{{ \Helper::number_format($q_detail->selling_price_in_booking_currency) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                 </div>
@@ -1020,7 +1020,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text" name="total_net_price" value="{{ \Helper::number_format($quote->net_price) }}" class="form-control total-net-price hide-arrows" readonly>
                       </div>
@@ -1034,7 +1034,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text" name="total_markup_amount"  value="{{ Helper::number_format($quote->markup_amount) }}" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" data-name="total_markup_amount" data-type="currency" {{ $quote->markup_type == 'itemised' ? 'readonly' : '' }}>
                       </div>
@@ -1060,7 +1060,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                           </div>
                           <input type="text" name="agency_commission" value="{{ Helper::number_format($quote->agency_commission) }}" class="form-control agency-commission remove-zero-values" data-type="currency">
                         </div>
@@ -1074,7 +1074,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                           </div>
                           <input type="text" name="total_net_margin" value="{{ Helper::number_format($quote->total_net_margin) }}" class="form-control total-net-margin remove-zero-values" readonly>
                         </div>
@@ -1089,7 +1089,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text"  name="total_selling_price" value="{{ Helper::number_format($quote->selling_price) }}" class="form-control total-selling-price hide-arrows" min="0.00" step="any" readonly>
                       </div>
@@ -1117,7 +1117,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text"  name="booking_amount_per_person" value="{{ Helper::number_format($quote->amount_per_person) }}" class="form-control booking-amount-per-person hide-arrows" step="any" min="0" readonly>
                       </div>
@@ -1139,7 +1139,7 @@
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
                         <input type="text" name="commission_amount" value="{{ Helper::number_format($quote->commission_amount) }}" class="form-control commission-amount hide-arrows" min="0" step="any" readonly>
                       </div>

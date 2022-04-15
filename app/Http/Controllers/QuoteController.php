@@ -485,6 +485,7 @@ class QuoteController extends Controller
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
         $data['harbours']          = Harbour::get();
+        $data['user_brand_supplier_countries'] = Auth::user()->getBrand->getSupplierCountries()->pluck('country_id')->toArray();
 
         return view('quotes.create', $data);
     }
