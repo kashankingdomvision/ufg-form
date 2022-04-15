@@ -35,33 +35,18 @@
             <form method="POST" id="store_commission_criteria" action="{{ route('commission_criterias.store') }}" >
               @csrf
               <div class="card-body">
-              
+
                 <div class="form-group">
-                  <label>Commission  <span style="color:red">*</span></label>
-                  <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
-                    <option selected value="" >Select Commission  </option>
-                    @foreach ($commission_types as $commission_type)
-                      <option value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
-                    @endforeach
-                  </select>
+                  <label>Name <span style="color:red">*</span></label>
+                  <input type="text" name="name" id="name" class="form-control" placeholder="Commission Name">
                   <span class="text-danger" role="alert"></span>
                 </div>
-
+              
                 <div class="form-group">
                   <label>Commision Percentage % <span style="color:red">*</span></label>
                   <input type="number" name="percentage" id="percentage" class="form-control" placeholder="Commision percentage %">
                   <span class="text-danger" role="alert"></span>
                 </div>
-
-                <div class="form-group">
-                  <label>Commission Group <span style="color:red">*</span> </label>
-                  <select name="commission_group_id[]" id="commission_group_id" data-placeholder="Select Commission Group" class="form-control select2-multiple" data-placeholder="Select Commission Group" multiple>
-                    @foreach ($commission_groups as $commission_group)
-                      <option value="{{ $commission_group->id }}" {{ in_array($commission_group->id, old('commission_group_id') ?? []) ? 'selected' : '' }}>{{$commission_group->name}} </option>
-                    @endforeach
-                  </select>
-                  <span class="text-danger" role="alert"></span>
-                </div> 
 
                 <div class="form-group">
                   <label>Brand <span style="color:red">*</span></label>
@@ -120,3 +105,24 @@
 @push('js')
   <script src="{{ asset('js/commission_management.js') }}" ></script>
 @endpush
+
+{{-- <div class="form-group">
+  <label>Commission  <span style="color:red">*</span></label>
+  <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
+    <option selected value="" >Select Commission  </option>
+    @foreach ($commission_types as $commission_type)
+      <option value="{{ $commission_type->id }}">{{ $commission_type->name }} </option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div> --}}
+
+{{-- <div class="form-group">
+  <label>Commission Group <span style="color:red">*</span> </label>
+  <select name="commission_group_id[]" id="commission_group_id" data-placeholder="Select Commission Group" class="form-control select2-multiple" data-placeholder="Select Commission Group" multiple>
+    @foreach ($commission_groups as $commission_group)
+      <option value="{{ $commission_group->id }}" {{ in_array($commission_group->id, old('commission_group_id') ?? []) ? 'selected' : '' }}>{{$commission_group->name}} </option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div>  --}}

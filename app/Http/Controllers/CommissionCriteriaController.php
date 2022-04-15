@@ -43,8 +43,8 @@ class CommissionCriteriaController extends Controller
     public function create()
     {
         $data['brands']             = Brand::orderBy('id','ASC')->get();
-        $data['commission_types']   = Commission::orderBy('id','ASC')->get();
-        $data['commission_groups']  = CommissionGroup::orderBy('id','ASC')->get();
+        // $data['commission_types']   = Commission::orderBy('id','ASC')->get();
+        // $data['commission_groups']  = CommissionGroup::orderBy('id','ASC')->get();
         $data['currencies']         = Currency::active()->orderBy('id', 'ASC')->get();
         $data['booking_seasons']    = Season::all();
 
@@ -59,37 +59,39 @@ class CommissionCriteriaController extends Controller
      */
     public function store(CommissionCriteriaRequest $request)
     {
-        $commission_criterias = CommissionCriteria::where([
-            'commission_id'       => $request->commission_id,
-        ])
-        ->whereHas('getSeasons', function($query) use($request){
-            $query->whereIn('season_id', $request->season_id );
-        })
-        ->whereHas('getCommissionGroups', function($query) use($request){
-            $query->whereIn('commission_group_id', $request->commission_group_id );
-        })
-        ->whereHas('getCurrencies', function($query) use($request){
-            $query->whereIn('currency_id', $request->currency_id );
-        })
-        ->whereHas('getBrands', function($query) use($request){
+        // ->whereHas('getCommissionGroups', function($query) use($request){
+        //     $query->whereIn('commission_group_id', $request->commission_group_id );
+        // })
+        // where([
+        //     'commission_id'       => $request->commission_id,
+        // ])
+
+        $commission_criterias = CommissionCriteria::
+        whereHas('getBrands', function($query) use ($request){
             $query->whereIn('brand_id', $request->brand_id );
         }) 
-        ->whereHas('getHolidayTypes', function($query) use($request){
+        ->whereHas('getHolidayTypes', function($query) use ($request){
             $query->whereIn('holiday_type_id', $request->holiday_type_id );
+        })
+        ->whereHas('getCurrencies', function($query) use ($request){
+            $query->whereIn('currency_id', $request->currency_id );
+        })
+        ->whereHas('getSeasons', function($query) use($request){
+            $query->whereIn('season_id', $request->season_id );
         });
-
+ 
         if($commission_criterias->exists()){
             throw ValidationException::withMessages([ 'percentage' => 'The Percentage has already been taken with these Criteria.']);
         }
 
         $commission_criterias = CommissionCriteria::create([
-            'commission_id'       => $request->commission_id,
-            'percentage'          => $request->percentage,
-            'user_id'             => Auth::id()
+            'name'       => $request->name,
+            'percentage' => $request->percentage,
+            'user_id'    => Auth::id()
         ]);
 
         $commission_criterias->getSeasons()->sync($request->season_id);
-        $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
+        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
@@ -135,16 +137,16 @@ class CommissionCriteriaController extends Controller
     // CommissionCriteriaRequest
     public function update(CommissionCriteriaRequest $request, $id)
     {
-        $commission_criterias = CommissionCriteria::where([
-            'commission_id'       => $request->commission_id,
-   
-        ])
-        ->whereHas('getSeasons', function($query) use($request){
+        $commission_criterias = CommissionCriteria::
+        // where([
+        //     'commission_id'       => $request->commission_id,
+        // ])
+        whereHas('getSeasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
         })
-        ->whereHas('getCommissionGroups', function($query) use($request){
-            $query->whereIn('commission_group_id', $request->commission_group_id );
-        })
+        // ->whereHas('getCommissionGroups', function($query) use($request){
+        //     $query->whereIn('commission_group_id', $request->commission_group_id );
+        // })
         ->whereHas('getCurrencies', function($query) use($request){
             $query->whereIn('currency_id', $request->currency_id );
         })
@@ -162,13 +164,13 @@ class CommissionCriteriaController extends Controller
 
         $commission_criterias = CommissionCriteria::find(decrypt($id));
         $commission_criterias->update([
-            'commission_id'       => $request->commission_id,
+            // 'commission_id'       => $request->commission_id,
             'percentage'          => $request->percentage,
             'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->getSeasons()->sync($request->season_id);
-        $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
+        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);

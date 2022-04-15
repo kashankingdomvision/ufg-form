@@ -13,23 +13,23 @@ class CommissionCriteriaSeederTable extends Seeder
      */
     public function run()
     {
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criterias.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criterias.sql');
+        // DB::unprepared($sql);
 
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_groups.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_groups.sql');
+        // DB::unprepared($sql);
 
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_brands.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_brands.sql');
+        // DB::unprepared($sql);
 
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_holiday_types.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_holiday_types.sql');
+        // DB::unprepared($sql);
 
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_currencies.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_currencies.sql');
+        // DB::unprepared($sql);
 
-        $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_seasons.sql');
-        DB::unprepared($sql);
+        // $sql = file_get_contents(database_path() . '/seeds/sql_dump/commission_criteria_seasons.sql');
+        // DB::unprepared($sql);
         
         // $commission_criteria  = [
         //     [

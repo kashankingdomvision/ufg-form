@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             HarbourTableSeeder::class,
             CabinTypeSeeder::class,
             StationSeeder::class,
-            BrandSupplierCountryTableSeeder::class,
+            // BrandSupplierCountryTableSeeder::class,
             TourContactTableSeeder::class,
             StoreTextTableSeeder::class,
         ]);

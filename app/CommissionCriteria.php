@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class CommissionCriteria extends Model
 {
     protected $fillable = [
-        'commission_id',    
+        'name',
+        // 'commission_id',    
         'percentage',    
-        'commission_group_id',    
+        // 'commission_group_id',    
         'brand_id',    
         'holiday_type_id',    
         'currency_id',    

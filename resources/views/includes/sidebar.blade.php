@@ -215,23 +215,23 @@
 
                         <ul class="nav nav-treeview">
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commissions.index', 'commissions.create', 'commissions.edit']) ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-percentage"></i>
                                     <p>
                                         Commissions
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
 
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a href="{{ route('commission_groups.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_groups.index', 'commission_groups.create', 'commission_groups.edit']) ? 'active' : '' }}">
                                     <i class="fa fa-users nav-icon"></i>
                                     <p>
                                         Commission Groups
                                     </p>
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item">
                                 <a href="{{ route('commission_criterias.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'active' : '' }}">

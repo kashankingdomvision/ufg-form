@@ -86,8 +86,9 @@
                           <label for="parent" class="custom-control-label"></label>
                         </div>
                       </th>
-                      <th>Commission</th>
-                      <th>Commission Group</th>
+                      <th>Name</th>
+                      {{-- <th>Commission</th> --}}
+                      {{-- <th>Commission Group</th> --}}
                       <th>Percentage</th>
                       <th>Booking Currency</th>
                       <th>Brand</th>
@@ -106,14 +107,15 @@
                             <label for="child_{{$commission_criteria->id}}" class="custom-control-label"></label>
                           </div>
                         </td>
-                        <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommission->name) ? $commission_criteria->getCommission->name : '' }}</td>
-                        <td>
+                        <td>{{ $commission_criteria->name }}</td>
+                        {{-- <td>{{ isset($commission_criteria->getCommission->name) && !empty($commission_criteria->getCommission->name) ? $commission_criteria->getCommission->name : '' }}</td> --}}
+                        {{-- <td>
                           @if($commission_criteria->getCommissionGroups && $commission_criteria->getCommissionGroups->count())
                             @foreach ($commission_criteria->getCommissionGroups as $group)
                               <span class="badge badge-info">{{ $group->name }}</span>
                             @endforeach
                           @endif
-                        </td>
+                        </td> --}}
                         <td>{{ $commission_criteria->percentage }} %</td>
                         <td>
                           @if($commission_criteria->getCurrencies && $commission_criteria->getCurrencies->count())

@@ -36,31 +36,16 @@
               @csrf @method('put')
 
               <div class="card-body">
+
                 <div class="form-group">
-                  <label>Commission <span style="color:red">*</span></label>
-                  <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
-                    <option selected value="" >Select Commission Type </option>
-                    @foreach ($commission_types as $commission_type)
-                      <option value="{{ $commission_type->id }}" {{ $commission_type->id == $commission_criteria->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} </option>
-                    @endforeach
-                  </select>
+                  <label>Name <span style="color:red">*</span></label>
+                  <input type="text" name="name" id="name" value="{{ $commission_criteria->name }}" class="form-control" placeholder="Commission Name">
                   <span class="text-danger" role="alert"></span>
                 </div>
 
                 <div class="form-group">
                   <label>Commision Percentage  <span style="color:red">*</span></label>
                   <input type="number" name="percentage" value="{{ $commission_criteria->percentage }}" class="form-control" placeholder="Commission Percentage %">
-                  <span class="text-danger" role="alert"></span>
-                </div>
-
-                <div class="form-group">
-                  <label>Commission Group <span style="color:red">*</span></label>
-                    <select name="commission_group_id[]" id="commission_group_id" class="form-control select2-multiple" data-placeholder="Select Commission Group" multiple>
-                    <option value="">Select Commission Group</option>
-                    @foreach ($commission_groups as $commission_group)
-                      <option value="{{ $commission_group->id }}" {{ (in_array($commission_group->id, $commission_criteria->getCommissionGroups()->pluck('commission_group_id')->toArray()) ) ? 'selected' : ''}}>{{$commission_group->name}} </option>
-                    @endforeach
-                  </select>
                   <span class="text-danger" role="alert"></span>
                 </div>
 
@@ -122,3 +107,26 @@
 @push('js')
   <script src="{{ asset('js/commission_management.js') }}" ></script>
 @endpush
+
+{{-- <div class="form-group">
+  <label>Commission <span style="color:red">*</span></label>
+  <select name="commission_id" id="commission_id" class="form-control select2single commission-id">
+    <option selected value="" >Select Commission Type </option>
+    @foreach ($commission_types as $commission_type)
+      <option value="{{ $commission_type->id }}" {{ $commission_type->id == $commission_criteria->commission_id ? 'selected' : '' }}>{{ $commission_type->name }} </option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div>
+
+
+<div class="form-group">
+  <label>Commission Group <span style="color:red">*</span></label>
+    <select name="commission_group_id[]" id="commission_group_id" class="form-control select2-multiple" data-placeholder="Select Commission Group" multiple>
+    <option value="">Select Commission Group</option>
+    @foreach ($commission_groups as $commission_group)
+      <option value="{{ $commission_group->id }}" {{ (in_array($commission_group->id, $commission_criteria->getCommissionGroups()->pluck('commission_group_id')->toArray()) ) ? 'selected' : ''}}>{{$commission_group->name}} </option>
+    @endforeach
+  </select>
+  <span class="text-danger" role="alert"></span>
+</div> --}}
