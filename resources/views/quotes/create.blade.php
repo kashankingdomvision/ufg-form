@@ -5,7 +5,6 @@
 @section('content')
 
 <div class="content-wrapper">
-
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -30,9 +29,10 @@
               <h3 class="card-title text-center">Quote Form</h3>
             </div>
 
-            <form method="POST" action="{{ route('quotes.store') }}" id="store_quote" class="create-template"> @csrf
-              <div class="card-body">
+            <form method="POST" action="{{ route('quotes.store') }}" id="store_quote" class="create-template"> 
+              @csrf
 
+              <div class="card-body">
                 <!-- For Commission Calculation -->
                 <div class="row d-none">
                   <div class="col-sm-6">
@@ -73,7 +73,7 @@
                       <label>Zoho Reference <span style="color:red">*</span></label>
                       <div class="input-group">
                         <input type="text" name="ref_no" id="ref_no" class="reference-name form-control" placeholder="Enter Reference Number" aria-label="Recipient's username" aria-describedby="basic-addon2" autofocus>
-                          <div class="input-group-append">
+                        <div class="input-group-append">
                           <button id="search-reference-btn" class="btn search-reference-btn search-reference" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Search</button>
                         </div>
                       </div>
@@ -258,20 +258,20 @@
                       <div class="col form-group">
                         <label>Agency Name</label> <span style="color:red"> *</span>
                         <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
-                        <span class="text-danger" role="alert" > </span>
+                        <span class="text-danger" role="alert"> </span>
                       </div>
 
                       <div class="col form-group">
                         <label>Agency Contact Name </label> <span style="color:red"> *</span>
                         <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
-                        <span class="text-danger" role="alert" > </span>
+                        <span class="text-danger" role="alert"> </span>
                       </div>
                       
                       <div class="col form-group">
                         <label>Agency Contact No.</label> <span style="color:red"> *</span>
                         <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
-                          <span class="text-danger error_msggc hide" role="alert"></span>
-                          <span class="text-success valid_msggc" role="alert"></span>
+                        <span class="text-danger error_msggc hide" role="alert"></span>
+                        <span class="text-success valid_msggc" role="alert"></span>
                       </div>
 
                       <div class="col form-group">
@@ -282,7 +282,6 @@
                     </div>
 
                     <div class="row mt-1 PassengerField">
-
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Lead Passenger Name <span style="color:red">*</span></label>
@@ -390,6 +389,7 @@
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
+
                     </div>
                   </div>
 
@@ -406,7 +406,8 @@
                     </div>
                   </div>
 
-                  <div id="appendPaxName" class="col-md-12"></div>
+                  <div id="appendPaxName" class="col-md-12">
+                  </div>
 
                   <div class="col-md-12 col-offset-md-4">
                     <button type="button" class="add-pax-column btn btn-sm btn-dark float-right"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -436,7 +437,6 @@
                 </div>
 
                 <div class="parent" id="parent">
-
                   @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                   <div class="sortable sortable-spacing">
@@ -553,8 +553,6 @@
                             </div>
                           </div>
 
-                          {{-- <div class="category-details-render col-12 row"></div> --}}
-                        
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Supplier Country <span style="color:red">*</span></label>
@@ -614,8 +612,6 @@
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
-
-                          {{-- <div class="product-details-render col-12 row"></div> --}}
 
                           <div class="col-md-3 payment-type-feild">
                             <div class="form-group">
