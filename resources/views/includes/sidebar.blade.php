@@ -1,5 +1,6 @@
 @php
     $route = \Route::currentRouteName();
+    $currenct_user_is_admin = Auth::user()->hasAdmin();
 
     $supplier_routes = [
         'suppliers.index',
@@ -172,7 +173,7 @@
                     </a>
                 </li>
                
-                @if(Auth::user()->hasAdmin())
+                @if($currenct_user_is_admin)
 
                     <li class="nav-item {{ in_array($route, ['users.index', 'users.create', 'users.edit', 'roles.index', 'roles.create', 'roles.edit']) ? 'menu-open': '' }}">
                         
@@ -326,7 +327,7 @@
 
                 </li>
 
-                @if(Auth::user()->hasAdmin())
+                @if($currenct_user_is_admin)
                 <li class="nav-item {{ in_array($route, $setting_routes) ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa-cog"></i>
@@ -503,7 +504,7 @@
                     </a>
 
                     <ul class="nav nav-treeview">
-                        @if(Auth::user()->hasAdmin())
+                        @if($currenct_user_is_admin)
                             <li class="nav-item">
                                 <a href="{{ route('reports.commission.report') }}" class="nav-link sidebar-border-left {{ in_array($route, ['reports.commission.report']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
