@@ -666,14 +666,17 @@ class ResponseController extends Controller
         ->leftJoin('commission_criteria_currencies', 'commission_criterias.id', '=', 'commission_criteria_currencies.commission_criteria_id')
         ->orderBy('commission_criterias.id','ASC')
         ->get([
-            'commission_criterias.commission_id',
+            'commission_criterias.id',
+            'commission_criterias.name',
             'commission_criterias.percentage',
-            'commission_criteria_groups.commission_group_id',
             'commission_criteria_brands.brand_id',
             'commission_criteria_holiday_types.holiday_type_id',
             'commission_criteria_currencies.currency_id',
             'commission_criteria_seasons.season_id'
         ]);
+
+        // 'commission_criterias.commission_id',
+        // 'commission_criteria_groups.commission_group_id',
     }
 
     public function getCommissions(){

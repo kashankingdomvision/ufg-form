@@ -918,7 +918,7 @@
                     </h5>
                   </label>
 
-                  <div class="col-md-3 align-items-end">
+                  <div class="col-md-3 d-flex align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
@@ -929,7 +929,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-2 d-none">
+                  <div class="col-sm-2 d-flex align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="number" name="commission_percentage" class="form-control commission-percentage hide-arrows" min="0" step="any" value="0.00" readonly>
@@ -939,6 +939,15 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" name="commission_criteria_id" value="" class="form-control commission-criteria-id hide-arrows" readonly>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
                 <div class="form-group row">

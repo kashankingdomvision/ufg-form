@@ -51,6 +51,7 @@ class Booking extends Model
         'markup_percentage',
         'selling_price',
         'profit_percentage',
+        'commission_criteria_id',
         'commission_amount',
         'commission_percentage',
         'selling_currency_oc',
@@ -98,6 +99,7 @@ class Booking extends Model
             return $this->lead_passenger_dinning_preference;
         }
     }
+    
     public function getLeadPassengerBeddingPreferencesAttribute()
     {
         if($this->agency == 1){
@@ -140,6 +142,10 @@ class Booking extends Model
     
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
+    public function getCommissionCriteria(){
+    	return $this->hasOne(CommissionCriteria::class, 'id', 'commission_criteria_id');
     }
 
     function getCommission() {

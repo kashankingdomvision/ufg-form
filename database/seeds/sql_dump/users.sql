@@ -16,3 +16,7 @@ UPDATE `users` SET `rate_type` = 'manual';
 
 -- set supervisor 
 UPDATE `users` SET `supervisor_id` = '11' WHERE `users`.`id` = 2;
+
+-- set commission & group null
+UPDATE `users` SET `commission_id` = NULL;
+UPDATE `users` SET `commission_group_id` = NULL;

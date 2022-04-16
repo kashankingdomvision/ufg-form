@@ -54,6 +54,7 @@ class Quote extends Model
         'markup_percentage',
         'selling_price',
         'profit_percentage',
+        'commission_criteria_id',
         'commission_amount',
         'commission_percentage',
         'selling_currency_oc',
@@ -133,6 +134,10 @@ class Quote extends Model
     public function getLeadPassengerResidentIn()
     {
         return $this->hasOne(Country::class, 'id', 'lead_passenger_resident');
+    }
+
+    public function getCommissionCriteria(){
+    	return $this->hasOne(CommissionCriteria::class, 'id' ,'commission_criteria_id');
     }
 
     public function getCommission(){

@@ -1641,15 +1641,13 @@ $(document).ready(function () {
       netValue = removeComma($('.total-net-margin').val());
     }
 
-    if (commissionID && commissionGroupID && brandID && holidayTypeID && currencyID && seasonID) {
-      commissionPercentage = getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID);
-      calculatedCommisionAmount = parseFloat(netValue / 100) * parseFloat(commissionPercentage);
-      var commissionNames = getCommissionAndGroupName(commissionID, commissionGroupID);
+    if (brandID && holidayTypeID && currencyID && seasonID) {
+      commissionObject = getCommissionPercent(brandID, holidayTypeID, currencyID, seasonID);
+      calculatedCommisionAmount = parseFloat(netValue / 100) * parseFloat(commissionObject.commissionPercentage);
 
-      if (parseFloat(commissionPercentage) > 0.00) {
-        $('.badge-commission-name').text(commissionNames.commissionName);
-        $('.badge-commission-group-name').text(commissionNames.commissionGroupName);
-        $('.badge-commission-percentage').text("".concat(commissionPercentage, " %"));
+      if (parseFloat(commissionObject.commissionPercentage) > 0.00) {
+        $('.badge-commission-name').text(commissionObject.commissionName);
+        $('.badge-commission-percentage').text("".concat(commissionObject.commissionPercentage, " %")); // $('.badge-commission-group-name').text(commissionNames.commissionGroupName);
       } else {
         resetCommissionNameFeilds();
       }
@@ -1658,7 +1656,8 @@ $(document).ready(function () {
       resetCommissionNameFeilds();
     }
 
-    $('.commission-percentage').val(check(commissionPercentage));
+    $('.commission-criteria-id').val(commissionObject.criteriaID);
+    $('.commission-percentage').val(check(commissionObject.commissionPercentage));
     $('.commission-amount').val(check(calculatedCommisionAmount));
   };
 
@@ -1780,9 +1779,9 @@ $(document).ready(function () {
     }
 
     if (markupType == 'whole') {
-      $(".total-markup-amount").val(parseFloat(0).toFixed(2));
-      $(".total-markup-percent").val(parseFloat(0).toFixed(2));
-      $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
+      // $(".total-markup-amount").val(parseFloat(0).toFixed(2));
+      // $(".total-markup-percent").val(parseFloat(0).toFixed(2));
+      // $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
       $(".total-selling-price").val(check(actualCostInBookingCurrency));
     }
 
@@ -1842,17 +1841,25 @@ $(document).ready(function () {
     $('.badge-commission-percentage').text('');
   }
 
-  function getCommissionPercent(commissionID, commissionGroupID, brandID, holidayTypeID, currencyID, seasonID) {
-    var commissionPercentage = 0.00;
+  function getCommissionPercent(brandID, holidayTypeID, currencyID, seasonID) {
+    var criteriaID = '';
+    var criteriaName = '';
+    var criteriaPercentage = 0.00;
     var object = commissionCriteriaRates.filter(function (elem) {
-      return elem.commission_id == commissionID && elem.commission_group_id == commissionGroupID && elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
+      return elem.brand_id == brandID && elem.holiday_type_id == holidayTypeID && elem.currency_id == currencyID && elem.season_id == seasonID;
     });
 
     if (object.length > 0) {
-      commissionPercentage = object.shift().percentage;
+      criteriaID = object[0].id;
+      criteriaName = object[0].name;
+      criteriaPercentage = object[0].percentage;
     }
 
-    return commissionPercentage;
+    return {
+      criteriaID: criteriaID,
+      commissionName: criteriaName,
+      commissionPercentage: criteriaPercentage
+    };
   }
 
   function getCommissionAndGroupName(commissionID, commissionGroupID) {

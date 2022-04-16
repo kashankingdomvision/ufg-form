@@ -159,6 +159,7 @@ class BookingController extends Controller
             'user_id'                           =>  Auth::id(),
             'rate_type'                         =>  ($request->rate_type == 'live')? 'live': 'manual',
             'markup_type'                       =>  $request->markup_type??NULL,
+            'commission_criteria_id'            =>  $request->commission_criteria_id??NULL,
             'commission_id'                     =>  $request->commission_id??NULL,
             'commission_group_id'               =>  $request->commission_group_id??NULL,
             'default_supplier_currency_id'      =>  $request->default_supplier_currency_id??NULL,

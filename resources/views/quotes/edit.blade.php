@@ -1129,8 +1129,8 @@
                   <label for="inputEmail3" class="col-md-4 col-form-label">
                     Staff Commission
                     <h5>
-                      <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
-                      <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span>
+                      <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommissionCriteria->name) && !empty($quote->getCommissionCriteria->name) ? $quote->getCommissionCriteria->name : ''}}</span>
+                      {{-- <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span> --}}
                       <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                     </h5>
                   </label>
@@ -1146,13 +1146,21 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2 d-none">
+                  <div class="col-md-2 d-flex align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="number" name="commission_percentage" value="{{ Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" name="commission_criteria_id" value="{{ $quote->commission_criteria_id }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
                       </div>
                     </div>
                   </div>

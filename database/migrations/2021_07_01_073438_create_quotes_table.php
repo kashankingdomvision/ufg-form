@@ -17,13 +17,13 @@ class CreateQuotesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('commission_id');
+            $table->unsignedBigInteger('commission_id')->nullable();
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
-            $table->unsignedBigInteger('commission_group_id');
+            $table->unsignedBigInteger('commission_group_id')->nullable();
             $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
             $table->string('reason_for_trip');

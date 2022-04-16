@@ -33,9 +33,11 @@
                 <span class="fa fa-arrow-left"></span>&nbsp;&nbsp;Back to  Listing
               </a>
 
-              <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="btn btn-success btn-sm float-right mr-2" title="View Booking" >
-                <span class="fa fa-eye"></span>&nbsp;&nbsp;View Booking
-              </a>
+              @if(isset($quote->getBooking->id))
+                <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="btn btn-success btn-sm float-right mr-2" title="View Booking" >
+                  <span class="fa fa-eye"></span>&nbsp;&nbsp;View Booking
+                </a>
+              @endif
 
               @if($quote->booking_status == 'quote')
                 <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
@@ -1109,30 +1111,38 @@
                   <label for="inputEmail3" class="col-md-4 col-form-label">
                     Staff Commission
                     <h5>
-                      <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommission->name) && !empty($quote->getCommission->name) ? $quote->getCommission->name : ''}}</span>
-                      <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span>
+                      <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($quote->getCommissionCriteria->name) && !empty($quote->getCommissionCriteria->name) ? $quote->getCommissionCriteria->name : ''}}</span>
+                      {{-- <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->getCommissionGroup->name) && !empty($quote->getCommissionGroup->name) ? $quote->getCommissionGroup->name : ''}}</span> --}}
                       <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                     </h5>
                   </label>
 
-                  <div class="col-md-3 align-items-end">
+                  <div class="col-md-3 d-flex align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->getCurrency && $quote->getCurrency->count()) ? $quote->getCurrency->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ isset($quote->getCurrency->code) && !empty($quote->getCurrency->code) ? $quote->getCurrency->code : '' }}</span>
                         </div>
-                        <input type="text" value="{{ Helper::number_format($quote->commission_amount) }}" name="commission_amount" class="form-control commission-amount hide-arrows" readonly>
+                        <input type="text" name="commission_amount" value="{{ Helper::number_format($quote->commission_amount) }}" class="form-control commission-amount hide-arrows" min="0" step="any" readonly>
                       </div>
                     </div>
                   </div>
 
-                  <div class="col-md-2 d-none">
+                  <div class="col-md-2 d-flex align-items-end">
                     <div class="form-group">
                       <div class="input-group">
-                        <input type="number" step="any" name="commission_percentage" value="{{ Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
+                        <input type="number" name="commission_percentage" value="{{ Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
                         <div class="input-group-append">
                           <div class="input-group-text">%</div>
                         </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" name="commission_criteria_id" value="{{ $quote->commission_criteria_id }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
                       </div>
                     </div>
                   </div>
