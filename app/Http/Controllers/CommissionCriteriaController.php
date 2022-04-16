@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CommissionCriteriaRequest;
+use App\Http\Requests\UpdateCommissionCriteriaRequest;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -59,13 +60,6 @@ class CommissionCriteriaController extends Controller
      */
     public function store(CommissionCriteriaRequest $request)
     {
-        // ->whereHas('getCommissionGroups', function($query) use($request){
-        //     $query->whereIn('commission_group_id', $request->commission_group_id );
-        // })
-        // where([
-        //     'commission_id'       => $request->commission_id,
-        // ])
-
         $commission_criterias = CommissionCriteria::
         whereHas('getBrands', function($query) use ($request){
             $query->whereIn('brand_id', $request->brand_id );
@@ -81,7 +75,12 @@ class CommissionCriteriaController extends Controller
         });
  
         if($commission_criterias->exists()){
-            throw ValidationException::withMessages([ 'percentage' => 'The Percentage has already been taken with these Criteria.']);
+            throw ValidationException::withMessages([ 
+                'brand_id'        => 'The Criteria has already been taken.',
+                'holiday_type_id' => 'The Criteria has already been taken.',
+                'currency_id'     => 'The Criteria has already been taken.',
+                'season_id'       => 'The Criteria has already been taken.'
+            ]);
         }
 
         $commission_criterias = CommissionCriteria::create([
@@ -91,7 +90,6 @@ class CommissionCriteriaController extends Controller
         ]);
 
         $commission_criterias->getSeasons()->sync($request->season_id);
-        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
@@ -101,6 +99,15 @@ class CommissionCriteriaController extends Controller
             'success_message' => 'Commission Criteria Created Successfully.',
             'redirect_url'    => route('commission_criterias.index') 
         ]);
+
+        // ->whereHas('getCommissionGroups', function($query) use($request){
+        //     $query->whereIn('commission_group_id', $request->commission_group_id );
+        // })
+        // where([
+        //     'commission_id'       => $request->commission_id,
+        // ])
+
+        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
     }
 
     /**
@@ -134,19 +141,12 @@ class CommissionCriteriaController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // CommissionCriteriaRequest
-    public function update(CommissionCriteriaRequest $request, $id)
+    public function update(UpdateCommissionCriteriaRequest $request, $id)
     {
         $commission_criterias = CommissionCriteria::
-        // where([
-        //     'commission_id'       => $request->commission_id,
-        // ])
         whereHas('getSeasons', function($query) use($request){
             $query->whereIn('season_id', $request->season_id );
         })
-        // ->whereHas('getCommissionGroups', function($query) use($request){
-        //     $query->whereIn('commission_group_id', $request->commission_group_id );
-        // })
         ->whereHas('getCurrencies', function($query) use($request){
             $query->whereIn('currency_id', $request->currency_id );
         })
@@ -159,18 +159,21 @@ class CommissionCriteriaController extends Controller
         ->where('id', '!='  , decrypt($id));
 
         if($commission_criterias->exists()){
-            throw ValidationException::withMessages([ 'percentage' => 'The Percentage has already been taken with these Criteria.']);
+            throw ValidationException::withMessages([ 
+                'brand_id'        => 'The Criteria has already been taken.',
+                'holiday_type_id' => 'The Criteria has already been taken.',
+                'currency_id'     => 'The Criteria has already been taken.',
+                'season_id'       => 'The Criteria has already been taken.'
+            ]);
         }
 
         $commission_criterias = CommissionCriteria::find(decrypt($id));
         $commission_criterias->update([
-            // 'commission_id'       => $request->commission_id,
             'percentage'          => $request->percentage,
             'user_id'             => Auth::id()
         ]);
 
         $commission_criterias->getSeasons()->sync($request->season_id);
-        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
         $commission_criterias->getCurrencies()->sync($request->currency_id);
         $commission_criterias->getBrands()->sync($request->brand_id);
         $commission_criterias->getHolidayTypes()->sync($request->holiday_type_id);
@@ -180,6 +183,17 @@ class CommissionCriteriaController extends Controller
             'success_message' => 'Commission Criteria Updated Successfully.',
             'redirect_url'    => route('commission_criterias.index') 
         ]);
+
+
+        // where([
+        //     'commission_id'       => $request->commission_id,
+        // ])
+       // ->whereHas('getCommissionGroups', function($query) use($request){
+        //     $query->whereIn('commission_group_id', $request->commission_group_id );
+        // })
+
+        // $commission_criterias->getCommissionGroups()->sync($request->commission_group_id);
+        // 'commission_id'       => $request->commission_id,
     }
 
     /**

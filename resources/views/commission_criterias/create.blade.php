@@ -48,6 +48,8 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
+                <h5 class="mt-1 mb-1-half"><span class="double-underline">Commission Criteria</span></h5>
+
                 <div class="form-group">
                   <label>Brand <span style="color:red">*</span></label>
                   <select name="brand_id[]" id="brand_id" data-placeholder="Select Brand" class="form-control select2-multiple getMultipleBrandtoHoliday brand-id" multiple>
