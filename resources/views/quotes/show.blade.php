@@ -1128,7 +1128,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2 d-flex align-items-end">
+                  <div class="col-md-2 d-none align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="number" name="commission_percentage" value="{{ Helper::number_format($quote->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
@@ -1139,7 +1139,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2 d-flex align-items-end">
+                  <div class="col-md-2 d-none align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="text" name="commission_criteria_id" value="{{ $quote->commission_criteria_id }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>

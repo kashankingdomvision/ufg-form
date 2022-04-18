@@ -1814,7 +1814,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-2 d-flex align-items-end d-none">
+                  <div class="col-sm-2 d-none align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="number" step="any" name="commission_percentage" value="{{ Helper::number_format($booking->commission_percentage) }}" class="form-control commission-percentage hide-arrows" min="0" step="any" readonly>
@@ -1825,7 +1825,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-2 d-flex align-items-end">
+                  <div class="col-md-2 d-none align-items-end">
                     <div class="form-group">
                       <div class="input-group">
                         <input type="text" name="commission_criteria_id" value="{{ $booking->commission_criteria_id }}" class="form-control commission-criteria-id hide-arrows" min="0" step="any" readonly>
