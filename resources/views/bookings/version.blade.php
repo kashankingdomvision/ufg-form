@@ -538,18 +538,23 @@
                       $booking_detail = (object) $booking_detail;
                       @endphp
 
+                      {{-- {{
+                        dd($booking_detail )
+                      }} --}}
                       <div class="quote card card-default quote-{{$key}}" data-key="{{$key}}">
 
                         <div class="card-header">
                           <h3 class="card-title card-title-style quote-title">
                             <div class="badge-service-status d-inline">
-                              @if($booking_detail->status == 'active')
+                              @if($booking_detail->status == 'not_booked')
+                                <span class="badge badge-warning">Not Booked</span> 
+                              @elseif($booking_detail->status == 'pending')
+                                <span class="badge badge-warning">Pending</span>
+                              @elseif($booking_detail->status == 'booked')
                                 <span class="badge badge-success">Booked</span>
-                              @elseif($booking_detail->status == 'cancelled')
+                              @elseif($booking_detail->status == 'pending')
                                 <span class="badge badge-danger">Cancelled</span>
                               @endif
-
-                              <span class="border mr-2 ml-1"></span>
                             </div>
                               
                             <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
@@ -596,8 +601,20 @@
                         </div>
 
                         <div class="card-body">
-
                           <div class="row">
+
+                            <div class="col-md-3">
+                              <div class="form-group">
+                                <label>Status</label>
+                                <select name="quote[{{ $key }}][status]" data-name="status" id="quote_{{ $key }}_status" class="form-control select2single booking-detail-status">
+                                  <option value="">Select Status</option>
+                                  @foreach ($booking_detail_statuses as $status)
+                                    <option value="{{ $status }}" data-name="{{ $status }}" {{ $booking_detail->status == $status ? 'selected' : '' }} >{{ ucwords(str_replace('_', ' ', $status)) }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                            </div>
+
                             <div class="col-md-3">
                               <div class="form-group">
                                 <label>Date of Service <span style="color:red">*</span></label>

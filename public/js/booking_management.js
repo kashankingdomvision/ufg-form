@@ -1490,11 +1490,35 @@ $(document).ready(function () {
     getSellingPricenAndActualCostInBookingCurrency(actualCost, quoteKey);
     getBookingTotalValues();
   });
-  /*
-  |--------------------------------------------------------------------------
-  | End Booking Management
-  |--------------------------------------------------------------------------
-  */
+  $(document).on('change', '.booking-detail-status', function () {
+    var quote = $(this).closest('.quote');
+    var bookingDetailStatus = $(this).find(':selected').data('name');
+    var badgeName;
+
+    switch (bookingDetailStatus) {
+      case 'not_booked':
+        badgeName = '<span class="badge badge-warning">Not Booked</span>';
+        break;
+
+      case 'pending':
+        badgeName = '<span class="badge badge-warning">Pending</span>';
+        break;
+
+      case 'booked':
+        badgeName = '<span class="badge badge-success">Booked</span>';
+        break;
+
+      case 'cancelled':
+        badgeName = '<span class="badge badge-danger">Cancelled</span>';
+        break;
+
+      default:
+        badgeName = '';
+        break;
+    }
+
+    quote.find('.badge-service-status').html(badgeName);
+  });
 });
 
 /***/ }),

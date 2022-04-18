@@ -611,14 +611,13 @@
 
                   @if($booking->getBookingDetail && $booking->getBookingDetail->count())
                     <div class="sortable sortable-spacing">
-                      @foreach ($booking->getBookingDetail()->get() as $key  => $booking_detail )
+                      @foreach ($booking->getBookingDetail as $key  => $booking_detail )
 
                         <div class="quote card card-default quote-{{$key}} {{ $booking_detail->status == 'cancelled' ? 'collapsed-card' : '' }}" data-key="{{$key}}">
                           <div class="card-header">
                             <h3 class="card-title card-title-style quote-title">
                               <div class="badge-service-status d-inline">
                                 {!! $booking_detail->booking_detail_status !!}
-
                                 {{-- <span class="border mr-2 ml-1"></span> --}}
                               </div>
                                 
@@ -672,6 +671,18 @@
                                 <div class="form-group">
                                   <label>Booking Detail ID</label>
                                   <input type="text" value="{{ $booking_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id" class="form-control detail-id">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Status</label>
+                                  <select name="quote[{{ $key }}][status]" data-name="status" id="quote_{{ $key }}_status" class="form-control select2single booking-detail-status">
+                                    <option value="">Select Status</option>
+                                    @foreach ($booking_detail_statuses as $status)
+                                      <option value="{{ $status }}" data-name="{{ $status }}" {{ $booking_detail->status == $status ? 'selected' : '' }} >{{ ucwords(str_replace('_', ' ', $status)) }}</option>
+                                    @endforeach
+                                  </select>
                                 </div>
                               </div>
 

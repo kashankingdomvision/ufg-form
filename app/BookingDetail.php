@@ -56,6 +56,16 @@ class BookingDetail extends Model
         'tour_address',
     ];
 
+    
+    public function scopeStatuses(){
+        return [ 
+            'not_booked',
+            'pending', 
+            'booked', 
+            'cancelled'
+        ];
+    }
+
     public function getBookingDetailStatusAttribute()
     {
         $status = $this->status;
@@ -242,5 +252,5 @@ class BookingDetail extends Model
 
     public function setSellingPriceInBookingCurrencyAttribute( $value ) {
         $this->attributes['selling_price_in_booking_currency'] = str_replace( ',', '', $value );
-    }
+    }  
 }

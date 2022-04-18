@@ -618,7 +618,6 @@
                             <h3 class="card-title card-title-style quote-title">
                               <div class="badge-service-status d-inline">
                                 {!! $booking_detail->booking_detail_status !!}
-                                {{-- <span class="border mr-2 ml-1"></span> --}}
                               </div>
                                 
                               <span class="badge badge-info badge-date-of-service">{{ isset($booking_detail->date_of_service) && !empty($booking_detail->date_of_service) ? $booking_detail->date_of_service : '' }}</span>
@@ -671,6 +670,18 @@
                                 <div class="form-group">
                                   <label>Booking Detail ID</label>
                                   <input type="text" value="{{ $booking_detail->id }}" name="quote[{{ $key }}][detail_id]"  id="quote_{{ $key }}_detail_id" class="form-control detail-id">
+                                </div>
+                              </div>
+
+                              <div class="col-md-3">
+                                <div class="form-group">
+                                  <label>Status</label>
+                                  <select name="quote[{{ $key }}][status]" data-name="status" id="quote_{{ $key }}_status" class="form-control select2single booking-detail-status">
+                                    <option value="">Select Status</option>
+                                    @foreach ($booking_detail_statuses as $status)
+                                      <option value="{{ $status }}" data-name="{{ $status }}" {{ $booking_detail->status == $status ? 'selected' : '' }} >{{ ucwords(str_replace('_', ' ', $status)) }}</option>
+                                    @endforeach
+                                  </select>
                                 </div>
                               </div>
 
@@ -2402,3 +2413,5 @@
 {{-- <a href="javascript:void(0)" class="cancel-booking float-right btn btn-danger btn-sm mr-2" data-bookingid="{{ $booking->id }}" data-title="Cancel Booking" data-target="#Cancel_booking">
   <i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Booking
 </a> --}}
+
+{{-- <span class="border mr-2 ml-1"></span> --}}

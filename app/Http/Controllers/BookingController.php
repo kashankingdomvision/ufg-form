@@ -215,6 +215,7 @@ class BookingController extends Controller
     {
         $data = [
 
+            'status'                            => $quoteD['status'],
             'category_id'                       => $quoteD['category_id'],
             'supplier_country_ids'              => isset($quoteD['supplier_country_ids']) && !empty($quoteD['supplier_country_ids']) ? json_encode($quoteD['supplier_country_ids']) : NULL,
             'group_owner_id'                    => isset($quoteD['group_owner_id']) ? $quoteD['group_owner_id'] : NULL,
@@ -344,6 +345,7 @@ class BookingController extends Controller
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['locations']        = Location::get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        $data['booking_detail_statuses'] = BookingDetail::Statuses();
 
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -649,6 +651,8 @@ class BookingController extends Controller
         $data['locations']        = Location::get();
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        $data['booking_detail_statuses'] = BookingDetail::Statuses();
+
         
         if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
 
@@ -707,7 +711,8 @@ class BookingController extends Controller
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
         $data['locations']        = Location::get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
-        
+        $data['booking_detail_statuses'] = BookingDetail::Statuses();
+      
         return view('bookings.version', $data);
     }
 
