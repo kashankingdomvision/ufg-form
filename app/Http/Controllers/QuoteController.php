@@ -459,33 +459,38 @@ class QuoteController extends Controller
 
     public function create()
     {
-        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        // whereHas('getRole', function($query){
-        //     $query->where('slug', 'sales-agent');
-        // })
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
         $data['quote_id']         = Helper::getQuoteID();
-        $data['quote_ref']        = Quote::get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::orderBy('created_at','DESC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
+        $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
-
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
-        $data['harbours']          = Harbour::get();
+        
+        
+        
+        // $data['commission_types'] = Commission::all();
+        // $data['quote_ref']        = Quote::get('quote_ref');
+        // $data['locations']        = Location::get();
+        // $data['harbours']          = Harbour::get();
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
 
         return view('quotes.create', $data);
     }
@@ -1204,3 +1209,8 @@ class QuoteController extends Controller
     // 'supplier_country_ids'  => (isset($quoteD['supplier_country_ids'])) ? json_encode($quoteD['supplier_country_ids']) : NULL ,
     // 'added_in_sage'           => isset($quoteD['added_in_sage']) && !empty($quoteD['added_in_sage']) ? : 0,
 }
+
+
+// whereHas('getRole', function($query){
+//     $query->where('slug', 'sales-agent');
+// })
