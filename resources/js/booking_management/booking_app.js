@@ -1003,6 +1003,9 @@ $(document).ready(function() {
                 $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
                 $(`${quoteClass}`).find('.status-setting').addClass('d-none');
 
+                $(`${quoteClass}`).find('.supplier-country-id').val($('.country-destination').val()).change();
+
+
                 datepickerReset(1,`${quoteClass}`);
                 reinitializedSingleSelect2();
                 reinitializedMultipleSelect2();
@@ -1012,8 +1015,8 @@ $(document).ready(function() {
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
                 // set default supplier country
-                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
-                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
+                // let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                // $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
 
                 tourContactAutoCompleteInitialize();
 
@@ -1171,6 +1174,7 @@ $(document).ready(function() {
                 $(`${quoteClass}`).find('.finance-clonning-btn, .calender-feild-form-group').removeClass('d-none');
                 $(`${quoteClass}`).find('.booking-supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
                 $(`${quoteClass}`).find('.status-setting').addClass('d-none');
+                $(`${quoteClass}`).find('.supplier-country-id').val($('.country-destination').val()).change();
 
 
                 datepickerReset(1,`${quoteClass}`);
@@ -1182,8 +1186,8 @@ $(document).ready(function() {
                 $(`#quote_${quoteKey}_date_of_service`).datepicker("setDate", endDateOfService);
 
                 // set default supplier country
-                let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
-                $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
+                // let supplier_country_ids = $(`#quote_0_supplier_country_ids`).val();
+                // $(`#quote_${quoteKey}_supplier_country_ids`).val(supplier_country_ids).change();
 
                 $('html, body').animate({ scrollTop: $(quoteClass).offset().top }, 1000);
                 $('.parent-spinner').removeClass('spinner-border');

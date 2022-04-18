@@ -2989,6 +2989,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        $("".concat(quoteClass)).find('.supplier-country-id').val($('.country-destination').val()).change();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
@@ -2997,10 +2998,7 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(currentQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
-
-        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
-        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
         $('html, body').animate({
           scrollTop: $(quoteClass).offset().top
         }, 1000);
@@ -3080,6 +3078,7 @@ $(document).ready(function () {
         $("".concat(quoteClass)).find('.previewId').attr('id', "quote_".concat(quoteKey, "_holder"));
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
+        $("".concat(quoteClass)).find('.supplier-country-id').val($('.country-destination').val()).change();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
@@ -3088,10 +3087,7 @@ $(document).ready(function () {
         /* Set last End Date of Service */
 
         var endDateOfService = $("#quote_".concat(beforeAppendLastQuoteKey, "_end_date_of_service")).val();
-        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService); // set default supplier country
-
-        var supplier_country_ids = $("#quote_0_supplier_country_ids").val();
-        $("#quote_".concat(quoteKey, "_supplier_country_ids")).val(supplier_country_ids).change();
+        $("#quote_".concat(quoteKey, "_date_of_service")).datepicker("setDate", endDateOfService);
         $('html, body').animate({
           scrollTop: $('.quote:last').offset().top
         }, 1000);
