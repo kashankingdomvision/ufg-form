@@ -26,10 +26,7 @@ $(document).ready(function($) {
     // set autofocus on search
     $(document).on('select2:open', '.select2single', function(e) {
 
-        $(".select2-search__field").each(function (
-            key,
-            value,
-        ){
+        $(".select2-search__field").each(function (key, value){
             value.focus();
         })
     });
