@@ -644,7 +644,31 @@ $(document).ready(function($) {
     });
 
     // make quote section sortable
-    $(".sortable").sortable();
+    $( ".sortable" ).sortable({
+        disabled: true
+    });
+    
+    // Sortable disabled or enabled
+    $(document).on('click','.row .expand-collapse-quote-detail-cards', function(){
+        if ($('.sortable-spacing .quote').hasClass('collapsed-card')){
+            $( ".sortable" ).sortable({
+                disabled: true
+            });
+        } 
+        else {
+            $( ".sortable" ).sortable({
+                disabled: false
+            });
+        }
+    });
+
+    $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+        $(".sortable").sortable("disable");      
+    });
+
+    $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+        $(".sortable").sortable("enable");      
+    });
 
     $('.date-range-picker').daterangepicker({
         autoUpdateInput: false,
