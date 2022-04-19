@@ -670,6 +670,14 @@ $(document).ready(function($) {
         $(".sortable").sortable("enable");      
     });
 
+    // $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
+    //     $(".sortable").sortable("disable");      
+    // });
+
+    // $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function() {
+    //     $(".sortable").sortable();
+    // });
+
     $('.date-range-picker').daterangepicker({
         autoUpdateInput: false,
         locale: {
