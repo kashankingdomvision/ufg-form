@@ -69799,13 +69799,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
         disabled: false
       });
     }
-  });
-  $('.collapse-expand-btn').on('expanded.lte.cardwidget', function () {
-    $(".sortable").sortable("disable");
-  });
-  $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function () {
-    $(".sortable").sortable("enable");
-  }); // $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
+  }); // $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+  //     $(".sortable").sortable("disable");      
+  // });
+  // $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+  //     $(".sortable").sortable("enable");      
+  // });
+  // $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
   //     $(".sortable").sortable("disable");      
   // });
   // $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function() {

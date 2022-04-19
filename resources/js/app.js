@@ -662,13 +662,13 @@ $(document).ready(function($) {
         }
     });
 
-    $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
-        $(".sortable").sortable("disable");      
-    });
+    // $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+    //     $(".sortable").sortable("disable");      
+    // });
 
-    $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
-        $(".sortable").sortable("enable");      
-    });
+    // $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+    //     $(".sortable").sortable("enable");      
+    // });
 
     // $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
     //     $(".sortable").sortable("disable");      
