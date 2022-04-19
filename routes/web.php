@@ -466,6 +466,21 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'BrandController@bulkAction' ));
     });
 
+    /*  Booking Methods */
+    Route::group([
+        'prefix' => 'booking_methods',
+        'as'     => 'booking_methods.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'SettingControllers\BookingMethodController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'SettingControllers\BookingMethodController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'SettingControllers\BookingMethodController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SettingControllers\BookingMethodController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'SettingControllers\BookingMethodController@update'));
+        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'SettingControllers\BookingMethodController@destroy'));
+        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'SettingControllers\BookingMethodController@bulkAction' ));
+    });
+
     /*  Cabins */
     Route::group([
         'prefix' => 'cabins',

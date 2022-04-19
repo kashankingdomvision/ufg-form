@@ -69207,7 +69207,7 @@ __webpack_require__(/*! ./asset/pace/pace.min */ "./resources/js/asset/pace/pace
 
 jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // set autofocus on search
-  $(document).on('select2:open', '.select2single', function (e) {
+  $(document).on('select2:open', '.select2single, .selling-price-other-currency', function (e) {
     $(".select2-search__field").each(function (key, value) {
       value.focus({
         preventScroll: true
@@ -69785,7 +69785,34 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     }
   }); // make quote section sortable
 
-  $(".sortable").sortable();
+  $(".sortable").sortable({
+    disabled: true
+  }); // Sortable disabled or enabled
+
+  $(document).on('click', '.row .expand-collapse-quote-detail-cards', function () {
+    if ($('.sortable-spacing .quote').hasClass('collapsed-card')) {
+      $(".sortable").sortable({
+        disabled: true
+      });
+    } else {
+      $(".sortable").sortable({
+        disabled: false
+      });
+    }
+  });
+  $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function () {
+    $(this).closest('.quote').addClass('unsortable');
+    $(".sortable").sortable({
+      cancel: ".unsortable"
+    });
+  });
+  $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function () {
+    $(this).closest('.quote').removeClass('unsortable');
+    $(".sortable").sortable({
+      disabled: false,
+      cancel: ".unsortable"
+    });
+  });
   $('.date-range-picker').daterangepicker({
     autoUpdateInput: false,
     locale: {
@@ -70505,6 +70532,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 //         value.focus();
 //     })
 // })
+// $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+//     $(".sortable").sortable("disable");      
+// });
+// $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+//     $(".sortable").sortable("enable");      
+// });
 
 /***/ }),
 

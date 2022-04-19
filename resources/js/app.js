@@ -21,12 +21,12 @@ require('./asset/adminlte/adminlte');
 require('./asset/intl_tel_input/utils');
 require('./asset/pace/pace.min');
 
-$(document).ready(function($) {
+$(document).ready(function ($) {
 
     // set autofocus on search
-    $(document).on('select2:open', '.select2single', function(e) {
+    $(document).on('select2:open', '.select2single, .selling-price-other-currency', function (e) {
 
-        $(".select2-search__field").each(function (key, value){
+        $(".select2-search__field").each(function (key, value) {
             value.focus({
                 preventScroll: true
             });
@@ -41,12 +41,12 @@ $(document).ready(function($) {
         timer: 2200,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     });
 
-    window.calltextEditorSummerNote = function(val = null) {
+    window.calltextEditorSummerNote = function (val = null) {
 
         $('.summernote:last').summernote('destroy');
         $('.note-editor:last').remove();
@@ -59,11 +59,11 @@ $(document).ready(function($) {
         }, 'code', val);
     }
 
-    window.setTextEditorValue = function(id, Text) {
+    window.setTextEditorValue = function (id, Text) {
         $(id).summernote('code', Text);
     }
 
-    window.formatState = function(option) {
+    window.formatState = function (option) {
         var optionImage = $(option.element).attr('data-image');
         if (!optionImage) {
             return option.text;
@@ -72,17 +72,17 @@ $(document).ready(function($) {
         return $(`<span><img height="19" width="19" src="${optionImage}" class="option-flag-image" />${option.text}</span>`);
     };
 
-    window.reinitializedSingleSelect2 = function() {
+    window.reinitializedSingleSelect2 = function () {
         $('.select2single').select2({
             width: '100%',
             theme: "bootstrap",
-         
+
             templateResult: formatState,
             templateSelection: formatState,
         });
     }
 
-    window.reinitializedMultipleSelect2 = function() {
+    window.reinitializedMultipleSelect2 = function () {
         $('.select2-multiple').select2({
             width: '100%',
             theme: "classic",
@@ -91,27 +91,27 @@ $(document).ready(function($) {
         });
     }
 
-    window.destroySingleSelect2 = function() {
+    window.destroySingleSelect2 = function () {
         if ($('.select2single').data('select2')) {
             $('.select2single').select2('destroy');
         }
     }
 
-    window.destroyMultipleSelect2 = function() {
+    window.destroyMultipleSelect2 = function () {
         if ($('.select2-multiple').data('select2')) {
             $('.select2-multiple').select2('destroy');
         }
     }
 
-    window.disabledFeild = function(p) {
+    window.disabledFeild = function (p) {
         $(p).attr("disabled", true);
     }
 
-    window.removeDisabledAttribute = function(p) {
+    window.removeDisabledAttribute = function (p) {
         $(p).removeAttr("disabled");
     }
 
-    window.removeSpace = function(string) {
+    window.removeSpace = function (string) {
         return string.replace(/\s/g, '');
     }
 
@@ -120,13 +120,13 @@ $(document).ready(function($) {
     | Define Global Functions
     |--------------------------------------------------------------------------
     */
-    
-    window.removeFormValidationStyles = function() {
+
+    window.removeFormValidationStyles = function () {
         $('input, select, textarea').removeClass('is-invalid');
         $('.text-danger').html('');
     }
 
-    window.resetModalForm = function(modalID) {
+    window.resetModalForm = function (modalID) {
 
         $(`${modalID}`).trigger("reset");
         $(`${modalID} .summernote`).summernote("reset");
@@ -134,47 +134,47 @@ $(document).ready(function($) {
         $(`${modalID} .text-danger`).html('');
     }
 
-    window.addFormLoadingStyles = function() {
+    window.addFormLoadingStyles = function () {
         $("#overlay").addClass('overlay');
         $(".note-editor").css('border-color', '');
         $("#overlay").html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
     }
 
-    window.addModalFormLoadingStyles = function(formSelector) {
+    window.addModalFormLoadingStyles = function (formSelector) {
 
         $(`${formSelector} button[type="submit"]`).find('span').addClass(`mr-2 spinner-border spinner-border-sm`);
     }
 
-    window.removeModalFormLoadingStyles = function(formSelector) {
+    window.removeModalFormLoadingStyles = function (formSelector) {
 
-        setTimeout(function() {
+        setTimeout(function () {
 
             $(`${formSelector} button[type="submit"]`).find('span').removeClass(`mr-2 spinner-border spinner-border-sm`);
         }, 250);
 
     }
 
-    window.removeFormLoadingStyles = function() {
-        setTimeout(function() {
+    window.removeFormLoadingStyles = function () {
+        setTimeout(function () {
             $("#overlay").removeClass('overlay');
             $("#overlay").html('');
         }, 250);
     }
 
-    window.printServerValidationErrors = function(response) {
+    window.printServerValidationErrors = function (response) {
 
         if (response.status === 422) {
 
             let errors = response.responseJSON;
-            let flag   = true;
+            let flag = true;
 
-            setTimeout(function() {
-                jQuery.each(errors.errors, function(index, value) {
+            setTimeout(function () {
+                jQuery.each(errors.errors, function (index, value) {
 
                     index = index.replace(/\./g, '_');
 
                     /* Expand Quote Details Card */
-                    
+
                     let closestQuote = $(`#${index}`).closest('.quote');
 
                     closestQuote.removeClass('collapsed-card');
@@ -187,7 +187,7 @@ $(document).ready(function($) {
                     $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
                     $(`#${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
 
-                    if(flag){
+                    if (flag) {
                         $('html, body').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
                         flag = false;
                     }
@@ -199,24 +199,23 @@ $(document).ready(function($) {
     }
 
     // Used in Quote & Booking
-    window.stickyValidationErrors = function(response) {
+    window.stickyValidationErrors = function (response) {
 
         if (response.status === 422) {
 
             let errors = response.responseJSON;
 
-            if((Object.keys(errors).length) > 0 )
-            {
+            if ((Object.keys(errors).length) > 0) {
                 $('#sticky_button').removeClass('d-none');
             }
         }
     }
 
-    $(document).on('click', '#sticky_button', function() {
+    $(document).on('click', '#sticky_button', function () {
 
         event.preventDefault();
 
-        let url    = $(this).closest("form").attr('action');
+        let url = $(this).closest("form").attr('action');
         let formID = $(this).closest("form").attr('id');
 
         $.ajax({
@@ -226,13 +225,13 @@ $(document).ready(function($) {
             contentType: false,
             cache: false,
             processData: false,
-            beforeSend: function() {
+            beforeSend: function () {
                 removeFormValidationStyles();
             },
-            success: function(response) {
+            success: function (response) {
                 printServerSuccessMessage(response, `#${formID}`);
             },
-            error: function(response) {
+            error: function (response) {
                 removeFormLoadingStyles();
                 printServerValidationErrors(response);
             }
@@ -240,9 +239,9 @@ $(document).ready(function($) {
     });
 
     //- Used in Quote & Booking
-    window.printServerSuccessMessage = function(data, formSelector) {
+    window.printServerSuccessMessage = function (data, formSelector) {
 
-        if(data && data.status){
+        if (data && data.status) {
 
             $(`${formSelector}`)[0].reset();
 
@@ -251,46 +250,46 @@ $(document).ready(function($) {
                 title: data.success_message
             });
 
-            setTimeout(function() {
+            setTimeout(function () {
                 window.location.href = data.redirect_url;
             }, 2500);
         }
     }
-    
 
-    window.printListingSuccessMessage = function(response) {
 
-        if(response && response.status){
-            
+    window.printListingSuccessMessage = function (response) {
+
+        if (response && response.status) {
+
             $("#listing_card_body").load(`${location.href} #listing_card_body`);
-    
+
             Toast.fire({
                 icon: 'success',
                 title: response.message
             });
-            
-            setTimeout(function() {
+
+            setTimeout(function () {
                 // location.reload();
             }, 2500);
         }
 
-        if(response && !response.status){
+        if (response && !response.status) {
 
             $("#listing_card_body").load(`${location.href} #listing_card_body`);
-    
+
             Toast.fire({
                 icon: 'error',
                 title: response.message
             });
-            
-            setTimeout(function() {
+
+            setTimeout(function () {
                 // location.reload();
             }, 2500);
         }
 
     }
 
-    window.printListingErrorMessage = function(message) {
+    window.printListingErrorMessage = function (message) {
 
         Toast.fire({
             icon: 'error',
@@ -302,16 +301,16 @@ $(document).ready(function($) {
 
         var unique = currencyArray.filter((v, i, a) => a.indexOf(v) === i);
 
-        if(unique.length === 1){
+        if (unique.length === 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    window.printModalServerSuccessMessage = function(response, modalSelector) {
+    window.printModalServerSuccessMessage = function (response, modalSelector) {
 
-        if(response && response.status){
+        if (response && response.status) {
 
             $(`${modalSelector}`).modal('hide');
 
@@ -323,22 +322,22 @@ $(document).ready(function($) {
             });
 
             /* Reload page if you are on edit page */
-            if(!CURRENT_ROUTE_NAME.includes('index')){
-                setTimeout(function() {
+            if (!CURRENT_ROUTE_NAME.includes('index')) {
+                setTimeout(function () {
                     location.reload();
                 }, 2500);
             }
         }
     }
 
-    window.printModalServerValidationErrors = function(response, modalSelector) {
+    window.printModalServerValidationErrors = function (response, modalSelector) {
 
         if (response.status === 422) {
 
             let errors = response.responseJSON;
 
-            setTimeout(function() {
-                jQuery.each(errors.errors, function(index, value) {
+            setTimeout(function () {
+                jQuery.each(errors.errors, function (index, value) {
 
                     index = index.replace(/\./g, '_');
 
@@ -352,9 +351,9 @@ $(document).ready(function($) {
         }
     }
 
-    window.printAlertResponse = function(response) {
-        
-        if(response && response.status){
+    window.printAlertResponse = function (response) {
+
+        if (response && response.status) {
 
             $("#listing_card_body").load(`${location.href} #listing_card_body`);
 
@@ -364,14 +363,14 @@ $(document).ready(function($) {
             });
 
             /* Reload page if you are on edit page */
-            if(!CURRENT_ROUTE_NAME.includes('index')){
-                setTimeout(function() {
+            if (!CURRENT_ROUTE_NAME.includes('index')) {
+                setTimeout(function () {
                     location.reload();
                 }, 2500);
             }
         }
 
-        if(response && !response.status){
+        if (response && !response.status) {
 
             Toast.fire({
                 icon: 'error',
@@ -380,22 +379,22 @@ $(document).ready(function($) {
         }
     }
 
-    window.printServerAlertResponse = function(response) {
+    window.printServerAlertResponse = function (response) {
 
-        if(response && response.status){
+        if (response && response.status) {
 
             Toast.fire({
                 icon: 'success',
                 title: response.success_message
             });
 
-            setTimeout(function() {
+            setTimeout(function () {
                 location.reload();
             }, 2500);
         }
     }
 
-    window.curday = function(sp) {
+    window.curday = function (sp) {
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth() + 1; //As January is 0.
@@ -405,7 +404,7 @@ $(document).ready(function($) {
         return (yyyy + sp + mm + sp + dd);
     };
 
-    window.todayDate = function() {
+    window.todayDate = function () {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -413,38 +412,38 @@ $(document).ready(function($) {
         return today = dd + '/' + mm + '/' + yyyy;
     }
 
-    window.convertDate = function(date) {
+    window.convertDate = function (date) {
         var dateParts = date.split("/");
         return dateParts = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
     }
 
-    $(document).on('keyup', "input[data-type='currency']", function(e) {
+    $(document).on('keyup', "input[data-type='currency']", function (e) {
         formatCurrency($(this));
     });
-    
-    $(document).on('blur', "input[data-type='currency']", function(e) {
+
+    $(document).on('blur', "input[data-type='currency']", function (e) {
         formatCurrency($(this), "blur");
     });
 
-    window.check = function(x) {
+    window.check = function (x) {
 
         if (isNaN(x) || !isFinite(x)) {
             return parseFloat(0).toFixed(2);
         }
- 
+
         return formatComma(x.toFixed(2));
     }
 
-    window.formatComma = function(input_val, blur) {
+    window.formatComma = function (input_val, blur) {
 
         if (input_val.indexOf(".") >= 0) {
-        
-            var decimal_pos = input_val.indexOf(".");
-            var left_side   = input_val.substring(0, decimal_pos);
-            var right_side  = input_val.substring(decimal_pos);
-        
 
-            left_side  = formatNumber(left_side);
+            var decimal_pos = input_val.indexOf(".");
+            var left_side = input_val.substring(0, decimal_pos);
+            var right_side = input_val.substring(decimal_pos);
+
+
+            left_side = formatNumber(left_side);
             right_side = formatNumber(right_side);
 
             if (blur === "blur") {
@@ -453,12 +452,12 @@ $(document).ready(function($) {
 
             right_side = right_side.substring(0, 2);
             input_val = left_side + "." + right_side;
-    
+
         } else {
             input_val = formatNumber(input_val);
             input_val = input_val;
 
-            if(blur === "blur") {
+            if (blur === "blur") {
                 input_val += ".00";
             }
         }
@@ -466,11 +465,11 @@ $(document).ready(function($) {
         return input_val;
     }
 
-    window.removeComma = function(n) {
+    window.removeComma = function (n) {
         return n.replace(/,/g, '');
     }
 
-    window.checkForInt = function(x) {
+    window.checkForInt = function (x) {
 
         if (isNaN(x) || !isFinite(x)) {
             return '';
@@ -479,28 +478,28 @@ $(document).ready(function($) {
         return parseInt(x);
     }
 
-    window.formatNumber = function(n) {
+    window.formatNumber = function (n) {
 
         return n
-        .replace(/(?!-)[^0-9]/g, "")
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            .replace(/(?!-)[^0-9]/g, "")
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-      
-    window.formatCurrency = function(input, blur) {
-     
+
+    window.formatCurrency = function (input, blur) {
+
         var input_val = input.val();
-  
+
         if (input_val === "") { return; }
 
         // send updated string to input
         input.val(formatComma(input_val, blur));
     }
 
-    window.isEmpty = function(value) {
+    window.isEmpty = function (value) {
         return (value == null || value == '' || value == 'undefined' ? 'N/A' : value);
     }
 
-    window.datepickerReset = function(key = null, quoteClass) {
+    window.datepickerReset = function (key = null, quoteClass) {
         // var today;
         // today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
         // console.log(today);
@@ -516,7 +515,7 @@ $(document).ready(function($) {
                 $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 // $('.bookingDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
                 // $('.bookingDueDate:last').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: season_start_date, endDate: season_end_date });
-               
+
                 // $(`${quoteClass} .bookingEndDateOfService`).datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
                 $('.stored-text-date').datepicker("destroy").datepicker({ autoclose: true, format: 'dd/mm/yyyy' });
             } else {
@@ -527,17 +526,17 @@ $(document).ready(function($) {
             }
         } else {
 
-            $('.datepicker').datepicker('destroy').datepicker({autoclose: true, format: 'dd/mm/yyyy', startDate: date});
+            $('.datepicker').datepicker('destroy').datepicker({ autoclose: true, format: 'dd/mm/yyyy', startDate: date });
         }
 
         /*  Datepicker fixed code for jQuery UI Sortable */
-        $('.datepicker').datepicker().on('hide', function(e) {
-            $(this).blur(); 
+        $('.datepicker').datepicker().on('hide', function (e) {
+            $(this).blur();
         });
     }
 
     // function intTelinput(key = null, inVal = null) {
-    window.intTelinput = function(key = null, inVal = null) {
+    window.intTelinput = function (key = null, inVal = null) {
 
         // console.log(key);
         var input = document.querySelector('.phone' + key);
@@ -546,7 +545,7 @@ $(document).ready(function($) {
         var iti = intlTelInput(input, {
             utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.min.js",
             separateDialCode: true,
-            preferredCountries:["gb","us","au","ca","nz"],
+            preferredCountries: ["gb", "us", "au", "ca", "nz"],
             formatOnDisplay: true,
             initialCountry: "US",
             nationalMode: true,
@@ -559,8 +558,8 @@ $(document).ready(function($) {
         // iti.setCountry("US");
         // on blur: validate
         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
-        
-        input.addEventListener('blur', function() {
+
+        input.addEventListener('blur', function () {
             input.nextElementSibling.value = iti.getNumber();
             reset();
             if (input.value.trim()) {
@@ -580,7 +579,7 @@ $(document).ready(function($) {
         });
 
 
-        var reset = function() {
+        var reset = function () {
             input.classList.remove("is-invalid");
             errorMsg.innerHTML = "";
             errorMsg.classList.add("hide");
@@ -606,7 +605,7 @@ $(document).ready(function($) {
     | Invoke Global Functions
     |--------------------------------------------------------------------------
     */
-    
+
     datepickerReset();
 
     /*  ajaxSetup */
@@ -644,7 +643,42 @@ $(document).ready(function($) {
     });
 
     // make quote section sortable
-    $(".sortable").sortable();
+    $(".sortable").sortable({
+        disabled: true
+    });
+
+    // Sortable disabled or enabled
+    $(document).on('click', '.row .expand-collapse-quote-detail-cards', function () {
+        if ($('.sortable-spacing .quote').hasClass('collapsed-card')) {
+            $(".sortable").sortable({
+                disabled: true
+            });
+        }
+        else {
+            $(".sortable").sortable({
+                disabled: false
+            });
+        }
+    });
+
+    $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
+       
+        $(this).closest('.quote').addClass('unsortable');
+
+        $(".sortable").sortable({ 
+            cancel:  ".unsortable"
+        });
+    });
+
+    $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function() {
+
+        $(this).closest('.quote').removeClass('unsortable');
+     
+        $(".sortable").sortable({ 
+            disabled: false,
+            cancel:  ".unsortable"
+        });
+    });
 
     $('.date-range-picker').daterangepicker({
         autoUpdateInput: false,
@@ -654,33 +688,33 @@ $(document).ready(function($) {
         }
     });
 
-    $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+    $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
     });
 
-    $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+    $('.date-range-picker').on('cancel.daterangepicker', function (ev, picker) {
         $(this).val('');
     });
 
     /*---------------------------------------------------------------------------------------*/
- 
+
     /* Focus In/Out Function on Calculation Values */
-    $(document).on('focus', '.remove-zero-values', function() {
+    $(document).on('focus', '.remove-zero-values', function () {
         var value = parseFloat($(this).val()).toFixed(2);
-        if(value == 0.00){
+        if (value == 0.00) {
             $(this).val('');
         }
     });
 
-    $(document).on('focusout', '.remove-zero-values', function() {
+    $(document).on('focusout', '.remove-zero-values', function () {
         var value = $(this).val();
-        if(value == ''){
+        if (value == '') {
             $(this).val((parseFloat(0).toFixed(2)));
         }
     });
     /* End Focus In/Out Function on Calculation Values */
 
-    $(document).on('change', '.select-agency', function() {
+    $(document).on('change', '.select-agency', function () {
         var agency_ = $('.agencyField');
         var passenger_ = $('.PassengerField');
         if (($(this).val() == 1)) {
@@ -718,7 +752,7 @@ $(document).ready(function($) {
         getCommissionRate();
     });
 
-    $(document).on('click', '.expand-all-btn', function(event) {
+    $(document).on('click', '.expand-all-btn', function (event) {
         $('#parent .quote').removeClass('collapsed-card');
         $('#parent .card-body').css("display", "block");
         $('#parent .collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
@@ -726,13 +760,13 @@ $(document).ready(function($) {
         // $('.expand-collapse-quote-detail-cards').removeClass('d-none');
     });
 
-    $(document).on('click', '.compare-expand-all-btn', function(event) {
+    $(document).on('click', '.compare-expand-all-btn', function (event) {
         $('#compare_parent .card').removeClass('collapsed-card');
         $('#compare_parent .card-body').css("display", "block");
         $('#compare_parent .compare-collapse-expand-btn').html(`<i class="fas fa-minus"></i>`);
     });
 
-    $(document).on('click', '.compare-expand-collapse-quote-detail-cards', function(event) {
+    $(document).on('click', '.compare-expand-collapse-quote-detail-cards', function (event) {
 
         $('#compare_parent .card').addClass('collapsed-card');
         $('#compare_parent .card-body').css("display", "none");
@@ -745,25 +779,25 @@ $(document).ready(function($) {
      * -------------------------------------------------------------------------------------
      */
 
-     $(document).on('click', '.zero-one-checkbox', function() {
+    $(document).on('click', '.zero-one-checkbox', function () {
 
         let value = $(this).val();
 
-        if(value == 0){
+        if (value == 0) {
             $(this).val(1);
-        }else{
+        } else {
             $(this).val(0);
         }
 
     });
 
-    $(document).on('click', '.parent-row', function(e) {
+    $(document).on('click', '.parent-row', function (e) {
         var parentID = $(this).data('id');
         $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
         $(this).html($(this).html() == `<span class="fa fa-minus"></span>` ? `<span class="fa fa-plus"></span>` : `<span class="fa fa-minus"></span>`);
     });
 
-    $(".readonly").keypress(function(evt) {
+    $(".readonly").keypress(function (evt) {
         evt.preventDefault();
     });
 
@@ -771,11 +805,11 @@ $(document).ready(function($) {
     $(".expand-all-btn").removeAttr('disabled');
 
     // transfer report
-    function createFilter(type,label,data){
+    function createFilter(type, label, data) {
 
         var options;
 
-        if(label == null){
+        if (label == null) {
             $('.filter-col').remove();
             return;
         }
@@ -786,10 +820,10 @@ $(document).ready(function($) {
             data: { 'type': type, 'label': label, 'data': data },
             datatype: "json",
             async: false,
-            success: function(response){
+            success: function (response) {
 
                 var result = '';
-                $.each(response.label_results, function(key, value) {
+                $.each(response.label_results, function (key, value) {
                     result += `<option value="${value.value}"> ${value.value} </option>`;
                 });
 
@@ -797,280 +831,280 @@ $(document).ready(function($) {
             }
         });
 
-        var multipleSelect2HTML = 
-        `<div class="col-md-3 filter-col">
+        var multipleSelect2HTML =
+            `<div class="col-md-3 filter-col">
             <div class="d-flex bd-highlight">
                 <div class="w-100 bd-highlight"><label>${label}</label></div>
                 <div class="flex-shrink-1 bd-highlight" style="font-size: 11px;"><i class="fas fa-times text-danger border border-danger remove-col" style="padding: 4px; border-radius: 4px; cursor: pointer;"></i></div>
             </div>
             <select class="form-control select2-multiple" multiple name="columns[${label}][]">${options}</select>
         </div>`;
-    
+
         return multipleSelect2HTML;
     }
 
 
     // transfer report
-    $(document).on('change', '.transfer-detail-feild', function() {
+    $(document).on('change', '.transfer-detail-feild', function () {
 
         var feild = $(this).val();
 
-        if(typeof feild === 'undefined' || feild == ""){
+        if (typeof feild === 'undefined' || feild == "") {
             $('#search_transfer_detail').addClass('d-none');
-        }else{
+        } else {
             $('#search_transfer_detail').removeClass('d-none');
         }
 
-        var type  = $(this).find(':selected').attr('data-optionType');
+        var type = $(this).find(':selected').attr('data-optionType');
         var label = $(this).find(':selected').attr('data-optionLable');
-        var data  = $(this).find(':selected').attr('data-optionData');
+        var data = $(this).find(':selected').attr('data-optionData');
 
-        $(createFilter(type,label,data)).insertBefore("#more_filter");
+        $(createFilter(type, label, data)).insertBefore("#more_filter");
         reinitializedMultipleSelect2();
     });
 
     // transfer report
-    $(document).on('click', '.remove-col', function() {
-    $(this).closest('.filter-col').remove();
+    $(document).on('click', '.remove-col', function () {
+        $(this).closest('.filter-col').remove();
     });
 
-    $(document).on('click', '.parent', function() {
+    $(document).on('click', '.parent', function () {
 
-    if ($(this).is(':checked', true)) {
-        $(".child").prop('checked', true);
+        if ($(this).is(':checked', true)) {
+            $(".child").prop('checked', true);
 
-    } else {
+        } else {
 
-        $(".child").prop('checked', false);
-    }
+            $(".child").prop('checked', false);
+        }
     });
 
-    $('.sbp-parent').on('click', function(e) {
+    $('.sbp-parent').on('click', function (e) {
 
-    if ($(this).is(':checked', true)) {
+        if ($(this).is(':checked', true)) {
 
-        $(".credit").prop('checked', false);
-        $('.credit').trigger('click');
+            $(".credit").prop('checked', false);
+            $('.credit').trigger('click');
 
-    } else {
+        } else {
 
-        $('.credit').trigger('click');
-        $('.total-paid-amount').val(parseFloat(0).toFixed(2));
+            $('.credit').trigger('click');
+            $('.total-paid-amount').val(parseFloat(0).toFixed(2));
 
-    }
-    });
-
-    // Supplier Bulk Payments
-    $('.credit').change(function(){
-
-    var currencyCode          = $(this).attr('data-currencyCode');
-    var value                 = parseFloat($(this).attr('data-value')).toFixed(2);
-    var row                   = $(this).closest('.credit-row');
-
-    if($(this).is(':checked')){
-
-        $(this).val('1');
-
-        row.find('.row-paid-amount').val(value);
-        row.find('.row-total-paid-amount').val(value);
-
-        getTotalPaidAmount();
-
-    }
-    else {
-
-        $(this).val('0');
-
-        row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
-        row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
-        getTotalPaidAmount();
-        // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
-    }
-
+        }
     });
 
     // Supplier Bulk Payments
-    $(document).on("change", '.row-paid-amount', function(event) {
+    $('.credit').change(function () {
 
-    var row                        = $(this).closest('.credit-row');
-    var currentPaidAmountValue     = parseFloat($(this).val());
+        var currencyCode = $(this).attr('data-currencyCode');
+        var value = parseFloat($(this).attr('data-value')).toFixed(2);
+        var row = $(this).closest('.credit-row');
 
-    var rowCreditNoteAmount        = row.find('.row-credit-note-amount').val();
-    var rowTotalPaidAmount         = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
+        if ($(this).is(':checked')) {
 
-    var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
+            $(this).val('1');
 
-    row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+            row.find('.row-paid-amount').val(value);
+            row.find('.row-total-paid-amount').val(value);
 
+            getTotalPaidAmount();
 
-    if(rowTotalPaidAmount > totalOutstandingAmountLeft){
-        alert("Please Enter Correct Amount");
-        $(this).val('0.00');
+        }
+        else {
 
+            $(this).val('0');
 
-        row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
-    }
+            row.find('.row-paid-amount').val((parseFloat(0).toFixed(2)));
+            row.find('.row-total-paid-amount').val((parseFloat(0).toFixed(2)));
+            getTotalPaidAmount();
+            // $('.total-paid-amount').val((parseFloat(getCheckedValues()).toFixed(2)));
+        }
 
-    getTotalPaidAmount();
-
-    // var value                 = parseFloat($(this).val());
-    // var row                   = $(this).closest('.credit-row');
-    // var outstandingAmountLeft = row.find('.credit').val();
-
-    // if(value > outstandingAmountLeft){
-    //     alert("Please Enter Correct Amount");
-    //     $(this).val('0.00');
-    // }
-
-    // getTotalPaidAmount();
     });
 
-    function getTotalPaidAmount(){
-
-    var paidAmountValues = parseFloat(getPaidAmountValues());
-    $('.total-paid-amount').val(getFloat(paidAmountValues));
-    }
-
-    function getRemainingCreditNoteAmount(){
-
-    var totalWalletAmount     = parseFloat($('.total-credit-amount').val());
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-    var result                = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
-
-    $('.remaining-credit-amount').html(getFloat(result));
-    $('.remaining-credit-amount').val(getFloat(result));
-    }
-
-    function getPaidAmountValues(){
-    var checkedValuesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(e.value)).get();
-    var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-    }
-
-    function getCreditNoteValues(){
-    var checkedValuesArray = $('.row-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
-    var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
-    return parseFloat(checkedValuesTotal).toFixed(2);
-    }
-
-    function getFloat(value){
-    // console.log(parseFloat(value).toFixed(2));
-    return parseFloat(value).toFixed(2);
-    }
-
     // Supplier Bulk Payments
-    $(document).on("change", '.row-credit-note-amount', function(event) {
+    $(document).on("change", '.row-paid-amount', function (event) {
 
-    var totalWalletAmount      = parseFloat($('.total-credit-amount').val());
-    var currentCreditNoteValue = parseFloat($(this).val());
+        var row = $(this).closest('.credit-row');
+        var currentPaidAmountValue = parseFloat($(this).val());
 
-    var row                    = $(this).closest('.credit-row');
-    var rowOutstandingAmount   = row.find('.credit').attr('data-value');
+        var rowCreditNoteAmount = row.find('.row-credit-note-amount').val();
+        var rowTotalPaidAmount = parseFloat(currentPaidAmountValue) + parseFloat(rowCreditNoteAmount);
 
-    var rowPaidAmount          = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
-    var rowTotalPaidAmount     = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+        var totalOutstandingAmountLeft = parseFloat(row.find('.credit').attr('data-value'));
 
-    var totalCreditNoteValues = parseFloat(getCreditNoteValues());
-
-    if(row.find('.credit').is(':checked')){
-
-        row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
         row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
 
-        if(currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount ){
 
+        if (rowTotalPaidAmount > totalOutstandingAmountLeft) {
             alert("Please Enter Correct Amount");
             $(this).val('0.00');
 
-            row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
-            row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+
+            row.find('.row-total-paid-amount').val(getFloat(rowCreditNoteAmount));
         }
 
-
         getTotalPaidAmount();
-        getRemainingCreditNoteAmount();
+
+        // var value                 = parseFloat($(this).val());
+        // var row                   = $(this).closest('.credit-row');
+        // var outstandingAmountLeft = row.find('.credit').val();
+
+        // if(value > outstandingAmountLeft){
+        //     alert("Please Enter Correct Amount");
+        //     $(this).val('0.00');
+        // }
+
+        // getTotalPaidAmount();
+    });
+
+    function getTotalPaidAmount() {
+
+        var paidAmountValues = parseFloat(getPaidAmountValues());
+        $('.total-paid-amount').val(getFloat(paidAmountValues));
     }
-    else {
-        $(this).val('0.00');
+
+    function getRemainingCreditNoteAmount() {
+
+        var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+        var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+        var result = parseFloat(totalWalletAmount) - parseFloat(totalCreditNoteValues);
+
+        $('.remaining-credit-amount').html(getFloat(result));
+        $('.remaining-credit-amount').val(getFloat(result));
     }
+
+    function getPaidAmountValues() {
+        var checkedValuesArray = $('.row-total-paid-amount').map((i, e) => parseFloat(e.value)).get();
+        var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+        return parseFloat(checkedValuesTotal).toFixed(2);
+    }
+
+    function getCreditNoteValues() {
+        var checkedValuesArray = $('.row-credit-note-amount').map((i, e) => parseFloat(e.value)).get();
+        var checkedValuesTotal = checkedValuesArray.reduce((a, b) => (a + b), 0);
+        return parseFloat(checkedValuesTotal).toFixed(2);
+    }
+
+    function getFloat(value) {
+        // console.log(parseFloat(value).toFixed(2));
+        return parseFloat(value).toFixed(2);
+    }
+
+    // Supplier Bulk Payments
+    $(document).on("change", '.row-credit-note-amount', function (event) {
+
+        var totalWalletAmount = parseFloat($('.total-credit-amount').val());
+        var currentCreditNoteValue = parseFloat($(this).val());
+
+        var row = $(this).closest('.credit-row');
+        var rowOutstandingAmount = row.find('.credit').attr('data-value');
+
+        var rowPaidAmount = parseFloat(rowOutstandingAmount) - parseFloat(currentCreditNoteValue);
+        var rowTotalPaidAmount = parseFloat(rowPaidAmount) + parseFloat(currentCreditNoteValue);
+
+        var totalCreditNoteValues = parseFloat(getCreditNoteValues());
+
+        if (row.find('.credit').is(':checked')) {
+
+            row.find('.row-paid-amount').val(getFloat(rowPaidAmount));
+            row.find('.row-total-paid-amount').val(getFloat(rowTotalPaidAmount));
+
+            if (currentCreditNoteValue > totalWalletAmount || totalCreditNoteValues > totalWalletAmount) {
+
+                alert("Please Enter Correct Amount");
+                $(this).val('0.00');
+
+                row.find('.row-paid-amount').val(getFloat(rowOutstandingAmount));
+                row.find('.row-total-paid-amount').val(getFloat(rowOutstandingAmount));
+            }
+
+
+            getTotalPaidAmount();
+            getRemainingCreditNoteAmount();
+        }
+        else {
+            $(this).val('0.00');
+        }
     });
 
     // Supplier Bulk Payments
-    $("#bulk_payment").submit(function(event) {
+    $("#bulk_payment").submit(function (event) {
 
-    event.preventDefault();
+        event.preventDefault();
 
-    var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
-    if (checkedValues.length == 0) {
-        alert("Please Check any Record First");
-        return;
-    }
+        var checkedValues = $('.credit:checked').map((i, e) => e.value).get();
+        if (checkedValues.length == 0) {
+            alert("Please Check any Record First");
+            return;
+        }
 
-    var url = $(this).attr('action');
+        var url = $(this).attr('action');
 
-    $.ajax({
-        type: 'POST',
-        url: url,
-        data: new FormData(this),
-        contentType: false,
-        cache: false,
-        processData: false,
-        beforeSend: function() {
-            $('input, select').removeClass('is-invalid');
-            $('.text-danger').html('');
-            $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
-        },
-        success: function(data) {
-            $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                $('input, select').removeClass('is-invalid');
+                $('.text-danger').html('');
+                $("#bulk_payment_submit").find('span').addClass('spinner-border spinner-border-sm');
+            },
+            success: function (data) {
+                $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
 
-            setTimeout(function() {
+                setTimeout(function () {
 
-                if(data && data.status == true){
-                    alert(data.success_message);
-                    location.reload();
-                }
-            }, 200);
-        },
-        error: function(reject) {
-
-            if (reject.status === 422) {
-
-                var errors = $.parseJSON(reject.responseText);
-
-                setTimeout(function() {
-                    $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
-
-                    if (errors.hasOwnProperty("payment_error")) {
-                        alert(errors.payment_error);
+                    if (data && data.status == true) {
+                        alert(data.success_message);
                         location.reload();
-
-                    } else {
-
-                        var flag = true;
-
-                        jQuery.each(errors.errors, function(index, value) {
-
-                            index = index.replace(/\./g, '_');
-                            $(`#${index}`).addClass('is-invalid');
-                            $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                            if (flag) {
-
-                                $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
-                                flag = false;
-                            }
-                        });
                     }
+                }, 200);
+            },
+            error: function (reject) {
 
-                }, 400);
+                if (reject.status === 422) {
+
+                    var errors = $.parseJSON(reject.responseText);
+
+                    setTimeout(function () {
+                        $("#bulk_payment_submit").find('span').removeClass('spinner-border spinner-border-sm');
+
+                        if (errors.hasOwnProperty("payment_error")) {
+                            alert(errors.payment_error);
+                            location.reload();
+
+                        } else {
+
+                            var flag = true;
+
+                            jQuery.each(errors.errors, function (index, value) {
+
+                                index = index.replace(/\./g, '_');
+                                $(`#${index}`).addClass('is-invalid');
+                                $(`#${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                                if (flag) {
+
+                                    $('html, body').animate({ scrollTop: $(`#${index}`).offset().top }, 1000);
+                                    flag = false;
+                                }
+                            });
+                        }
+
+                    }, 400);
 
 
-            }
-        },
+                }
+            },
+        });
     });
-    });
 
-    $(document).on('change', '.selectStoredText', function() {
+    $(document).on('change', '.selectStoredText', function () {
 
         var slug = $(this).val();
         var quote = jQuery(this).closest('.quote');
@@ -1079,38 +1113,38 @@ $(document).ready(function($) {
             url: `${BASEURL}stored/${slug}/text`,
             type: 'get',
             dataType: "json",
-            success: function(data) {
+            success: function (data) {
                 console.log(key);
-                var id ='#quote_'+key+'_stored_text';
+                var id = '#quote_' + key + '_stored_text';
                 setTextEditorValue(id, data);
             },
-            error: function(reject) {
+            error: function (reject) {
                 alert(reject);
             },
         });
-    
+
     });
-    
-    $(document).on('click', '.addmodalforquote', function() {
-    
+
+    $(document).on('click', '.addmodalforquote', function () {
+
         var quote = $(this).closest('.quote');
         var key = quote.data('key');
-        var target = '.'+$(this).data('show');
+        var target = '.' + $(this).data('show');
         // console.log(target);
         quote.find(target).modal('show');
-        quote.find(target+':input').removeAttr('disabled');
+        quote.find(target + ':input').removeAttr('disabled');
         // jQuery('#accomadation_modal').modal('show').find('input').val('');
     });
 
-    
-    $(document).on('click', '.removeChild', function() {
+
+    $(document).on('click', '.removeChild', function () {
         var id = $(this).data('show');
         $(id).removeAttr("style");
         $($(this).data('append')).empty();
         $(this).attr("style", "display:none");
     });
 
-    $(document).on('click', '.addChild', function() {
+    $(document).on('click', '.addChild', function () {
         $('.append').empty();
         var id = $(this).data('id');
         var refNumber = $(this).data('ref');
@@ -1123,13 +1157,13 @@ $(document).ready(function($) {
         $('.removeChild').attr("style", "display:none");
 
         $(this).attr("style", "display:none")
-            // $(appendId).empty();
+        // $(appendId).empty();
 
         $.ajax({
             url: BASEURL + 'quotes/child/reference',
             data: { id: id, ref_no: refNumber },
             type: 'get',
-            success: function(response) {
+            success: function (response) {
                 $(appendId).append(response);
                 $(removeBtnId).removeAttr("style");
             }
@@ -1148,60 +1182,60 @@ $(document).ready(function($) {
     // });
 
 
-            // $('#delete_all').on('click', function(e) {
-            //     e.preventDefault();
-            //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+    // $('#delete_all').on('click', function(e) {
+    //     e.preventDefault();
+    //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
 
-            //     if (checkedValues.length > 0) {
-            //         jQuery('#multiple_delete_modal').modal('show');
-            //     } else {
-            //         alert("Please Check any Record First");
-            //     }
+    //     if (checkedValues.length > 0) {
+    //         jQuery('#multiple_delete_modal').modal('show');
+    //     } else {
+    //         alert("Please Check any Record First");
+    //     }
 
-            // });
+    // });
 
-            // $('#multiple_delete').on('click', function(e) {
-            //     e.preventDefault();
+    // $('#multiple_delete').on('click', function(e) {
+    //     e.preventDefault();
 
-            //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
-            //     var tableName = $('.table-name').val();
-            //     $.ajax({
-            //         url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
-            //         type: 'Delete',
-            //         dataType: "JSON",
-            //         data: { "checkedValues": checkedValues, "tableName": tableName },
-            //         beforeSend: function() {
-            //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
-            //         },
-            //         success: function(response) {
+    //     var checkedValues = $('.child:checked').map((i, e) => e.value).get();
+    //     var tableName = $('.table-name').val();
+    //     $.ajax({
+    //         url: REDIRECT_BASEURL + 'multiple-delete/' + checkedValues,
+    //         type: 'Delete',
+    //         dataType: "JSON",
+    //         data: { "checkedValues": checkedValues, "tableName": tableName },
+    //         beforeSend: function() {
+    //             $("#multiple_delete").find('span').addClass('spinner-border spinner-border-sm');
+    //         },
+    //         success: function(response) {
 
-            //             if (response.status == true) {
+    //             if (response.status == true) {
 
 
-            //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
-            //                 jQuery('#multiple_delete_modal').modal('hide');
+    //                 $("#multiple_delete").find('span').removeClass('spinner-border spinner-border-sm');
+    //                 jQuery('#multiple_delete_modal').modal('hide');
 
-            //                 setTimeout(function() {
+    //                 setTimeout(function() {
 
-            //                     alert(response.message);
-            //                     location.reload();
+    //                     alert(response.message);
+    //                     location.reload();
 
-            //                 }, 600);
+    //                 }, 600);
 
-            //             }
-            //         },
-            //         error: function(xhr) {
-            //             console.log(xhr.responseText);
-            //         }
-            //     });
+    //             }
+    //         },
+    //         error: function(xhr) {
+    //             console.log(xhr.responseText);
+    //         }
+    //     });
 
-            // });
-
-        
+    // });
 
 
 
-   
+
+
+
 
 
 
@@ -1540,3 +1574,12 @@ $(document).ready(function($) {
 //         value.focus();
 //     })
 // })
+
+
+// $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+//     $(".sortable").sortable("disable");      
+// });
+
+// $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+//     $(".sortable").sortable("enable");      
+// });
