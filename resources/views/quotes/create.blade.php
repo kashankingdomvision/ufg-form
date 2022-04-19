@@ -440,7 +440,7 @@
                   @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                   <div class="sortable sortable-spacing">
-                    <div class="quote card card-default quote-0" data-key="0">
+                    <div class="quote card card-default quote-0 unsortable" data-key="0">
 
                       <div class="card-header">
                         <h3 class="card-title card-title-style quote-title">

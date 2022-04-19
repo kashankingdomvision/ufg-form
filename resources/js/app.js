@@ -661,21 +661,24 @@ $(document).ready(function ($) {
         }
     });
 
-    // $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
-    //     $(".sortable").sortable("disable");      
-    // });
+    $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
+       
+        $(this).closest('.quote').addClass('unsortable');
 
-    // $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
-    //     $(".sortable").sortable("enable");      
-    // });
+        $(".sortable").sortable({ 
+            cancel:  ".unsortable"
+        });
+    });
 
-    // $('body').on('expanded.lte.cardwidget', '.collapse-expand-btn', function() {
-    //     $(".sortable").sortable("disable");      
-    // });
+    $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function() {
 
-    // $('body').on('collapsed.lte.cardwidget', '.collapse-expand-btn', function() {
-    //     $(".sortable").sortable();
-    // });
+        $(this).closest('.quote').removeClass('unsortable');
+     
+        $(".sortable").sortable({ 
+            disabled: false,
+            cancel:  ".unsortable"
+        });
+    });
 
     $('.date-range-picker').daterangepicker({
         autoUpdateInput: false,
@@ -1571,3 +1574,12 @@ $(document).ready(function ($) {
 //         value.focus();
 //     })
 // })
+
+
+// $('.collapse-expand-btn').on('expanded.lte.cardwidget', function() {
+//     $(".sortable").sortable("disable");      
+// });
+
+// $('.collapse-expand-btn').on('collapsed.lte.cardwidget', function() {
+//     $(".sortable").sortable("enable");      
+// });
