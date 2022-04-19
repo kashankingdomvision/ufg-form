@@ -27,8 +27,10 @@ $(document).ready(function($) {
     $(document).on('select2:open', '.select2single', function(e) {
 
         $(".select2-search__field").each(function (key, value){
-            value.focus();
-        })
+            value.focus({
+                preventScroll: true
+            });
+        });
     });
 
     window.Toast = Swal.mixin({
@@ -74,6 +76,7 @@ $(document).ready(function($) {
         $('.select2single').select2({
             width: '100%',
             theme: "bootstrap",
+         
             templateResult: formatState,
             templateSelection: formatState,
         });
