@@ -571,8 +571,8 @@
 
                         @php
                           $category = isset($q_detail['category_id']) && !empty($q_detail['category_id']) ? $log->getQueryData($q_detail['category_id'], 'Category')->first() : '';
-                          $supplier_currency_code = isset($log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code) && !empty($log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '';
-                          $booking_currency_code = isset($log->getQueryData($quote->currency_id, 'Currency')->first()->code) && !empty($log->getQueryData($quote->currency_id, 'Currency')->first()->code) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '';
+                          $supplier_currency_code = $log->getQueryData($q_detail['supplier_currency_id'], 'Currency', 'code');
+                          $booking_currency_code  = $log->getQueryData($quote->currency_id, 'Currency', 'code');
                         @endphp
 
                         <div class="quote card card-default quote-{{$key}}" data-key="{{ $key }}">
@@ -583,7 +583,7 @@
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail['end_date_of_service']) && !empty($q_detail['end_date_of_service']) ? $q_detail['end_date_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-category-id">{{ $category->name }}</span>
-                              <span class="badge badge-info badge-group-owner-id">{{ (isset($q_detail['group_owner_id']) && $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->count() > 0 ) ? $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-group-owner-id">{{ $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner', 'name') }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
                               {{-- <span class="badge badge-info badge-supplier-currency-id">{{ (isset($q_detail['supplier_currency_id']) && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code.' - '.$log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->name : '' }}</span> --}}
@@ -1080,7 +1080,7 @@
                     <label for="inputEmail3" class="col-sm-4 col-form-label">
                       Staff Commission
                       <h5>
-                        <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ !empty($log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name) ? $log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name : '' }}</span>
+                        <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ $log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria', 'name') }}</span>
                         {{-- <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->commission_group_id) && $log->getQueryData($quote->commission_group_id, 'CommissionGroup')->count() ? $log->getQueryData($quote->commission_group_id, 'CommissionGroup')->first()->name : ''}}</span> --}}
                         <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                       </h5>
