@@ -216,7 +216,7 @@
                                                     @endif
                                                     <td>{{ $quote->lead_passenger_name }}</td>
                                                     <td>{{ $quote->getSeason->name }}</td>
-                                                    <td>{{ (isset($quote->getBrand->name))? $quote->getBrand->name: NULL }}</td>
+                                                    <td>{{ isset($quote->getBrand->name) ? $quote->getBrand->name: '' }}</td>
                                                     <td>{{ $quote->getBookingCurrency->code.' - '.$quote->getBookingCurrency->name }}</td>
                                                     <td>{!! $quote->booking_formated_status !!}</td>
                                                     <td>{{ $quote->formated_booking_date }}</td>

@@ -478,7 +478,7 @@ class QuoteController extends Controller
         $data['booking_types']    = BookingType::all();
         $data['quote_id']         = Helper::getQuoteID();
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::orderBy('created_at','DESC')->get();
+        $data['groups']           = Group::latest()->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
@@ -569,29 +569,39 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail(decrypt($id));
         $data['quote']            = $quote;
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+ 
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
-        $data['groups']           = Group::where('currency_id', $quote->currency_id)->orderBy('created_at','DESC')->get();
+        $data['groups']           = Group::where('currency_id', $quote->currency_id)->latest()->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
+        $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
-
+        
+        
+        // $data['quote_ref']        = Quote::where('quote_ref','!=', $quote->quote_ref)->get('quote_ref');
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        // $data                     = array_merge($data, Helper::checkAlreadyExistUser($id,'quotes'));
+        // $data['locations']        = Location::get();
+        // $data['commission_types'] = Commission::all();
+        // $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        // $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         return view('quotes.edit', $data);
     }
 
@@ -690,31 +700,43 @@ class QuoteController extends Controller
         $quote                    = $log->data;
         $data['quote']            = (object) $quote;
         $data['log']              = $log;
+
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['public_templates']  = Template::public()->get();
         $data['private_templates'] = Template::private()->get();
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
-        $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
+        $data['categories']       = Category::orderBy('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
-        $data['booked_by']        = User::all()->sortBy('name');
         $data['supervisors']      = User::role(['supervisor'])->get();
-        $data['sale_persons']     = User::get();
-        $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        $data['sale_persons']     = User::role(['sales-agent'])->get();
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['commission_types'] = Commission::all();
-        $data['quote_ref']        = Quote::where('quote_ref','!=', $data['quote']->quote_ref)->get('quote_ref');
         $data['storetexts']       = StoreText::get();
         $data['groups']           = Group::with('quotes')->where('currency_id', $data['quote']->currency_id)->orderBy('id','ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('id', 'desc')->get();
-        $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
-        $data['locations']        = Location::get();
+        $data['preset_comments']  = PresetComment::orderBy('id','ASC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
-
+        
         if($type != NULL){
             $data['type'] = $type;
         }
+        
+        
+        // $data['locations']        = Location::get();
+        // $data['booked_by']        = User::all()->sortBy('name');
+        // $data['booking_methods']  = BookingMethod::all()->sortBy('id');
+        // $data['quote_ref']        = Quote::where('quote_ref','!=', $data['quote']->quote_ref)->get('quote_ref');
+        // $data['commission_types'] = Commission::all();
+        // $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
+        // $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+
         return view('quotes.version', $data);
     }
 

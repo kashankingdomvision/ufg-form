@@ -568,6 +568,13 @@
 
                     <div class="sortable sortable-spacing">
                       @foreach ($quote->quote as $key => $q_detail )
+
+                        @php
+                          $category = isset($q_detail['category_id']) && !empty($q_detail['category_id']) ? $log->getQueryData($q_detail['category_id'], 'Category')->first() : '';
+                          $supplier_currency_code = isset($log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code) && !empty($log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '';
+                          $booking_currency_code = isset($log->getQueryData($quote->currency_id, 'Currency')->first()->code) && !empty($log->getQueryData($quote->currency_id, 'Currency')->first()->code) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '';
+                        @endphp
+
                         <div class="quote card card-default quote-{{$key}}" data-key="{{ $key }}">
 
                           <div class="card-header">
@@ -575,7 +582,7 @@
                               <span class="badge badge-info badge-date-of-service">{{ isset($q_detail['date_of_service']) && !empty($q_detail['date_of_service']) ? $q_detail['date_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-end-date-of-service">{{ isset($q_detail['end_date_of_service']) && !empty($q_detail['end_date_of_service']) ? $q_detail['end_date_of_service'] : '' }}</span>
                               <span class="badge badge-info badge-time-of-service">{{ isset($q_detail['time_of_service']) && !empty($q_detail['time_of_service']) ? $q_detail['time_of_service'] : '' }}</span>
-                              <span class="badge badge-info badge-category-id">{{ isset($q_detail['category_id']) && ($log->getQueryData($q_detail['category_id'], 'Category')->count() > 0) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->name : '' }}</span>
+                              <span class="badge badge-info badge-category-id">{{ $category->name }}</span>
                               <span class="badge badge-info badge-group-owner-id">{{ (isset($q_detail['group_owner_id']) && $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->count() > 0 ) ? $log->getQueryData($q_detail['group_owner_id'], 'GroupOwner')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-supplier-id">{{ (isset($q_detail['supplier_id']) && $log->getQueryData($q_detail['supplier_id'], 'Supplier')->count() > 0 ) ? $log->getQueryData($q_detail['supplier_id'], 'Supplier')->first()->name : '' }}</span>
                               <span class="badge badge-info badge-product-id">{{ (isset($q_detail['product_id']) && $log->getQueryData($q_detail['product_id'], 'Product')->count() > 0 ) ? $log->getQueryData($q_detail['product_id'], 'Product')->first()->name : ''  }}</span>
@@ -651,16 +658,16 @@
                                 </div>
                               </div>
 
-                              <div class="col-md-3 show-tf {{ isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->show_tf) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->show_tf == 0) ? 'd-none' : '' }}">
+                              <div class="col-md-3 show-tf {{ $category->show_tf == 0 ? 'd-none' : '' }}">
                                 <div class="form-group">
-                                  <label class="label-of-time-label">{{ isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->label_of_time) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->label_of_time) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->label_of_time : '' }}</label>
+                                  <label class="label-of-time-label">{{ $category->label_of_time }}</label>
                                   <input type="time" value="{{ $q_detail['time_of_service'] }}" name="quote[{{ $key }}][time_of_service]" data-name="time_of_service" id="quote_{{ $key }}_time_of_service" class="form-control time-of-service" placeholder="Time of Service" autocomplete="off">
                                 </div>
                               </div>
 
-                              <div class="col-md-3 {{ isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->second_tf) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->second_tf == 0) ? 'd-none' : '' }} second-tf">
+                              <div class="col-md-3 {{ $category->second_tf == 0 ? 'd-none' : '' }} second-tf">
                                 <div class="form-group">
-                                  <label class="second-label-of-time">{{ isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->label_of_time) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->second_label_of_time) ? $log->getQueryData($q_detail['category_id'], 'Category')->first()->second_label_of_time : '' }}</label>
+                                  <label class="second-label-of-time">{{ $category->second_label_of_time }}</label>
                                   <input type="time" name="quote[{{ $key }}][second_time_of_service]" value="{{ $q_detail['second_time_of_service'] }}" data-name="second_time_of_service" id="quote_{{ $key }}_second_time_of_service" class="form-control second-time-of-service"  autocomplete="off">
                                 </div>
                               </div>
@@ -668,7 +675,7 @@
                               <div class="col-md-3">
                                 <div class="form-group">
                                   <label>Category <span style="color:red">*</span></label>
-                                  <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-id @error('category_id') is-invalid @enderror">
+                                  <select name="quote[{{ $key }}][category_id]" data-name="category_id" id="quote_{{ $key }}_category_id" class="form-control select2single category-id">
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $category)
                                       <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" data-enddateofservice="{{ $category->set_end_date_of_service }}" {{ ($q_detail['category_id'] == $category->id)? 'selected' : NULL}} > {{ $category->name }} </option>
@@ -732,11 +739,11 @@
                                   $query->where('id', $q_detail['category_id']);
                                 });
 
-                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && is_null($q_detail['group_owner_id'])){
+                                if(($category->slug == 'cruise') && is_null($q_detail['group_owner_id'])){
                                   $query->whereNull('group_owner_id');
                                 }
 
-                                if(isset($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && !empty($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug) && ($log->getQueryData($q_detail['category_id'], 'Category')->first()->slug == 'cruise') && !is_null($q_detail['group_owner_id'])){
+                                if(($category->slug == 'cruise') && !is_null($q_detail['group_owner_id'])){
                                   $query->where('group_owner_id', $q_detail['group_owner_id']);
                                 }
 
@@ -822,7 +829,7 @@
                                 <div class="form-group">
                                   <label>Estimated Cost <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ $supplier_currency_code }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['estimated_cost']) }}" name="quote[{{ $key }}][estimated_cost]" data-name="estimated_cost" data-type="currency" id="quote_{{ $key }}_estimated_cost" class="form-control estimated-cost change-calculation remove-zero-values" value="0.00">
                                   </div>
                                 </div>
@@ -832,7 +839,7 @@
                                 <div class="form-group">
                                   <label>Markup Amount <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ $supplier_currency_code }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['markup_amount']) }}" name="quote[{{ $key }}][markup_amount]" data-name="markup_amount" data-type="currency" id="quote_{{ $key }}_markup_amount" class="form-control markup-amount change-calculation remove-zero-values" value="0.00">
                                   </div>
                                 </div>
@@ -852,7 +859,7 @@
                                 <div class="form-group">
                                   <label>Selling Price <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ $supplier_currency_code }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['selling_price']) }}" name="quote[{{ $key }}][selling_price]" data-name="selling_price" id="quote_{{ $key }}_selling_price" class="form-control selling-price hide-arrows" value="0.00" readonly>
                                   </div>
                                 </div>
@@ -862,7 +869,7 @@
                                 <div class="form-group">
                                   <label>Profit % <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ ($q_detail['supplier_currency_id'] && $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->count()) ? $log->getQueryData($q_detail['supplier_currency_id'], 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text supplier-currency-code">{{ $supplier_currency_code }}</span></div>
                                     <input type="number" step="any" value="{{ \Helper::number_format($q_detail['profit_percentage']) }}" name="quote[{{ $key }}][profit_percentage]" data-name="profit_percentage" id="quote_{{ $key }}_profit_percentage" class="form-control profit-percentage hide-arrows" value="0.00" readonly>
                                     <div class="input-group-append"><div class="input-group-text">%</div></div>
                                   </div>
@@ -873,7 +880,7 @@
                                 <div class="form-group">
                                   <label>Estimated Cost in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['estimated_cost_bc']) }}" name="quote[{{ $key }}][estimated_cost_in_booking_currency]" data-name="estimated_cost_in_booking_currency" id="quote_{{ $key }}_estimated_cost_in_booking_currency" class="form-control estimated-cost-in-booking-currency" value="0.00" readonly>
                                   </div>
                                 </div>
@@ -883,7 +890,7 @@
                                 <div class="form-group">
                                   <label>Markup Amount in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['markup_amount_in_booking_currency']) }}" name="quote[{{ $key }}][markup_amount_in_booking_currency]" data-name="markup_amount_in_booking_currency" id="quote_{{ $key }}_markup_amount_in_booking_currency" class="form-control markup-amount-in-booking-currency" value="0.00" readonly>
                                   </div>
                                 </div>
@@ -893,7 +900,7 @@
                                 <div class="form-group">
                                   <label>Selling Price in Booking Currency <span style="color:red">*</span></label>
                                   <div class="input-group">
-                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span></div>
+                                    <div class="input-group-prepend"><span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span></div>
                                     <input type="text" step="any" value="{{ \Helper::number_format($q_detail['selling_price_in_booking_currency']) }}" name="quote[{{ $key }}][selling_price_in_booking_currency]" data-name="selling_price_in_booking_currency" id="quote_{{ $key }}_selling_price_in_booking_currency" class="form-control selling-price-in-booking-currency" value="0.00" readonly>
                                   </div>
                                 </div>
@@ -965,7 +972,7 @@
                     <div class="col-md-3">
                       <div class="form-group">
                         <div class="input-group">
-                          <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                          <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                           <input type="text" name="total_net_price" step="any" class="form-control total-net-price hide-arrows" step="any" min="0"  value="{{ \Helper::number_format($quote->net_price) }}" readonly>
                         </div>
                       </div>
@@ -978,7 +985,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                           </div>
                           <input type="text" value="{{ \Helper::number_format($quote->markup_amount) }}"  step="any" class="form-control total-markup-amount total-markup-change remove-zero-values hide-arrows" step="any" min="0" name="total_markup_amount" data-name="total_markup_amount" data-type="currency" value="0.00" readonly>
                         </div>
@@ -1004,7 +1011,7 @@
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">
-                              <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                              <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                             </div>
                             <input type="text" step="any" class="form-control agency-commission remove-zero-values" step="any" min="0" name="agency_commission" data-type="currency" value="{{ \Helper::number_format($quote->agency_commission) }}" >
                           </div>
@@ -1018,7 +1025,7 @@
                         <div class="form-group">
                           <div class="input-group">
                             <div class="input-group-prepend">
-                              <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                              <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                             </div>
                             <input type="text" step="any" class="form-control total-net-margin remove-zero-values" step="any" min="0" name="total_net_margin" value="{{ \Helper::number_format($quote->total_net_margin) }}" readonly>
                           </div>
@@ -1033,7 +1040,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                           </div>
                           <input type="text" name="total_selling_price" value="{{ Helper::number_format($quote->selling_price) }}" class="form-control total-selling-price hide-arrows" readonly>
                         </div>
@@ -1061,7 +1068,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                           </div>
                           <input type="text" name="booking_amount_per_person" value="{{ Helper::number_format($quote->amount_per_person) }}" class="form-control booking-amount-per-person hide-arrows" readonly>
                         </div>
@@ -1073,7 +1080,7 @@
                     <label for="inputEmail3" class="col-sm-4 col-form-label">
                       Staff Commission
                       <h5>
-                        <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ isset($log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name) && !empty($log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name) ? $log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name : '' }}</span>
+                        <span class="badge badge-secondary badge-commission-name" title="Commission Name">{{ !empty($log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name) ? $log->getQueryData($quote->commission_criteria_id, 'CommissionCriteria')->first()->name : '' }}</span>
                         {{-- <span class="badge badge-secondary badge-commission-group-name" title="Commission Group">{{ isset($quote->commission_group_id) && $log->getQueryData($quote->commission_group_id, 'CommissionGroup')->count() ? $log->getQueryData($quote->commission_group_id, 'CommissionGroup')->first()->name : ''}}</span> --}}
                         <span class="badge badge-secondary badge-commission-percentage" title="Commission Percentage">{{ isset($quote->commission_percentage) && !empty($quote->commission_percentage) ? $quote->commission_percentage.' %' : ''}}</span>
                       </h5>
@@ -1083,7 +1090,7 @@
                       <div class="form-group">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                            <span class="input-group-text booking-currency-code">{{ ($quote->currency_id && $log->getQueryData($quote->currency_id, 'Currency')->count()) ? $log->getQueryData($quote->currency_id, 'Currency')->first()->code : '' }}</span>
+                            <span class="input-group-text booking-currency-code">{{ $booking_currency_code  }}</span>
                           </div>
                           <input type="text" name="commission_amount" value="{{ Helper::number_format($quote->commission_amount) }}"  class="form-control commission-amount hide-arrows" readonly>
                         </div>
