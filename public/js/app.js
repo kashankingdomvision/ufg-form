@@ -69209,7 +69209,9 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   // set autofocus on search
   $(document).on('select2:open', '.select2single', function (e) {
     $(".select2-search__field").each(function (key, value) {
-      value.focus();
+      value.focus({
+        preventScroll: true
+      });
     });
   });
   window.Toast = Swal.mixin({
