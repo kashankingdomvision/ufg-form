@@ -5,6 +5,9 @@ namespace App\Http\Controllers\SettingControllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\BookingMethod;
+use App\Http\Requests\CreateBookingMethod;
+use App\Http\Requests\UpdateBookingMethod;
+use DB;
 class BookingMethodController extends Controller
 {
     public $pagination = 10;
@@ -41,11 +44,17 @@ class BookingMethodController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateBookingMethod $request)
     {
-        $request->validate(['name' => 'required|string']);
-        BookingMethod::create($request->all());
-        return redirect()->route('setting.booking_methods.index')->with('success_message', 'Booking method created successfully'); 
+        BookingMethod::create([
+            'name'  =>  $request->name
+        ]);
+        
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Booking Method Created Successfully.',
+            'redirect_url'    => route('booking_methods.index') 
+        ]);
         
     }
 
@@ -59,7 +68,7 @@ class BookingMethodController extends Controller
     public function edit($id)
     {
         $data['booking_method'] = BookingMethod::findOrFail(decrypt($id));
-        return view('booking_methods.edit',$data);
+        return view('booking_methods.edit', $data);
     }
 
     /**
@@ -69,11 +78,17 @@ class BookingMethodController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateBookingMethod $request, $id)
     {
-        $request->validate(['name' => 'required|string']);
-        BookingMethod::findOrFail(decrypt($id))->update($request->all());
-        return redirect()->route('setting.booking_methods.index')->with('success_message', 'Booking method updated successfully'); 
+        $booking_method = BookingMethod::findOrFail(decrypt($id))->update([
+            'name' => $request->name,
+        ]);
+        
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Booking Method Updated Successfully.',
+            'redirect_url'    => route('booking_methods.index') 
+        ]);
         
     }
 
@@ -86,7 +101,36 @@ class BookingMethodController extends Controller
     public function destroy($id)
     {
         BookingMethod::destroy(decrypt($id));
-        return redirect()->route('setting.booking_methods.index')->with('success_message', 'Booking method deleted successfully'); 
+        return redirect()->route('booking_methods.index')->with('success_message', 'Booking method deleted successfully'); 
         
+    }
+
+    public function bulkAction(Request $request)
+    {
+        try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+    
+            if($bulk_action_type == 'delete'){
+                DB::table("booking_methods")->whereIn('id', $bulk_action_ids)->delete();
+                $message = "Booking Methods Deleted Successfully.";
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        } catch (\Exception $e) {
+
+            // $e->getMessage(),
+            return response()->json([ 
+                'status'  => false, 
+                'message' => "Something Went Wrong, Please Try Again."
+            ]);
+        }
     }
 }

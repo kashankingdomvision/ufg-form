@@ -99,7 +99,13 @@ __webpack_require__(/*! ./setting/bank_app */ "./resources/js/setting/bank_app.j
 
 __webpack_require__(/*! ./setting/brand_app */ "./resources/js/setting/brand_app.js");
 
+__webpack_require__(/*! ./setting/booking_method_app */ "./resources/js/setting/booking_method_app.js");
+
+__webpack_require__(/*! ./setting/cabin_type_app */ "./resources/js/setting/cabin_type_app.js");
+
 __webpack_require__(/*! ./setting/country_app */ "./resources/js/setting/country_app.js");
+
+__webpack_require__(/*! ./setting/contact_app */ "./resources/js/setting/contact_app.js");
 
 __webpack_require__(/*! ./setting/currency_app */ "./resources/js/setting/currency_app.js");
 
@@ -121,11 +127,7 @@ __webpack_require__(/*! ./setting/season_app */ "./resources/js/setting/season_a
 
 __webpack_require__(/*! ./setting/store_text_app */ "./resources/js/setting/store_text_app.js");
 
-__webpack_require__(/*! ./setting/cabin_type_app */ "./resources/js/setting/cabin_type_app.js");
-
 __webpack_require__(/*! ./setting/station_app */ "./resources/js/setting/station_app.js");
-
-__webpack_require__(/*! ./setting/contact_app */ "./resources/js/setting/contact_app.js");
 
 __webpack_require__(/*! ./setting/tour_contact_app */ "./resources/js/setting/tour_contact_app.js");
 
@@ -355,6 +357,127 @@ $(document).ready(function () {
               type: 'POST',
               url: $('#bank_bulk_action').attr('action'),
               data: new FormData($('#bank_bulk_action')[0]),
+              contentType: false,
+              cache: false,
+              processData: false,
+              success: function success(response) {
+                printListingSuccessMessage(response);
+              }
+            });
+          }
+        });
+      } else {
+        printListingErrorMessage("Please Check Atleast One Record.");
+      }
+    }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/setting/booking_method_app.js":
+/*!****************************************************!*\
+  !*** ./resources/js/setting/booking_method_app.js ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  /*
+  |--------------------------------------------------------------------------------
+  | Store Booking Method
+  |--------------------------------------------------------------------------------
+  */
+  $(document).on('submit', '#store_booking_method', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  /*
+  |--------------------------------------------------------------------------------
+  | Update Booking Method
+  |--------------------------------------------------------------------------------
+  */
+
+  $(document).on('submit', '#update_booking_method', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('click', '.booking-method-bulk-action-item', function () {
+    var checkedValues = $('.child:checked').map(function (i, e) {
+      return e.value;
+    }).get();
+    var bulkActionType = $(this).data('action_type');
+    var message = "";
+    var buttonText = "";
+
+    if (['delete'].includes(bulkActionType)) {
+      if (checkedValues.length > 0) {
+        $('input[name="bulk_action_type"]').val(bulkActionType);
+        $('input[name="bulk_action_ids"]').val(checkedValues);
+
+        switch (bulkActionType) {
+          case "delete":
+            message = 'You want to Delete Booking Methods?';
+            buttonText = 'Delete';
+            break;
+        }
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: message,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#28a745',
+          cancelButtonColor: '#dc3545',
+          confirmButtonText: "Yes, ".concat(buttonText, " it !")
+        }).then(function (result) {
+          if (result.isConfirmed) {
+            $.ajax({
+              type: 'POST',
+              url: $('#booking_method_bulk_action').attr('action'),
+              data: new FormData($('#booking_method_bulk_action')[0]),
               contentType: false,
               cache: false,
               processData: false,
