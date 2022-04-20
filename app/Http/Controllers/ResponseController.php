@@ -688,6 +688,7 @@ class ResponseController extends Controller
     }
 
     public function getFilterCurrencyRates(Request $request){
+
         $query = DB::table('currency_conversions');
 
         if(!is_null($request->selected_currencies)){
