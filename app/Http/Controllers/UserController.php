@@ -45,7 +45,7 @@ class UserController extends Controller
         }
 
         $data['users']      = $user->paginate($this->pagination);
-        $data['roles']      = Role::orderBy('id', 'ASC')->get(['id','name']);
+        $data['roles']      = Role::orderBy('id', 'ASC')->get(['id','name'])->sortBy('name');
         $data['currencies'] = Currency::active()->orderBy('id', 'ASC')->get(['id','name','code','flag','status']);
         $data['brands']     = Brand::orderBy('id', 'ASC')->get(['id','name']);
 
@@ -87,7 +87,8 @@ class UserController extends Controller
     public function searchFilters($user, $request)
     {
         if ($request->has('search') && !empty($request->search)) {
-            $user = $user->where(function ($query) use($request) {
+
+            $user = $user->where(function ($query) use ($request) {
                 $query->where('name', 'like', '%'.$request->search.'%')
                     ->orWhere('email', 'like', '%'.$request->search.'%')
                     ->orWhereHas('getBrand', function ($query) use($request) {
@@ -100,20 +101,20 @@ class UserController extends Controller
         }
                          
         if ($request->has('role') && !empty($request->role)) {
-            $user = $user->whereHas('getRole', function ($q) use($request) {
-                $q->where('id', $request->role);
+            $user = $user->whereHas('getRole', function ($query) use ($request) {
+                $query->where('id', $request->role);
             });
         }
 
         if ($request->has('currency') && !empty($request->currency)) {
-            $user = $user->whereHas('getCurrency', function ($q) use($request) {
-                $q->where('id', $request->currency);
+            $user = $user->whereHas('getCurrency', function ($query) use ($request) {
+                $query->where('id', $request->currency);
             });
         }
 
         if ($request->has('brand') && !empty($request->brand)) {
-            $user = $user->whereHas('getBrand', function ($q) use($request) {
-                $q->where('id', $request->brand);
+            $user = $user->whereHas('getBrand', function ($query) use ($request) {
+                $query->where('id', $request->brand);
             });
         }
 
@@ -155,7 +156,7 @@ class UserController extends Controller
     public function create()
     {
         $data['supervisors']       = User::role(['supervisor'])->get();
-        $data['roles']             = Role::orderBy('name', 'ASC')->get();
+        $data['roles']             = Role::orderBy('id', 'ASC')->get()->sortBy('name');
         $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
@@ -167,8 +168,6 @@ class UserController extends Controller
     // UserRequest
     public function store(UserRequest $request)
     {
-        // dd(request()->all());
-
         User::create($this->userArray($request, 'store'));
 
         return response()->json([ 
@@ -181,14 +180,13 @@ class UserController extends Controller
     public function edit($id, $status = null)
     {
         $data['user']              = User::findOrFail(decrypt($id));
-        $data['roles']             = Role::orderBy('name', 'ASC')->get();
+        $data['roles']             = Role::orderBy('id', 'ASC')->get()->sortBy('name');
         $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['brands']            = Brand::orderBy('id', 'ASC')->get();
         $data['commisions']        = Commission::orderBy('id', 'ASC')->get();
         $data['commission_groups'] = CommissionGroup::orderBy('id','ASC')->get();
         $data['supervisors']       = User::role(['supervisor'])->get();
-
-        $data['status']     = $status;
+        $data['status']            = $status;
         
         return view('users.edit', $data);
 

@@ -32,6 +32,7 @@
 
             <form method="POST" id="update_user" action="{{ route('users.update', [encrypt($user->id), $status]) }}">
               @csrf
+              
               <div class="card-body">
                 <div class="form-group">
                   <label>Name <span style="color:red">*</span></label>
@@ -51,7 +52,7 @@
                   <span class="text-danger" role="alert"></span>
                 </div>
 
-                @if(Auth::user()->hasAdmin())
+                @if(Auth::user()->isAdmin())
                   <div class="form-group">
                     <label>User Type <span style="color:red">*</span></label>
                     <select name="role_id" id="role_id" class="form-control select2single role-id">

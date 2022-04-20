@@ -105,9 +105,9 @@ class User extends Authenticatable
     }
 
     
-    public function hasAdmin()
+    public function isAdmin()
     {
-        return $this->getRole()->where('slug', 'admin')->exists();
+        return $this->getRole()->where('slug', 'admin')->get();
     }
 
     public function scopeRole($query, $value)

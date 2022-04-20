@@ -8,7 +8,11 @@ class Currency extends Model
 {
     protected $fillable = [
         
-        'name','code','status','is_obsolete','flag',
+        'name',
+        'code',
+        'status',
+        'is_obsolete',
+        'flag',
     ];
 
     public function scopeActive($query)
