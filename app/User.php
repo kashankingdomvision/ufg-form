@@ -103,11 +103,10 @@ class User extends Authenticatable
     function getCancelledBooking() {
         return $this->hasMany(Booking::class, 'user_id', 'id')->where('booking_status','cancelled');
     }
-
     
     public function isAdmin()
     {
-        return $this->getRole()->where('slug', 'admin')->get();
+        return $this->getRole->slug == 'admin';
     }
 
     public function scopeRole($query, $value)
