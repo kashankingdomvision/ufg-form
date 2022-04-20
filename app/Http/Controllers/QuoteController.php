@@ -463,7 +463,7 @@ class QuoteController extends Controller
             return Country::orderBy('sort_order', 'ASC')->get();
         });
 
-        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
             return Country::orderByService()->orderBy('name', 'ASC')->get();
         });
 
@@ -483,8 +483,6 @@ class QuoteController extends Controller
         $data['preset_comments']      = PresetComment::orderBy('id', 'ASC')->get();
         $data['currency_conversions'] = CurrencyConversion::orderBy('from', 'desc')->get();
         
-        
-        
         // $data['commission_types'] = Commission::all();
         // $data['quote_ref']        = Quote::get('quote_ref');
         // $data['locations']        = Location::get();
@@ -499,9 +497,6 @@ class QuoteController extends Controller
     // Request
     public function store(QuoteRequest $request)
     {
-
-        
-
         $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
         $quote->getCountryDestinations()->sync($request->country_destination_ids);
 
@@ -574,7 +569,7 @@ class QuoteController extends Controller
             return Country::orderBy('sort_order', 'ASC')->get();
         });
 
-        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
             return Country::orderByService()->orderBy('name', 'ASC')->get();
         });
  
@@ -705,7 +700,7 @@ class QuoteController extends Controller
             return Country::orderBy('sort_order', 'ASC')->get();
         });
 
-        $data['supplier_countries'] = cache()->rememberForever('countries', function () {
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
             return Country::orderByService()->orderBy('name', 'ASC')->get();
         });
 

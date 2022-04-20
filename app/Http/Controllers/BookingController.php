@@ -325,9 +325,16 @@ class BookingController extends Controller
     public function edit($id)
     {
         $booking = Booking::findOrFail(decrypt($id));
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
         $data['booking']          = $booking;
+
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['users']            = User::all()->sortBy('name');
@@ -632,8 +639,14 @@ class BookingController extends Controller
 
     public function show($id,$status = null)
     {
-        $data['countries']        = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries'] = cache()->rememberForever('countries', function () {
+            return Country::orderBy('sort_order', 'ASC')->get();
+        });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+            return Country::orderByService()->orderBy('name', 'ASC')->get();
+        });
+
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['users']            = User::all()->sortBy('name');
@@ -694,8 +707,13 @@ class BookingController extends Controller
         $booking_log                = BookingLog::findOrFail(decrypt($id));
         $data['log']                = $booking_log;
         $data['booking']            = (object) $booking_log->data;
-        $data['countries']          = Country::orderBy('sort_order', 'ASC')->get();
-        $data['supplier_countries'] = Country::orderByService()->orderByAsc()->get();
+        $data['countries']          = cache()->rememberForever('countries', function () {
+                                        return Country::orderBy('sort_order', 'ASC')->get();
+                                    });
+
+        $data['supplier_countries'] = cache()->rememberForever('supplier_countries', function () {
+                                        return Country::orderByService()->orderBy('name', 'ASC')->get();
+                                    });
         $data['categories']         = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']            = Season::all();
         $data['users']              = User::all()->sortBy('name');
