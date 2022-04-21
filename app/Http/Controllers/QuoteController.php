@@ -58,7 +58,7 @@ class QuoteController extends Controller
 
     public function index(Request $request)
     {
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', '!=', 1);
+        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', 0);
         if(count($request->all()) >0){
             $quote = $this->searchFilters($quote, $request);
         }

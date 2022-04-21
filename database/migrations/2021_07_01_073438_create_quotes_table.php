@@ -71,7 +71,7 @@ class CreateQuotesTable extends Migration
 
             $table->enum('status', ['quote','booked','cancelled'])->default('quote');
             $table->dateTime('booking_date')->nullable();
-            $table->enum('is_archive', [1,0])->default(0);
+            $table->boolean('is_archive')->default(0);
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('user_id');
             $table->softDeletes();
