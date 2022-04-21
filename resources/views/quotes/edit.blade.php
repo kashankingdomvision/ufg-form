@@ -64,21 +64,21 @@
                 <i class="fa fa-arrow-left"></i>&nbsp;&nbsp;Back to  Listing
               </a>
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <a class="mr-2 float-right" href="{{ route('quotes.export', encrypt($quote->id)) }}">
                   <button type="button" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel"><i class="fa fa-file-export"></i>&nbsp;&nbsp;Export in Excel</button>
                 </a>
               @endif
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <button type="button" class="multiple-alert btn btn-danger btn-sm float-right mr-2" data-action_type="cancel_quote" data-action="{{ route('quotes.multiple.alert', ['cancel_quote', encrypt($quote->id)]) }}" title="Cancel Quote"><i class="fa fa-times"></i>&nbsp;&nbsp;Cancel Quote</button>
               @endif
 
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="booked_quote" data-action="{{ route('quotes.multiple.alert', ['booked_quote', encrypt($quote->id)]) }}" data-quote_id="{{encrypt($quote->id)}}" title="Confirm Booking"><i class="fa fa-check"></i>&nbsp;&nbsp;Confirm Booking</button>
               @endif
 
-              @if($quote->booking_status == 'cancelled')
+              @if($quote->status == 'cancelled')
                 <button type="button" class="multiple-alert btn btn-success btn-sm float-right mr-2" data-action_type="restore_quote" data-action="{{ route('quotes.multiple.alert', ['restore_quote', encrypt($quote->id)]) }}" title="Restore Quote"><i class="fa fa-undo-alt"></i>&nbsp;&nbsp;Restore</button>
               @endif
             </div>
@@ -614,6 +614,10 @@
 
                   <div class="sortable sortable-spacing">
                     @foreach ($quote->getQuoteDetails as $key => $q_detail)
+                      @php
+                        $supplier_currency_code = isset($q_detail->getSupplierCurrency->code) && !empty($q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '';
+                      @endphp
+
                       <div class="quote card card-default quote-{{$key}}" data-key="{{$key}}">
 
                         <div class="card-header">
@@ -1229,7 +1233,7 @@
               </div>
 
               
-              @if($quote->booking_status == 'quote')
+              @if($quote->status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                   <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-2">Cancel</a>

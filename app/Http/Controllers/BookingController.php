@@ -139,7 +139,7 @@ class BookingController extends Controller
             });
 
             $booking->when($request->status, function ($query) use ($request) {
-                $query->where('booking_status', $request->status);
+                $query->where('status', $request->status);
             });
       
         }
@@ -766,7 +766,7 @@ class BookingController extends Controller
             'currency_id'          => $request->booking_currency_id,
         ]);
 
-        Booking::where('id', $request->booking_id)->update([ 'booking_status' => 'cancelled' ]);
+        Booking::where('id', $request->booking_id)->update([ 'status' => 'cancelled' ]);
 
         return \Response::json(['success_message' => 'Booking Cancelled Successfully'], 200);
     }
@@ -795,7 +795,7 @@ class BookingController extends Controller
 
     public function revert_cancel_booking($id){ 
 
-        Booking::where('id',decrypt($id))->update([ 'booking_status' => 'confirmed' ]);
+        Booking::where('id',decrypt($id))->update([ 'status' => 'confirmed' ]);
         BookingCancellation::where('booking_id',decrypt($id))->delete();
 
         return redirect()->back()->with('success_message', 'Booking Reverted Successfully');    
@@ -936,14 +936,14 @@ class BookingController extends Controller
         ]);
 
         Booking::where('id', $id)->update([ 
-            'booking_status' => 'cancelled',
+            'status' => 'cancelled',
             'cancel_date'    => Carbon::now()
         ]);
     }
 
     public function restorBooking($id)
     {
-        Booking::where('id', $id)->update([ 'booking_status' => 'confirmed' ]);
+        Booking::where('id', $id)->update([ 'status' => 'confirmed' ]);
         BookingCancellation::where('booking_id', $id)->delete();
     }
     

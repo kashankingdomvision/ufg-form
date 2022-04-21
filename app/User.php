@@ -85,11 +85,11 @@ class User extends Authenticatable
     }
 
     function getQuote() {
-        return $this->hasMany(Quote::class, 'user_id', 'id')->where('booking_status','quote');
+        return $this->hasMany(Quote::class, 'user_id', 'id')->where('status','quote');
     }
 
     function getCancelledQuote() {
-        return $this->hasMany(Quote::class, 'user_id', 'id')->where('booking_status','cancelled');
+        return $this->hasMany(Quote::class, 'user_id', 'id')->where('status','cancelled');
     }
 
     function getTotalBooking() {
@@ -97,11 +97,11 @@ class User extends Authenticatable
     }
 
     function getConfirmedBooking() {
-        return $this->hasMany(Booking::class, 'user_id', 'id')->where('booking_status','confirmed');
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('status','confirmed');
     }
 
     function getCancelledBooking() {
-        return $this->hasMany(Booking::class, 'user_id', 'id')->where('booking_status','cancelled');
+        return $this->hasMany(Booking::class, 'user_id', 'id')->where('status','cancelled');
     }
     
     public function isAdmin()

@@ -97,7 +97,7 @@ class ReportController extends Controller
 
     public function commission_report(Request $request){
 
-        $query = Booking::where('booking_status','confirmed')->orderBy('id','ASC');
+        $query = Booking::where('status','confirmed')->orderBy('id','ASC');
     
         if (!empty($request->all())){
 
@@ -458,7 +458,7 @@ class ReportController extends Controller
         }
 
         if($request->has('status') && !empty($request->status)){
-            $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+            $quote->where('status', 'like', '%'.$request->status.'%' );
         }
 
         if($request->has('booking_currency') && !empty($request->booking_currency)){
@@ -662,11 +662,11 @@ class ReportController extends Controller
         $query = BookingDetail::where('category_id',1);
 
         $query->whereHas('getBooking', function($query) use($request){
-            $query->where('booking_status','confirmed' );
+            $query->where('status','confirmed' );
         });
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
-        $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+        $data['bookings']        = Booking::select('id','quote_ref')->where('status','confirmed')->orderBy('id','ASC')->get();
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
         $data['brands']          = Brand::all();
         $data['booking_seasons'] = Season::all();
@@ -680,7 +680,7 @@ class ReportController extends Controller
 
         $query = BookingDetail::where('category_id',1);
         $query->whereHas('getBooking', function($query) use($request){
-            $query->where('booking_status','confirmed' );
+            $query->where('status','confirmed' );
         });
 
         if (!empty(request()->all())) {
@@ -729,7 +729,7 @@ class ReportController extends Controller
         }
 
         $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
-        $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+        $data['bookings']        = Booking::select('id','quote_ref')->where('status','confirmed')->orderBy('id','ASC')->get();
         $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
         $data['brands']          = Brand::all();
         $data['booking_seasons'] = Season::all();
@@ -1586,7 +1586,7 @@ class ReportController extends Controller
             }
     
             if($passedParams['status'] && !empty($passedParams['status'])){
-                $quote->where('booking_status', 'like', '%'.$passedParams['status'].'%' );
+                $quote->where('status', 'like', '%'.$passedParams['status'].'%' );
             }
     
             if($passedParams['booking_currency'] && !empty($passedParams['booking_currency'])){
@@ -1648,7 +1648,7 @@ class ReportController extends Controller
             
             $query = BookingDetail::where('category_id',1);
             $query->whereHas('getBooking', function($query) use($request){
-                $query->where('booking_status','confirmed' );
+                $query->where('status','confirmed' );
             });
 
             if (!empty($passedParams)) {
@@ -1688,7 +1688,7 @@ class ReportController extends Controller
             }
 
             $data['booking_details'] = $query->orderBy('booking_id','ASC')->get();
-            $data['bookings']        = Booking::select('id','quote_ref')->where('booking_status','confirmed')->orderBy('id','ASC')->get();
+            $data['bookings']        = Booking::select('id','quote_ref')->where('status','confirmed')->orderBy('id','ASC')->get();
             $data['suppliers']       = Category::where('slug','transfer')->first()->getSupplier;
             $data['brands']          = Brand::all();
             $data['booking_seasons'] = Season::all();
@@ -1876,7 +1876,7 @@ class ReportController extends Controller
 
     public function commission_report_export(Request $request) {
         try {
-            $query = Booking::where('booking_status','confirmed')->orderBy('id','ASC');
+            $query = Booking::where('status','confirmed')->orderBy('id','ASC');
             
             $passedParams = json_decode($request->params, TRUE);
             if (!empty($passedParams)){

@@ -928,7 +928,7 @@
                     <button type="button" id="save_template" class="btn btn-outline-success btn-sm pull-right">Save as Template</button>
                   </div>
 
-                  <div class="row" id="storedText" @if(!$quote->stored_text) style="display:none; @endif">
+                  {{-- <div class="row" id="storedText" @if(!$quote->stored_text) style="display:none; @endif">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="col-sm-3 col-form-label">Stored Text</label>
@@ -939,7 +939,7 @@
                         </select>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
 
                   <div class="row">
                     <div class="col-md-12 agencyField {{ ($quote->agency == 0) ? 'd-none' : '' }}">

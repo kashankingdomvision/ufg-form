@@ -901,12 +901,12 @@ class ResponseController extends Controller
 
     //     }elseif ($request->btn  == 'cancel'){
 
-    //         DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+    //         DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'cancelled']);
     //         $respons['message'] = 'Quotes Cancelled Successfully !!';
     //     }
     //     elseif ($request->btn  == 'quote'){
 
-    //         DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+    //         DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'quote']);
     //         $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
     //     }
 

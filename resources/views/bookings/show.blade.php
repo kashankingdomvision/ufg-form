@@ -89,13 +89,13 @@
                 <i class="fa fa-eye" aria-hidden="true"></i>&nbsp;&nbsp;View Final Quote
               </a>
 
-              @if($booking->booking_status == 'confirmed')
+              @if($booking->status == 'confirmed')
                 <button type="button" class="multiple-alert mr-2 float-right btn btn-danger btn-sm" data-action_type="cancel_booking" data-booking_id="{{ $booking->id }}" data-action="{{ route('bookings.multiple.alert', ['cancel_booking', encrypt($booking->id)]) }}" title="Cancel Booking"><i class="fa fa-times mr-2"></i>Cancel Booking</button>
 
                 <button type="button" class="multiple-alert mr-2 float-right btn btn-success btn-sm" data-action_type="edit_booking" title="Edit Booking"><i class="fas fa-edit mr-2"></i>Edit Booking</button>
               @endif
 
-              @if($booking->booking_status == 'cancelled')
+              @if($booking->status == 'cancelled')
                 <button type="button" class="multiple-alert mr-2 float-right btn btn-success btn-sm"  data-action_type="restore_booking" data-action="{{ route('bookings.multiple.alert', ['restore_booking', encrypt($booking->id)]) }}" title="Restore Booking"><i class="fa fa-undo-alt mr-2"></i>Restore Booking</button>
               @endif
             </div>
@@ -1885,7 +1885,7 @@
                   </div>
                 </div>
 
-                @if($booking->booking_status == 'cancelled')
+                @if($booking->status == 'cancelled')
                   <section class="cancellation-payments-section">
 
                     <div class="cancellation-payments">

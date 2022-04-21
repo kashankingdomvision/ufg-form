@@ -33,7 +33,6 @@ class CreateUsersTable extends Migration
             $table->integer('is_login')->unsigned()->default(0);
             $table->longText('column_preferences')->nullable();
             $table->timestamps();
-            
         });
     }
 

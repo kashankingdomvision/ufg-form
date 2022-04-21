@@ -88,7 +88,7 @@ class QuoteController extends Controller
             if($request->status == 'cancelled'){
                 $quote->where('deleted_at', '!=', null);
             }else{
-                $quote->where('booking_status', 'like', '%'.$request->status.'%' );
+                $quote->where('status', 'like', '%'.$request->status.'%' );
             }
         }
 
@@ -245,7 +245,7 @@ class QuoteController extends Controller
             $data['agency_contact']         = $request->agency_contact??NULL;
             $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
             $data['booking_details']        = $request->booking_details;
-            $data['booking_status']         = 'confirmed';
+            $data['status']                 = 'confirmed';
             $data['booking_date']           = Carbon::now();
             $data['created_by']             =  Auth::id();
         }
@@ -776,12 +776,12 @@ class QuoteController extends Controller
             $bulk_action_ids  = explode(",", $bulk_action_ids);
     
             if($bulk_action_type == 'cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'cancelled' ]);
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'status' => 'cancelled' ]);
                 $message = "Quotes Cancelled Successfully.";
             }
     
             if($bulk_action_type == 'revert_cancel'){
-                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'booking_status' => 'quote' ]);
+                DB::table("quotes")->whereIn('id', $bulk_action_ids)->update([ 'status' => 'quote' ]);
                 $message = "Revert Cancelled Quotes Successfully.";
             }
     
@@ -820,12 +820,12 @@ class QuoteController extends Controller
 
         // }elseif ($request->btn  == 'cancel'){
 
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'cancelled']);
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'cancelled']);
         //     $respons['message'] = 'Quotes Cancelled Successfully !!';
         // }
         // elseif ($request->btn  == 'quote'){
 
-        //     DB::table($table_name)->whereIn('id', $ids)->update(['booking_status' => 'quote']);
+        //     DB::table($table_name)->whereIn('id', $ids)->update(['status' => 'quote']);
         //     $respons['message'] = 'Revert Cancelled Quotes Successfully !!';
         // }
 
@@ -908,7 +908,7 @@ class QuoteController extends Controller
             }
             
             $quote->update([
-                'booking_status' => 'booked',
+                'status' => 'booked',
                 'booking_date'   => Carbon::now()
             ]);
           
@@ -947,13 +947,13 @@ class QuoteController extends Controller
 
             if($action_type == 'cancel_quote'){
                 
-                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'cancelled' ]);
+                Quote::findOrFail(decrypt($id))->update([ 'status' => 'cancelled' ]);
                 $message = "Quote Cancelled Successfully.";
             }
 
             if($action_type == 'restore_quote'){
 
-                Quote::findOrFail(decrypt($id))->update([ 'booking_status' => 'quote' ]);
+                Quote::findOrFail(decrypt($id))->update([ 'status' => 'quote' ]);
                 $message = "Quote Restored Successfully.";
             }
 
@@ -1017,14 +1017,14 @@ class QuoteController extends Controller
         }
         
         $quote->update([
-            'booking_status' => 'booked',
+            'status' => 'booked',
             'booking_date'   => Carbon::now()
         ]);
     }
 
     public function cancelQuote($id){
 
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'cancelled']);
     }
 
     public function exportQuote($id){
@@ -1082,13 +1082,13 @@ class QuoteController extends Controller
 
     public function cancel($id)
     {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'cancelled']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'cancelled']);
         return redirect()->back()->with('success_message', 'Quote Cancelled Successfully');
     }
 
     public function restore($id)
     {
-        Quote::findOrFail(decrypt($id))->update(['booking_status' => 'quote']);
+        Quote::findOrFail(decrypt($id))->update(['status' => 'quote']);
         return redirect()->back()->with('success_message', 'Quote Restore Successfully');
     }
 

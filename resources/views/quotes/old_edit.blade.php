@@ -72,20 +72,20 @@
                   <span class="fa fa-arrow-left"></span>  &nbsp;Back to  Listing
                 </a>
 
-                @if($quote->booking_status == 'quote')
+                @if($quote->status == 'quote')
                   <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.export', encrypt($quote->id)) }}">
                     @csrf
                     <button type="submit" onclick="return confirm('Are you sure you would like to Export this Quote?');" class="btn btn-info btn-sm float-right" data-title="" data-target="#" title="Export in Excel">Export in Excel</button>
                   </form>
                 @endif
 
-                @if($quote->booking_status == 'quote')
+                @if($quote->status == 'quote')
                   <a href="{{ route('quotes.cancelled', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Cancel this Quote?');" data-title="Cancel" data-target="#cancel" title="Cancel Quote">
                     <button type="button" class="mr-2 btn btn-danger btn-sm float-right" data-title="" data-target="#" title="Cancel Quote">Cancel Quote</button>
                   </a>
                 @endif
 
-                @if($quote->booking_status == 'quote')
+                @if($quote->status == 'quote')
                   <form  class="mr-2 float-right" method="POST" action="{{ route('quotes.booked', encrypt($quote->id)) }}">
                     @csrf @method('patch')
                     <button type="submit"  onclick="return confirm('Are you sure you want to convert this Quotation to Booking?');" class="btn btn-success btn-sm" data-title="" data-target="#" title="Confirm Booking">Confirm Booking</button>
@@ -93,7 +93,7 @@
                 @endif
 
 
-                @if($quote->booking_status == 'cancelled')
+                @if($quote->status == 'cancelled')
                   <a href="{{ route('quotes.restore', encrypt($quote->id)) }}" onclick="return confirm('Are you sure you want to Restore this Quote?');" data-title="Cancel" title="Restore Quote">
                     <button type="button" class="mr-2 btn btn-success btn-sm float-right">Restore</button>
                   </a>
@@ -1274,7 +1274,7 @@
                     </div>
                   </div>
                 </div>
-                @if($quote->booking_status == 'quote')
+                @if($quote->status == 'quote')
                 <div class="card-footer">
                   <button type="submit" class="btn btn-success float-right buttonSumbit">Submit</button>
                   <a href="{{ route('quotes.index') }}" class="btn btn-danger buttonSumbit float-right mr-3">Cancel</a>

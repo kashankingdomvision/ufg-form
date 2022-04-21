@@ -60,7 +60,7 @@ class Booking extends Model
         'amount_per_person',
         'rate_type',
         'markup_type',
-        'booking_status',
+        'status',
         'booking_date',
         'cancel_date',
         'tas_ref',
@@ -111,7 +111,7 @@ class Booking extends Model
     
     public function getBookingFormatedStatusAttribute()
     {
-        $status = $this->booking_status;
+        $status = $this->status;
         switch ($status) {
             case 'confirmed':
                 return '<h5><span class="badge badge-success">Confirmed</span></h5>';

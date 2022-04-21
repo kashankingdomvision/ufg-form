@@ -8165,7 +8165,7 @@ class AdminController extends Controller
     public function convert_quote_to_booking($id)
     {
         $qoute = Qoute::find($id);
-        $qoute->qoute_to_booking_status = 1;
+        $qoute->qoute_to_status = 1;
         $qoute->qoute_to_booking_date = date('Y-m-d');
         $qoute->save();
 

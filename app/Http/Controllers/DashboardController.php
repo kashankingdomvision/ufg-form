@@ -28,7 +28,7 @@ class DashboardController extends Controller
     {
         
         $data['booking'] = Booking::count();
-        $data['quote']   = Quote::where('booking_status', 'quote')->count();
+        $data['quote']   = Quote::where('status', 'quote')->count();
         $data['users']   = User::count();
         $data['supplier']= Supplier::count();
         

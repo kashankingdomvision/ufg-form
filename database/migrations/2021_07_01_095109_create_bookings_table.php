@@ -65,7 +65,7 @@ class CreateBookingsTable extends Migration
             $table->double('amount_per_person')->nullable();
             $table->enum('rate_type',['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
-            $table->enum('booking_status',['confirmed','cancelled'])->default('confirmed');
+            $table->enum('status',['confirmed','cancelled'])->default('confirmed');
             $table->timestamp('booking_date')->nullable();
             $table->text('revelant_quote')->nullable();
             $table->timestamps();
