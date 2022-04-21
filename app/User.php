@@ -114,5 +114,6 @@ class User extends Authenticatable
         return $query->whereHas('getRole', function($query) use ($value){
             $query->whereIn('slug', $value);
         });
+        // return $query->join('roles', 'roles.id', '=', 'users.role_id')->whereIn('roles.slug',  $value);
     }
 }
