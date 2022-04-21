@@ -58,15 +58,39 @@ class QuoteController extends Controller
 
     public function index(Request $request)
     {
-        $quote  = Quote::select('*', DB::raw('count(*) as quote_count'))->withTrashed()->where('is_archive', 0);
+        $quote  = Quote::
+        with([
+            'getBooking' => function ($query) {
+                $query->select('id');
+            },
+            'getSeason' => function ($query) {
+                $query->select('id','name');
+            },
+            'getBrand' => function ($query) {
+                $query->select('id','name');
+            },
+            'getBookingCurrency' => function ($query) {
+                $query->select('id','name', 'code');
+            },
+            'getCreatedBy' => function ($query) {
+                $query->select('id','name');
+            },
+        ])
+        ->select(
+            '*', 
+            DB::raw('count(*) as quote_count')
+        )
+        ->where('is_archive', 0);
+        
         if(count($request->all()) >0){
             $quote = $this->searchFilters($quote, $request);
         }
-        $data['quotes']           = $quote->groupBy('ref_no')->orderBy('created_at','DESC')->paginate($this->pagiantion);
-        $data['booking_seasons']  = Season::all();
-        $data['brands']           = Brand::orderBy('id','ASC')->get();
+
+        $data['quotes']           = $quote->groupBy('ref_no')->latest()->paginate($this->pagiantion);
+        $data['booking_seasons']  = Season::get(['id','name']);
+        $data['brands']           = Brand::orderBy('id','ASC')->get(['id','name']);
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();
-        $data['users']            = User::get();
+        $data['users']            = User::get(['name']);
 
         return view('quotes.listing', $data);
     }
