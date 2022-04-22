@@ -587,7 +587,17 @@ class QuoteController extends Controller
     public function edit($id)
     {
         $quote = Quote::findOrFail(decrypt($id));
-        $data['quote']            = $quote;
+        $data['quote']         = $quote;
+        $data['quote_details'] = $quote->getQuoteDetails()->with([
+            'getSupplierCurrency',
+            'getCategory',
+            'getGroupOwner',
+            'getSupplier',
+            'getProduct',
+            'getQuoteDetailCountries',
+        ])
+        ->get();
+
 
         $data['countries'] = cache()->rememberForever('countries', function () {
             return Country::orderBy('sort_order', 'ASC')->get();

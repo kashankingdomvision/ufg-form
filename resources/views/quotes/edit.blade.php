@@ -613,7 +613,8 @@
                   @include('quote_booking_includes.expand_collapse_quote_detail_cards')
 
                   <div class="sortable sortable-spacing">
-                    @foreach ($quote->getQuoteDetails as $key => $q_detail)
+                    {{-- @foreach ($quote->getQuoteDetails as $key => $q_detail) --}}
+                    @foreach ($quote_details as $key => $q_detail)
                       @php
                         $supplier_currency_code = isset($q_detail->getSupplierCurrency->code) && !empty($q_detail->getSupplierCurrency->code) ? $q_detail->getSupplierCurrency->code : '';
                       @endphp
