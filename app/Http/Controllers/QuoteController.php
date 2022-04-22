@@ -586,7 +586,20 @@ class QuoteController extends Controller
 
     public function edit($id)
     {
-        $quote = Quote::findOrFail(decrypt($id));
+        $quote = Quote::with([
+            'getCountryDestinations' => function ($query) {
+                $query->select('countries.id');
+            },
+            'getQuotelogs' => function ($query) {
+                $query->select('id','quote_id','log_no','version_no');
+            },
+            'getPaxDetail',
+            'getCommissionCriteria',
+            'getCurrency',
+            'getBrand',
+        ])
+        ->findOrFail(decrypt($id));
+
         $data['quote']         = $quote;
         $data['quote_details'] = $quote->getQuoteDetails()->with([
             'getSupplierCurrency',

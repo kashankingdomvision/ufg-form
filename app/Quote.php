@@ -157,7 +157,7 @@ class Quote extends Model
 
     public function getQuotelogs()
     {
-        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
+        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('id','DESC');
     }
 
     /**
