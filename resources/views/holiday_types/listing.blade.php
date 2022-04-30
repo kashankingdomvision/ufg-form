@@ -102,14 +102,14 @@
                         <td>{{ $value->name }}</td>
                         <td>{{ $value->getBrand->name ?? NULL }}</td>
                         <td>
-                          <form method="post" action="{{ route('holiday_types.destroy', encrypt($value->id)) }}">
-                            <a href="{{ route('holiday_types.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          <a href="{{ route('holiday_types.edit', encrypt($value->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                          {{-- <form method="post" action="{{ route('holiday_types.destroy', encrypt($value->id)) }}">
                             @csrf
                             @method('delete')
                             <button class="mr-2  btn btn-outline-danger btn-xs" title="Delete" onclick="return confirm('Are you sure want to Delete this record?');">
                               <span class="fa fa-trash"></span>
                             </button>
-                          </form>
+                          </form> --}}
                         </td>
                       </tr>
                     @endforeach
