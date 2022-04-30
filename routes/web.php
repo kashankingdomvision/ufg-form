@@ -748,6 +748,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('store-station', array('as' => 'response.stations.store', 'uses' => 'ResponseController@storeStation'));
         Route::post('store-product-with-supplier', array('as'=>'store.product.with.supplier','uses'=>'ResponseController@storeProductWithSupplier'));
         Route::post('find/reference', array('as' => 'find.reference', 'uses' => 'ResponseController@findReference'));
+        Route::post('store-holiday-types', array('as' => 'store.holiday.types', 'uses' => 'ResponseController@storeHolidayTypes'));
 
         Route::get('supplier-on-change', array('as'=>'supplier.on.change','uses'=>'ResponseController@SupplierOnChange'));
         Route::get('brand-on-change', array('as'=>'brand.on.change','uses'=>'ResponseController@brandOnChange'));
@@ -765,7 +766,9 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('get-commissions', array('as'=>'get.commissions','uses'=>'ResponseController@getCommissions'));
         Route::get('get-commission-groups', array('as'=>'get.commission.groups','uses'=>'ResponseController@getCommissionGroups'));
         Route::get('get-filter-currency-rate', array('as' => 'get.filter.currency.rate', 'uses' => 'ResponseController@getFilterCurrencyRates'));
+        Route::get('get-holiday-types', array('as' => 'get.holiday.types', 'uses' => 'ResponseController@getHolidayTypes'));
         
+
         Route::get('is/reference/{id}/exist', array('as' => 'is.reference.exist', 'uses' => 'ResponseController@isReferenceExists'));
         Route::get('quotes/child/reference', array('as' => 'get.child.reference', 'uses' => 'ResponseController@getChildReference'));
         Route::get('call-template/{id}', array('as' => 'call.template', 'uses' => 'ResponseController@callTemplate'));

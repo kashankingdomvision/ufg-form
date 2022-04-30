@@ -23,6 +23,174 @@ require('./asset/pace/pace.min');
 
 $(document).ready(function ($) {
 
+    // var array = [
+    //     {
+    //         "display_value": "-None-",
+    //         "actual_value": "-None-"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Cruise",
+    //         "actual_value": "Cruise, Twin/Multi-Centre"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Activity Holiday",
+    //         "actual_value": "Activity Holiday"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Tailor Made",
+    //         "actual_value": "Tailor Made"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Escorted Tour",
+    //         "actual_value": "Escorted Tour"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Cruise & Stay",
+    //         "actual_value": "Cruise & Stay"
+    //     },
+    //     {
+    //         "display_value": "UCroatia: Single Destination",
+    //         "actual_value": "Single Destination"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Greece",
+    //         "actual_value": "UCruises: Greece"
+    //     },
+    //     {
+    //         "display_value": "Cruise Croatia Gulet Charter",
+    //         "actual_value": "Cruise Croatia"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Seychelles",
+    //         "actual_value": "UCruises: Seychelles"
+    //     },
+    //     {
+    //         "display_value": "Cruise Croatia Yacht Charter",
+    //         "actual_value": "Cruise Croatia Yacht Charter"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Bali",
+    //         "actual_value": "UCruises: Bali"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Barbados & Grenadines",
+    //         "actual_value": "UCruises: Barbados & Grenadines"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Costa Rica & Panama",
+    //         "actual_value": "UCruises: Costa Rica & Panama"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Cape Verde",
+    //         "actual_value": "UCruises: Cape Verde"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Cuba",
+    //         "actual_value": "UCruises: Cuba"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Croatia",
+    //         "actual_value": "UCruises: Croatia"
+    //     },
+    //     {
+    //         "display_value": "UTC: Tailor Made",
+    //         "actual_value": "UTC: Tailor Made"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Egypt",
+    //         "actual_value": "UCruises: Egypt"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Maldives",
+    //         "actual_value": "UCruises: Maldives"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Mekong",
+    //         "actual_value": "UCruises: Mekong"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Iceland",
+    //         "actual_value": "UCruises: Iceland"
+    //     },
+    //     {
+    //         "display_value": "UCruises: Spain & Portugal",
+    //         "actual_value": "UCruises: Spain & Portugal"
+    //     },
+    //     {
+    //         "display_value": "UGCruise",
+    //         "actual_value": "UGCruise"
+    //     },
+    //     {
+    //         "display_value": "UGCruiseStay",
+    //         "actual_value": "UGCruiseStay"
+    //     },
+    //     {
+    //         "display_value": "UGTailormade",
+    //         "actual_value": "UGTailormade"
+    //     },
+    //     {
+    //         "display_value": "UTUganda: Tailor Made",
+    //         "actual_value": "UTUganda: Tailor Made"
+    //     },
+    //     {
+    //         "display_value": "UTC: Honeymoons",
+    //         "actual_value": "UTC: Honeymoons"
+    //     },
+    //     {
+    //         "display_value": "UTC: Africa Safari",
+    //         "actual_value": "UTC: Africa Safari"
+    //     },
+    //     {
+    //         "display_value": "UTC: Food & Wine",
+    //         "actual_value": "UTC: Food & Wine"
+    //     },
+    //     {
+    //         "display_value": "UTC: Culture & Heritage",
+    //         "actual_value": "UTC: Culture & Heritage"
+    //     },
+    //     {
+    //         "display_value": "UTC: Cruises",
+    //         "actual_value": "UTC: Cruises"
+    //     },
+    //     {
+    //         "display_value": "UTC: Wildlife Holidays",
+    //         "actual_value": "UTC: Wildlife Holidays"
+    //     },
+    //     {
+    //         "display_value": "UTC: Family Adventures",
+    //         "actual_value": "UTC: Family Adventures"
+    //     },
+    //     {
+    //         "display_value": "UTC: Luxury Train",
+    //         "actual_value": "UTC: Luxury Train"
+    //     },
+    //     {
+    //         "display_value": "Unassigned",
+    //         "actual_value": "Unassigned"
+    //     },
+    //     {
+    //         "display_value": "UTC: Beach Collection",
+    //         "actual_value": "UTC: Beach Collection"
+    //     },
+    //     {
+    //         "display_value": "UTC: Active Holidays",
+    //         "actual_value": "UTC: Active Holidays"
+    //     },
+    //     {
+    //         "display_value": "UTC: Multi-Centre",
+    //         "actual_value": "UTC: Multi-Centre"
+    //     },
+    //     {
+    //         "display_value": "UTC: Luxury Road Trips",
+    //         "actual_value": "UTC: Luxury Road Trips"
+    //     }
+    // ];
+
+
+    // var values = array.map(value => value.display_value).filter(e => e !== "-None-");
+
+    // console.log(values);
+
     // set autofocus on search
     $(document).on('select2:open', '.select2single, .selling-price-other-currency', function (e) {
 
@@ -142,7 +310,7 @@ $(document).ready(function ($) {
 
     window.addModalFormLoadingStyles = function (formSelector) {
 
-        $(`${formSelector} button[type="submit"]`).find('span').addClass(`mr-2 spinner-border spinner-border-sm`);
+        $(`${formSelector} button[type="submit"]`).find('span').addClass('mr-2 spinner-border spinner-border-sm');
     }
 
     window.removeModalFormLoadingStyles = function (formSelector) {
@@ -210,6 +378,111 @@ $(document).ready(function ($) {
             }
         }
     }
+
+    $(document).on('click', '#fetch_holiday_types', function () {
+
+        event.preventDefault();
+
+        let span = $(this).find('span');
+
+        $.ajax({
+            headers: { 'X-CSRF-TOKEN': CSRFTOKEN },
+            url: `${BASEURL}get-holiday-types`,
+            type: 'GET',
+            dataType: "json",
+            beforeSend: function() {
+                span.addClass('mr-2 spinner-border spinner-border-sm');
+            },
+            success: function(response) {
+      
+                if(response.status && response.hasOwnProperty('html')){
+                    $('#store_holiday_types_modal').modal('show');
+                    $('#store_holiday_types_modal .modal-body').html(response.html);
+                }
+
+                $('.select2single').select2({
+                    width: '75%',
+                    theme: "bootstrap",
+                    templateResult: formatState,
+                    templateSelection: formatState,
+                });
+
+                if(!response.status){
+                    Toast.fire({
+                        icon: 'info',
+                        title: response.success_message
+                    });
+                }
+
+                span.removeClass('spinner-border spinner-border-sm');
+            },
+            error: function(reject) {
+                span.removeClass('spinner-border spinner-border-sm');
+            }
+        });
+
+    });
+
+    $(document).on('submit', '#store_holiday_types_modal_form', function () {
+
+        event.preventDefault();
+
+        let url     = $(this).attr('action');
+        let formID  = $(this).attr('id');
+        let modalID = $(this).closest('.modal').attr('id');
+
+        console.lo
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                removeFormValidationStyles();
+
+                console.log(`#${formID}`);
+
+                addModalFormLoadingStyles(`#${formID}`);
+            },
+            success: function (response) {
+
+                removeModalFormLoadingStyles(`#${formID}`);
+                printModalServerSuccessMessage(response, `#${modalID}`);
+            },
+            error: function (response) {
+                removeModalFormLoadingStyles(`#${formID}`);
+
+                if (response.status === 422) {
+
+                    let errors = response.responseJSON;
+                    let flag = true;
+        
+                    setTimeout(function () {
+                        jQuery.each(errors.errors, function (index, value) {
+        
+                            index = index.replace(/\./g, '_');
+
+                            $(`#${modalID} #${index}`).addClass('is-invalid');
+                            $(`#${modalID} #${index}`).closest('.form-group').find('.text-danger').html(value);
+
+                            if (flag) {
+                                $(`.table-responsive`).animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
+                                flag = false;
+                            }
+                        });
+        
+                    }, 250);
+        
+                }
+
+                // printModalServerValidationErrors(response, `#${modalID}`);
+            }
+        });
+
+    });
 
     $(document).on('click', '#sticky_button', function () {
 
@@ -335,6 +608,7 @@ $(document).ready(function ($) {
         if (response.status === 422) {
 
             let errors = response.responseJSON;
+            let flag = true;
 
             setTimeout(function () {
                 jQuery.each(errors.errors, function (index, value) {
@@ -343,7 +617,6 @@ $(document).ready(function ($) {
 
                     $(`${modalSelector} #${index}`).addClass('is-invalid');
                     $(`${modalSelector} #${index}`).closest('.form-group').find('.text-danger').html(value);
-                    $(`${modalSelector} #${index}`).closest('.form-group').find('.note-editor').css('border-color', 'red');
                 });
 
             }, 250);

@@ -1,13 +1,8 @@
-
-
-
 @extends('layouts.app')
-
 @section('title','View Holiday Types')
-
 @section('content')
-<div class="content-wrapper">
 
+<div class="content-wrapper">
   <section class="content-header">
     <div class="container-fluid">
       <div class="row">
@@ -57,7 +52,7 @@
 
             <!-- Multi Actions -->
             <div class="card-header">
-              <div class="row">
+              <div class="row justify-content-between">
                 <form method="POST" id="holiday_type_bulk_action" action="{{ route('holiday_types.bulk.action') }}" >
                   @csrf
                   <input type="hidden" name="bulk_action_type" value="">
@@ -72,6 +67,8 @@
                     </div>
                   </div>
                 </form>
+
+                <button id="fetch_holiday_types" class="btn btn-base" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Fetch Holiday Types</button>
               </div>
             </div>
             <!-- End Multi Actions -->
@@ -135,6 +132,7 @@
     </div>
   </section>
 
+  @include('holiday_types.includes.store_holiday_types_modal')
 </div>
 @endsection
 @push('js')
