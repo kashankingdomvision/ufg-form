@@ -15,13 +15,12 @@ class CreateSupplierTable extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('currency_id')->nullable();
+            $table->foreignId('currency_id')->nullable()->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();
-            $table->foreign('currency_id')->references('id')->on('currencies');
         });
     }
 

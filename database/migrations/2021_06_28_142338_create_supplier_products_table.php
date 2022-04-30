@@ -14,14 +14,10 @@ class CreateSupplierProductsTable extends Migration
     public function up()
     {
         Schema::create('supplier_products', function (Blueprint $table) {
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('product_id');
+
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
             $table->primary(['supplier_id', 'product_id']);
-            
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
-            
-            
         });
     }
 

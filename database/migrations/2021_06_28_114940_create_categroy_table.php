@@ -19,17 +19,16 @@ class CreateCategroyTable extends Migration
             $table->mediumInteger('sort_order');
             $table->string('slug');
             $table->longText('feilds')->nullable();
-            // $table->enum('booking', [0, 1])->default(0)->nullable();
-            // $table->enum('quote', [0, 1])->default(0)->nullable();
             $table->enum('set_end_date_of_service', [0, 1])->default(0);
             $table->enum('show_tf', [0, 1])->default(0);
             $table->string('label_of_time')->nullable();
-
             $table->enum('second_tf', [0, 1])->default(0);
             $table->string('second_label_of_time')->nullable();
-
             $table->timestamps();
         });
+
+        // $table->enum('booking', [0, 1])->default(0)->nullable();
+        // $table->enum('quote', [0, 1])->default(0)->nullable();
     }
 
     /**

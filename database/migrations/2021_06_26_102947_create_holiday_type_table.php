@@ -15,10 +15,9 @@ class CreateHolidayTypeTable extends Migration
     {
         Schema::create('holiday_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('brand_id');  
+            $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->timestamps();
-            $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
