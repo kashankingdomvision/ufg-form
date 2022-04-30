@@ -699,6 +699,84 @@ class ResponseController extends Controller
         return view('quote_booking_includes.currency_conversion_filter_modal', $data);
     }
 
+    public function storeHolidayTypes(Request $request)
+    {
+        $this->validate(
+            $request, 
+            [
+                'holiday_types'            => 'required|array',
+                'holiday_types.*.brand_id' => 'required',
+            ],
+            [
+                'holiday_types.*.brand_id.required' => 'The Brand Name field is required.'
+            ]
+        );
+
+        foreach($request->holiday_types as $key => $holiday_types){
+
+            HolidayType::create([
+                'name'     => $holiday_types['name'],
+                'brand_id' => $holiday_types['brand_id'],
+            ]);
+        }
+
+        return response()->json([ 
+            'status' => true,
+            'success_message' => 'Holiday Type Added Successfully.',
+        ]);
+    }
+
+    public function getHolidayTypes(){
+
+        $zoho_credentials = ReferenceCredential::where('type', 'zoho')->first();
+
+        $url = "https://www.zohoapis.com/crm/v2/settings/fields/2740962000000177001?module=Deals";
+        $args = array(
+            'method' => 'GET',
+            'ssl' => false,
+            'format' => 'ARRAY',
+            'headers' => array(
+                "Authorization:" . 'Zoho-oauthtoken ' . $zoho_credentials->access_token,
+                "Content-Type: application/json",
+            ),
+        );
+
+        $response = Helper::cf_remote_request($url, $args);
+
+        $holiday_types_array = $response['body']['fields'][0]['pick_list_values'];
+
+        $holiday_types = collect($holiday_types_array)
+        ->map(function ($item, $key) {
+            return $item['display_value'];
+        })
+        ->filter(function ($item) {
+
+            if(!in_array($item,['-None-','Unassigned'])){
+                return $item;
+            }
+        })
+        ->values()
+        ->toArray();
+
+        $data['existing_holiday_types'] = HolidayType::pluck('name')->toArray();
+        $data['brands'] = Brand::get();
+
+        $data['new_holiday_types'] = array_diff($holiday_types, $data['existing_holiday_types']);
+
+
+        if (empty($data['new_holiday_types'])) {
+            return response()->json([
+                'status' => false,
+                'success_message' => 'Holiday Type already Upto date.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'html'   => view('holiday_types.includes.view_holiday_types', $data)->render()
+        ]);
+    }
+
     public function getTourContacts()
     {
         $tour_contacts = TourContact::pluck('name')->toArray();
