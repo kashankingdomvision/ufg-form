@@ -20,7 +20,13 @@ class HolidayTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $HolidayType = HolidayType::orderBy('id', 'ASC');
+        $HolidayType = HolidayType::   
+        with([
+            'getBrand' => function ($query) {
+                $query->select('id','name');
+            }
+        ])->orderBy('id', 'ASC');
+
         if(count($request->all()) > 0){
             if($request->has('search') && !empty($request->search)){
                 $HolidayType->where(function($q) use($request){
@@ -31,7 +37,9 @@ class HolidayTypeController extends Controller
                 });
             }
         }
+
         $data['holiday_types'] = $HolidayType->paginate($this->pagination);
+        
         return view('holiday_types.listing', $data);
     }
 
