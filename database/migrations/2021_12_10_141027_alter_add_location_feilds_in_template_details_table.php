@@ -14,9 +14,7 @@ class AlterAddLocationFeildsInTemplateDetailsTable extends Migration
     public function up()
     {
         Schema::table('template_details', function (Blueprint $table) {
-
-            $table->unsignedBigInteger('supplier_location_id')->after('category_id')->nullable(); 
-            $table->foreign('supplier_location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_location_id')->nullable()->after('category_id')->constrained('locations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

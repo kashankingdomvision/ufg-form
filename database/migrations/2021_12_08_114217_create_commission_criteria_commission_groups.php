@@ -15,11 +15,8 @@ class CreateCommissionCriteriaCommissionGroups extends Migration
     {
         Schema::create('commission_criteria_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('commission_criteria_id');
-            $table->unsignedBigInteger('commission_group_id');
-          
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('commission_group_id')->references('id')->on('commission_groups')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_group_id')->constrained('commission_groups')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

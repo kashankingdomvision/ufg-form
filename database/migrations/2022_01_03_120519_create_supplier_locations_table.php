@@ -15,10 +15,8 @@ class CreateSupplierLocationsTable extends Migration
     {
         Schema::create('supplier_locations', function (Blueprint $table) {
             $table->primary(['supplier_id', 'location_id']);
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('location_id');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('location_id')->references('id')->on('locations')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('location_id')->constrained('locations')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

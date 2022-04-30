@@ -15,10 +15,8 @@ class CreateSupplierCountriesTable extends Migration
     {
         Schema::create('supplier_countries', function (Blueprint $table) {
             $table->primary(['supplier_id', 'country_id']);
-            $table->unsignedBigInteger('supplier_id');
-            $table->unsignedBigInteger('country_id');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('country_id')->references('id')->on('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

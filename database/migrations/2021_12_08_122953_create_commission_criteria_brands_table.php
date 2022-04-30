@@ -15,11 +15,8 @@ class CreateCommissionCriteriaBrandsTable extends Migration
     {
         Schema::create('commission_criteria_brands', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('commission_criteria_id');
-            $table->unsignedBigInteger('brand_id');
-          
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('brand_id')->references('id')->on('brands')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
