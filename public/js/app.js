@@ -69599,7 +69599,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       processData: false,
       beforeSend: function beforeSend() {
         removeFormValidationStyles();
-        console.log("#".concat(formID));
         addModalFormLoadingStyles("#".concat(formID));
       },
       success: function success(response) {
@@ -69619,7 +69618,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
               $("#".concat(modalID, " #").concat(index)).closest('.form-group').find('.text-danger').html(value);
 
               if (flag) {
-                $(".table-responsive").animate({
+                $('.table-responsive').animate({
                   scrollTop: $("#".concat(index)).parents('.form-group').offset().top
                 }, 1000);
                 flag = false;

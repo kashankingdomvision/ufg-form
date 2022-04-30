@@ -442,9 +442,6 @@ $(document).ready(function ($) {
             processData: false,
             beforeSend: function () {
                 removeFormValidationStyles();
-
-                console.log(`#${formID}`);
-
                 addModalFormLoadingStyles(`#${formID}`);
             },
             success: function (response) {
@@ -469,7 +466,7 @@ $(document).ready(function ($) {
                             $(`#${modalID} #${index}`).closest('.form-group').find('.text-danger').html(value);
 
                             if (flag) {
-                                $(`.table-responsive`).animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
+                                $('.table-responsive').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
                                 flag = false;
                             }
                         });
