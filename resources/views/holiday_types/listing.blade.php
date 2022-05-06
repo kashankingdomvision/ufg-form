@@ -68,7 +68,10 @@
                   </div>
                 </form>
 
-                <button id="fetch_holiday_types" class="btn btn-base" type="button"><span class="mr-2 " role="status" aria-hidden="true"></span>Fetch Holiday Types</button>
+                <button id="fetch_holiday_types" class="btn btn-base" type="button">
+                  <span class="fas fa-sync" role="status" aria-hidden="true"></span>
+                  Fetch Holiday Types
+                </button>
               </div>
             </div>
             <!-- End Multi Actions -->

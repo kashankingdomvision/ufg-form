@@ -69487,12 +69487,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.addModalFormLoadingStyles = function (formSelector) {
-    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass('mr-2 spinner-border spinner-border-sm');
+    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass('spinner-border spinner-border-sm');
   };
 
   window.removeModalFormLoadingStyles = function (formSelector) {
     setTimeout(function () {
-      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass("mr-2 spinner-border spinner-border-sm");
+      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass('spinner-border spinner-border-sm');
     }, 250);
   };
 
@@ -69555,7 +69555,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       type: 'GET',
       dataType: "json",
       beforeSend: function beforeSend() {
-        span.addClass('mr-2 spinner-border spinner-border-sm');
+        span.addClass('fa-spin');
       },
       success: function success(response) {
         if (response.status && response.hasOwnProperty('html')) {
@@ -69577,10 +69577,10 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
           });
         }
 
-        span.removeClass('spinner-border spinner-border-sm');
+        span.removeClass('fa-spin');
       },
       error: function error(reject) {
-        span.removeClass('spinner-border spinner-border-sm');
+        span.removeClass('fa-spin');
       }
     });
   });

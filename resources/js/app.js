@@ -310,14 +310,14 @@ $(document).ready(function ($) {
 
     window.addModalFormLoadingStyles = function (formSelector) {
 
-        $(`${formSelector} button[type="submit"]`).find('span').addClass('mr-2 spinner-border spinner-border-sm');
+        $(`${formSelector} button[type="submit"]`).find('span').addClass('spinner-border spinner-border-sm');
     }
 
     window.removeModalFormLoadingStyles = function (formSelector) {
 
         setTimeout(function () {
 
-            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`mr-2 spinner-border spinner-border-sm`);
+            $(`${formSelector} button[type="submit"]`).find('span').removeClass('spinner-border spinner-border-sm');
         }, 250);
 
     }
@@ -391,7 +391,7 @@ $(document).ready(function ($) {
             type: 'GET',
             dataType: "json",
             beforeSend: function() {
-                span.addClass('mr-2 spinner-border spinner-border-sm');
+                span.addClass('fa-spin');
             },
             success: function(response) {
       
@@ -414,10 +414,10 @@ $(document).ready(function ($) {
                     });
                 }
 
-                span.removeClass('spinner-border spinner-border-sm');
+                span.removeClass('fa-spin');
             },
             error: function(reject) {
-                span.removeClass('spinner-border spinner-border-sm');
+                span.removeClass('fa-spin');
             }
         });
 
