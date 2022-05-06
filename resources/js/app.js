@@ -409,7 +409,7 @@ $(document).ready(function ($) {
 
                 if(!response.status){
                     Toast.fire({
-                        icon: 'info',
+                        icon: response.icon,
                         title: response.success_message
                     });
                 }

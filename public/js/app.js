@@ -69572,7 +69572,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (!response.status) {
           Toast.fire({
-            icon: 'info',
+            icon: response.icon,
             title: response.success_message
           });
         }
