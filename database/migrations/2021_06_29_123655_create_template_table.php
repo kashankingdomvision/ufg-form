@@ -19,7 +19,7 @@ class CreateTemplateTable extends Migration
             $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->string('title');
-            $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('rate_type', ['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
             $table->enum('status', [0, 1])->default(1);
             $table->tinyInteger('privacy_status');

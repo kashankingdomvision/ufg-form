@@ -14,8 +14,9 @@ class CreateQuotePaxDetailsTable extends Migration
     public function up()
     {
         Schema::create('quote_pax_details', function (Blueprint $table) {
+            
             $table->id();
-            $table->unsignedBigInteger('quote_id');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('contact_number')->nullable();
@@ -25,8 +26,6 @@ class CreateQuotePaxDetailsTable extends Migration
             $table->string('medical_requirement')->nullable();
             $table->enum('covid_vaccinated',[0, 1, 2])->default(0);
             $table->timestamps();
-            
-            $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

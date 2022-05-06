@@ -14,6 +14,7 @@ class CreateBookingLogsTable extends Migration
     public function up()
     {
         Schema::create('booking_logs', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->string('version_no');
@@ -21,7 +22,6 @@ class CreateBookingLogsTable extends Migration
             $table->longText('data');
             $table->timestamps();
             $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            
         });
     }
 

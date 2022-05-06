@@ -16,7 +16,7 @@ class CreateBookingPaxDetailsTable extends Migration
         Schema::create('booking_pax_details', function (Blueprint $table) {
             
             $table->id();
-            $table->unsignedBigInteger('booking_id');
+            $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('contact_number')->nullable();
@@ -26,8 +26,6 @@ class CreateBookingPaxDetailsTable extends Migration
             $table->string('medical_requirement')->nullable();
             $table->enum('covid_vaccinated',[0, 1, 2])->default(0);
             $table->timestamps();
-            
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

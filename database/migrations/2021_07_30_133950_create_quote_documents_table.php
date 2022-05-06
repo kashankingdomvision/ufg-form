@@ -15,12 +15,11 @@ class CreateQuoteDocumentsTable extends Migration
     {
         Schema::create('quote_documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('quote_id');
             $table->longText('data')->nullable();
             $table->timestamps();
             
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             
         });
     }

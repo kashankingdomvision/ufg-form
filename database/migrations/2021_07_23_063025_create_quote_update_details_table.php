@@ -16,10 +16,9 @@ class CreateQuoteUpdateDetailsTable extends Migration
         Schema::create('quote_update_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('foreign_id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('status',['quotes','bookings'])->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
