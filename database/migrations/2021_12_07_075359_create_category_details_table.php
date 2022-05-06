@@ -24,10 +24,11 @@ class CreateCategoryDetailsTable extends Migration
     public function up()
     {
         Schema::create('quote_category_details', function (Blueprint $table) {
+            
             $table->id();
-            $table->unsignedBigInteger('quote_id');
-            $table->unsignedBigInteger('quote_detail_id');
-            $table->unsignedBigInteger('category_id');
+            $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('quote_detail_id')->constrained('quote_details')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onUpdate('cascade')->onDelete('cascade');
 
             $table->string('type')->nullable();
             $table->string('label')->nullable();
@@ -41,9 +42,6 @@ class CreateCategoryDetailsTable extends Migration
             $table->string('subtype')->nullable();
             $table->enum('toggle', ['true' , 'false']);
             
-            $table->foreign('quote_id')->references('id')->on('quotes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('quote_detail_id')->references('id')->on('quote_details')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

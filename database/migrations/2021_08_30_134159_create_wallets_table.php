@@ -19,7 +19,7 @@ class CreateWalletsTable extends Migration
             $table->foreignId('booking_detail_id')->constrained('booking_details')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('supplier_id')->constrained('suppliers')->onUpdate('cascade')->onDelete('cascade');
             $table->double('amount');
-            $table->enum('type',['credit','debit']);
+            $table->enum('type', ['credit','debit']);
             $table->timestamps();
         });
     }
