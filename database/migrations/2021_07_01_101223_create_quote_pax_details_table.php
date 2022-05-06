@@ -14,7 +14,7 @@ class CreateQuotePaxDetailsTable extends Migration
     public function up()
     {
         Schema::create('quote_pax_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('quote_id');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();

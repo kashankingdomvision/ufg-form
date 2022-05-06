@@ -14,7 +14,7 @@ class CreateTemplateTable extends Migration
     public function up()
     {
         Schema::create('templates', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');

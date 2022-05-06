@@ -14,7 +14,7 @@ class CreateBookingRefundPaymentsTable extends Migration
     public function up()
     {
         Schema::create('booking_refund_payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_detail_id');
             $table->double('refund_amount')->nullable();
             $table->date('refund_date')->nullable();

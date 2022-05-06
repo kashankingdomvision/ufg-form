@@ -14,7 +14,7 @@ class CreateBookingDetailFinancesTable extends Migration
     public function up()
     {
         Schema::create('booking_detail_finances', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_detail_id');
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->double('deposit_amount')->nullable();

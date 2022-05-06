@@ -14,7 +14,7 @@ class CreateQuoteBehalfUsersTable extends Migration
     public function up()
     {
         Schema::create('quote_behalf_users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('quote_id');
             $table->unsignedBigInteger('behalf_user_id');

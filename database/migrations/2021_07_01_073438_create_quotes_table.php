@@ -15,7 +15,7 @@ class CreateQuotesTable extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('season_id');
             $table->unsignedBigInteger('brand_id');
             $table->unsignedBigInteger('holiday_type_id');

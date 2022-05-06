@@ -14,7 +14,7 @@ class CreateCategroyTable extends Migration
     public function up()
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name');
             $table->mediumInteger('sort_order');
             $table->string('slug');

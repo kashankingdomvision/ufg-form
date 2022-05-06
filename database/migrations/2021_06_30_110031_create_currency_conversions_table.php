@@ -14,7 +14,7 @@ class CreateCurrencyConversionsTable extends Migration
     public function up()
     {
         Schema::create('currency_conversions', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('from');
             $table->string('to');
             $table->double('live');

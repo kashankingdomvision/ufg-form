@@ -15,7 +15,7 @@ class CreateBookingPaxDetailsTable extends Migration
     {
         Schema::create('booking_pax_details', function (Blueprint $table) {
             
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();

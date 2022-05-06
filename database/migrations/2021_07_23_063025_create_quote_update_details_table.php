@@ -14,7 +14,7 @@ class CreateQuoteUpdateDetailsTable extends Migration
     public function up()
     {
         Schema::create('quote_update_details', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('foreign_id');
             $table->unsignedBigInteger('user_id');
             $table->enum('status',['quotes','bookings'])->nullable();

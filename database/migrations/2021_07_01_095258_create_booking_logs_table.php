@@ -14,7 +14,7 @@ class CreateBookingLogsTable extends Migration
     public function up()
     {
         Schema::create('booking_logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('booking_id');
             $table->string('version_no');
             $table->bigInteger('log_no')->nullalbe();
