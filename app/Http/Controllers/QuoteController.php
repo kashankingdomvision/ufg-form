@@ -61,7 +61,7 @@ class QuoteController extends Controller
         $quote  = Quote::
         with([
             'getBooking' => function ($query) {
-                $query->select('id');
+                $query->select('id','quote_id');
             },
             'getSeason' => function ($query) {
                 $query->select('id','name');
