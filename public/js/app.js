@@ -69589,7 +69589,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
     var modalID = $(this).closest('.modal').attr('id');
-    console.lo;
     $.ajax({
       type: 'POST',
       url: url,

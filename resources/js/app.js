@@ -431,8 +431,6 @@ $(document).ready(function ($) {
         let formID  = $(this).attr('id');
         let modalID = $(this).closest('.modal').attr('id');
 
-        console.lo
-
         $.ajax({
             type: 'POST',
             url: url,
