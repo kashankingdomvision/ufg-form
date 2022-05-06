@@ -17,7 +17,7 @@ class CreateQuoteUpdateDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('foreign_id');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->enum('status',['quotes','bookings'])->nullable();
+            $table->enum('status', ['quotes','bookings'])->nullable();
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ class CreateBookingDetailFinancesTable extends Migration
             $table->enum('upload_to_calender', [0,1])->default(0)->nullable();
             $table->enum('added_in_sage', [0, 1])->default(0)->nullable();
             $table->bigInteger('additional_date')->nullable();
+            $table->double('outstanding_amount')->nullable();
             $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();

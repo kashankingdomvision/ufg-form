@@ -17,6 +17,8 @@ class CreateQuotePaxDetailsTable extends Migration
             
             $table->id();
             $table->foreignId('quote_id')->constrained('quotes')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('nationality_id')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('resident_in')->nullable()->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
             $table->string('full_name')->nullable();
             $table->string('email_address')->nullable();
             $table->string('contact_number')->nullable();
