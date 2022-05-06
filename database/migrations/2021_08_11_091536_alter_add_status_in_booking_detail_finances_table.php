@@ -14,7 +14,7 @@ class AlterAddStatusInBookingDetailFinancesTable extends Migration
     public function up()
     {
         Schema::table('booking_detail_finances', function (Blueprint $table) {
-            $table->enum('status',['paid','cancelled'])->default('paid')->after('outstanding_amount');
+            $table->enum('status', ['paid','cancelled'])->default('paid')->after('outstanding_amount');
         });
     }
 

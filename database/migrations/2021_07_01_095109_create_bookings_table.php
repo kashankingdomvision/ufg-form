@@ -34,7 +34,7 @@ class CreateBookingsTable extends Migration
             // $table->string('tas_ref')->nullable();
             $table->string('country_destination_ids');
             $table->enum('agency', [0, 1])->default(0);
-            $table->enum('agency_commission_type',['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
+            $table->enum('agency_commission_type', ['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
             $table->double('agency_commission')->nullable();
             $table->double('total_net_margin')->nullable();
             $table->string('agency_name')->nullable();
@@ -50,7 +50,7 @@ class CreateBookingsTable extends Migration
             $table->string('lead_passenger_dietary_preferences')->nullable();
             $table->string('lead_passenger_bedding_preference')->nullable();
             $table->string('lead_passenger_medical_requirement')->nullable();
-            $table->enum('lead_passenger_covid_vaccinated',[0, 1, 2])->default(0);
+            $table->enum('lead_passenger_covid_vaccinated', [0, 1, 2])->default(0);
             $table->bigInteger('pax_no')->default(1);
             $table->double('net_price')->nullable();
             $table->double('markup_amount')->nullable();
@@ -63,10 +63,11 @@ class CreateBookingsTable extends Migration
             $table->double('selling_price_ocr')->nullable();
             $table->double('booking_amount_per_person_in_osp', 8, 2)->nullable();
             $table->double('amount_per_person')->nullable();
-            $table->enum('rate_type',['live','manual'])->default('live');
+            $table->enum('rate_type', ['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
-            $table->enum('status',['confirmed','cancelled'])->default('confirmed');
-            $table->timestamp('booking_date')->nullable();
+            $table->enum('status', ['confirmed','cancelled'])->default('confirmed');
+            $table->dateTime('booking_date')->nullable();
+            $table->dateTime('cancel_date')->nullable();
             $table->text('revelant_quote')->nullable();
             $table->timestamps();
         });

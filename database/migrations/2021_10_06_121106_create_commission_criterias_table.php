@@ -16,12 +16,8 @@ class CreateCommissionCriteriasTable extends Migration
         Schema::create('commission_criterias', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // $table->unsignedBigInteger('commission_id');
             $table->double('percentage');
-            $table->unsignedBigInteger('user_id');
-
-            // $table->foreign('commission_id')->references('id')->on('commissions')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

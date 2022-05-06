@@ -14,12 +14,10 @@ class CreateCommissionSeasonsTable extends Migration
     public function up()
     {
         Schema::create('commission_criteria_seasons', function (Blueprint $table) {
+            
             $table->id();
-            $table->unsignedBigInteger('commission_criteria_id');
-            $table->unsignedBigInteger('season_id');
-
-            $table->foreign('season_id')->references('id')->on('seasons')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('season_id')->constrained('seasons')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
