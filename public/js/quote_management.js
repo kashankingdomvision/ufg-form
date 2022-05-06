@@ -207,12 +207,10 @@ $(document).ready(function () {
 
   window.getCommissionRate = function () {
     var calculatedCommisionAmount = 0;
-    var commissionPercentage = 0;
+    var commissionObject = {};
     var agency = $("input[name=agency]:checked").val();
     var agencyCommissionType = $("input[name=agency_commission_type]:checked").val();
     var netValue = removeComma($('.total-markup-amount').val());
-    var commissionID = $('.commission-id').val();
-    var commissionGroupID = $('.commission-group-id').val();
     var brandID = $('.brand-id').val();
     var holidayTypeID = $('.holiday-type-id').val();
     var currencyID = $('.booking-currency-id').val();
