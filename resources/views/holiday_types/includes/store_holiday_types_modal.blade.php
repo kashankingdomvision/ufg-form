@@ -11,9 +11,7 @@
             </div>
 
             <form action="{{ route('store.holiday.types') }}" method="POST" id="store_holiday_types_modal_form">
-                <div class="modal-body">
-                    
-                </div>
+                <div class="modal-body"></div>
 
                 <div class="modal-footer justify-content-right">
                     <button type="submit" class="btn btn-success">

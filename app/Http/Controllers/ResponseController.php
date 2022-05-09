@@ -701,22 +701,26 @@ class ResponseController extends Controller
 
     public function storeHolidayTypes(Request $request)
     {
-        $this->validate(
-            $request, 
-            [
-                'holiday_types'            => 'required|array',
-                'holiday_types.*.brand_id' => 'required',
-            ],
-            [
-                'holiday_types.*.brand_id.required' => 'The Brand Name field is required.'
-            ]
-        );
+        $holiday_types = collect($request->holiday_types)
+        ->filter(function ($item) {
+            if(!is_null($item['brand_id'])){
+                return $item;
+            }
+        })
+        ->toArray();
 
-        foreach($request->holiday_types as $key => $holiday_types){
+        if(empty($holiday_types)){
+            return response()->json([ 
+
+                'error_message' => 'Please Select Atleast one Brand.',
+            ], 422);
+        }
+
+        foreach($holiday_types as $key => $holiday_type){
 
             HolidayType::create([
-                'name'     => $holiday_types['name'],
-                'brand_id' => $holiday_types['brand_id'],
+                'name'     => $holiday_type['name'],
+                'brand_id' => $holiday_type['brand_id'],
             ]);
         }
 

@@ -453,24 +453,8 @@ $(document).ready(function ($) {
                 if (response.status === 422) {
 
                     let errors = response.responseJSON;
-                    let flag = true;
-        
-                    setTimeout(function () {
-                        jQuery.each(errors.errors, function (index, value) {
-        
-                            index = index.replace(/\./g, '_');
 
-                            $(`#${modalID} #${index}`).addClass('is-invalid');
-                            $(`#${modalID} #${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                            if (flag) {
-                                $('.table-responsive').animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
-                                flag = false;
-                            }
-                        });
-        
-                    }, 250);
-        
+                    printListingErrorMessage(errors.error_message);
                 }
 
                 // printModalServerValidationErrors(response, `#${modalID}`);
