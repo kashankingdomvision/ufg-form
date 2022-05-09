@@ -15,7 +15,6 @@ class AlterFeildsInBookingDetailsTable extends Migration
     {
         Schema::table('booking_details', function (Blueprint $table) {
 
-
             $table->string('tour_meeting_point')->nullable()->after('product_details');
             $table->string('tour_contact')->nullable()->after('tour_meeting_point');
             $table->string('tour_telephone')->nullable()->after('tour_contact');

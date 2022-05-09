@@ -19,8 +19,6 @@ class CreateQuoteDocumentsTable extends Migration
             $table->unsignedBigInteger('quote_id');
             $table->longText('data')->nullable();
             $table->timestamps();
-            
-            
         });
     }
 

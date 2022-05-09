@@ -36,32 +36,22 @@ class AlterQuoteTableForeignKeys extends Migration
      */
     public function down()
     {
+        $columns = [ 
+            'default_supplier_currency_id',
+            'created_by',
+            'user_id',
+            'season_id',
+            'brand_id',
+            'currency_id',
+            'holiday_type_id',
+            'sale_person_id',
+            'lead_passsenger_nationailty_id',
+            'lead_passenger_resident'
+        ];
+
         Schema::table('quotes', function (Blueprint $table) {
-            $table->dropForeign([
-                'default_supplier_currency_id',
-                'created_by',
-                'user_id',
-                'season_id',
-                'brand_id',
-                'currency_id',
-                'holiday_type_id',
-                'sale_person_id',
-                'lead_passsenger_nationailty_id',
-                'lead_passenger_resident'
-            ]);
-            
-            $table->dropColumn([
-                'default_supplier_currency_id',
-                'created_by',
-                'user_id',
-                'season_id',
-                'brand_id',
-                'currency_id',
-                'holiday_type_id',
-                'sale_person_id',
-                'lead_passsenger_nationailty_id',
-                'lead_passenger_resident'
-            ]);
+            $table->dropForeign($columns);
+            $table->dropColumn($columns);
         });
     }
 }
