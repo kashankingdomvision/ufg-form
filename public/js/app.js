@@ -69487,12 +69487,12 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
   };
 
   window.addModalFormLoadingStyles = function (formSelector) {
-    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass('mr-2 spinner-border spinner-border-sm');
+    $("".concat(formSelector, " button[type=\"submit\"]")).find('span').addClass('spinner-border spinner-border-sm');
   };
 
   window.removeModalFormLoadingStyles = function (formSelector) {
     setTimeout(function () {
-      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass("mr-2 spinner-border spinner-border-sm");
+      $("".concat(formSelector, " button[type=\"submit\"]")).find('span').removeClass('spinner-border spinner-border-sm');
     }, 250);
   };
 
@@ -69555,7 +69555,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       type: 'GET',
       dataType: "json",
       beforeSend: function beforeSend() {
-        span.addClass('mr-2 spinner-border spinner-border-sm');
+        span.addClass('fa-spin');
       },
       success: function success(response) {
         if (response.status && response.hasOwnProperty('html')) {
@@ -69572,15 +69572,15 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (!response.status) {
           Toast.fire({
-            icon: 'info',
+            icon: response.icon,
             title: response.success_message
           });
         }
 
-        span.removeClass('spinner-border spinner-border-sm');
+        span.removeClass('fa-spin');
       },
       error: function error(reject) {
-        span.removeClass('spinner-border spinner-border-sm');
+        span.removeClass('fa-spin');
       }
     });
   });
@@ -69589,7 +69589,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
     var modalID = $(this).closest('.modal').attr('id');
-    console.lo;
     $.ajax({
       type: 'POST',
       url: url,
@@ -69599,7 +69598,6 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       processData: false,
       beforeSend: function beforeSend() {
         removeFormValidationStyles();
-        console.log("#".concat(formID));
         addModalFormLoadingStyles("#".concat(formID));
       },
       success: function success(response) {
@@ -69611,21 +69609,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
 
         if (response.status === 422) {
           var errors = response.responseJSON;
-          var flag = true;
-          setTimeout(function () {
-            jQuery.each(errors.errors, function (index, value) {
-              index = index.replace(/\./g, '_');
-              $("#".concat(modalID, " #").concat(index)).addClass('is-invalid');
-              $("#".concat(modalID, " #").concat(index)).closest('.form-group').find('.text-danger').html(value);
-
-              if (flag) {
-                $(".table-responsive").animate({
-                  scrollTop: $("#".concat(index)).parents('.form-group').offset().top
-                }, 1000);
-                flag = false;
-              }
-            });
-          }, 250);
+          printListingErrorMessage(errors.error_message);
         } // printModalServerValidationErrors(response, `#${modalID}`);
 
       }

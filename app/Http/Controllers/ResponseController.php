@@ -702,22 +702,26 @@ class ResponseController extends Controller
 
     public function storeHolidayTypes(Request $request)
     {
-        $this->validate(
-            $request, 
-            [
-                'holiday_types'            => 'required|array',
-                'holiday_types.*.brand_id' => 'required',
-            ],
-            [
-                'holiday_types.*.brand_id.required' => 'The Brand Name field is required.'
-            ]
-        );
+        $holiday_types = collect($request->holiday_types)
+        ->filter(function ($item) {
+            if(!is_null($item['brand_id'])){
+                return $item;
+            }
+        })
+        ->toArray();
 
-        foreach($request->holiday_types as $key => $holiday_types){
+        if(empty($holiday_types)){
+            return response()->json([ 
+
+                'error_message' => 'Please Select Atleast one Brand.',
+            ], 422);
+        }
+
+        foreach($holiday_types as $key => $holiday_type){
 
             HolidayType::create([
-                'name'     => $holiday_types['name'],
-                'brand_id' => $holiday_types['brand_id'],
+                'name'     => $holiday_type['name'],
+                'brand_id' => $holiday_type['brand_id'],
             ]);
         }
 
@@ -744,38 +748,50 @@ class ResponseController extends Controller
 
         $response = Helper::cf_remote_request($url, $args);
 
-        $holiday_types_array = $response['body']['fields'][0]['pick_list_values'];
+        if ($response && $response['status'] == 200) {
 
-        $holiday_types = collect($holiday_types_array)
-        ->map(function ($item, $key) {
-            return $item['display_value'];
-        })
-        ->filter(function ($item) {
-
-            if(!in_array($item,['-None-','Unassigned'])){
-                return $item;
+            $holiday_types_array = $response['body']['fields'][0]['pick_list_values'];
+    
+            $holiday_types = collect($holiday_types_array)
+            ->map(function ($item, $key) {
+                return $item['display_value'];
+            })
+            ->filter(function ($item) {
+    
+                if(!in_array($item,['-None-','Unassigned'])){
+                    return $item;
+                }
+            })
+            ->values()
+            ->toArray();
+    
+            $data['existing_holiday_types'] = HolidayType::pluck('name')->toArray();
+            $data['brands'] = Brand::get();
+    
+            $data['new_holiday_types'] = array_diff($holiday_types, $data['existing_holiday_types']);
+    
+    
+            if (empty($data['new_holiday_types'])) {
+                return response()->json([
+                    'status' => false,
+                    'icon'   => 'info',
+                    'success_message' => 'Holiday Type already Upto date.',
+                ]);
             }
-        })
-        ->values()
-        ->toArray();
-
-        $data['existing_holiday_types'] = HolidayType::pluck('name')->toArray();
-        $data['brands'] = Brand::get();
-
-        $data['new_holiday_types'] = array_diff($holiday_types, $data['existing_holiday_types']);
-
-
-        if (empty($data['new_holiday_types'])) {
+    
             return response()->json([
-                'status' => false,
-                'success_message' => 'Holiday Type already Upto date.',
+                'status' => true,
+                'icon' => 'info',
+                'html'   => view('holiday_types.includes.view_holiday_types', $data)->render()
             ]);
         }
 
         return response()->json([
-            'status' => true,
-            'html'   => view('holiday_types.includes.view_holiday_types', $data)->render()
+            'status' => false,
+            'icon'   => 'error',
+            'success_message' => 'Something Went Wrong, Please Try Again.',
         ]);
+
     }
 
     public function getTourContacts()

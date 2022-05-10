@@ -32,6 +32,9 @@
         'brands.index',
         'brands.create',
         'brands.edit',
+        'booking_methods.create',
+        'booking_methods.index',
+        'booking_methods.edit',
         'countries.index',
         'countries.create',
         'countries.edit',
@@ -73,10 +76,6 @@
         'tour_contacts.create',
         'tour_contacts.index',
         'tour_contacts.edit',
-        'booking_methods.create',
-        'booking_methods.index',
-        'booking_methods.edit',
-
     ];
 @endphp
 
@@ -359,15 +358,6 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="{{ route('booking_methods.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['booking_methods.index', 'booking_methods.create', 'booking_methods.edit']) ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-book"></i>
-                                <p>
-                                    Booking Methods
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
                             <a href="{{ route('brands.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['brands.index', 'brands.create', 'brands.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon far fa-circle"></i>
                                 <p>
@@ -377,9 +367,17 @@
                         </li>
 
                         <li class="nav-item">
+                            <a href="{{ route('booking_methods.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['booking_methods.index', 'booking_methods.create', 'booking_methods.edit']) ? 'active' : '' }}">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>
+                                    Booking Methods
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
                             <a href="{{ route('cabins.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['cabins.index', 'cabins.create', 'cabins.edit']) ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-box"></i>
-                                {{-- <i class="fa-solid fa-cabinet-filing"></i> --}}
                                 <p>
                                     Cabins
                                 </p>
@@ -909,3 +907,5 @@
 {{-- 'setting.airlines.index',
 'setting.airlines.create',
 'setting.airlines.edit', --}}
+
+{{-- <i class="fa-solid fa-cabinet-filing"></i> --}}

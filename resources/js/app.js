@@ -310,14 +310,14 @@ $(document).ready(function ($) {
 
     window.addModalFormLoadingStyles = function (formSelector) {
 
-        $(`${formSelector} button[type="submit"]`).find('span').addClass('mr-2 spinner-border spinner-border-sm');
+        $(`${formSelector} button[type="submit"]`).find('span').addClass('spinner-border spinner-border-sm');
     }
 
     window.removeModalFormLoadingStyles = function (formSelector) {
 
         setTimeout(function () {
 
-            $(`${formSelector} button[type="submit"]`).find('span').removeClass(`mr-2 spinner-border spinner-border-sm`);
+            $(`${formSelector} button[type="submit"]`).find('span').removeClass('spinner-border spinner-border-sm');
         }, 250);
 
     }
@@ -391,7 +391,7 @@ $(document).ready(function ($) {
             type: 'GET',
             dataType: "json",
             beforeSend: function() {
-                span.addClass('mr-2 spinner-border spinner-border-sm');
+                span.addClass('fa-spin');
             },
             success: function(response) {
       
@@ -409,15 +409,15 @@ $(document).ready(function ($) {
 
                 if(!response.status){
                     Toast.fire({
-                        icon: 'info',
+                        icon: response.icon,
                         title: response.success_message
                     });
                 }
 
-                span.removeClass('spinner-border spinner-border-sm');
+                span.removeClass('fa-spin');
             },
             error: function(reject) {
-                span.removeClass('spinner-border spinner-border-sm');
+                span.removeClass('fa-spin');
             }
         });
 
@@ -431,8 +431,6 @@ $(document).ready(function ($) {
         let formID  = $(this).attr('id');
         let modalID = $(this).closest('.modal').attr('id');
 
-        console.lo
-
         $.ajax({
             type: 'POST',
             url: url,
@@ -442,9 +440,6 @@ $(document).ready(function ($) {
             processData: false,
             beforeSend: function () {
                 removeFormValidationStyles();
-
-                console.log(`#${formID}`);
-
                 addModalFormLoadingStyles(`#${formID}`);
             },
             success: function (response) {
@@ -458,24 +453,8 @@ $(document).ready(function ($) {
                 if (response.status === 422) {
 
                     let errors = response.responseJSON;
-                    let flag = true;
-        
-                    setTimeout(function () {
-                        jQuery.each(errors.errors, function (index, value) {
-        
-                            index = index.replace(/\./g, '_');
 
-                            $(`#${modalID} #${index}`).addClass('is-invalid');
-                            $(`#${modalID} #${index}`).closest('.form-group').find('.text-danger').html(value);
-
-                            if (flag) {
-                                $(`.table-responsive`).animate({ scrollTop: $(`#${index}`).parents('.form-group').offset().top }, 1000);
-                                flag = false;
-                            }
-                        });
-        
-                    }, 250);
-        
+                    printListingErrorMessage(errors.error_message);
                 }
 
                 // printModalServerValidationErrors(response, `#${modalID}`);

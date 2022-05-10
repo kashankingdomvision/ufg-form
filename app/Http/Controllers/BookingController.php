@@ -354,12 +354,12 @@ class BookingController extends Controller
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['booking_detail_statuses'] = BookingDetail::Statuses();
 
-        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
+        if(isset($booking->ref_no) && !empty($booking->ref_no)){
 
-            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
+            $zoho_booking_reference = $booking->ref_no;
 
             $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+                return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
             });
 
             if($response['status'] == 200 && isset($response['body']['old_records'])) {

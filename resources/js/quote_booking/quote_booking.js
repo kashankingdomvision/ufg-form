@@ -123,12 +123,10 @@ $(document).ready(function() {
     window.getCommissionRate = function() {
 
         var calculatedCommisionAmount = 0;
-        var commissionPercentage      = 0;
+        var commissionObject          = {};
         var agency                    = $("input[name=agency]:checked").val();
         var agencyCommissionType      = $("input[name=agency_commission_type]:checked").val();
         var netValue                  = removeComma($('.total-markup-amount').val());
-        var commissionID              = $('.commission-id').val();
-        var commissionGroupID         = $('.commission-group-id').val();
         var brandID                   = $('.brand-id').val();
         var holidayTypeID             = $('.holiday-type-id').val();
         var currencyID                = $('.booking-currency-id').val();
@@ -781,22 +779,24 @@ $(document).ready(function() {
                 $(".search-reference-btn").find('span').addClass('spinner-border spinner-border-sm');
             },
             success: function(data) {
-      
-                if(data.response) {
 
-                    if (data.response.tas_ref) {
-                        $("#tas_ref").val(data.response.tas_ref);
+                let response      = data.response;
+                let leadPassenger = data.response.lead_passenger;
+                let brand         = data.response.brand;
+
+                if(response){
+
+                    /* Lead Passenger */
+                    if(leadPassenger.name != null){
+                        $('#lead_passenger_name').val(leadPassenger.name);
                     }
 
-                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('name')) {
-                        $('#lead_passenger_name').val(data.response.lead_passenger.name);
+                    if (leadPassenger.email  != null) {
+                        $('#lead_passenger_email').val(leadPassenger.email);
                     }
 
-                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('email')) {
-                        $('#lead_passenger_email').val(data.response.lead_passenger.email);
-                    }
+                    if (leadPassenger.phone !== null) {
 
-                    if (data.response.lead_passenger && data.response.lead_passenger.hasOwnProperty('phone')) {
                         $('#lead_passenger_contact').val('');
                         
                         var input = document.querySelector('#lead_passenger_contact');
@@ -820,7 +820,7 @@ $(document).ready(function() {
                             placeholderNumberType: "MOBILE",
                         });
 
-                        iti.setNumber(data.response.lead_passenger.phone.replace(/^0+/, '+'));
+                        iti.setNumber(leadPassenger.phone.replace(/^0+/, '+'));
 
                         var errorMap = ["Invalid number", "Invalid country code", "Too short", "Too long", "Invalid number"];
 
@@ -842,7 +842,39 @@ $(document).ready(function() {
 
                     }
 
-                    // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
+                    if (response.tas_ref !== null) {
+                        $("#tas_ref").val(response.tas_ref);
+                    }
+
+                    if (brand.hasOwnProperty('brand_id') && brand.brand_id !== null) {
+                        $('#brand_id').val(brand.brand_id).change();
+                    }
+
+                    if (brand.hasOwnProperty('name') && brand.name !== null) {
+                        setTimeout(function() {
+                            $("#holiday_type_id option:contains(" + brand.name + ")").attr('selected', 'selected').change();
+                            // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
+                        }, 500);
+                    }
+
+                    if (response.sale_person !== null) {
+                        // $('#sale_person_id').val(data.response.sale_person).trigger('change');
+                        $(`#sale_person_id option[data-email="${response.sale_person}"]`).prop('selected','selected').change();
+                    }
+
+                    if (response.currency !== null) {
+                        $(`#currency_id option[data-code="${response.currency}"]`).prop('selected','selected').change();
+                    }
+                    
+                }
+
+
+                    // if (data.response.pax) {
+                    //     $('#pax_no').val(data.response.pax).trigger('change');
+                    // }
+
+
+                      // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('passenger_name')) {
                     //     $('#lead_passenger_name').val(data.response.passengers.lead_passenger.passenger_name);
                     // }
 
@@ -885,30 +917,6 @@ $(document).ready(function() {
 
                     // }
 
-                    if (data.response.brand && data.response.brand.hasOwnProperty('brand_id')) {
-                        $('#brand_id').val(data.response.brand.brand_id).change();
-                    }
-
-                    if (data.response.brand && data.response.brand.hasOwnProperty('name')) {
-                        setTimeout(function() {
-                            $("#holiday_type_id option:contains(" + data.response.brand.name + ")").attr('selected', 'selected').change();
-                            // $("#holiday_type_id option[data-value='" + data.response.brand.name +"']").attr("selected","selected");
-                        }, 500);
-                    }
-
-                    if (data.response.sale_person) {
-                        // $('#sale_person_id').val(data.response.sale_person).trigger('change');
-                        $(`#sale_person_id option[data-email="${data.response.sale_person}"]`).prop('selected','selected').change();
-                    }
-
-                    // if (data.response.pax) {
-                    //     $('#pax_no').val(data.response.pax).trigger('change');
-                    // }
-
-                    if (data.response.currency) {
-                        $(`#currency_id option[data-code="${data.response.currency}"]`).prop('selected','selected').change();
-                    }
-
                     // if (data.response.passengers && data.response.passengers.hasOwnProperty('lead_passenger') && data.response.passengers.lead_passenger.hasOwnProperty('dinning_prefrences')) {
                     //     $('#lead_passenger_dietary_preferences').val(data.response.passengers.lead_passenger.dinning_prefrences);
                     // }
@@ -930,7 +938,6 @@ $(document).ready(function() {
                     //     });
                     // }
 
-                }
            
                 $(".search-reference-btn").find('span').removeClass('spinner-border spinner-border-sm');
             },
