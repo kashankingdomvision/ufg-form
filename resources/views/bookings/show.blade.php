@@ -2136,7 +2136,7 @@
                   </div>
                 @endif
 
-                @if(isset($old_ufg_payment_records) && !empty($old_ufg_payment_records))
+                @if(!empty($old_ufg_payment_records))
                   <div class="card  mt-2">
                     <div class="card-header">
                       <h3 class="card-title font-weight-bold">Old UFG Payment System</h3>

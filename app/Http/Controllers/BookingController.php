@@ -324,9 +324,6 @@ class BookingController extends Controller
 
     public function edit($id)
     {
-        $booking = Booking::findOrFail(decrypt($id));
-        $data['booking']          = $booking;
-
         $data['countries'] = cache()->rememberForever('countries', function () {
             return Country::orderBy('sort_order', 'ASC')->get();
         });
@@ -335,6 +332,8 @@ class BookingController extends Controller
             return Country::orderByService()->orderBy('name', 'ASC')->get();
         });
 
+        $booking                  = Booking::findOrFail(decrypt($id));
+        $data['booking']          = $booking;
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['users']            = User::all()->sortBy('name');
@@ -362,13 +361,12 @@ class BookingController extends Controller
                 return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
             });
 
-            if($response['status'] == 200 && isset($response['body']['old_records'])) {
-                $data['old_ufg_payment_records'] = $response['body']['old_records'];
+            if($response['status'] == 200) {
+                
+                $data['old_ufg_payment_records'] = isset($response['body']['old_records']) ? $response['body']['old_records'] : NULL;
+                $data['ufg_payment_records']     = isset($response['body']['message']) ? $response['body']['message'] : NULL;
             }
 
-            if($response['status'] == 200 && isset($response['body']['message'])) {
-                $data['ufg_payment_records'] = $response['body']['message'];
-            }
         }
 
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
@@ -637,7 +635,7 @@ class BookingController extends Controller
         ]);
     }
 
-    public function show($id,$status = null)
+    public function show($id, $status = null)
     {
         $data['countries'] = cache()->rememberForever('countries', function () {
             return Country::orderBy('sort_order', 'ASC')->get();
@@ -647,6 +645,7 @@ class BookingController extends Controller
             return Country::orderByService()->orderBy('name', 'ASC')->get();
         });
 
+        $booking                  = Booking::findOrFail(decrypt($id));
         $data['categories']       = Category::orderby('sort_order', 'ASC')->get();
         $data['seasons']          = Season::all();
         $data['users']            = User::all()->sortBy('name');
@@ -656,7 +655,7 @@ class BookingController extends Controller
         $data['currencies']       = Currency::active()->orderBy('id', 'ASC')->get();;
         $data['brands']           = Brand::orderBy('id','ASC')->get();
         $data['booking_types']    = BookingType::all();
-        $data['booking']            = Booking::findOrFail(decrypt($id));
+        $data['booking']          = $booking;
         $data['commission_types'] = Commission::all();
         $data['payment_methods']  = PaymentMethod::all();
         $data['banks']            = Bank::all();
@@ -665,29 +664,25 @@ class BookingController extends Controller
         $data['preset_comments']  = PresetComment::orderBy('created_at','DESC')->get();
         $data['group_owners']     = GroupOwner::orderBy('id','ASC')->get();
         $data['booking_detail_statuses'] = BookingDetail::Statuses();
-
-        
-        if(isset($data['booking']->ref_no) && !empty($data['booking']->ref_no)){
-
-            $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
-            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
-            });
-
-            if($response['status'] == 200 && isset($response['body']['old_records'])) {
-                $data['old_ufg_payment_records'] = $response['body']['old_records'];
-            }
-
-            if($response['status'] == 200 && isset($response['body']['message'])) {
-                $data['ufg_payment_records'] = $response['body']['message'];
-            }
-        }
-
         $data['status'] = $status;
         $data = array_merge($data, Helper::checkAlreadyExistUser($id,'bookings'));
 
+        if(isset($booking->ref_no) && !empty($booking->ref_no)){
 
-        return view('bookings.show',$data);
+            $zoho_booking_reference = $booking->ref_no;
+
+            $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
+                return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
+            });
+
+            if($response['status'] == 200) {
+
+                $data['old_ufg_payment_records'] = isset($response['body']['old_records']) ? $response['body']['old_records'] : NULL;
+                $data['ufg_payment_records']     = isset($response['body']['message']) ? $response['body']['message'] : NULL;
+            }
+        }
+
+        return view('bookings.show', $data);
     }
 
     // not used currently
