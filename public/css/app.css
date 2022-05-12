@@ -6510,6 +6510,16 @@ form .card-footer {
   border-color: #3b4956;
 }
 
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #3b4956;
+}
+
+.nav-pills .nav-link:not(.active):hover {
+  color: #3b4956;
+}
+
 .dropdown-item.active,
 .dropdown-item:active {
   color: #fff;
