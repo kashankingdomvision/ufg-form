@@ -2878,6 +2878,16 @@ $(document).ready(function () {
     }
   }
 
+  function hideQuoteDetailRemoveButton() {
+    if ($('.quote').length == 1) {
+      $('.remove-quote-detail-service').addClass('d-none');
+    }
+  }
+
+  function showQuoteDetailRemoveButton() {
+    $('.remove-quote-detail-service').removeClass('d-none');
+  }
+
   $(document).on('change', '.markup-type', function () {
     getMarkupTypeFeildAttribute();
   });
@@ -2887,6 +2897,7 @@ $(document).ready(function () {
     if (confirm("Are you sure you want to Remove this Service?") == true) {
       $(this).closest(".quote").remove();
       getQuoteTotalValues();
+      hideQuoteDetailRemoveButton();
     }
   });
   $(document).on("keyup change", '.change-calculation', function (event) {
@@ -2993,6 +3004,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         $("".concat(quoteClass)).find('.supplier-country-id').val($('.country-destination').val()).change();
+        showQuoteDetailRemoveButton();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
@@ -3082,6 +3094,7 @@ $(document).ready(function () {
         $("#quote_".concat(quoteKey, "_holder")).empty();
         $("".concat(quoteClass)).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
         $("".concat(quoteClass)).find('.supplier-country-id').val($('.country-destination').val()).change();
+        showQuoteDetailRemoveButton();
         callLaravelFileManger();
         datepickerReset(1, "".concat(quoteClass));
         reinitializedSummerNote("".concat(quoteClass));
