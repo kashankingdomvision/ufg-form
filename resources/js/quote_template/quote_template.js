@@ -39,6 +39,16 @@ $(document).ready(function () {
         }
     }
 
+    function hideQuoteDetailRemoveButton() {
+        if($('.quote').length == 1){
+            $('.remove-quote-detail-service').addClass('d-none');
+        }
+    }
+
+    function showQuoteDetailRemoveButton() {
+        $('.remove-quote-detail-service').removeClass('d-none');
+    }
+
     $(document).on('change', '.markup-type', function () {
         getMarkupTypeFeildAttribute();
     });
@@ -50,6 +60,7 @@ $(document).ready(function () {
             $(this).closest(".quote").remove();
 
             getQuoteTotalValues();
+            hideQuoteDetailRemoveButton();
         }
     });
 
@@ -188,6 +199,8 @@ $(document).ready(function () {
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
                 $(`${quoteClass}`).find('.supplier-country-id').val($('.country-destination').val()).change();
 
+                showQuoteDetailRemoveButton();
+
                 callLaravelFileManger();
                 datepickerReset(1, `${quoteClass}`);
 
@@ -307,7 +320,8 @@ $(document).ready(function () {
 
                 $(`${quoteClass}`).find('.supplier-currency-id').val($('.default-supplier-currency-id').val()).change();
                 $(`${quoteClass}`).find('.supplier-country-id').val($('.country-destination').val()).change();
-
+                
+                showQuoteDetailRemoveButton();
 
                 callLaravelFileManger();
                 datepickerReset(1, `${quoteClass}`);
