@@ -31,13 +31,12 @@ class GroupController extends Controller
     {
         $group = Group::with('quotes')->orderBy('id', 'Desc');
 
-        if(count($request->all()) > 0){
-            if($request->has('search') && !empty($request->search)){
-                $group->where('name', 'like', '%'.$request->search.'%');
-            }
+        if($request->filled('search')){
+            $group->where('name', 'like', "%{$request->search}%");
         }
 
         $data['groups'] = $group->paginate($this->pagination);
+
         return view('groups.listing', $data);
     }
 
@@ -100,7 +99,7 @@ class GroupController extends Controller
 
         $currency  = Quote::select('currency_id')->where('id', $quote_ids[0])->first();
 
-        $data = [
+        return [
             'name'                    => $request->name,
             'total_net_price'         => $sum_of_quotes_total->total_net_price,
             'total_markup_amount'     => $sum_of_quotes_total->total_markup_amount,
@@ -110,8 +109,6 @@ class GroupController extends Controller
             'total_commission_amount' => $sum_of_quotes_total->total_commission_amount,
             'currency_id'             => $currency->currency_id
         ];
-
-        return $data;
     }
 
     /*

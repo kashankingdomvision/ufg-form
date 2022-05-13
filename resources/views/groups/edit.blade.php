@@ -46,7 +46,7 @@
                   <label for="quotes">Quotes <span class="h6">(Select Atleast Two Quotes)</span> <span style="color:red">*</span></label>
                   <select  name="quote_ids[]" id="quote_ids" class="form-control select2-multiple" data-placeholder="Select Quotes" multiple>
                     @foreach ($quotes as $quote)
-                      <option value="{{ $quote->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : '' }}> {{ $quote->quote_ref }} - {{ $quote->ref_no }} - {{ $quote->getBookingCurrency->name }} </option>
+                      <option value="{{ $quote->id }}" {{ $group->quotes->contains('id', $quote->id) ? 'selected' : '' }}> {{ $quote->quote_ref }} - {{ $quote->ref_no }} - {{ isset($quote->getBookingCurrency->code) ? $quote->getBookingCurrency->code : '' }} </option>
                     @endforeach
                   </select>
                   <span class="text-danger" role="alert"></span>
