@@ -698,6 +698,8 @@ Route::group(['middleware' => ['auth']], function(){
         'as'     => 'reports.'
     ], function () {
 
+        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commissionReport'));
+
         Route::get('user-report', array('as' => 'user.report', 'uses' => 'ReportController@user_report'));
         Route::get('activity-by-user', array('as' => 'activity.by.user', 'uses' => 'ReportController@activity_by_user'));
         Route::get('supplier-report', array('as' => 'supplier.report', 'uses' => 'ReportController@supplier_report'));
@@ -712,8 +714,6 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::get('transfer-report', array('as' => 'transfer.report', 'uses' => 'ReportController@transfer_report'));
         Route::get('transfer-report-listing', array('as' => 'transfer.report.listing', 'uses' => 'ReportController@transfer_report_listing'));
-
-        Route::get('commission-report', array('as' => 'commission.report', 'uses' => 'ReportController@commission_report'));
 
         // reports-export-routes
         Route::post('customer-report-export', array('as' => 'customer.report.export', 'uses' => 'ReportController@customer_report_export'));

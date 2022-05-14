@@ -95,43 +95,36 @@ class ReportController extends Controller
         return view('reports.user_report', $data);
     }
 
-    public function commission_report(Request $request){
+    public function commissionReport(Request $request){
 
-        $query = Booking::where('status','confirmed')->orderBy('id','ASC');
+        $query = Booking::with([
+            'getCurrency',
+            'getSalePerson',
+            'getBrand',
+            'getHolidayType',
+            'getSeason',
+        ])
+        ->where('booking_status','confirmed')
+        ->orderBy('id','ASC');
     
-        if (!empty($request->all())){
-
-
-            if(request()->has('booking_currency') && !empty(request()->booking_currency)){
-                $query->whereIn('currency_id', $request->booking_currency);
-            }
-
-            if(request()->has('sale_person_id') && !empty(request()->sale_person_id)){
-                $query->where('sale_person_id', $request->sale_person_id);
-            }
-
-            if(request()->has('commission_id') && !empty(request()->commission_id)){
-                $query->where('commission_id', $request->commission_id);
-            }
-
-            if(request()->has('commission_group_id') && !empty(request()->commission_group_id)){
-                $query->where('commission_group_id', $request->commission_group_id);
-            }
-
-            if(request()->has('brand_id') && !empty(request()->brand_id)){
-                $query->where('brand_id', $request->brand_id);
-            }
-
-            if(request()->has('season_id') && !empty(request()->season_id)){
-                $query->where('season_id', $request->season_id);
-            }
-
+        if(request()->filled('booking_currency')){
+            $query->whereIn('currency_id', $request->booking_currency);
         }
 
-        $data['commissions']       = Commission::all();
-        $data['commission_groups'] = CommissionGroup::all();
-        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
+        if(request()->filled('sale_person_id')){
+            $query->where('sale_person_id', $request->sale_person_id);
+        }
+
+        if(request()->filled('brand_id')){
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if(request()->filled('season_id')){
+            $query->where('season_id', $request->season_id);
+        }
+
         $data['bookings']          = $query->get();
+        $data['currencies']        = Currency::active()->orderBy('id', 'ASC')->get();
         $data['users']             = User::get();
         $data['brands']            = Brand::orderBy('id','ASC')->get();
         $data['booking_seasons']   = Season::all();
