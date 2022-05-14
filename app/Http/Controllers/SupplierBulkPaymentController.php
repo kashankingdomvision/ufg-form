@@ -30,37 +30,34 @@ class SupplierBulkPaymentController extends Controller
         $data['booking_seasons'] = Season::all();
         $data['suppliers']       = Supplier::orderBy('id', 'ASC')->get();
         $data['payment_methods'] = PaymentMethod::where('id', '!=' , 3)->get();
-        $data['bookings']        =  null;
+        $data['bookings']        = null;
 
-        if(count($request->all()) > 0){
-            if($request->has('supplier_id') && !empty($request->supplier_id) && $request->has('season_id') && !empty($request->season_id)){
+        if($request->filled('supplier_id') && $request->filled('season_id')){
 
-                $query = Booking::orderBy('bookings.id', 'ASC')
-                ->leftJoin('booking_details', 'bookings.id', '=', 'booking_details.booking_id')
-                ->where('bookings.season_id',$request->season_id)
-                ->where('booking_details.supplier_id',$request->supplier_id)
-                ->where('booking_details.payment_status', 'active')
-                ->where('booking_details.outstanding_amount_left','>' ,0);
+            $query = Booking::orderBy('bookings.id', 'ASC')
+            ->leftJoin('booking_details', 'bookings.id', '=', 'booking_details.booking_id')
+            ->where('bookings.season_id', $request->season_id)
+            ->where('booking_details.supplier_id', $request->supplier_id)
+            ->where('booking_details.payment_status', 'active')
+            ->where('booking_details.outstanding_amount_left','>' ,0);
 
-                $data['bookings'] =  $query->get([
-                    'bookings.ref_no',
-                    'bookings.quote_ref',
-                    'booking_details.id as booking_detail_id',
-                    'bookings.id as booking_id',
-                    'booking_details.actual_cost_bc',
-                    'booking_details.outstanding_amount_left',
-                    'booking_details.supplier_currency_id as supplier_currency_id',
-                    'booking_details.booking_detail_unique_ref_id',
-                    'booking_details.actual_cost',
-                ]);
+            $data['bookings'] =  $query->get([
+                'bookings.ref_no',
+                'bookings.quote_ref',
+                'booking_details.id as booking_detail_id',
+                'bookings.id as booking_id',
+                'booking_details.actual_cost_bc',
+                'booking_details.outstanding_amount_left',
+                'booking_details.supplier_currency_id as supplier_currency_id',
+                'booking_details.booking_detail_unique_ref_id',
+                'booking_details.actual_cost',
+            ]);
 
-                $data['selected_supplier_currency'] = Supplier::find($request->supplier_id)->getCurrency->code;
-                $data['currency_id']                = Supplier::find($request->supplier_id)->currency_id;
-                $data['supplier_id']                = $request->supplier_id;
-                $data['season_id']                  = $request->season_id;
-                $data['total_wallet']               = TotalWallet::where('supplier_id', $request->supplier_id)->first();
-            }
-
+            $data['selected_supplier_currency'] = Supplier::find($request->supplier_id)->getCurrency->code;
+            $data['currency_id']                = Supplier::find($request->supplier_id)->currency_id;
+            $data['supplier_id']                = $request->supplier_id;
+            $data['season_id']                  = $request->season_id;
+            $data['total_wallet']               = TotalWallet::where('supplier_id', $request->supplier_id)->first();
         }
          
         return view('supplier_bulk_payments.index', $data);
