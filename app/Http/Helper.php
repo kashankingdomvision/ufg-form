@@ -15,6 +15,7 @@ use App\QuoteUpdateDetail;
 use App\SupplierRateSheet;
 use App\User;
 use App\Wallet;
+use App\CurrencyConversion;
 use Auth;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +23,23 @@ use Illuminate\Support\Facades\Storage;
 class Helper
 {
 
+
+	public static function getAmountInSaleAgentCurrency($from, $to, $amount, $rate_type){
+
+		$rate = Helper::getCurrencyConversionRate($from, $to, $rate_type);
+
+		return Helper::number_format($rate * $amount);
+    }
+
+	public static function getCurrencyConversionRate($from_currency, $to_currency, $rate_type){
+	 
+        return $object = CurrencyConversion::where([
+            'from' => $from_currency,
+            'to'   => $to_currency
+        ])
+        ->first()
+        ->value($rate_type);
+    }
 
 
 	public static function get_autocomplete_type_records($autocomplete_type){

@@ -65,6 +65,7 @@ class Booking extends Model
         'cancel_date',
         'tas_ref',
         'revelant_quote',
+        'is_sale_agent_paid',
     ];
     
     public function getVersionAttribute()
@@ -215,6 +216,11 @@ class Booking extends Model
     public function getSalePerson()
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
+    }
+
+    public function getLastSaleAgentCommissionBatchDetails()
+    {
+        return $this->hasOne(SaleAgentCommissionBatchDetails::class, 'booking_id', 'id')->latest();
     }
 
     public function getUser()

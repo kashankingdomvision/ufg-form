@@ -70148,6 +70148,13 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function ($) {
       $(this).val(0);
     }
   });
+  $(document).on('click', '.finance-parent', function () {
+    if ($(this).is(':checked', true)) {
+      $(".finance-child").prop('checked', true).val(1);
+    } else {
+      $(".finance-child").prop('checked', false).val(0);
+    }
+  });
   $(document).on('click', '.parent-row', function (e) {
     var parentID = $(this).data('id');
     $("#child-row-".concat(parentID)).hasClass('d-none') ? $("#child-row-".concat(parentID)).removeClass('d-none') : $("#child-row-".concat(parentID)).addClass('d-none');
