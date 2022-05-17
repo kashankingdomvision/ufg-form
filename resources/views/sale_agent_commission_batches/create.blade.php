@@ -249,7 +249,7 @@
                                                 <td colspan="9"></td>
                                                 <td class="d-flex justify-content-left">
                                                   <button type="submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Pay &nbsp; </button>
-                                                  <a href="{{ route('supplier-bulk-payments.index') }}" class="btn btn-danger float-right ">Cancel</a>
+                                                  <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
                                                 </td>
                                             </tr>
 

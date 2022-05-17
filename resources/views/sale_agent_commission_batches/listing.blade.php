@@ -87,32 +87,29 @@
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
-                                <th></th>
-                                <th>Booking Ref #</th>
-                                {{-- <th>Quote Ref # </th> --}}
-                                <th>Sales Agent</th>
-                                {{-- <th>Booking Currency</th> --}}
-                                {{-- <th>Season</th> --}}
-                                <th>Com. Amount in Agent's Currency</th>
-                                <th>Total Paid Amount Yet</th>
-                                <th>Outstanding Amount Left</th>
-                                <th>Pay Commission Amount</th>
-                                <th style="min-width: 210px;">Total Paid Amount</th>
-                                <th>Total Outstanding Amount</th>
-                                <th></th>
+                              <th></th>
+                              <th>Booking Ref #</th>
+                              <th>Sales Agent</th>
+                              <th>Com. Amount in Agent's Currency</th>
+                              <th>Total Paid Amount Yet</th>
+                              <th>Outstanding Amount Left</th>
+                              <th>Pay Commission Amount</th>
+                              <th style="min-width: 210px;">Total Paid Amount</th>
+                              <th>Total Outstanding Amount</th>
+                              <th></th>
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
-                                <tr>
-                                    <td></td>
-                                    <td> {{ $sacb_details->getBooking->ref_no }} </td>
-                                    <td> {{ isset($sacb_details->getBooking->getSalePerson->name) ? $sacb_details->getBooking->getSalePerson->name : ''  }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_default_currency) }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
-                                </tr>
+                              <tr>
+                                <td></td>
+                                <td> {{ $sacb_details->getBooking->ref_no }} </td>
+                                <td> {{ isset($sacb_details->getBooking->getSalePerson->name) ? $sacb_details->getBooking->getSalePerson->name : ''  }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_default_currency) }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
+                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                              </tr>
                             @endforeach
                           </tbody>
                         </tr>
