@@ -106,7 +106,7 @@
                                     <td></td>
                                     <td> {{ $sacb_details->getBooking->ref_no }} </td>
                                     <td> {{ isset($sacb_details->getBooking->getSalePerson->name) ? $sacb_details->getBooking->getSalePerson->name : ''  }} </td>
-                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ $sacb_details->commission_amount_in_default_currency }} </td>
+                                    <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_default_currency) }} </td>
                                     <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
                                     <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
                                     <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
