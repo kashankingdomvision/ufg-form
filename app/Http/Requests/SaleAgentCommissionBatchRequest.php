@@ -24,16 +24,26 @@ class SaleAgentCommissionBatchRequest extends FormRequest
     public function rules()
     {
         return [
-            'batch_name' => 'required',
-            'payment_method_id' => 'required'
+            'batch_name'                      => 'required',
+            'payment_method_id'               => 'required',
+            'finance.*.pay_commission_amount' => 'required|not_in:0',
         ];
     }
     
     public function attributes()
     {
         return [
-            'batch_name' => 'Batch Name',
-            'payment_method_id' => 'Payment Method'
+            'batch_name'        => 'Batch Name',
+            'payment_method_id' => 'Payment Method',
+            'finance.*.pay_commission_amount' => 'Commission Amount',
+
+        ];
+    }
+
+    public function messages()
+    {
+        return[
+            'finance.*.pay_commission_amount.not_in' => 'Amount should be greater than 0.',
         ];
     }
 }

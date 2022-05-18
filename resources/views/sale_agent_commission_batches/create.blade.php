@@ -143,7 +143,7 @@
                                             <th>Total Paid Amount Yet</th>
                                             <th>Outstanding Amount Left</th>
                                             <th>Pay Commission Amount</th>
-                                            <th style="min-width: 210px;">Total Paid Amount</th>
+                                            <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
                                         </tr>
                                     </thead>
@@ -199,13 +199,14 @@
                                                     <input type="hidden" name="finance[{{$key}}][booking_id]" class="form-control" value="{{ $booking->id }}">
                                                     <input type="hidden" name="finance[{{$key}}][sales_agent_default_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}">
 
-                                                    <td>
+                                                    <td class="form-group">
                                                         <div class="input-group mx-sm-3">
-                                                          <div class="input-group-prepend">
+                                                            <div class="input-group-prepend">
                                                             <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
-                                                          </div>
-                                                          <input type="text" name="finance[{{$key}}][pay_commission_amount]" class="form-control pay-commission-amount remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
+                                                            </div>
+                                                            <input type="text" name="finance[{{$key}}][pay_commission_amount]" id="finance_{{$key}}_pay_commission_amount" class="form-control pay-commission-amount remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
                                                         </div>
+                                                        <small class="text-danger"></small>
                                                     </td>
                                                     
                                                     <td>
