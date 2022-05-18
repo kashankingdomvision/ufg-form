@@ -26,7 +26,7 @@ class SaleAgentCommissionBatchRequest extends FormRequest
         return [
             'batch_name'                      => 'required',
             'payment_method_id'               => 'required',
-            'finance.*.pay_commission_amount' => 'required|not_in:0',
+            'finance.*.pay_commission_amount' => 'exclude_unless:finance.*.finance_child,1|gt:0',
         ];
     }
     
