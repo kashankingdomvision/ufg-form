@@ -455,13 +455,11 @@ class QuoteController extends Controller
 
     public function getQuoteDetailStoredTextArray($quoteDetail, $quote_detail){
 
-        $data = [
+        return [
             'quote_detail_id' => $quoteDetail->id,
             'stored_text'     => $quote_detail['stored_text']['text'],
             'action_date'     => $quote_detail['stored_text']['date']
         ];
-
-        return $data;
     }
 
     public function getQuoteLogArray($quote)
@@ -471,14 +469,12 @@ class QuoteController extends Controller
         $array['quote'] = $quote->getQuoteDetails->toArray();
         $array['pax'  ] = $quote->getPaxDetail->toArray();
 
-        $data = [
+        return [
             'quote_id'   => $quote->id,
             'version_no' => $quote->version,
             'data'       => $array,
             'log_no'     => $quote->getQuotelogs()->count(),
         ];
-
-        return $data;
     }
 
     public function create()
