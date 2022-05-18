@@ -45,7 +45,7 @@ class SaleAgentCommissionBatchController extends Controller
 
         foreach ($request->finance as $key => $finance) {
 
-            if($finance['finance_child'] == 1){
+            if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
 
                 SaleAgentCommissionBatchDetails::create([
 
