@@ -36,6 +36,7 @@ class CreateBookingsTable extends Migration
             $table->enum('agency', [0, 1])->default(0);
             $table->enum('agency_commission_type', ['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
             $table->double('agency_commission')->nullable();
+            $table->boolean('is_sale_agent_paid')->default(0);
             $table->double('total_net_margin')->nullable();
             $table->string('agency_name')->nullable();
             $table->string('agency_contact')->nullable();

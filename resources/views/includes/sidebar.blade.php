@@ -206,7 +206,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item {{  in_array($route, ['commissions.index', 'commissions.create', 'commissions.edit', 'commission_groups.index', 'commission_groups.create', 'commission_groups.edit', 'commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'menu-open': '' }}">
+                    <li class="nav-item {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit', 'pay_commissions.index', 'pay_commissions.create']) ? 'menu-open': '' }}">
                         
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-percentage"></i>
@@ -244,6 +244,16 @@
                                     </p>
                                 </a>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('pay_commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.index', 'pay_commissions.create']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Pay Commission
+                                    </p>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                 @endif

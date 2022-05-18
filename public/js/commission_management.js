@@ -93,11 +93,11 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./commission_management/commission_app */ "./resources/js/commission_management/commission_app.js");
+__webpack_require__(/*! ./commission_management/commission_app */ "./resources/js/commission_management/commission_app.js"); // require('./commission_management/commission_group_app.js');
+// require('./commission_management/commission_criteria_app.js');
 
-__webpack_require__(/*! ./commission_management/commission_group_app.js */ "./resources/js/commission_management/commission_group_app.js");
 
-__webpack_require__(/*! ./commission_management/commission_criteria_app.js */ "./resources/js/commission_management/commission_criteria_app.js");
+__webpack_require__(/*! ./commission_management/pay_commission.js */ "./resources/js/commission_management/pay_commission.js");
 
 /***/ }),
 
@@ -222,163 +222,70 @@ $(document).ready(function () {
 
 /***/ }),
 
-/***/ "./resources/js/commission_management/commission_criteria_app.js":
-/*!***********************************************************************!*\
-  !*** ./resources/js/commission_management/commission_criteria_app.js ***!
-  \***********************************************************************/
+/***/ "./resources/js/commission_management/pay_commission.js":
+/*!**************************************************************!*\
+  !*** ./resources/js/commission_management/pay_commission.js ***!
+  \**************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 $(document).ready(function () {
-  /*
-  |--------------------------------------------------------------------------------
-  | Store Commission Criteria 
-  |--------------------------------------------------------------------------------
-  */
-  $(document).on('submit', '#store_commission_criteria', function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    var formID = $(this).attr('id');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addFormLoadingStyles();
-      },
-      success: function success(response) {
-        removeFormLoadingStyles();
-        printServerSuccessMessage(response, "#".concat(formID));
-      },
-      error: function error(response) {
-        removeFormLoadingStyles();
-        printServerValidationErrors(response);
-      }
-    });
-  });
-  /*
-  |--------------------------------------------------------------------------------
-  | Update Commission Criteria
-  |--------------------------------------------------------------------------------
-  */
+  function getTotalPaidAmount() {
+    var valesArray = $('.row-total-paid-amount').map(function (i, e) {
+      return parseFloat(removeComma(e.value));
+    }).get();
+    var rowTotalPaidAmount = valesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    $('.total-paid-amount').html(check(rowTotalPaidAmount)).val(check(rowTotalPaidAmount));
+  }
 
-  $(document).on('submit', '#update_commission_criteria', function (event) {
+  function getTotalOutstandingAmount() {
+    var valesArray = $('.row-total-outstanding-amount').map(function (i, e) {
+      return parseFloat(removeComma(e.value));
+    }).get();
+    var rowTotalOutstandingAmount = valesArray.reduce(function (a, b) {
+      return a + b;
+    }, 0);
+    $('.total-outstanding-amount').html(check(rowTotalOutstandingAmount)).val(check(rowTotalOutstandingAmount));
+  }
+
+  $(document).on("change", '.pay-commission-amount', function (e) {
+    var commissionRow = $(this).closest('.commission-row');
+    var totalPaidAmountYet = removeComma(commissionRow.find('.total-paid-amount-yet').val());
+    var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
+    var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
+
+    if (parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
+      Toast.fire({
+        icon: 'warning',
+        title: 'Please Enter Correct Amount.'
+      });
+      $(this).val('0.00');
+      return;
+    }
+
+    var rowTotalPaidAmount = parseFloat(totalPaidAmountYet) + parseFloat(payCommisionAmount);
+    var rowTotalOutstandingAmount = parseFloat(outstandingAmountLeft) - parseFloat(payCommisionAmount);
+    commissionRow.find('.row-total-paid-amount').val(check(rowTotalPaidAmount));
+    commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
+    getTotalPaidAmount();
+    getTotalOutstandingAmount();
+  });
+  $(document).on('submit', '#store_pay_commission', function (event) {
     event.preventDefault();
-    var url = $(this).attr('action');
-    var formID = $(this).attr('id');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addFormLoadingStyles();
-      },
-      success: function success(response) {
-        removeFormLoadingStyles();
-        printServerSuccessMessage(response, "#".concat(formID));
-      },
-      error: function error(response) {
-        removeFormLoadingStyles();
-        printServerValidationErrors(response);
-      }
-    });
-  });
-  $(document).on('change', '.getMultipleBrandtoHoliday', function () {
-    var brand_ids = $(this).val();
-    var options = '';
-    var url = "".concat(BASEURL, "multiple-brand-on-change");
-    $.ajax({
-      type: 'get',
-      url: url,
-      data: {
-        'brand_ids': brand_ids
-      },
-      beforeSend: function beforeSend() {
-        $('.appendMultipleHolidayType').html(options);
-      },
-      success: function success(response) {
-        $.each(response, function (key, value) {
-          options += "<option data-value=\"".concat(value.name, "\" value=\"").concat(value.id, "\"> ").concat(value.name, " (").concat(value.brand_name, ") </option>");
-        });
-        $('.appendMultipleHolidayType').html(options);
-      }
-    });
-  });
-  $(document).on('click', '.commission-criteria-bulk-action-item', function () {
-    var checkedValues = $('.child:checked').map(function (i, e) {
+    var checkedValues = $('.finance-child:checked').map(function (i, e) {
       return e.value;
     }).get();
-    var bulkActionType = $(this).data('action_type');
-    var message = "";
-    var buttonText = "";
 
-    if (['delete'].includes(bulkActionType)) {
-      if (checkedValues.length > 0) {
-        $('input[name="bulk_action_type"]').val(bulkActionType);
-        $('input[name="bulk_action_ids"]').val(checkedValues);
-
-        switch (bulkActionType) {
-          case "delete":
-            message = 'You want to Delete Commission Criterias?';
-            buttonText = 'Delete';
-            break;
-        }
-
-        Swal.fire({
-          title: 'Are you sure?',
-          text: message,
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#dc3545',
-          confirmButtonText: "Yes, ".concat(buttonText, " it !")
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            $.ajax({
-              type: 'POST',
-              url: $('#commission_criteria_bulk_action').attr('action'),
-              data: new FormData($('#commission_criteria_bulk_action')[0]),
-              contentType: false,
-              cache: false,
-              processData: false,
-              success: function success(response) {
-                printListingSuccessMessage(response);
-              }
-            });
-          }
-        });
-      } else {
-        printListingErrorMessage("Please Check Atleast One Record.");
-      }
+    if (checkedValues.length == 0) {
+      Toast.fire({
+        icon: 'error',
+        title: 'Please Check Any Record First.'
+      });
+      return;
     }
-  });
-});
 
-/***/ }),
-
-/***/ "./resources/js/commission_management/commission_group_app.js":
-/*!********************************************************************!*\
-  !*** ./resources/js/commission_management/commission_group_app.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-$(document).ready(function () {
-  /*
-  |--------------------------------------------------------------------------------
-  | Store Commission Group 
-  |--------------------------------------------------------------------------------
-  */
-  $(document).on('submit', '#store_commission_group', function (event) {
-    event.preventDefault();
     var url = $(this).attr('action');
     var formID = $(this).attr('id');
     $.ajax({
@@ -390,96 +297,17 @@ $(document).ready(function () {
       processData: false,
       beforeSend: function beforeSend() {
         removeFormValidationStyles();
-        addFormLoadingStyles();
+        addModalFormLoadingStyles("#".concat(formID));
       },
       success: function success(response) {
-        removeFormLoadingStyles();
+        removeModalFormLoadingStyles("#".concat(formID));
         printServerSuccessMessage(response, "#".concat(formID));
       },
       error: function error(response) {
-        removeFormLoadingStyles();
+        removeModalFormLoadingStyles("#".concat(formID));
         printServerValidationErrors(response);
       }
     });
-  });
-  /*
-  |--------------------------------------------------------------------------------
-  | Update Commission Group
-  |--------------------------------------------------------------------------------
-  */
-
-  $(document).on('submit', '#update_commission_group', function (event) {
-    event.preventDefault();
-    var url = $(this).attr('action');
-    var formID = $(this).attr('id');
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: new FormData(this),
-      contentType: false,
-      cache: false,
-      processData: false,
-      beforeSend: function beforeSend() {
-        removeFormValidationStyles();
-        addFormLoadingStyles();
-      },
-      success: function success(response) {
-        removeFormLoadingStyles();
-        printServerSuccessMessage(response, "#".concat(formID));
-      },
-      error: function error(response) {
-        removeFormLoadingStyles();
-        printServerValidationErrors(response);
-      }
-    });
-  });
-  $(document).on('click', '.commission-group-bulk-action-item', function () {
-    var checkedValues = $('.child:checked').map(function (i, e) {
-      return e.value;
-    }).get();
-    var bulkActionType = $(this).data('action_type');
-    var message = "";
-    var buttonText = "";
-
-    if (['delete'].includes(bulkActionType)) {
-      if (checkedValues.length > 0) {
-        $('input[name="bulk_action_type"]').val(bulkActionType);
-        $('input[name="bulk_action_ids"]').val(checkedValues);
-
-        switch (bulkActionType) {
-          case "delete":
-            message = 'You want to Delete Commission Groups?';
-            buttonText = 'Delete';
-            break;
-        }
-
-        Swal.fire({
-          title: 'Are you sure?',
-          text: message,
-          icon: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#28a745',
-          cancelButtonColor: '#dc3545',
-          confirmButtonText: "Yes, ".concat(buttonText, " it !")
-        }).then(function (result) {
-          if (result.isConfirmed) {
-            $.ajax({
-              type: 'POST',
-              url: $('#commission_group_bulk_action').attr('action'),
-              data: new FormData($('#commission_group_bulk_action')[0]),
-              contentType: false,
-              cache: false,
-              processData: false,
-              success: function success(response) {
-                printListingSuccessMessage(response);
-              }
-            });
-          }
-        });
-      } else {
-        printListingErrorMessage("Please Check Atleast One Record.");
-      }
-    }
   });
 });
 

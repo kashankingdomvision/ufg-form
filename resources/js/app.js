@@ -875,6 +875,21 @@ $(document).ready(function ($) {
 
     });
 
+    $(document).on('click', '.finance-parent', function () {
+
+        if ($(this).is(':checked', true)) {
+            $(".finance-child")
+            .prop('checked', true)
+            .val(1);
+
+        } else {
+
+            $(".finance-child")
+            .prop('checked', false)
+            .val(0);
+        }
+    });
+
     $(document).on('click', '.parent-row', function (e) {
         var parentID = $(this).data('id');
         $(`#child-row-${parentID}`).hasClass('d-none') ? $(`#child-row-${parentID}`).removeClass('d-none') : $(`#child-row-${parentID}`).addClass('d-none');
