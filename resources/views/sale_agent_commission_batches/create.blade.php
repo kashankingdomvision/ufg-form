@@ -199,10 +199,10 @@
                                                     <input type="hidden" name="finance[{{$key}}][booking_id]" class="form-control" value="{{ $booking->id }}">
                                                     <input type="hidden" name="finance[{{$key}}][sales_agent_default_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}">
 
-                                                    <td class="form-group">
-                                                        <div class="input-group mx-sm-3">
+                                                    <td class="form-group ">
+                                                        <div class="input-group mx-sm-3 d-flex justify-content-center">
                                                             <div class="input-group-prepend">
-                                                            <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                                <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                             </div>
                                                             <input type="text" name="finance[{{$key}}][pay_commission_amount]" id="finance_{{$key}}_pay_commission_amount" class="form-control pay-commission-amount remove-zero-values hide-arrows" data-type="currency" value="0.00" style="max-width: 100px;">
                                                         </div>
@@ -211,18 +211,18 @@
                                                     
                                                     <td>
                                                         <div class="input-group mx-sm-4">
-                                                          <div class="input-group-prepend">
-                                                            <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
-                                                          </div>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                            </div>
                                                           <input type="text" name="finance[{{$key}}][row_total_paid_amount]" class="form-control row-total-paid-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                         </div>
                                                     </td>
 
                                                     <td>
                                                         <div class="input-group mx-sm-4">
-                                                          <div class="input-group-prepend">
-                                                            <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
-                                                          </div>
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
+                                                            </div>
                                                           <input type="text" name="finance[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                         </div>
                                                     </td>
