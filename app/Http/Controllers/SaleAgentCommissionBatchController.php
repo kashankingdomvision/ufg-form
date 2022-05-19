@@ -84,6 +84,7 @@ class SaleAgentCommissionBatchController extends Controller
         if($request->filled('sales_agent') && $request->filled('season')){
 
             $query = Booking::with([
+                'getSalePerson.getCurrency',
                 'getSalePerson',
                 'getCurrency',
                 'getSeason',
@@ -104,7 +105,7 @@ class SaleAgentCommissionBatchController extends Controller
                 'id',
             ])
             ->get()
-            // ->take(1)
+            // ->take(4)
             ;
 
             $test = $data['bookings'];

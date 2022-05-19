@@ -312,8 +312,6 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'SaleAgentCommissionBatchController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'SaleAgentCommissionBatchController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'SaleAgentCommissionBatchController@store'));
-       
-       
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
         Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));
