@@ -211,6 +211,8 @@ class QuoteController extends Controller
             'rate_type'                         =>  ($request->rate_type == 'live') ? 'live': 'manual',
             'markup_type'                       =>  $request->markup_type??NULL,
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
+            'sale_person_currency_id'           =>  $request->sale_person_currency_id??NULL,
+            'commission_amount_in_sale_person_currency' =>  $request->commission_amount_in_sale_person_currency??NULL,
         ];
 
         if($type == 'quotes'){

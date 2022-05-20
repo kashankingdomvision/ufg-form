@@ -258,7 +258,8 @@ class BookingController extends Controller
             'invoice'                           => $this->fileStore($quoteD, $booking->id),
             'booking_id'                        => $booking->id,
             'status'                            => isset($quoteD['status']) && !empty($quoteD['status']) ? $quoteD['status'] : 'active',
-       
+            'sale_person_currency_id'           =>  $request->sale_person_currency_id??NULL,
+            'commission_amount_in_sale_person_currency' =>  $request->commission_amount_in_sale_person_currency??NULL,
         ];
 
         return $data;
@@ -277,7 +278,7 @@ class BookingController extends Controller
             "upload_to_calender"    => $quoteD['upload_to_calender']??NULL,
             "additional_date"       => $quoteD['ab_number_of_days']??NULL,
             "outstanding_amount"    => $quoteD['outstanding_amount']??NULL,
-            "added_in_sage"         => $quoteD['added_in_sage'] ? $quoteD['added_in_sage'] : '0',
+            "added_in_sage"         => isset($quoteD['added_in_sage']) ? $quoteD['added_in_sage'] : '0',
             "user_id"               => Auth::id(),
         ];
     }
@@ -446,9 +447,6 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
-
-        // dd($request->all());
-
         // check update access
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         // if(!$quote_update_detail->exists()) {

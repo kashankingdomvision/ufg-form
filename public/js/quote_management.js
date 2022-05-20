@@ -185,6 +185,16 @@ $(document).ready(function () {
     $('.booking-amount-per-person-in-osp').val(check(bookingAmountPerPersonInOtherSellingPrice));
   };
 
+  window.getCommissionAmountInSalePersonCurrency = function () {
+    var rateType = $('input[name="rate_type"]:checked').val();
+    var commissionAmount = removeComma($('.commission-amount').val());
+    var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
+    var salePersonCurrency = $(".sale-person-currency-id").data('currency_code');
+    var rate = getRate(salePersonCurrency, bookingCurrency, rateType);
+    var commissionAmountInSalePersonCurrency = parseFloat(commissionAmount) * parseFloat(rate);
+    $('.commission-amount-in-sale-person-currency').val(check(commissionAmountInSalePersonCurrency));
+  };
+
   window.getSellingPrice = function () {
     var sellingPriceOtherCurrency = $('.selling-price-other-currency').val();
 
@@ -244,6 +254,7 @@ $(document).ready(function () {
     $('.commission-criteria-id').val(commissionObject.criteriaID);
     $('.commission-percentage').val(check(commissionObject.commissionPercentage));
     $('.commission-amount').val(check(calculatedCommisionAmount));
+    getCommissionAmountInSalePersonCurrency();
   };
 
   window.getRate = function (supplierCurrency, bookingCurrency, rateType) {
@@ -604,19 +615,19 @@ $(document).ready(function () {
 
   $(document).on('change', '.sales-person-id', function () {
     var salesPersonID = $(this).val();
-    var userID = $('.user-id').val();
+    /* Hide Staff Commission Code */
+    // var userID        = $('.user-id').val();
+    // if (typeof salesPersonID === 'undefined' || salesPersonID == "") {
+    //     return;
+    // }
+    // if(salesPersonID != userID){
+    //     $('#potential_commission_feild').addClass('d-none');
+    // }
+    // if(salesPersonID == userID){
+    //     $('#potential_commission_feild').removeClass('d-none');
+    // }
 
-    if (typeof salesPersonID === 'undefined' || salesPersonID == "") {
-      return;
-    }
-
-    if (salesPersonID != userID) {
-      $('#potential_commission_feild').addClass('d-none');
-    }
-
-    if (salesPersonID == userID) {
-      $('#potential_commission_feild').removeClass('d-none');
-    }
+    /* Hide Staff Commission Code */
 
     $.ajax({
       type: 'get',
@@ -625,9 +636,17 @@ $(document).ready(function () {
         'sales_person_id': salesPersonID
       },
       success: function success(response) {
-        if (response && Object.keys(response.supervisor).length > 0) {
+        if (response && response.supervisor != null) {
           $('.supervisor-id').val(response.supervisor.id).change();
         }
+
+        if (response && response.sale_person_currency != null) {
+          $('.sale-person-currency-code').html(response.sale_person_currency.code);
+          $('.sale-person-currency-id').val(response.sale_person_currency.id);
+          $('.sale-person-currency-id').attr('data-currency_code', response.sale_person_currency.code).data('currency_code', response.sale_person_currency.code);
+        }
+
+        getCommissionAmountInSalePersonCurrency();
       }
     });
   });

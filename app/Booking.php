@@ -22,6 +22,7 @@ class Booking extends Model
         'currency_id',
         'holiday_type_id',
         'sale_person_id',
+        'sale_person_currency_id',
         'booking_details',
         'reason_for_trip',
         'ref_name',
@@ -53,6 +54,7 @@ class Booking extends Model
         'profit_percentage',
         'commission_criteria_id',
         'commission_amount',
+        'commission_amount_in_sale_person_currency',
         'commission_percentage',
         'selling_currency_oc',
         'selling_price_ocr',
@@ -143,6 +145,10 @@ class Booking extends Model
     
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+    
+    function getSalePersonCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'sale_person_currency_id');
     }
 
     public function getCommissionCriteria(){

@@ -23,6 +23,7 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
+            $table->unsignedBigInteger('sale_person_currency_id')->nullable();
             $table->unsignedBigInteger('commission_group_id')->nullable();
             $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
@@ -57,6 +58,7 @@ class CreateQuotesTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->double('commission_amount')->nullable();
+            $table->double('commission_amount_in_sale_person_currency')->nullable();
             $table->double('commission_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
