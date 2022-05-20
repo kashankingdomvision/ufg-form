@@ -149,7 +149,6 @@
                                             @foreach($bookings as $key => $booking)
                                                 @php
                                                     $supplier_default_currency_code = isset($booking->getSalePerson->getCurrency->code) ? $booking->getSalePerson->getCurrency->code : '';
-                                                    $amount_in_sale_agent_currency = Helper::getAmountInSaleAgentCurrency($booking->getCurrency->code, $supplier_default_currency_code, $booking->commission_amount, $booking->rate_type);
                                                 @endphp
 
                                                 <tr class="commission-row">
@@ -163,15 +162,15 @@
                                                     <!-- Hidden feilds -->
                                                     <td class="d-none">
                                                         <input type="text" name="finance[{{$key}}][total_paid_amount_yet]" class="total-paid-amount-yet" value="{{ is_null($booking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format(0) : $booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount }}">
-                                                        <input type="text" name="finance[{{$key}}][commission_amount_in_default_currency]" value="{{ $amount_in_sale_agent_currency }}">
-                                                        <input type="text" name="finance[{{$key}}][outstanding_amount_left]" class="outstanding-amount-left remove-zero-values hide-arrows" value="{{ is_null($booking->getLastSaleAgentCommissionBatchDetails) ? $amount_in_sale_agent_currency : $booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount }}" style="max-width: 100px;">
+                                                        <input type="text" name="finance[{{$key}}][commission_amount_in_default_currency]" value="{{ Helper::number_format($booking->commission_amount_in_sale_person_currency)  }}">
+                                                        <input type="text" name="finance[{{$key}}][outstanding_amount_left]" class="outstanding-amount-left remove-zero-values hide-arrows" value="{{ is_null($booking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format($booking->commission_amount_in_sale_person_currency) : $booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount }}" style="max-width: 100px;">
                                                         <input type="text" name="finance[{{$key}}][booking_id]" value="{{ $booking->id }}">
                                                         <input type="text" name="finance[{{$key}}][sales_agent_default_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}">
                                                     </td>
 
                                                     <td>{{ $booking->ref_no }}</td>
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
-                                                    <td>{{ $supplier_default_currency_code }} {{ $amount_in_sale_agent_currency }} </td>
+                                                    <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
@@ -183,7 +182,7 @@
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
-                                                            {{ $supplier_default_currency_code }} {{ $amount_in_sale_agent_currency }}
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
                                                         @else
                                                             {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
                                                         @endif

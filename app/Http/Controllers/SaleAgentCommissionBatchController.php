@@ -103,9 +103,10 @@ class SaleAgentCommissionBatchController extends Controller
                 'commission_amount',
                 'rate_type',
                 'id',
+                'commission_amount_in_sale_person_currency'
             ])
             ->get()
-            // ->take(4)
+            // ->take(1)
             ;
 
             $test = $data['bookings'];
