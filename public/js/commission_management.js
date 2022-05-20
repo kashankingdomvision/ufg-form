@@ -250,25 +250,33 @@ $(document).ready(function () {
     $('.total-outstanding-amount').html(check(rowTotalOutstandingAmount)).val(check(rowTotalOutstandingAmount));
   }
 
+  function resetCommissionRow(commissionRow) {
+    commissionRow.find('.pay-commission-amount').val('0.00');
+    commissionRow.find('.finance-child').prop('checked', false).val('0');
+    commissionRow.find('.row-total-paid-amount').val('0.00');
+    commissionRow.find('.row-total-outstanding-amount').val('0.00');
+  }
+
   $(document).on("change", '.pay-commission-amount', function (e) {
     var commissionRow = $(this).closest('.commission-row');
     var totalPaidAmountYet = removeComma(commissionRow.find('.total-paid-amount-yet').val());
     var payCommisionAmount = removeComma(commissionRow.find('.pay-commission-amount').val());
     var outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
 
-    if (parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
+    if (parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)) {
       Toast.fire({
         icon: 'warning',
         title: 'Please Enter Correct Amount.'
       });
-      $(this).val('0.00');
-      return;
+      resetCommissionRow(commissionRow);
+    } else {
+      var rowTotalPaidAmount = parseFloat(totalPaidAmountYet) + parseFloat(payCommisionAmount);
+      var rowTotalOutstandingAmount = parseFloat(outstandingAmountLeft) - parseFloat(payCommisionAmount);
+      commissionRow.find('.finance-child').prop('checked', true).val('1');
+      commissionRow.find('.row-total-paid-amount').val(check(rowTotalPaidAmount));
+      commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
     }
 
-    var rowTotalPaidAmount = parseFloat(totalPaidAmountYet) + parseFloat(payCommisionAmount);
-    var rowTotalOutstandingAmount = parseFloat(outstandingAmountLeft) - parseFloat(payCommisionAmount);
-    commissionRow.find('.row-total-paid-amount').val(check(rowTotalPaidAmount));
-    commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
     getTotalPaidAmount();
     getTotalOutstandingAmount();
   });

@@ -8,12 +8,18 @@ $(document).ready(function() {
         $('.total-paid-amount').html(check(rowTotalPaidAmount)).val(check(rowTotalPaidAmount));
     }
 
-
     function getTotalOutstandingAmount() {
         let valesArray = $('.row-total-outstanding-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
         let rowTotalOutstandingAmount = valesArray.reduce((a, b) => (a + b), 0);
 
         $('.total-outstanding-amount').html(check(rowTotalOutstandingAmount)).val(check(rowTotalOutstandingAmount));
+    }
+
+    function resetCommissionRow(commissionRow) {
+        commissionRow.find('.pay-commission-amount').val('0.00');
+        commissionRow.find('.finance-child').prop('checked', false).val('0');
+        commissionRow.find('.row-total-paid-amount').val('0.00');
+        commissionRow.find('.row-total-outstanding-amount').val('0.00');
     }
 
 
@@ -24,23 +30,24 @@ $(document).ready(function() {
         let payCommisionAmount    = removeComma(commissionRow.find('.pay-commission-amount').val());
         let outstandingAmountLeft = removeComma(commissionRow.find('.outstanding-amount-left').val());
 
-        if(parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)){
-
+        if(parseFloat(payCommisionAmount) <= 0 || parseFloat(payCommisionAmount) > parseFloat(outstandingAmountLeft)){
+           
             Toast.fire({
                 icon: 'warning',
                 title: 'Please Enter Correct Amount.'
             });
 
-            $(this).val('0.00');
+            resetCommissionRow(commissionRow);
 
-            return;
+        }else{
+
+            let rowTotalPaidAmount        = parseFloat(totalPaidAmountYet) + parseFloat(payCommisionAmount);
+            let rowTotalOutstandingAmount = parseFloat(outstandingAmountLeft) - parseFloat(payCommisionAmount);
+    
+            commissionRow.find('.finance-child').prop('checked', true).val('1');
+            commissionRow.find('.row-total-paid-amount').val(check(rowTotalPaidAmount));
+            commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
         }
-
-        let rowTotalPaidAmount        = parseFloat(totalPaidAmountYet) + parseFloat(payCommisionAmount);
-        let rowTotalOutstandingAmount = parseFloat(outstandingAmountLeft) - parseFloat(payCommisionAmount);
-
-        commissionRow.find('.row-total-paid-amount').val(check(rowTotalPaidAmount));
-        commissionRow.find('.row-total-outstanding-amount').val(check(rowTotalOutstandingAmount));
 
         getTotalPaidAmount();
         getTotalOutstandingAmount();
