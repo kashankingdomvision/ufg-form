@@ -658,7 +658,7 @@ class BookingController extends Controller
 
             $zoho_booking_reference = isset($data['booking']->ref_no) && !empty($data['booking']->ref_no) ? $data['booking']->ref_no : '' ;
             $response = Cache::remember($zoho_booking_reference, $this->cacheTimeOut, function() use ($zoho_booking_reference) {
-                return Helper::get_payment_detial_by_ref_no($zoho_booking_reference);
+                return Helper::getPaymentDetialByRefNo($zoho_booking_reference);
             });
 
             if($response['status'] == 200 && isset($response['body']['old_records'])) {
