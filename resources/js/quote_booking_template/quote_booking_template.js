@@ -321,6 +321,8 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '.date-of-service', function () {
+        var DepartureDate = $('.quote:first').find('.date-of-service').val();
+        $('#quote_departure_date').val(DepartureDate).datepicker('setDate');
 
         var quote = $(this).closest('.quote');
         var quoteKey = quote.data('key');
@@ -376,6 +378,8 @@ $(document).ready(function () {
     });
 
     $(document).on('change', '.end-date-of-service', function () {
+        var ReturnDate = $('.quote:last').find('.end-date-of-service').val();
+        $('#quote_return_date').val(ReturnDate).datepicker('setDate');
 
         var quote = $(this).closest('.quote');
         var quoteKey = quote.data('key');

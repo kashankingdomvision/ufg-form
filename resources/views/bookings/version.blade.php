@@ -224,6 +224,28 @@
 
                   <div class="col-sm-6">
                     <div class="form-group">
+                      <label>Departure Date <span style="color:red">*</span></label>
+                      <div class="input-group">
+                        <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
+                        <input type="text" placeholder="DD/MM/YYYY" value="{{$booking->departure_date}}" name="booking_departure_date" id="quote_departure_date" class="form-control departure-date datepicker" autocomplete="off">
+                      </div>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Return Date <span style="color:red">*</span></label>
+                      <div class="input-group">
+                        <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
+                        <input type="text" placeholder="DD/MM/YYYY" value="{{$booking->return_date}}" name="booking_return_date" id="quote_return_date" class="form-control return-date datepicker" autocomplete="off">
+                      </div>
+                      <span class="text-danger" role="alert"></span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
                       <label>Agency Booking <span style="color:red">*</span></label>
                       <div class="d-flex flex-row">
                         <div class="custom-control custom-radio mr-1">

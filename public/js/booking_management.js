@@ -2666,6 +2666,8 @@ $(document).ready(function () {
     quote.find('.badge-time-of-service').removeClass('d-none');
   });
   $(document).on('change', '.date-of-service', function () {
+    var DepartureDate = $('.quote:first').find('.date-of-service').val();
+    $('#quote_departure_date').val(DepartureDate).datepicker('setDate');
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();
@@ -2709,6 +2711,8 @@ $(document).ready(function () {
     }
   });
   $(document).on('change', '.end-date-of-service', function () {
+    var ReturnDate = $('.quote:last').find('.end-date-of-service').val();
+    $('#quote_return_date').val(ReturnDate).datepicker('setDate');
     var quote = $(this).closest('.quote');
     var quoteKey = quote.data('key');
     var DateOFService = $("#quote_".concat(quoteKey, "_date_of_service")).val();

@@ -213,6 +213,8 @@ class QuoteController extends Controller
             'revelant_quote'                    =>  $request->revelant_quote??NULL,
             'sale_person_currency_id'           =>  $request->sale_person_currency_id??NULL,
             'commission_amount_in_sale_person_currency' =>  $request->commission_amount_in_sale_person_currency??NULL,
+            'departure_date'                    => $request->departure_date??NULL,
+            'return_date'                       => $request->return_date??NULL
         ];
 
         if($type == 'quotes'){
@@ -496,9 +498,7 @@ class QuoteController extends Controller
     // Request
     public function store(QuoteRequest $request)
     {
-
-        
-
+        // dd($request->all());
         $quote = Quote::create($this->quoteArray($request, 'quotes', 'store'));
         $quote->getCountryDestinations()->sync($request->country_destination_ids);
 

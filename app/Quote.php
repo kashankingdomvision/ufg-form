@@ -72,6 +72,8 @@ class Quote extends Model
         'transfer',
         'stored_text',
         'markup_type',
+        'departure_date',
+        'return_date'
     ];
 
     public function getCountryDestinations()
@@ -197,6 +199,14 @@ class Quote extends Model
         return date('d/m/Y', strtotime($this->booking_date));
     }
     
+    public function getDepartureDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function getReturnDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
     public function getFormatedCreatedAtAttribute()
     {
         return date('d/m/Y', strtotime($this->created_at));
@@ -283,5 +293,14 @@ class Quote extends Model
 
     public function setBookingAmountPerPersonInOspAttribute( $value ) {
         $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepartureDateAttribute( $value ) {
+        $this->attributes['departure_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+
+    }
+
+    public function setReturnDateAttribute( $value) {
+        $this->attributes['return_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }

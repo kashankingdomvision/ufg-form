@@ -68,6 +68,8 @@ class Booking extends Model
         'tas_ref',
         'revelant_quote',
         'is_sale_agent_paid',
+        'departure_date',
+        'return_date'
     ];
     
     public function getVersionAttribute()
@@ -219,6 +221,14 @@ class Booking extends Model
         }
     }
     
+    public function getDepartureDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+    
+    public function getReturnDateAttribute( $value ) {
+        return (new Carbon($value))->format('d/m/Y');
+    }
+
     public function getSalePerson()
     {
         return $this->hasOne(User::class, 'id', 'sale_person_id');
@@ -283,6 +293,14 @@ class Booking extends Model
 
     public function setBookingAmountPerPersonInOspAttribute( $value ) {
         $this->attributes['booking_amount_per_person_in_osp'] = str_replace( ',', '', $value );
+    }
+
+    public function setDepartureDateAttribute( $value ) {
+        $this->attributes['departure_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
+    }
+
+    public function setReturnDateAttribute( $value) {
+        $this->attributes['return_date']   = date('Y-m-d', strtotime(Carbon::parse(str_replace('/', '-', $value))->format('Y-m-d')));
     }
 }
 
