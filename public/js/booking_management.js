@@ -1629,7 +1629,7 @@ $(document).ready(function () {
     var commissionAmount = removeComma($('.commission-amount').val());
     var bookingCurrency = $(".booking-currency-id").find(':selected').data('code');
     var salePersonCurrency = $(".sale-person-currency-id").data('currency_code');
-    var rate = getRate(salePersonCurrency, bookingCurrency, rateType);
+    var rate = getRate(bookingCurrency, salePersonCurrency, rateType);
     var commissionAmountInSalePersonCurrency = parseFloat(commissionAmount) * parseFloat(rate);
     $('.commission-amount-in-sale-person-currency').val(check(commissionAmountInSalePersonCurrency));
   };
@@ -1696,9 +1696,9 @@ $(document).ready(function () {
     getCommissionAmountInSalePersonCurrency();
   };
 
-  window.getRate = function (supplierCurrency, bookingCurrency, rateType) {
+  window.getRate = function (fromCurrency, toCurrency, rateType) {
     var object = currencyConvert.filter(function (elem) {
-      return elem.from == supplierCurrency && elem.to == bookingCurrency;
+      return elem.from == fromCurrency && elem.to == toCurrency;
     });
     return object.shift()[rateType];
   };

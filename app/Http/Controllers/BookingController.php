@@ -208,6 +208,8 @@ class BookingController extends Controller
             'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
             'agency_email'                      =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
             'revelant_qoutes'                   =>  $request->revelant_qoutes??NULL,
+            'sale_person_currency_id'           =>  $request->sale_person_currency_id??NULL,
+            'commission_amount_in_sale_person_currency' => $request->commission_amount_in_sale_person_currency??NULL,
         ];
     }
 
@@ -258,8 +260,6 @@ class BookingController extends Controller
             'invoice'                           => $this->fileStore($quoteD, $booking->id),
             'booking_id'                        => $booking->id,
             'status'                            => isset($quoteD['status']) && !empty($quoteD['status']) ? $quoteD['status'] : 'active',
-            'sale_person_currency_id'           =>  $request->sale_person_currency_id??NULL,
-            'commission_amount_in_sale_person_currency' =>  $request->commission_amount_in_sale_person_currency??NULL,
         ];
 
         return $data;
@@ -447,6 +447,9 @@ class BookingController extends Controller
 
     public function update(BookingRequest $request, $id)
     {
+
+        // dd($request->all());
+
         // check update access
         // $quote_update_detail = QuoteUpdateDetail::where('foreign_id',decrypt($id))->where('user_id', Auth::id())->where('status','bookings');
         // if(!$quote_update_detail->exists()) {
