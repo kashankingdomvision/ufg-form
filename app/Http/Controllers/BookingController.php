@@ -208,8 +208,8 @@ class BookingController extends Controller
             'agency_contact'                    =>  (isset($request['agency_contact']))? $request->full_number : NULL, 
             'agency_email'                      =>  (isset($request['agency_email'])) ? $request->agency_email : NULL, 
             'revelant_qoutes'                   =>  $request->revelant_qoutes??NULL,
-            'departure_date'                    => $request->departure_date??NULL,
-            'return_date'                       => $request->return_date??NULL
+            'departure_date'                    =>  $request->departure_date??NULL,
+            'return_date'                       =>  $request->return_date??NULL
         ];
     }
 
@@ -456,7 +456,7 @@ class BookingController extends Controller
         // }
         
         //- check update access
-
+        // dd($request->all());
         $booking = Booking::findOrFail(decrypt($id));
         $booking->getCountryDestinations()->sync($request->country_destination_ids);
 
