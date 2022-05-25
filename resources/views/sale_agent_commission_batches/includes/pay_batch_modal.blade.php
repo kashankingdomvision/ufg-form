@@ -13,7 +13,7 @@
           <input type="hidden" name="batch_id" id="batch_id">
 
             <div class="modal-body">
-                <div class="row">
+                <div class="row d-flex justify-content-center">
                     <div class="col-md-8">
                         <div class="form-group">
                             <label>Payment Method <span style="color:red">*</span></label>

@@ -24,7 +24,7 @@ class SaleAgentCommissionBatchRequest extends FormRequest
     public function rules()
     {
         return [
-            'batch_name'                      => 'required',
+            'batch_name'                      => 'required|unique:sac_batches,name',
             // 'payment_method_id'               => 'required',
             'finance.*.pay_commission_amount' => 'exclude_unless:finance.*.finance_child,1|gt:0',
         ];

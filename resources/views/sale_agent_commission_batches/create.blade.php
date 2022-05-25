@@ -126,7 +126,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                {{-- <div class="col-md-3">
                                     <div class="form-group" >
                                         <label>Payment Method <span style="color:red">*</span></label>
                                         <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
@@ -137,7 +137,7 @@
                                         </select>
                                         <span class="text-danger" role="alert"></span>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
 

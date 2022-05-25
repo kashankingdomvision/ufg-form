@@ -246,10 +246,6 @@ $(document).ready(function() {
                         }
                     });
                 }
-
-                if(actionType == "edit_booking"){
-                    $('#show_booking :input').removeAttr('disabled');
-                }
             }
         });
     });
@@ -323,6 +319,9 @@ $(document).ready(function() {
                     title: response.success_message
                 });
 
+                setTimeout(function () {
+                    window.location.href = data.redirect_url;
+                }, 2500);
             },
             error: function(response) {
 

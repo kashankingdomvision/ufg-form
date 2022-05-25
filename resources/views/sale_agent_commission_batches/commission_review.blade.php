@@ -67,7 +67,6 @@
                       <th>Batch Name</th>
                       <th>Sale Person</th>
                       <th>Sale Person Currency</th>
-                      <th>Payment Method</th>
                       <th>Status</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
@@ -87,12 +86,13 @@
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getSalePerson->name) && !empty($sac_batch->getSalePerson->name) ? $sac_batch->getSalePerson->name : '' }}</td>
                           <td>{{ !is_null($sac_batch->getSalePersonCurrency) ? $sac_batch->getSalePersonCurrency->code.' - '.$sac_batch->getSalePersonCurrency->name : '' }}</td>
-                          <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
                           <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
                           <td>
-                            <button type="button" class="pay-batch btn btn-outline-info btn-xs float-right mr-2" data-batch_id="{{ $sac_batch->id }}" title="Pay Batch"><i class="fa fa-money-bill-alt"></i></button>
+                            @if($sac_batch->status == 'confirmed')
+                              <button type="button" class="pay-batch btn btn-outline-info btn-xs mr-2" data-batch_id="{{ $sac_batch->id }}" title="Pay Batch"><i class="fa fa-money-bill-alt"></i></button>
+                            @endif
                           </td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
@@ -130,7 +130,9 @@
                                   @endif
                                 </td>
                                 <td>
-                                  <button type="button" data-batch_id="{{$sac_batch->id}}" data-booking_currency_code="{{ $sacb_details->getBooking->getCurrency->code }}" data-booking_ID="{{ $sacb_details->booking_id }}" data-sale_agent_currency_code="{{ $sac_batch->getSalePersonCurrency->code }}" data-sale_agent_commission_amount="{{ $sacb_details->commission_amount_in_sale_person_currency }}" class="adjust-booking-commission btn btn-outline-info btn-xs float-right mr-2" title="Adjust Commission"><i class="fa fa-adjust"></i></button>
+                                  @if($sacb_details->status == 'dispute')
+                                    <button type="button" data-batch_id="{{$sac_batch->id}}" data-booking_currency_code="{{ $sacb_details->getBooking->getCurrency->code }}" data-booking_ID="{{ $sacb_details->booking_id }}" data-sale_agent_currency_code="{{ $sac_batch->getSalePersonCurrency->code }}" data-sale_agent_commission_amount="{{ $sacb_details->commission_amount_in_sale_person_currency }}" class="adjust-booking-commission btn btn-outline-info btn-xs float-right mr-2" title="Adjust Commission"><i class="fa fa-adjust"></i></button>
+                                  @endif
                                 </td>
                               </tr>
                             @endforeach

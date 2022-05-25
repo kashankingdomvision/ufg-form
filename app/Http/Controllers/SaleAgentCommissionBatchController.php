@@ -39,19 +39,17 @@ class SaleAgentCommissionBatchController extends Controller
 
         $sac_batch = SaleAgentCommissionBatch::create([
 
-            'name' => $request->batch_name,
-            'payment_method_id' => $request->payment_method_id,
-            'total_paid_amount' => $request->total_paid_amount,
+            'name'                     => $request->batch_name,
+            'payment_method_id'        => $request->payment_method_id,
+            'total_paid_amount'        => $request->total_paid_amount,
             'total_outstanding_amount' => $request->total_outstanding_amount,
-            'sale_person_id' => $request->sale_person_id,
-            'sale_person_currency_id' => $request->sale_person_currency_id
+            'sale_person_id'           => $request->sale_person_id,
+            'sale_person_currency_id'  => $request->sale_person_currency_id
         ]);
 
         foreach ($request->finance as $key => $finance) {
 
             if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
-
-                // dd($finance['sale_person_id']);
 
                 SaleAgentCommissionBatchDetails::create([
 
@@ -68,7 +66,7 @@ class SaleAgentCommissionBatchController extends Controller
                 ]);
 
                 if($finance['row_total_outstanding_amount'] == 0){
-                    Booking::where('id', $finance['booking_id'])->update([ 'is_sale_agent_paid' => 1 ]);
+                    Booking::where('id', $finance['booking_id'])->update([ 'is_sale_agent_paid' => 2 ]);
                 }
             }
         }
@@ -97,10 +95,10 @@ class SaleAgentCommissionBatchController extends Controller
                 'getLastSaleAgentCommissionBatchDetails',
             ])
             ->where('season_id', $request->season)
-            ->where('is_sale_agent_paid', 0)
+            ->whereIn('is_sale_agent_paid', [0,1])
             ->where('commission_amount', '>', 0);
 
-            $data['bookings'] =  $query->select([
+            $bookings =  $query->select([
                 'season_id',
                 'ref_no',
                 'quote_ref',
@@ -109,16 +107,40 @@ class SaleAgentCommissionBatchController extends Controller
                 'commission_amount',
                 'rate_type',
                 'id',
-                'commission_amount_in_sale_person_currency'
+                'commission_amount_in_sale_person_currency',
+                'is_sale_agent_paid',
             ])
             ->get()
             // ->take(1)
+
             ;
 
 
+            $collection = collect([
+                ['product' => 'Desk', 'price' => 200],
+                ['product' => 'Chair', 'price' => 100],
+            ]);
+
+            dd($bookings->contains('is_sale_agent_paid', '0'));
+
+            $data['pay'] = collect($bookings)->contains('is_sale_agent_paid', 0);
+
+            dd($data['pay']);
+
+  
+            // dd($bookings);
+
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
+            $data['bookings'] = $bookings;
 
+   
+
+       
+
+            // $q = SaleAgentCommissionBatchDetails::whereIn('booking_id', [1,2,3])->exists();
+
+            // dd($q);
 
             $test = $data['bookings'];
 
@@ -137,6 +159,11 @@ class SaleAgentCommissionBatchController extends Controller
             ->update([
                 'payment_method_id' => $request->payment_method_id,
                 'status' => 'paid'
+            ]);
+
+            SaleAgentCommissionBatchDetails::where('booking_id', $id)->update([
+                'dispute_detail' => request()->dispute_detail,
+                'status' => 'dispute',
             ]);
 
 
