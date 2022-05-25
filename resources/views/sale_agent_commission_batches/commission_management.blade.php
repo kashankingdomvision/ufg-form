@@ -121,7 +121,15 @@
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
                                 <td> {!! $sacb_details->formatted_status !!} </td>
-                                <td> {{ $sacb_details->dispute_detail }}</td>
+                                <td>
+                                  @if(!empty($sacb_details->dispute_detail))
+                                    <a href="javascript:void(0)" data-details="{{ $sacb_details->dispute_detail }}" class="mr-2 btn btn-outline-info btn-xs view-dispute-detail" title="View Dispute Details">
+                                      <span class="fa fa-eye"></span>
+                                    </a> 
+                                    @else
+                                      -
+                                  @endif
+                                </td>
 
                                 <td class="d-flex">
                                   <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
@@ -154,7 +162,9 @@
 
 </div>
 
-  @include('sale_agent_commission_batches.includes.dispute_modal')
+  @include('sale_agent_commission_batches.includes.add_dispute_modal')
+  @include('sale_agent_commission_batches.includes.dispute_detail_modal')
+
 @endsection
 
 @push('js')

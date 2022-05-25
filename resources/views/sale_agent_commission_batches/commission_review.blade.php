@@ -122,7 +122,7 @@
                                 <td> {!! $sacb_details->formatted_status !!} </td>
                                 <td>
                                   @if(!empty($sacb_details->dispute_detail))
-                                    <a href="javascript:void(0)" data-details="{{ $sacb_details->dispute_detail }}" class="mr-2 btn btn-outline-info btn-xs view-dispute-detail" title="View Disput Details">
+                                    <a href="javascript:void(0)" data-details="{{ $sacb_details->dispute_detail }}" class="mr-2 btn btn-outline-info btn-xs view-dispute-detail" title="View Dispute Details">
                                       <span class="fa fa-eye"></span>
                                     </a> 
                                     @else

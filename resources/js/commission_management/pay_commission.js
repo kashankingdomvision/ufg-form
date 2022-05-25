@@ -223,8 +223,8 @@ $(document).ready(function() {
                 if(actionType == "dispute"){
 
                     modal.modal('show');
+                    $("#dispute_commission_form")[0].reset();
                     modal.find('#dispute_commission_form').attr("action", url);
-
                 }
 
                 if(actionType == "confirmed"){

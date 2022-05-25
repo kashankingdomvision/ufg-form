@@ -12,10 +12,10 @@
 
             <div class="modal-body">
 
-                <input type="text" name="booking_currency_code" id="booking_currency_code" value="" class="form-control hide-arrows" readonly>
-                <input type="text" name="sale_person_currency_code" id="sale_person_currency_code" value="" class="form-control hide-arrows" readonly>
-                <input type="text" name="booking_id" id="booking_id" value="" class="form-control hide-arrows" readonly>
-                <input type="text" name="batch_id" value="" class="batch-id form-control hide-arrows" readonly>
+                <input type="hidden" name="booking_currency_code" id="booking_currency_code" value="" class="form-control hide-arrows" readonly>
+                <input type="hidden" name="sale_person_currency_code" id="sale_person_currency_code" value="" class="form-control hide-arrows" readonly>
+                <input type="hidden" name="booking_id" id="booking_id" value="" class="form-control hide-arrows" readonly>
+                <input type="hidden" name="batch_id" value="" class="batch-id form-control hide-arrows" readonly>
 
                 <div class="form-group">
                     <label>Current Commission Amount <span style="color:red">*</span></label>
