@@ -218,8 +218,8 @@
                                                         <small class="text-danger"></small>
                                                     </td>
                                                     
-                                                    <td>
-                                                        <div class="input-group mx-sm-4">
+                                                    <td class="form-group">
+                                                        <div class="input-group d-flex justify-content-center">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                             </div>
@@ -227,8 +227,8 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>
-                                                        <div class="input-group mx-sm-4">
+                                                    <td class="form-group">
+                                                        <div class="input-group d-flex justify-content-center">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                             </div>
