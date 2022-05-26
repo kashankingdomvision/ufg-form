@@ -13,7 +13,7 @@
         <div class="col-sm-6">
           <div class="d-flex">
             <h4>
-              Commission Review
+              Com. Management
               <x-add-new-button :route="route('pay_commissions.create')"></x-add-new-button>
             </h4>
           </div>
@@ -22,8 +22,8 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Quote Management</a></li>
-            <li class="breadcrumb-item active">Group Quote</li>
+            <li class="breadcrumb-item"><a>Pay Com. Management</a></li>
+            <li class="breadcrumb-item active">Com. Management</li>
           </ol>
         </div>
       </div>
@@ -59,6 +59,28 @@
               </h3>
             </div>
 
+            <!-- Multi Actions -->
+            <div class="card-header">
+              <div class="row">
+                <form method="POST" id="sale_person_commission_bulk_action" action="{{ route('pay_commissions.sale_person_commission_bulk_action') }}" >
+                  @csrf
+                  <input type="hidden" name="bulk_action_type" value="">
+                  <input type="hidden" name="bulk_action_ids" value="">
+                  <input type="hidden" name="batch_ids" value="">
+
+                  <div class="dropdown show btn-group">
+                    <button type="button" class="btn btn-base btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Select Action
+                    </button>
+                    <div class="dropdown-menu">
+                      <button type="button" data-action_type="confirmed" class="dropdown-item sale-person-commission-bulk-action-item"><i class="fa fa-check text-green mr-2"></i>Confirm</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          <!-- End Multi Actions -->
+
             {{-- <div>
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
@@ -85,10 +107,16 @@
                     @if($sac_batch && $sac_batch->count())
                       @foreach ($sac_batch as $key => $sac_batch)
                         <tr>
-                          <td>
+                          <td class="d-flex  align-items-center">
                             <button class="btn btn-sm parent-row" data-id="{{$sac_batch->id}}">
                               <span class="fa fa-plus"></span>
                             </button>
+
+                            <div class="custom-control custom-checkbox ml-2">
+                              <input type="checkbox" id="child_{{$sac_batch->id}}" value="{{$sac_batch->id}}" data-batch_id="{{ $sac_batch->id }}" class="batch-parent custom-control-input custom-control-input-success custom-control-input-outline">
+                              <label for="child_{{$sac_batch->id}}" class="custom-control-label"></label>
+                            </div>
+
                           </td>
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
@@ -98,7 +126,8 @@
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
-                              <th></th>
+                              <th>
+                              </th>
                               <th>Booking Ref #</th>
                               <th>Com. Amount in Agent's Currency</th>
                               <th>Total Paid Amount Yet</th>
@@ -112,7 +141,12 @@
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
                               <tr>
-                                <td></td>
+                                <td> 
+                                  <div class="custom-control custom-checkbox d-flex justify-content-end">
+                                    <input type="checkbox" id="child_{{$sacb_details->id}}" value="{{$sacb_details->booking_id}}" class="batch-child batch-child-{{ $sac_batch->id }} custom-control-input custom-control-input-success custom-control-input-outline">
+                                    <label for="child_{{$sacb_details->id}}" class="custom-control-label"></label>
+                                  </div>
+                                </td>
                                 <td> {{ $sacb_details->getBooking->ref_no }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_sale_person_currency) }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>

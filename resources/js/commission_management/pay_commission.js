@@ -331,4 +331,76 @@ $(document).ready(function() {
 
     });
 
+
+    $(document).on('click', '.batch-parent', function () {
+
+        let batchID = $(this).data('batch_id');
+
+        if ($(this).is(':checked', true)) {
+            $(`.batch-child-${batchID}`).prop('checked', true);
+
+        } else {
+
+            $(`.batch-child-${batchID}`).prop('checked', false);
+        }
+    });
+
+    $(document).on('click', '.sale-person-commission-bulk-action-item', function() {
+
+        let checkedValues      = $('.batch-child:checked').map((i, e) => e.value ).get();
+        let batchCheckedValues = $('.batch-parent:checked').map((i, e) => e.value ).get();
+        let bulkActionType     = $(this).data('action_type');
+        let message            = "";
+        let buttonText         = "";
+
+        console.log(checkedValues);
+        console.log(bulkActionType);
+        console.log(batchCheckedValues);
+    
+        if(['confirmed'].includes(bulkActionType)){
+
+            if(checkedValues.length > 0){
+    
+                $('input[name="bulk_action_type"]').val(bulkActionType);
+                $('input[name="bulk_action_ids"]').val(checkedValues);
+                $('input[name="batch_ids"]').val(batchCheckedValues);
+    
+                switch(bulkActionType) {
+                    case "confirmed":
+                        message    = 'You want to Confirmed Commission?';
+                        buttonText = 'Confirm';
+                        break;
+                }
+    
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: message,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#dc3545',
+                    confirmButtonText: `Yes, ${buttonText} it !`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: $('#sale_person_commission_bulk_action').attr('action'),
+                            data: new FormData($('#sale_person_commission_bulk_action')[0]),
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            success: function(response) {
+                                printListingSuccessMessage(response);
+                            }
+                        });
+                    }
+                })
+            } else {
+
+                printListingErrorMessage("Please Check Atleast One Record.");
+            }
+        }
+
+    });
+
 });

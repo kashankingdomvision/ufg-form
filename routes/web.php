@@ -321,6 +321,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::post('adjust-commission', array('as' => 'adjust_commission', 'uses' => 'SaleAgentCommissionBatchController@adjustCommission' ));
 
+        Route::post('sale-person-commission-bulk-action', array('as' => 'sale_person_commission_bulk_action', 'uses' => 'SaleAgentCommissionBatchController@salePersonCommissionBulkAction' ));
 
 
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));

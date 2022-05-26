@@ -35,6 +35,10 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function create(Request $request)
     {
+
+
+
+
         $data['users']            = User::get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
@@ -270,17 +274,30 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function confirmedCommission($id)
     {
-        SaleAgentCommissionBatchDetails::where('booking_id', $id)->update([
-            'status' => 'confirmed',
-            'dispute_detail' => null,
-        ]);
+        // dd(($id));
+        // $a = SaleAgentCommissionBatchDetails::whereIn('booking_id', [ '2','3' ])
+        // ->update([
+        //     'status' => 'confirmed',
+        //     'dispute_detail' => null,
+        // ]);
+
+        $a = SaleAgentCommissionBatchDetails::whereIn('booking_id', [$id])
+        ->get();
+        // ->update([
+        //     'status' => 'confirmed',
+        //     'dispute_detail' => null,
+        // ]);
+
+        dd($a);
+
     }
 
     public function updateBatchStatus($batch_id)
     {
-        $statuses = SaleAgentCommissionBatchDetails::where('sac_batch_id', $batch_id)
+        $statuses = SaleAgentCommissionBatchDetails::whereIn('sac_batch_id', [$batch_id])
         ->pluck('status')
         ->toArray();
+
 
         $status = '';
 
@@ -296,11 +313,10 @@ class SaleAgentCommissionBatchController extends Controller
             $status = 'partial';
         }
 
-        SaleAgentCommissionBatch::find($batch_id)
+        SaleAgentCommissionBatch::where('id', [$batch_id])
         ->update([
             'status' => $status
         ]);
-
     }
 
 
@@ -335,6 +351,42 @@ class SaleAgentCommissionBatchController extends Controller
             'redirect_url'    => route('pay_commissions.commission_review') 
         ]);
     }
+
+    public function salePersonCommissionBulkAction(Request $request)
+    {
+        // dd($request->all());
+
+        // try {
+
+            $message = "";
+            $bulk_action_ids  = $request->bulk_action_ids;
+            $bulk_action_type = $request->bulk_action_type;
+            $bulk_action_ids  = explode(",", $bulk_action_ids);
+            $batch_ids  = explode(",", $request->batch_ids);
+
+    
+            if($bulk_action_type == 'confirmed'){
+
+                $this->confirmedCommission($bulk_action_ids);
+                $this->updateBatchStatus($batch_ids);
+                $message = 'Commission Update Successfully.';
+            }
+    
+            return response()->json([ 
+                'status'  => true, 
+                'message' => $message,
+            ]);
+          
+        // } catch (\Exception $e) {
+
+        //     // $e->getMessage(),
+        //     return response()->json([ 
+        //         'status'  => false, 
+        //         'message' => "Something Went Wrong, Please Try Again."
+        //     ]);
+        // }
+
  
+    }
 
 }

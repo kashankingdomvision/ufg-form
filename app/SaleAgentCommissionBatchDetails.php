@@ -21,6 +21,7 @@ class SaleAgentCommissionBatchDetails extends Model
         'total_paid_amount',
         'total_outstanding_amount',
         'status',
+        'dispute_detail'
     ];
 
     public function getFormattedStatusAttribute()
