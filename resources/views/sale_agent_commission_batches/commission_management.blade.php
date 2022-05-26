@@ -132,8 +132,10 @@
                                 </td>
 
                                 <td class="d-flex">
-                                  <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
-                                  <button type="button" class="commission-status btn btn-outline-danger btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['dispute', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="dispute" title="Dispute Commission"><i class="fa fa-times"></i></button>
+                                  @if($sacb_details->status != 'paid' && $sacb_details->total_paid_amount_yet == 0)
+                                    <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
+                                    <button type="button" class="commission-status btn btn-outline-danger btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['dispute', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="dispute" title="Dispute Commission"><i class="fa fa-times"></i></button>
+                                  @endif
                                 </td>
                               </tr>
                             @endforeach

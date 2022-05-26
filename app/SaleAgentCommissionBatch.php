@@ -64,6 +64,11 @@ class SaleAgentCommissionBatch extends Model
         return $this->hasMany(SaleAgentCommissionBatchDetails::class, 'sac_batch_id', 'id');
     }
 
+    public function getBatchBookingIDSAttribute()
+    {
+        return $this->getSaleAgentCommissionBatchDetails->pluck('booking_id')->toArray();
+    }
+
     public function setTotalPaidAmountAttribute( $value ) {
         $this->attributes['total_paid_amount'] = str_replace( ',', '', $value );
     }

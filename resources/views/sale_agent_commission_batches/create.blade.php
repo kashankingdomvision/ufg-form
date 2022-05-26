@@ -116,28 +116,40 @@
                                             <span class="text-danger" role="alert"></span>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-3 d-none">
+                                        <div class="form-group">
+                                            <label>Send To Agent <span style="color:red">*</span></label>
+                                            <input type="text" name="send_to_agent" value="{{ isset($send_to_agent) ? $send_to_agent : '' }}" id="pay_or_sent_to_agent" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Batch Name <span style="color:red">*</span></label>
+                                            <input type="text" name="batch_name" id="batch_name" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+
                                 @endif
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Batch Name <span style="color:red">*</span></label>
-                                        <input type="text" name="batch_name" id="batch_name" class="form-control">
-                                        <span class="text-danger" role="alert"></span>
+                                @if(isset($send_to_agent) && $send_to_agent == 1)
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Payment Method <span style="color:red">*</span></label>
+                                            <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
+                                                <option value="">Select Payment Method</option>
+                                                @foreach ($payment_methods as $payment_method)
+                                                    <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
-                                {{-- <div class="col-md-3">
-                                    <div class="form-group" >
-                                        <label>Payment Method <span style="color:red">*</span></label>
-                                        <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
-                                            <option value="">Select Payment Method</option>
-                                            @foreach ($payment_methods as $payment_method)
-                                                <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger" role="alert"></span>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
 
@@ -258,8 +270,8 @@
                                             <tr class="mt-2">
                                                 <td colspan="8"></td>
                                                 <td class="d-flex justify-content-left">
-                                                  <button type="submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Save & Send to Agent &nbsp; </button>
-                                                  <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
+                                                    <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
+                                                    <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
                                                 </td>
                                             </tr>
 

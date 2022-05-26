@@ -39,6 +39,10 @@ class SaleAgentCommissionBatchDetails extends Model
                 return '<h5><span class="badge badge-danger">Dispute</span></h5>';
                 break;
 
+            case 'paid':
+                return '<h5><span class="badge badge-success">Paid</span></h5>';
+                break;
+
             
   
         }

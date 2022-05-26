@@ -67,7 +67,7 @@ class Booking extends Model
         'cancel_date',
         'tas_ref',
         'revelant_quote',
-        'is_sale_agent_paid',
+        'sale_person_payment_status',
     ];
     
     public function getVersionAttribute()

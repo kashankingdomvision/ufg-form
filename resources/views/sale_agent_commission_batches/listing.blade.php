@@ -102,6 +102,7 @@
                               <th>Pay Commission Amount</th>
                               <th style="min-width: 210px;">Total Paid Amount</th>
                               <th>Total Outstanding Amount</th>
+                              <th>Status</th>
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
                               <tr>
@@ -114,6 +115,7 @@
                                 <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
                                 <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
                                 <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                                <td> {!! $sacb_details->formatted_status !!} </td>
                               </tr>
                             @endforeach
                           </tbody>

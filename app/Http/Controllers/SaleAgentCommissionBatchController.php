@@ -33,54 +33,8 @@ class SaleAgentCommissionBatchController extends Controller
         return view('sale_agent_commission_batches.listing', $data);
     }
 
-    public function store(SaleAgentCommissionBatchRequest $request)
-    {
-        // dd($request->all());
-
-        $sac_batch = SaleAgentCommissionBatch::create([
-
-            'name'                     => $request->batch_name,
-            'payment_method_id'        => $request->payment_method_id,
-            'total_paid_amount'        => $request->total_paid_amount,
-            'total_outstanding_amount' => $request->total_outstanding_amount,
-            'sale_person_id'           => $request->sale_person_id,
-            'sale_person_currency_id'  => $request->sale_person_currency_id
-        ]);
-
-        foreach ($request->finance as $key => $finance) {
-
-            if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
-
-                SaleAgentCommissionBatchDetails::create([
-
-                    'sac_batch_id'                              => $sac_batch->id,
-                    'booking_id'                                => $finance['booking_id'],
-                    'sale_person_id'                            => $finance['sale_person_id'],
-                    'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
-                    'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
-                    'total_paid_amount_yet'                     => $finance['total_paid_amount_yet'],
-                    'outstanding_amount_left'                   => $finance['outstanding_amount_left'],
-                    'pay_commission_amount'                     => $finance['pay_commission_amount'],
-                    'total_paid_amount'                         => $finance['row_total_paid_amount'],
-                    'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
-                ]);
-
-                if($finance['row_total_outstanding_amount'] == 0){
-                    Booking::where('id', $finance['booking_id'])->update([ 'is_sale_agent_paid' => 2 ]);
-                }
-            }
-        }
-
-        return response()->json([ 
-            'status'          => true, 
-            'success_message' => 'Save & Send Successfully.',
-            'redirect_url'    => route('pay_commissions.commission_review') 
-        ]);
-    }
-
     public function create(Request $request)
     {
-
         $data['users']            = User::get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
@@ -95,10 +49,10 @@ class SaleAgentCommissionBatchController extends Controller
                 'getLastSaleAgentCommissionBatchDetails',
             ])
             ->where('season_id', $request->season)
-            ->whereIn('is_sale_agent_paid', [0,1])
+            ->whereIn('sale_person_payment_status', [0,1])
             ->where('commission_amount', '>', 0);
 
-            $bookings =  $query->select([
+            $bookings = $query->select([
                 'season_id',
                 'ref_no',
                 'quote_ref',
@@ -108,64 +62,111 @@ class SaleAgentCommissionBatchController extends Controller
                 'rate_type',
                 'id',
                 'commission_amount_in_sale_person_currency',
-                'is_sale_agent_paid',
+                'sale_person_payment_status',
             ])
             ->get()
             // ->take(1)
-
             ;
-
-
-            $collection = collect([
-                ['product' => 'Desk', 'price' => 200],
-                ['product' => 'Chair', 'price' => 100],
-            ]);
-
-            dd($bookings->contains('is_sale_agent_paid', '0'));
-
-            $data['pay'] = collect($bookings)->contains('is_sale_agent_paid', 0);
-
-            dd($data['pay']);
-
-  
-            // dd($bookings);
 
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
             $data['bookings'] = $bookings;
-
-   
-
-       
-
-            // $q = SaleAgentCommissionBatchDetails::whereIn('booking_id', [1,2,3])->exists();
-
-            // dd($q);
-
-            $test = $data['bookings'];
-
-            // dd($data);
+            $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
         }
 
-
         return view('sale_agent_commission_batches.create', $data);
+    }
+
+    public function store(SaleAgentCommissionBatchRequest $request)
+    {
+        // dd($request->boolean('send_to_agent'));
+        // dd($request->all());
+
+        $status = '';
+
+        $sac_batch = SaleAgentCommissionBatch::create([
+
+            'name'                     => $request->batch_name,
+            'payment_method_id'        => $request->payment_method_id,
+            'total_paid_amount'        => $request->total_paid_amount,
+            'total_outstanding_amount' => $request->total_outstanding_amount,
+            'sale_person_id'           => $request->sale_person_id,
+            'sale_person_currency_id'  => $request->sale_person_currency_id,
+            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid'
+        ]);
+
+        foreach ($request->finance as $key => $finance) {
+
+            if(isset($finance['finance_child']) && $finance['finance_child'] == 1){
+
+                if($request->send_to_agent == 0)
+                    $status = 'pending';
+
+                if($request->send_to_agent == 1)
+                    $status = 'paid';
+
+                if($request->send_to_agent == 0 && $finance['total_paid_amount_yet'] > 0)
+                    $status = 'confirmed';
+
+                SaleAgentCommissionBatchDetails::create([
+
+                    'sac_batch_id'                              => $sac_batch->id,
+                    'booking_id'                                => $finance['booking_id'],
+                    'sale_person_id'                            => $finance['sale_person_id'],
+                    'sale_person_currency_id'                   => $finance['sale_person_currency_id'],
+                    'commission_amount_in_sale_person_currency' => $finance['commission_amount_in_sale_person_currency'],
+                    'total_paid_amount_yet'                     => $finance['total_paid_amount_yet'],
+                    'outstanding_amount_left'                   => $finance['outstanding_amount_left'],
+                    'pay_commission_amount'                     => $finance['pay_commission_amount'],
+                    'total_paid_amount'                         => $finance['row_total_paid_amount'],
+                    'total_outstanding_amount'                  => $finance['row_total_outstanding_amount'],
+                    'status'                                    => $status
+                ]);
+
+
+                // if($finance['row_total_outstanding_amount'] > 0){
+                //     Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 1 ]);
+                // }
+
+                // if($finance['row_total_outstanding_amount'] == 0){
+                //     Booking::where('id', $finance['booking_id'])->update([ 'sale_person_payment_status' => 2 ]);
+                // }
+            }
+        }
+
+        return response()->json([ 
+            'status'          => true, 
+            'success_message' => 'Save & Send Successfully.',
+            'redirect_url'    => route('pay_commissions.commission_review') 
+        ]);
     }
 
     public function payBatch(PayBatchRequest $request){
 
         if($request->filled('batch_id') && $request->filled('payment_method_id')){
 
-            SaleAgentCommissionBatch::find($request->batch_id)
-            ->update([
+            $sac_batch = SaleAgentCommissionBatch::find($request->batch_id);
+
+            $sac_batch->update([
                 'payment_method_id' => $request->payment_method_id,
                 'status' => 'paid'
             ]);
 
-            SaleAgentCommissionBatchDetails::where('booking_id', $id)->update([
-                'dispute_detail' => request()->dispute_detail,
-                'status' => 'dispute',
+            $sac_batch->getSaleAgentCommissionBatchDetails()
+            ->update([
+                'status' => 'paid',
             ]);
 
+            foreach($sac_batch->getSaleAgentCommissionBatchDetails as $details){
+
+                if($details->total_outstanding_amount == 0){
+                    Booking::where('id', $details->booking_id)->update([ 'sale_person_payment_status' => 2 ]);
+                }
+
+                if($details->total_outstanding_amount > 0){
+                    Booking::where('id', $details->booking_id)->update([ 'sale_person_payment_status' => 1 ]);
+                }
+            }
 
             return response()->json([ 
                 'status'          => true, 
@@ -189,7 +190,6 @@ class SaleAgentCommissionBatchController extends Controller
         ->whereNotIn('status', ['paid'])
         ->get();
 
-        // dd($data['sac_batch']);
 
         return view('sale_agent_commission_batches.commission_review', $data);
     }

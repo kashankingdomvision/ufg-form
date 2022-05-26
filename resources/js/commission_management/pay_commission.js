@@ -104,7 +104,6 @@ $(document).ready(function() {
         let modal = $('#pay_batch_modal');
         modal.find('#batch_id').val(batchID);
 
-
         modal.modal('show');
     });
 
