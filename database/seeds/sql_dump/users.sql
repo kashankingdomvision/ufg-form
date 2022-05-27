@@ -13,6 +13,7 @@ INSERT INTO `users` (`id`, `role_id`, `supervisor_id`, `currency_id`, `brand_id`
 
 -- set currency rate type manual for all users
 UPDATE `users` SET `rate_type` = 'manual';
+-- UPDATE `users` SET `rate_type` = 'live';
 
 -- set supervisor 
 UPDATE `users` SET `supervisor_id` = '11' WHERE `users`.`id` = 2;

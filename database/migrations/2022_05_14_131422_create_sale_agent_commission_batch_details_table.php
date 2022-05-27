@@ -18,16 +18,18 @@ class CreateSaleAgentCommissionBatchDetailsTable extends Migration
 
             $table->foreignId('sac_batch_id')->constrained('sac_batches')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('booking_id')->constrained('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sales_agent_default_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sale_person_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sale_person_currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
 
-            $table->double('commission_amount_in_default_currency', 8, 2);
+            $table->double('commission_amount_in_sale_person_currency', 8, 2);
             $table->double('total_paid_amount_yet', 8, 2);
             $table->double('outstanding_amount_left', 8, 2);
             $table->double('pay_commission_amount', 8, 2);
             $table->double('total_paid_amount', 8, 2);
             $table->double('total_outstanding_amount', 8, 2);
+            $table->enum('status', ['pending' , 'confirmed', 'dispute', 'partial_paid', 'full_paid'])->default('pending');
+            $table->text('dispute_detail')->nullable();
             $table->timestamps();
-
         });
     }
 

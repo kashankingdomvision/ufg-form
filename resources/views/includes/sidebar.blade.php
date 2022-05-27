@@ -206,7 +206,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit', 'pay_commissions.index', 'pay_commissions.create']) ? 'menu-open': '' }}">
+                    <li class="nav-item {{ in_array($route, ['commission_criterias.index', 'commission_criterias.create', 'commission_criterias.edit']) ? 'menu-open': '' }}">
                         
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-percentage"></i>
@@ -245,6 +245,45 @@
                                 </a>
                             </li>
 
+                            {{-- <li class="nav-item">
+                                <a href="{{ route('pay_commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.index', 'pay_commissions.create']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Pay Commission
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('pay_commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.index', 'pay_commissions.create']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Sale Person Com. Review
+                                    </p>
+                                </a>
+                            </li> --}}
+
+                        </ul>
+                    </li>
+                @endif
+
+                <li class="nav-item {{ in_array($route, [
+                    'pay_commissions.index', 'pay_commissions.create', 
+                    'pay_commissions.commission_review',
+                    'pay_commissions.commission_management'
+                    ]) ? 'menu-open': '' }}">
+                    
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-percentage"></i>
+                        <p>
+                            Pay Com. Management
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+
+                    <ul class="nav nav-treeview">
+
+                        @if($currenct_user_is_admin)
                             <li class="nav-item">
                                 <a href="{{ route('pay_commissions.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.index', 'pay_commissions.create']) ? 'active' : '' }}">
                                     <i class="nav-icon far fa-circle"></i>
@@ -254,9 +293,31 @@
                                 </a>
                             </li>
 
-                        </ul>
-                    </li>
-                @endif
+                        <li class="nav-item">
+                            <a href="{{ route('pay_commissions.commission_review') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.commission_review']) ? 'active' : '' }}">
+                                <i class="nav-icon far fa-circle"></i>
+                                <p>
+                                    Commission Review
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+
+
+                        @if(auth()->user()->getRole->slug == 'sales-agent')
+
+                            <li class="nav-item">
+                                <a href="{{ route('pay_commissions.commission_management') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.commission_management']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Com. Management
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
+
+                    </ul>
+                </li>
 
                 <li class="nav-item {{ in_array($route, $supplier_routes) ? 'menu-open': '' }}">
                     <a href="#" class="nav-link">

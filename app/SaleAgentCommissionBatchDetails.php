@@ -12,14 +12,39 @@ class SaleAgentCommissionBatchDetails extends Model
         
         'sac_batch_id',
         'booking_id',
-        'sales_agent_default_currency_id',
-        'commission_amount_in_default_currency',
+        'sale_person_id',
+        'sale_person_currency_id',
+        'commission_amount_in_sale_person_currency',
         'total_paid_amount_yet',
         'outstanding_amount_left',
         'pay_commission_amount',
         'total_paid_amount',
         'total_outstanding_amount',
+        'status',
     ];
+
+    public function getFormattedStatusAttribute()
+    {
+        switch ($this->attributes['status']) {
+            
+            case 'confirmed':
+                return '<h5><span class="badge badge-success">Confirmed</span></h5>';
+                break;
+            
+            case 'pending':
+                return '<h5><span class="badge badge-info">Pending</span></h5>';
+                break;
+
+            case 'dispute':
+                return '<h5><span class="badge badge-danger">Dispute</span></h5>';
+                break;
+
+            
+  
+        }
+    }
+    
+    
 
     function getBooking() {
         return $this->hasOne(Booking::class, 'id', 'booking_id');

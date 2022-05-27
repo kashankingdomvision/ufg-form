@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','View Pay Commission')
+@section('title','Commission Review')
 
 @section('content')
 
@@ -13,7 +13,7 @@
         <div class="col-sm-6">
           <div class="d-flex">
             <h4>
-              View Pay Commission
+              Commission Review
               <x-add-new-button :route="route('pay_commissions.create')"></x-add-new-button>
             </h4>
           </div>
@@ -22,8 +22,8 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a>Home</a></li>
-            <li class="breadcrumb-item"><a>Pay Com. Management</a></li>
-            <li class="breadcrumb-item active">Pay Commission</li>
+            <li class="breadcrumb-item"><a>Quote Management</a></li>
+            <li class="breadcrumb-item active">Group Quote</li>
           </ol>
         </div>
       </div>
@@ -49,14 +49,23 @@
 
   <section class="content">
     <div class="container-fluid">
+
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
               <h3 class="card-title float-left">
-                Pay Commission List
+                Com. Management List
               </h3>
             </div>
+
+            {{-- <div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Partials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Confirmed</a></li>
+                </ul>
+            </div> --}}
 
             <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
@@ -66,17 +75,15 @@
                       <th></th>
                       <th>Batch Name</th>
                       <th>Payment Method</th>
+                      <th>Status</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
-                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
 
                     @if($sac_batch && $sac_batch->count())
                       @foreach ($sac_batch as $key => $sac_batch)
-
-
                         <tr>
                           <td>
                             <button class="btn btn-sm parent-row" data-id="{{$sac_batch->id}}">
@@ -85,35 +92,49 @@
                           </td>
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
+                          <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
-                          <td> {!! $sac_batch->formatted_status !!} </td>
-
-                          <td></td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
                               <th></th>
                               <th>Booking Ref #</th>
-                              <th>Sales Agent</th>
                               <th>Com. Amount in Agent's Currency</th>
                               <th>Total Paid Amount Yet</th>
                               <th>Outstanding Amount Left</th>
                               <th>Pay Commission Amount</th>
                               <th style="min-width: 210px;">Total Paid Amount</th>
                               <th>Total Outstanding Amount</th>
+                              <th>Status</th>
+                              <th style="width: 50%">Dispute Detail</th>
+                              <th>Action</th>
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
                               <tr>
                                 <td></td>
                                 <td> {{ $sacb_details->getBooking->ref_no }} </td>
-                                <td> {{ isset($sacb_details->getBooking->getSalePerson->name) ? $sacb_details->getBooking->getSalePerson->name : ''  }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_sale_person_currency) }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
-                                <td> {{ isset($sacb_details->getCurrency->code) ? $sacb_details->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_sale_person_currency) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
+                                <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                                <td> {!! $sacb_details->formatted_status !!} </td>
+                                <td>
+                                  @if(!empty($sacb_details->dispute_detail))
+                                    <a href="javascript:void(0)" data-details="{{ $sacb_details->dispute_detail }}" class="mr-2 btn btn-outline-info btn-xs view-dispute-detail" title="View Dispute Details">
+                                      <span class="fa fa-eye"></span>
+                                    </a> 
+                                    @else
+                                      -
+                                  @endif
+                                </td>
+
+                                <td class="d-flex">
+                                  <button type="button" class="commission-status btn btn-outline-success btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['confirmed', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="confirmed" title="Confirm Commission"><i class="fa fa-check"></i></button>
+                                  <button type="button" class="commission-status btn btn-outline-danger btn-xs float-right mr-2" data-action="{{ route('pay_commissions.commission_action', ['dispute', encrypt($sacb_details->sac_batch_id), encrypt($sacb_details->booking_id)]) }}" data-action_type="dispute" title="Dispute Commission"><i class="fa fa-times"></i></button>
+                                </td>
                               </tr>
                             @endforeach
                           </tbody>
@@ -140,10 +161,14 @@
   </section>
 
 </div>
+
+  @include('sale_agent_commission_batches.includes.add_dispute_modal')
+  @include('sale_agent_commission_batches.includes.dispute_detail_modal')
+
 @endsection
 
 @push('js')
-  <script src="{{ asset('js/quote_management.js') }}" ></script>
+  <script src="{{ asset('js/commission_management.js') }}" ></script>
 @endpush
 
 {{-- <section class="content p-2">
