@@ -50,6 +50,9 @@ class SaleAgentCommissionBatchController extends Controller
                 'getSalePerson',
                 'getCurrency',
                 'getSeason',
+                'getCommissionCriteria',
+                'getBrand',
+                'getHolidayType',
                 'getLastSaleAgentCommissionBatchDetails',
             ])
             ->where('season_id', $request->season)
@@ -58,6 +61,9 @@ class SaleAgentCommissionBatchController extends Controller
 
             $bookings = $query->select([
                 'season_id',
+                'brand_id',
+                'holiday_type_id',
+                'commission_criteria_id',
                 'ref_no',
                 'quote_ref',
                 'sale_person_id',
@@ -76,6 +82,7 @@ class SaleAgentCommissionBatchController extends Controller
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
             $data['bookings'] = $bookings;
             $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
+
         }
 
         return view('sale_agent_commission_batches.create', $data);
@@ -188,11 +195,18 @@ class SaleAgentCommissionBatchController extends Controller
 
             'getPaymentMethod',
             'getSaleAgentCommissionBatchDetails',
+            'getSaleAgentCommissionBatchDetails.getBooking',
+            'getSaleAgentCommissionBatchDetails.getBooking.getCurrency',
+            'getSaleAgentCommissionBatchDetails.getBooking.getBrand',
+            'getSaleAgentCommissionBatchDetails.getBooking.getHolidayType',
+            'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
             'getSalePerson',
             'getSalePersonCurrency',
         ])
         ->whereNotIn('status', ['paid'])
         ->get();
+
+        // dd($data['sac_batch']);
 
 
         return view('sale_agent_commission_batches.commission_review', $data);
