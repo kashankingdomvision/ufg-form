@@ -143,8 +143,8 @@
                               <tr>
                                 <td> 
                                   <div class="custom-control custom-checkbox d-flex justify-content-end">
-                                    <input type="checkbox" id="child_{{$sacb_details->id}}" value="{{$sacb_details->booking_id}}" class="batch-child batch-child-{{ $sac_batch->id }} custom-control-input custom-control-input-success custom-control-input-outline">
-                                    <label for="child_{{$sacb_details->id}}" class="custom-control-label"></label>
+                                    <input type="checkbox" id="child_{{sprintf("%04s", $sacb_details->id)}}" value="{{$sacb_details->id}}" class="batch-child batch-child-{{ $sac_batch->id }} custom-control-input custom-control-input-success custom-control-input-outline">
+                                    <label for="child_{{sprintf("%04s", $sacb_details->id)}}" class="custom-control-label"></label>
                                   </div>
                                 </td>
                                 <td> {{ $sacb_details->getBooking->ref_no }} </td>
