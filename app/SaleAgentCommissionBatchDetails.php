@@ -21,6 +21,7 @@ class SaleAgentCommissionBatchDetails extends Model
         'total_paid_amount',
         'total_outstanding_amount',
         'status',
+        'dispute_detail'
     ];
 
     public function getFormattedStatusAttribute()
@@ -37,6 +38,10 @@ class SaleAgentCommissionBatchDetails extends Model
 
             case 'dispute':
                 return '<h5><span class="badge badge-danger">Dispute</span></h5>';
+                break;
+
+            case 'paid':
+                return '<h5><span class="badge badge-success">Paid</span></h5>';
                 break;
 
             

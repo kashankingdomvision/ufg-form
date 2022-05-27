@@ -69,7 +69,8 @@ class Booking extends Model
         'revelant_quote',
         'is_sale_agent_paid',
         'departure_date',
-        'return_date'
+        'return_date',
+        'sale_person_payment_status',
     ];
     
     public function getVersionAttribute()

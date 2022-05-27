@@ -99,6 +99,10 @@
                             <tr>
                               <th></th>
                               <th>Booking Ref #</th>
+                              <th>Booking Currency</th>
+                              <th>Brand</th>
+                              <th>Holiday Type</th>
+                              <th>Season</th>
                               <th>Com. Amount in Agent's Currency</th>
                               <th>Total Paid Amount Yet</th>
                               <th>Outstanding Amount Left</th>
@@ -112,7 +116,11 @@
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
                               <tr>
                                 <td></td>
-                                <td> {{ $sacb_details->getBooking->ref_no }} </td>
+                                <td> {{ !is_null($sacb_details->getBooking->ref_no) ? $sacb_details->getBooking->ref_no : '' }} </td>
+                                <td> {{ !is_null($sacb_details->getBooking->getCurrency) ? $sacb_details->getBooking->getCurrency->code.' - '.$sacb_details->getBooking->getCurrency->name : '' }} </td>
+                                <td> {{ !is_null($sacb_details->getBooking->getBrand) ? $sacb_details->getBooking->getBrand->name : '' }} </td>
+                                <td> {{ !is_null($sacb_details->getBooking->getHolidayType) ? $sacb_details->getBooking->getHolidayType->name : '' }} </td>
+                                <td> {{ !is_null($sacb_details->getBooking->getSeason) ? $sacb_details->getBooking->getSeason->name : '' }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_sale_person_currency) }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>

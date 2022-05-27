@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','Pay Commision')
 @section('content')
-
+ 
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -116,28 +116,40 @@
                                             <span class="text-danger" role="alert"></span>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-3 d-none">
+                                        <div class="form-group">
+                                            <label>Send To Agent <span style="color:red">*</span></label>
+                                            <input type="text" name="send_to_agent" value="{{ isset($send_to_agent) ? $send_to_agent : '' }}" id="pay_or_sent_to_agent" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Batch Name <span style="color:red">*</span></label>
+                                            <input type="text" name="batch_name" id="batch_name" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+
                                 @endif
 
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Batch Name <span style="color:red">*</span></label>
-                                        <input type="text" name="batch_name" id="batch_name" class="form-control">
-                                        <span class="text-danger" role="alert"></span>
+                                @if(isset($send_to_agent) && $send_to_agent == 1)
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Payment Method <span style="color:red">*</span></label>
+                                            <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
+                                                <option value="">Select Payment Method</option>
+                                                @foreach ($payment_methods as $payment_method)
+                                                    <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
 
-                                {{-- <div class="col-md-3">
-                                    <div class="form-group" >
-                                        <label>Payment Method <span style="color:red">*</span></label>
-                                        <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
-                                            <option value="">Select Payment Method</option>
-                                            @foreach ($payment_methods as $payment_method)
-                                                <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger" role="alert"></span>
-                                    </div>
-                                </div> --}}
                             </div>
                         </div>
 
@@ -154,6 +166,11 @@
                                             </th>
                                             {{-- <th style="min-width: 200px;">feilds</th> --}}
                                             <th>Booking Ref #</th>
+                                            <th>Booking Currency</th>
+                                            <th>Brand</th>
+                                            <th>Holiday Type</th>
+                                            <th>Season</th>
+                                            <th>Com. Criteria</th>
                                             <th>Com. Amount</th>
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
@@ -189,6 +206,24 @@
                                                     </td>
 
                                                     <td>{{ $booking->ref_no }}</td>
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getBrand->name) ? $booking->getBrand->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getHolidayType->name) ? $booking->getHolidayType->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getSeason->name) ? $booking->getSeason->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        <h5>
+                                                            <span class="badge badge-info" title="Commission Name">{{ !is_null($booking->getCommissionCriteria->name) ? $booking->getCommissionCriteria->name : '' }}</span>
+                                                            <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria->name) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
+                                                        </h5>
+                                                    </td>
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
                                                     <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
 
@@ -240,7 +275,7 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="7"></td>
+                                                <td colspan="12"></td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -256,10 +291,10 @@
                                             </tr>
 
                                             <tr class="mt-2">
-                                                <td colspan="8"></td>
+                                                <td colspan="13"></td>
                                                 <td class="d-flex justify-content-left">
-                                                  <button type="submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Save & Send to Agent &nbsp; </button>
-                                                  <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
+                                                    <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
+                                                    <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
                                                 </td>
                                             </tr>
 
