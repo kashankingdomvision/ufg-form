@@ -225,6 +225,11 @@ class SaleAgentCommissionBatchController extends Controller
             'getSaleAgentCommissionBatchDetails',
             'getSalePerson',
             'getSalePersonCurrency',
+            'getSaleAgentCommissionBatchDetails.getBooking',
+            'getSaleAgentCommissionBatchDetails.getBooking.getCurrency',
+            'getSaleAgentCommissionBatchDetails.getBooking.getBrand',
+            'getSaleAgentCommissionBatchDetails.getBooking.getHolidayType',
+            'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
         ])
         ->orderBy('id', 'DESC')
         ->get();
