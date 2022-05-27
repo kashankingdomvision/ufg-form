@@ -207,21 +207,21 @@
 
                                                     <td>{{ $booking->ref_no }}</td>
                                                     <td>
-                                                        {{ !is_null($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}
                                                     </td>
                                                     <td>
-                                                        {{ !is_null($booking->getBrand->name) ? $booking->getBrand->name : '' }}
+                                                        {{ !is_null($booking->getBrand) ? $booking->getBrand->name : '' }}
                                                     </td>
                                                     <td>
-                                                        {{ !is_null($booking->getHolidayType->name) ? $booking->getHolidayType->name : '' }}
+                                                        {{ !is_null($booking->getHolidayType) ? $booking->getHolidayType->name : '' }}
                                                     </td>
                                                     <td>
-                                                        {{ !is_null($booking->getSeason->name) ? $booking->getSeason->name : '' }}
+                                                        {{ !is_null($booking->getSeason) ? $booking->getSeason->name : '' }}
                                                     </td>
                                                     <td>
                                                         <h5>
-                                                            <span class="badge badge-info" title="Commission Name">{{ !is_null($booking->getCommissionCriteria->name) ? $booking->getCommissionCriteria->name : '' }}</span>
-                                                            <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria->name) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
+                                                            <span class="badge badge-info" title="Commission Name">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->name : '' }}</span>
+                                                            <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
                                                         </h5>
                                                     </td>
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>

@@ -123,8 +123,8 @@
                           <td>{{ $sac_batch->name }}</td>
                           <td>{{ isset($sac_batch->getPaymentMethod->name) && !empty($sac_batch->getPaymentMethod->name) ? $sac_batch->getPaymentMethod->name : '' }}</td>
                           <td>{!! $sac_batch->formatted_status !!}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
-                          <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
+                          <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
