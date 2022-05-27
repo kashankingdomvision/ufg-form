@@ -112,10 +112,12 @@
                               <span class="fa fa-plus"></span>
                             </button>
 
-                            <div class="custom-control custom-checkbox ml-2">
-                              <input type="checkbox" id="child_{{$sac_batch->id}}" value="{{$sac_batch->id}}" data-batch_id="{{ $sac_batch->id }}" class="batch-parent custom-control-input custom-control-input-success custom-control-input-outline">
-                              <label for="child_{{$sac_batch->id}}" class="custom-control-label"></label>
-                            </div>
+                            @if($sac_batch->status != 'paid')
+                              <div class="custom-control custom-checkbox ml-2">
+                                <input type="checkbox" id="child_{{$sac_batch->id}}" value="{{$sac_batch->id}}" data-batch_id="{{ $sac_batch->id }}" class="batch-parent custom-control-input custom-control-input-success custom-control-input-outline">
+                                <label for="child_{{$sac_batch->id}}" class="custom-control-label"></label>
+                              </div>
+                            @endif
 
                           </td>
                           <td>{{ $sac_batch->name }}</td>
@@ -146,10 +148,12 @@
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
                               <tr>
                                 <td> 
-                                  <div class="custom-control custom-checkbox d-flex justify-content-end">
-                                    <input type="checkbox" id="child_{{sprintf("%04s", $sacb_details->id)}}" value="{{$sacb_details->id}}" class="batch-child batch-child-{{ $sac_batch->id }} custom-control-input custom-control-input-success custom-control-input-outline">
-                                    <label for="child_{{sprintf("%04s", $sacb_details->id)}}" class="custom-control-label"></label>
-                                  </div>
+                                  @if($sac_batch->status != 'paid')
+                                    <div class="custom-control custom-checkbox d-flex justify-content-end">
+                                      <input type="checkbox" id="child_{{sprintf("%04s", $sacb_details->id)}}" value="{{$sacb_details->id}}" class="batch-child batch-child-{{ $sac_batch->id }} custom-control-input custom-control-input-success custom-control-input-outline">
+                                      <label for="child_{{sprintf("%04s", $sacb_details->id)}}" class="custom-control-label"></label>
+                                    </div>
+                                  @endif
                                 </td>
                                 <td> {{ !is_null($sacb_details->getBooking->ref_no) ? $sacb_details->getBooking->ref_no : '' }} </td>
                                 <td> {{ !is_null($sacb_details->getBooking->getCurrency) ? $sacb_details->getBooking->getCurrency->code.' - '.$sacb_details->getBooking->getCurrency->name : '' }} </td>
