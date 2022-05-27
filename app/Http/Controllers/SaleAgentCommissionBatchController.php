@@ -255,7 +255,11 @@ class SaleAgentCommissionBatchController extends Controller
 
             if($action_type == 'confirmed'){
 
-                $this->confirmedCommission(decrypt($id));
+                SaleAgentCommissionBatchDetails::where('id', decrypt($id))
+                ->update([
+                    'status' => 'confirmed'
+                ]);
+
                 $message = "Commission Confirmed Successfully.";
             }
 
