@@ -26,6 +26,11 @@ class SaleAgentCommissionBatchController extends Controller
         $data['sac_batch'] = SaleAgentCommissionBatch::with([
             'getPaymentMethod',
             'getSaleAgentCommissionBatchDetails',
+            'getSaleAgentCommissionBatchDetails.getBooking',
+            'getSaleAgentCommissionBatchDetails.getBooking.getCurrency',
+            'getSaleAgentCommissionBatchDetails.getBooking.getBrand',
+            'getSaleAgentCommissionBatchDetails.getBooking.getHolidayType',
+            'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
         ])
         ->where('status', 'paid')
         ->get();
