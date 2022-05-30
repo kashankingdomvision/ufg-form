@@ -41,10 +41,7 @@ class SaleAgentCommissionBatchController extends Controller
     public function create(Request $request)
     {
 
-
-
-
-        $data['users']            = User::get();
+        $data['users']            = User::role(['sales-agent'])->get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
 

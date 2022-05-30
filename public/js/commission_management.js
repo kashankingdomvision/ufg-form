@@ -520,6 +520,21 @@ $(document).ready(function () {
       }
     });
   });
+
+  function resetTable(response) {
+    $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
+    $("#overlay").addClass('overlay').html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
+    setTimeout(function () {
+      $("#overlay").removeClass('overlay').html('');
+      $('.child-row').removeClass('d-none');
+      $('.parent-row').html('<span class="fa fa-minus"></span>');
+      Toast.fire({
+        icon: 'success',
+        title: response.success_message
+      });
+    }, 500);
+  }
+
   $(document).on('click', ".commission-status", function (event) {
     var url = $(this).data('action');
     var actionType = $(this).data('action_type');
@@ -564,17 +579,7 @@ $(document).ready(function () {
             cache: false,
             processData: false,
             success: function success(response) {
-              $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
-              $("#overlay").addClass('overlay').html("<i class=\"fas fa-2x fa-sync-alt fa-spin\"></i>");
-              setTimeout(function () {
-                $("#overlay").removeClass('overlay').html('');
-                $('.child-row').removeClass('d-none');
-                $('.parent-row').html('<span class="fa fa-minus"></span>');
-                Toast.fire({
-                  icon: 'success',
-                  title: response.success_message
-                });
-              }, 500);
+              resetTable(response);
             }
           });
         }
@@ -598,11 +603,7 @@ $(document).ready(function () {
       success: function success(response) {
         removeModalFormLoadingStyles("#".concat(formID));
         $("#dispute_booking_modal").modal('hide');
-        $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
-        Toast.fire({
-          icon: 'success',
-          title: response.success_message
-        });
+        resetTable(response);
       },
       error: function error(response) {
         removeModalFormLoadingStyles("#".concat(formID));

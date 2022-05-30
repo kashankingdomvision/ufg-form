@@ -14,8 +14,8 @@
                 <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a>Home</a></li>
-                    <li class="breadcrumb-item"><a>Supplier Bulk Payments</a></li>
-                    <li class="breadcrumb-item active">Add Supplier Bulk Payments </li>
+                    <li class="breadcrumb-item"><a>Pay Com. Management</a></li>
+                    <li class="breadcrumb-item active">Pay Commission</li>
                 </ol>
                 </div>
             </div>
