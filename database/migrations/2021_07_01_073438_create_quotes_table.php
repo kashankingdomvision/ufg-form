@@ -22,6 +22,7 @@ class CreateQuotesTable extends Migration
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('sale_person_id');
             $table->unsignedBigInteger('commission_id')->nullable();
+            $table->unsignedBigInteger('sale_person_currency_id')->nullable();
             $table->unsignedBigInteger('commission_group_id')->nullable();
             $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
@@ -50,17 +51,15 @@ class CreateQuotesTable extends Migration
             $table->string('lead_passenger_bedding_preference')->nullable();
             $table->string('lead_passenger_dietary_preferences')->nullable();
             $table->string('lead_passenger_medical_requirement')->nullable();
-
-            $table->unsignedBigInteger('pax_no')->default(0);
-            $table->double('net_price', 8, 2)->nullable();
-            $table->double('markup_amount', 8, 2)->nullable();
-            $table->double('markup_percentage', 8, 2)->nullable();
-            $table->double('selling_price', 8, 2)->nullable();
-            $table->double('profit_percentage', 8, 2)->nullable();
-
-            $table->double('commission_amount', 8, 2)->nullable();
-            $table->double('commission_percentage', 8, 2)->nullable();
-
+            $table->bigInteger('pax_no')->default(0);
+            $table->double('net_price')->nullable();
+            $table->double('markup_amount')->nullable();
+            $table->double('markup_percentage')->nullable();
+            $table->double('selling_price')->nullable();
+            $table->double('profit_percentage')->nullable();
+            $table->double('commission_amount')->nullable();
+            $table->double('commission_amount_in_sale_person_currency')->nullable();
+            $table->double('commission_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
             $table->double('booking_amount_per_person_in_osp', 8, 2)->nullable();

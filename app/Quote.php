@@ -24,6 +24,7 @@ class Quote extends Model
         'commission_group_id',
         'booking_details',
         'reason_for_trip',
+        'sale_person_currency_id',
         'ref_name',
         'ref_no',
         'quote_ref',
@@ -58,6 +59,7 @@ class Quote extends Model
         'profit_percentage',
 
         'commission_amount',
+        'commission_amount_in_sale_person_currency',
         'commission_percentage',
 
         'selling_currency_oc',
@@ -108,6 +110,10 @@ class Quote extends Model
 
     function getCurrency() {
         return $this->hasOne(Currency::class, 'id', 'currency_id');
+    }
+
+    function getSalePersonCurrency() {
+        return $this->hasOne(Currency::class, 'id', 'sale_person_currency_id');
     }
     
     function getBookingCurrency() {

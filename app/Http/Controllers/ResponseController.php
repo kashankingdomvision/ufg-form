@@ -640,9 +640,11 @@ class ResponseController extends Controller
     public function salesPersonOnChange(Request $request){
 
         $supervisor  = User::find($request->sales_person_id)->getSupervisor;
+        $sale_person_currency  = User::find($request->sales_person_id)->getCurrency;
 
         return response()->json([
             'supervisor'    => $supervisor,
+            'sale_person_currency' => $sale_person_currency,
         ]);
     }
 

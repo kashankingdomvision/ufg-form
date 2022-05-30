@@ -1620,6 +1620,34 @@
                 </div>
 
                 <div class="form-group row">
+                  <label for="inputEmail3" class="col-md-4 col-form-label">
+                    Com. Amount in Sale Person's Currency
+                  </label>
+
+                  <div class="col-md-3 d-flex align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text sale-person-currency-code">
+                            {{ ($booking->sale_person_currency_id && $log->getQueryData($booking->sale_person_currency_id, 'Currency')->count()) ? $log->getQueryData($booking->sale_person_currency_id, 'Currency')->first()->code : '' }}
+                          </span>
+                        </div>
+                        <input type="text" name="commission_amount_in_sale_person_currency" class="form-control commission-amount-in-sale-person-currency hide-arrows" value="{{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}" readonly>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-2 align-items-end">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <input type="text" name="sale_person_currency_id" data-currency_code="{{ ($booking->sale_person_currency_id && $log->getQueryData($booking->sale_person_currency_id, 'Currency')->count()) ? $log->getQueryData($booking->sale_person_currency_id, 'Currency')->first()->code : '' }}" 
+                        value="{{ isset($booking->sale_person_currency_id) && !empty($booking->sale_person_currency_id) ? $booking->sale_person_currency_id : '' }}" class="form-control sale-person-currency-id hide-arrows" readonly>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label>Selling Price in Other Currency</label>

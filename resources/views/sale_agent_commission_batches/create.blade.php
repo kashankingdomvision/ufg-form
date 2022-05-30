@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','Pay Commision')
 @section('content')
-
+ 
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -43,11 +43,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Sales Agent</label>
-                                        <select class="form-control select2single" name="sales_agent">
+                                        <label>Sales Person</label>
+                                        <select class="form-control select2single" name="sale_person_id">
                                             <option value="">Select User </option>
                                             @foreach ($users as $user)
-                                            <option value="{{ $user->id }}" {{ request()->get('sales_agent') == $user->id  ? 'selected' : '' }}>
+                                            <option value="{{ $user->id }}" {{ request()->get('sale_person_id') == $user->id  ? 'selected' : '' }}>
                                                 {{ $user->name }}
                                             </option>
                                             @endforeach
@@ -99,26 +99,57 @@
 
                         <div class="card-body pl-4">
                             <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Batch Name <span style="color:red">*</span></label>
-                                        <input type="text" name="batch_name" id="batch_name" class="form-control">
-                                        <span class="text-danger" role="alert"></span>
-                                    </div>
-                                  </div>
 
-                                <div class="col-md-3">
-                                    <div class="form-group" >
-                                        <label>Payment Method <span style="color:red">*</span></label>
-                                        <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
-                                            <option value="">Select Payment Method</option>
-                                            @foreach ($payment_methods as $payment_method)
-                                                <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger" role="alert"></span>
+                                @if(isset($sale_person_id) && !empty($sale_person_id))
+                                    <div class="col-md-3 d-none">
+                                        <div class="form-group">
+                                            <label>Sale Person ID <span style="color:red">*</span></label>
+                                            <input type="text" name="sale_person_id" id="sale_person_id" value="{{ $sale_person_id }}" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
                                     </div>
-                                </div>
+
+                                    <div class="col-md-3 d-none">
+                                        <div class="form-group">
+                                            <label>Sale Person Currency ID <span style="color:red">*</span></label>
+                                            <input type="text" name="sale_person_currency_id" id="sale_person_currency_id" value="{{ $sale_person_currency_id }}" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 d-none">
+                                        <div class="form-group">
+                                            <label>Send To Agent <span style="color:red">*</span></label>
+                                            <input type="text" name="send_to_agent" value="{{ isset($send_to_agent) ? $send_to_agent : '' }}" id="pay_or_sent_to_agent" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+    
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Batch Name <span style="color:red">*</span></label>
+                                            <input type="text" name="batch_name" id="batch_name" class="form-control">
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+
+                                @endif
+
+                                @if(isset($send_to_agent) && $send_to_agent == 1)
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Payment Method <span style="color:red">*</span></label>
+                                            <select name="payment_method_id" id="payment_method_id" class="form-control payment-method-id select2single">
+                                                <option value="">Select Payment Method</option>
+                                                @foreach ($payment_methods as $payment_method)
+                                                    <option value="{{ $payment_method->id }}" > {{ $payment_method->name }} </option>
+                                                @endforeach
+                                            </select>
+                                            <span class="text-danger" role="alert"></span>
+                                        </div>
+                                    </div>
+                                @endif
+
                             </div>
                         </div>
 
@@ -133,11 +164,13 @@
                                                     <label for="parent" class="custom-control-label"></label>
                                                 </div>
                                             </th>
+                                            {{-- <th style="min-width: 200px;">feilds</th> --}}
                                             <th>Booking Ref #</th>
-                                            {{-- <th>Quote Ref # </th> --}}
-                                            <th>Sales Agent</th>
-                                            {{-- <th>Booking Currency</th> --}}
-                                            {{-- <th>Season</th> --}}
+                                            <th>Booking Currency</th>
+                                            <th>Brand</th>
+                                            <th>Holiday Type</th>
+                                            <th>Season</th>
+                                            <th>Com. Criteria</th>
                                             <th>Com. Amount</th>
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
@@ -162,44 +195,55 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>{{ $booking->ref_no }}</td>
-                                                    {{-- <td>{{ $booking->quote_ref }}</td> --}}
-                                                    <td>{{ isset($booking->getSalePerson->name) && !empty($booking->getSalePerson->name) ? $booking->getSalePerson->name : '' }}</td>
-                                                    {{-- <td>{{ isset($booking->getCurrency->name) && !empty($booking->getCurrency->name) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}</td> --}}
-                                                    {{-- <td>{{ isset($booking->getSeason->name) && !empty($booking->getSeason->name) ? $booking->getSeason->name : '' }}</td> --}}
-                                                    <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
-                                                    <td>{{ $supplier_default_currency_code }} {{ Helper::getAmountInSaleAgentCurrency($booking->getCurrency->code, $supplier_default_currency_code, $booking->commission_amount, $booking->rate_type) }}
-                                                    
-                                                        <input type="hidden" name="finance[{{$key}}][commission_amount_in_default_currency]" value="{{ Helper::getAmountInSaleAgentCurrency($booking->getCurrency->code, $supplier_default_currency_code, $booking->commission_amount, $booking->rate_type) }}">
+                                                    <!-- Hidden feilds -->
+                                                    <td class="d-none">
+                                                        <input type="text" name="finance[{{$key}}][total_paid_amount_yet]" class="total-paid-amount-yet" value="{{ is_null($booking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format(0) : $booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount }}">
+                                                        <input type="text" name="finance[{{$key}}][commission_amount_in_sale_person_currency]" value="{{ Helper::number_format($booking->commission_amount_in_sale_person_currency)  }}">
+                                                        <input type="text" name="finance[{{$key}}][outstanding_amount_left]" class="outstanding-amount-left remove-zero-values hide-arrows" value="{{ is_null($booking->getLastSaleAgentCommissionBatchDetails) ? Helper::number_format($booking->commission_amount_in_sale_person_currency) : $booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount }}" style="max-width: 100px;">
+                                                        <input type="text" name="finance[{{$key}}][booking_id]" value="{{ $booking->id }}">
+                                                        <input type="text" name="finance[{{$key}}][sale_person_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}">
+                                                        <input type="text" name="finance[{{$key}}][sale_person_id]" value="{{ $booking->sale_person_id }}">
                                                     </td>
+
+                                                    <td>{{ $booking->ref_no }}</td>
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code.' - '.$booking->getCurrency->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getBrand) ? $booking->getBrand->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getHolidayType) ? $booking->getHolidayType->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getSeason) ? $booking->getSeason->name : '' }}
+                                                    </td>
+                                                    <td>
+                                                        <h5>
+                                                            <span class="badge badge-info" title="Commission Name">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->name : '' }}</span>
+                                                            <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
+                                                        </h5>
+                                                    </td>
+                                                    <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
+                                                    <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
                                                             {{ $supplier_default_currency_code }} {{ Helper::number_format(0) }}
-                                                            <input type="hidden" name="finance[{{$key}}][total_paid_amount_yet]" class="total-paid-amount-yet" value="{{ Helper::number_format(0) }}">
-                                                            @else
-
-                                                            <input type="hidden" name="finance[{{$key}}][total_paid_amount_yet]" class="total-paid-amount-yet" value="{{ $booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount }}">
+                                                        @else
                                                             {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
                                                         @endif
-                                                    </td>
+                                                    </td> 
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
-                                                            {{ $supplier_default_currency_code }} {{ Helper::getAmountInSaleAgentCurrency($booking->getCurrency->code, $supplier_default_currency_code, $booking->commission_amount, $booking->rate_type) }}
-                                                            <input type="hidden" name="finance[{{$key}}][outstanding_amount_left]" class="form-control outstanding-amount-left remove-zero-values hide-arrows" value="{{ Helper::getAmountInSaleAgentCurrency($booking->getCurrency->code, $supplier_default_currency_code, $booking->commission_amount, $booking->rate_type) }}" style="max-width: 100px;">
-
-                                                            @else
-
-                                                            <input type="hidden" name="finance[{{$key}}][outstanding_amount_left]" class="form-control outstanding-amount-left remove-zero-values hide-arrows" value="{{ $booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount }}">
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
+                                                        @else
                                                             {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
                                                         @endif
-                                                    </td>
+                                                    </td> 
 
-                                                    <input type="hidden" name="finance[{{$key}}][booking_id]" class="form-control" value="{{ $booking->id }}">
-                                                    <input type="hidden" name="finance[{{$key}}][sales_agent_default_currency_id]" value="{{ $booking->getSalePerson->getCurrency->id }}">
-
-                                                    <td class="form-group ">
+                                                    <td class="form-group">
                                                         <div class="input-group mx-sm-3 d-flex justify-content-center">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
@@ -209,8 +253,8 @@
                                                         <small class="text-danger"></small>
                                                     </td>
                                                     
-                                                    <td>
-                                                        <div class="input-group mx-sm-4">
+                                                    <td class="form-group">
+                                                        <div class="input-group d-flex justify-content-center">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                             </div>
@@ -218,8 +262,8 @@
                                                         </div>
                                                     </td>
 
-                                                    <td>
-                                                        <div class="input-group mx-sm-4">
+                                                    <td class="form-group">
+                                                        <div class="input-group d-flex justify-content-center">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">{{ $supplier_default_currency_code }}</span>
                                                             </div>
@@ -231,7 +275,7 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="8"></td>
+                                                <td colspan="12"></td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -247,10 +291,10 @@
                                             </tr>
 
                                             <tr class="mt-2">
-                                                <td colspan="9"></td>
+                                                <td colspan="13"></td>
                                                 <td class="d-flex justify-content-left">
-                                                  <button type="submit" class="btn btn-success bulk-payment float-right mr-3"><span class="mr-2 "></span> Pay &nbsp; </button>
-                                                  <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
+                                                    <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
+                                                    <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
                                                 </td>
                                             </tr>
 

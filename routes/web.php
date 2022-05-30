@@ -312,12 +312,22 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('index', array('as' => 'index', 'uses' => 'SaleAgentCommissionBatchController@index'));
         Route::get('create', array('as' => 'create', 'uses' => 'SaleAgentCommissionBatchController@create'));
         Route::post('store', array('as' => 'store', 'uses' => 'SaleAgentCommissionBatchController@store'));
-       
-       
-        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
-        Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
-        Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));
-        Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CommissionCriteriaController@bulkAction' ));
+        Route::get('commission-review', array('as' => 'commission_review', 'uses' => 'SaleAgentCommissionBatchController@commissionReview'));
+        
+        Route::get('commission-management', array('as' => 'commission_management', 'uses' => 'SaleAgentCommissionBatchController@commissionManagement'));
+        Route::patch('commission-action/{type}/{batch_id}/{id}', array('as' => 'commission_action', 'uses' => 'SaleAgentCommissionBatchController@commissionAction' ));
+
+        Route::patch('pay-batch', array('as' => 'pay_batch', 'uses' => 'SaleAgentCommissionBatchController@payBatch' ));
+
+        Route::post('adjust-commission', array('as' => 'adjust_commission', 'uses' => 'SaleAgentCommissionBatchController@adjustCommission' ));
+
+        Route::post('sale-person-commission-bulk-action', array('as' => 'sale_person_commission_bulk_action', 'uses' => 'SaleAgentCommissionBatchController@salePersonCommissionBulkAction' ));
+
+
+        // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
+        // Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
+        // Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));
+        // Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CommissionCriteriaController@bulkAction' ));
     });
     
     /*

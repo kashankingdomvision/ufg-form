@@ -33,11 +33,10 @@ class Helper
 
 	public static function getCurrencyConversionRate($from_currency, $to_currency, $rate_type){
 	 
-        return $object = CurrencyConversion::where([
+		return $object = CurrencyConversion::where([
             'from' => $from_currency,
             'to'   => $to_currency
         ])
-        ->first()
         ->value($rate_type);
     }
 

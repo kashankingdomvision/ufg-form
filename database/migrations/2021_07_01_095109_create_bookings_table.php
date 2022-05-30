@@ -24,6 +24,7 @@ class CreateBookingsTable extends Migration
             $table->unsignedBigInteger('currency_id');
             $table->unsignedBigInteger('holiday_type_id');
             $table->unsignedBigInteger('sale_person_id');
+            $table->unsignedBigInteger('sale_person_currency_id')->nullable();
             $table->unsignedBigInteger('commission_group_id')->nullable();
             $table->unsignedBigInteger('default_supplier_currency_id')->nullable();
             $table->string('booking_details');
@@ -36,7 +37,7 @@ class CreateBookingsTable extends Migration
             $table->enum('agency', [0, 1])->default(0);
             $table->enum('agency_commission_type', ['net-price','paid-net-of-commission','we-pay-commission-on-departure'])->nullable();
             $table->double('agency_commission')->nullable();
-            $table->boolean('is_sale_agent_paid')->default(0);
+            $table->unsignedTinyInteger('sale_person_payment_status')->default(0);
             $table->double('total_net_margin')->nullable();
             $table->string('agency_name')->nullable();
             $table->string('agency_contact')->nullable();
@@ -59,6 +60,7 @@ class CreateBookingsTable extends Migration
             $table->double('selling_price')->nullable();
             $table->double('profit_percentage')->nullable();
             $table->double('commission_amount')->nullable();
+            $table->double('commission_amount_in_sale_person_currency')->nullable();
             $table->double('commission_percentage')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
