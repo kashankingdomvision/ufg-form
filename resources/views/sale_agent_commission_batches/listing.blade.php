@@ -71,6 +71,7 @@
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
                       <th>Status</th>
+                      <th>Deposit Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -92,6 +93,7 @@
                           <td>{{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
                           <td> {!! $sac_batch->formatted_status !!} </td>
+                          <td>{{ $sac_batch->formatted_deposit_date }}</td>
 
                           <td></td>
                           

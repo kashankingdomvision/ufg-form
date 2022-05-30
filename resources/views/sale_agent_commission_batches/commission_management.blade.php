@@ -100,6 +100,7 @@
                       <th>Status</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
+                      <th>Deposit Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -125,6 +126,7 @@
                           <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>{{ $sac_batch->formatted_deposit_date }}</td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>

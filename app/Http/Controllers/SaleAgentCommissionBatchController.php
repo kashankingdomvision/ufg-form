@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\PayBatchRequest;
 use App\Http\Helper;
+use Carbon\Carbon;
 
 use App\User;
 use App\Season;
@@ -105,7 +106,8 @@ class SaleAgentCommissionBatchController extends Controller
             'total_outstanding_amount' => $request->total_outstanding_amount,
             'sale_person_id'           => $request->sale_person_id,
             'sale_person_currency_id'  => $request->sale_person_currency_id,
-            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid'
+            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid',
+            'deposit_date'             => $request->send_to_agent == 1 ? Carbon::today()->toDateString() : null
         ]);
 
         foreach ($request->finance as $key => $finance) {
@@ -162,7 +164,8 @@ class SaleAgentCommissionBatchController extends Controller
 
             $sac_batch->update([
                 'payment_method_id' => $request->payment_method_id,
-                'status' => 'paid'
+                'status'            => 'paid',
+                'deposit_date'      => Carbon::today()->toDateString()
             ]);
 
             $sac_batch->getSaleAgentCommissionBatchDetails()

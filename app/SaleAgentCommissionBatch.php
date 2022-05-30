@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class SaleAgentCommissionBatch extends Model
 {
@@ -17,6 +18,7 @@ class SaleAgentCommissionBatch extends Model
         'sale_person_id',
         'sale_person_currency_id',
         'status',
+        'deposit_date'
     ];
 
     public function getFormattedStatusAttribute()
@@ -44,6 +46,11 @@ class SaleAgentCommissionBatch extends Model
                 break;
 
         }
+    }
+
+    public function getFormattedDepositDateAttribute()
+    {
+        return is_null($this->attributes['deposit_date']) ? '-' : Carbon::parse($this->attributes['deposit_date'])->format('d/m/Y');
     }
 
     public function getSalePerson()
