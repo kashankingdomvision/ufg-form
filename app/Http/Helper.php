@@ -348,7 +348,7 @@ class Helper
 
         $total_quote = Quote::select(DB::raw('count(id) as total_quote'))
             ->where('agency', '0')
-            ->where('booking_status', 'quote')
+            ->where('status', 'quote')
             ->where('lead_passenger_email', $value)
             ->groupBy('lead_passenger_email')
             ->get();
@@ -361,7 +361,7 @@ class Helper
     public static function getTotalCancelledQuote($value){
         $total_cancelled_quote = Quote::select(DB::raw('count(id) as total_cancelled_quote'))
             ->where('agency', '0')
-            ->where('booking_status', 'cancelled')
+            ->where('status', 'cancelled')
             ->where('lead_passenger_email', $value)
             ->groupBy('lead_passenger_email')
             ->get();
@@ -389,7 +389,7 @@ class Helper
         $total_confirmed_bookings = Booking::select(DB::raw('count(id) as total_confirmed_bookings'))
             ->where('agency', '0')
             ->where('lead_passenger_email', $value)
-            ->where('booking_status', 'confirmed')
+            ->where('status', 'confirmed')
             ->groupBy('lead_passenger_email')
             ->get();
 
@@ -403,7 +403,7 @@ class Helper
         $total_cancelled_bookings = Booking::select(DB::raw('count(id) as total_cancelled_bookings'))
             ->where('agency', '0')
             ->where('lead_passenger_email', $value)
-            ->where('booking_status', 'cancelled')
+            ->where('status', 'cancelled')
             ->groupBy('lead_passenger_email')
             ->get();
 

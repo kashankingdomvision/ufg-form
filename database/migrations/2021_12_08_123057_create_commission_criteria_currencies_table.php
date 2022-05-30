@@ -15,11 +15,8 @@ class CreateCommissionCriteriaCurrenciesTable extends Migration
     {
         Schema::create('commission_criteria_currencies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('commission_criteria_id');
-            $table->unsignedBigInteger('currency_id');
-          
-            $table->foreign('commission_criteria_id')->references('id')->on('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('commission_criteria_id')->constrained('commission_criterias')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

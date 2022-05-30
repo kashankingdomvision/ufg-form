@@ -14,20 +14,17 @@ class CreateSupplierBulkPaymentDetails extends Migration
     public function up()
     {
         Schema::create('supplier_bulk_payment_details', function (Blueprint $table) {
+            
             $table->id();
-            $table->unsignedBigInteger('supplier_bulk_payment_id');
-            $table->unsignedBigInteger('booking_id');
+            $table->foreignId('supplier_bulk_payment_id')->constrained('supplier_bulk_payments')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('booking_id')->constrained('brands')->onUpdate('cascade')->onDelete('cascade');
             $table->string('bd_reference_id', 6);
             $table->double('actual_cost');
             $table->double('outstanding_amount_left');
             $table->double('row_total_paid_amount');
             $table->double('paid_amount');
             $table->double('credit_note_amount');
-            $table->unsignedBigInteger('currency_id');
-
-            $table->foreign('supplier_bulk_payment_id')->references('id')->on('supplier_bulk_payments')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('booking_id')->references('id')->on('bookings')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('currency_id')->constrained('currencies')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

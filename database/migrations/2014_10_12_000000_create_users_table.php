@@ -14,7 +14,7 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->unsignedBigInteger('currency_id')->nullable();
@@ -33,7 +33,6 @@ class CreateUsersTable extends Migration
             $table->integer('is_login')->unsigned()->default(0);
             $table->longText('column_preferences')->nullable();
             $table->timestamps();
-            
         });
     }
 

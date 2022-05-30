@@ -15,7 +15,7 @@ class CreateQuoteDetailsTable extends Migration
     {
         Schema::create('quote_details', function (Blueprint $table) {
        
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('quote_id');
             $table->date('date_of_service')->nullable();
             $table->date('end_date_of_service')->nullable();

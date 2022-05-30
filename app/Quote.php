@@ -14,66 +14,72 @@ class Quote extends Model
 
     protected $fillable = [ 
         
-        'booking_details',
-        'reason_for_trip',
-        'commission_id',
-        'commission_group_id',
-        'country_destination_ids',
-        'default_supplier_currency_id',
-        'created_by',
-        'user_id',
         'season_id',
         'brand_id',
-        'currency_id',
         'holiday_type_id',
+        'currency_id',
         'sale_person_id',
+        'default_supplier_currency_id',
+        'commission_id',
+        'commission_group_id',
+        'booking_details',
+        'reason_for_trip',
         'sale_person_currency_id',
         'ref_name',
         'ref_no',
         'quote_ref',
+        'country_destination_ids',
+
         'agency',
         'agency_name',
-        'agency_commission_type',
-        'agency_commission',
-        'total_net_margin',
-        'agency_contact',
         'agency_email',
+        'agency_contact',
         'agency_contact_name',
+        'agency_commission',
+        'agency_commission_type',
+        'total_net_margin',
+        
         'lead_passenger_name',
         'lead_passenger_email',
         'lead_passenger_contact',
         'lead_passenger_dbo',
+
         'lead_passsenger_nationailty_id',
         'lead_passenger_resident',
+        'lead_passenger_covid_vaccinated',
         'lead_passenger_bedding_preference',
         'lead_passenger_dietary_preferences',
         'lead_passenger_medical_requirement',
-        'lead_passenger_covid_vaccinated',
+
         'pax_no',
         'net_price',
         'markup_amount',
         'markup_percentage',
         'selling_price',
         'profit_percentage',
-        'commission_criteria_id',
+
         'commission_amount',
         'commission_amount_in_sale_person_currency',
         'commission_percentage',
+
         'selling_currency_oc',
         'selling_price_ocr',
         'booking_amount_per_person_in_osp',
         'amount_per_person',
+
         'rate_type',
-        'booking_status',
+        'markup_type',
+
+        'status',
         'booking_date',
         'is_archive',
         'tas_ref',
         'revelant_quote',
-        'transfer',
         'stored_text',
-        'markup_type',
         'departure_date',
-        'return_date'
+        'return_date',
+        'created_by',
+        'user_id'
     ];
 
     public function getCountryDestinations()
@@ -162,7 +168,7 @@ class Quote extends Model
 
     public function getQuotelogs()
     {
-        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('log_no','DESC');
+        return $this->hasMany(QuoteLog::class, 'quote_id', 'id')->orderBy('id','DESC');
     }
 
     /**
@@ -175,7 +181,7 @@ class Quote extends Model
     
     public function getBookingFormatedStatusAttribute()
     {
-        $status = $this->booking_status;
+        $status = $this->status;
         switch ($status) {
             case 'booked':
                 return '<h5><span class="badge badge-success">Booked</span></h5>';
@@ -232,14 +238,14 @@ class Quote extends Model
         return  'UFG-'.rand(23, 200).''.Str::random(5).' '.date('d/m/Y', strtotime(now())).' By '.Auth::user()->name; 
     }
 
-    public function getHasUserEditAttribute()
-    {
-        $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
-        if($checkUserExist){
-            return "";
-            // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
-        }
-    }
+    // public function getHasUserEditAttribute()
+    // {
+    //     $checkUserExist = $this->getQuoteUpdateDetail()->where('user_id','!=',Auth::id())->exists();
+    //     if($checkUserExist){
+    //         return "";
+    //         // return "<i class='fa fa-lock'  style='font-size:15px;'></i>";
+    //     }
+    // }
 
     public function setRevelantQuoteAttribute($value)
     {

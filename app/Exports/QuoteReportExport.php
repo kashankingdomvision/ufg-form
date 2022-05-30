@@ -68,7 +68,7 @@ class QuoteReportExport implements FromCollection, WithHeadings, ShouldAutoSize,
                 'Amount Per Person' => $quote->getBookingCurrency->code.' '.$quote->amount_per_person,
                 'Total Profit Percentage' => $total_profit_percentage.' %',
                 'Booking Date' => $quote->formated_booking_date,
-                'Status' => ucfirst($quote->booking_status),
+                'Status' => ucfirst($quote->status),
                 'Created At' => $quote->formated_created_at,
             ];
         }

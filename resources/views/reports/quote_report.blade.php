@@ -283,13 +283,13 @@
                                                 <td>{{ $quote->formated_booking_date }}</td>
                                                 <td>{{ $quote->formated_created_at }}</td>
                                                 <td>
-                                                    @if($quote->booking_status == 'quote' || $quote->booking_status == 'cancelled')
+                                                    @if($quote->status == 'quote' || $quote->status == 'cancelled')
                                                         <a href="{{ route('quotes.final', encrypt($quote->id)) }}" title="View Quote" class="mr-2 btn btn-outline-info btn-xs" data-title="Final Quotation" data-target="#Final_Quotation">
                                                             <span class="fa fa-eye"></span>
                                                         </a>
                                                     @endif
 
-                                                    @if($quote->booking_status == 'booked')
+                                                    @if($quote->status == 'booked')
                                                         <a href="{{ route('bookings.show',encrypt($quote->getBooking->id)) }}" class="mr-2 btn btn-outline-success btn-xs" data-title="View Booking" title="View Booking" >
                                                             <i class="fas fa-eye"></i>
                                                         </a>

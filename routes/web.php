@@ -759,7 +759,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('commission-report-export', array('as' => 'commission.report.export', 'uses' => 'ReportController@commission_report_export'));
     });
 
-   /*
+    /*
     |--------------------------------------------------------------------------
     | Routes For Ajax Request
     |--------------------------------------------------------------------------
@@ -802,8 +802,11 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('stored/{slug}/text', array('as' => 'stored.text', 'uses' => 'ResponseController@getStoredText'));
         Route::get('category-details-filter', array('as' => 'category.details.filter', 'uses' => 'ReportController@categoryDetailsFilter'));
         Route::get('remove-form-builder-feild', array('as' => 'remove.form.builder.feild', 'uses' => 'ResponseController@removeFormBuidlerFeild'));
-        
-        // Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
+    });
+});
+
+
+     // Route::get('get-supplier-product-and-sheet',array('as'=>'supplier.product.and.sheet','uses'=>'ResponseController@getSupplierProductAndSheet'));
         // Route::get('get-supplier-rate-sheets',array('as'=>'supplier.rate.sheet','uses'=>'ResponseController@getSupplierRateSheet'));
         // Route::post('currency/status', ['as' => 'currency.status', 'uses' => 'ResponseController@updateCurrencyStatus']);
         // Route::put('bulk-action', ['as' => 'bulk.action', 'uses' => 'ResponseController@bulkAction']);
@@ -813,11 +816,6 @@ Route::group(['middleware' => ['auth']], function(){
         // Route::get('location/to/supplier',array('as'=>'location.supplier','uses'=>'ResponseController@getLocationToSupplier'));
         // Route::get('country/to/town',array('as'=>'country.towns','uses'=>'ResponseController@getCountryToTown'));
         // Route::get('holiday-types',array('as'=>'get-holiday-type','uses'=>'AdminController@get_holiday_type'));
-    });
-
-
-
-});
 
 // Route::group([
 //     'prefix' => 'commissions',

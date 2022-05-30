@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Add Quote')
-
 @section('content')
 
 <div class="content-wrapper">
@@ -202,7 +200,7 @@
                       <select name="season_id" id="season_id" class="form-control select2single season-id">
                         <option value="">Select Booking Season</option>
                         @foreach ($seasons as $season)
-                          <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ old('season_id') == $season->id  ? "selected" : (($season->default == 1)? 'selected' : NULL) }}> {{ $season->name }} </option>
+                          <option value="{{ $season->id }}" data-start="{{ $season->start_date }}" data-end="{{ $season->end_date }}" {{ $season->default == 1 ? 'selected' : '' }}> {{ $season->name }} </option>
                         @endforeach
                       </select>
                       <span class="text-danger" role="alert"></span>
@@ -278,28 +276,28 @@
                   <div class="col-md-12 agency-columns">
                     <div class="row mt-1 agencyField d-none">
                       <div class="col form-group">
-                        <label>Agency Name</label> <span style="color:red"> *</span>
+                        <label>Agency Name</label> <span style="color:red">*</span>
                         <input type="text" name="agency_name" id="agency_name" class="form-control" placeholder="Agency Name">
                         <span class="text-danger" role="alert"> </span>
                       </div>
 
                       <div class="col form-group">
-                        <label>Agency Contact Name </label> <span style="color:red"> *</span>
+                        <label>Agency Contact Name </label> <span style="color:red">*</span>
                         <input type="text" name="agency_contact_name" id="agency_contact_name" class="form-control" placeholder="Agency Contact Name">
                         <span class="text-danger" role="alert"> </span>
                       </div>
                       
                       <div class="col form-group">
-                        <label>Agency Contact No.</label> <span style="color:red"> *</span>
+                        <label>Agency Contact No.</label> <span style="color:red">*</span>
                         <input type="tel" name="agency_contact" id="agency_contact" class="form-control phone phonegc ">
                         <span class="text-danger error_msggc hide" role="alert"></span>
                         <span class="text-success valid_msggc" role="alert"></span>
                       </div>
 
                       <div class="col form-group">
-                        <label>Agency Email </label> <span style="color:red"> *</span>
+                        <label>Agency Email </label> <span style="color:red">*</span>
                         <input type="email" name="agency_email" id="agency_email" class="form-control" placeholder="Agency Email Address">
-                        <span class="text-danger" role="alert" > </span>
+                        <span class="text-danger" role="alert"></span>
                       </div>
                     </div>
 
@@ -307,7 +305,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Lead Passenger Name <span style="color:red">*</span></label>
-                          <input type="text" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name" >
+                          <input type="text" name="lead_passenger_name" id="lead_passenger_name" class="form-control" placeholder="Lead Passenger Name">
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
@@ -315,7 +313,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Email Address <span style="color:red">*</span></label>
-                          <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address" >
+                          <input type="email" name="lead_passenger_email" id="lead_passenger_email" class="form-control" placeholder="Email Address">
                           <span class="text-danger" role="alert"></span>
                         </div>
                       </div>
@@ -323,7 +321,7 @@
                       <div class="col-md-3">
                         <div class="form-group">
                           <label>Contact Number <span style="color:red">*</span></label>
-                          <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0 " >
+                          <input type="tel" name="lead_passenger_contact" id="lead_passenger_contact"  class="form-control phone phone0">
                           <span class="text-danger error_msg0" role="alert"></span>
                           <span class="text-success valid_msg0" role="alert"></span>
                         </div>
@@ -343,7 +341,7 @@
                           <select name="lead_passsenger_nationailty_id" id="lead_passsenger_nationailty_id" class="form-control select2single nationality-id">
                             <option selected value="" >Select Nationality</option>
                             @foreach ($countries as $country)
-                              <option value="{{ $country->id }}" {{ (old('lead_passsenger_nationailty_id') == $country->id)? 'selected': null }}> {{ $country->name }} </option>
+                              <option value="{{ $country->id }}"> {{ $country->name }} </option>
                             @endforeach
                           </select>
                           <span class="text-danger" role="alert"></span>
@@ -473,7 +471,6 @@
                           <span class="badge badge-info badge-group-owner-id"></span>
                           <span class="badge badge-info badge-supplier-id"></span>
                           <span class="badge badge-info badge-product-id"></span>
-                          {{-- <span class="badge badge-info badge-supplier-currency-id"></span> --}}
                           <span class="badge badge-info badge-pick-up-location"></span>
                           <span class="badge badge-info badge-drop-off-location"></span>
                           <span class="badge badge-info badge-room-type"></span>
@@ -489,7 +486,7 @@
                         <div class="card-tools">
                           <button type="button" class="btn btn-sm btn-outline-dark mr-2 add-new-service-below"><i class="fas fa-plus"></i> &nbsp;<i class="fas fa-level-down-alt"></i></i></button>
                           <button type="button" class="btn btn-sm btn-outline-dark mr-2 collapse-expand-btn" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                          <button type="button" class="btn btn-sm btn-outline-dark mr-2 remove-quote-detail-service" title="Remove"><i class="fas fa-times"></i></button>
+                          <button type="button" class="btn btn-sm btn-outline-dark mr-2 remove-quote-detail-service d-none" title="Remove"><i class="fas fa-times"></i></button>
                         </div>
                       </div>
 
@@ -516,7 +513,6 @@
                                 <div class="input-group-prepend"> <span class="input-group-text"><i class="far fa-calendar-alt"></i></span> </div>
                                 <input type="text" placeholder="DD/MM/YYYY" name="quote[0][date_of_service]" data-name="date_of_service" id="quote_0_date_of_service" class="form-control date-of-service datepicker  checkDates bookingDateOfService " autocomplete="off">
                               </div>
-
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
@@ -557,7 +553,7 @@
                           <div class="col-md-3">
                             <div class="form-group">
                               <label>Category <span style="color:red">*</span></label>
-                              <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single @error('category_id') is-invalid @enderror">
+                              <select name="quote[0][category_id]" data-name="category_id" id="quote_0_category_id" class="form-control category-id select2single">
                                 <option selected value="">Select Category</option>
                                 @foreach ($categories as $category)
                                   <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" data-name="{{ $category->name }}" data-enddateofservice="{{ $category->set_end_date_of_service }}"> {{ $category->name }} </option>
@@ -605,8 +601,7 @@
 
                           <div class="col-md-3">
                             <div class="form-group">
-                              <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a>
-                              </label>
+                              <label>Supplier <span style="color:red">*</span> <a href="" target="_blank" class="ml-1 view-supplier-rate"></a></label>
                               <button type="button" class="btn btn-xs btn-outline-dark ml-1 add-new-supplier"> <i class="fas fa-plus"></i></button>
                               <select name="quote[0][supplier_id]" data-name="supplier_id" id="quote_0_supplier_id" class="form-control supplier-id select2single">
                                 <option selected value="">Select Supplier</option>
@@ -629,7 +624,7 @@
                           <div class="col-md-3 d-none">
                             <div class="form-group">
                               <label>Product Details</label>
-                              <input type="text" name="quote[0][product_details]" value="" id="quote_0_product_details" class="form-control product-details">
+                              <input type="text" name="quote[0][product_details]" id="quote_0_product_details" class="form-control product-details">
                               <span class="text-danger" role="alert"></span>
                             </div>
                           </div>
@@ -779,7 +774,6 @@
                               </div>
                             </div>
                           </div>
-
                         </div>
 
                       </div>
@@ -1085,6 +1079,7 @@
     @include('quote_booking_includes.append_quote_details_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ])
     @include('quote_booking_includes.append_quote_details_below_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ])
     @include('quote_booking_includes.currency_conversion_modal')
+    
     @include('quote_booking_includes.store_harbour_modal')
     @include('quote_booking_includes.store_airport_code_modal')
     @include('quote_booking_includes.store_hotel_modal')
@@ -1290,3 +1285,6 @@
 {{-- @include('partials.new_service_modal', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn' ]) --}}
 {{-- @include('partials.new_service_modal_below', ['categories' => $categories, 'module_class' => 'quotes-service-category-btn-below' ]) --}}
 {{-- @include('partials.view_rates_modal') --}}
+
+
+{{-- <span class="badge badge-info badge-supplier-currency-id"></span> --}}

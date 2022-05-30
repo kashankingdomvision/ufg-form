@@ -1709,7 +1709,7 @@
                   </div>
                 </div>
 
-                @if($booking->booking_status == 'cancelled' && count($booking->booking_cancellation_refund_payments) > 0)
+                @if($booking->status == 'cancelled' && count($booking->booking_cancellation_refund_payments) > 0)
                   <section class="cancellation-payments-section mb-2">
                     <div class="cancellation-payments">
                       <hr><h3 class="mt-1 mb-1-half"><span class="double-underline">Booking Cancellation Refund Payments</span></h3>
