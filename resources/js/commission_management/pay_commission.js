@@ -237,11 +237,23 @@ $(document).ready(function() {
                         success: function(response) {
 
                             $("#listing_card_body").load(`${location.href} #listing_card_body`);
-                
-                            Toast.fire({
-                                icon: 'success',
-                                title: response.success_message
-                            });
+                            $("#overlay")
+                            .addClass('overlay')
+                            .html(`<i class="fas fa-2x fa-sync-alt fa-spin"></i>`);
+
+                            setTimeout(function () {
+
+                                $("#overlay").removeClass('overlay').html('');
+                                $('.child-row').removeClass('d-none');
+                                $('.parent-row').html('<span class="fa fa-minus"></span>');
+
+                                Toast.fire({
+                                    icon: 'success',
+                                    title: response.success_message
+                                });
+                                
+                            }, 500);
+
                         }
                     });
                 }

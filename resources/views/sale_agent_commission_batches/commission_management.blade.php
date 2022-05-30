@@ -79,15 +79,15 @@
                 </form>
               </div>
             </div>
-          <!-- End Multi Actions -->
+            <!-- End Multi Actions -->
 
-            {{-- <div>
-                <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Partials</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Confirmed</a></li>
-                </ul>
-            </div> --}}
+              {{-- <div>
+                  <ul class="nav nav-pills">
+                      <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Pending</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Partials</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Confirmed</a></li>
+                  </ul>
+              </div> --}}
 
             <div class="card-body p-0" id="listing_card_body">
               <div class="table-responsive">
@@ -202,6 +202,8 @@
                 {{-- {{ $sac_batch->links() }} --}}
               </ul>
             </div>
+
+            <div id="overlay" class=""></div>
           </div>
         </div>
       </div>
