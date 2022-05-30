@@ -69,13 +69,13 @@ class Quote extends Model
 
         'rate_type',
         'markup_type',
+        
+        'revelant_quote',
 
         'status',
         'booking_date',
         'is_archive',
         'tas_ref',
-        'revelant_quote',
-        'stored_text',
         'departure_date',
         'return_date',
         'created_by',
