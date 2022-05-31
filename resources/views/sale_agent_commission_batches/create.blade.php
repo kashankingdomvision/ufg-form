@@ -179,6 +179,10 @@
                                             <th>Holiday Type</th>
                                             <th>Season</th>
                                             <th>Com. Criteria</th>
+                                            <th>Departure Date</th>
+                                            <th>Selling Price</th>
+                                            <th>Total Markup Amount</th>
+                                            <th>Total Markup Percentage</th>
                                             <th>Com. Amount</th>
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
@@ -232,6 +236,20 @@
                                                             <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
                                                         </h5>
                                                     </td>
+                                                    <td> {{ $booking->departure_date }} </td>
+
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }} 
+                                                        {{ Helper::number_format($booking->selling_price) }} </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }}
+                                                        {{ Helper::number_format($booking->markup_amount) }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ Helper::number_format($booking->markup_percentage).' %' }}
+                                                    </td>
+
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
                                                     <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
 
@@ -283,7 +301,7 @@
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="12"></td>
+                                                <td colspan="16"></td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -299,7 +317,7 @@
                                             </tr>
 
                                             <tr class="mt-2">
-                                                <td colspan="13"></td>
+                                                <td colspan="17"></td>
                                                 <td class="d-flex justify-content-left">
                                                     <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
                                                     <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>

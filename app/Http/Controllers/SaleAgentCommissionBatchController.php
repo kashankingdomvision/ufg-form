@@ -82,10 +82,16 @@ class SaleAgentCommissionBatchController extends Controller
                 'id',
                 'commission_amount_in_sale_person_currency',
                 'sale_person_payment_status',
+                'departure_date',
+                'selling_price',
+                'markup_amount',
+                'markup_percentage',
             ])
             ->get()
             // ->take(1)
             ;
+
+            // dd($bookings);
 
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
