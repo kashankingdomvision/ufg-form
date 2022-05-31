@@ -232,6 +232,7 @@ class SaleAgentCommissionBatchController extends Controller
             'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
         ])
         ->orderBy('id', 'DESC')
+        ->where('sale_person_id', auth()->user()->id)
         ->get();
 
         // dd($data['sac_batch']);
