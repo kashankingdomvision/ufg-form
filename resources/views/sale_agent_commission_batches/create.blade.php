@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label>Season</label>
                                         <select class="form-control select2single" name="season">
-                                            <option value="">Select Supplier </option>
+                                            <option value="">Select Season </option>
                                             @foreach ($seasons as $season)
                                                 <option value="{{ $season->id }}" {{ (request()->get('season_id') == $season->id || $season->default == 1  ) ? 'selected' : '' }}>{{ $season->name }}</option>
                                             @endforeach
@@ -67,6 +67,14 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Departure Date</label>
+                                        <input type="text" name="departure_date" value="{{ request()->departure_date }}" autocomplete="off" class="form-control date-range-picker">
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="row mt-1">

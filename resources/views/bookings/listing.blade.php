@@ -135,6 +135,7 @@
                                             {{-- <th>Dinning Preferences</th>
                                             <th>Bedding Preferences</th> --}}
                                             <th>Booking Status</th>
+                                            <th>Departure Date</th>
                                             <th>Created At</th>
                                             {{-- <th>Transfer Info Responsible Person</th>
                                             <th>Transfer Organized Responsible Person</th>
@@ -166,6 +167,7 @@
                                                 {{-- <td>{{ $booking->lead_passenger_dinning_preferences  }}</td>
                                                 <td>{{ $booking->lead_passenger_bedding_preferences }}</td> --}}
                                                 <td>{!! $booking->booking_formated_status !!}</td>
+                                                <td>{{ $booking->departure_date}}</td>
                                                 <td>{{ $booking->formated_created_at}}</td>
                                                 <td width="10%" class="d-flex" >
                                                     <a href="{{ route('bookings.edit', encrypt($booking->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" data-title="Edit" title="Edit" >

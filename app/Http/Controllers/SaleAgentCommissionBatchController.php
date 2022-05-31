@@ -62,6 +62,12 @@ class SaleAgentCommissionBatchController extends Controller
             ->whereIn('sale_person_payment_status', [0,1])
             ->where('commission_amount', '>', 0);
 
+            $query->when($request->departure_date, function ($query) use ($request) {
+
+                $dates = Helper::dates($request->departure_date);
+                $query->whereBetween('departure_date', [$dates->start_date, $dates->end_date]);
+            });
+
             $bookings = $query->select([
                 'season_id',
                 'brand_id',
