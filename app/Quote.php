@@ -22,6 +22,7 @@ class Quote extends Model
         'default_supplier_currency_id',
         'commission_id',
         'commission_group_id',
+        'commission_criteria_id',
         'booking_details',
         'reason_for_trip',
         'sale_person_currency_id',
