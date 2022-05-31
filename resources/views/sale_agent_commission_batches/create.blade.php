@@ -257,7 +257,7 @@
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
                                                             {{ $supplier_default_currency_code }} {{ Helper::number_format(0) }}
                                                         @else
-                                                            {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
                                                         @endif
                                                     </td> 
 
@@ -265,7 +265,7 @@
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
                                                             {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
                                                         @else
-                                                            {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
                                                         @endif
                                                     </td> 
 
