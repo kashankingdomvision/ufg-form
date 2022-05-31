@@ -161,7 +161,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body p-0">
+                        <div class="card-body p-0" id="listing_card_body">
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
@@ -251,7 +251,14 @@
                                                     </td>
 
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
-                                                    <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
+                                                    <td>
+                                                        {{ $supplier_default_currency_code }}
+                                                        {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
+
+                                                        <button type="button" data-booking_ID="{{ $booking->id }}" data-sale_agent_currency_code="{{ $supplier_default_currency_code }}" data-sale_agent_commission_amount="{{ $booking->commission_amount_in_sale_person_currency }}" class="update-booking-commission ml-2 btn btn-outline-success btn-xs" title="Edit Commission">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
@@ -346,6 +353,7 @@
     </section>
 </form>
 
+    @include('sale_agent_commission_batches.includes.update_booking_commission_modal')
 </div>
 @endsection
 @push('js')

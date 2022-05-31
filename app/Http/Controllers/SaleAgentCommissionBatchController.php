@@ -389,6 +389,32 @@ class SaleAgentCommissionBatchController extends Controller
         ]);
     }
 
+    public function updateBookingCommission(Request $request)
+    {
+        if($request->filled('booking_id')){
+    
+            $booking = Booking::with([
+                'getSalePersonCurrency',
+            ])
+            ->find($request->booking_id);
+
+            $rate = Helper::getCurrencyConversionRate($booking->getSalePersonCurrency->code, $booking->getCurrency->code, $booking->rate_type);
+
+            $booking->update([
+                'commission_amount_in_sale_person_currency' => $request->adjust_commission_amount,
+                'commission_amount' => $request->adjust_commission_amount * $rate,
+                'commission_percentage' => null,
+                'commission_criteria_id' => null,
+            ]);
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Commission Update Successfully.',
+                'redirect_url'    => route('pay_commissions.commission_review') 
+            ]);
+        }
+    }
+
     public function salePersonCommissionBulkAction(Request $request)
     {
         // dd($request->all());

@@ -490,6 +490,45 @@ $(document).ready(function () {
     $('#booking_currency_code').val(bookingCurrencyCode);
     $('.batch-id').val(batchID);
   });
+  $(document).on('click', ".update-booking-commission", function (event) {
+    var modal = $('#update_booking_commission_modal');
+    modal.modal('show');
+    var bookingID = $(this).data('booking_id');
+    var saleAgentCurrencyCode = $(this).data('sale_agent_currency_code');
+    var saleAgentCommissionAmount = $(this).data('sale_agent_commission_amount');
+    $('.sale-person-currency-code').html(saleAgentCurrencyCode);
+    $('#booking_id').val(bookingID);
+    $('#current_commission_amount').val(check(saleAgentCommissionAmount));
+  });
+  $(document).on('submit', '#update_booking_commission_form', function (event) {
+    event.preventDefault();
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: $(this).attr('action'),
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addModalFormLoadingStyles("#".concat(formID));
+      },
+      success: function success(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        $("#update_booking_commission_modal").modal('hide');
+        $("#listing_card_body").load("".concat(location.href, " #listing_card_body"));
+        Toast.fire({
+          icon: 'success',
+          title: response.success_message
+        });
+      },
+      error: function error(response) {
+        removeModalFormLoadingStyles("#".concat(formID));
+        printModalServerValidationErrors(response, "#".concat(formID));
+      }
+    });
+  });
   $(document).on('submit', "#pay_batch_modal_form", function (event) {
     event.preventDefault();
     var url = $(this).attr('action');

@@ -323,6 +323,7 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::post('sale-person-commission-bulk-action', array('as' => 'sale_person_commission_bulk_action', 'uses' => 'SaleAgentCommissionBatchController@salePersonCommissionBulkAction' ));
 
+        Route::patch('update-booking-commission', array('as' => 'update_booking_commission', 'uses' => 'SaleAgentCommissionBatchController@updateBookingCommission' ));
 
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
         // Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
