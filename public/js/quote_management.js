@@ -2257,10 +2257,11 @@ $(document).ready(function () {
     }
 
     if (markupType == 'whole') {
-      // $(".total-markup-amount").val(parseFloat(0).toFixed(2));
-      // $(".total-markup-percent").val(parseFloat(0).toFixed(2));
-      // $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
-      $(".total-selling-price").val(check(estimatedCostInBookingCurrency));
+      var totalMarkupAmount = removeComma($(".total-markup-amount").val());
+
+      var _sellingPriceInBookingCurrency = parseFloat(estimatedCostInBookingCurrency) + parseFloat(totalMarkupAmount);
+
+      $(".total-selling-price").val(check(_sellingPriceInBookingCurrency));
     }
 
     onChangeAgencyCommissionType();
@@ -2298,6 +2299,13 @@ $(document).ready(function () {
         $("#quote_".concat(key, "_markup_percentage")).val(check(calculatedMarkupPercentage));
         $("#quote_".concat(key, "_selling_price")).val(check(calculatedSellingPrice));
         $("#quote_".concat(key, "_selling_price_in_booking_currency")).val(check(calculatedSellingPriceInBookingCurrency));
+      }
+
+      if (markupType == 'whole') {
+        var totalNetPrice = removeComma($('.total-net-price').val());
+        var totalMarkupPercentage = removeComma($('.total-markup-percent').val());
+        var totalMarkupAmount = parseFloat(totalNetPrice / 100) * parseFloat(totalMarkupPercentage);
+        $('.total-markup-amount').val(check(totalMarkupAmount));
       }
     }
 
