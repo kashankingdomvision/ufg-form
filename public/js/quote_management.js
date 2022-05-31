@@ -378,7 +378,11 @@ $(document).ready(function () {
       // $(".total-markup-amount").val(parseFloat(0).toFixed(2));
       // $(".total-markup-percent").val(parseFloat(0).toFixed(2));
       // $(".total-profit-percentage").val(parseFloat(0).toFixed(2));
-      $(".total-selling-price").val(check(actualCostInBookingCurrency));
+      var totalMarkupAmount = removeComma($(".total-markup-amount").val());
+
+      var _sellingPriceInBookingCurrency = parseFloat(actualCostInBookingCurrency) + parseFloat(totalMarkupAmount);
+
+      $(".total-selling-price").val(check(_sellingPriceInBookingCurrency));
     }
 
     onChangeAgencyCommissionType();
