@@ -456,9 +456,6 @@ class SaleAgentCommissionBatchController extends Controller
 
     }
 
-
-    
-
     public function salePersonCommissionBulkAction(Request $request)
     {
         // dd($request->all());
@@ -493,8 +490,6 @@ class SaleAgentCommissionBatchController extends Controller
         //         'message' => "Something Went Wrong, Please Try Again."
         //     ]);
         // }
-
- 
     }
 
 }

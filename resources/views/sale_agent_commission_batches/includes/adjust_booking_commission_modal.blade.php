@@ -8,7 +8,7 @@
           </button>
         </div>
         <form action="{{ route('pay_commissions.adjust_commission') }}" method="POST" id="adjust_booking_commission_form">
-          @csrf 
+          @csrf @method('patch')
 
             <div class="modal-body">
 
