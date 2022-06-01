@@ -325,6 +325,8 @@ Route::group(['middleware' => ['auth']], function(){
 
         Route::patch('update-booking-commission', array('as' => 'update_booking_commission', 'uses' => 'SaleAgentCommissionBatchController@updateBookingCommission' ));
 
+        Route::patch('store-sale-person-bonus', array('as' => 'store_sale_person_bonus', 'uses' => 'SaleAgentCommissionBatchController@storeSalePersonBonus' ));
+
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
         // Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
         // Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));

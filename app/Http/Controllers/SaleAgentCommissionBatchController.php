@@ -86,6 +86,7 @@ class SaleAgentCommissionBatchController extends Controller
                 'selling_price',
                 'markup_amount',
                 'markup_percentage',
+                'sale_person_bonus_amount'
             ])
             ->get()
             // ->take(1)
@@ -391,8 +392,18 @@ class SaleAgentCommissionBatchController extends Controller
 
     public function updateBookingCommission(Request $request)
     {
-        if($request->filled('booking_id')){
+        $this->validate(
+            $request, 
+            [
+                'update_commission_amount' => 'required',
+            ],
+            [
+                'update_commission_amount.required' => 'The Commission Amount field is required.',
+            ]
+        );
     
+        if($request->filled('booking_id')){
+
             $booking = Booking::with([
                 'getSalePersonCurrency',
             ])
@@ -414,6 +425,39 @@ class SaleAgentCommissionBatchController extends Controller
             ]);
         }
     }
+
+    public function storeSalePersonBonus(Request $request)
+    {
+        $this->validate(
+            $request, 
+            [
+                'sale_person_bonus_amount' => 'required',
+            ],
+            [
+                'sale_person_bonus_amount.required' => 'The Bonus Amount field is required.',
+            ]
+        );
+
+        if($request->filled('booking_id')){
+    
+            $booking = Booking::find($request->booking_id);
+
+            $booking->update([
+                'sale_person_bonus_amount' => $request->sale_person_bonus_amount,
+            ]);
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Bonus Added Successfully.',
+                'redirect_url'    => ''
+            ]);
+        }
+
+
+    }
+
+
+    
 
     public function salePersonCommissionBulkAction(Request $request)
     {

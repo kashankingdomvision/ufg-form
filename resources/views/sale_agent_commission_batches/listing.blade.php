@@ -115,6 +115,7 @@
                               <th>Pay Commission Amount</th>
                               <th style="min-width: 210px;">Total Paid Amount</th>
                               <th>Total Outstanding Amount</th>
+                              <th>Bonus Amount</th>
                               <th>Status</th>
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
@@ -144,6 +145,10 @@
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                                <td>
+                                  {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }}
+                                  {{ isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) ? Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) : '' }} 
+                                </td>
                                 <td> {!! $sacb_details->formatted_status !!} </td>
                               </tr>
                             @endforeach

@@ -71,6 +71,7 @@ class Booking extends Model
         'departure_date',
         'return_date',
         'sale_person_payment_status',
+        'sale_person_bonus_amount',
     ];
     
     public function getVersionAttribute()

@@ -11,7 +11,7 @@
         @csrf @method('PATCH')
 
         <div class="modal-body">
-          <input type="hidden" name="booking_id" id="booking_id" value="" class="form-control hide-arrows" readonly>
+          <input type="hidden" name="booking_id" value="" class="form-control booking-id hide-arrows" readonly>
 
           <div class="form-group">
             <label>Current Commission Amount <span style="color:red">*</span></label>
@@ -24,13 +24,14 @@
           </div>
 
           <div class="form-group">
-            <label>Adjust Commission Amount <span style="color:red">*</span></label>
+            <label>Update Commission Amount <span style="color:red">*</span></label>
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text sale-person-currency-code"></span>
               </div>
-              <input type="text" name="adjust_commission_amount" id="adjust_commission_amount" value="" class="form-control adjust-commission-amount hide-arrows">
+              <input type="text" name="update_commission_amount" id="update_commission_amount" value="" class="form-control update-commission-amount hide-arrows">
             </div>
+            <span class="text-danger" role="alert"></span>
           </div>
         </div>
             

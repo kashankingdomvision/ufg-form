@@ -111,6 +111,7 @@
                               <th>Total Outstanding Amount</th>
                               <th>Status</th>
                               <th>Dispute Detail</th>
+                              <th>Bonus Amount</th>
                               <th>Action</th>
                             </tr>
                             @foreach($sac_batch->getSaleAgentCommissionBatchDetails as $sacb_details)
@@ -136,6 +137,10 @@
                                     @else
                                       -
                                   @endif
+                                </td>
+                                <td>
+                                  {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }}
+                                  {{ isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) ? Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) : '' }} 
                                 </td>
                                 <td>
                                   @if($sacb_details->status == 'dispute')

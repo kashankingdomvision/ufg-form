@@ -190,6 +190,10 @@
                                             <th>Pay Commission Amount</th>
                                             <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
+                                            <th>Agent's Bonus</th>
+                                            @if(isset($send_to_agent) && $send_to_agent == 0)
+                                                <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -255,9 +259,7 @@
                                                         {{ $supplier_default_currency_code }}
                                                         {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
 
-                                                        <button type="button" data-booking_ID="{{ $booking->id }}" data-sale_agent_currency_code="{{ $supplier_default_currency_code }}" data-sale_agent_commission_amount="{{ $booking->commission_amount_in_sale_person_currency }}" class="update-booking-commission ml-2 btn btn-outline-success btn-xs" title="Edit Commission">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
+                                                
                                                     </td>
 
                                                     <td>
@@ -303,6 +305,37 @@
                                                           <input type="text" name="finance[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                         </div>
                                                     </td>
+
+                                                    <td>
+                                                        @if(is_null($booking->sale_person_bonus_amount))
+                                                            -
+                                                        @else
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->sale_person_bonus_amount) }}
+                                                        @endif
+                                                    </td>
+
+                                                    @if(isset($send_to_agent) && $send_to_agent == 0)
+                                                        <td>
+                                                            @if($booking->sale_person_payment_status == 0)
+                                                                <button type="button" 
+                                                                    data-booking_id="{{ $booking->id }}" 
+                                                                    data-sale_agent_currency_code="{{ $supplier_default_currency_code }}"
+                                                                    data-sale_agent_commission_amount="{{ $booking->commission_amount_in_sale_person_currency }}"
+                                                                    class="update-booking-commission ml-2 btn btn-outline-success btn-xs" title="Edit Commission"
+                                                                >
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+
+                                                                <button type="button" 
+                                                                    data-booking_id="{{ $booking->id }}"
+                                                                    data-sale_agent_currency_code="{{ $supplier_default_currency_code }}"
+                                                                    class="store-sale-person-bonus ml-1 btn btn-outline-info btn-xs" title="Add Bonus">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                    @endif
+
                                                 </tr>
 
                                             @endforeach
@@ -353,7 +386,9 @@
     </section>
 </form>
 
-    @include('sale_agent_commission_batches.includes.update_booking_commission_modal')
+    @include('sale_agent_commission_batches.includes.update_sale_person_commission_modal')
+    @include('sale_agent_commission_batches.includes.store_sale_person_bonus_modal')
+
 </div>
 @endsection
 @push('js')
