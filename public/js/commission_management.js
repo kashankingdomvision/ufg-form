@@ -100,6 +100,8 @@ __webpack_require__(/*! ./commission_management/commission_criteria_app.js */ ".
 
 __webpack_require__(/*! ./commission_management/pay_commission.js */ "./resources/js/commission_management/pay_commission.js");
 
+__webpack_require__(/*! ./commission_management/sale_person_payment_app.js */ "./resources/js/commission_management/sale_person_payment_app.js");
+
 /***/ }),
 
 /***/ "./resources/js/commission_management/commission_app.js":
@@ -784,6 +786,74 @@ $(document).ready(function () {
         printListingErrorMessage("Please Check Atleast One Record.");
       }
     }
+  });
+});
+
+/***/ }),
+
+/***/ "./resources/js/commission_management/sale_person_payment_app.js":
+/*!***********************************************************************!*\
+  !*** ./resources/js/commission_management/sale_person_payment_app.js ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+$(document).ready(function () {
+  $(document).on('submit', '#store_sale_person_payment', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('submit', '#update_sale_person_payment', function (event) {
+    event.preventDefault();
+    var url = $(this).attr('action');
+    var formID = $(this).attr('id');
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: new FormData(this),
+      contentType: false,
+      cache: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        removeFormValidationStyles();
+        addFormLoadingStyles();
+      },
+      success: function success(response) {
+        removeFormLoadingStyles();
+        printServerSuccessMessage(response, "#".concat(formID));
+      },
+      error: function error(response) {
+        removeFormLoadingStyles();
+        printServerValidationErrors(response);
+      }
+    });
+  });
+  $(document).on('change', '.sale-person-id', function (event) {
+    var salePersonCurrencyID = $(this).find(":selected").data('sale_person_currency_id');
+    var salePersonCurrencyCode = $(this).find(":selected").data("sale_person_currency_code");
+    $('.sale-person-currency-id').val(salePersonCurrencyID);
+    $('.sale-person-currency-code').html(salePersonCurrencyCode);
   });
 });
 

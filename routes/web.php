@@ -316,21 +316,35 @@ Route::group(['middleware' => ['auth']], function(){
         
         Route::get('commission-management', array('as' => 'commission_management', 'uses' => 'SaleAgentCommissionBatchController@commissionManagement'));
         Route::patch('commission-action/{type}/{batch_id}/{id}', array('as' => 'commission_action', 'uses' => 'SaleAgentCommissionBatchController@commissionAction' ));
-
         Route::patch('pay-batch', array('as' => 'pay_batch', 'uses' => 'SaleAgentCommissionBatchController@payBatch' ));
-
-        Route::post('adjust-commission', array('as' => 'adjust_commission', 'uses' => 'SaleAgentCommissionBatchController@adjustCommission' ));
-
+        Route::patch('adjust-commission', array('as' => 'adjust_commission', 'uses' => 'SaleAgentCommissionBatchController@adjustCommission' ));
         Route::post('sale-person-commission-bulk-action', array('as' => 'sale_person_commission_bulk_action', 'uses' => 'SaleAgentCommissionBatchController@salePersonCommissionBulkAction' ));
-
         Route::patch('update-booking-commission', array('as' => 'update_booking_commission', 'uses' => 'SaleAgentCommissionBatchController@updateBookingCommission' ));
-
         Route::patch('store-sale-person-bonus', array('as' => 'store_sale_person_bonus', 'uses' => 'SaleAgentCommissionBatchController@storeSalePersonBonus' ));
+
+
+        Route::get('create-sale-person-payment', array('as' => 'create_sale_person_payment', 'uses' => 'SaleAgentCommissionBatchController@storeSalePersonPayment'));
+        Route::post('store-sale-person-payment', array('as' => 'store_sale_person_payment', 'uses' => 'SaleAgentCommissionBatchController@storeSalePersonPayment' ));
+
 
         // Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'CommissionCriteriaController@edit'));
         // Route::put('update/{id}', array('as' => 'update', 'uses' => 'CommissionCriteriaController@update'));
         // Route::delete('delete/{id}', array('as' => 'destroy', 'uses' => 'CommissionCriteriaController@destroy'));
         // Route::post('bulk-action', array('as' => 'bulk.action', 'uses' => 'CommissionCriteriaController@bulkAction' ));
+    });
+
+    /* Sale Person Payment */
+    Route::group([
+        'prefix' => 'sale-person-payments',
+        'as'     => 'sale_person_payments.'
+    ], function () {
+        
+        Route::get('index', array('as' => 'index', 'uses' => 'SalePersonPaymentController@index'));
+        Route::get('create', array('as' => 'create', 'uses' => 'SalePersonPaymentController@create'));
+        Route::post('store', array('as' => 'store', 'uses' => 'SalePersonPaymentController@store'));
+        Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SalePersonPaymentController@edit'));
+        Route::put('update/{id}', array('as' => 'update', 'uses' => 'SalePersonPaymentController@update'));
+
     });
     
     /*

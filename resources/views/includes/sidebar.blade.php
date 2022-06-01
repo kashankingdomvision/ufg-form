@@ -232,7 +232,9 @@
                 <li class="nav-item {{ in_array($route, [
                     'pay_commissions.index', 'pay_commissions.create', 
                     'pay_commissions.commission_review',
-                    'pay_commissions.commission_management'
+                    'pay_commissions.commission_management',
+                    'sale_person_payments.index',
+                    'sale_person_payments.create',
                     ]) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
@@ -255,15 +257,24 @@
                                 </a>
                             </li>
 
-                        <li class="nav-item">
-                            <a href="{{ route('pay_commissions.commission_review') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.commission_review']) ? 'active' : '' }}">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    Commission Review
-                                </p>
-                            </a>
-                        </li>
-                    @endif
+                            <li class="nav-item">
+                                <a href="{{ route('pay_commissions.commission_review') }}" class="nav-link sidebar-border-left {{ in_array($route, ['pay_commissions.commission_review']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Commission Review
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('sale_person_payments.index') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.index', 'sale_person_payments.create', 'sale_person_payments.listing']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Sale Person's Payment
+                                    </p>
+                                </a>
+                            </li>
+                        @endif
 
 
                         @if(auth()->user()->getRole->slug == 'sales-agent')
@@ -277,7 +288,6 @@
                                 </a>
                             </li>
                         @endif
-
                     </ul>
                 </li>
 
