@@ -86,7 +86,6 @@
                           </td>
                           <td>
                             <a href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
-                            <a href="{{ route('account_allocation.edit', encrypt($sp_payment->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Account Allocation"><i class="fa fa-fw fa-tasks"></i></a>
                           </td>
                         </tr>
                       @endforeach
