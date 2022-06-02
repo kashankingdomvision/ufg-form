@@ -143,7 +143,18 @@
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }} </td>
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->pay_commission_amount) }} </td>
-                                <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }} </td>
+                                <td> 
+                                @if($sacb_details->status != 'dispute') 
+                                    <a href="javascript:void(0)" class="view-detail" data-booking_id="{{$sacb_details->booking_id}}"> 
+                                    {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} 
+                                      {{ Helper::number_format($sacb_details->total_paid_amount) }}
+                                    </a>
+                                  @else
+                                    {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} 
+                                    {{ Helper::number_format($sacb_details->total_paid_amount) }}
+                                  @endif
+                                  <!-- {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount) }}  -->
+                                </td>
                                 <td> {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
                                 <td>
                                   {{ isset($sacb_details->getBooking->getCurrency->code) ? $sacb_details->getBooking->getCurrency->code : ''  }}
@@ -176,10 +187,12 @@
   </section>
 
 </div>
+@include('sale_agent_commission_batches.includes.view_detail_modal')
 @endsection
 
 @push('js')
   <script src="{{ asset('js/quote_management.js') }}" ></script>
+  <script src="{{ asset('js/commission_management.js') }}" ></script>
 @endpush
 
 {{-- <section class="content p-2">
