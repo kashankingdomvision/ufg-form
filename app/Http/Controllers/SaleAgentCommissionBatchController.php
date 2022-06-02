@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\PayBatchRequest;
 use App\Http\Helper;
+use Carbon\Carbon;
 
 use App\User;
 use App\Season;
@@ -41,10 +42,7 @@ class SaleAgentCommissionBatchController extends Controller
     public function create(Request $request)
     {
 
-
-
-
-        $data['users']            = User::get();
+        $data['users']            = User::role(['sales-agent'])->get();
         $data['seasons']          = Season::all();
         $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
 
@@ -64,6 +62,12 @@ class SaleAgentCommissionBatchController extends Controller
             ->whereIn('sale_person_payment_status', [0,1])
             ->where('commission_amount', '>', 0);
 
+            $query->when($request->departure_date, function ($query) use ($request) {
+
+                $dates = Helper::dates($request->departure_date);
+                $query->whereBetween('departure_date', [$dates->start_date, $dates->end_date]);
+            });
+
             $bookings = $query->select([
                 'season_id',
                 'brand_id',
@@ -78,10 +82,17 @@ class SaleAgentCommissionBatchController extends Controller
                 'id',
                 'commission_amount_in_sale_person_currency',
                 'sale_person_payment_status',
+                'departure_date',
+                'selling_price',
+                'markup_amount',
+                'markup_percentage',
+                'sale_person_bonus_amount'
             ])
             ->get()
             // ->take(1)
             ;
+
+            // dd($bookings);
 
             $data['sale_person_id'] = $request->sale_person_id;
             $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
@@ -108,7 +119,8 @@ class SaleAgentCommissionBatchController extends Controller
             'total_outstanding_amount' => $request->total_outstanding_amount,
             'sale_person_id'           => $request->sale_person_id,
             'sale_person_currency_id'  => $request->sale_person_currency_id,
-            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid'
+            'status'                   => $request->send_to_agent == 0 ? 'pending' : 'paid',
+            'deposit_date'             => $request->send_to_agent == 1 ? Carbon::today()->toDateString() : null
         ]);
 
         foreach ($request->finance as $key => $finance) {
@@ -165,7 +177,8 @@ class SaleAgentCommissionBatchController extends Controller
 
             $sac_batch->update([
                 'payment_method_id' => $request->payment_method_id,
-                'status' => 'paid'
+                'status'            => 'paid',
+                'deposit_date'      => Carbon::today()->toDateString()
             ]);
 
             $sac_batch->getSaleAgentCommissionBatchDetails()
@@ -232,6 +245,7 @@ class SaleAgentCommissionBatchController extends Controller
             'getSaleAgentCommissionBatchDetails.getBooking.getSeason',
         ])
         ->orderBy('id', 'DESC')
+        ->where('sale_person_id', auth()->user()->id)
         ->get();
 
         return view('sale_agent_commission_batches.commission_management', $data);
@@ -374,6 +388,72 @@ class SaleAgentCommissionBatchController extends Controller
         ]);
     }
 
+    public function updateBookingCommission(Request $request)
+    {
+        $this->validate(
+            $request, 
+            [
+                'update_commission_amount' => 'required',
+            ],
+            [
+                'update_commission_amount.required' => 'The Commission Amount field is required.',
+            ]
+        );
+    
+        if($request->filled('booking_id')){
+
+            $booking = Booking::with([
+                'getSalePersonCurrency',
+            ])
+            ->find($request->booking_id);
+
+            $rate = Helper::getCurrencyConversionRate($booking->getSalePersonCurrency->code, $booking->getCurrency->code, $booking->rate_type);
+
+            $booking->update([
+                'commission_amount_in_sale_person_currency' => $request->adjust_commission_amount,
+                'commission_amount' => $request->adjust_commission_amount * $rate,
+                'commission_percentage' => null,
+                'commission_criteria_id' => null,
+            ]);
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Commission Update Successfully.',
+                'redirect_url'    => route('pay_commissions.commission_review') 
+            ]);
+        }
+    }
+
+    public function storeSalePersonBonus(Request $request)
+    {
+        $this->validate(
+            $request, 
+            [
+                'sale_person_bonus_amount' => 'required',
+            ],
+            [
+                'sale_person_bonus_amount.required' => 'The Bonus Amount field is required.',
+            ]
+        );
+
+        if($request->filled('booking_id')){
+    
+            $booking = Booking::find($request->booking_id);
+
+            $booking->update([
+                'sale_person_bonus_amount' => $request->sale_person_bonus_amount,
+            ]);
+
+            return response()->json([ 
+                'status'          => true, 
+                'success_message' => 'Bonus Added Successfully.',
+                'redirect_url'    => ''
+            ]);
+        }
+
+
+    }
+
     public function salePersonCommissionBulkAction(Request $request)
     {
         // dd($request->all());
@@ -408,8 +488,6 @@ class SaleAgentCommissionBatchController extends Controller
         //         'message' => "Something Went Wrong, Please Try Again."
         //     ]);
         // }
-
- 
     }
 
     public function viewCommissionDetail($booking_id)

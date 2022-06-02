@@ -62,6 +62,7 @@ class CreateBookingsTable extends Migration
             $table->double('commission_amount')->nullable();
             $table->double('commission_amount_in_sale_person_currency')->nullable();
             $table->double('commission_percentage')->nullable();
+            $table->double('sale_person_bonus_amount')->nullable();
             $table->string('selling_currency_oc')->nullable();
             $table->double('selling_price_ocr')->nullable();
             $table->double('booking_amount_per_person_in_osp', 8, 2)->nullable();

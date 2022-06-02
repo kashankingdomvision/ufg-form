@@ -1129,7 +1129,8 @@
                   </div>
                 </div>
 
-                <div class="form-group row {{ ($quote->user_id != $quote->sale_person_id) ? 'd-none' : '' }}" id="potential_commission_feild">
+                {{-- {{ ($quote->user_id != $quote->sale_person_id) ? 'd-none' : '' }} --}}
+                <div class="form-group row" id="potential_commission_feild">
                   <label for="inputEmail3" class="col-md-4 col-form-label">
                     Staff Commission
                     <h5>

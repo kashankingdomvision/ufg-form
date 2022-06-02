@@ -22,6 +22,7 @@ class Quote extends Model
         'default_supplier_currency_id',
         'commission_id',
         'commission_group_id',
+        'commission_criteria_id',
         'booking_details',
         'reason_for_trip',
         'sale_person_currency_id',
@@ -69,13 +70,13 @@ class Quote extends Model
 
         'rate_type',
         'markup_type',
+        
+        'revelant_quote',
 
         'status',
         'booking_date',
         'is_archive',
         'tas_ref',
-        'revelant_quote',
-        'stored_text',
         'departure_date',
         'return_date',
         'created_by',

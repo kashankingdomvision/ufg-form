@@ -68,6 +68,8 @@ class CreateQuotesTable extends Migration
             $table->enum('rate_type', ['live','manual'])->default('live');
             $table->enum('markup_type', ['itemised', 'whole'])->default('itemised');
 
+            $table->text('revelant_quote')->nullable();
+
             $table->enum('status', ['quote','booked','cancelled'])->default('quote');
             $table->dateTime('booking_date')->nullable();
             $table->boolean('is_archive')->default(0);

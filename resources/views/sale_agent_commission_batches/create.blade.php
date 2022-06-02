@@ -14,8 +14,8 @@
                 <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a>Home</a></li>
-                    <li class="breadcrumb-item"><a>Supplier Bulk Payments</a></li>
-                    <li class="breadcrumb-item active">Add Supplier Bulk Payments </li>
+                    <li class="breadcrumb-item"><a>Pay Com. Management</a></li>
+                    <li class="breadcrumb-item active">Pay Commission</li>
                 </ol>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                                     <div class="form-group">
                                         <label>Season</label>
                                         <select class="form-control select2single" name="season">
-                                            <option value="">Select Supplier </option>
+                                            <option value="">Select Season </option>
                                             @foreach ($seasons as $season)
                                                 <option value="{{ $season->id }}" {{ (request()->get('season_id') == $season->id || $season->default == 1  ) ? 'selected' : '' }}>{{ $season->name }}</option>
                                             @endforeach
@@ -67,6 +67,14 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Departure Date</label>
+                                        <input type="text" name="departure_date" value="{{ request()->departure_date }}" autocomplete="off" class="form-control date-range-picker">
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="row mt-1">
@@ -153,7 +161,7 @@
                             </div>
                         </div>
 
-                        <div class="card-body p-0">
+                        <div class="card-body p-0" id="listing_card_body">
                             <div class="table-responsive">
                                 <table class="table table-hover text-nowrap">
                                     <thead>
@@ -171,6 +179,10 @@
                                             <th>Holiday Type</th>
                                             <th>Season</th>
                                             <th>Com. Criteria</th>
+                                            <th>Departure Date</th>
+                                            <th>Selling Price</th>
+                                            <th>Total Markup Amount</th>
+                                            <th>Total Markup Percentage</th>
                                             <th>Com. Amount</th>
                                             <th>Com. Amount in Agent's Currency</th>
                                             <th>Total Paid Amount Yet</th>
@@ -178,6 +190,10 @@
                                             <th>Pay Commission Amount</th>
                                             <th style="min-width: 250px;">Total Paid Amount</th>
                                             <th>Total Outstanding Amount</th>
+                                            <th>Agent's Bonus</th>
+                                            @if(isset($send_to_agent) && $send_to_agent == 0)
+                                                <th>Action</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -224,14 +240,33 @@
                                                             <span class="badge badge-info" title="Commission Percentage">{{ !is_null($booking->getCommissionCriteria) ? $booking->getCommissionCriteria->percentage.' %' : '' }}</span>
                                                         </h5>
                                                     </td>
+                                                    <td> {{ $booking->departure_date }} </td>
+
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }} 
+                                                        {{ Helper::number_format($booking->selling_price) }} </td>
+                                                    <td>
+                                                        {{ !is_null($booking->getCurrency) ? $booking->getCurrency->code : '' }}
+                                                        {{ Helper::number_format($booking->markup_amount) }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ Helper::number_format($booking->markup_percentage).' %' }}
+                                                    </td>
+
                                                     <td>{{ isset($booking->getCurrency->code) ? $booking->getCurrency->code : '' }} {{ Helper::number_format($booking->commission_amount) }}</td>
-                                                    <td>{{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }} </td>
+                                                    <td>
+                                                        {{ $supplier_default_currency_code }}
+                                                        {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
+
+                                                
+                                                    </td>
 
                                                     <td>
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
                                                             {{ $supplier_default_currency_code }} {{ Helper::number_format(0) }}
                                                         @else
-                                                            {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_paid_amount) }}
                                                         @endif
                                                     </td> 
 
@@ -239,7 +274,7 @@
                                                         @if(is_null($booking->getLastSaleAgentCommissionBatchDetails))
                                                             {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->commission_amount_in_sale_person_currency) }}
                                                         @else
-                                                            {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->getLastSaleAgentCommissionBatchDetails->total_outstanding_amount) }}
                                                         @endif
                                                     </td> 
 
@@ -270,12 +305,43 @@
                                                           <input type="text" name="finance[{{$key}}][row_total_outstanding_amount]" class="form-control row-total-outstanding-amount remove-zero-values hide-arrows" value="0.00" style="max-width: 100px;" readonly>
                                                         </div>
                                                     </td>
+
+                                                    <td>
+                                                        @if(is_null($booking->sale_person_bonus_amount))
+                                                            -
+                                                        @else
+                                                            {{ $supplier_default_currency_code }} {{ Helper::number_format($booking->sale_person_bonus_amount) }}
+                                                        @endif
+                                                    </td>
+
+                                                    @if(isset($send_to_agent) && $send_to_agent == 0)
+                                                        <td>
+                                                            @if($booking->sale_person_payment_status == 0)
+                                                                <button type="button" 
+                                                                    data-booking_id="{{ $booking->id }}" 
+                                                                    data-sale_agent_currency_code="{{ $supplier_default_currency_code }}"
+                                                                    data-sale_agent_commission_amount="{{ $booking->commission_amount_in_sale_person_currency }}"
+                                                                    class="update-booking-commission ml-2 btn btn-outline-success btn-xs" title="Edit Commission"
+                                                                >
+                                                                    <i class="fas fa-edit"></i>
+                                                                </button>
+
+                                                                <button type="button" 
+                                                                    data-booking_id="{{ $booking->id }}"
+                                                                    data-sale_agent_currency_code="{{ $supplier_default_currency_code }}"
+                                                                    class="store-sale-person-bonus ml-1 btn btn-outline-info btn-xs" title="Add Bonus">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                    @endif
+
                                                 </tr>
 
                                             @endforeach
 
                                             <tr class="border-top border-bottom">
-                                                <td colspan="12"></td>
+                                                <td colspan="16"></td>
                                                 
                                                 <td class="font-weight-bold">
                                                     <span>{{ $supplier_default_currency_code }}</span>
@@ -291,7 +357,7 @@
                                             </tr>
 
                                             <tr class="mt-2">
-                                                <td colspan="13"></td>
+                                                <td colspan="17"></td>
                                                 <td class="d-flex justify-content-left">
                                                     <button type="submit" class="btn btn-success float-right mr-3"><span class="mr-2 "></span> {{ isset($send_to_agent) && $send_to_agent == 0 ? 'Save & Send to Agent' : 'Pay' }} &nbsp; </button>
                                                     <a href="{{ route('pay_commissions.index') }}" class="btn btn-danger float-right ">Cancel</a>
@@ -319,6 +385,9 @@
         </div>
     </section>
 </form>
+
+    @include('sale_agent_commission_batches.includes.update_sale_person_commission_modal')
+    @include('sale_agent_commission_batches.includes.store_sale_person_bonus_modal')
 
 </div>
 @endsection

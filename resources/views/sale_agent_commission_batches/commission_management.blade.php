@@ -100,6 +100,7 @@
                       <th>Status</th>
                       <th>Total Paid Amount</th>
                       <th>Total Outstanding Amount</th>
+                      <th>Deposit Date</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -125,6 +126,7 @@
                           <td>{!! $sac_batch->formatted_status !!}</td>
                           <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_paid_amount) }}</td>
                           <td>{{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} {{ Helper::number_format($sac_batch->total_outstanding_amount) }}</td>
+                          <td>{{ $sac_batch->formatted_deposit_date }}</td>
                           
                           <tbody class="child-row d-none" id="child-row-{{$sac_batch->id}}">
                             <tr>
@@ -135,12 +137,17 @@
                               <th>Brand</th>
                               <th>Holiday Type</th>
                               <th>Season</th>
+                              <th>Departure Date</th>
+                              <th>Selling Price</th>
+                              <th>Total Markup Amount</th>
+                              <th>Total Markup Percentage</th>
                               <th>Com. Amount in Agent's Currency</th>
                               <th>Total Paid Amount Yet</th>
                               <th>Outstanding Amount Left</th>
                               <th>Pay Commission Amount</th>
                               <th style="min-width: 210px;">Total Paid Amount</th>
                               <th>Total Outstanding Amount</th>
+                              <th>Bonus Amount</th>
                               <th>Status</th>
                               <th style="width: 50%">Dispute Detail</th>
                               <th>Action</th>
@@ -160,6 +167,19 @@
                                 <td> {{ !is_null($sacb_details->getBooking->getBrand) ? $sacb_details->getBooking->getBrand->name : '' }} </td>
                                 <td> {{ !is_null($sacb_details->getBooking->getHolidayType) ? $sacb_details->getBooking->getHolidayType->name : '' }} </td>
                                 <td> {{ !is_null($sacb_details->getBooking->getSeason) ? $sacb_details->getBooking->getSeason->name : '' }} </td>
+                                <td> {{ isset($sacb_details->getBooking->departure_date) && !empty($sacb_details->getBooking->departure_date) ? $sacb_details->getBooking->departure_date : '' }} </td>
+                                <td>
+                                  {{ isset($sacb_details->getBooking->getCurrency) && !empty($sacb_details->getBooking->getCurrency) ? $sacb_details->getBooking->getCurrency->code : '' }} 
+                                  {{ Helper::number_format($sacb_details->getBooking->selling_price) }} 
+                                </td>
+                                <td>
+                                  {{ isset($sacb_details->getBooking->getCurrency) && !empty($sacb_details->getBooking->getCurrency) ? $sacb_details->getBooking->getCurrency->code : '' }}
+                                  {{ Helper::number_format($sacb_details->getBooking->markup_amount) }}
+                                </td>
+                                <td>
+                                  {{ isset($sacb_details->getBooking->getCurrency) && !empty($sacb_details->getBooking->getCurrency) ? $sacb_details->getBooking->getCurrency->code : '' }}
+                                  {{ Helper::number_format($sacb_details->getBooking->markup_percentage).' %' }}
+                                </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->commission_amount_in_sale_person_currency) }} </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_paid_amount_yet) }}</td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->outstanding_amount_left) }} </td>
@@ -176,6 +196,10 @@
                                   @endif
                                </td>
                                 <td> {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }} {{ Helper::number_format($sacb_details->total_outstanding_amount) }} </td>
+                                <td>
+                                  {{ isset($sac_batch->getSalePersonCurrency->code) && !empty($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : '' }} 
+                                  {{ isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) ? Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) : '' }}
+                                </td>
                                 <td> {!! $sacb_details->formatted_status !!} </td>
                                 <td>
                                   @if(!empty($sacb_details->dispute_detail))

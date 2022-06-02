@@ -247,7 +247,7 @@ class QuoteController extends Controller
             $data['quote_ref']              = $request->quote_no??$request->quote_ref;
             $data['agency_contact']         = isset($request->agency_contact) && !empty($request->agency_contact) ? $request->full_number : NULL;
             $data['lead_passenger_contact'] = isset($request->lead_passenger_contact) && !empty($request->lead_passenger_contact) ? $request->full_number : NULL;
-            $data['stored_text']            = $request->stored_text??NULL;
+            // $data['stored_text']            = $request->stored_text??NULL;
 
             /* append only for store quote */
             if($action == 'store'){
@@ -261,7 +261,7 @@ class QuoteController extends Controller
             $data['quote_ref']              = Helper::getQuoteID();
             $data['agency_contact']         = $request->agency_contact??NULL;
             $data['lead_passenger_contact'] = $request->lead_passenger_contact??NULL;
-            $data['stored_text']            = $request->stored_text??NULL;
+            // $data['stored_text']            = $request->stored_text??NULL;
             $data['created_by']             =  Auth::id();
         }
 
