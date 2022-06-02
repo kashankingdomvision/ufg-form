@@ -202,7 +202,7 @@ class QuoteExport implements FromCollection, WithHeadings, ShouldAutoSize, WithE
                     [
                         'SALES PERSON:',''.$data['quote']->getSalePerson->name ? $data['quote']->getSalePerson->name : '---',
                         '', // blank array for skip one column
-                        'COMMISSION TYPE:',''.$data['quote']->getCommission->name ? $data['quote']->getCommission->name.' ('.$data['quote']->getCommission->percentage.' %)' : '---'
+                        // 'COMMISSION TYPE:',''.$data['quote']->getCommission->name ? $data['quote']->getCommission->name.' ('.$data['quote']->getCommission->percentage.' %)' : '---'
                     ],
                     [
                         'BRAND:',''.$data['quote']->getBrand->name ? $data['quote']->getBrand->name : '---',

@@ -235,6 +235,7 @@
                     'pay_commissions.commission_management',
                     'sale_person_payments.index',
                     'sale_person_payments.create',
+                    'sale_person_payments.account_allocation',
                     ]) ? 'menu-open': '' }}">
                     
                     <a href="#" class="nav-link">
@@ -271,6 +272,15 @@
                                     <i class="nav-icon far fa-circle"></i>
                                     <p>
                                         Sale Person's Payment
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('sale_person_payments.account_allocation') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.account_allocation']) ? 'active' : '' }}">
+                                    <i class="nav-icon far fa-circle"></i>
+                                    <p>
+                                        Acc Allocation
                                     </p>
                                 </a>
                             </li>

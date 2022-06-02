@@ -8,6 +8,9 @@ use App\Http\Requests\SalePersonPaymentRequest;
 use App\SalePersonPayment;
 use App\User;
 use App\Currency;
+use App\Season;
+use App\PaymentMethod;
+use App\Booking;
 
 class SalePersonPaymentController extends Controller
 {
@@ -78,5 +81,73 @@ class SalePersonPaymentController extends Controller
             'redirect_url'    => route('sale_person_payments.index') 
         ]);
     }
+
+
+    public function accountAllocation(Request $request)
+    {
+
+        
+        $data['users']            = User::role(['sales-agent'])->get();
+        $data['seasons']          = Season::all();
+        $data['payment_methods']  = PaymentMethod::whereNotIn('id', [3])->get();
+
+        if($request->filled('sale_person_id') && $request->filled('season')){
+
+            $query = Booking::with([
+                'getSalePerson.getCurrency',
+                'getSalePerson',
+                'getCurrency',
+                'getSeason',
+                'getCommissionCriteria',
+                'getBrand',
+                'getHolidayType',
+                'getLastSaleAgentCommissionBatchDetails',
+            ])
+            ->where('season_id', $request->season)
+            ->whereIn('sale_person_payment_status', [0,1])
+            ->where('commission_amount', '>', 0);
+
+            $query->when($request->departure_date, function ($query) use ($request) {
+
+                $dates = Helper::dates($request->departure_date);
+                $query->whereBetween('departure_date', [$dates->start_date, $dates->end_date]);
+            });
+
+            $bookings = $query->select([
+                'season_id',
+                'brand_id',
+                'holiday_type_id',
+                'commission_criteria_id',
+                'ref_no',
+                'quote_ref',
+                'sale_person_id',
+                'currency_id',
+                'commission_amount',
+                'rate_type',
+                'id',
+                'commission_amount_in_sale_person_currency',
+                'sale_person_payment_status',
+                'departure_date',
+                'selling_price',
+                'markup_amount',
+                'markup_percentage',
+                'sale_person_bonus_amount'
+            ])
+            ->get()
+            // ->take(1)
+            ;
+
+            // dd($bookings);
+
+            $data['sale_person_id'] = $request->sale_person_id;
+            $data['sale_person_currency_id'] = User::find($request->sale_person_id)->value('currency_id');
+            $data['bookings'] = $bookings;
+            $data['send_to_agent'] = collect($bookings)->contains('sale_person_payment_status', 0) ? 0 : 1;
+
+        }
+
+        return view('sale_person_payments.account_allocation', $data);
+    }
+
 
 }

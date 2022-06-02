@@ -85,7 +85,7 @@
                             {{ Helper::number_format($sp_payment->balance_owed_amount) }}
                           </td>
                           <td>
-                            <a  href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
+                            <a href="{{ route('sale_person_payments.edit', encrypt($sp_payment->id)) }}" class=" mr-2 btn btn-outline-success btn-xs" title="Edit"><i class="fa fa-fw fa-edit"></i></a>
                           </td>
                         </tr>
                       @endforeach
