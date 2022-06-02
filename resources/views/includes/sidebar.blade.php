@@ -276,14 +276,6 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a href="{{ route('sale_person_payments.account_allocation') }}" class="nav-link sidebar-border-left {{ in_array($route, ['sale_person_payments.account_allocation']) ? 'active' : '' }}">
-                                    <i class="nav-icon far fa-circle"></i>
-                                    <p>
-                                        Acc Allocation
-                                    </p>
-                                </a>
-                            </li>
                         @endif
 
 

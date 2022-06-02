@@ -139,8 +139,12 @@
                                   @endif
                                 </td>
                                 <td>
-                                  {{ !is_null($sac_batch->getSalePersonCurrency->code) ? $sac_batch->getSalePersonCurrency->code : ''  }}
-                                  {{ isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) ? Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) : '' }} 
+                                  @if(isset($sacb_details->getBooking->sale_person_bonus_amount) && !empty($sacb_details->getBooking->sale_person_bonus_amount) && !is_null($sac_batch->getSalePersonCurrency))
+                                    {{ $sac_batch->getSalePersonCurrency->code }}
+                                    {{ Helper::number_format($sacb_details->getBooking->sale_person_bonus_amount) }}
+                                  @else
+                                    -
+                                  @endif
                                 </td>
                                 <td>
                                   @if($sacb_details->status == 'dispute')

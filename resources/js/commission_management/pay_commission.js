@@ -51,6 +51,35 @@ $(document).ready(function() {
 
         getTotalPaidAmount();
         getTotalOutstandingAmount();
+
+
+
+        let salePersonPayments = removeComma($('.sale-person-payments').val());
+
+        if (salePersonPayments !== undefined) {
+
+            $('#sale_person_payments').prop('checked', true).val('1');
+
+            let balanceOwedAmount = removeComma($('.balance-owed-amount').val());
+
+
+            let valesArray = $('.pay-commission-amount').map((i, e) => parseFloat(removeComma(e.value))).get();
+            let totalPayCommissionAmount = valesArray.reduce((a, b) => (a + b), 0);
+
+            let balanceOwedOutstandingAmount = removeComma($('.balance-owed-outstanding-amount').val());
+            let calBalanceOwedOutstandingAmount = parseFloat(balanceOwedAmount) - parseFloat(totalPayCommissionAmount);
+            let calBalancTotalPaidAmount = parseFloat(balanceOwedAmount) - parseFloat(calBalanceOwedOutstandingAmount);
+
+
+            $('.balance-owed-outstanding-amount').val(check(calBalanceOwedOutstandingAmount));
+
+
+            $('.balance-owed-total-paid-amount').val(check(calBalancTotalPaidAmount));
+
+  
+    
+            $('.total-pay-commission-amount').html(check(totalPayCommissionAmount)).val(check(totalPayCommissionAmount));
+        }
     });
 
     $(document).on('submit', '#store_pay_commission', function(event) {
