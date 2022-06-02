@@ -345,6 +345,7 @@ Route::group(['middleware' => ['auth']], function(){
         Route::get('edit/{id}', array('as' => 'edit', 'uses' => 'SalePersonPaymentController@edit'));
         Route::put('update/{id}', array('as' => 'update', 'uses' => 'SalePersonPaymentController@update'));
 
+        Route::get('account-allocation', array('as' => 'account_allocation', 'uses' => 'SalePersonPaymentController@accountAllocation'));
     });
     
     /*
